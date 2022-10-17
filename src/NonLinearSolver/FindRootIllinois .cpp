@@ -5,39 +5,41 @@
 #include "Functions/ISingleVariableRealValuedFunctionUtils.h"
 #include "Utils/MessageHandler.h"
 
-NonLinearSolverStatus FindRootIllinois::FindInInterval(ISingleVariableRealValuedFunction& fie, double xmin, double xmax, INonLinearSolverStrategy& strategy, double& result)
+NonLinearSolverStatus FindRootIllinois::FindInInterval(ISingleVariableRealValuedFunction& fie, double a, double b, INonLinearSolverStrategy& strategy, double& result)
 {
-   const double fmin = Evaluate(fie, xmin);
-   const double fmax = Evaluate(fie, xmax);
-
-   if (fmin > fmax)
-   {
-      // Swap arguments
-      return FindInInterval(fie, xmax, xmin, strategy, result);
-   }
-
-   MessageHandler::Assert(fmin <= 0.0);
-   MessageHandler::Assert(fmax >= 0.0);
-
    int iter = 0;
-   double rsd = (std::abs(fmin) + std::abs(fmax)) / 2;
+   double fa = Evaluate(fie, a);
+   double fb = Evaluate(fie, b);
+   const double rsd = (fa + fb) / 2;
    auto status = strategy.GetStatus(iter, { std::addressof(rsd), 1 });
+   if (status == NonLinearSolverStatus::Converged)
+   {
+      result = a;
+      return status;
+   }
 
    while (status == NonLinearSolverStatus::NotConverged)
    {
       ++iter;
-      result = (xmin + xmax) / 2;
-      double fmid = Evaluate(fie, result);
-      status = strategy.GetStatus(iter, { std::addressof(fmid), 1 } );
+      double x = (a * fb - b * fa) / (fb - fa);
+      result = x;
+      double fx = Evaluate(fie, x);
+      status = strategy.GetStatus(iter, { std::addressof(fx), 1 });
 
-      if (fmid > 0)
+      if (status == NonLinearSolverStatus::Converged) break;
+
+      if (fx * fb < 0)
       {
-         xmax = result;
+         a = b;
+         fa = fb;
       }
       else
       {
-         xmin = result;
+         fa *= 0.5;
       }
+
+      b = x;
+      fb = fx;
    }
 
    return status;

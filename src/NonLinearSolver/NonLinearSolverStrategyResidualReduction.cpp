@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <numeric>
 #include <cmath>
+#include <string>
 
 NonLinearSolverStrategyResidualReduction::NonLinearSolverStrategyResidualReduction(const NonLinearSolverConvergenceCriteria& crit):
 	m_convergenceCrit(crit)
@@ -12,7 +13,11 @@ NonLinearSolverStrategyResidualReduction::NonLinearSolverStrategyResidualReducti
 
 NonLinearSolverStatus NonLinearSolverStrategyResidualReduction::GetStatus(int iter, std::span<const  double> rsd)
 {
-	assert(iter == m_residuals.size());
+	if (iter != m_residuals.size())
+	{
+		const std::string msg = "NonLinearSolverStrategyResidualReduction::GetStatus rsd should have size " + std::to_string(iter) + ", but is " + std::to_string(m_residuals.size());
+		throw std::exception(msg.c_str());
+	}
 	const double normResidual = std::sqrt(std::inner_product(rsd.begin(), rsd.end(), rsd.begin(), 0.0));
 	m_residuals.push_back(normResidual);
 	if (iter == 0)
