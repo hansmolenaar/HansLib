@@ -16,7 +16,7 @@ TEST(UnitVectorTest, TestUnitVector2)
    ASSERT_TRUE(vecptr.get() != nullptr);
    ASSERT_EQ(2, vecptr->GetDimension());
 
-   const auto vec = *vecptr;
+   const auto& vec = *vecptr;
    ASSERT_NEAR(vec(0), MathConstants::SQRT1_2, eps);
    ASSERT_NEAR(vec(1), -MathConstants::SQRT1_2, eps);
 }
