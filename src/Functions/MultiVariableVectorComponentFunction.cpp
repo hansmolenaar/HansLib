@@ -36,6 +36,12 @@ bool MultiVariableVectorComponentFunction::DerivativeAlwaysZero(int var) const
 	return var != m_index;
 }
 
+
+bool MultiVariableVectorComponentFunction::HasDerivative() const
+{
+	return true;
+}
+
 double MultiVariableVectorComponentFunction::Evaluate(std::span<const double>x) const
 {
 	MessageHandler::Assert(x.size() == GetDomainDimension());

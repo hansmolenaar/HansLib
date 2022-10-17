@@ -19,6 +19,10 @@ int MultiVariableProductFunction::GetDomainDimension() const
 }
 
 
+bool MultiVariableProductFunction::HasDerivative() const
+{
+	return std::all_of(m_functions.begin(), m_functions.end(), [=](const IMultiVariableRealValuedFunction* fie) { return fie->HasDerivative(); });
+}
 
 
 bool MultiVariableProductFunction::DerivativeAlwaysZero(int var) const

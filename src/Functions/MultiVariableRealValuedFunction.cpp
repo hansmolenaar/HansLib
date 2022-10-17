@@ -43,6 +43,12 @@ bool MultiVariableRealValuedFunction::DerivativeAlwaysZero(int var) const
 	return !m_isActive.at(var);
 }
 
+
+bool MultiVariableRealValuedFunction::HasDerivative() const
+{
+	return true;
+}
+
 double MultiVariableRealValuedFunction::Evaluate(std::span<const double>x) const
 {
 	MessageHandler::Assert(x.size() == GetDomainDimension());

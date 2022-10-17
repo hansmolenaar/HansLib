@@ -14,6 +14,7 @@ public:
 	double Evaluate(double x)const override;
 	double Derivative(double x)const override;
 	bool IsNonConstant() const override;
+	bool HasDerivative() const override;
 private:
 	std::vector< std::pair<double, SingleVariableMonomial> > m_polynomial;
 };

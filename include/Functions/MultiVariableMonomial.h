@@ -14,7 +14,7 @@ public:
 	double Evaluate(std::span<const double>x)const override;
 	void Derivative(std::span<const double>x, std::span< double> dfdx)const override;
 	bool DerivativeAlwaysZero(int var) const override;
-
+	bool HasDerivative() const override;
 
 	using IMultiVariableRealValuedFunction::DerivativeAlwaysZero;
 	using IMultiVariableRealValuedFunction::Derivative;

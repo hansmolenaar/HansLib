@@ -157,6 +157,7 @@
     <ClInclude Include="..\include\Functions\RealFunctionAdd.h" />
     <ClInclude Include="..\include\Functions\RealFunctionCompose.h" />
     <ClInclude Include="..\include\Functions\RealFunctionNull.h" />
+    <ClInclude Include="..\include\Functions\SingleVariableFunctionExamples.h" />
     <ClInclude Include="..\include\Functions\SingleVariableMonomial.h" />
     <ClInclude Include="..\include\Functions\SingleVariablePolynomial.h" />
     <ClInclude Include="..\include\Functions\SingleVariableRealValuedFunction.h" />
@@ -175,6 +176,7 @@
     <ClCompile Include="..\src\Functions\RealFunctionAdd.cpp" />
     <ClCompile Include="..\src\Functions\RealFunctionCompose.cpp" />
     <ClCompile Include="..\src\Functions\RealFunctionNull.cpp" />
+    <ClCompile Include="..\src\Functions\SingleVariableFunctionExamples.cpp" />
     <ClCompile Include="..\src\Functions\SingleVariableMonomial.cpp" />
     <ClCompile Include="..\src\Functions\SingleVariablePolynomial.cpp" />
     <ClCompile Include="..\src\Functions\SingleVariableRealValuedFunction.cpp" />

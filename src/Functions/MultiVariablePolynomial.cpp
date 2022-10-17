@@ -33,6 +33,12 @@ int MultiVariablePolynomial::GetDomainDimension() const
 	return m_dim;
 }
 
+
+bool MultiVariablePolynomial::HasDerivative() const
+{
+	return true;
+}
+
 bool MultiVariablePolynomial::DerivativeAlwaysZero(int var) const
 {
 	return std::all_of(m_terms.begin(), m_terms.end(), [&](const auto& term) {return term.second.DerivativeAlwaysZero(var); });

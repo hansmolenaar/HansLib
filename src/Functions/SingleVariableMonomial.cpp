@@ -39,3 +39,9 @@ bool SingleVariableMonomial::IsNonConstant() const
 {
 	return m_pow > 0;
 }
+
+
+bool SingleVariableMonomial::HasDerivative() const
+{
+	return true;
+}

@@ -30,6 +30,12 @@ double SingleVariablePolynomial::Derivative(double x)const
 }
 
 
+bool SingleVariablePolynomial::HasDerivative() const
+{
+	return true;
+}
+
+
 bool SingleVariablePolynomial::IsNonConstant() const
 {
 	for (auto& term : m_polynomial)

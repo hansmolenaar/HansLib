@@ -29,6 +29,12 @@ int RealFunctionCompose::GetDomainDimension() const
 }
 
 
+bool RealFunctionCompose::HasDerivative() const
+{
+	return true;
+}
+
+
 void RealFunctionCompose::Derivative(std::span<const double>x, IMatrix& dfdx)const
 {
 	const int M = m_g.GetDomainDimension();

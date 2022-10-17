@@ -22,7 +22,11 @@ NonLinearSolverStatus NonLinearSolverStrategyResidualReduction::GetStatus(int it
 	m_residuals.push_back(normResidual);
 	if (iter == 0)
 	{
-		// Nothing to do
+		// Sick case
+		if (m_residuals[0] == 0.0)
+		{
+			return NonLinearSolverStatus::Converged;
+		}
 	}
 	else if (iter > m_convergenceCrit.GetMaxIter())
 	{

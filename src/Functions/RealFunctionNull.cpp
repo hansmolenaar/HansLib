@@ -27,6 +27,11 @@ int RealFunctionNull::GetDomainDimension() const
 }
 
 
+bool RealFunctionNull::HasDerivative() const
+{
+	return true;
+}
+
 void RealFunctionNull::Derivative(std::span<const double>x, IMatrix& dfdx)const
 {
 	MessageHandler::Assert(m_numVar == dfdx.GetColDimension());

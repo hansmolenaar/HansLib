@@ -23,6 +23,10 @@ bool MultiVariableVectorValuedFunction::DerivativeAlwaysZero(int eqn, int var) c
 }
 
 
+bool MultiVariableVectorValuedFunction::HasDerivative() const
+{
+	return true;
+}
 
 int MultiVariableVectorValuedFunction::GetRangeDimension() const
 {

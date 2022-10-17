@@ -17,6 +17,7 @@ public:
 	void Evaluate(std::span<const double>x, std::span<double> fx)const override;
 	void Derivative(std::span<const double>x, IMatrix& dfdx) const override;
 	bool DerivativeAlwaysZero(int eqn, int var) const override;
+	bool HasDerivative() const override;
 
 private:
 	const std::vector<std::shared_ptr< IMultiVariableRealValuedFunction> >  m_components;

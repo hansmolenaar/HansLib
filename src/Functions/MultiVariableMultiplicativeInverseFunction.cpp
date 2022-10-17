@@ -13,7 +13,10 @@ int MultiVariableMultiplicativeInverseFunction::GetDomainDimension() const
 	return m_function.GetDomainDimension();
 }
 
-
+bool MultiVariableMultiplicativeInverseFunction::HasDerivative() const
+{
+	return true;
+}
 
 
 bool MultiVariableMultiplicativeInverseFunction::DerivativeAlwaysZero(int var) const

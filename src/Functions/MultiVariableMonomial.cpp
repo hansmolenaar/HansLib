@@ -27,6 +27,10 @@ int MultiVariableMonomial::GetDomainDimension() const
 
 
 
+bool MultiVariableMonomial::HasDerivative() const
+{
+	return true;
+}
 
 bool MultiVariableMonomial::DerivativeAlwaysZero(int var) const
 {
