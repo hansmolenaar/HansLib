@@ -1,7 +1,7 @@
 #include "Functions/ISingleVariableRealValuedFunctionUtils.h"
 #include "Functions/ISingleVariableRealValuedFunction.h"
-#include "Utils/NonLinearSolverStrategyResidualReduction.h"
-#include "Utils/NonLinearSolver.h"
+#include "NonLinearSolver/NonLinearSolverStrategyResidualReduction.h"
+#include "NonLinearSolver/NonLinearSolver.h"
 
 #include <string>
 #include <sstream>

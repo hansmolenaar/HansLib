@@ -30,6 +30,15 @@
     <ClInclude Include="..\include\NonLinearSolver\NonLinearSolverStrategyResidualReduction.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\include\NonLinearSolver\FindRootBisection.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NonLinearSolver\IFindRoot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\NonLinearSolver\FindRootIllinois .h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\NonLinearSolver\NonLinearSolver.cpp">
@@ -39,6 +48,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\NonLinearSolver\NonLinearSolverStrategyResidualReduction.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\NonLinearSolver\FindRootBisection.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\NonLinearSolver\FindRootIllinois .cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

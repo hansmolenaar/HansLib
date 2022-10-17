@@ -1,6 +1,6 @@
-#include "Utils/NonLinearSolver.h"
+#include "NonLinearSolver/NonLinearSolver.h"
 #include "MatrixVector/MatrixSquare.h"
-#include "Utils/INonLinearSolverStrategy.h"
+#include "NonLinearSolver/INonLinearSolverStrategy.h"
 #include "Functions/IRealFunction.h"
 #include "Functions/IRealFunctionUtils.h"
 #include "Utils/MessageHandler.h"

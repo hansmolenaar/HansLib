@@ -1,8 +1,9 @@
 #pragma once
 
-#include <gsl/gsl-lite.hpp>
 #include "INonLinearSolverStrategy.h"
 #include "NonLinearSolverConvergenceCriteria.h"
+
+#include <vector>
 
 class NonLinearSolverStrategyResidualReduction : public INonLinearSolverStrategy
 {

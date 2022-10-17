@@ -142,6 +142,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\include\NonLinearSolver\FindRootBisection.h" />
+    <ClInclude Include="..\include\NonLinearSolver\FindRootIllinois .h" />
+    <ClInclude Include="..\include\NonLinearSolver\IFindRoot.h" />
     <ClInclude Include="..\include\NonLinearSolver\INonLinearSolverStrategy.h" />
     <ClInclude Include="..\include\NonLinearSolver\NonLinearSolver.h" />
     <ClInclude Include="..\include\NonLinearSolver\NonLinearSolverConvergenceCriteria.h" />
@@ -149,6 +152,8 @@
     <ClInclude Include="..\include\NonLinearSolver\NonLinearSolverStrategyResidualReduction.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\src\NonLinearSolver\FindRootBisection.cpp" />
+    <ClCompile Include="..\src\NonLinearSolver\FindRootIllinois .cpp" />
     <ClCompile Include="..\src\NonLinearSolver\NonLinearSolver.cpp" />
     <ClCompile Include="..\src\NonLinearSolver\NonLinearSolverConvergenceCriteria.cpp" />
     <ClCompile Include="..\src\NonLinearSolver\NonLinearSolverStrategyResidualReduction.cpp" />
