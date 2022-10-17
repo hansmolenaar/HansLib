@@ -1,6 +1,6 @@
-#include "MatrixVector/IMatrixKelvinReprUtils.h"
+#include "KelvinRepr/IMatrixKelvinReprUtils.h"
 
-#include "MatrixVector/IMatrixKelvinRepr.h"
+#include "KelvinRepr/IMatrixKelvinRepr.h"
 #include "Utils/MessageHandler.h"
 
 
@@ -50,6 +50,7 @@ IMatrixKelvinRepr& operator+=(IMatrixKelvinRepr& matrix, const IMatrixKelvinRepr
 	return matrix;
 }
 
+#if false
 void IMatrixRotation::RotateTensor(const IMatrixKelvinRepr& tin, IMatrixKelvinRepr& tout) const
 {
    const int dim = GetDimension();
@@ -71,3 +72,4 @@ void IMatrixRotation::RotateTensor(const IMatrixKelvinRepr& tin, IMatrixKelvinRe
       }
    }
 }
+#endif

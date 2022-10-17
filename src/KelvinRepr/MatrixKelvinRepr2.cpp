@@ -1,9 +1,9 @@
-#include "MatrixVector/MatrixKelvinRepr2.h"
+#include "KelvinRepr/MatrixKelvinRepr2.h"
 
 #include "Utils/MathConstants.h"
 #include "Utils/MessageHandler.h"
-#include "MatrixVector/IMatrixKelvinReprUtils.h"
-#include "MatrixVector/IndexerKelvinRepr2.h"
+#include "KelvinRepr/IMatrixKelvinReprUtils.h"
+#include "KelvinRepr/IndexerKelvinRepr2.h"
 
 #include <exception>
 

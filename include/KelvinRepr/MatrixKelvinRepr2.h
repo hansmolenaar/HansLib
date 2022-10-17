@@ -1,6 +1,6 @@
 #pragma once
 
-#include "MatrixVector/MatrixKelvinReprBase.h"
+#include "KelvinRepr/MatrixKelvinReprBase.h"
 
 class MatrixKelvinRepr2 : public MatrixKelvinReprBase<2>
 {

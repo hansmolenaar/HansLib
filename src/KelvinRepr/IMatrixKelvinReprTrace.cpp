@@ -1,6 +1,6 @@
-#include "MatrixVector/IMatrixKelvinReprTrace.h"
+#include "KelvinRepr/IMatrixKelvinReprTrace.h"
 
-#include "MatrixVector/IMatrixKelvinRepr.h"
+#include "KelvinRepr/IMatrixKelvinRepr.h"
 #include "MatrixVector/IMatrix.h"
 #include "MatrixVector/IMatrixUtils.h"
 #include "Utils/MessageHandler.h"

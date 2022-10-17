@@ -1,6 +1,6 @@
-#include "MatrixVector/MatrixKelvinRepr1.h"
+#include "KelvinRepr/MatrixKelvinRepr1.h"
 
-#include "MatrixVector/IndexerKelvinRepr1.h"
+#include "KelvinRepr/IndexerKelvinRepr1.h"
 #include "Utils/MessageHandler.h"
 
 namespace

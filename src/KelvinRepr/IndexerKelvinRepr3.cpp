@@ -1,4 +1,4 @@
-#include "MatrixVector/IndexerKelvinRepr3.h"
+#include "KelvinRepr/IndexerKelvinRepr3.h"
 
 #include "Utils/MessageHandler.h"
 
