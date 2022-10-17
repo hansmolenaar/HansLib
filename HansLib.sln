@@ -9,6 +9,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MatrixVector", "MatrixVecto
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UtilsTest", "UtilsTest\UtilsTest.vcxproj", "{CEFA6749-E55D-4A25-B43E-0089DE93215A}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MatrixVectorTest", "MatrixVectorTest\MatrixVectorTest.vcxproj", "{12FAA466-DCAB-4BE8-A2AD-9D3304F12357}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -41,6 +43,14 @@ Global
 		{CEFA6749-E55D-4A25-B43E-0089DE93215A}.Release|x64.Build.0 = Release|x64
 		{CEFA6749-E55D-4A25-B43E-0089DE93215A}.Release|x86.ActiveCfg = Release|Win32
 		{CEFA6749-E55D-4A25-B43E-0089DE93215A}.Release|x86.Build.0 = Release|Win32
+		{12FAA466-DCAB-4BE8-A2AD-9D3304F12357}.Debug|x64.ActiveCfg = Debug|x64
+		{12FAA466-DCAB-4BE8-A2AD-9D3304F12357}.Debug|x64.Build.0 = Debug|x64
+		{12FAA466-DCAB-4BE8-A2AD-9D3304F12357}.Debug|x86.ActiveCfg = Debug|Win32
+		{12FAA466-DCAB-4BE8-A2AD-9D3304F12357}.Debug|x86.Build.0 = Debug|Win32
+		{12FAA466-DCAB-4BE8-A2AD-9D3304F12357}.Release|x64.ActiveCfg = Release|x64
+		{12FAA466-DCAB-4BE8-A2AD-9D3304F12357}.Release|x64.Build.0 = Release|x64
+		{12FAA466-DCAB-4BE8-A2AD-9D3304F12357}.Release|x86.ActiveCfg = Release|Win32
+		{12FAA466-DCAB-4BE8-A2AD-9D3304F12357}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
