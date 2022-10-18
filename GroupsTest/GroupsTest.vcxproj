@@ -36,23 +36,23 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\test\GroupsTest\FinitePointGroupRotation2Test.cpp" />
-    <ClCompile Include="..\test\GroupsTest\FinitePointGroupRotation3Test.cpp" />
-    <ClCompile Include="..\test\GroupsTest\GroupTableCyclicTest.cpp" />
-    <ClCompile Include="..\test\GroupsTest\IFinitePointGroupTest.cpp" />
-    <ClCompile Include="..\test\GroupsTest\IGroupTableTest.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\test\GroupsTest\IFinitePointGroupTest.h" />
-    <ClInclude Include="..\test\GroupsTest\IGroupTableTest.h" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Groups\Groups.vcxproj">
       <Project>{eda39747-c1da-42cb-857d-a77171048589}</Project>
     </ProjectReference>
     <ProjectReference Include="..\HLUtils\HLUtils.vcxproj">
       <Project>{e68fc7e3-1402-4bbe-9d0f-f4bd88acfd45}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="FinitePointGroupRotation2Test.cpp" />
+    <ClCompile Include="FinitePointGroupRotation3Test.cpp" />
+    <ClCompile Include="GroupTableCyclicTest.cpp" />
+    <ClCompile Include="IFinitePointGroupTest.cpp" />
+    <ClCompile Include="IGroupTableTest.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="IFinitePointGroupTest.h" />
+    <ClInclude Include="IGroupTableTest.h" />
   </ItemGroup>
   <ItemDefinitionGroup />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

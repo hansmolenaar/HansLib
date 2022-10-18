@@ -37,23 +37,20 @@
     </Microsoft-GoogleTest-Disable-gtest_main>
   </PropertyGroup>
   <ItemGroup>
-    <ClInclude Include="..\test\MatrixVectorTest\IMatrixTest.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\test\MatrixVectorTest\IdentityMatrixTest.cpp" />
-    <ClCompile Include="..\test\MatrixVectorTest\IMatrixRotationTest.cpp" />
-    <ClCompile Include="..\test\MatrixVectorTest\IMatrixSquareUtilsTest.cpp" />
-    <ClCompile Include="..\test\MatrixVectorTest\IMatrixTest.cpp" />
-    <ClCompile Include="..\test\MatrixVectorTest\IMatrixUtilsTest.cpp" />
-    <ClCompile Include="..\test\MatrixVectorTest\IVectorUtilsTest.cpp" />
-    <ClCompile Include="..\test\MatrixVectorTest\MatrixDenseTest.cpp" />
-    <ClCompile Include="..\test\MatrixVectorTest\MatrixNullTest.cpp" />
-    <ClCompile Include="..\test\MatrixVectorTest\MatrixRotation2DTest.cpp" />
-    <ClCompile Include="..\test\MatrixVectorTest\MatrixRotation3DTest.cpp" />
-    <ClCompile Include="..\test\MatrixVectorTest\MatrixSquareTest.cpp" />
-    <ClCompile Include="..\test\MatrixVectorTest\RowColOfMatrixTest.cpp" />
-    <ClCompile Include="..\test\MatrixVectorTest\SubMatrixTest.cpp" />
-    <ClCompile Include="..\test\MatrixVectorTest\UnitVectorTest.cpp" />
+    <ClCompile Include="IdentityMatrixTest.cpp" />
+    <ClCompile Include="IMatrixRotationTest.cpp" />
+    <ClCompile Include="IMatrixSquareUtilsTest.cpp" />
+    <ClCompile Include="IMatrixTest.cpp" />
+    <ClCompile Include="IMatrixUtilsTest.cpp" />
+    <ClCompile Include="IVectorUtilsTest.cpp" />
+    <ClCompile Include="MatrixDenseTest.cpp" />
+    <ClCompile Include="MatrixNullTest.cpp" />
+    <ClCompile Include="MatrixRotation2DTest.cpp" />
+    <ClCompile Include="MatrixRotation3DTest.cpp" />
+    <ClCompile Include="MatrixSquareTest.cpp" />
+    <ClCompile Include="RowColOfMatrixTest.cpp" />
+    <ClCompile Include="SubMatrixTest.cpp" />
+    <ClCompile Include="UnitVectorTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -65,6 +62,9 @@
     <ProjectReference Include="..\MatrixVector\MatrixVector.vcxproj">
       <Project>{04dbb236-8fb0-448c-9504-f587dcc2e150}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="IMatrixTest.h" />
   </ItemGroup>
   <ItemDefinitionGroup />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

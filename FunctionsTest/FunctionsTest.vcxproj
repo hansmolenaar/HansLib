@@ -36,19 +36,19 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\test\FunctionsTest\IRealFunctionUtilsTest.cpp" />
-    <ClCompile Include="..\test\FunctionsTest\MultiVariableMonomialTest.cpp" />
-    <ClCompile Include="..\test\FunctionsTest\MultiVariableMultiplicativeInverseFunctionTest.cpp" />
-    <ClCompile Include="..\test\FunctionsTest\MultiVariablePolynomialTest.cpp" />
-    <ClCompile Include="..\test\FunctionsTest\MultiVariableProductFunctionTest.cpp" />
-    <ClCompile Include="..\test\FunctionsTest\MultiVariableRealValuedFunctionTest.cpp" />
-    <ClCompile Include="..\test\FunctionsTest\MultiVariableVectorComponentFunctionTest.cpp" />
-    <ClCompile Include="..\test\FunctionsTest\RealFunctionAddTest.cpp" />
-    <ClCompile Include="..\test\FunctionsTest\RealFunctionComposeTest.cpp" />
-    <ClCompile Include="..\test\FunctionsTest\RealFunctionNullTest.cpp" />
-    <ClCompile Include="..\test\FunctionsTest\SingleVariableMonomialTest.cpp" />
-    <ClCompile Include="..\test\FunctionsTest\SingleVariablePolynomialTest.cpp" />
-    <ClCompile Include="..\test\FunctionsTest\SingleVariableRealValuedFunctionTest.cpp" />
+    <ClCompile Include="IRealFunctionUtilsTest.cpp" />
+    <ClCompile Include="MultiVariableMonomialTest.cpp" />
+    <ClCompile Include="MultiVariableMultiplicativeInverseFunctionTest.cpp" />
+    <ClCompile Include="MultiVariablePolynomialTest.cpp" />
+    <ClCompile Include="MultiVariableProductFunctionTest.cpp" />
+    <ClCompile Include="MultiVariableRealValuedFunctionTest.cpp" />
+    <ClCompile Include="MultiVariableVectorComponentFunctionTest.cpp" />
+    <ClCompile Include="RealFunctionAddTest.cpp" />
+    <ClCompile Include="RealFunctionComposeTest.cpp" />
+    <ClCompile Include="RealFunctionNullTest.cpp" />
+    <ClCompile Include="SingleVariableMonomialTest.cpp" />
+    <ClCompile Include="SingleVariablePolynomialTest.cpp" />
+    <ClCompile Include="SingleVariableRealValuedFunctionTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Functions\Functions.vcxproj">

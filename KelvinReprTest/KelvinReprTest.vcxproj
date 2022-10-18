@@ -36,17 +36,6 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\test\KelvinReprTest\IMatrixKelvinReprTest.cpp" />
-    <ClCompile Include="..\test\KelvinReprTest\IMatrixKelvinReprTraceTest.cpp" />
-    <ClCompile Include="..\test\KelvinReprTest\IMatrixKelvinReprUtilsTest.cpp" />
-    <ClCompile Include="..\test\KelvinReprTest\IndexerKelvinRepr3Test.cpp" />
-    <ClCompile Include="..\test\KelvinReprTest\MatrixKelvinRepr1Test.cpp" />
-    <ClCompile Include="..\test\KelvinReprTest\MatrixKelvinRepr3Test.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\test\KelvinReprTest\IMatrixKelvinReprTest.h" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Functions\Functions.vcxproj">
       <Project>{f795c850-01b9-4cbd-ba0a-94c8f230a240}</Project>
     </ProjectReference>
@@ -59,6 +48,17 @@
     <ProjectReference Include="..\NonLinearSolver\NonLinearSolver.vcxproj">
       <Project>{0ca8e5ac-0b7e-49f9-80bc-1168d9c6bcec}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="IMatrixKelvinReprTest.cpp" />
+    <ClCompile Include="IMatrixKelvinReprTraceTest.cpp" />
+    <ClCompile Include="IMatrixKelvinReprUtilsTest.cpp" />
+    <ClCompile Include="IndexerKelvinRepr3Test.cpp" />
+    <ClCompile Include="MatrixKelvinRepr1Test.cpp" />
+    <ClCompile Include="MatrixKelvinRepr3Test.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="IMatrixKelvinReprTest.h" />
   </ItemGroup>
   <ItemDefinitionGroup />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

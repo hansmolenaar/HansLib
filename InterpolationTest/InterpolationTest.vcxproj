@@ -36,15 +36,15 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\test\InterpolationTest\LagrangeInterpolationTest.cpp" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Functions\Functions.vcxproj">
       <Project>{f795c850-01b9-4cbd-ba0a-94c8f230a240}</Project>
     </ProjectReference>
     <ProjectReference Include="..\Interpolation\Interpolation.vcxproj">
       <Project>{7cae9120-d61e-4c01-bd91-0af520784227}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="LagrangeInterpolationTest.cpp" />
   </ItemGroup>
   <ItemDefinitionGroup />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
