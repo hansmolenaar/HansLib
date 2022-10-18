@@ -18,6 +18,46 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="IMultiVariableRealValuedFunction.h" />
+    <ClInclude Include="IRealFunction.h" />
+    <ClInclude Include="IRealFunctionUtils.h" />
+    <ClInclude Include="ISingleVariableRealValuedFunction.h" />
+    <ClInclude Include="ISingleVariableRealValuedFunctionUtils.h" />
+    <ClInclude Include="MultiVariableMonomial.h" />
+    <ClInclude Include="MultiVariableMultiplicativeInverseFunction.h" />
+    <ClInclude Include="MultiVariablePolynomial.h" />
+    <ClInclude Include="MultiVariableProductFunction.h" />
+    <ClInclude Include="MultiVariableRealValuedFunction.h" />
+    <ClInclude Include="MultiVariableVectorComponentFunction.h" />
+    <ClInclude Include="MultiVariableVectorValuedFunction.h" />
+    <ClInclude Include="RealFunctionAdd.h" />
+    <ClInclude Include="RealFunctionCompose.h" />
+    <ClInclude Include="RealFunctionNull.h" />
+    <ClInclude Include="SingleVariableFunctionExamples.h" />
+    <ClInclude Include="SingleVariableMonomial.h" />
+    <ClInclude Include="SingleVariablePolynomial.h" />
+    <ClInclude Include="SingleVariableRealValuedFunction.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="IMultiVariableRealValuedFunction.cpp" />
+    <ClCompile Include="IRealFunctionUtils.cpp" />
+    <ClCompile Include="ISingleVariableRealValuedFunctionUtils.cpp" />
+    <ClCompile Include="MultiVariableMonomial.cpp" />
+    <ClCompile Include="MultiVariableMultiplicativeInverseFunction.cpp" />
+    <ClCompile Include="MultiVariablePolynomial.cpp" />
+    <ClCompile Include="MultiVariableProductFunction.cpp" />
+    <ClCompile Include="MultiVariableRealValuedFunction.cpp" />
+    <ClCompile Include="MultiVariableVectorComponentFunction.cpp" />
+    <ClCompile Include="MultiVariableVectorValuedFunction.cpp" />
+    <ClCompile Include="RealFunctionAdd.cpp" />
+    <ClCompile Include="RealFunctionCompose.cpp" />
+    <ClCompile Include="RealFunctionNull.cpp" />
+    <ClCompile Include="SingleVariableFunctionExamples.cpp" />
+    <ClCompile Include="SingleVariableMonomial.cpp" />
+    <ClCompile Include="SingleVariablePolynomial.cpp" />
+    <ClCompile Include="SingleVariableRealValuedFunction.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -141,46 +181,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClInclude Include="..\include\Functions\IMultiVariableRealValuedFunction.h" />
-    <ClInclude Include="..\include\Functions\IRealFunction.h" />
-    <ClInclude Include="..\include\Functions\IRealFunctionUtils.h" />
-    <ClInclude Include="..\include\Functions\ISingleVariableRealValuedFunction.h" />
-    <ClInclude Include="..\include\Functions\ISingleVariableRealValuedFunctionUtils.h" />
-    <ClInclude Include="..\include\Functions\MultiVariableMonomial.h" />
-    <ClInclude Include="..\include\Functions\MultiVariableMultiplicativeInverseFunction.h" />
-    <ClInclude Include="..\include\Functions\MultiVariablePolynomial.h" />
-    <ClInclude Include="..\include\Functions\MultiVariableProductFunction.h" />
-    <ClInclude Include="..\include\Functions\MultiVariableRealValuedFunction.h" />
-    <ClInclude Include="..\include\Functions\MultiVariableVectorComponentFunction.h" />
-    <ClInclude Include="..\include\Functions\MultiVariableVectorValuedFunction.h" />
-    <ClInclude Include="..\include\Functions\RealFunctionAdd.h" />
-    <ClInclude Include="..\include\Functions\RealFunctionCompose.h" />
-    <ClInclude Include="..\include\Functions\RealFunctionNull.h" />
-    <ClInclude Include="..\include\Functions\SingleVariableFunctionExamples.h" />
-    <ClInclude Include="..\include\Functions\SingleVariableMonomial.h" />
-    <ClInclude Include="..\include\Functions\SingleVariablePolynomial.h" />
-    <ClInclude Include="..\include\Functions\SingleVariableRealValuedFunction.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\src\Functions\IMultiVariableRealValuedFunction.cpp" />
-    <ClCompile Include="..\src\Functions\IRealFunctionUtils.cpp" />
-    <ClCompile Include="..\src\Functions\ISingleVariableRealValuedFunctionUtils.cpp" />
-    <ClCompile Include="..\src\Functions\MultiVariableMonomial.cpp" />
-    <ClCompile Include="..\src\Functions\MultiVariableMultiplicativeInverseFunction.cpp" />
-    <ClCompile Include="..\src\Functions\MultiVariablePolynomial.cpp" />
-    <ClCompile Include="..\src\Functions\MultiVariableProductFunction.cpp" />
-    <ClCompile Include="..\src\Functions\MultiVariableRealValuedFunction.cpp" />
-    <ClCompile Include="..\src\Functions\MultiVariableVectorComponentFunction.cpp" />
-    <ClCompile Include="..\src\Functions\MultiVariableVectorValuedFunction.cpp" />
-    <ClCompile Include="..\src\Functions\RealFunctionAdd.cpp" />
-    <ClCompile Include="..\src\Functions\RealFunctionCompose.cpp" />
-    <ClCompile Include="..\src\Functions\RealFunctionNull.cpp" />
-    <ClCompile Include="..\src\Functions\SingleVariableFunctionExamples.cpp" />
-    <ClCompile Include="..\src\Functions\SingleVariableMonomial.cpp" />
-    <ClCompile Include="..\src\Functions\SingleVariablePolynomial.cpp" />
-    <ClCompile Include="..\src\Functions\SingleVariableRealValuedFunction.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

@@ -15,114 +15,114 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\include\Functions\IMultiVariableRealValuedFunction.h">
+    <ClInclude Include="IMultiVariableRealValuedFunction.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\Functions\IRealFunction.h">
+    <ClInclude Include="IRealFunction.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\Functions\IRealFunctionUtils.h">
+    <ClInclude Include="IRealFunctionUtils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\Functions\ISingleVariableRealValuedFunction.h">
+    <ClInclude Include="ISingleVariableRealValuedFunction.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\Functions\ISingleVariableRealValuedFunctionUtils.h">
+    <ClInclude Include="ISingleVariableRealValuedFunctionUtils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\Functions\MultiVariableMonomial.h">
+    <ClInclude Include="MultiVariableMonomial.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\Functions\MultiVariableMultiplicativeInverseFunction.h">
+    <ClInclude Include="MultiVariableMultiplicativeInverseFunction.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\Functions\MultiVariablePolynomial.h">
+    <ClInclude Include="MultiVariablePolynomial.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\Functions\MultiVariableProductFunction.h">
+    <ClInclude Include="MultiVariableProductFunction.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\Functions\MultiVariableRealValuedFunction.h">
+    <ClInclude Include="MultiVariableRealValuedFunction.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\Functions\MultiVariableVectorComponentFunction.h">
+    <ClInclude Include="MultiVariableVectorComponentFunction.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\Functions\MultiVariableVectorValuedFunction.h">
+    <ClInclude Include="MultiVariableVectorValuedFunction.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\Functions\RealFunctionAdd.h">
+    <ClInclude Include="RealFunctionAdd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\Functions\RealFunctionCompose.h">
+    <ClInclude Include="RealFunctionCompose.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\Functions\RealFunctionNull.h">
+    <ClInclude Include="RealFunctionNull.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\Functions\SingleVariableMonomial.h">
+    <ClInclude Include="SingleVariableFunctionExamples.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\Functions\SingleVariablePolynomial.h">
+    <ClInclude Include="SingleVariableMonomial.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\Functions\SingleVariableRealValuedFunction.h">
+    <ClInclude Include="SingleVariablePolynomial.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\Functions\SingleVariableFunctionExamples.h">
+    <ClInclude Include="SingleVariableRealValuedFunction.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\Functions\IMultiVariableRealValuedFunction.cpp">
+    <ClCompile Include="IMultiVariableRealValuedFunction.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Functions\IRealFunctionUtils.cpp">
+    <ClCompile Include="IRealFunctionUtils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Functions\ISingleVariableRealValuedFunctionUtils.cpp">
+    <ClCompile Include="ISingleVariableRealValuedFunctionUtils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Functions\MultiVariableMonomial.cpp">
+    <ClCompile Include="MultiVariableMonomial.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Functions\MultiVariableMultiplicativeInverseFunction.cpp">
+    <ClCompile Include="MultiVariableMultiplicativeInverseFunction.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Functions\MultiVariablePolynomial.cpp">
+    <ClCompile Include="MultiVariablePolynomial.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Functions\MultiVariableProductFunction.cpp">
+    <ClCompile Include="MultiVariableProductFunction.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Functions\MultiVariableRealValuedFunction.cpp">
+    <ClCompile Include="MultiVariableRealValuedFunction.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Functions\MultiVariableVectorComponentFunction.cpp">
+    <ClCompile Include="MultiVariableVectorComponentFunction.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Functions\MultiVariableVectorValuedFunction.cpp">
+    <ClCompile Include="MultiVariableVectorValuedFunction.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Functions\RealFunctionAdd.cpp">
+    <ClCompile Include="RealFunctionAdd.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Functions\RealFunctionCompose.cpp">
+    <ClCompile Include="RealFunctionCompose.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Functions\RealFunctionNull.cpp">
+    <ClCompile Include="RealFunctionNull.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Functions\SingleVariableMonomial.cpp">
+    <ClCompile Include="SingleVariableFunctionExamples.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Functions\SingleVariablePolynomial.cpp">
+    <ClCompile Include="SingleVariableMonomial.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Functions\SingleVariableRealValuedFunction.cpp">
+    <ClCompile Include="SingleVariablePolynomial.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Functions\SingleVariableFunctionExamples.cpp">
+    <ClCompile Include="SingleVariableRealValuedFunction.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

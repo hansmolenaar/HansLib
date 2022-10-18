@@ -142,47 +142,48 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\include\MatrixVector\IdentityMatrix.h" />
-    <ClInclude Include="..\include\MatrixVector\IMatrix.h" />
-    <ClInclude Include="..\include\MatrixVector\IMatrixRotation.h" />
-    <ClInclude Include="..\include\MatrixVector\IMatrixSquare.h" />
-    <ClInclude Include="..\include\MatrixVector\IMatrixSquareUtils.h" />
-    <ClInclude Include="..\include\MatrixVector\IMatrixSymmetric.h" />
-    <ClInclude Include="..\include\MatrixVector\IMatrixUtils.h" />
-    <ClInclude Include="..\include\MatrixVector\IVector.h" />
-    <ClInclude Include="..\include\MatrixVector\IVectorUtils.h" />
-    <ClInclude Include="..\include\MatrixVector\MatrixDense.h" />
-    <ClInclude Include="..\include\MatrixVector\MatrixRotation2D.h" />
-    <ClInclude Include="..\include\MatrixVector\MatrixRotation3D.h" />
-    <ClInclude Include="..\include\MatrixVector\MatrixSquare.h" />
-    <ClInclude Include="..\include\MatrixVector\RowColOfMatrix.h" />
-    <ClInclude Include="..\include\MatrixVector\SubMatrix.h" />
-    <ClInclude Include="..\include\MatrixVector\UnitVector.h" />
-    <ClInclude Include="..\include\MatrixVector\Vector.h" />
-    <ClInclude Include="..\include\MatrixVector\VectorWrapper.h" />
-    <ClInclude Include="..\include\MatrixVector\VectorWrapperRO.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\src\MatrixVector\IdentityMatrix.cpp" />
-    <ClCompile Include="..\src\MatrixVector\imatrixrotation.cpp" />
-    <ClCompile Include="..\src\MatrixVector\IMatrixSquareUtils.cpp" />
-    <ClCompile Include="..\src\MatrixVector\IMatrixUtils.cpp" />
-    <ClCompile Include="..\src\MatrixVector\IVectorUtils.cpp" />
-    <ClCompile Include="..\src\MatrixVector\MatrixDense.cpp" />
-    <ClCompile Include="..\src\MatrixVector\MatrixNull.cpp" />
-    <ClCompile Include="..\src\MatrixVector\MatrixRotation2D.cpp" />
-    <ClCompile Include="..\src\MatrixVector\MatrixRotation3D.cpp" />
-    <ClCompile Include="..\src\MatrixVector\MatrixSquare.cpp" />
-    <ClCompile Include="..\src\MatrixVector\RowColOfMatrix.cpp" />
-    <ClCompile Include="..\src\MatrixVector\SubMatrix.cpp" />
-    <ClCompile Include="..\src\MatrixVector\Vector.cpp" />
-    <ClCompile Include="..\src\MatrixVector\VectorWrapper.cpp" />
-    <ClCompile Include="..\src\MatrixVector\VectorWrapperRO.cpp" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Utils\Utils.vcxproj">
       <Project>{78612aec-e5cd-41af-b059-cc5c11dd9b39}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="IdentityMatrix.h" />
+    <ClInclude Include="IMatrix.h" />
+    <ClInclude Include="IMatrixRotation.h" />
+    <ClInclude Include="IMatrixSquare.h" />
+    <ClInclude Include="IMatrixSquareUtils.h" />
+    <ClInclude Include="IMatrixSymmetric.h" />
+    <ClInclude Include="IMatrixUtils.h" />
+    <ClInclude Include="IVector.h" />
+    <ClInclude Include="IVectorUtils.h" />
+    <ClInclude Include="MatrixDense.h" />
+    <ClInclude Include="MatrixNull.h" />
+    <ClInclude Include="MatrixRotation2D.h" />
+    <ClInclude Include="MatrixRotation3D.h" />
+    <ClInclude Include="MatrixSquare.h" />
+    <ClInclude Include="RowColOfMatrix.h" />
+    <ClInclude Include="SubMatrix.h" />
+    <ClInclude Include="UnitVector.h" />
+    <ClInclude Include="Vector.h" />
+    <ClInclude Include="VectorWrapper.h" />
+    <ClInclude Include="VectorWrapperRO.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="IdentityMatrix.cpp" />
+    <ClCompile Include="imatrixrotation.cpp" />
+    <ClCompile Include="IMatrixSquareUtils.cpp" />
+    <ClCompile Include="IMatrixUtils.cpp" />
+    <ClCompile Include="IVectorUtils.cpp" />
+    <ClCompile Include="MatrixDense.cpp" />
+    <ClCompile Include="MatrixNull.cpp" />
+    <ClCompile Include="MatrixRotation2D.cpp" />
+    <ClCompile Include="MatrixRotation3D.cpp" />
+    <ClCompile Include="MatrixSquare.cpp" />
+    <ClCompile Include="RowColOfMatrix.cpp" />
+    <ClCompile Include="SubMatrix.cpp" />
+    <ClCompile Include="Vector.cpp" />
+    <ClCompile Include="VectorWrapper.cpp" />
+    <ClCompile Include="VectorWrapperRO.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

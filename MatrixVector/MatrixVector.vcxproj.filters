@@ -15,108 +15,111 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\include\MatrixVector\IdentityMatrix.h">
+    <ClInclude Include="IdentityMatrix.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\MatrixVector\IMatrix.h">
+    <ClInclude Include="IMatrix.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\MatrixVector\IMatrixRotation.h">
+    <ClInclude Include="IMatrixRotation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\MatrixVector\IMatrixSquare.h">
+    <ClInclude Include="IMatrixSquare.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\MatrixVector\IMatrixSquareUtils.h">
+    <ClInclude Include="IMatrixSquareUtils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\MatrixVector\IMatrixSymmetric.h">
+    <ClInclude Include="IMatrixSymmetric.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\MatrixVector\IMatrixUtils.h">
+    <ClInclude Include="IMatrixUtils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\MatrixVector\IVector.h">
+    <ClInclude Include="IVector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\MatrixVector\IVectorUtils.h">
+    <ClInclude Include="IVectorUtils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\MatrixVector\MatrixDense.h">
+    <ClInclude Include="MatrixDense.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\MatrixVector\MatrixRotation2D.h">
+    <ClInclude Include="MatrixNull.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\MatrixVector\MatrixRotation3D.h">
+    <ClInclude Include="MatrixRotation2D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\MatrixVector\MatrixSquare.h">
+    <ClInclude Include="MatrixRotation3D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\MatrixVector\RowColOfMatrix.h">
+    <ClInclude Include="MatrixSquare.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\MatrixVector\SubMatrix.h">
+    <ClInclude Include="RowColOfMatrix.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\MatrixVector\UnitVector.h">
+    <ClInclude Include="SubMatrix.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\MatrixVector\Vector.h">
+    <ClInclude Include="UnitVector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\MatrixVector\VectorWrapper.h">
+    <ClInclude Include="Vector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\MatrixVector\VectorWrapperRO.h">
+    <ClInclude Include="VectorWrapper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VectorWrapperRO.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\MatrixVector\IdentityMatrix.cpp">
+    <ClCompile Include="IdentityMatrix.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\MatrixVector\imatrixrotation.cpp">
+    <ClCompile Include="imatrixrotation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\MatrixVector\IMatrixSquareUtils.cpp">
+    <ClCompile Include="IMatrixSquareUtils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\MatrixVector\IMatrixUtils.cpp">
+    <ClCompile Include="IMatrixUtils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\MatrixVector\IVectorUtils.cpp">
+    <ClCompile Include="IVectorUtils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\MatrixVector\MatrixDense.cpp">
+    <ClCompile Include="MatrixDense.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\MatrixVector\MatrixNull.cpp">
+    <ClCompile Include="MatrixNull.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\MatrixVector\MatrixRotation2D.cpp">
+    <ClCompile Include="MatrixRotation2D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\MatrixVector\MatrixRotation3D.cpp">
+    <ClCompile Include="MatrixRotation3D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\MatrixVector\MatrixSquare.cpp">
+    <ClCompile Include="MatrixSquare.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\MatrixVector\RowColOfMatrix.cpp">
+    <ClCompile Include="RowColOfMatrix.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\MatrixVector\SubMatrix.cpp">
+    <ClCompile Include="SubMatrix.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\MatrixVector\Vector.cpp">
+    <ClCompile Include="Vector.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\MatrixVector\VectorWrapper.cpp">
+    <ClCompile Include="VectorWrapper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\MatrixVector\VectorWrapperRO.cpp">
+    <ClCompile Include="VectorWrapperRO.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
