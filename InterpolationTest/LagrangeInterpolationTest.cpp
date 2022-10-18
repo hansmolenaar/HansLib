@@ -8,6 +8,7 @@ TEST(LagrangeInterpolationTest, Basics)
    LagrangeInterpolation li(std::vector<double>{0, 1, 3}, std::vector<double>{0, 1, 9});
    ASSERT_FALSE(li.HasDerivative());
    ASSERT_NEAR(li.Evaluate(2.0), 4.0, 1.0e-10);
+   ASSERT_NEAR(li.Evaluate(1.0), 1.0, 1.0e-10);
 }
 
 
