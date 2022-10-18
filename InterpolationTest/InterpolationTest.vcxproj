@@ -44,6 +44,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ChebyshevPointsTest.cpp" />
+    <ClCompile Include="EquidistantPointsTest.cpp" />
     <ClCompile Include="LagrangeInterpolationTest.cpp" />
   </ItemGroup>
   <ItemDefinitionGroup />

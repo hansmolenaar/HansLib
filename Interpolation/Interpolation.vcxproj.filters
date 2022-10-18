@@ -18,9 +18,21 @@
     <ClInclude Include="LagrangeInterpolation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="EquidistantPoints.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ChebyshevPoints.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="LagrangeInterpolation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EquidistantPoints.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ChebyshevPoints.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

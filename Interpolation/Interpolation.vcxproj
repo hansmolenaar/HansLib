@@ -19,9 +19,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ChebyshevPoints.h" />
+    <ClInclude Include="EquidistantPoints.h" />
     <ClInclude Include="LagrangeInterpolation.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ChebyshevPoints.cpp" />
+    <ClCompile Include="EquidistantPoints.cpp" />
     <ClCompile Include="LagrangeInterpolation.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
