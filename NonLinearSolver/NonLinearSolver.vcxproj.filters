@@ -15,45 +15,45 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\include\NonLinearSolver\INonLinearSolverStrategy.h">
+    <ClInclude Include="FindRootBisection.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\NonLinearSolver\NonLinearSolver.h">
+    <ClInclude Include="FindRootIllinois .h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\NonLinearSolver\NonLinearSolverConvergenceCriteria.h">
+    <ClInclude Include="IFindRoot.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\NonLinearSolver\NonLinearSolverStatus.h">
+    <ClInclude Include="INonLinearSolverStrategy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\NonLinearSolver\NonLinearSolverStrategyResidualReduction.h">
+    <ClInclude Include="NonLinearSolver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\NonLinearSolver\FindRootBisection.h">
+    <ClInclude Include="NonLinearSolverConvergenceCriteria.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\NonLinearSolver\IFindRoot.h">
+    <ClInclude Include="NonLinearSolverStatus.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\NonLinearSolver\FindRootIllinois .h">
+    <ClInclude Include="NonLinearSolverStrategyResidualReduction.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\NonLinearSolver\NonLinearSolver.cpp">
+    <ClCompile Include="FindRootBisection.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\NonLinearSolver\NonLinearSolverConvergenceCriteria.cpp">
+    <ClCompile Include="FindRootIllinois .cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\NonLinearSolver\NonLinearSolverStrategyResidualReduction.cpp">
+    <ClCompile Include="NonLinearSolver.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\NonLinearSolver\FindRootBisection.cpp">
+    <ClCompile Include="NonLinearSolverConvergenceCriteria.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\NonLinearSolver\FindRootIllinois .cpp">
+    <ClCompile Include="NonLinearSolverStrategyResidualReduction.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

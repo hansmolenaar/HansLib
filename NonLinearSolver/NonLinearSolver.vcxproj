@@ -18,6 +18,23 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="FindRootBisection.h" />
+    <ClInclude Include="FindRootIllinois .h" />
+    <ClInclude Include="IFindRoot.h" />
+    <ClInclude Include="INonLinearSolverStrategy.h" />
+    <ClInclude Include="NonLinearSolver.h" />
+    <ClInclude Include="NonLinearSolverConvergenceCriteria.h" />
+    <ClInclude Include="NonLinearSolverStatus.h" />
+    <ClInclude Include="NonLinearSolverStrategyResidualReduction.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="FindRootBisection.cpp" />
+    <ClCompile Include="FindRootIllinois .cpp" />
+    <ClCompile Include="NonLinearSolver.cpp" />
+    <ClCompile Include="NonLinearSolverConvergenceCriteria.cpp" />
+    <ClCompile Include="NonLinearSolverStrategyResidualReduction.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -116,7 +133,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\Hans\source\repos\HansLib\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Hans\source\repos\HansLib;C:\Users\Hans\source\repos\HansLib\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
@@ -141,23 +158,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClInclude Include="..\include\NonLinearSolver\FindRootBisection.h" />
-    <ClInclude Include="..\include\NonLinearSolver\FindRootIllinois .h" />
-    <ClInclude Include="..\include\NonLinearSolver\IFindRoot.h" />
-    <ClInclude Include="..\include\NonLinearSolver\INonLinearSolverStrategy.h" />
-    <ClInclude Include="..\include\NonLinearSolver\NonLinearSolver.h" />
-    <ClInclude Include="..\include\NonLinearSolver\NonLinearSolverConvergenceCriteria.h" />
-    <ClInclude Include="..\include\NonLinearSolver\NonLinearSolverStatus.h" />
-    <ClInclude Include="..\include\NonLinearSolver\NonLinearSolverStrategyResidualReduction.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\src\NonLinearSolver\FindRootBisection.cpp" />
-    <ClCompile Include="..\src\NonLinearSolver\FindRootIllinois .cpp" />
-    <ClCompile Include="..\src\NonLinearSolver\NonLinearSolver.cpp" />
-    <ClCompile Include="..\src\NonLinearSolver\NonLinearSolverConvergenceCriteria.cpp" />
-    <ClCompile Include="..\src\NonLinearSolver\NonLinearSolverStrategyResidualReduction.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
