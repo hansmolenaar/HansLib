@@ -1,6 +1,6 @@
 #pragma once
 
-#include "KelvinRepr/IMatrixKelvinRepr.h"
+#include "IMatrixKelvinRepr.h"
 #include "Utils/IndexerSymmetric.h"
 #include "Utils/MessageHandler.h"
 #include "Utils/MathConstants.h"

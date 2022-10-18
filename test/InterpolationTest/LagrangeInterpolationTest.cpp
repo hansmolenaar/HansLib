@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "LagrangeInterpolation.h"
+#include "Interpolation/LagrangeInterpolation.h"
 
 
 TEST(LagrangeInterpolationTest, Basics)

@@ -1,4 +1,4 @@
-#include "KelvinRepr/IndexerKelvinRepr3.h"
+#include "IndexerKelvinRepr3.h"
 
 #include "Utils/MessageHandler.h"
 

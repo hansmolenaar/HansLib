@@ -15,60 +15,60 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\include\KelvinRepr\IMatrixKelvinRepr.h">
+    <ClInclude Include="IMatrixKelvinRepr.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\KelvinRepr\IMatrixKelvinReprTrace.h">
+    <ClInclude Include="IMatrixKelvinReprTrace.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\KelvinRepr\IMatrixKelvinReprUtils.h">
+    <ClInclude Include="IMatrixKelvinReprUtils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\KelvinRepr\IndexerKelvinRepr1.h">
+    <ClInclude Include="IndexerKelvinRepr1.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\KelvinRepr\IndexerKelvinRepr2.h">
+    <ClInclude Include="IndexerKelvinRepr2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\KelvinRepr\IndexerKelvinRepr3.h">
+    <ClInclude Include="IndexerKelvinRepr3.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\KelvinRepr\MatrixKelvinRepr1.h">
+    <ClInclude Include="MatrixKelvinRepr1.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\KelvinRepr\MatrixKelvinRepr2.h">
+    <ClInclude Include="MatrixKelvinRepr2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\KelvinRepr\MatrixKelvinRepr3.h">
+    <ClInclude Include="MatrixKelvinRepr3.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\KelvinRepr\MatrixKelvinReprBase.h">
+    <ClInclude Include="MatrixKelvinReprBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\KelvinRepr\IMatrixKelvinReprTrace.cpp">
+    <ClCompile Include="IMatrixKelvinReprTrace.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\KelvinRepr\IMatrixKelvinReprUtils.cpp">
+    <ClCompile Include="IMatrixKelvinReprUtils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\KelvinRepr\IndexerKelvinRepr1.cpp">
+    <ClCompile Include="IndexerKelvinRepr1.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\KelvinRepr\IndexerKelvinRepr2.cpp">
+    <ClCompile Include="IndexerKelvinRepr2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\KelvinRepr\IndexerKelvinRepr3.cpp">
+    <ClCompile Include="IndexerKelvinRepr3.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\KelvinRepr\MatrixKelvinRepr1.cpp">
+    <ClCompile Include="MatrixKelvinRepr1.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\KelvinRepr\MatrixKelvinRepr2.cpp">
+    <ClCompile Include="MatrixKelvinRepr2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\KelvinRepr\MatrixKelvinRepr3.cpp">
+    <ClCompile Include="MatrixKelvinRepr3.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

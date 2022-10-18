@@ -18,6 +18,28 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="IMatrixKelvinRepr.h" />
+    <ClInclude Include="IMatrixKelvinReprTrace.h" />
+    <ClInclude Include="IMatrixKelvinReprUtils.h" />
+    <ClInclude Include="IndexerKelvinRepr1.h" />
+    <ClInclude Include="IndexerKelvinRepr2.h" />
+    <ClInclude Include="IndexerKelvinRepr3.h" />
+    <ClInclude Include="MatrixKelvinRepr1.h" />
+    <ClInclude Include="MatrixKelvinRepr2.h" />
+    <ClInclude Include="MatrixKelvinRepr3.h" />
+    <ClInclude Include="MatrixKelvinReprBase.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="IMatrixKelvinReprTrace.cpp" />
+    <ClCompile Include="IMatrixKelvinReprUtils.cpp" />
+    <ClCompile Include="IndexerKelvinRepr1.cpp" />
+    <ClCompile Include="IndexerKelvinRepr2.cpp" />
+    <ClCompile Include="IndexerKelvinRepr3.cpp" />
+    <ClCompile Include="MatrixKelvinRepr1.cpp" />
+    <ClCompile Include="MatrixKelvinRepr2.cpp" />
+    <ClCompile Include="MatrixKelvinRepr3.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -116,7 +138,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\Hans\source\repos\HansLib\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Hans\source\repos\HansLib\KelvinRepr;C:\Users\Hans\source\repos\HansLib\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
@@ -141,28 +163,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClInclude Include="..\include\KelvinRepr\IMatrixKelvinRepr.h" />
-    <ClInclude Include="..\include\KelvinRepr\IMatrixKelvinReprTrace.h" />
-    <ClInclude Include="..\include\KelvinRepr\IMatrixKelvinReprUtils.h" />
-    <ClInclude Include="..\include\KelvinRepr\IndexerKelvinRepr1.h" />
-    <ClInclude Include="..\include\KelvinRepr\IndexerKelvinRepr2.h" />
-    <ClInclude Include="..\include\KelvinRepr\IndexerKelvinRepr3.h" />
-    <ClInclude Include="..\include\KelvinRepr\MatrixKelvinRepr1.h" />
-    <ClInclude Include="..\include\KelvinRepr\MatrixKelvinRepr2.h" />
-    <ClInclude Include="..\include\KelvinRepr\MatrixKelvinRepr3.h" />
-    <ClInclude Include="..\include\KelvinRepr\MatrixKelvinReprBase.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\src\KelvinRepr\IMatrixKelvinReprTrace.cpp" />
-    <ClCompile Include="..\src\KelvinRepr\IMatrixKelvinReprUtils.cpp" />
-    <ClCompile Include="..\src\KelvinRepr\IndexerKelvinRepr1.cpp" />
-    <ClCompile Include="..\src\KelvinRepr\IndexerKelvinRepr2.cpp" />
-    <ClCompile Include="..\src\KelvinRepr\IndexerKelvinRepr3.cpp" />
-    <ClCompile Include="..\src\KelvinRepr\MatrixKelvinRepr1.cpp" />
-    <ClCompile Include="..\src\KelvinRepr\MatrixKelvinRepr2.cpp" />
-    <ClCompile Include="..\src\KelvinRepr\MatrixKelvinRepr3.cpp" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

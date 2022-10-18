@@ -1,6 +1,6 @@
 #pragma once
 
-#include "KelvinRepr/MatrixKelvinReprBase.h"
+#include "MatrixKelvinReprBase.h"
 #include <array>
 
 class MatrixKelvinRepr1 : public MatrixKelvinReprBase<1>
