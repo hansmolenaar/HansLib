@@ -15,36 +15,36 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\include\Groups\FinitePointGroupRotation2.h">
+    <ClInclude Include="IGroupTable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\Groups\FinitePointGroupRotation3.h">
+    <ClInclude Include="IFinitePointGroupAction.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\Groups\GroupTableCyclic.h">
+    <ClInclude Include="IFinitePointGroup.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\Groups\IFiniteGroup.h">
+    <ClInclude Include="IFiniteGroup.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\Groups\IFinitePointGroup.h">
+    <ClInclude Include="GroupTableCyclic.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\Groups\IFinitePointGroupAction.h">
+    <ClInclude Include="FinitePointGroupRotation3.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\include\Groups\IGroupTable.h">
+    <ClInclude Include="FinitePointGroupRotation2.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\Groups\FinitePointGroupRotation2.cpp">
+    <ClCompile Include="GroupTableCyclic.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Groups\FinitePointGroupRotation3.cpp">
+    <ClCompile Include="FinitePointGroupRotation3.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Groups\GroupTableCyclic.cpp">
+    <ClCompile Include="FinitePointGroupRotation2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

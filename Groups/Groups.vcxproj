@@ -116,7 +116,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\Hans\source\repos\HansLib\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Hans\source\repos\HansLib;C:\Users\Hans\source\repos\HansLib\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
@@ -142,26 +142,26 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\include\Groups\FinitePointGroupRotation2.h" />
-    <ClInclude Include="..\include\Groups\FinitePointGroupRotation3.h" />
-    <ClInclude Include="..\include\Groups\GroupTableCyclic.h" />
-    <ClInclude Include="..\include\Groups\IFiniteGroup.h" />
-    <ClInclude Include="..\include\Groups\IFinitePointGroup.h" />
-    <ClInclude Include="..\include\Groups\IFinitePointGroupAction.h" />
-    <ClInclude Include="..\include\Groups\IGroupTable.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\src\Groups\FinitePointGroupRotation2.cpp" />
-    <ClCompile Include="..\src\Groups\FinitePointGroupRotation3.cpp" />
-    <ClCompile Include="..\src\Groups\GroupTableCyclic.cpp" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\MatrixVector\MatrixVector.vcxproj">
       <Project>{04dbb236-8fb0-448c-9504-f587dcc2e150}</Project>
     </ProjectReference>
     <ProjectReference Include="..\Utils\Utils.vcxproj">
       <Project>{78612aec-e5cd-41af-b059-cc5c11dd9b39}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="FinitePointGroupRotation2.h" />
+    <ClInclude Include="FinitePointGroupRotation3.h" />
+    <ClInclude Include="GroupTableCyclic.h" />
+    <ClInclude Include="IFiniteGroup.h" />
+    <ClInclude Include="IFinitePointGroup.h" />
+    <ClInclude Include="IFinitePointGroupAction.h" />
+    <ClInclude Include="IGroupTable.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="FinitePointGroupRotation2.cpp" />
+    <ClCompile Include="FinitePointGroupRotation3.cpp" />
+    <ClCompile Include="GroupTableCyclic.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

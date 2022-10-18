@@ -1,4 +1,4 @@
-#include "Groups/GroupTableCyclic.h"
+#include "GroupTableCyclic.h"
 
 #include "Utils/MessageHandler.h"
 

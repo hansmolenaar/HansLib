@@ -1,5 +1,5 @@
-#include "Groups/FinitePointGroupRotation2.h"
-#include "Groups/GroupTableCyclic.h"
+#include "FinitePointGroupRotation2.h"
+#include "GroupTableCyclic.h"
 #include "MatrixVector/MatrixRotation2D.h"
 #include "Utils/MessageHandler.h"
 #include "Utils/MathConstants.h"
