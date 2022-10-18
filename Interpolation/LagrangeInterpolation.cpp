@@ -1,4 +1,5 @@
-#include "Interpolation/LagrangeInterpolation.h"
+#include "LagrangeInterpolation.h"
+#include <exception>
 
 
 bool  LagrangeInterpolation::HasDerivative() const
