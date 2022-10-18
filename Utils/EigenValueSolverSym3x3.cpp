@@ -4,15 +4,15 @@
 #include "Utils/MathConstants.h"
 #include "MatrixVector/IMatrixSymmetric.h"
 #include "MatrixVector/IMatrixSquareUtils.h"
-#include "MatrixVector/MatrixKelvinRepr3.h"
-#include "MatrixVector/IMatrixKelvinReprUtils.h"
+#include "KelvinRepr/MatrixKelvinRepr3.h"
+#include "KelvinRepr/IMatrixKelvinReprUtils.h"
 #include "Functions/IRealFunctionUtils.h"
 #include "Functions/MultiVariableVectorComponentFunction.h"
 #include "Functions/MultiVariableRealValuedFunction.h"
 #include "Functions/MultiVariableVectorValuedFunction.h"
 #include "Functions/MultiVariableMultiplicativeInverseFunction.h"
 #include "Functions/MultiVariableProductFunction.h"
-#include "MatrixVector/MatrixKelvinRepr3.h"
+#include "KelvinRepr/MatrixKelvinRepr3.h"
 #include "MatrixVector/IMatrixUtils.h"
 #include "MatrixVector/MatrixDense.h"
 
@@ -58,6 +58,11 @@ bool EigenValueSolverSym3x3Utils::FunctionP3Inv::DerivativeAlwaysZero(int var) c
    return false;
 }
 
+bool EigenValueSolverSym3x3Utils::FunctionP3Inv::HasDerivative() const
+{
+   return true;
+}
+
 // !!!!!!!!!!!!!!!!!!! DetAMinQI !!!!!!!!!!!!!!!!!!!!!
 
 
@@ -65,6 +70,13 @@ int EigenValueSolverSym3x3Utils::DetAMinQI::GetDomainDimension() const
 {
    return 6;
 }
+
+
+bool EigenValueSolverSym3x3Utils::DetAMinQI::HasDerivative() const
+{
+   return true;
+}
+
 double EigenValueSolverSym3x3Utils::DetAMinQI::Evaluate(std::span<const double>x)const
 {
    std::array<double, 6> bmat;
@@ -145,6 +157,12 @@ int EigenValueSolverSym3x3Utils::AuxilaryEquationRoots::GetDomainDimension() con
    return 1;
 }
 
+
+bool EigenValueSolverSym3x3Utils::AuxilaryEquationRoots::HasDerivative() const
+{
+   return true;
+}
+
 bool EigenValueSolverSym3x3Utils::AuxilaryEquationRoots::DerivativeAlwaysZero(int eqn, int var) const
 {
    return false;
@@ -213,6 +231,12 @@ int EigenValueSolverSym3x3Utils::FunctionP::GetDomainDimension() const
    return 6;
 }
 
+
+bool EigenValueSolverSym3x3Utils::FunctionP::HasDerivative() const
+{
+   return true;
+}
+
 double EigenValueSolverSym3x3Utils::FunctionP::Evaluate(std::span<const double>x)const
 {
    MessageHandler::Assert(x.size() == 6);
@@ -271,6 +295,12 @@ int EigenValueSolverSym3x3Utils::ComponentAMinQI::GetDomainDimension() const
    return 6;
 }
 
+
+bool EigenValueSolverSym3x3Utils::ComponentAMinQI::HasDerivative() const
+{
+   return true;
+}
+
 double EigenValueSolverSym3x3Utils::ComponentAMinQI::Evaluate(std::span<const double>x)const
 {
    MessageHandler::Assert(x.size() == 6);
@@ -322,6 +352,12 @@ int EigenValueSolverSym3x3Utils::FunctionDetB::GetDomainDimension() const
    return 6;
 }
 
+
+bool EigenValueSolverSym3x3Utils::FunctionDetB::HasDerivative() const
+{
+   return true;
+}
+
 double EigenValueSolverSym3x3Utils::FunctionDetB::Evaluate(std::span<const double>x)const
 {
    FunctionP3Inv p3inv;
@@ -359,6 +395,12 @@ int EigenValueSolverSym3x3::GetDomainDimension() const
 bool EigenValueSolverSym3x3::DerivativeAlwaysZero(int eqn, int var) const
 {
    return false;
+}
+
+
+bool EigenValueSolverSym3x3::HasDerivative() const
+{
+   return true;
 }
 
 void EigenValueSolverSym3x3::Evaluate(std::span<const double> x, std::span< double> eigenValues) const

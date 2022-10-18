@@ -15,6 +15,7 @@ public:
    bool DerivativeAlwaysZero(int eqn, int var) const override;
    void Evaluate(std::span<const double>x, std::span< double> y) const override;
    void Derivative(std::span<const double>x, IMatrix& dfdx) const override;
+   bool HasDerivative() const override;
 
    static void CalculateEigenvalues3x3(const MatrixKelvinRepr3&, std::span<double>);
 
@@ -31,6 +32,7 @@ namespace EigenValueSolverSym3x3Utils
       int GetRangeDimension() const override;
       int GetDomainDimension() const override;
       bool DerivativeAlwaysZero(int eqn, int var) const override;
+      bool HasDerivative() const override;
 
       // Roots of:  x^3 -3x - detB = 0
       void Evaluate(std::span<const double>x, std::span< double> y) const override;
@@ -49,7 +51,7 @@ namespace EigenValueSolverSym3x3Utils
       double Evaluate(std::span<const double>x)const override;
       void Derivative(std::span<const double>x, std::span< double> dfdx)const override;
       bool DerivativeAlwaysZero(int var) const override;
-
+      bool HasDerivative() const override;
 
       using IMultiVariableRealValuedFunction::DerivativeAlwaysZero;
       using IMultiVariableRealValuedFunction::Derivative;
@@ -62,7 +64,7 @@ namespace EigenValueSolverSym3x3Utils
       double Evaluate(std::span<const double>x)const override;
       void Derivative(std::span<const double>x, std::span< double> dfdx)const override;
       bool DerivativeAlwaysZero(int var) const override;
-
+      bool HasDerivative() const override;
 
       using IMultiVariableRealValuedFunction::DerivativeAlwaysZero;
       using IMultiVariableRealValuedFunction::Derivative;
@@ -78,7 +80,7 @@ namespace EigenValueSolverSym3x3Utils
       double Evaluate(std::span<const double>x)const override;
       void Derivative(std::span<const double>x, std::span< double> dfdx)const override;
       bool DerivativeAlwaysZero(int var) const override;
-
+      bool HasDerivative() const override;
 
       using IMultiVariableRealValuedFunction::DerivativeAlwaysZero;
       using IMultiVariableRealValuedFunction::Derivative;
@@ -95,7 +97,7 @@ namespace EigenValueSolverSym3x3Utils
       double Evaluate(std::span<const double>x)const override;
       void Derivative(std::span<const double>x, std::span< double> dfdx)const override;
       bool DerivativeAlwaysZero(int var) const override;
-
+      bool HasDerivative() const override;
 
       using IMultiVariableRealValuedFunction::DerivativeAlwaysZero;
       using IMultiVariableRealValuedFunction::Derivative;
@@ -112,7 +114,7 @@ namespace EigenValueSolverSym3x3Utils
       double Evaluate(std::span<const double>x)const override;
       void Derivative(std::span<const double>x, std::span< double> dfdx)const override;
       bool DerivativeAlwaysZero(int var) const override;
-
+      bool HasDerivative() const override;
 
       using IMultiVariableRealValuedFunction::DerivativeAlwaysZero;
       using IMultiVariableRealValuedFunction::Derivative;

@@ -116,7 +116,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\Hans\source\repos\HansLib\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Hans\source\repos\HansLib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
@@ -142,18 +142,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\include\Utils\IIndexer.h" />
-    <ClInclude Include="..\include\Utils\IndexerRowMajor.h" />
-    <ClInclude Include="..\include\Utils\IndexerSymmetric.h" />
-    <ClInclude Include="..\include\Utils\MathConstants.h" />
-    <ClInclude Include="..\include\Utils\MessageHandler.h" />
-    <ClInclude Include="..\include\Utils\Plotting.h" />
+    <ClCompile Include="EigenValueSolverSym2x2.cpp" />
+    <ClCompile Include="EigenValueSolverSym3x3.cpp" />
+    <ClCompile Include="IndexerRowMajor.cpp" />
+    <ClCompile Include="IndexerSymmetric.cpp" />
+    <ClCompile Include="MessageHandler.cpp" />
+    <ClCompile Include="Plotting.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\Utils\IndexerRowMajor.cpp" />
-    <ClCompile Include="..\src\Utils\IndexerSymmetric.cpp" />
-    <ClCompile Include="..\src\Utils\MessageHandler.cpp" />
-    <ClCompile Include="..\src\Utils\Plotting.cpp" />
+    <ClInclude Include="EigenValueSolverSym2x2.h" />
+    <ClInclude Include="EigenValueSolverSym3x3.h" />
+    <ClInclude Include="IIndexer.h" />
+    <ClInclude Include="IndexerRowMajor.h" />
+    <ClInclude Include="IndexerSymmetric.h" />
+    <ClInclude Include="MathConstants.h" />
+    <ClInclude Include="MessageHandler.h" />
+    <ClInclude Include="Plotting.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

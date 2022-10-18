@@ -1,5 +1,5 @@
 #include "Utils/EigenValueSolverSym2x2.h"
-#include "MatrixVector/MatrixKelvinRepr2.h"
+#include "KelvinRepr/MatrixKelvinRepr2.h"
 #include "MatrixVector/IMatrixUtils.h"
 
 #if 0
@@ -31,6 +31,10 @@ int EigenValueSolverSym2x2Utils::Det::GetDomainDimension() const
    return 3;
 }
 
+bool EigenValueSolverSym2x2Utils::Det::HasDerivative() const
+{
+   return true;
+}
 
 bool EigenValueSolverSym2x2Utils::Det::DerivativeAlwaysZero(int) const
 {
@@ -69,6 +73,11 @@ int EigenValueSolverSym2x2::GetDomainDimension() const
 bool EigenValueSolverSym2x2::DerivativeAlwaysZero(int eqn, int var) const
 {
    return false;
+}
+
+bool EigenValueSolverSym2x2::HasDerivative() const
+{
+   return true;
 }
 
 // ( a c )
