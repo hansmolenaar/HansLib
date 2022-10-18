@@ -27,6 +27,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "KelvinReprTest", "KelvinRep
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NonLinearSolverTest", "NonLinearSolverTest\NonLinearSolverTest.vcxproj", "{9EFF5F39-4BA8-4607-96FB-F36E9D144F92}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Interpolation", "Interpolation\Interpolation.vcxproj", "{7CAE9120-D61E-4C01-BD91-0AF520784227}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LagrangeInterpolationTest", "LagrangeInterpolationTest\LagrangeInterpolationTest.vcxproj", "{E3447111-B896-4AF3-A3B9-A74C6BB580FE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -131,6 +135,22 @@ Global
 		{9EFF5F39-4BA8-4607-96FB-F36E9D144F92}.Release|x64.Build.0 = Release|x64
 		{9EFF5F39-4BA8-4607-96FB-F36E9D144F92}.Release|x86.ActiveCfg = Release|Win32
 		{9EFF5F39-4BA8-4607-96FB-F36E9D144F92}.Release|x86.Build.0 = Release|Win32
+		{7CAE9120-D61E-4C01-BD91-0AF520784227}.Debug|x64.ActiveCfg = Debug|x64
+		{7CAE9120-D61E-4C01-BD91-0AF520784227}.Debug|x64.Build.0 = Debug|x64
+		{7CAE9120-D61E-4C01-BD91-0AF520784227}.Debug|x86.ActiveCfg = Debug|Win32
+		{7CAE9120-D61E-4C01-BD91-0AF520784227}.Debug|x86.Build.0 = Debug|Win32
+		{7CAE9120-D61E-4C01-BD91-0AF520784227}.Release|x64.ActiveCfg = Release|x64
+		{7CAE9120-D61E-4C01-BD91-0AF520784227}.Release|x64.Build.0 = Release|x64
+		{7CAE9120-D61E-4C01-BD91-0AF520784227}.Release|x86.ActiveCfg = Release|Win32
+		{7CAE9120-D61E-4C01-BD91-0AF520784227}.Release|x86.Build.0 = Release|Win32
+		{E3447111-B896-4AF3-A3B9-A74C6BB580FE}.Debug|x64.ActiveCfg = Debug|x64
+		{E3447111-B896-4AF3-A3B9-A74C6BB580FE}.Debug|x64.Build.0 = Debug|x64
+		{E3447111-B896-4AF3-A3B9-A74C6BB580FE}.Debug|x86.ActiveCfg = Debug|Win32
+		{E3447111-B896-4AF3-A3B9-A74C6BB580FE}.Debug|x86.Build.0 = Debug|Win32
+		{E3447111-B896-4AF3-A3B9-A74C6BB580FE}.Release|x64.ActiveCfg = Release|x64
+		{E3447111-B896-4AF3-A3B9-A74C6BB580FE}.Release|x64.Build.0 = Release|x64
+		{E3447111-B896-4AF3-A3B9-A74C6BB580FE}.Release|x86.ActiveCfg = Release|Win32
+		{E3447111-B896-4AF3-A3B9-A74C6BB580FE}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

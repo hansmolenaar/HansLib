@@ -9,10 +9,11 @@
 class ISingleVariableRealValuedFunction :public IMultiVariableRealValuedFunction
 {
 public:
+	virtual ~ISingleVariableRealValuedFunction() = default;
+
 	virtual double Evaluate(double x)const = 0;
 	virtual double Derivative(double x)const = 0;
 	virtual bool IsNonConstant() const = 0;
-	virtual ~ISingleVariableRealValuedFunction() {}
 
 	using IMultiVariableRealValuedFunction::Evaluate;
 	using IMultiVariableRealValuedFunction::Derivative;
