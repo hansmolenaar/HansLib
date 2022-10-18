@@ -145,9 +145,6 @@
     <ProjectReference Include="..\MatrixVector\MatrixVector.vcxproj">
       <Project>{04dbb236-8fb0-448c-9504-f587dcc2e150}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\Utils\Utils.vcxproj">
-      <Project>{78612aec-e5cd-41af-b059-cc5c11dd9b39}</Project>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FinitePointGroupRotation2.h" />

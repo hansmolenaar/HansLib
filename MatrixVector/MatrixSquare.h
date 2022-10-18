@@ -3,7 +3,7 @@
 #include <memory>
 #include <vector>
 #include <span>
-#include "Utils/IndexerRowMajor.h"
+#include "HLUtils/IndexerRowMajor.h"
 #include "IMatrixSquare.h"
 
 class IIndexer;

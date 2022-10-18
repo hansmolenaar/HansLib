@@ -4,7 +4,7 @@
 
 #include "IMultiVariableRealValuedFunction.h"
 #include "MatrixVector/MatrixSquare.h"
-#include "Utils/MessageHandler.h"
+#include "HLUtils/MessageHandler.h"
 
 class ISingleVariableRealValuedFunction :public IMultiVariableRealValuedFunction
 {

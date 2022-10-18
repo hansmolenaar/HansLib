@@ -1,11 +1,8 @@
 #include <gtest/gtest.h>
 
-#include "Utils/IndexerSymmetric.h"
+#include "HLUtils/IndexerSymmetric.h"
 
 
-// TODO strange crash at start up
-
-#if false
 namespace {
 	void Check1(const IndexerSymmetric& indexer)
 	{
@@ -86,5 +83,3 @@ TEST(IndexerSymmetricTest, Test4)
 	const IndexerSymmetric indexer(4);
 	Check4(indexer);
 }
-
-#endif

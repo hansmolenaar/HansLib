@@ -45,9 +45,6 @@
     <ProjectReference Include="..\Interpolation\Interpolation.vcxproj">
       <Project>{7cae9120-d61e-4c01-bd91-0af520784227}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\Utils\Utils.vcxproj">
-      <Project>{78612aec-e5cd-41af-b059-cc5c11dd9b39}</Project>
-    </ProjectReference>
   </ItemGroup>
   <ItemDefinitionGroup />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

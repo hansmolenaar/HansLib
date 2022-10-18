@@ -1,6 +1,6 @@
 #include "Functions/MultiVariablePolynomial.h"
 
-#include "Utils/MessageHandler.h"
+#include "HLUtils/MessageHandler.h"
 #include "MatrixVector/IMatrix.h"
 #include "MatrixVector/IMatrixUtils.h"
 #include "Functions/IRealFunctionUtils.h"

@@ -1,8 +1,8 @@
 #include "FinitePointGroupRotation3.h"
 #include "GroupTableCyclic.h"
 #include "MatrixVector/MatrixRotation3D.h"
-#include "Utils/MessageHandler.h"
-#include "Utils/MathConstants.h"
+#include "HLUtils/MessageHandler.h"
+#include "HLUtils/MathConstants.h"
 
 
 FinitePointGroupRotation3::FinitePointGroupRotation3(int order, const UnitVector3& axis)

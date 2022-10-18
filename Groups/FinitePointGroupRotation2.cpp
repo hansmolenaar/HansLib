@@ -1,8 +1,8 @@
 #include "FinitePointGroupRotation2.h"
 #include "GroupTableCyclic.h"
 #include "MatrixVector/MatrixRotation2D.h"
-#include "Utils/MessageHandler.h"
-#include "Utils/MathConstants.h"
+#include "HLUtils/MessageHandler.h"
+#include "HLUtils/MathConstants.h"
 
 #include <map>
 #include <tuple>

@@ -1,7 +1,7 @@
 #include "IMatrixKelvinReprUtils.h"
 
 #include "IMatrixKelvinRepr.h"
-#include "Utils/MessageHandler.h"
+#include "HLUtils/MessageHandler.h"
 
 
 void SetAll(IMatrixKelvinRepr& matrix, double value)

@@ -1,6 +1,6 @@
 #include "Functions/RealFunctionCompose.h"
 
-#include "Utils/MessageHandler.h"
+#include "HLUtils/MessageHandler.h"
 #include "MatrixVector/MatrixDense.h"
 #include "MatrixVector/IMatrixUtils.h"
 #include "Functions/IRealFunctionUtils.h"

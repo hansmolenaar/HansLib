@@ -5,7 +5,7 @@
 #include "Groups/FinitePointGroupRotation3.h"
 #include "Groups/IGroupTable.h"
 #include "MatrixVector/UnitVector.h"
-#include "Utils/MathConstants.h"
+#include "HLUtils/MathConstants.h"
 
 TEST(FinitePointGroupRotation3Test, TestInstance)
 {

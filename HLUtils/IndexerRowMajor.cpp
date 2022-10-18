@@ -1,5 +1,5 @@
-#include "Utils/IndexerRowMajor.h"
-#include "Utils/MessageHandler.h"
+#include "IndexerRowMajor.h"
+#include "MessageHandler.h"
 
 #include <algorithm>
 

@@ -49,9 +49,6 @@
     <ProjectReference Include="..\NonLinearSolver\NonLinearSolver.vcxproj">
       <Project>{0ca8e5ac-0b7e-49f9-80bc-1168d9c6bcec}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\Utils\Utils.vcxproj">
-      <Project>{78612aec-e5cd-41af-b059-cc5c11dd9b39}</Project>
-    </ProjectReference>
   </ItemGroup>
   <ItemDefinitionGroup />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

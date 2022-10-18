@@ -1,10 +1,9 @@
 #include <gtest/gtest.h>
 
 
-#include "Utils/IndexerRowMajor.h"
+#include "HLUtils/IndexerRowMajor.h"
 
-// TODO strange crash at start up
-#if false
+
 
 TEST(IndexerRowMajorTest, TestToFlat)
 {
@@ -36,8 +35,6 @@ TEST(IndexerRowMajorTest, TestDimensions)
 	ASSERT_EQ(2, ij.GetRowDimension());
 	ASSERT_EQ(3, ij.GetColDimension());
 }
-
-#endif
 
 
 

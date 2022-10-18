@@ -142,11 +142,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Utils\Utils.vcxproj">
-      <Project>{78612aec-e5cd-41af-b059-cc5c11dd9b39}</Project>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="IdentityMatrix.h" />
     <ClInclude Include="IMatrix.h" />
     <ClInclude Include="IMatrixRotation.h" />

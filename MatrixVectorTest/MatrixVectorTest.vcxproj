@@ -59,6 +59,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\HLUtils\HLUtils.vcxproj">
+      <Project>{e68fc7e3-1402-4bbe-9d0f-f4bd88acfd45}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\MatrixVector\MatrixVector.vcxproj">
       <Project>{04dbb236-8fb0-448c-9504-f587dcc2e150}</Project>
     </ProjectReference>

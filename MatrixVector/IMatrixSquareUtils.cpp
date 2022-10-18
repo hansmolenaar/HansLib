@@ -1,7 +1,7 @@
 #include "MatrixVector/IMatrixSquareUtils.h"
 
 #include "MatrixVector/IMatrixSquare.h"
-#include "Utils/MessageHandler.h"
+#include "HLUtils/MessageHandler.h"
 
 #include <algorithm>
 #include <ranges>

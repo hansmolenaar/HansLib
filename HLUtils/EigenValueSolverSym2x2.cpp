@@ -1,10 +1,10 @@
-#include "Utils/EigenValueSolverSym2x2.h"
+#include "HLUtils/EigenValueSolverSym2x2.h"
 #include "KelvinRepr/MatrixKelvinRepr2.h"
 #include "MatrixVector/IMatrixUtils.h"
 
 #if 0
-#include "Utils/MessageHandler.h"
-#include "Utils/MathConstants.h"
+#include "HLUtils/MessageHandler.h"
+#include "HLUtils/MathConstants.h"
 #include "MatrixVector/IMatrixSymmetric.h"
 #include "MatrixVector/IMatrixSquareUtils.h"
 #include "MatrixVector/MatrixKelvinRepr3.h"
