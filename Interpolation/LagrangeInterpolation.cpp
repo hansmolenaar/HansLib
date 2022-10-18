@@ -1,6 +1,12 @@
 #include "LagrangeInterpolation.h"
-#include <exception>
+#include "HLUtils/MessageHandler.h"
 
+LagrangeInterpolation::LagrangeInterpolation(std::span<const double>x, std::span<const double>y) :
+   m_xvals(x.begin(), x.end()), m_yvals(y.begin(), y.end())
+{
+   MessageHandler::Assert(m_xvals.size() == m_yvals.size());
+   MessageHandler::Assert(m_xvals.size() > 1);
+}
 
 bool  LagrangeInterpolation::HasDerivative() const
 {
@@ -14,12 +20,26 @@ bool LagrangeInterpolation::DerivativeAlwaysZero(int eqn, int var) const
 
 double  LagrangeInterpolation::Evaluate(double x) const
 {
-   throw std::exception(" LagrangeInterpolation::Evaluate not implemented");
+   double result = 0;
+   for (size_t i = 0; i < m_xvals.size(); ++i)
+   {
+      double coef = 1;
+      for (size_t j = 0; j < m_yvals.size(); ++j)
+      {
+         if (i != j)
+         {
+            coef *= (x - m_xvals.at(j)) / (m_xvals.at(i) - m_xvals.at(j));
+         }
+      }
+      result += coef * m_yvals.at(i);
+   }
+   return result;
 }
 
 double LagrangeInterpolation::Derivative(double x) const
 {
-   throw std::exception(" LagrangeInterpolation::Derivative not implemented");
+   MessageHandler::Assert(false, " LagrangeInterpolation::Derivative not implemented");
+   return {};
 }
 
 bool LagrangeInterpolation::IsNonConstant() const
