@@ -12,6 +12,7 @@ TEST(ChebyshevPointsTest, Case1)
 
 
 TEST(ChebyshevPointsTest, Case2)
+
 {
    const auto& points = ChebyshevPoints::Generate(-1, 1, 2);
    ASSERT_EQ(points.size(), 2);
