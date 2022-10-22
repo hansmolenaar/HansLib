@@ -4,6 +4,7 @@
 #include <span>
 #include "../Interval/Interval.h"
 #include "../HLUtils/MessageHandler.h"
+#include "../Point/Point.h"
 
 template <typename T, size_t... Is, typename... Args>
 std::array<T, sizeof...(Is)> MakeArrayHelper(
@@ -30,6 +31,9 @@ public:
    static BoundingBox CreateFromListTransformed(const Container& container, F fun);
 
    const Interval<T>& getInterval(int n) const { return m_intervals.at(n); }
+
+   Point<T, N> getLower() const;
+   Point<T, N> getUpper() const;
 
    void Add(const std::span<const T>&);
 
@@ -98,4 +102,21 @@ BoundingBox<T, N> BoundingBox<T, N>::CreateFromListTransformed(const Container& 
       result.Add(fun(*itr));
    }
    return result;
+}
+
+template<typename T, int N >
+Point<T, N> BoundingBox<T, N>::getLower() const
+{
+   std::array<T, N> values;
+   std::ranges::transform(m_intervals, values.data(), [](const Interval<T>& intv) {return intv.getLower(); });
+   return Point<T, N>(values);
+}
+
+
+template<typename T, int N >
+Point<T, N> BoundingBox<T, N>::getUpper() const
+{
+   std::array<T, N> values;
+   std::ranges::transform(m_intervals, values.data(), [](const Interval<T>& intv) {return intv.getUpper(); });
+   return Point<T, N>(values);
 }
