@@ -21,9 +21,11 @@ public:
 
    auto operator<=>(const Point<T, N>&) const = default;
 
+   Point<T, N>& operator+=(const Point<T, N>&);
+
    friend Point<T, N> operator+(Point<T, N> lhs, const Point<T, N>& rhs)
    {
-      std::transform(lhs.m_values.begin(), lhs.m_values.end(), rhs.m_values.begin(), lhs.m_values.begin(), [](T v0, T v1) {return v0 + v1; });
+      lhs += rhs;
       return lhs;
    }
 
@@ -37,6 +39,14 @@ Point<T, N>::Point(const std::initializer_list<T>& values)
 {
    MessageHandler::Assert(values.size() == N);
    std::copy(values.begin(), values.end(), m_values.begin());
+}
+
+
+template<typename T, int N>
+Point<T, N>& Point<T, N>::operator+=(const Point<T, N>& rhs)
+{
+   std::transform(m_values.begin(), m_values.end(), rhs.m_values.begin(), m_values.begin(), [](T v0, T v1) {return v0 + v1; });
+   return *this;
 }
 
 using Point1 = Point<double, 1>;
