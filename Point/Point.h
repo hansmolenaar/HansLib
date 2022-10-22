@@ -2,6 +2,8 @@
 
 #include "HLUtils/MessageHandler.h"
 #include <array>
+#include <ranges>
+#include <algorithm>
 
 
 template<typename T, int N>
@@ -17,7 +19,14 @@ public:
    PointIterator begin() const { return m_values.begin(); }
    PointIterator end() const { return m_values.end(); }
 
-   auto operator<=>(const Point<T,N>&) const = default;
+   auto operator<=>(const Point<T, N>&) const = default;
+
+   friend Point<T, N> operator+(Point<T, N> lhs, const Point<T, N>& rhs)
+   {
+      std::transform(lhs.m_values.begin(), lhs.m_values.end(), rhs.m_values.begin(), lhs.m_values.begin(), [](T v0, T v1) {return v0 + v1; });
+      return lhs;
+   }
+
 private:
    std::array<T, N> m_values;
 };

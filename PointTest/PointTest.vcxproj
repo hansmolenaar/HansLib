@@ -42,6 +42,9 @@
     <ProjectReference Include="..\HLUtils\HLUtils.vcxproj">
       <Project>{e68fc7e3-1402-4bbe-9d0f-f4bd88acfd45}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\Point\Point.vcxproj">
+      <Project>{db08a033-bf9a-4c04-b753-7c2270a6024f}</Project>
+    </ProjectReference>
   </ItemGroup>
   <ItemDefinitionGroup />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

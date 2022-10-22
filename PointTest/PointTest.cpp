@@ -27,3 +27,12 @@ TEST(PointTest, Spaceship)
    ASSERT_TRUE(p1 < p2);
    ASSERT_FALSE(p1 >= p2);
 }
+
+
+TEST(PointTest, Plus)
+{
+   const IntPoint3 p1{ 2, 3, 4 };
+   const IntPoint3 p2{ 7, 5, 1 };
+   const auto& sum = p1 + p2;
+   ASSERT_EQ(sum, IntPoint3({ 9,8, 5 }));
+}
