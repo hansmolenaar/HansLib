@@ -1,8 +1,15 @@
 #pragma once
 
+//#include "Point/Point.h"
 #include "Point/Point.h"
+#include "BoundingBox/BoundingBox.h"
+
+#include <memory>
+#include <span>
 
 enum class KdTreeOverlap { NoOverlap, Overlap, Contains };
+
+using KdTreePosition = int;
 
 template<typename T, int N>
 class IKdTreeTraversor;
@@ -26,7 +33,10 @@ private:
 template<typename T, int N>
 class KdTreeLeaf : public KdTreeVertex<T, N>
 {
-
+public:
+   KdTreeLeaf(T value, KdTreePosition position) : KdTreeVertex(nullptr, nullptr, value, value), m_position(position) {}
+private:
+   KdTreePosition m_position;
 
 };
 
@@ -35,21 +45,28 @@ class IKdTreeTraversor
 {
 public:
    virtual ~IKdTreeTraversor() = default;
-   virtual void HandleLeaf(const KdTreeLeaf<T, N>&) = 0;
+   virtual void HandleLeaf(KdTreePosition) = 0;
    virtual KdTreeOverlap DeterminOverlap(const Point<T, N>&, const Point<T, N>&) = 0;
 };
 
 template<typename T, int N>
 class KdTree
 {
+public:
+   static std::vector<KdTreePosition> SortPerDimension(int thisDim, const std::span<const Point<T, N>>& values);
 
+private:
+   KdTree(const std::span<const Point<T, N>>& points);
+   KdTreeVertex<T, N>* m_root = nullptr;
+   std::span <const Point<T, N>>& m_points;
+   std::unique_ptr<BoundingBox<T, N>> m_bb;
 };
 
 template<typename T, int N>
 class PreSorting
 {
 public:
-   PreSorting(int , const std::span<const Point<T,N>>&);
+   PreSorting(int, const std::span<const Point<T, N>>&);
    bool less(int, int) const;
 private:
    int m_currentDim;
@@ -69,7 +86,7 @@ void KdTreeVertex<T, N>::HandleAllLeavesInSubTree(IKdTreeTraversor<T, N>& traver
 {
    if (isLeaf())
    {
-      traversor.HandleLeaf(*dynamic_cast<const KdTreeLeaf<T, N>*>(this));
+      traversor.HandleLeaf(dynamic_cast<const KdTreeLeaf<T, N>*>(this)->getPosition());
    }
    else
    {
@@ -89,7 +106,7 @@ void KdTreeVertex<T, N>::Traverse(IKdTreeTraversor<T, N>& traversor, int level, 
 {
    if (isLeaf())
    {
-      traversor.HandleLeaf(*dynamic_cast<const KdTreeLeaf<T, N>*>(this));
+      traversor.HandleLeaf(dynamic_cast<const KdTreeLeaf<T, N>*>(this)->getPosition());
    }
    else
    {
@@ -120,7 +137,7 @@ void KdTreeVertex<T, N>::Traverse(IKdTreeTraversor<T, N>& traversor, int level, 
 // PreSorting
 
 template<typename T, int N>
-PreSorting<T, N>::PreSorting(int skipDim, const std::span<const Point<T, N>>& points) : 
+PreSorting<T, N>::PreSorting(int skipDim, const std::span<const Point<T, N>>& points) :
    m_currentDim(skipDim), m_points(points)
 {
 }
@@ -134,4 +151,28 @@ bool PreSorting<T, N>::less(int n0, int n1) const
       if (m_points[n0][n] < m_points[n1][n]) return true;
    }
    return false;
+}
+
+// KdTree
+
+
+template<typename T, int N>
+std::vector<KdTreePosition> KdTree<T, N>::SortPerDimension(int thisDim, const std::span<const Point<T, N>>& points)
+{
+   auto preSorting = std::make_unique< PreSorting<T,N>>(thisDim, points);
+   // TODO
+}
+
+template<typename T, int N>
+KdTree<T, N>::KdTree(const std::span<const Point<T, N>>& points) : m_points(points)
+{
+   if (!m_points.empty())
+   {
+      std::array<std::vector<KdTreePosition>, N>  orders;
+      Point<T, N> lb, ub;
+      for (int d = 0; d < N; ++d)
+      {
+         orders[d] = SortPerDimension(d, m_points);
+      }
+   }
 }
