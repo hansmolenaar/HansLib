@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GtaTestDurations xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Executable>C:\Users\Hans\source\repos\HansLib\TreeTest.exe</Executable>
+  <TestDurations>
+    <TestDuration Test="KdTreeTest.TestPreSorting" Duration="1" />
+    <TestDuration Test="KdTreeTest.EmptyTree" Duration="1" />
+    <TestDuration Test="KdTreeTest.Vertex" Duration="1" />
+    <TestDuration Test="KdTreeTraversorPointsInRangeTest.TestDeterminOverlap1D" Duration="1" />
+  </TestDurations>
+</GtaTestDurations>

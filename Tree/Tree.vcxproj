@@ -142,7 +142,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="IKdTreeTraversor.h" />
     <ClInclude Include="KdTree.h" />
+    <ClInclude Include="KdTreeTraversorPointsInRange.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TreeDummy.cpp" />

@@ -80,3 +80,20 @@ TEST(IntervalTest, LowerUpper)
    ASSERT_EQ(bb.getUpper(), IntPoint2({ 3, 4 }));
 }
 
+
+TEST(IntervalTest, Contains)
+{
+   const auto bb = BoundingBox<int, 2>::CreateFromList(std::initializer_list<IntPoint2>{ {2, 4}, { 3,1 } });
+   ASSERT_TRUE(bb.contains(IntPoint2({ 2,4 })));
+   ASSERT_FALSE(bb.contains(IntPoint2({ 2,6 })));
+   ASSERT_FALSE(bb.contains(IntPoint2({ 6,1 })));
+}
+
+TEST(IntervalTest, LowerUpperDim)
+{
+   const auto bb = BoundingBox<int, 2>::CreateFromList(std::initializer_list<IntPoint2>{ {2, 4}, { 3,1 } });
+   ASSERT_EQ(bb.getLower(0), 2);
+   ASSERT_EQ(bb.getUpper(0), 3);
+   ASSERT_EQ(bb.getLower(1), 1);
+   ASSERT_EQ(bb.getUpper(1), 4);
+}

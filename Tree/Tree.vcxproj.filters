@@ -18,6 +18,12 @@
     <ClInclude Include="KdTree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="IKdTreeTraversor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="KdTreeTraversorPointsInRange.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TreeDummy.cpp">

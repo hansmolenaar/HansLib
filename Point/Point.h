@@ -10,6 +10,7 @@ template<typename T, int N>
 class Point
 {
 public:
+   Point() = default;
    Point(const std::array< T, N>& values) { m_values = values; }
    Point(const std::initializer_list<T>& values);
    const T& at(int n) const { return m_values.at(n); }

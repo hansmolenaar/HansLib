@@ -35,7 +35,12 @@ public:
    Point<T, N> getLower() const;
    Point<T, N> getUpper() const;
 
+   T getLower(int) const;
+   T getUpper(int) const;
+
    void Add(const std::span<const T>&);
+
+   bool contains(const Point<T, N>&) const;
 
 private:
    explicit BoundingBox(const std::span<const T>&);
@@ -50,7 +55,6 @@ BoundingBox<T, N> BoundingBox<T, N>::Create(const std::span<const T>& values)
 {
    return BoundingBox<T, N>(values);
 };
-
 
 template<typename T, int N>
 BoundingBox<T, N>::BoundingBox(const std::span<const T>& values) :
@@ -79,7 +83,7 @@ template<typename Container>
 BoundingBox<T, N> BoundingBox<T, N>::CreateFromList(const Container& container)
 {
    auto itr = std::begin(container);
-   BoundingBox<T, N> result = BoundingBox<T, N>::Create(*itr);
+   auto result = BoundingBox<T, N>::Create(*itr);
    ++itr;
    for (; itr != std::end(container); ++itr)
    {
@@ -112,11 +116,33 @@ Point<T, N> BoundingBox<T, N>::getLower() const
    return Point<T, N>(values);
 }
 
-
 template<typename T, int N >
 Point<T, N> BoundingBox<T, N>::getUpper() const
 {
    std::array<T, N> values;
    std::ranges::transform(m_intervals, values.data(), [](const Interval<T>& intv) {return intv.getUpper(); });
    return Point<T, N>(values);
+}
+
+
+template<typename T, int N >
+T BoundingBox<T, N>::getLower(int d) const
+{
+   return m_intervals.at(d).getLower();
+}
+
+template<typename T, int N >
+T BoundingBox<T, N>::getUpper(int d) const
+{
+   return m_intervals.at(d).getUpper();
+}
+
+template<typename T, int N >
+bool BoundingBox<T, N>::contains(const Point<T, N>& point) const
+{
+   for ( int d = 0; d < N; ++d)
+   {
+      if (!m_intervals.at(d).contains(point[d])) return false;
+   }
+   return true;
 }
