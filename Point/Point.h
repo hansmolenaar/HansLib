@@ -14,6 +14,9 @@ public:
    Point(const std::initializer_list<T>& values);
    const T& at(int n) const { return m_values.at(n); }
 
+   T& operator [](int idx) { return m_values[idx]; }
+   T operator [](int idx) const { return m_values[idx]; }
+
    using PointIterator = std::array<T, N>::const_iterator;
 
    PointIterator begin() const { return m_values.begin(); }
