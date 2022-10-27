@@ -27,11 +27,27 @@ TEST(KdTreeTest, TestPreSorting)
 TEST(KdTreeTest, EmptyTree)
 {
    std::vector<IntPoint1> values;
-   auto tree = KdTree<int,1>::Create(values);
+   auto tree = KdTree<int, 1>::Create(values);
    ASSERT_EQ(tree->GetAllLeavesInOrder().size(), 0);
 
-   const auto searchRange = BoundingBox<int,1>::Create( std::array<int,1>{ 0 });
-    KdTreeTraversorPointsInRange<int, 1> traversor(searchRange);
+   const auto searchRange = BoundingBox<int, 1>::Create(std::array<int, 1>{ 0 });
+   KdTreeTraversorPointsInRange<int, 1> traversor(searchRange);
    tree->Traverse(traversor);
    ASSERT_TRUE(traversor.GetFound().empty());
+}
+
+
+TEST(KdTreeTest, SingleElement)
+{
+   auto tree = KdTree<int, 1>::Create(std::array<IntPoint1, 1>{ IntPoint1{ 10 }});
+   ASSERT_EQ(1, tree->GetAllLeavesInOrder().size());
+   ASSERT_EQ(0, tree->GetAllLeavesInOrder().front());
+
+   //var searchRange = BoundingBox<int>.CreateFromSinglePoint(new int[] { 0 });
+   auto searchRange = BoundingBox<int, 1>::Create(std::vector<int>{0});
+   ASSERT_TRUE(tree->FindInRange(searchRange).empty());
+   searchRange = BoundingBox<int, 1>::CreateFromList(std::vector<IntPoint1>{ {0}, { 20 }});
+   auto found = tree->FindInRange(searchRange);
+   ASSERT_EQ(found.size(), 1);
+   ASSERT_EQ(found.front(), 0);
 }
