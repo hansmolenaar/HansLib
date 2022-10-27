@@ -5,11 +5,8 @@
 
 TEST(KdTreeTraversorPointsInRangeTest, TestDeterminOverlap1D)
 {
-   std::vector<IntPoint1> values;
-   auto tree = KdTree<int, 1>::Create(values);
-
    const std::vector<std::vector<int>> points{ {1}, {5} };
-   const KdTreeTraversorPointsInRange<int, 1> traversor(*tree, BoundingBox<int, 1>::CreateFromList(points));
+   const KdTreeTraversorPointsInRange<int, 1> traversor(BoundingBox<int, 1>::CreateFromList(points));
 
    ASSERT_EQ(KdTreeOverlap::NoOverlap, traversor.DeterminOverlap(IntPoint1{ -3 }, IntPoint1{ -1 }));
    ASSERT_EQ(KdTreeOverlap::NoOverlap, traversor.DeterminOverlap(IntPoint1{ 7 }, IntPoint1 { 8 }));
@@ -24,5 +21,4 @@ TEST(KdTreeTraversorPointsInRangeTest, TestDeterminOverlap1D)
    ASSERT_EQ(KdTreeOverlap::Contains, traversor.DeterminOverlap(IntPoint1{ 1 }, IntPoint1 { 4 }));
    ASSERT_EQ(KdTreeOverlap::Contains, traversor.DeterminOverlap(IntPoint1 { 2 }, IntPoint1 { 5 }));
    ASSERT_EQ(KdTreeOverlap::Contains, traversor.DeterminOverlap(IntPoint1 { 1 }, IntPoint1 { 5 }));
-
 }

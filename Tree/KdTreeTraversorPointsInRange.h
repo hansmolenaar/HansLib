@@ -13,20 +13,20 @@ template<typename T, int N>
 class KdTreeTraversorPointsInRange : public IKdTreeTraversor<T,N>
 {
 public:
-   KdTreeTraversorPointsInRange(const KdTree<T, N>& tree, BoundingBox<T, N> bb) : m_bb(bb), m_tree(tree) {}
-   void HandleLeaf(KdTreePosition position) override;
+   KdTreeTraversorPointsInRange( BoundingBox<T, N> bb) : m_bb(bb) {}
+   void HandleLeaf(KdTreePosition position, const  Point<T, N>&) override;
    KdTreeOverlap DeterminOverlap(const Point<T, N>&, const Point<T, N>&) const override;
+   const std::span<const KdTreePosition>& GetFound() const { return  m_found; }
 
 private:
    std::vector<KdTreePosition> m_found;
    BoundingBox<T, N> m_bb;
-   const KdTree<T, N>& m_tree;
 };
 
 template<typename T, int N>
-void KdTreeTraversorPointsInRange<T, N>::HandleLeaf(KdTreePosition position)
+void KdTreeTraversorPointsInRange<T, N>::HandleLeaf(KdTreePosition position, const  Point<T, N>& point)
 {
-   if (m_bb.contains(m_tree.GetPoint(position)))
+   if (m_bb.contains(point))
    {
       m_found.push_back(position);
    }

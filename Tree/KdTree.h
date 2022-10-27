@@ -48,6 +48,7 @@ public:
    static std::unique_ptr< KdTree<T, N>> Create(const std::span<const Point<T, N>>&);
    std::vector<KdTreePosition> GetAllLeavesInOrder() const;
    Point<T, N> GetPoint(KdTreePosition ) const;
+   void Traverse(IKdTreeTraversor<T, N>& traversor);
 private:
    KdTree(std::span<const Point<T, N>> points);
    KdTreeVertex<T, N>* m_root = nullptr;
@@ -266,6 +267,24 @@ std::vector<KdTreePosition> KdTree<T, N>::GetAllLeavesInOrder() const
       throw std::exception("not yet implemented");
    }
    return {};
+}
+
+template<typename T, int N>
+void KdTree<T, N>::Traverse(IKdTreeTraversor<T, N>& traversor)
+{
+   if (m_root != nullptr)
+   {
+#if false
+         var lwrBound = BoundingBox.GetLowerAll().ToArray();
+         var uprBound = BoundingBox.GetUpperAll().ToArray();
+         if (traversor.DeterminOverlap(lwrBound, uprBound) != KdTreeOverlap.NoOverlap)
+         {
+            Root.Traverse(traversor, 0, BoundingBox.GetLowerAll().ToArray(), BoundingBox.GetUpperAll().ToArray());
+         }
+#else
+      MessageHandler::Error("KdTree<T, N>::Traverse Not yet implemented");
+#endif
+   }
 }
 
 template<typename T, int N>

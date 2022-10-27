@@ -2,6 +2,8 @@
 
 #include "Tree/KdTree.h"
 #include "Point/Point.h"
+#include "BoundingBox/BoundingBox.h"
+#include "Tree/KdTreeTraversorPointsInRange.h"
 TEST(KdTreeTest, Vertex)
 {
    KdTreeVertex<int, 1> vertex(nullptr, nullptr, 1, 2);
@@ -28,6 +30,8 @@ TEST(KdTreeTest, EmptyTree)
    auto tree = KdTree<int,1>::Create(values);
    ASSERT_EQ(tree->GetAllLeavesInOrder().size(), 0);
 
-  // var searchRange = BoundingBox<int>.CreateFromSinglePoint(new int[] { 0 });
-  // Assert.IsFalse(tree.FindInRange(searchRange).Any());
+   const auto searchRange = BoundingBox<int,1>::Create( std::array<int,1>{ 0 });
+    KdTreeTraversorPointsInRange<int, 1> traversor(searchRange);
+   tree->Traverse(traversor);
+   ASSERT_TRUE(traversor.GetFound().empty());
 }

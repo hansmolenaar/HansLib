@@ -2,7 +2,11 @@
 
 #include "Point/Point.h"
 
+#include <limits>
+
 using KdTreePosition = int;
+
+constexpr KdTreePosition KdTreePositionInvalid = std::numeric_limits<KdTreePosition>::min();
 
 enum class KdTreeOverlap { NoOverlap, Overlap, Contains };
 
@@ -11,6 +15,6 @@ class IKdTreeTraversor
 {
 public:
    virtual ~IKdTreeTraversor() = default;
-   virtual void HandleLeaf(KdTreePosition) = 0;
+   virtual void HandleLeaf(KdTreePosition, const Point<T,N>&) = 0;
    virtual KdTreeOverlap DeterminOverlap(const Point<T, N>&, const Point<T, N>&) const = 0;
 };
