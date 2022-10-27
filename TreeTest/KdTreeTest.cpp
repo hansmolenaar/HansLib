@@ -15,12 +15,32 @@ TEST(KdTreeTest, TestPreSorting)
    const PreSorting<int, 2> preSorting0(0, points);
    std::vector<KdTreePosition> order{ 0,1 };
    std::sort(order.begin(), order.end(), [&preSorting0](KdTreePosition p0, KdTreePosition p1) {return preSorting0.less(p0, p1); });
-   std::vector<KdTreePosition> expect{ 1,0 };
+   std::vector<KdTreePosition> expect{ 0,1 };
    ASSERT_TRUE(std::equal(order.begin(), order.end(), expect.begin(), expect.end()));
 
    const PreSorting<int, 2> preSorting1(1, points);
    std::sort(order.begin(), order.end(), [&preSorting1](KdTreePosition p0, KdTreePosition p1) {return preSorting1.less(p0, p1); });
-   expect = std::vector<KdTreePosition>{ 0,1 };
+   expect = std::vector<KdTreePosition>{ 1,0 };
+   ASSERT_TRUE(std::equal(order.begin(), order.end(), expect.begin(), expect.end()));
+}
+
+TEST(KdTreeTest, TestPreSorting2)
+{
+   const std::vector<IntPoint2> points{ { 0, 2},{ 0, 1} };
+   const PreSorting<int, 2> preSorting0(0, points);
+   std::vector<KdTreePosition> order{ 0,1 };
+   std::sort(order.begin(), order.end(), [&preSorting0](KdTreePosition p0, KdTreePosition p1) {return preSorting0.less(p0, p1); });
+   std::vector<KdTreePosition> expect{ 1,0 };
+   ASSERT_TRUE(std::equal(order.begin(), order.end(), expect.begin(), expect.end()));
+}
+
+TEST(KdTreeTest, TestPreSorting3)
+{
+   const std::vector<IntPoint2> points{ { 2, 0},{ 0, 0} };
+   const PreSorting<int, 2> preSorting0(1, points);
+   std::vector<KdTreePosition> order{ 0,1 };
+   std::sort(order.begin(), order.end(), [&preSorting0](KdTreePosition p0, KdTreePosition p1) {return preSorting0.less(p0, p1); });
+   std::vector<KdTreePosition> expect{ 1,0 };
    ASSERT_TRUE(std::equal(order.begin(), order.end(), expect.begin(), expect.end()));
 }
 
@@ -50,4 +70,14 @@ TEST(KdTreeTest, SingleElement)
    auto found = tree->FindInRange(searchRange);
    ASSERT_EQ(found.size(), 1);
    ASSERT_EQ(found.front(), 0);
+}
+
+
+
+TEST(KdTreeTest, TwoElements)
+{
+   auto tree = KdTree<int, 1>::Create(std::array<IntPoint1, 2>{ IntPoint1{ 10 }, IntPoint1{ 5 } });
+   const auto ordered = tree->GetAllLeavesInOrder();
+   const std::vector<KdTreePosition> expect{1,0};
+   ASSERT_TRUE(std::ranges::equal(ordered, expect));
 }
