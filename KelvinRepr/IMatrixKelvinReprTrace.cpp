@@ -3,7 +3,7 @@
 #include "IMatrixKelvinRepr.h"
 #include "MatrixVector/IMatrix.h"
 #include "MatrixVector/IMatrixUtils.h"
-#include "HLUtils/MessageHandler.h"
+#include "Utilities/MessageHandler.h"
 
 #include <algorithm>
 #include <numeric>

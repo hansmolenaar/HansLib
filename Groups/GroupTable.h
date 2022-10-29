@@ -1,6 +1,6 @@
 #pragma once
 
-#include "HLUtils/Defines.h"
+#include "Utilities/Defines.h"
 #include "IFiniteGroup.h"
 
 #include <map>

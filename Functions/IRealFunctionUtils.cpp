@@ -3,7 +3,7 @@
 #include "MatrixVector/MatrixDense.h"
 #include "Functions/SingleVariableRealValuedFunction.h"
 #include "Functions/ISingleVariableRealValuedFunctionUtils.h"
-#include "HLUtils/MessageHandler.h"
+#include "Utilities/MessageHandler.h"
 #include "Functions/MultiVariableRealValuedFunction.h"
 #include "Functions/RealFunctionAdd.h"
 #include "MatrixVector/IMatrixUtils.h"

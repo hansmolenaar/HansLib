@@ -8,7 +8,7 @@ VectorWrapper::VectorWrapper( std::span<double> data) :
 
 int VectorWrapper::GetDimension() const
 {
-	return m_data.size();
+	return static_cast<int>(m_data.size());
 }
 
 

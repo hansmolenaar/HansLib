@@ -1,7 +1,7 @@
-#include "HLUtils/EigenValueSolverSym3x3.h"
+#include "Utilities/EigenValueSolverSym3x3.h"
 
-#include "HLUtils/MessageHandler.h"
-#include "HLUtils/MathConstants.h"
+#include "Utilities/MessageHandler.h"
+#include "Utilities/MathConstants.h"
 #include "MatrixVector/IMatrixSymmetric.h"
 #include "MatrixVector/IMatrixSquareUtils.h"
 #include "KelvinRepr/MatrixKelvinRepr3.h"

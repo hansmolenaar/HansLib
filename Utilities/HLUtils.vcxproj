@@ -21,9 +21,10 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{effeebad-501b-4a18-a582-853986814552}</ProjectGuid>
-    <RootNamespace>BoundingBox</RootNamespace>
+    <ProjectGuid>{e68fc7e3-1402-4bbe-9d0f-f4bd88acfd45}</ProjectGuid>
+    <RootNamespace>HLUtils</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>Utilities</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -116,10 +117,9 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
       <AdditionalIncludeDirectories>C:\Users\Hans\source\repos\HansLib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <TreatWarningAsError>true</TreatWarningAsError>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -143,10 +143,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="BoundingBox.h" />
+    <ClInclude Include="Defines.h" />
+    <ClInclude Include="EigenValueSolverSym2x2.h" />
+    <ClInclude Include="EigenValueSolverSym3x3.h" />
+    <ClInclude Include="IIndexer.h" />
+    <ClInclude Include="IndexerRowMajor.h" />
+    <ClInclude Include="IndexerSymmetric.h" />
+    <ClInclude Include="MathConstants.h" />
+    <ClInclude Include="MessageHandler.h" />
+    <ClInclude Include="Plotting.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BoundingBoxDummy.cpp" />
+    <ClCompile Include="EigenValueSolverSym2x2.cpp" />
+    <ClCompile Include="EigenValueSolverSym3x3.cpp" />
+    <ClCompile Include="IndexerSymmetric.cpp" />
+    <ClCompile Include="MessageHandler.cpp" />
+    <ClCompile Include="Plotting.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

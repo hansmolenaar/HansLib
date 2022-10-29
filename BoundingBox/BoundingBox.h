@@ -1,8 +1,8 @@
 #pragma once
 
-#include "HLUtils/Defines.h"
+#include "Utilities/Defines.h"
 #include "Interval/Interval.h"
-#include "HLUtils/MessageHandler.h"
+#include "Utilities/MessageHandler.h"
 #include "Point/Point.h"
 
 #include <span>

@@ -1,5 +1,5 @@
 #include "EquidistantPoints.h"
-#include"HLUtils/MessageHandler.h"
+#include"Utilities/MessageHandler.h"
 
 std::vector<double> EquidistantPoints::Generate(double low, double hig, int nsteps)
 {

@@ -3,7 +3,7 @@
 #include "NonLinearSolver/INonLinearSolverStrategy.h"
 #include "Functions/IRealFunction.h"
 #include "Functions/IRealFunctionUtils.h"
-#include "HLUtils/MessageHandler.h"
+#include "Utilities/MessageHandler.h"
 
 #include <algorithm>
 #include <vector>
@@ -17,13 +17,13 @@ NonLinearSolver::NonLinearSolver(IRealFunction& problem) :
 
 NonLinearSolverStatus NonLinearSolver::Solve(std::span< const double> fx, std::span<  double>x, INonLinearSolverStrategy& strategy)
 {
-	const int dim = fx.size();
+	const auto dim = fx.size();
 	MessageHandler::Assert(x.size() == dim);
 	MessageHandler::Assert(GetDimension(m_problem) == dim);
 	
 	std::vector<double> rsd(dim);
 	std::vector<double> cor(dim);
-	MatrixSquare jacobian(dim);
+	MatrixSquare jacobian(static_cast<int>(dim));
 	
 	// Calculate initial residual
 	m_problem.Evaluate(x, rsd);

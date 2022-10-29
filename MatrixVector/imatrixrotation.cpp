@@ -1,6 +1,6 @@
 #include "MatrixVector/IMatrixRotation.h"
 #include "MatrixVector/IMatrixSquareUtils.h"
-#include "HLUtils/MessageHandler.h"
+#include "Utilities/MessageHandler.h"
 
 
 double& IMatrixRotation::operator() (int, int)

@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "HLUtils/Defines.h"
+#include "Utilities/Defines.h"
 #include "Tree/KdTree.h"
 #include "Point/Point.h"
 #include "BoundingBox/BoundingBox.h"
@@ -19,7 +19,7 @@ static void TestIntKdTree(std::span<const Point<int, N>> points)
    std::vector<int> position(numPoints);
    for (size_t n = 0; n < points.size(); ++n)
    {
-      position.at(n) = n;
+      position.at(n) = static_cast<int>(n);
    }
 
    std::random_device rd;
@@ -180,14 +180,14 @@ TEST(KdTreeTest, FindInRange2DFromExample)
    ASSERT_TRUE(str::equal(std::vector<KdTreePosition> { 0, 1 }, found));
 
    searchRange = BoundingBox<int, 2>::CreateFromList(std::vector<IntPoint2>{ { 0, 5 }, { 10, 10 } });
-    found = tree->FindInRange(searchRange);
+   found = tree->FindInRange(searchRange);
    str::sort(found);
    ASSERT_TRUE(str::equal(std::vector<KdTreePosition> { 2, 3 }, found));
 
    searchRange = BoundingBox<int, 2>::CreateFromList(std::vector<IntPoint2>{ { 6, 0 }, { 10, 4 } });
    found = tree->FindInRange(searchRange);
    str::sort(found);
-   ASSERT_TRUE(str::equal(std::vector<KdTreePosition> { 4,5 }, found));
+   ASSERT_TRUE(str::equal(std::vector<KdTreePosition> { 4, 5 }, found));
 
    searchRange = BoundingBox<int, 2>::CreateFromList(std::vector<IntPoint2>{ { 0, 0  }, { 10, 3 } });
    found = tree->FindInRange(searchRange);

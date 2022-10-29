@@ -1,9 +1,9 @@
 #pragma once
 
 #include "IMatrixKelvinRepr.h"
-#include "HLUtils/IndexerSymmetric.h"
-#include "HLUtils/MessageHandler.h"
-#include "HLUtils/MathConstants.h"
+#include "Utilities/IndexerSymmetric.h"
+#include "Utilities/MessageHandler.h"
+#include "Utilities/MathConstants.h"
 
 #include <array>
 

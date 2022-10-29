@@ -1,7 +1,7 @@
 #include "MatrixKelvinRepr2.h"
 
-#include "HLUtils/MathConstants.h"
-#include "HLUtils/MessageHandler.h"
+#include "Utilities/MathConstants.h"
+#include "Utilities/MessageHandler.h"
 #include "IMatrixKelvinReprUtils.h"
 #include "IndexerKelvinRepr2.h"
 

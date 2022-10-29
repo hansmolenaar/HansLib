@@ -1,5 +1,5 @@
-#include "HLUtils/Defines.h"
-#include "HLUtils/MessageHandler.h"
+#include "Utilities/Defines.h"
+#include "Utilities/MessageHandler.h"
 #include "IFiniteGroupUtils.h"
 #include "IFiniteGroup.h"
 

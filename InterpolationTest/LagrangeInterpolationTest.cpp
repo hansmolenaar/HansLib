@@ -3,7 +3,7 @@
 #include "Interpolation/LagrangeInterpolation.h"
 #include "Interpolation/EquidistantPoints.h"
 #include "Functions/SingleVariableFunctionExamples.h"
-#include "HLUtils/Plotting.h"
+#include "Utilities/Plotting.h"
 
 TEST(LagrangeInterpolationTest, Basics)
 {

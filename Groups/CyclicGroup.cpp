@@ -1,6 +1,6 @@
 #include "CyclicGroup.h"
 
-#include "HLUtils/MessageHandler.h"
+#include "Utilities/MessageHandler.h"
 #include "IFiniteGroupUtils.h"
 
 std::unique_ptr<CyclicGroup> CyclicGroup::Create(int order)

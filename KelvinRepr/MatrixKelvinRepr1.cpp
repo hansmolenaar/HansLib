@@ -1,7 +1,7 @@
 #include "MatrixKelvinRepr1.h"
 
 #include "IndexerKelvinRepr1.h"
-#include "HLUtils/MessageHandler.h"
+#include "Utilities/MessageHandler.h"
 
 namespace
 {
