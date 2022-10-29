@@ -5,7 +5,6 @@
 #include "MatrixVector/MatrixSquare.h"
 #include "MatrixVector/IdentityMatrix.h"
 #include "MatrixVector/UnitVector.h"
-#include "Groups/FinitePointGroupRotation3.h"
 
 namespace {
    const double eps = 1.0e-12;

@@ -4,5 +4,6 @@
 #include <algorithm>
 #include <vector>
 #include <array>
+#include <memory>
 
 namespace str = std::ranges;

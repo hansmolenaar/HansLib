@@ -147,18 +147,14 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="FinitePointGroupRotation2.h" />
-    <ClInclude Include="FinitePointGroupRotation3.h" />
-    <ClInclude Include="GroupTableCyclic.h" />
-    <ClInclude Include="IFiniteGroup.h" />
-    <ClInclude Include="IFinitePointGroup.h" />
-    <ClInclude Include="IFinitePointGroupAction.h" />
-    <ClInclude Include="IGroupTable.h" />
+    <ClCompile Include="CyclicGroup.cpp" />
+    <ClCompile Include="IFiniteGroupUtils.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="FinitePointGroupRotation2.cpp" />
-    <ClCompile Include="FinitePointGroupRotation3.cpp" />
-    <ClCompile Include="GroupTableCyclic.cpp" />
+    <ClInclude Include="CyclicGroup.h" />
+    <ClInclude Include="IFiniteGroup.h" />
+    <ClInclude Include="IFiniteGroupUtils.h" />
+    <ClInclude Include="IFinitePointGroupAction.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
