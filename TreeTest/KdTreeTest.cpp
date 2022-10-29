@@ -6,9 +6,12 @@
 #include "Tree/KdTreeTraversorPointsInRange.h"
 
 #include <random>
+#include <algorithm>
+
+namespace str = std::ranges;
 
 template<int N>
-static void TestIntKdTree(std::span<const Point<int,N>> points)
+static void TestIntKdTree(std::span<const Point<int, N>> points)
 {
    if (points.empty()) return;
    const size_t numPoints = points.size();
@@ -33,8 +36,8 @@ static void TestIntKdTree(std::span<const Point<int,N>> points)
       {
          shuffledPoints.push_back(points[position[n]]);
       }
-      const auto tree = KdTree<int, N>::Create(shuffledPoints); 
-      const auto found = tree-> FindInRange(searchRange);
+      const auto tree = KdTree<int, N>::Create(shuffledPoints);
+      const auto found = tree->FindInRange(searchRange);
       const std::set<KdTreePosition> foundSet(found.begin(), found.end());
       ASSERT_EQ(foundSet.size(), expectToFind);
       for (auto f : foundSet)
@@ -42,7 +45,7 @@ static void TestIntKdTree(std::span<const Point<int,N>> points)
          ASSERT_TRUE(shuffledPoints.at(f) == points.front());
       }
    }
-  
+
 }
 
 TEST(KdTreeTest, Vertex)
@@ -119,7 +122,7 @@ TEST(KdTreeTest, TwoElements)
 {
    auto tree = KdTree<int, 1>::Create(std::array<IntPoint1, 2>{ IntPoint1{ 10 }, IntPoint1{ 5 } });
    const auto ordered = tree->GetAllLeavesInOrder();
-   const std::vector<KdTreePosition> expect{1,0};
+   const std::vector<KdTreePosition> expect{ 1,0 };
    ASSERT_TRUE(std::ranges::equal(ordered, expect));
 }
 
@@ -140,7 +143,7 @@ TEST(KdTreeTest, TenPoints2D)
    std::vector<IntPoint2> pairs(numPoints);
    for (int p = 0; p < numPoints; ++p)
    {
-      pairs[p] = IntPoint2{p, numPoints-p};
+      pairs[p] = IntPoint2{ p, numPoints - p };
    }
 
    auto tree = KdTree<int, 2>::Create(pairs);
@@ -163,4 +166,39 @@ TEST(KdTreeTest, Duplicates)
       points.back() = points.front();
       TestIntKdTree<2>(points);
    }
+}
+
+
+TEST(KdTreeTest, FindInRange2DFromExample)
+{
+   // See https://en.wikipedia.org/wiki/K-d_tree
+   const std::array<IntPoint2, 6> points{ IntPoint2{2, 3}, IntPoint2{5, 4}, IntPoint2{9, 6}, IntPoint2{4, 7}, IntPoint2{8, 1}, IntPoint2{7, 2} };
+   TestIntKdTree<2>(points);
+
+   auto tree = KdTree<int, 2>::Create(points);
+
+   auto searchRange = BoundingBox<int, 2>::CreateFromList(std::vector<IntPoint2>{ { 0, 0 }, { 6, 5 } });
+   auto found = tree->FindInRange(searchRange);
+   str::sort(found);
+   ASSERT_TRUE(str::equal(std::vector<KdTreePosition> { 0, 1 }, found));
+
+   searchRange = BoundingBox<int, 2>::CreateFromList(std::vector<IntPoint2>{ { 0, 5 }, { 10, 10 } });
+    found = tree->FindInRange(searchRange);
+   str::sort(found);
+   ASSERT_TRUE(str::equal(std::vector<KdTreePosition> { 2, 3 }, found));
+
+   searchRange = BoundingBox<int, 2>::CreateFromList(std::vector<IntPoint2>{ { 6, 0 }, { 10, 4 } });
+   found = tree->FindInRange(searchRange);
+   str::sort(found);
+   ASSERT_TRUE(str::equal(std::vector<KdTreePosition> { 4,5 }, found));
+
+   searchRange = BoundingBox<int, 2>::CreateFromList(std::vector<IntPoint2>{ { 0, 0  }, { 10, 3 } });
+   found = tree->FindInRange(searchRange);
+   str::sort(found);
+   ASSERT_TRUE(str::equal(std::vector<KdTreePosition> { 0, 4, 5 }, found));
+
+   searchRange = BoundingBox<int, 2>::CreateFromList(std::vector<IntPoint2>{ { 0, 0  }, { 10, 4 } });
+   found = tree->FindInRange(searchRange);
+   str::sort(found);
+   ASSERT_TRUE(str::equal(std::vector<KdTreePosition> { 0, 1, 4, 5 }, found));
 }
