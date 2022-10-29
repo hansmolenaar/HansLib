@@ -32,13 +32,13 @@ void IFiniteGroupUtils::CheckGroupAxioms(const IFiniteGroup& group)
    {
       for (auto n1 : elements)
       {
-         int result = group(n0, n1);
+         const auto result = group(n0, n1);
          CheckValid(group, result);
       }
    }
 
    //  identity
-   const auto identity = group.getIdentityElement();
+   const auto identity = group.getIdentity();
    for (auto n : elements)
    {
       MessageHandler::Assert(group(identity, n) == n);
@@ -48,7 +48,7 @@ void IFiniteGroupUtils::CheckGroupAxioms(const IFiniteGroup& group)
    // inverse
    for (auto n : elements)
    {
-      const int inverse = group.inverse(n);
+      const auto inverse = group.getInverse(n);
       MessageHandler::Assert(group(inverse, n) == identity);
       MessageHandler::Assert(group(n, inverse) == identity);
    }

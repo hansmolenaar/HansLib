@@ -1,6 +1,7 @@
 #include "CyclicGroup.h"
 
 #include "HLUtils/MessageHandler.h"
+#include "IFiniteGroupUtils.h"
 
 std::unique_ptr<CyclicGroup> CyclicGroup::Create(int order)
 {
@@ -20,18 +21,18 @@ int CyclicGroup::getOrder() const
 
 GroupElement CyclicGroup::operator()(GroupElement n0, GroupElement n1) const
 {
-   MessageHandler::Assert(std::min(n0, n1) >= 0);
-   MessageHandler::Assert(std::max(n0, n1) < m_order);
+   IFiniteGroupUtils::CheckValid(*this, n0);
+   IFiniteGroupUtils::CheckValid(*this, n1);
    return (n0 + n1) % m_order;
 }
 
-GroupElement CyclicGroup::inverse(GroupElement n) const
+GroupElement CyclicGroup::getInverse(GroupElement n) const
 {
-   MessageHandler::Assert(n >= 0 && n < m_order);
+   IFiniteGroupUtils::CheckValid(*this, n);
    return (m_order - n) % m_order;
 }
 
-GroupElement CyclicGroup::getIdentityElement() const
+GroupElement CyclicGroup::getIdentity() const
 {
    return 0;
 }
