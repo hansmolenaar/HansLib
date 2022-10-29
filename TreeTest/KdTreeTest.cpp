@@ -123,7 +123,7 @@ TEST(KdTreeTest, TwoElements)
    auto tree = KdTree<int, 1>::Create(std::array<IntPoint1, 2>{ IntPoint1{ 10 }, IntPoint1{ 5 } });
    const auto ordered = tree->GetAllLeavesInOrder();
    const std::vector<KdTreePosition> expect{ 1,0 };
-   ASSERT_TRUE(std::ranges::equal(ordered, expect));
+   ASSERT_TRUE(str::equal(ordered, expect));
 }
 
 
@@ -132,7 +132,7 @@ TEST(KdTreeTest, ThreeElements1D)
    std::array<IntPoint1, 3> points{ IntPoint1{ 9 }, IntPoint1{ 5 }, IntPoint1{ 7 } };
    auto tree = KdTree<int, 1>::Create(points);
    const auto& orderedLeaves = tree->GetAllLeavesInOrder();
-   ASSERT_TRUE(std::ranges::equal(orderedLeaves, std::vector<KdTreePosition>{1, 2, 0}));
+   ASSERT_TRUE(str::equal(orderedLeaves, std::vector<KdTreePosition>{1, 2, 0}));
    TestIntKdTree<1>(points);
 }
 
@@ -148,7 +148,7 @@ TEST(KdTreeTest, TenPoints2D)
 
    auto tree = KdTree<int, 2>::Create(pairs);
    const auto& orderedLeaves = tree->GetAllLeavesInOrder();
-   ASSERT_TRUE(std::ranges::equal(orderedLeaves, std::vector<KdTreePosition>{3, 4, 0, 2, 1, 8, 9, 5, 7, 6}));
+   ASSERT_TRUE(str::equal(orderedLeaves, std::vector<KdTreePosition>{3, 4, 0, 2, 1, 8, 9, 5, 7, 6}));
 
    TestIntKdTree<2>(pairs);
 }
