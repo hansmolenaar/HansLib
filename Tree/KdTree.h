@@ -200,7 +200,7 @@ KdTree<T, N>::KdTree(std::span<const Point<T, N>> points) : m_points(points)
       }
       m_bb = std::make_unique<BoundingBox<T, N>>(BoundingBox<T, N>::CreateFromList(std::array<Point<T, N>, 2 >{ lb, ub }));
       std::vector< bool> goRight(m_points.size(), false);
-      std::array<  std::span<KdTreePosition>, 1> ordersSpan;
+      std::array<  std::span<KdTreePosition>, N> ordersSpan;
       for (int n = 0; n < N; ++n)
       {
          ordersSpan[n] = orders[n];
@@ -253,7 +253,7 @@ KdTreeVertex<T, N>* KdTree<T, N>::BuildTree(std::array< std::span< KdTreePositio
          if (d == activeDim) continue;
 
          auto& currentOrder = orders[d];
-         std::copy(copyList.begin(), copyList.end(), currentOrder.begin());
+         std::copy(currentOrder.begin(), currentOrder.end(), copyList.begin());
 
          size_t p = 0;
          for (KdTreePosition pos : copyList)
