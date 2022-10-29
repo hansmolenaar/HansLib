@@ -1,14 +1,11 @@
 #include <gtest/gtest.h>
 
+#include "HLUtils/Defines.h"
 #include "Tree/KdTree.h"
 #include "Point/Point.h"
 #include "BoundingBox/BoundingBox.h"
 #include "Tree/KdTreeTraversorPointsInRange.h"
-
 #include <random>
-#include <algorithm>
-
-namespace str = std::ranges;
 
 template<int N>
 static void TestIntKdTree(std::span<const Point<int, N>> points)

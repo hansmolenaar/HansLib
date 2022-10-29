@@ -1,10 +1,11 @@
 #pragma once
 
-#include <array>
+#include "HLUtils/Defines.h"
+#include "Interval/Interval.h"
+#include "HLUtils/MessageHandler.h"
+#include "Point/Point.h"
+
 #include <span>
-#include "../Interval/Interval.h"
-#include "../HLUtils/MessageHandler.h"
-#include "../Point/Point.h"
 
 template <typename T, size_t... Is, typename... Args>
 std::array<T, sizeof...(Is)> MakeArrayHelper(
@@ -112,7 +113,7 @@ template<typename T, int N >
 Point<T, N> BoundingBox<T, N>::getLower() const
 {
    std::array<T, N> values;
-   std::ranges::transform(m_intervals, values.data(), [](const Interval<T>& intv) {return intv.getLower(); });
+   str::transform(m_intervals, values.data(), [](const Interval<T>& intv) {return intv.getLower(); });
    return Point<T, N>(values);
 }
 
@@ -120,7 +121,7 @@ template<typename T, int N >
 Point<T, N> BoundingBox<T, N>::getUpper() const
 {
    std::array<T, N> values;
-   std::ranges::transform(m_intervals, values.data(), [](const Interval<T>& intv) {return intv.getUpper(); });
+   str::transform(m_intervals, values.data(), [](const Interval<T>& intv) {return intv.getUpper(); });
    return Point<T, N>(values);
 }
 

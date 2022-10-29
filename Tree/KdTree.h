@@ -1,5 +1,6 @@
 #pragma once
 
+#include "HLUtils/Defines.h"
 #include "IKdTreeTraversor.h"
 #include "Point/Point.h"
 #include "BoundingBox/BoundingBox.h"
@@ -10,7 +11,6 @@
 #include <numeric>
 #include <deque>
 #include <limits>
-#include <vector>
 
 template<typename T, int N>
 class KdTreeVertex;

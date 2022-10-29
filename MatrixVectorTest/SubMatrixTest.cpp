@@ -1,20 +1,18 @@
 #include <gtest/gtest.h>
 
+#include "HLUtils/Defines.h"
 #include "MatrixVector/SubMatrix.h"
 #include "MatrixVector/MatrixSquare.h"
 
 #include <numeric>
-#include <ranges>
-
-
 TEST(SubMatrixTest, Test1)
 {
    const double eps = 1.0e-10;
    const int dim = 8;
    MatrixSquare mat(dim);
-   for (int row : std::ranges::iota_view(0, dim))
+   for (int row : str::iota_view(0, dim))
    {
-      for (int col : std::ranges::iota_view(0, dim))
+      for (int col : str::iota_view(0, dim))
       {
          mat(row, col) = row * 0.1 + col * 0.01;
       }
