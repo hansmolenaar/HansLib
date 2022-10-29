@@ -33,13 +33,13 @@ private:
    KdTree(std::span<const Point<T, N>> points);
 
    static KdTreeVertex<T, N>* BuildTree(std::array< std::span< KdTreePosition>, N>& orders, int depth, const std::span<const Point<T, N>>& points,
-      std::vector< bool>& goRight, std::span<KdTreePosition> work, std::deque<KdTreeLeaf<T, N>>& m_vertices);
+      std::vector< bool>& goRight, std::span<KdTreePosition> work, std::deque<KdTreeVertex<T, N>>& m_vertices);
    static std::vector<KdTreePosition> SortPerDimension(int thisDim, const std::span<const Point<T, N>> values);
 
    KdTreeVertex<T, N>* m_root = nullptr;
    std::span<const Point<T, N>> m_points;
    std::unique_ptr<BoundingBox<T, N>> m_bb;
-   std::deque<KdTreeLeaf<T, N>>  m_treeVertices;
+   std::deque<KdTreeVertex<T, N>>  m_treeVertices;
 };
 
 // Forget the rest...
@@ -48,31 +48,28 @@ template<typename T, int N>
 class KdTreeVertex
 {
 public:
-   virtual ~KdTreeVertex() = default;
    KdTreeVertex(KdTreeVertex<T, N>* left, KdTreeVertex<T, N>* right, T median, T nxt);
+   KdTreeVertex(KdTreePosition pos);
    void HandleAllLeavesInSubTree(const KdTree<T, N>&, IKdTreeTraversor<T, N>&) const;
    void Traverse(const KdTree<T, N>&, IKdTreeTraversor<T, N>&, int level, Point<T, N>& lbound, Point<T, N>& ubound) const;
+   bool isLeaf() const { return m_left == nullptr && m_right == nullptr; }
+   KdTreePosition getPosition() const;
 
 private:
-   bool isLeaf() const { return m_left == nullptr && m_right == nullptr; };
-   KdTreeVertex<T, N>* m_left;
-   KdTreeVertex<T, N>* m_right;
+   KdTreeVertex<T, N>* m_left = nullptr;
+   KdTreeVertex<T, N>* m_right = nullptr;
    T                  m_median;
    T                  m_firstAfterMedian;
+   KdTreePosition     m_position = KdTreePositionInvalid;
 };
 
 template<typename T, int N>
-class KdTreeLeaf : public KdTreeVertex<T, N>
+KdTreePosition  KdTreeVertex<T, N>::getPosition() const
 {
-public:
-   KdTreeLeaf(KdTreeVertex<T, N>* left, KdTreeVertex<T, N>* right, T median, T nxt) : KdTreeVertex<T, N>(left, right, median, nxt), m_position(std::numeric_limits<KdTreePosition>::max()) {}
-   KdTreeLeaf(T value, KdTreePosition position) : KdTreeVertex<T, N>(nullptr, nullptr, value, value), m_position(position) {}
-   KdTreePosition getPosition() const { return m_position; }
-private:
-   KdTreePosition m_position;
-
-};
-
+   if (!isLeaf()) MessageHandler::Error("KdTreeVertex<T, N>::getPosition() not a leaf");
+   if (m_position == KdTreePositionInvalid) MessageHandler::Error("KdTreeVertex<T, N>::getPosition() position not set");
+   return m_position;
+}
 
 template<typename T, int N>
 class PreSorting
@@ -90,7 +87,7 @@ namespace
    template<typename T, int N>
    void HandleLeaf(const KdTree<T, N>& tree, IKdTreeTraversor<T, N>& traversor, const KdTreeVertex<T, N>& vertex)
    {
-      const auto pos = dynamic_cast<const KdTreeLeaf<T, N>&>(vertex).getPosition();
+      const auto pos = vertex.getPosition();
       const auto& point = tree.GetPoint(pos);
       traversor.HandleLeaf(pos, point);
    }
@@ -100,6 +97,11 @@ namespace
 template<typename T, int N>
 KdTreeVertex<T, N>::KdTreeVertex(KdTreeVertex<T, N>* left, KdTreeVertex<T, N>* right, T median, T nxt) :
    m_left(left), m_right(right), m_median(median), m_firstAfterMedian(nxt)
+{}
+
+template<typename T, int N>
+KdTreeVertex<T, N>::KdTreeVertex(KdTreePosition pos) :
+   m_position(pos)
 {}
 
 
@@ -225,14 +227,14 @@ KdTree<T, N>::KdTree(std::span<const Point<T, N>> points) : m_points(points)
 
 template<typename T, int N>
 KdTreeVertex<T, N>* KdTree<T, N>::BuildTree(std::array< std::span< KdTreePosition>, N>& orders, int depth, const std::span<const Point<T, N>>& points,
-   std::vector< bool>& goRight, std::span<KdTreePosition> work, std::deque<KdTreeLeaf<T, N>>& buffer)
+   std::vector< bool>& goRight, std::span<KdTreePosition> work, std::deque<KdTreeVertex<T, N>>& buffer)
 {
    const int activeDim = depth % N;
    const auto& order = orders[activeDim];
    if (order.size() == 1)
    {
       const auto pos = order[0];
-      buffer.emplace_back(KdTreeLeaf<T, N>{ points[pos][activeDim], pos});
+      buffer.emplace_back(pos);
       return &buffer.back();
    }
    else
