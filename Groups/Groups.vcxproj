@@ -152,6 +152,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CyclicGroup.h" />
+    <ClInclude Include="GroupDefines.h" />
     <ClInclude Include="IFiniteGroup.h" />
     <ClInclude Include="IFiniteGroupUtils.h" />
     <ClInclude Include="IFinitePointGroupAction.h" />

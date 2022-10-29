@@ -10,9 +10,9 @@ public:
    static std::unique_ptr<CyclicGroup> Create(int);
 
     int getOrder() const override;
-    int getIdentityElement() const override;
-    int inverse(int) const override;
-    int operator()(int, int) const override;
+    GroupElement getIdentityElement() const override;
+    GroupElement inverse(GroupElement) const override;
+    GroupElement operator()(GroupElement, GroupElement) const override;
 
 private:
    CyclicGroup(int);

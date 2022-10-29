@@ -3,31 +3,50 @@
 #include "IFiniteGroupUtils.h"
 #include "IFiniteGroup.h"
 
+void IFiniteGroupUtils::CheckValid(const IFiniteGroup& group, GroupElement elm)
+{
+   MessageHandler::Assert(elm >= 0);
+   MessageHandler::Assert(elm < group.getOrder());
+}
+
+std::vector<GroupElement> IFiniteGroupUtils::GetElements(const IFiniteGroup& group)
+{
+   const auto order = group.getOrder();
+   std::vector < GroupElement> result(order);
+   for (auto n = 0; n < order; ++n)
+   {
+      result.at(n) = n;
+   }
+   return result;
+}
+
 void IFiniteGroupUtils::CheckGroupAxioms(const IFiniteGroup& group)
 {
    const int order = group.getOrder();
    MessageHandler::Assert(order > 0);
 
+   const auto& elements = GetElements(group);
+
    // Is closed
-   for (int n0 = 0; n0 < order; ++n0)
+   for (auto n0 : elements)
    {
-      for (int n1 = 0; n1 < order; ++n1)
+      for (auto n1 : elements)
       {
          int result = group(n0, n1);
-         MessageHandler::Assert(result >= 0 && result < order);
+         CheckValid(group, result);
       }
    }
 
    //  identity
-   const int identity = group.getIdentityElement();
-   for (int n = 0; n < order; ++n)
+   const auto identity = group.getIdentityElement();
+   for (auto n : elements)
    {
       MessageHandler::Assert(group(identity, n) == n);
       MessageHandler::Assert(group(n, identity) == n);
    }
 
    // inverse
-   for (int n = 0; n < order; ++n)
+   for (auto n : elements)
    {
       const int inverse = group.inverse(n);
       MessageHandler::Assert(group(inverse, n) == identity);
@@ -35,14 +54,14 @@ void IFiniteGroupUtils::CheckGroupAxioms(const IFiniteGroup& group)
    }
 
    // Associativity, should inplement Light's algorithm
-   for (int n0 = 0; n0 < order; ++n0)
+   for (auto n0  : elements)
    {
-      for (int n1 = 0; n1 < order; ++n1)
+      for (auto n1 : elements)
       {
-         for (int n2 = 0; n2 < order; ++n2)
+         for (auto n2 : elements)
          {
-            const int res1 = group(group(n0, n1), n2);
-            const int res2 = group(n0, group(n1, n2));
+            const auto res1 = group(group(n0, n1), n2);
+            const auto res2 = group(n0, group(n1, n2));
             MessageHandler::Assert(res1 == res2);
          }
       }

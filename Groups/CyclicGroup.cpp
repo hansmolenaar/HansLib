@@ -18,20 +18,20 @@ int CyclicGroup::getOrder() const
    return m_order;
 }
 
-int CyclicGroup::operator()(int n0, int n1) const
+GroupElement CyclicGroup::operator()(GroupElement n0, GroupElement n1) const
 {
    MessageHandler::Assert(std::min(n0, n1) >= 0);
    MessageHandler::Assert(std::max(n0, n1) < m_order);
    return (n0 + n1) % m_order;
 }
 
-int CyclicGroup::inverse(int n) const
+GroupElement CyclicGroup::inverse(GroupElement n) const
 {
    MessageHandler::Assert(n >= 0 && n < m_order);
    return (m_order - n) % m_order;
 }
 
-int CyclicGroup::getIdentityElement() const
+GroupElement CyclicGroup::getIdentityElement() const
 {
    return 0;
 }

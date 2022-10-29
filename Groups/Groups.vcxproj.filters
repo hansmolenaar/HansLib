@@ -35,5 +35,8 @@
     <ClInclude Include="IFinitePointGroupAction.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="GroupDefines.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
