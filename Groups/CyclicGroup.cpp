@@ -30,3 +30,8 @@ int CyclicGroup::inverse(int n) const
    MessageHandler::Assert(n >= 0 && n < m_order);
    return (m_order - n) % m_order;
 }
+
+int CyclicGroup::getIdentityElement() const
+{
+   return 0;
+}

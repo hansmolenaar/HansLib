@@ -18,19 +18,20 @@ void IFiniteGroupUtils::CheckGroupAxioms(const IFiniteGroup& group)
       }
    }
 
-   // 0 is identity
+   //  identity
+   const int identity = group.getIdentityElement();
    for (int n = 0; n < order; ++n)
    {
-      MessageHandler::Assert(group(0, n) == n);
-      MessageHandler::Assert(group(n, 0) == n);
+      MessageHandler::Assert(group(identity, n) == n);
+      MessageHandler::Assert(group(n, identity) == n);
    }
 
    // inverse
    for (int n = 0; n < order; ++n)
    {
       const int inverse = group.inverse(n);
-      MessageHandler::Assert(group(inverse, n) == 0);
-      MessageHandler::Assert(group(n, inverse) == 0);
+      MessageHandler::Assert(group(inverse, n) == identity);
+      MessageHandler::Assert(group(n, inverse) == identity);
    }
 
    // Associativity, should inplement Light's algorithm

@@ -10,7 +10,7 @@ public:
    static std::unique_ptr<CyclicGroup> Create(int);
 
     int getOrder() const override;
-   // 0 must be identity
+    int getIdentityElement() const override;
     int inverse(int) const override;
     int operator()(int, int) const override;
 
