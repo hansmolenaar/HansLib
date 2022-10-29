@@ -13,6 +13,38 @@
 #include <vector>
 
 template<typename T, int N>
+class KdTreeVertex;
+
+template<typename T, int N>
+class KdTreeLeaf;
+
+
+template<typename T, int N>
+class KdTree
+{
+public:
+   static std::unique_ptr< KdTree<T, N>> Create(const std::span<const Point<T, N>>&);
+   std::vector<KdTreePosition> GetAllLeavesInOrder() const;
+   Point<T, N> GetPoint(KdTreePosition) const;
+   void Traverse(IKdTreeTraversor<T, N>& traversor);
+   std::vector<KdTreePosition> FindInRange(const BoundingBox<T, N>&);
+
+private:
+   KdTree(std::span<const Point<T, N>> points);
+
+   static KdTreeVertex<T, N>* BuildTree(std::array< std::span< KdTreePosition>, N>& orders, int depth, const std::span<const Point<T, N>>& points,
+      std::vector< bool>& goRight, std::span<KdTreePosition> work, std::deque<KdTreeLeaf<T, N>>& m_vertices);
+   static std::vector<KdTreePosition> SortPerDimension(int thisDim, const std::span<const Point<T, N>> values);
+
+   KdTreeVertex<T, N>* m_root = nullptr;
+   std::span<const Point<T, N>> m_points;
+   std::unique_ptr<BoundingBox<T, N>> m_bb;
+   std::deque<KdTreeLeaf<T, N>>  m_treeVertices;
+};
+
+// Forget the rest...
+
+template<typename T, int N>
 class KdTreeVertex
 {
 public:
@@ -41,25 +73,6 @@ private:
 
 };
 
-template<typename T, int N>
-class KdTree
-{
-public:
-   static std::vector<KdTreePosition> SortPerDimension(int thisDim, const std::span<const Point<T, N>> values);
-   static KdTreeVertex<T, N>* BuildTree(std::array< std::span< KdTreePosition>, N>& orders, int depth, const std::span<const Point<T, N>>& points,
-      std::vector< bool>& goRight, std::deque<KdTreeLeaf<T, N>>& m_vertices);
-   static std::unique_ptr< KdTree<T, N>> Create(const std::span<const Point<T, N>>&);
-   std::vector<KdTreePosition> GetAllLeavesInOrder() const;
-   Point<T, N> GetPoint(KdTreePosition) const;
-   void Traverse(IKdTreeTraversor<T, N>& traversor);
-   std::vector<KdTreePosition> FindInRange(const BoundingBox<T, N>&);
-private:
-   KdTree(std::span<const Point<T, N>> points);
-   KdTreeVertex<T, N>* m_root = nullptr;
-   std::span<const Point<T, N>> m_points;
-   std::unique_ptr<BoundingBox<T, N>> m_bb;
-   std::deque<KdTreeLeaf<T, N>>  m_treeVertices;
-};
 
 template<typename T, int N>
 class PreSorting
@@ -136,7 +149,7 @@ void KdTreeVertex<T, N>::Traverse(const KdTree<T, N>& tree, IKdTreeTraversor<T, 
          lbound[dir] = m_firstAfterMedian;
          if (traversor.DeterminOverlap(lbound, ubound) != KdTreeOverlap::NoOverlap)
          {
-            m_right->Traverse(tree,traversor, level + 1, lbound, ubound);
+            m_right->Traverse(tree, traversor, level + 1, lbound, ubound);
          }
          lbound[dir] = storeVal;
       }
@@ -205,13 +218,14 @@ KdTree<T, N>::KdTree(std::span<const Point<T, N>> points) : m_points(points)
       {
          ordersSpan[n] = orders[n];
       }
-      m_root = BuildTree(ordersSpan, 0, m_points, goRight, m_treeVertices);
+      std::vector<KdTreePosition> work(m_points.size());
+      m_root = BuildTree(ordersSpan, 0, m_points, goRight, work, m_treeVertices);
    }
 }
 
 template<typename T, int N>
 KdTreeVertex<T, N>* KdTree<T, N>::BuildTree(std::array< std::span< KdTreePosition>, N>& orders, int depth, const std::span<const Point<T, N>>& points,
-   std::vector< bool>& goRight, std::deque<KdTreeLeaf<T, N>>& buffer)
+   std::vector< bool>& goRight, std::span<KdTreePosition> work, std::deque<KdTreeLeaf<T, N>>& buffer)
 {
    const int activeDim = depth % N;
    const auto& order = orders[activeDim];
@@ -247,7 +261,7 @@ KdTreeVertex<T, N>* KdTree<T, N>::BuildTree(std::array< std::span< KdTreePositio
       }
 
 
-      std::vector<KdTreePosition> copyList(order.size());
+      std::span<KdTreePosition> copyList(work.begin(), work.begin() + order.size());
       for (int d = 0; d < N; ++d)
       {
          if (d == activeDim) continue;
@@ -275,8 +289,8 @@ KdTreeVertex<T, N>* KdTree<T, N>::BuildTree(std::array< std::span< KdTreePositio
       }
 
 
-      auto* vertexLeft = BuildTree(left, depth + 1, points, goRight, buffer);
-      auto* vertexRight = BuildTree(right, depth + 1, points, goRight, buffer);
+      auto* vertexLeft = BuildTree(left, depth + 1, points, goRight, work, buffer);
+      auto* vertexRight = BuildTree(right, depth + 1, points, goRight, work, buffer);
       buffer.emplace_back(vertexLeft, vertexRight, median, nxt);
       return &buffer.back();
    }
