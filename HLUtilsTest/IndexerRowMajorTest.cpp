@@ -7,7 +7,7 @@
 
 TEST(IndexerRowMajorTest, TestToFlat)
 {
-	IndexerRowMajor ij({ 2,3 });
+	IndexerRowMajor<int> ij({ 2,3 });
 	ASSERT_EQ(ij.ToFlat({ 0,0 }), 0);
 	ASSERT_EQ(ij.ToFlat({ 0,1 }), 1);
 	ASSERT_EQ(ij.ToFlat({ 0,2 }), 2);
@@ -19,7 +19,7 @@ TEST(IndexerRowMajorTest, TestToFlat)
 
 TEST(IndexerRowMajorTest, TestErrorToFlat)
 {
-	IndexerRowMajor ij({ 2,3 });
+	IndexerRowMajor<int> ij({ 2,3 });
 	ASSERT_ANY_THROW(ij.ToFlat({ 1 }); );
 	ASSERT_ANY_THROW(ij.ToFlat({ 1,2,3 }); );
 	ASSERT_ANY_THROW(ij.ToFlat({ -1,0 }););
@@ -31,7 +31,7 @@ TEST(IndexerRowMajorTest, TestErrorToFlat)
 
 TEST(IndexerRowMajorTest, TestDimensions)
 {
-	IndexerRowMajor ij({ 2,3 });
+	IndexerRowMajor<int> ij({ 2,3 });
 	ASSERT_EQ(2, ij.GetRowDimension());
 	ASSERT_EQ(3, ij.GetColDimension());
 }

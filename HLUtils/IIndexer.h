@@ -3,10 +3,11 @@
 
 #include <initializer_list>
 
+template <typename I>
 class IIndexer
 {
 public:
-	virtual int ToFlat(std::initializer_list<int> ijk) const = 0;
-	~IIndexer(){};
+	virtual	~IIndexer() = default;
+	virtual int ToFlat(std::initializer_list<I> ijk) const = 0;
 };
 

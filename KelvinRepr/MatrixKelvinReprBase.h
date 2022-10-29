@@ -23,15 +23,15 @@ public:
 
    void CopyFrom(const MatrixKelvinReprBase<Dimension>&);
 protected:
-   explicit MatrixKelvinReprBase(const IIndexer&);
+   explicit MatrixKelvinReprBase(const IIndexer<int>&);
 
-   const IIndexer& m_indexer;
+   const IIndexer<int>& m_indexer;
    std::array<double, VectorLength> m_data;
 };
 
 
 template<int Dimension>
-MatrixKelvinReprBase< Dimension>::MatrixKelvinReprBase(const IIndexer& indexer) : m_indexer(indexer)
+MatrixKelvinReprBase< Dimension>::MatrixKelvinReprBase(const IIndexer<int>& indexer) : m_indexer(indexer)
 {
    std::fill_n(m_data.begin(), VectorLength, 0.0);
 }

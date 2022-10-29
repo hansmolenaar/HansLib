@@ -50,9 +50,6 @@
     <ClCompile Include="EigenValueSolverSym3x3.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="IndexerRowMajor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="IndexerSymmetric.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

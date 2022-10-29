@@ -3,7 +3,7 @@
 #include "HLUtils/IIndexer.h"
 
 
-class IndexerKelvinRepr3 : public IIndexer
+class IndexerKelvinRepr3 : public IIndexer<int>
 {
 public:
    IndexerKelvinRepr3();

@@ -155,7 +155,6 @@
   <ItemGroup>
     <ClCompile Include="EigenValueSolverSym2x2.cpp" />
     <ClCompile Include="EigenValueSolverSym3x3.cpp" />
-    <ClCompile Include="IndexerRowMajor.cpp" />
     <ClCompile Include="IndexerSymmetric.cpp" />
     <ClCompile Include="MessageHandler.cpp" />
     <ClCompile Include="Plotting.cpp" />

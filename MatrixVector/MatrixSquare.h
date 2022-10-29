@@ -6,7 +6,6 @@
 #include "HLUtils/IndexerRowMajor.h"
 #include "IMatrixSquare.h"
 
-class IIndexer;
 
 class MatrixSquare : public IMatrixSquare
 {
@@ -16,7 +15,7 @@ public:
 	//void Clear();
 	bool Solve(std::span<const double> rhs, std::span< double> sol); // Returns succes
 
-	const IIndexer& GetIndexer();
+	const IIndexer<int>& GetIndexer();
 
 	int GetDimension() const override;
 
@@ -29,7 +28,7 @@ private:
 	std::vector<double>  m_matrix;
 	std::vector<double>  m_inverse;
 	std::vector<int>  m_pivot;
-	IndexerRowMajor m_indexer;
+	IndexerRowMajor<int> m_indexer;
 	int m_dim;
 	bool m_dirty;
 

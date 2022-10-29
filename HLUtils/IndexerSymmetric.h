@@ -3,7 +3,8 @@
 #include "IIndexer.h"
 #include <vector>
 
-class IndexerSymmetric :public IIndexer
+
+class IndexerSymmetric :public IIndexer<int>
 {
 public:
 	IndexerSymmetric(int dim);

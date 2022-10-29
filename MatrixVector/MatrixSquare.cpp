@@ -249,7 +249,7 @@ bool MatrixSquare::Solve(std::span<const double> rhs, std::span< double> sol)
 }
 
 
-const IIndexer& MatrixSquare::GetIndexer()
+const IIndexer<int>& MatrixSquare::GetIndexer()
 {
 	return m_indexer;
 }

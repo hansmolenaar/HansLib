@@ -6,8 +6,6 @@
 #include "HLUtils/IndexerRowMajor.h"
 #include "IMatrixSquare.h"
 
-class IIndexer;
-
 class MatrixDense : public IMatrix
 {
 public:
@@ -22,6 +20,6 @@ public:
 
 
 private:
-	IndexerRowMajor m_indexer;
+	IndexerRowMajor<int> m_indexer;
 	std::vector<double>  m_entries;
 };
