@@ -5,13 +5,10 @@
 
 #include <map>
 
-#if false
-class GroupTable : public IFiniteGroup
+class GroupTable //: public IFiniteGroup
 {
 public:
    GroupTable(const std::vector<std::tuple<GroupElement, GroupElement, GroupElement>>&);
 private:
-  // std::vector<
+   std::vector<GroupElement>  m_entries;
 };
-
-#endif

@@ -35,11 +35,6 @@
     <ClCompile Include="NonLinearSolverConvergenceCriteria.cpp" />
     <ClCompile Include="NonLinearSolverStrategyResidualReduction.cpp" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\HLUtils\HLUtils.vcxproj">
-      <Project>{e68fc7e3-1402-4bbe-9d0f-f4bd88acfd45}</Project>
-    </ProjectReference>
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>

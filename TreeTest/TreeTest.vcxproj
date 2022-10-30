@@ -43,7 +43,7 @@
     <ClCompile Include="KdTreeTraversorPointsInRangeTest.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\HLUtils\HLUtils.vcxproj">
+    <ProjectReference Include="..\Utilities\Utilities.vcxproj">
       <Project>{e68fc7e3-1402-4bbe-9d0f-f4bd88acfd45}</Project>
     </ProjectReference>
   </ItemGroup>

@@ -27,7 +27,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Interpolation", "Interpolat
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "InterpolationTest", "InterpolationTest\InterpolationTest.vcxproj", "{39C74ABA-6528-4D94-87A2-6C32032F020E}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Utilities", "HLUtils\HLUtils.vcxproj", "{E68FC7E3-1402-4BBE-9D0F-F4BD88ACFD45}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Utilities", "Utilities\Utilities.vcxproj", "{E68FC7E3-1402-4BBE-9D0F-F4BD88ACFD45}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Interval", "Interval\Interval.vcxproj", "{1CD55D85-E025-45C1-8E1C-5C3E9477555A}"
 EndProject

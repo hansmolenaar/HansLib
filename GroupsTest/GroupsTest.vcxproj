@@ -39,7 +39,7 @@
     <ProjectReference Include="..\Groups\Groups.vcxproj">
       <Project>{eda39747-c1da-42cb-857d-a77171048589}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\HLUtils\HLUtils.vcxproj">
+    <ProjectReference Include="..\Utilities\Utilities.vcxproj">
       <Project>{e68fc7e3-1402-4bbe-9d0f-f4bd88acfd45}</Project>
     </ProjectReference>
   </ItemGroup>

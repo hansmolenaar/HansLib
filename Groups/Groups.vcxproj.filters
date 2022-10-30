@@ -21,6 +21,9 @@
     <ClCompile Include="IFiniteGroupUtils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GroupTable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IFiniteGroup.h">
