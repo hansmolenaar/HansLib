@@ -10,12 +10,19 @@ class IndexerRowMajor :public IIndexer<I>
 public:
 	IndexerRowMajor(I dimRow, I dimCol);
 	I ToFlat(std::initializer_list<I> ijk) const override;
+	int numberOfIndices() const override;
 	I GetRowDimension() const;
 	I GetColDimension() const;
 private:
 	I m_dimRow;
 	I m_dimCol;
 };
+
+template <typename I>
+int IndexerRowMajor<I>::numberOfIndices() const
+{
+	return 2;
+}
 
 template <typename I>
 IndexerRowMajor<I>::IndexerRowMajor(I dimRow, I dimCol) : m_dimRow(dimRow), m_dimCol(dimCol)

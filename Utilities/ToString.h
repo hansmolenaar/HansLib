@@ -1,5 +1,12 @@
 #pragma once
 
 #include <string>
+#include <sstream>
 
-std::string ToString(size_t);
+template<typename T>
+std::string ToString(T value)
+{
+   std::ostringstream os;
+   os << value;
+   return os.str();
+}

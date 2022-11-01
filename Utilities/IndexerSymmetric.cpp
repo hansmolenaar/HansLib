@@ -27,3 +27,8 @@ int IndexerSymmetric::ToFlat(int row, int col) const
 		return row * (row + 1) / 2 + col;
 	}
 }
+
+int IndexerSymmetric::numberOfIndices() const
+{
+	return 2;
+}

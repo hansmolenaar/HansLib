@@ -12,5 +12,6 @@
     <ClCompile Include="CyclicGourpTest.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
+    <ClCompile Include="GroupTableTest.cpp" />
   </ItemGroup>
 </Project>

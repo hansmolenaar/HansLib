@@ -152,6 +152,7 @@
     <ClInclude Include="MathConstants.h" />
     <ClInclude Include="MessageHandler.h" />
     <ClInclude Include="Plotting.h" />
+    <ClInclude Include="ToString.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EigenValueSolverSym2x2.cpp" />
