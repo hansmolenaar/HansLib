@@ -24,6 +24,9 @@
     <ClCompile Include="GroupTable.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DihedralGroup.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IFiniteGroup.h">
@@ -42,6 +45,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GroupTable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DihedralGroup.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

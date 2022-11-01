@@ -13,5 +13,6 @@
       <Filter>Source files</Filter>
     </ClCompile>
     <ClCompile Include="GroupTableTest.cpp" />
+    <ClCompile Include="DihedralGroupTest.cpp" />
   </ItemGroup>
 </Project>

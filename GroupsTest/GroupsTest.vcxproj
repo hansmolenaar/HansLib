@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CyclicGourpTest.cpp" />
+    <ClCompile Include="DihedralGroupTest.cpp" />
     <ClCompile Include="GroupTableTest.cpp" />
   </ItemGroup>
   <ItemDefinitionGroup />

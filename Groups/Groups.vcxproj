@@ -149,11 +149,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CyclicGroup.cpp" />
+    <ClCompile Include="DihedralGroup.cpp" />
     <ClCompile Include="GroupTable.cpp" />
     <ClCompile Include="IFiniteGroupUtils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CyclicGroup.h" />
+    <ClInclude Include="DihedralGroup.h" />
     <ClInclude Include="GroupDefines.h" />
     <ClInclude Include="GroupTable.h" />
     <ClInclude Include="IFiniteGroup.h" />
