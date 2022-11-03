@@ -15,7 +15,7 @@ public:
 
 	double operator() (int, int)  const override;
 
-   void Transform(std::span<const double>, std::span<double>) const override;
+   void Transform(std::span<const double>, std::span<double>) const;
 private:
    MatrixRotation3D(const UnitVector3&, double);
 

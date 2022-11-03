@@ -15,7 +15,7 @@ public:
 
 	double operator() (int, int)  const override;
 
-   void Transform(std::span<const double>, std::span<double>) const override;
+   void Transform(std::span<const double>, std::span<double>) const;
 
 private:
    MatrixDense   m_matrix;

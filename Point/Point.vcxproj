@@ -145,9 +145,11 @@
   <ItemGroup>
     <ClInclude Include="IPointTransformation.h" />
     <ClInclude Include="Point.h" />
+    <ClInclude Include="PointClose.h" />
+    <ClInclude Include="Rotate2D.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="PointDummy.cpp" />
+    <ClCompile Include="Rotate2D.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Utilities\Utilities.vcxproj">

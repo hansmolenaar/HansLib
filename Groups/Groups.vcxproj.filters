@@ -38,9 +38,6 @@
     <ClInclude Include="IFiniteGroupUtils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="IFinitePointGroupAction.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="GroupDefines.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -48,6 +45,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DihedralGroup.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IFinitePointGroupAction.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

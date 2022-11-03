@@ -1,11 +1,12 @@
 #pragma once
 
-#include <span>
+#include "IFiniteGroup.h"
+#include "Point/Point.h"
 
-class IFinitePointGroupAction 
+template<int N>
+class IFinitePointGroupAction
 {
-public:
-   virtual void Transform(std::span<const double>, std::span<double>) const = 0;
-
-   virtual ~IFinitePointGroupAction() {};
+   virtual ~IFinitePointGroupAction() = default;
+   const IFiniteGroup& getGroup() const = 0;
+   Point<double, N> operator()(int, Point<double,N>) const = 0;
 };

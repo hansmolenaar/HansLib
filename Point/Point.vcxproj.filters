@@ -21,9 +21,15 @@
     <ClInclude Include="IPointTransformation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Rotate2D.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PointClose.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="PointDummy.cpp">
+    <ClCompile Include="Rotate2D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

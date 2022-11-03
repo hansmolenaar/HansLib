@@ -33,6 +33,8 @@ public:
       return lhs;
    }
 
+   std::span<const T> data() const { return m_values; }
+
 private:
    std::array<T, N> m_values;
 };
