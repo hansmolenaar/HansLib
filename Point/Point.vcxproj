@@ -147,6 +147,7 @@
     <ClInclude Include="Point.h" />
     <ClInclude Include="PointClose.h" />
     <ClInclude Include="Rotate2D.h" />
+    <ClInclude Include="UnitVector.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Rotate2D.cpp" />

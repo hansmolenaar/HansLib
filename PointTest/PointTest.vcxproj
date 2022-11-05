@@ -39,6 +39,7 @@
     <ClCompile Include="PointCloseTest.cpp" />
     <ClCompile Include="PointTest.cpp" />
     <ClCompile Include="Rotate2DTest.cpp" />
+    <ClCompile Include="UnitVectorTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Point\Point.vcxproj">
