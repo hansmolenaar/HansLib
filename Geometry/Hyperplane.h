@@ -1,11 +1,11 @@
 #pragma once
 
 #include "Point/Point.h"
-#include "Geometry/Hyperplane.h"
 #include "Geometry/UnitVector.h"
+#include "Geometry/IPointTransformation.h"
 
 template<int N>
-class Hyperplane
+class Hyperplane : public IPointTransformation<double, N>
 {
 public:
    Hyperplane(const Point<double, N>&, std::unique_ptr< UnitVector<N>>&&);
@@ -13,6 +13,9 @@ public:
    const Point<double, N>& getReferencePoint() const { return m_referencePoint; }
    double getSignedDistance(Point<double, N>) const;
    Point<double, N> reflect(Point<double, N>) const;
+
+   Point<double, N> operator()(const Point<double, N>& p) const override { return reflect(p); }
+
 private:
    Point<double, N> m_referencePoint;
    std::unique_ptr<UnitVector<N>> m_normal;

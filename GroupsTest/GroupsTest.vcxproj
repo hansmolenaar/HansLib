@@ -36,6 +36,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Geometry\Geometry.vcxproj">
+      <Project>{df5dbee9-c420-4fae-8b80-f3d14fb7b46c}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\Groups\Groups.vcxproj">
       <Project>{eda39747-c1da-42cb-857d-a77171048589}</Project>
     </ProjectReference>
@@ -44,7 +47,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ActionDihedralTest.cpp" />
     <ClCompile Include="ActionReflect1DTest.cpp" />
+    <ClCompile Include="ActionRotate2DTest.cpp" />
     <ClCompile Include="CyclicGourpTest.cpp" />
     <ClCompile Include="DihedralGroupTest.cpp" />
     <ClCompile Include="GroupTableTest.cpp" />

@@ -12,9 +12,19 @@
     <ClCompile Include="CyclicGourpTest.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
-    <ClCompile Include="GroupTableTest.cpp" />
-    <ClCompile Include="DihedralGroupTest.cpp" />
     <ClCompile Include="ActionReflect1DTest.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="DihedralGroupTest.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="GroupTableTest.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionRotate2DTest.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionDihedralTest.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
   </ItemGroup>

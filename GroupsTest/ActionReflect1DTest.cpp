@@ -6,5 +6,5 @@
 TEST(ActionReflect1DTest, Basic1)
 {
    const ActionReflect1D groupAction;
-   Test_IFinitePointGroupAction(groupAction);
+   Test_IFinitePointGroupAction(groupAction, GetRandomPoint<1>());
 }
