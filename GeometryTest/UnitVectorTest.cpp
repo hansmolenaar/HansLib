@@ -39,7 +39,16 @@ TEST(UnitVectorTest, Bounds)
 TEST(UnitVectorTest, InnerProduct)
 {
    const Point2 p{ {2,0} };
-   const auto uv = UnitVector<2>::Create(std::vector<double>{1,1});
+   const auto uv = UnitVector<2>::Create(std::vector<double>{1, 1});
    const double ip = uv->innerProduct(p);
    ASSERT_NEAR(ip, std::sqrt(2.0), crit);
+}
+
+
+TEST(UnitVectorTest, TimesFactor)
+{
+   const auto uv = UnitVector<2>::Create(Point2{ 3,4 });
+   const PointClose<double, 2> areClose;
+   ASSERT_TRUE(areClose((*uv) * 2.0, Point2{ 1.2, 1.6 }));
+   ASSERT_TRUE(areClose(2 * (*uv), Point2{ 1.2, 1.6 }));
 }

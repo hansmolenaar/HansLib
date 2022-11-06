@@ -27,6 +27,7 @@ public:
 
    Point<T, N> operator*(T) const;
    Point<T, N>& operator+=(const Point<T, N>&);
+   Point<T, N>& operator-=(const Point<T, N>&);
 
    friend Point<T, N> operator+(Point<T, N> lhs, const Point<T, N>& rhs)
    {
@@ -58,6 +59,14 @@ Point<T, N>& Point<T, N>::operator+=(const Point<T, N>& rhs)
    std::transform(m_values.begin(), m_values.end(), rhs.m_values.begin(), m_values.begin(), [](T v0, T v1) {return v0 + v1; });
    return *this;
 }
+
+template<typename T, int N>
+Point<T, N>& Point<T, N>::operator-=(const Point<T, N>& rhs)
+{
+   std::transform(m_values.begin(), m_values.end(), rhs.m_values.begin(), m_values.begin(), [](T v0, T v1) {return v0 - v1; });
+   return *this;
+}
+
 
 template<typename T, int N>
 Point<T, N> Point<T, N>::operator*(T factor) const

@@ -36,6 +36,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="HyperplaneTest.cpp" />
     <ClCompile Include="Rotate2DTest.cpp" />
     <ClCompile Include="UnitVectorTest.cpp" />
   </ItemGroup>

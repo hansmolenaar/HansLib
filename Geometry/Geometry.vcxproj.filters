@@ -24,6 +24,9 @@
     <ClInclude Include="UnitVector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Hyperplane.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Rotate2D.cpp">

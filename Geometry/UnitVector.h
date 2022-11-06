@@ -12,8 +12,9 @@ class UnitVector
 {
 public:
    static std::unique_ptr<UnitVector<N>> Create(std::span<const double>);
+   static std::unique_ptr<UnitVector<N>> Create(const Point<double, N>&);
    double operator[](int) const;
-   Point<double, N> operator()(double) const;
+
    double innerProduct(const Point<double, N>&) const;
 private:
    UnitVector(std::array<double, N>&&);
@@ -33,6 +34,12 @@ double UnitVector<N>::operator[](int d) const
 }
 
 template<int N>
+std::unique_ptr<UnitVector<N>>  UnitVector<N>::Create(const Point<double, N>& point)
+{
+   return Create(std::span<const double>(point.begin(), point.end()));
+}
+
+template<int N>
 std::unique_ptr<UnitVector<N>>  UnitVector<N>::Create(std::span<const double> cors)
 {
    std::unique_ptr<UnitVector<N>> result;
@@ -46,12 +53,24 @@ std::unique_ptr<UnitVector<N>>  UnitVector<N>::Create(std::span<const double> co
    }
    result.reset(new UnitVector<N>(std::move(values)));
    return result;
- }
+}
 
 template<int N>
-Point<double, N> UnitVector<N>::operator()(double factor) const
+Point<double, N> operator*(const UnitVector< N>& uv, double factor)
 {
+   Point<double, N> result;
+   for (int n = 0; n < N; ++n)
+   {
+      result[n] = uv[n] * factor;
+   }
+   return result;
+}
 
+
+template<int N>
+Point<double, N> operator*(double factor, const UnitVector< N>& uv)
+{
+   return uv * factor;
 }
 
 template<int N>

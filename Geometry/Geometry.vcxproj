@@ -143,6 +143,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Hyperplane.h" />
     <ClInclude Include="IPointTransformation.h" />
     <ClInclude Include="Rotate2D.h" />
     <ClInclude Include="UnitVector.h" />

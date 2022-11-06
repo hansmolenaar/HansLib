@@ -15,10 +15,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Geometry\Point.h">
+    <ClInclude Include="..\Point\Point.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Geometry\PointClose.h">
+    <ClInclude Include="..\Point\PointClose.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
