@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "Point/PointClose.h"
+#include "Geometry/PointClose.h"
 
 TEST(PointCloseTest, Int)
 {

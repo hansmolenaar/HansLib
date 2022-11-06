@@ -1,7 +1,7 @@
 #pragma once
 
 #include "IFiniteGroup.h"
-#include "Point/Point.h"
+#include "Geometry/Point.h"
 
 template<int N>
 class IFinitePointGroupAction

@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
-#include "Point/Rotate2D.h"
-#include "Point/PointClose.h"
+#include "Geometry/Rotate2D.h"
+#include "Geometry/PointClose.h"
 
 #include <numbers>
 

@@ -2,7 +2,7 @@
 
 #include "Utilities/Defines.h"
 #include "Tree/KdTree.h"
-#include "Point/Point.h"
+#include "Geometry/Point.h"
 #include "BoundingBox/BoundingBox.h"
 #include "Tree/KdTreeTraversorPointsInRange.h"
 #include <random>
