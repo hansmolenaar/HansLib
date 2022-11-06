@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Geometry/Point.h"
+#include "Point/Point.h"
 
 #include <limits>
 

@@ -3,7 +3,7 @@
 #include "Utilities/Defines.h"
 #include "Interval/Interval.h"
 #include "Utilities/MessageHandler.h"
-#include "Geometry/Point.h"
+#include "Point/Point.h"
 
 #include <span>
 

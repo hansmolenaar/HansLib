@@ -15,24 +15,15 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Point.h">
+    <ClInclude Include="..\Geometry\Point.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="IPointTransformation.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Rotate2D.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PointClose.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="UnitVector.h">
+    <ClInclude Include="..\Geometry\PointClose.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Rotate2D.cpp">
+    <ClCompile Include="PointDummy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

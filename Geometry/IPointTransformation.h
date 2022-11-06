@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Point.h"
+#include "Point/Point.h"
 
 template<typename T, int N>
 class IPointTransformation

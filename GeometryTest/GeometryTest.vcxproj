@@ -19,13 +19,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{5a3790a5-573a-4169-a30f-14dd754ae2e2}</ProjectGuid>
+    <ProjectGuid>{8644ab91-1c3c-440a-97f4-8a87e38ab47e}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
     <ConfigurationType>Application</ConfigurationType>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
-    <ProjectName>GeometryTest</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
@@ -37,14 +36,12 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="PointCloseTest.cpp" />
-    <ClCompile Include="PointTest.cpp" />
     <ClCompile Include="Rotate2DTest.cpp" />
     <ClCompile Include="UnitVectorTest.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Point\Point.vcxproj">
-      <Project>{db08a033-bf9a-4c04-b753-7c2270a6024f}</Project>
+    <ProjectReference Include="..\Geometry\Geometry.vcxproj">
+      <Project>{df5dbee9-c420-4fae-8b80-f3d14fb7b46c}</Project>
     </ProjectReference>
     <ProjectReference Include="..\Utilities\Utilities.vcxproj">
       <Project>{e68fc7e3-1402-4bbe-9d0f-f4bd88acfd45}</Project>
