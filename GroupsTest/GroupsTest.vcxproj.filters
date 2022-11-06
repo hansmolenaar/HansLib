@@ -14,5 +14,11 @@
     </ClCompile>
     <ClCompile Include="GroupTableTest.cpp" />
     <ClCompile Include="DihedralGroupTest.cpp" />
+    <ClCompile Include="ActionReflect1DTest.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="IFinitePointGroupActionTest.h" />
   </ItemGroup>
 </Project>

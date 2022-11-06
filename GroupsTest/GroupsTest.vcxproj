@@ -44,9 +44,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ActionReflect1DTest.cpp" />
     <ClCompile Include="CyclicGourpTest.cpp" />
     <ClCompile Include="DihedralGroupTest.cpp" />
     <ClCompile Include="GroupTableTest.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="IFinitePointGroupActionTest.h" />
   </ItemGroup>
   <ItemDefinitionGroup />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

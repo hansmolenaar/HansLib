@@ -42,6 +42,7 @@ std::unique_ptr<UnitVector<N>>  UnitVector<N>::Create(const Point<double, N>& po
 template<int N>
 std::unique_ptr<UnitVector<N>>  UnitVector<N>::Create(std::span<const double> cors)
 {
+   if (cors.size() != N) MessageHandler::Error("UnitVector<N>::Create span dimension incorrect");
    std::unique_ptr<UnitVector<N>> result;
    const double norm2 = std::accumulate(cors.begin(), cors.end(), 0.0, [](double v0, double v1) { return v0 + v1 * v1; });
    if (norm2 < std::numeric_limits<double>::min()) return result;

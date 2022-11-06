@@ -52,3 +52,9 @@ TEST(UnitVectorTest, TimesFactor)
    ASSERT_TRUE(areClose((*uv) * 2.0, Point2{ 1.2, 1.6 }));
    ASSERT_TRUE(areClose(2 * (*uv), Point2{ 1.2, 1.6 }));
 }
+
+
+TEST(UnitVectorTest, CreateUnhappyPath)
+{
+   ASSERT_THROW(UnitVector<1>::Create(std::vector<double>{ 1,2 }), MyException);
+}

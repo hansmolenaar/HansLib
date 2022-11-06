@@ -6,7 +6,8 @@
 template<int N>
 class IFinitePointGroupAction
 {
+public:
    virtual ~IFinitePointGroupAction() = default;
-   const IFiniteGroup& getGroup() const = 0;
-   Point<double, N> operator()(int, Point<double,N>) const = 0;
+   virtual const IFiniteGroup& getGroup() const = 0;
+   virtual  Point<double, N> operator()(int, const Point<double, N>&) const = 0;
 };
