@@ -47,6 +47,6 @@ TEST(DihedralGroupTest, TriangleIsNotAbelian)
 
    ASSERT_EQ(g(2, 2), 1);
    ASSERT_EQ(g(5, 5), 0);
-   ASSERT_EQ(g(1, 5), 4);
-   ASSERT_EQ(g(5, 1), 3);
+   ASSERT_EQ(g(1, 5), 3);
+   ASSERT_EQ(g(5, 1), 4);
 }

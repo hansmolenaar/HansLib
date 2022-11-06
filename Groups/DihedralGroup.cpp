@@ -18,9 +18,9 @@ std::unique_ptr<IFiniteGroup> DihedralGroup::Create(int numVertices)
       for (int n1 = 0; n1 < numVertices; ++n1)
       {
          table.at(indexer->ToFlat({ n0, n1 })) = (n0 + n1) % numVertices;
-         table.at(indexer->ToFlat({ numVertices + n0, numVertices + n1 })) = (numVertices + n1 - n0) % numVertices;
-         table.at(indexer->ToFlat({ numVertices + n0, n1 })) = numVertices + (numVertices + n1 + n0) % numVertices;
-         table.at(indexer->ToFlat({ n0, numVertices + n1 })) = numVertices + (numVertices + n1 - n0) % numVertices;
+         table.at(indexer->ToFlat({ numVertices + n0, numVertices + n1 })) = (numVertices + n0 - n1) % numVertices;
+         table.at(indexer->ToFlat({ numVertices + n0, n1 })) = numVertices + (numVertices + n0 - n1) % numVertices;
+         table.at(indexer->ToFlat({ n0, numVertices + n1 })) = numVertices + (numVertices + n1 + n0) % numVertices;
       }
    }
 

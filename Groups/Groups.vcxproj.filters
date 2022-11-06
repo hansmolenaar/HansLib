@@ -68,5 +68,8 @@
     <ClInclude Include="ActionDihedral.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="IFinitePointGroupActionUtils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
