@@ -9,3 +9,4 @@ namespace PermutationUtils
 }
 
 Permutation operator*(const Permutation&, const Permutation&);
+bool operator==(const Permutation&, const Permutation&);

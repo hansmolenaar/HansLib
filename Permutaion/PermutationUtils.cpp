@@ -26,3 +26,15 @@ Permutation operator*(const Permutation& perm1, const Permutation& perm0)
    }
    return Permutation::Create(permut);
 }
+
+
+bool operator==(const Permutation& perm0, const Permutation& perm1)
+{
+   if (perm0.getCardinality() != perm1.getCardinality()) return false;
+   const auto siz = perm0.getCardinality();
+   for (auto n = 0; n < siz; ++n)
+   {
+      if (perm0(n) != perm1(n)) return false;
+   }
+   return true;
+}

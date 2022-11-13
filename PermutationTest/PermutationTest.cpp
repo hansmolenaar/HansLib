@@ -56,10 +56,6 @@ TEST(PermutaionTest, TetSymmetry)
    const Permutation permut1 = Permutation::CreateFromCycle(4, std::vector<int>{0, 1, 2});
    const auto permut = permut1 * permut0;
    const Permutation permut_cycle = Permutation::CreateFromCycle(4, std::vector<int>{0, 1, 2, 3});
-   ASSERT_EQ(permut.getCardinality(), permut_cycle.getCardinality());
-   for (auto n = 0; n < 4; ++n)
-   {
-      ASSERT_EQ(permut(n), permut_cycle(n));
-   }
+   ASSERT_TRUE(permut == permut_cycle);
 }
 
