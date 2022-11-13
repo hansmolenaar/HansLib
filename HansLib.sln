@@ -53,6 +53,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GeometryTest", "GeometryTes
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Permutaion", "Permutaion\Permutaion.vcxproj", "{10FD00D7-35CC-46AA-8D48-D13185970A12}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PermutationTest", "PermutationTest\PermutationTest.vcxproj", "{6361A748-964C-44C4-A081-21306ED3CE18}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -261,6 +263,14 @@ Global
 		{10FD00D7-35CC-46AA-8D48-D13185970A12}.Release|x64.Build.0 = Release|x64
 		{10FD00D7-35CC-46AA-8D48-D13185970A12}.Release|x86.ActiveCfg = Release|Win32
 		{10FD00D7-35CC-46AA-8D48-D13185970A12}.Release|x86.Build.0 = Release|Win32
+		{6361A748-964C-44C4-A081-21306ED3CE18}.Debug|x64.ActiveCfg = Debug|x64
+		{6361A748-964C-44C4-A081-21306ED3CE18}.Debug|x64.Build.0 = Debug|x64
+		{6361A748-964C-44C4-A081-21306ED3CE18}.Debug|x86.ActiveCfg = Debug|Win32
+		{6361A748-964C-44C4-A081-21306ED3CE18}.Debug|x86.Build.0 = Debug|Win32
+		{6361A748-964C-44C4-A081-21306ED3CE18}.Release|x64.ActiveCfg = Release|x64
+		{6361A748-964C-44C4-A081-21306ED3CE18}.Release|x64.Build.0 = Release|x64
+		{6361A748-964C-44C4-A081-21306ED3CE18}.Release|x86.ActiveCfg = Release|Win32
+		{6361A748-964C-44C4-A081-21306ED3CE18}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -15,15 +15,12 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="IPermutation.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TrivialPermutation.h">
+    <ClInclude Include="Permutation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="TrivialPermutation.cpp">
+    <ClCompile Include="Permutation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

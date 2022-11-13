@@ -143,11 +143,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="IPermutation.h" />
-    <ClInclude Include="TrivialPermutation.h" />
+    <ClInclude Include="Permutation.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="TrivialPermutation.cpp" />
+    <ClCompile Include="Permutation.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
