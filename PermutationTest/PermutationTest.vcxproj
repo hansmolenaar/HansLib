@@ -34,6 +34,7 @@
   <PropertyGroup Label="UserMacros" />
   <ItemGroup>
     <ClCompile Include="PermutationTest.cpp" />
+    <ClCompile Include="PermutationUtilsTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

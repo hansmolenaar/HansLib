@@ -18,9 +18,15 @@
     <ClInclude Include="Permutation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="PermutationUtils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Permutation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PermutationUtils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

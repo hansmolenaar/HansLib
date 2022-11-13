@@ -144,9 +144,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Permutation.h" />
+    <ClInclude Include="PermutationUtils.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Permutation.cpp" />
+    <ClCompile Include="PermutationUtils.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
