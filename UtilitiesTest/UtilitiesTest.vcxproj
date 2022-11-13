@@ -37,6 +37,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssertTest.cpp" />
+    <ClCompile Include="BoundsCheckTest.cpp" />
     <ClCompile Include="IndexerRowMajorTest.cpp" />
     <ClCompile Include="IndexerSymmetricTest.cpp" />
   </ItemGroup>

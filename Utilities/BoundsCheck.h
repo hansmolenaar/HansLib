@@ -1,0 +1,65 @@
+#pragma once
+
+#include "Utilities/Assert.h"
+
+template<typename T>
+class BoundsCheck
+{
+public:
+   static BoundsCheck<T> Create(T, T);
+   static BoundsCheck<T> CreateLowerBound( T);
+   static BoundsCheck<T> CreateUpperBound(T);
+   bool operator()(const T&) const;
+   void check(const T&) const;
+private:
+   BoundsCheck(bool, T, bool, T);
+   bool m_hasLb = true;
+   bool m_hasUb = true;
+   T m_lb;
+   T m_ub;
+
+};
+
+template<typename T>
+BoundsCheck<T> BoundsCheck<T>::Create(T lb, T ub)
+{
+   Utilities::Assert(lb <= ub);
+   return BoundsCheck(true, lb, true, ub);
+}
+
+
+template<typename T>
+BoundsCheck<T> BoundsCheck<T>::CreateLowerBound(T bound)
+{
+   return BoundsCheck(true, bound, false, bound);
+}
+
+
+template<typename T>
+BoundsCheck<T> BoundsCheck<T>::CreateUpperBound(T bound)
+{
+   return BoundsCheck(false, bound, true, bound);
+}
+
+template<typename T>
+bool BoundsCheck<T>::operator()(const T& val)const
+{
+   if (m_hasLb && val < m_lb) return false;
+   if (m_hasUb && val > m_ub) return false;
+   return true;
+}
+
+template<typename T>
+BoundsCheck<T>::BoundsCheck(bool hasLb, T lb, bool hasUb, T ub) :
+   m_hasLb(hasLb),
+   m_hasUb(hasUb),
+   m_lb(std::move(lb)),
+   m_ub(std::move(ub))
+{}
+
+
+template<typename T>
+void BoundsCheck<T>::check(const T& value) const
+{
+   Utilities::Assert((*this)(value), "Bounds violation");
+}

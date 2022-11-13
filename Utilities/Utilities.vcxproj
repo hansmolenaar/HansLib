@@ -144,6 +144,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Assert.h" />
+    <ClInclude Include="BoundsCheck.h" />
     <ClInclude Include="Defines.h" />
     <ClInclude Include="EigenValueSolverSym2x2.h" />
     <ClInclude Include="EigenValueSolverSym3x3.h" />
