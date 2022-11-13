@@ -3,7 +3,7 @@
 #include "MatrixVector/MatrixDense.h"
 #include "Functions/SingleVariableRealValuedFunction.h"
 #include "Functions/ISingleVariableRealValuedFunctionUtils.h"
-#include "Utilities/MessageHandler.h"
+#include "Utilities/Assert.h"
 #include "Functions/MultiVariableRealValuedFunction.h"
 #include "Functions/RealFunctionAdd.h"
 #include "MatrixVector/IMatrixUtils.h"
@@ -13,7 +13,7 @@
 int GetDimension(const IRealFunction& fie)
 {
 	const int result = fie.GetDomainDimension();
-	MessageHandler::Assert(result == fie.GetRangeDimension());
+	Utilities::Assert(result == fie.GetRangeDimension());
 	return result;
 }
 
@@ -42,8 +42,8 @@ void CheckDerivatives(const IRealFunction& system, std::span< const double> x, s
 {
 	const int numEqn = system.GetRangeDimension();
 	const int numVar = system.GetDomainDimension();
-	MessageHandler::Assert(x.size() == numVar);
-	MessageHandler::Assert(delx.size() == numVar);
+	Utilities::Assert(x.size() == numVar);
+	Utilities::Assert(delx.size() == numVar);
 	std::vector<double> y(numEqn);
 	MatrixDense jacobian(numEqn, numVar);
 	for (int eqn = 0; eqn < numEqn; ++eqn)
@@ -55,7 +55,7 @@ void CheckDerivatives(const IRealFunction& system, std::span< const double> x, s
 			{
 				SetAll(jacobian, 1.0);
 				system.Derivative(vals, jacobian);
-				MessageHandler::Assert(jacobian(eqn, var) == 0.0);
+				Utilities::Assert(jacobian(eqn, var) == 0.0);
 			}
 			else
 			{
@@ -72,8 +72,8 @@ void CheckDerivatives(const IRealFunction& system, std::span< const double> x, s
 
 void CheckIndices(const IRealFunction& fie, int eqn, int var)
 {
-	MessageHandler::Assert(eqn >= 0 && eqn < fie.GetRangeDimension());
-	MessageHandler::Assert(var >= 0 && var < fie.GetDomainDimension());
+	Utilities::Assert(eqn >= 0 && eqn < fie.GetRangeDimension());
+	Utilities::Assert(var >= 0 && var < fie.GetDomainDimension());
 }
 
 

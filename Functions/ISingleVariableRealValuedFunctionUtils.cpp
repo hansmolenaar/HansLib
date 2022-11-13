@@ -38,7 +38,7 @@ void CheckDerivative(ISingleVariableRealValuedFunction& fie, double x, double de
       NonLinearSolverStrategyResidualReduction strategy(NonLinearSolverConvergenceCriteria(reduction, maxIter));
       std::array<double, 1> sol = { x + delx };
       NonLinearSolverStatus status = NonLinearSolver(fie).Solve(rhs, sol, strategy);
-      MessageHandler::Assert(status == NonLinearSolverStatus::Converged, "Problem with derivative! ");
+      Utilities::Assert(status == NonLinearSolverStatus::Converged, "Problem with derivative! ");
    }
 }
 

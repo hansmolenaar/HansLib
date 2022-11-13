@@ -36,6 +36,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AssertTest.cpp" />
     <ClCompile Include="IndexerRowMajorTest.cpp" />
     <ClCompile Include="IndexerSymmetricTest.cpp" />
   </ItemGroup>

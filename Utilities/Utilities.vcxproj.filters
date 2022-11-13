@@ -33,9 +33,6 @@
     <ClInclude Include="MathConstants.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MessageHandler.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Plotting.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -43,6 +40,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ToString.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Assert.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MyException.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -56,10 +59,10 @@
     <ClCompile Include="IndexerSymmetric.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MessageHandler.cpp">
+    <ClCompile Include="Plotting.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Plotting.cpp">
+    <ClCompile Include="Assert.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

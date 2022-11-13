@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Utilities/MessageHandler.h"
+#include "Utilities/Assert.h"
 
 class IMatrix
 {
@@ -21,8 +21,8 @@ void IMatrix::CopyFrom(const IMatrix& other)
    if (this != &other) { // self-assignment check expected
       const int nRows = GetRowDimension();
       const int nCols = GetColDimension();
-      MessageHandler::Assert(other.GetRowDimension() == nRows);
-      MessageHandler::Assert(other.GetColDimension() == nCols);
+      Utilities::Assert(other.GetRowDimension() == nRows);
+      Utilities::Assert(other.GetColDimension() == nCols);
       for (int r = 0; r < nRows; ++r)
       {
          for (int c = 0; c < nCols; ++c)

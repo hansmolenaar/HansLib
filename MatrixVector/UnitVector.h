@@ -2,7 +2,7 @@
 
 
 #include "IVector.h"
-#include "Utilities/MessageHandler.h"
+#include "Utilities/Assert.h"
 
 #include <array>
 #include <memory>
@@ -67,7 +67,7 @@ template<int Dimension>
 std::unique_ptr<UnitVector<Dimension>> UnitVector<Dimension>::TryCreate(std::span<const double> vec)
 {
    std::unique_ptr<UnitVector<Dimension>> result;
-   MessageHandler::Assert(vec.size() == Dimension);
+   Utilities::Assert(vec.size() == Dimension);
    const double nrm2 = std::inner_product(vec.begin(), vec.end(), vec.begin(), 0.0);
    const double nrm = std::sqrt(nrm2);
 

@@ -1,6 +1,6 @@
 #include "CyclicGroup.h"
 
-#include "Utilities/MessageHandler.h"
+#include "Utilities/Assert.h"
 #include "IFiniteGroupUtils.h"
 
 std::unique_ptr<CyclicGroup> CyclicGroup::Create(int order)
@@ -11,7 +11,7 @@ std::unique_ptr<CyclicGroup> CyclicGroup::Create(int order)
 
 CyclicGroup::CyclicGroup(int order) : m_order(order)
 {
-   MessageHandler::Assert(m_order > 0);
+   Utilities::Assert(m_order > 0);
 }
 
 int CyclicGroup::getOrder() const

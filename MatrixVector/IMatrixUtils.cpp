@@ -1,21 +1,21 @@
 #include "MatrixVector/IMatrixUtils.h"
 
 #include "MatrixVector/IMatrix.h"
-#include "Utilities/MessageHandler.h"
+#include "Utilities/Assert.h"
 
 #include <span>
 
 void CheckDimensions(const IMatrix& matrix)
 {
-	MessageHandler::Assert(matrix.GetRowDimension() >= 0);
-	MessageHandler::Assert(matrix.GetColDimension() >= 0);
+	Utilities::Assert(matrix.GetRowDimension() >= 0);
+	Utilities::Assert(matrix.GetColDimension() >= 0);
 }
 
 
 void CheckRowCol(const IMatrix& matrix, int row, int col)
 {
-	MessageHandler::Assert(row >= 0 && row < matrix.GetRowDimension()); 
-	MessageHandler::Assert(col >= 0 && col < matrix.GetColDimension());
+	Utilities::Assert(row >= 0 && row < matrix.GetRowDimension()); 
+	Utilities::Assert(col >= 0 && col < matrix.GetColDimension());
 }
 
 IMatrix& operator*=(IMatrix& matrix, double factor)
@@ -32,8 +32,8 @@ IMatrix& operator*=(IMatrix& matrix, double factor)
 
 IMatrix& operator+=(IMatrix& matrix, const IMatrix& matrixToAdd)
 {
-	MessageHandler::Assert(matrix.GetRowDimension() == matrixToAdd.GetRowDimension());
-	MessageHandler::Assert(matrix.GetColDimension() == matrixToAdd.GetColDimension());
+	Utilities::Assert(matrix.GetRowDimension() == matrixToAdd.GetRowDimension());
+	Utilities::Assert(matrix.GetColDimension() == matrixToAdd.GetColDimension());
 
 	for (int row = 0; row < matrix.GetRowDimension(); ++row)
 	{
@@ -66,8 +66,8 @@ void Clear(IMatrix& matrix)
 
 void MatrixTimesVector(const IMatrix& matrix, std::span<const double> vecin, std::span<double> vecout)
 {
-   MessageHandler::Assert(matrix.GetRowDimension() == vecout.size());
-   MessageHandler::Assert(matrix.GetColDimension() == vecin.size());
+   Utilities::Assert(matrix.GetRowDimension() == vecout.size());
+   Utilities::Assert(matrix.GetColDimension() == vecin.size());
    for (int row = 0; row < matrix.GetRowDimension(); ++row)
    {
       double sum = 0;
@@ -83,9 +83,9 @@ void MatrixTimesVector(const IMatrix& matrix, std::span<const double> vecin, std
 // mat3 = mat1*mat2
 void MatrixTimesMatrix(const IMatrix& mat1, const IMatrix& mat2, IMatrix& mat3)
 {
-   MessageHandler::Assert(mat1.GetRowDimension() == mat3.GetRowDimension());
-   MessageHandler::Assert(mat2.GetColDimension() == mat3.GetColDimension());
-   MessageHandler::Assert(mat1.GetColDimension() == mat2.GetRowDimension());
+   Utilities::Assert(mat1.GetRowDimension() == mat3.GetRowDimension());
+   Utilities::Assert(mat2.GetColDimension() == mat3.GetColDimension());
+   Utilities::Assert(mat1.GetColDimension() == mat2.GetRowDimension());
    for (int row = 0; row < mat1.GetRowDimension(); ++row)
    {
       for (int col = 0; col < mat2.GetColDimension(); ++col)

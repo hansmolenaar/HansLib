@@ -1,5 +1,5 @@
 #include "Utilities/Plotting.h"
-#include "Utilities/MessageHandler.h"
+#include "Utilities/Assert.h"
 
 #include <vector>
 #include <vector>
@@ -7,8 +7,8 @@
 
 std::string Plotting::PlotFunction(std::initializer_list< std::function<double(double)> > functions, double xmin, double xmax, int  nsteps)
 {
-   MessageHandler::Assert(nsteps > 1);
-   MessageHandler::Assert(xmax > xmin);
+   Utilities::Assert(nsteps > 1);
+   Utilities::Assert(xmax > xmin);
    std::ostringstream result;
 
    std::vector<std::function<double(double)> > fies(functions.begin(), functions.end());

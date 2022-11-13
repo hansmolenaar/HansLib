@@ -1,7 +1,4 @@
 #include "Functions/SingleVariablePolynomial.h"
-#include "Utilities/MessageHandler.h"
-
-
 
 
 void SingleVariablePolynomial::Add(double coef, SingleVariableMonomial monomial)

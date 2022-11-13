@@ -143,6 +143,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Assert.h" />
     <ClInclude Include="Defines.h" />
     <ClInclude Include="EigenValueSolverSym2x2.h" />
     <ClInclude Include="EigenValueSolverSym3x3.h" />
@@ -150,15 +151,15 @@
     <ClInclude Include="IndexerRowMajor.h" />
     <ClInclude Include="IndexerSymmetric.h" />
     <ClInclude Include="MathConstants.h" />
-    <ClInclude Include="MessageHandler.h" />
+    <ClInclude Include="MyException.h" />
     <ClInclude Include="Plotting.h" />
     <ClInclude Include="ToString.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Assert.cpp" />
     <ClCompile Include="EigenValueSolverSym2x2.cpp" />
     <ClCompile Include="EigenValueSolverSym3x3.cpp" />
     <ClCompile Include="IndexerSymmetric.cpp" />
-    <ClCompile Include="MessageHandler.cpp" />
     <ClCompile Include="Plotting.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

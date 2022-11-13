@@ -1,11 +1,11 @@
 #include "LagrangeInterpolation.h"
-#include "Utilities/MessageHandler.h"
+#include "Utilities/Assert.h"
 
 LagrangeInterpolation::LagrangeInterpolation(std::span<const double>x, std::span<const double>y) :
    m_xvals(x.begin(), x.end()), m_yvals(y.begin(), y.end())
 {
-   MessageHandler::Assert(m_xvals.size() == m_yvals.size());
-   MessageHandler::Assert(m_xvals.size() > 1);
+   Utilities::Assert(m_xvals.size() == m_yvals.size());
+   Utilities::Assert(m_xvals.size() > 1);
 }
 
 bool  LagrangeInterpolation::HasDerivative() const
@@ -38,7 +38,7 @@ double  LagrangeInterpolation::Evaluate(double x) const
 
 double LagrangeInterpolation::Derivative(double x) const
 {
-   MessageHandler::Assert(false, " LagrangeInterpolation::Derivative not implemented");
+   Utilities::Assert(false, " LagrangeInterpolation::Derivative not implemented");
    return {};
 }
 

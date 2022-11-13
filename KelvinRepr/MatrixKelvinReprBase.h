@@ -2,7 +2,7 @@
 
 #include "IMatrixKelvinRepr.h"
 #include "Utilities/IndexerSymmetric.h"
-#include "Utilities/MessageHandler.h"
+#include "Utilities/Assert.h"
 #include "Utilities/MathConstants.h"
 
 #include <array>

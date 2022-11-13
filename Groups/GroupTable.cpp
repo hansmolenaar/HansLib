@@ -1,5 +1,5 @@
 #include "GroupTable.h"
-#include "Utilities/MessageHandler.h"
+#include "Utilities/Assert.h"
 #include "Utilities/ToString.h"
 #include "IFiniteGroupUtils.h"
 
@@ -18,7 +18,7 @@ GroupTable::GroupTable(std::unique_ptr<IIndexer<GroupElement>>& indexer, const s
    m_order = static_cast<int>(std::round(std::sqrt(m_table.size())));
    if (m_order * m_order != m_table.size())
    {
-      MessageHandler::Error("GroupTable::GroupTable() size incorrect: " + ToString(m_table.size()));
+      throw MyException("GroupTable::GroupTable() size incorrect: " + ToString(m_table.size()));
    }
 
    for (GroupElement elm = 0; elm < m_order; ++elm)
@@ -30,7 +30,7 @@ GroupTable::GroupTable(std::unique_ptr<IIndexer<GroupElement>>& indexer, const s
    }
    if (m_identity == -1)
    {
-      MessageHandler::Error("GroupTable::GroupTable no identity");
+      throw MyException("GroupTable::GroupTable no identity");
    }
 
    m_inverse = std::vector<GroupElement>(m_order, -1);

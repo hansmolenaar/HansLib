@@ -1,6 +1,6 @@
 #include "MatrixVector/IdentityMatrix.h"
 
-#include "Utilities/MessageHandler.h"
+#include "Utilities/Assert.h"
 #include "MatrixVector/IMatrixUtils.h"
 
 #include <map>
@@ -9,7 +9,7 @@
 IdentityMatrix::IdentityMatrix(int dim) :
 	m_dimension(dim)
 {
-	MessageHandler::Assert(m_dimension > 0);
+	Utilities::Assert(m_dimension > 0);
 }
 
 const IdentityMatrix& IdentityMatrix::GetInstance(int dim)

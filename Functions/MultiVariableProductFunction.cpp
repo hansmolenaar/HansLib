@@ -1,5 +1,5 @@
 #include "Functions/MultiVariableProductFunction.h"
-#include "Utilities/MessageHandler.h"
+#include "Utilities/Assert.h"
 
 #include <algorithm>
 
@@ -9,7 +9,7 @@ MultiVariableProductFunction::MultiVariableProductFunction(std::initializer_list
 	m_dim = (*m_functions.begin())->GetDomainDimension();
 	for (auto f : m_functions)
 	{
-		MessageHandler::Assert(f->GetDomainDimension() == m_dim);
+		Utilities::Assert(f->GetDomainDimension() == m_dim);
 	}
 }
 
@@ -32,7 +32,7 @@ bool MultiVariableProductFunction::DerivativeAlwaysZero(int var) const
 
 double MultiVariableProductFunction::Evaluate(std::span<const double>x) const
 {
-	MessageHandler::Assert(x.size() == m_dim);
+	Utilities::Assert(x.size() == m_dim);
 	double result = 1.0;
 	for (const auto fie : m_functions)
 	{
@@ -44,8 +44,8 @@ double MultiVariableProductFunction::Evaluate(std::span<const double>x) const
 
 void MultiVariableProductFunction::Derivative(std::span<const double>x, std::span< double> dfdx)const
 {
-	MessageHandler::Assert(x.size() == m_dim);
-	MessageHandler::Assert(dfdx.size() == m_dim);
+	Utilities::Assert(x.size() == m_dim);
+	Utilities::Assert(dfdx.size() == m_dim);
 
 	std::vector<double> evals(m_functions.size());
 	for (auto n = 0; n < m_functions.size(); ++n)

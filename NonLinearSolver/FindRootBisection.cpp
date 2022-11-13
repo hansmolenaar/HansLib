@@ -3,7 +3,7 @@
 #include "Functions/ISingleVariableRealValuedFunction.h"
 #include "NonLinearSolver/INonLinearSolverStrategy.h"
 #include "Functions/ISingleVariableRealValuedFunctionUtils.h"
-#include "Utilities/MessageHandler.h"
+#include "Utilities/Assert.h"
 
 NonLinearSolverStatus FindRootBisection::FindInInterval(ISingleVariableRealValuedFunction& fie, double xmin, double xmax, INonLinearSolverStrategy& strategy, double& result)
 {
@@ -16,8 +16,8 @@ NonLinearSolverStatus FindRootBisection::FindInInterval(ISingleVariableRealValue
       return FindInInterval(fie, xmax, xmin, strategy, result);
    }
 
-   MessageHandler::Assert(fmin <= 0.0);
-   MessageHandler::Assert(fmax >= 0.0);
+   Utilities::Assert(fmin <= 0.0);
+   Utilities::Assert(fmax >= 0.0);
 
    int iter = 0;
    double rsd = (std::abs(fmin) + std::abs(fmax)) / 2;

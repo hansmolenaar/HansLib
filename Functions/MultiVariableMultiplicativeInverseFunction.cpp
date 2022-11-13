@@ -1,5 +1,5 @@
 #include "Functions/MultiVariableMultiplicativeInverseFunction.h"
-#include "Utilities/MessageHandler.h"
+#include "Utilities/Assert.h"
 
 #include <algorithm>
 
@@ -27,7 +27,7 @@ bool MultiVariableMultiplicativeInverseFunction::DerivativeAlwaysZero(int var) c
 double MultiVariableMultiplicativeInverseFunction::Evaluate(std::span<const double>x) const
 {
 	double fie = m_function.Evaluate(x);
-	MessageHandler::Assert(fie != 0.0);
+	Utilities::Assert(fie != 0.0);
 	return 1 / fie;
 }
 
@@ -45,7 +45,7 @@ void MultiVariableMultiplicativeInverseFunction::Derivative(std::span<const doub
 		}
 		else
 		{
-			MessageHandler::Assert(eval2 != 0.0);
+			Utilities::Assert(eval2 != 0.0);
 			dfdx[var] = -dfdx[var] / eval2;
 		}
 	}

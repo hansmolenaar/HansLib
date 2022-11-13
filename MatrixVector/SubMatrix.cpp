@@ -1,5 +1,5 @@
 #include "MatrixVector/SubMatrix.h"
-#include "Utilities/MessageHandler.h"
+#include "Utilities/Assert.h"
 
 #include "MatrixVector/IMatrixUtils.h"
 
@@ -9,10 +9,10 @@ SubMatrix::SubMatrix(IMatrix& matrix, int dimRow, int dimCol, int ofsetRow, int 
 	m_matrix(matrix), m_ofset({ ofsetRow, ofsetCol }), m_dimension({ dimRow, dimCol })
 {
 	CheckDimensions(*this);
-	MessageHandler::Assert(ofsetRow >= 0);
-	MessageHandler::Assert(ofsetCol >= 0);
-	MessageHandler::Assert(dimRow + ofsetRow <= matrix.GetRowDimension());
-	MessageHandler::Assert(dimCol + ofsetCol <= matrix.GetColDimension());
+	Utilities::Assert(ofsetRow >= 0);
+	Utilities::Assert(ofsetCol >= 0);
+	Utilities::Assert(dimRow + ofsetRow <= matrix.GetRowDimension());
+	Utilities::Assert(dimCol + ofsetCol <= matrix.GetColDimension());
 }
 
 

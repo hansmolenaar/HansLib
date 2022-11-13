@@ -3,7 +3,6 @@
 #include "IRealFunction.h"
 #include "MatrixVector/IMatrix.h"
 #include <span>
-#include "Utilities/MessageHandler.h"
 
 
 class IMultiVariableRealValuedFunction : public IRealFunction

@@ -1,8 +1,4 @@
 #include "Functions/SingleVariableRealValuedFunction.h"
-#include "Utilities/MessageHandler.h"
-
-
-
 
 SingleVariableRealValuedFunction::SingleVariableRealValuedFunction(
 	std::function<double(double)> function,

@@ -3,7 +3,7 @@
 #include "NonLinearSolver/INonLinearSolverStrategy.h"
 #include "Functions/IRealFunction.h"
 #include "Functions/IRealFunctionUtils.h"
-#include "Utilities/MessageHandler.h"
+#include "Utilities/Assert.h"
 
 #include <algorithm>
 #include <vector>
@@ -12,14 +12,14 @@
 NonLinearSolver::NonLinearSolver(IRealFunction& problem) :
 	m_problem(problem)
 {
-	MessageHandler::Assert(problem.GetRangeDimension() == problem.GetDomainDimension());
+	Utilities::Assert(problem.GetRangeDimension() == problem.GetDomainDimension());
 }
 
 NonLinearSolverStatus NonLinearSolver::Solve(std::span< const double> fx, std::span<  double>x, INonLinearSolverStrategy& strategy)
 {
 	const auto dim = fx.size();
-	MessageHandler::Assert(x.size() == dim);
-	MessageHandler::Assert(GetDimension(m_problem) == dim);
+	Utilities::Assert(x.size() == dim);
+	Utilities::Assert(GetDimension(m_problem) == dim);
 	
 	std::vector<double> rsd(dim);
 	std::vector<double> cor(dim);

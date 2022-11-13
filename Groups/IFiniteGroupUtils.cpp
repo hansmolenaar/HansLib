@@ -1,12 +1,12 @@
 #include "Utilities/Defines.h"
-#include "Utilities/MessageHandler.h"
+#include "Utilities/Assert.h"
 #include "IFiniteGroupUtils.h"
 #include "IFiniteGroup.h"
 
 void IFiniteGroupUtils::CheckValid(const IFiniteGroup& group, GroupElement elm)
 {
-   MessageHandler::Assert(elm >= 0);
-   MessageHandler::Assert(elm < group.getOrder());
+   Utilities::Assert(elm >= 0);
+   Utilities::Assert(elm < group.getOrder());
 }
 
 std::vector<GroupElement> IFiniteGroupUtils::GetElements(const IFiniteGroup& group)
@@ -23,7 +23,7 @@ std::vector<GroupElement> IFiniteGroupUtils::GetElements(const IFiniteGroup& gro
 void IFiniteGroupUtils::CheckGroupAxioms(const IFiniteGroup& group)
 {
    const int order = group.getOrder();
-   MessageHandler::Assert(order > 0);
+   Utilities::Assert(order > 0);
 
    const auto& elements = GetElements(group);
 
@@ -41,16 +41,16 @@ void IFiniteGroupUtils::CheckGroupAxioms(const IFiniteGroup& group)
    const auto identity = group.getIdentity();
    for (auto n : elements)
    {
-      MessageHandler::Assert(group(identity, n) == n);
-      MessageHandler::Assert(group(n, identity) == n);
+      Utilities::Assert(group(identity, n) == n);
+      Utilities::Assert(group(n, identity) == n);
    }
 
    // inverse
    for (auto n : elements)
    {
       const auto inverse = group.getInverse(n);
-      MessageHandler::Assert(group(inverse, n) == identity);
-      MessageHandler::Assert(group(n, inverse) == identity);
+      Utilities::Assert(group(inverse, n) == identity);
+      Utilities::Assert(group(n, inverse) == identity);
    }
 
    // Associativity, should inplement Light's algorithm
@@ -62,7 +62,7 @@ void IFiniteGroupUtils::CheckGroupAxioms(const IFiniteGroup& group)
          {
             const auto res1 = group(group(n0, n1), n2);
             const auto res2 = group(n0, group(n1, n2));
-            MessageHandler::Assert(res1 == res2);
+            Utilities::Assert(res1 == res2);
          }
       }
    }

@@ -1,6 +1,5 @@
 #include "MatrixVector/MatrixRotation2D.h"
 #include "MatrixVector/IMatrixUtils.h"
-#include "Utilities/MessageHandler.h"
 
 #include <cmath>
 

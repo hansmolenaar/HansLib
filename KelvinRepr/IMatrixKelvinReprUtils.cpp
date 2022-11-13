@@ -1,7 +1,7 @@
 #include "IMatrixKelvinReprUtils.h"
 
 #include "IMatrixKelvinRepr.h"
-#include "Utilities/MessageHandler.h"
+#include "Utilities/Assert.h"
 
 
 void SetAll(IMatrixKelvinRepr& matrix, double value)
@@ -54,8 +54,8 @@ IMatrixKelvinRepr& operator+=(IMatrixKelvinRepr& matrix, const IMatrixKelvinRepr
 void IMatrixRotation::RotateTensor(const IMatrixKelvinRepr& tin, IMatrixKelvinRepr& tout) const
 {
    const int dim = GetDimension();
-   MessageHandler::Assert(tin.GetDimension() == dim);
-   MessageHandler::Assert(tout.GetDimension() == dim);
+   Utilities::Assert(tin.GetDimension() == dim);
+   Utilities::Assert(tout.GetDimension() == dim);
    for (int row = 0; row < dim; ++row)
    {
       for (int col = row; col < dim; ++col)
