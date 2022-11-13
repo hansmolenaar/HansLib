@@ -51,6 +51,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Geometry", "Geometry\Geomet
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GeometryTest", "GeometryTest\GeometryTest.vcxproj", "{8644AB91-1C3C-440A-97F4-8A87E38AB47E}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Permutaion", "Permutaion\Permutaion.vcxproj", "{10FD00D7-35CC-46AA-8D48-D13185970A12}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -251,6 +253,14 @@ Global
 		{8644AB91-1C3C-440A-97F4-8A87E38AB47E}.Release|x64.Build.0 = Release|x64
 		{8644AB91-1C3C-440A-97F4-8A87E38AB47E}.Release|x86.ActiveCfg = Release|Win32
 		{8644AB91-1C3C-440A-97F4-8A87E38AB47E}.Release|x86.Build.0 = Release|Win32
+		{10FD00D7-35CC-46AA-8D48-D13185970A12}.Debug|x64.ActiveCfg = Debug|x64
+		{10FD00D7-35CC-46AA-8D48-D13185970A12}.Debug|x64.Build.0 = Debug|x64
+		{10FD00D7-35CC-46AA-8D48-D13185970A12}.Debug|x86.ActiveCfg = Debug|Win32
+		{10FD00D7-35CC-46AA-8D48-D13185970A12}.Debug|x86.Build.0 = Debug|Win32
+		{10FD00D7-35CC-46AA-8D48-D13185970A12}.Release|x64.ActiveCfg = Release|x64
+		{10FD00D7-35CC-46AA-8D48-D13185970A12}.Release|x64.Build.0 = Release|x64
+		{10FD00D7-35CC-46AA-8D48-D13185970A12}.Release|x86.ActiveCfg = Release|Win32
+		{10FD00D7-35CC-46AA-8D48-D13185970A12}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
