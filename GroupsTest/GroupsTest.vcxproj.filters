@@ -30,6 +30,9 @@
     <ClCompile Include="FinitePointGroupOrbitTest.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
+    <ClCompile Include="GroupFromOrbitTest.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IFinitePointGroupActionTest.h" />

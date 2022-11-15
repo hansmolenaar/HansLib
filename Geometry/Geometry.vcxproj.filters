@@ -36,6 +36,9 @@
     <ClInclude Include="PointClose.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="PointTransformationIdentity.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Rotate2D.cpp">

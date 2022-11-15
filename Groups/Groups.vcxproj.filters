@@ -74,5 +74,8 @@
     <ClInclude Include="FinitePointGroupOrbit.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="GroupFromOrbit.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

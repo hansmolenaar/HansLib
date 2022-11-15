@@ -149,6 +149,7 @@
     <ClInclude Include="IUniquePointCollection.h" />
     <ClInclude Include="PointClose.h" />
     <ClInclude Include="Rotate2D.h" />
+    <ClInclude Include="PointTransformationIdentity.h" />
     <ClInclude Include="UnitVector.h" />
   </ItemGroup>
   <ItemGroup>
