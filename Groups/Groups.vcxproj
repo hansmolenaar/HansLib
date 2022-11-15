@@ -162,6 +162,7 @@
     <ClInclude Include="ActionRotate2D.h" />
     <ClInclude Include="CyclicGroup.h" />
     <ClInclude Include="DihedralGroup.h" />
+    <ClInclude Include="FinitePointGroupOrbit.h" />
     <ClInclude Include="GroupDefines.h" />
     <ClInclude Include="GroupTable.h" />
     <ClInclude Include="IFiniteGroup.h" />

@@ -144,7 +144,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\Point\Point.h" />
-    <ClInclude Include="..\Point\PointClose.h" />
+    <ClInclude Include="IPointCollection.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="PointDummy.cpp" />

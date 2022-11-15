@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "Geometry/UnitVector.h"
-#include "Point/PointClose.h"
+#include "Geometry/PointClose.h"
 
 #include <numeric>
 

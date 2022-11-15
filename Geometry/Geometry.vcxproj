@@ -143,8 +143,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\Point\PointClose.h" />
     <ClInclude Include="Hyperplane.h" />
+    <ClInclude Include="IGeometryPredicate.h" />
     <ClInclude Include="IPointTransformation.h" />
+    <ClInclude Include="IUniquePointCollection.h" />
     <ClInclude Include="Rotate2D.h" />
     <ClInclude Include="UnitVector.h" />
   </ItemGroup>

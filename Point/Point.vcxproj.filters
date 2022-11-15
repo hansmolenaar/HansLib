@@ -18,7 +18,7 @@
     <ClInclude Include="..\Point\Point.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Point\PointClose.h">
+    <ClInclude Include="IPointCollection.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

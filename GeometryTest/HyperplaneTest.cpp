@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "Geometry/Hyperplane.h"
-#include "Point/PointClose.h"
+#include "Geometry/PointClose.h"
 
 
 namespace

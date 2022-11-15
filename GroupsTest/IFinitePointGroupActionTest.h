@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Groups/IFinitePointGroupAction.h"
-#include "Point//PointClose.h"
+#include "Geometry//PointClose.h"
 #include "Groups/IFiniteGroupUtils.h"
 
 #include <numbers>

@@ -27,6 +27,15 @@
     <ClInclude Include="Hyperplane.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="IGeometryPredicate.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Point\PointClose.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IUniquePointCollection.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Rotate2D.cpp">

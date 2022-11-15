@@ -2,7 +2,7 @@
 
 #include "Groups/ActionRotate2D.h"
 #include "IFinitePointGroupActionTest.h"
-#include "Point//PointClose.h"
+#include "Geometry//PointClose.h"
 
 TEST(ActionRotate2DTest, Interface)
 {

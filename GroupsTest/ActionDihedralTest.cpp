@@ -2,7 +2,7 @@
 
 #include "Groups/ActionDihedral.h"
 #include "IFinitePointGroupActionTest.h"
-#include "Point//PointClose.h"
+#include "Geometry//PointClose.h"
 #include "Groups/IFinitePointGroupActionUtils.h"
 
 TEST(ActionDihedralTest, Two)

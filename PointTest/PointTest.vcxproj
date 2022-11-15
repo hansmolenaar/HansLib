@@ -34,7 +34,6 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <ItemGroup>
-    <ClCompile Include="..\GeometryTest\PointCloseTest.cpp" />
     <ClCompile Include="..\GeometryTest\PointTest.cpp" />
   </ItemGroup>
   <ItemGroup>
