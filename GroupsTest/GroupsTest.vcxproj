@@ -52,6 +52,7 @@
     <ClCompile Include="ActionRotate2DTest.cpp" />
     <ClCompile Include="CyclicGourpTest.cpp" />
     <ClCompile Include="DihedralGroupTest.cpp" />
+    <ClCompile Include="FinitePointGroupOrbitTest.cpp" />
     <ClCompile Include="GroupTableTest.cpp" />
   </ItemGroup>
   <ItemGroup>

@@ -30,10 +30,10 @@
     <ClInclude Include="IGeometryPredicate.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Point\PointClose.h">
+    <ClInclude Include="IUniquePointCollection.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="IUniquePointCollection.h">
+    <ClInclude Include="PointClose.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
