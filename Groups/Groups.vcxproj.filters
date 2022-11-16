@@ -36,6 +36,9 @@
     <ClCompile Include="ActionDihedral.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="SameFiniteGroupPredicate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IFiniteGroup.h">
@@ -75,6 +78,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GroupFromOrbit.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SameFiniteGroupPredicate.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PointTransformationFromGroupAction.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

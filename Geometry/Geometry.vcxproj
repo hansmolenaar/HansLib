@@ -150,6 +150,7 @@
     <ClInclude Include="PointClose.h" />
     <ClInclude Include="Rotate2D.h" />
     <ClInclude Include="PointTransformationIdentity.h" />
+    <ClInclude Include="SamePointPredicate.h" />
     <ClInclude Include="UnitVector.h" />
   </ItemGroup>
   <ItemGroup>

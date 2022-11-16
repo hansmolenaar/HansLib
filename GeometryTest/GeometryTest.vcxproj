@@ -39,6 +39,7 @@
     <ClCompile Include="HyperplaneTest.cpp" />
     <ClCompile Include="PointCloseTest.cpp" />
     <ClCompile Include="Rotate2DTest.cpp" />
+    <ClCompile Include="SamePointPredicateTest.cpp" />
     <ClCompile Include="UnitVectorTest.cpp" />
   </ItemGroup>
   <ItemGroup>

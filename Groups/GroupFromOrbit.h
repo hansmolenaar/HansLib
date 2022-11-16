@@ -6,6 +6,7 @@
 #include "Geometry/IGeometryPredicate.h"
 #include "Utilities/IndexerRowMajor.h"
 #include "Groups/GroupTable.h"
+#include "Geometry/SamePointPredicate.h"
 
 namespace GroupFromOrbit
 {
@@ -24,25 +25,25 @@ std::unique_ptr<IFiniteGroup> GroupFromOrbit::Create<N>(
    for (const auto& t : transformations)
    {
       const auto image = (*t)(trialPoint);
-      auto finder = [&image, &predicate](const Point<double, N>& p) { return predicate.SamePoints(image, p); };
+      const SamePointPredicate<double, N> finder{predicate, image};
       if (std::find_if(orbit.begin(), orbit.end(), finder) != orbit.end()) return {};
       orbit.push_back(image);
    }
 
-  
+
    const int groupSize = static_cast<int>(transformations.size());
    std::unique_ptr<IIndexer<GroupElement>> indexer = std::make_unique<IndexerRowMajor<int>>(groupSize, groupSize);
-   std::vector< GroupElement> elements(groupSize*groupSize, -1);
+   std::vector< GroupElement> elements(groupSize * groupSize, -1);
    for (int g0 = 0; g0 < groupSize; ++g0)
    {
       for (int g1 = 0; g1 < groupSize; ++g1)
       {
          const auto image = (*transformations.at(g0))(orbit.at(g1));
-         auto finder = [&image, &predicate](const Point<double, N>& p) { return predicate.SamePoints(image, p); };
+         const SamePointPredicate<double, N> finder{ predicate, image };
          const auto found = std::find_if(orbit.begin(), orbit.end(), finder);
          if (found == orbit.end()) return {};
          const int g = static_cast<int>(std::distance(orbit.begin(), found));
-         const int pos = indexer->ToFlat({g0,g1}); // TODO check order!
+         const int pos = indexer->ToFlat({ g0,g1 }); // TODO check order!
          elements.at(pos) = g;
       }
    }

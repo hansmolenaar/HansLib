@@ -33,6 +33,12 @@
     <ClCompile Include="GroupFromOrbitTest.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
+    <ClCompile Include="SameFiniteGroupPredicateTest.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
+    <ClCompile Include="PointTransformationFromGroupActionTest.cpp">
+      <Filter>Source files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="IFinitePointGroupActionTest.h" />

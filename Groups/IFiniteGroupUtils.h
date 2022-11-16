@@ -1,6 +1,7 @@
 #pragma once
 
 #include "GroupDefines.h"
+#include <vector>
 
 class IFiniteGroup;
 

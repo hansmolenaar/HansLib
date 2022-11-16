@@ -3,6 +3,8 @@
 #include "Groups/FinitePointGroupOrbit.h"
 #include "Groups/ActionReflect1D.h"
 #include "Geometry/PointClose.h"
+#include "Groups/DihedralGroup.h"
+#include "Groups/ActionDihedral.h"
 
 TEST(FinitePointGroupOrbitTest, Basic1)
 {
@@ -21,4 +23,15 @@ TEST(FinitePointGroupOrbitTest, Basic1)
 
    found = orbit.tryGetClosePoint(Point1{ 1 });
    ASSERT_FALSE(std::get<0>(found));
+}
+
+
+TEST(FinitePointGroupOrbitTest, Di3)
+{
+   const ActionDihedral di(4);
+   const PointClose<double, 2> areClose;
+   const Point2 p{ 2, 1 };
+   const FinitePointGroupOrbit<2> orbit(di, p, areClose);
+
+   ASSERT_EQ(orbit.getNumPoints(), 8);
 }

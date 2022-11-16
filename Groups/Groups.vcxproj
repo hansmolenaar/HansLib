@@ -155,6 +155,7 @@
     <ClCompile Include="DihedralGroup.cpp" />
     <ClCompile Include="GroupTable.cpp" />
     <ClCompile Include="IFiniteGroupUtils.cpp" />
+    <ClCompile Include="SameFiniteGroupPredicate.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ActionDihedral.h" />
@@ -170,6 +171,8 @@
     <ClInclude Include="IFiniteGroupUtils.h" />
     <ClInclude Include="IFinitePointGroupAction.h" />
     <ClInclude Include="IFinitePointGroupActionUtils.h" />
+    <ClInclude Include="PointTransformationFromGroupAction.h" />
+    <ClInclude Include="SameFiniteGroupPredicate.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
