@@ -149,7 +149,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ActionDihedral.cpp" />
-    <ClCompile Include="ActionReflect1D.cpp" />
     <ClCompile Include="ActionRotate2D.cpp" />
     <ClCompile Include="CyclicGroup.cpp" />
     <ClCompile Include="DihedralGroup.cpp" />
@@ -159,7 +158,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ActionDihedral.h" />
-    <ClInclude Include="ActionReflect1D.h" />
+    <ClInclude Include="ActionReflectOrigin.h" />
     <ClInclude Include="ActionRotate2D.h" />
     <ClInclude Include="CyclicGroup.h" />
     <ClInclude Include="DihedralGroup.h" />

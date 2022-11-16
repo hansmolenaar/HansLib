@@ -30,9 +30,6 @@
     <ClCompile Include="ActionRotate2D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ActionReflect1D.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ActionDihedral.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -65,7 +62,7 @@
     <ClInclude Include="ActionRotate2D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ActionReflect1D.h">
+    <ClInclude Include="ActionReflectOrigin.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ActionDihedral.h">

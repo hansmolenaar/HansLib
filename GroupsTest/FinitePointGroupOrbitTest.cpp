@@ -1,14 +1,14 @@
 #include <gtest/gtest.h>
 
 #include "Groups/FinitePointGroupOrbit.h"
-#include "Groups/ActionReflect1D.h"
+#include "Groups/ActionReflectOrigin.h"
 #include "Geometry/PointClose.h"
 #include "Groups/DihedralGroup.h"
 #include "Groups/ActionDihedral.h"
 
 TEST(FinitePointGroupOrbitTest, Basic1)
 {
-   const ActionReflect1D reflect;
+   const ActionReflectOrigin<1> reflect;
    const PointClose<double, 1> areClose;
    const Point1 p{ 2.0 };
    const Point1 pr{ -2.0 };
@@ -24,7 +24,6 @@ TEST(FinitePointGroupOrbitTest, Basic1)
    found = orbit.tryGetClosePoint(Point1{ 1 });
    ASSERT_FALSE(std::get<0>(found));
 }
-
 
 TEST(FinitePointGroupOrbitTest, Di3)
 {

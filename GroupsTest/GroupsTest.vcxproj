@@ -48,7 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ActionDihedralTest.cpp" />
-    <ClCompile Include="ActionReflect1DTest.cpp" />
+    <ClCompile Include="ActionReflectOriginTest.cpp" />
     <ClCompile Include="ActionRotate2DTest.cpp" />
     <ClCompile Include="CyclicGourpTest.cpp" />
     <ClCompile Include="DihedralGroupTest.cpp" />

@@ -148,6 +148,7 @@
     <ClInclude Include="IPointTransformation.h" />
     <ClInclude Include="IUniquePointCollection.h" />
     <ClInclude Include="PointClose.h" />
+    <ClInclude Include="PointReflection.h" />
     <ClInclude Include="Rotate2D.h" />
     <ClInclude Include="PointTransformationIdentity.h" />
     <ClInclude Include="SamePointPredicate.h" />

@@ -12,7 +12,7 @@
     <ClCompile Include="CyclicGourpTest.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
-    <ClCompile Include="ActionReflect1DTest.cpp">
+    <ClCompile Include="ActionReflectOriginTest.cpp">
       <Filter>Source files</Filter>
     </ClCompile>
     <ClCompile Include="DihedralGroupTest.cpp">
