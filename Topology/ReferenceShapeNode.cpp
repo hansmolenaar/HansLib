@@ -1,17 +1,31 @@
 #include "Topology/ReferenceShapeNode.h"
 #include "Utilities/MyException.h"
 
-TopologyDimension ReferenceShapeNode::getMaxTopologyDimension() const
+class NodeAdjacencies : public ITopologicalAdjacencies
 {
-   return TopologyDimension::Corner;
+public:
+   TopologyDimension getMaxTopologyDimension() const override
+   {
+      return TopologyDimension::Corner;
+   }
+
+   int getCount(TopologyDimension dim) const override
+   {
+      return dim == TopologyDimension::Corner ? 1 : 0;
+   }
+
+   const ITopologicalAdjacency& getAdjacency(TopologyDimension, TopologyDimension) const override
+   {
+      throw  MyException("No way...");
+   }
+};
+
+namespace
+{
+   const NodeAdjacencies Instance;
 }
 
-int ReferenceShapeNode::getCount(TopologyDimension dim) const
+const ITopologicalAdjacencies& ReferenceShapeNode::getAdjacencies() const
 {
-   return dim == TopologyDimension::Corner ? 1 : 0;
-}
-
-const ITopologicalAdjacency& ReferenceShapeNode::getAdjacency(TopologyDimension, TopologyDimension) const
-{
-   throw  MyException("No way...");
+   return Instance;
 }

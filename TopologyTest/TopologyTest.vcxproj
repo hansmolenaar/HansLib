@@ -33,7 +33,7 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <ItemGroup>
-    <ClCompile Include="TopologyTest.cpp" />
+    <ClCompile Include="ReferenceShapeNodeTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
