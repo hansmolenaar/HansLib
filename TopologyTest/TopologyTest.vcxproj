@@ -34,6 +34,7 @@
   <PropertyGroup Label="UserMacros" />
   <ItemGroup>
     <ClCompile Include="ReferenceShapeNodeTest.cpp" />
+    <ClCompile Include="TopologicalAdjacencyTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -33,12 +33,24 @@
     <ClInclude Include="TopologicalAdjacency.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ReferenceshapePolyline.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TopologicalAdjacencies.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ReferenceShapeNode.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TopologicalAdjacency.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ReferenceshapePolyline.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TopologicalAdjacencies.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

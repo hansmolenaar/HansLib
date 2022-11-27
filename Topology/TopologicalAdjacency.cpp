@@ -2,6 +2,24 @@
 
 #include <algorithm>
 
+namespace
+{
+   void Cleanup(std::map<int, std::vector<int>>& from_to, int sizeFrom)
+   {
+      for (auto& itr : from_to)
+      {
+         std::vector<int>& toValues = itr.second;
+         std::sort(toValues.begin(), toValues.end());
+         if (std::unique(toValues.begin(), toValues.end()) != toValues.end()) throw MyException("TopologicalAdjacency::Cleanup duplicate indices");
+      }
+      const int lwrBound = from_to.begin()->first;
+      if (lwrBound < 0) throw MyException("TopologicalAdjacency::Cleanup lower bound " + std::to_string(lwrBound));
+      const int uprBound = from_to.rbegin()->first;
+      if (uprBound >= sizeFrom) throw MyException("TopologicalAdjacency::Cleanup lower bound " + std::to_string(uprBound));
+   }
+
+}
+
 TopologicalAdjacency::TopologicalAdjacency(TopologyDimension dimLow, std::map<int, std::vector<int>>&& low2high, TopologyDimension dimHigh, const std::map<int, std::vector<int>>&& high2low) :
    m_dimLow(dimLow),
    m_dimHigh(dimHigh),
@@ -32,6 +50,8 @@ const std::vector<int> TopologicalAdjacency::getConnectedHighers(int posLo) cons
 
 std::unique_ptr<TopologicalAdjacency> TopologicalAdjacency::Create(TopologyDimension dimHi, int countHigh, TopologyDimension dimLo, int countLow, const std::map<int, std::vector<int>>& hi2lo)
 {
+   if (dimLo >= dimHi) throw MyException("TopologicalAdjacency::Create dimLower should be less than dimHigher");
+
    std::map<int, std::vector<int>> low_2_high;
    std::map<int, std::vector<int>> high_2_low;
 
@@ -53,12 +73,8 @@ std::unique_ptr<TopologicalAdjacency> TopologicalAdjacency::Create(TopologyDimen
       }
    }
 
-   for (auto& itr : low_2_high) std::sort(itr.second.begin(), itr.second.end());
-   for (auto& itr : high_2_low) std::sort(itr.second.begin(), itr.second.end());
-
-   // Checks
-   // min/max
-   for ( const auto itr)
+   Cleanup(low_2_high, countLow);
+   Cleanup(high_2_low, countHigh);
 
    return std::unique_ptr<TopologicalAdjacency>(new TopologicalAdjacency(dimLo, std::move(low_2_high), dimHi, std::move(high_2_low)));
 }

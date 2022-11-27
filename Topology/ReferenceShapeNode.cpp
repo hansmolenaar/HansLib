@@ -1,5 +1,10 @@
 #include "Topology/ReferenceShapeNode.h"
 #include "Utilities/MyException.h"
+#include "Utilities/BoundsCheck.h"
+namespace
+{
+   const auto Checker = BoundsCheck<TopologyDimension>::Create(TopologyDimension::Corner, TopologyDimension::Corner);
+}
 
 class NodeAdjacencies : public ITopologicalAdjacencies
 {
@@ -11,7 +16,8 @@ public:
 
    int getCount(TopologyDimension dim) const override
    {
-      return dim == TopologyDimension::Corner ? 1 : 0;
+      Checker.check(dim);
+      return 1;
    }
 
    const ITopologicalAdjacency& getAdjacency(TopologyDimension, TopologyDimension) const override

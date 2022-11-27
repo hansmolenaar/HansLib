@@ -25,7 +25,7 @@ namespace TopologyTest
       }
       for (auto hig = 0; hig < countHig; ++hig)
       {
-         const auto& connectedLow = adjacency.getConnectedHighers(hig);
+         const auto& connectedLow = adjacency.getConnectedLowers(hig);
          for (auto low : connectedLow)
          {
             const std::pair<int, int> pair = std::make_pair(low, hig);
@@ -35,7 +35,9 @@ namespace TopologyTest
       }
       ASSERT_TRUE(l2h.empty());
 
+      ASSERT_ANY_THROW(adjacency.getConnectedLowers(-1));
       ASSERT_ANY_THROW(adjacency.getConnectedLowers(countHig));
+      ASSERT_ANY_THROW(adjacency.getConnectedHighers(-1));
       ASSERT_ANY_THROW(adjacency.getConnectedHighers(countLow));
    }
 }
