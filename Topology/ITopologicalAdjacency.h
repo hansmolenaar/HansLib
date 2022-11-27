@@ -5,6 +5,7 @@
 
 class ITopologicalAdjacency
 {
+public:
    virtual ~ITopologicalAdjacency() = default;
    virtual TopologyDimension getDimensionLow() const = 0;
    virtual  TopologyDimension getDimensionHigh() const = 0;
@@ -14,4 +15,4 @@ class ITopologicalAdjacency
    //IEnumerable<int> GetAllHighers();
    //bool IsActiveHigh(int posHi);
    //bool IsActiveLow(int posLo);
-}
+};

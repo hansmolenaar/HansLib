@@ -46,6 +46,10 @@
       <Project>{e68fc7e3-1402-4bbe-9d0f-f4bd88acfd45}</Project>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="TestITopologicalAdjacencies.h" />
+    <ClInclude Include="TestITopologicalAdjacency.h" />
+  </ItemGroup>
   <ItemDefinitionGroup />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

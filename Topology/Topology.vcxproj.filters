@@ -18,7 +18,7 @@
     <ClInclude Include="TopologyDimension.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ITopologicalAdjacenc.h">
+    <ClInclude Include="ITopologicalAdjacency.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ITopologicalAdjacencies.h">
@@ -30,9 +30,15 @@
     <ClInclude Include="ReferenceShapeNode.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="TopologicalAdjacency.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ReferenceShapeNode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TopologicalAdjacency.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
