@@ -151,6 +151,7 @@
     <ClInclude Include="IIndexer.h" />
     <ClInclude Include="IndexerRowMajor.h" />
     <ClInclude Include="IndexerSymmetric.h" />
+    <ClInclude Include="Iota.h" />
     <ClInclude Include="MathConstants.h" />
     <ClInclude Include="MyException.h" />
     <ClInclude Include="Plotting.h" />

@@ -1,4 +1,5 @@
 #include "TopologicalAdjacency.h"
+#include "Utilities/Iota.h"
 
 #include <algorithm>
 
@@ -77,4 +78,10 @@ std::unique_ptr<TopologicalAdjacency> TopologicalAdjacency::Create(TopologyDimen
    Cleanup(high_2_low, countHigh);
 
    return std::unique_ptr<TopologicalAdjacency>(new TopologicalAdjacency(dimLo, std::move(low_2_high), dimHi, std::move(high_2_low)));
+}
+
+std::unique_ptr<TopologicalAdjacency> TopologicalAdjacency::CreateTrivial(TopologyDimension dimHi, TopologyDimension dimLo, int countLow)
+{
+   std::map<int, std::vector<int>> hi2lo{ {0, Iota::GenerateIntVector(countLow)} };
+   return Create(dimHi, 1, dimLo, countLow, hi2lo);
 }

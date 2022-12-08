@@ -10,6 +10,7 @@ class TopologicalAdjacency : public ITopologicalAdjacency
 {
 public:
    static std::unique_ptr<TopologicalAdjacency> Create(TopologyDimension, int, TopologyDimension, int, const std::map<int, std::vector<int>>&);
+   static std::unique_ptr<TopologicalAdjacency> CreateTrivial(TopologyDimension,  TopologyDimension, int);
 
    TopologyDimension getDimensionLow() const override;
    TopologyDimension getDimensionHigh() const override;

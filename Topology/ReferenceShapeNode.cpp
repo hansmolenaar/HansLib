@@ -20,9 +20,10 @@ public:
       return 1;
    }
 
-   const ITopologicalAdjacency& getAdjacency(TopologyDimension, TopologyDimension) const override
+   std::pair<bool, const ITopologicalAdjacency*> getAdjacency(TopologyDimension hi, TopologyDimension lo) const override
    {
-      throw  MyException("No way...");
+      Utilities::Assert(hi != lo);
+      return std::make_pair(false, nullptr);
    }
 };
 

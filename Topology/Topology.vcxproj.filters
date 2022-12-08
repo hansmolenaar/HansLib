@@ -39,6 +39,12 @@
     <ClInclude Include="TopologicalAdjacencies.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="IReferenceShapeHyperCube.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ReferenceShapeHyperCubeFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ReferenceShapeNode.cpp">
@@ -51,6 +57,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TopologicalAdjacencies.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ReferenceShapeHyperCubeFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

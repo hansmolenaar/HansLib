@@ -144,8 +144,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="IReferenceShape.h" />
+    <ClInclude Include="IReferenceShapeHyperCube.h" />
     <ClInclude Include="ITopologicalAdjacency.h" />
     <ClInclude Include="ITopologicalAdjacencies.h" />
+    <ClInclude Include="ReferenceShapeHyperCubeFactory.h" />
     <ClInclude Include="ReferenceShapeNode.h" />
     <ClInclude Include="ReferenceshapePolyline.h" />
     <ClInclude Include="TopologicalAdjacencies.h" />
@@ -153,6 +155,7 @@
     <ClInclude Include="TopologyDimension.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ReferenceShapeHyperCubeFactory.cpp" />
     <ClCompile Include="ReferenceShapeNode.cpp" />
     <ClCompile Include="ReferenceshapePolyline.cpp" />
     <ClCompile Include="TopologicalAdjacencies.cpp" />
