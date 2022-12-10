@@ -3,7 +3,7 @@
 #include "Utilities/BoundsCheck.h"
 namespace
 {
-   const auto Checker = BoundsCheck<TopologyDimension>::Create(TopologyDimension::Corner, TopologyDimension::Corner);
+   const auto Checker = BoundsCheck<TopologyDimension>::CreateUpperBound(TopologyDimensionDef::Corner);
 }
 
 class NodeAdjacencies : public ITopologicalAdjacencies
@@ -11,7 +11,7 @@ class NodeAdjacencies : public ITopologicalAdjacencies
 public:
    TopologyDimension getMaxTopologyDimension() const override
    {
-      return TopologyDimension::Corner;
+      return TopologyDimensionDef::Corner;
    }
 
    int getCount(TopologyDimension dim) const override

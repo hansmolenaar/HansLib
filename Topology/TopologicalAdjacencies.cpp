@@ -12,8 +12,8 @@ namespace
 
    void CheckEdge2Corner(const ITopologicalAdjacency& e2c)
    {
-      if (e2c.getDimensionLow() != TopologyDimension::Corner) throw MyException("CheckEdge2Corner low dime");
-      if (e2c.getDimensionHigh() != TopologyDimension::Edge) throw MyException("CheckEdge2Corner high dime");
+      if (e2c.getDimensionLow() != TopologyDimensionDef::Corner) throw MyException("CheckEdge2Corner low dime");
+      if (e2c.getDimensionHigh() != TopologyDimensionDef::Edge) throw MyException("CheckEdge2Corner high dime");
    }
 
    void CheckInputAdjacency(TopologyDimension maxDim, const std::vector<int>& count, const ITopologicalAdjacency& adjacency)
@@ -41,9 +41,9 @@ namespace
 }
 
 TopologicalAdjacencies::TopologicalAdjacencies(const std::array<int, 2>& count, std::unique_ptr<ITopologicalAdjacency>&& edge_2_corner) :
-   m_count{ {TopologyDimension::Corner, std::get<0>(count)} , {TopologyDimension::Edge, std::get<1>(count)} }
+   m_count{ {TopologyDimensionDef::Corner, std::get<0>(count)} , {TopologyDimensionDef::Edge, std::get<1>(count)} }
 {
-   m_adjecencies.emplace(std::make_pair(TopologyDimension::Corner, TopologyDimension::Edge), std::move(edge_2_corner));
+   m_adjecencies.emplace(std::make_pair(TopologyDimensionDef::Corner, TopologyDimensionDef::Edge), std::move(edge_2_corner));
 }
 
 std::unique_ptr<TopologicalAdjacencies> TopologicalAdjacencies::Create(const std::vector<int>& count, std::vector<std::unique_ptr< ITopologicalAdjacency>>&& adjacencies)

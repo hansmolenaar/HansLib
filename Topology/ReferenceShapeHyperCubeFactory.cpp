@@ -1,4 +1,5 @@
 #include "ReferenceShapeHyperCubeFactory.h"
+#include "IReferenceShapeHyperCube.h"
 #include <memory>
 
 namespace

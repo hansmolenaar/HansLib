@@ -5,5 +5,5 @@
 
 class  IReferenceShapeHyperCube : public IReferenceShape
 {
-   virtual const std::vector<bool>&  VertexToBitVector(int vertex) = 0;
+   //virtual const std::vector<bool>&  VertexToBitVector(int vertex) = 0;
 };

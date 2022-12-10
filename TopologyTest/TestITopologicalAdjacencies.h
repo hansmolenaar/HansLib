@@ -10,9 +10,9 @@ namespace TopologyTest
    inline  void TestITopologicalAdjacencies(const ITopologicalAdjacencies& adjacencies)
    {
       const auto maxdim = adjacencies.getMaxTopologyDimension();
-      for (auto dimH = TopologyDimension::Corner; dimH <= maxdim; ++dimH)
+      for (auto dimH = TopologyDimensionDef::Corner; dimH <= maxdim; ++dimH)
       {
-         for (auto dimL = TopologyDimension::Corner; dimL < dimH; ++dimL)
+         for (auto dimL = TopologyDimensionDef::Corner; dimL < dimH; ++dimL)
          {
             const auto found = adjacencies.getAdjacency(dimH, dimL);
             if (found.first)
@@ -25,7 +25,7 @@ namespace TopologyTest
          ASSERT_ANY_THROW(adjacencies.getAdjacency(dimH, dimH));
       }
 
-      if (maxdim < TopologyDimension::Volume)
+      if (maxdim < TopologyDimensionDef::Volume)
       {
          const auto nxtDim = static_cast<TopologyDimension>(static_cast<int>(maxdim) + 1);
          ASSERT_ANY_THROW(adjacencies.getCount(nxtDim));
