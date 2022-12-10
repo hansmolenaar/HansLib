@@ -10,7 +10,6 @@
 class TopologicalAdjacencies : public ITopologicalAdjacencies
 {
 public:
-   static std::unique_ptr<TopologicalAdjacencies> Create(const std::array<int,2>&, std::unique_ptr<ITopologicalAdjacency>&&);
    static std::unique_ptr<TopologicalAdjacencies> Create(const std::vector<int>&, std::vector<std::unique_ptr< ITopologicalAdjacency>>&&);
 
 
@@ -19,8 +18,10 @@ public:
    std::pair<bool, const ITopologicalAdjacency*> getAdjacency(TopologyDimension hi, TopologyDimension lo) const override;
 
 private:
+   using AdjacencyMap = std::map <std::pair<TopologyDimension, TopologyDimension>, std::unique_ptr<ITopologicalAdjacency>>;
    TopologicalAdjacencies(const std::array<int, 2>& ,std::unique_ptr<ITopologicalAdjacency>&&);
+   TopologicalAdjacencies(std::map<TopologyDimension, int>&& count, AdjacencyMap&& adjacencies);
 
-   std::map < std::pair<TopologyDimension, TopologyDimension>, std::unique_ptr<ITopologicalAdjacency>> m_adjecencies;
+   AdjacencyMap m_adjecencies;
    std::map<TopologyDimension, int> m_count;
 };

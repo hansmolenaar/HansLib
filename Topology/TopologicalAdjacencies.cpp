@@ -21,8 +21,8 @@ namespace
       BoundsCheck<TopologyDimension>::CreateUpperBound(maxDim)(adjacency.getDimensionHigh());
       const int countLo = count.at(static_cast<size_t>(adjacency.getDimensionLow()));
       const int countHi = count.at(static_cast<size_t>(adjacency.getDimensionHigh()));
-      const auto checkLo = BoundsCheck<int>::Create(0, countLo-1);
-      const auto checkHi = BoundsCheck<int>::Create(0, countHi-1);
+      const auto checkLo = BoundsCheck<int>::Create(0, countLo - 1);
+      const auto checkHi = BoundsCheck<int>::Create(0, countHi - 1);
       for (int lo = 0; lo < countLo; ++lo)
       {
          for (auto hi : adjacency.getConnectedHighers(lo))
@@ -46,25 +46,33 @@ TopologicalAdjacencies::TopologicalAdjacencies(const std::array<int, 2>& count, 
    m_adjecencies.emplace(std::make_pair(TopologyDimensionDef::Corner, TopologyDimensionDef::Edge), std::move(edge_2_corner));
 }
 
-std::unique_ptr<TopologicalAdjacencies> TopologicalAdjacencies::Create(const std::vector<int>& count, std::vector<std::unique_ptr< ITopologicalAdjacency>>&& adjacencies)
+TopologicalAdjacencies::TopologicalAdjacencies(std::map<TopologyDimension, int>&& count, AdjacencyMap&& adjacencies) :
+   m_count(std::move(count)), m_adjecencies(std::move(adjacencies))
 {
-   for (auto dim : count) isPositive(dim);
-   const TopologyDimension maxDimension = static_cast<TopologyDimension>(count.size());
-   std::set<std::pair<TopologyDimension, TopologyDimension>> loUp;
-   for (const auto& adj : adjacencies)
-   {
-      const auto pair = std::make_pair(adj->getDimensionLow(), adj->getDimensionHigh());
-      Utilities::Assert(!loUp.contains(pair));
-      loUp.insert(pair);
-      CheckInputAdjacency(maxDimension, count, *adj);
-   }
 }
 
-std::unique_ptr<TopologicalAdjacencies> TopologicalAdjacencies::Create(const std::array<int, 2>& count, std::unique_ptr<ITopologicalAdjacency>&& adj)
+std::unique_ptr<TopologicalAdjacencies> TopologicalAdjacencies::Create(const std::vector<int>& count, std::vector<std::unique_ptr<ITopologicalAdjacency>>&& adjacencies)
 {
-   for (auto dim : count) isPositive(dim);
+   std::map<TopologyDimension, int> countMap;
 
-   return std::unique_ptr<TopologicalAdjacencies>(new TopologicalAdjacencies(count, std::move(adj)));
+   TopologyDimension tdim = TopologyDimensionDef::Corner;
+   for (auto c : count)
+   {
+      isPositive(c);
+      countMap.emplace(tdim, c);
+      ++tdim;
+   }
+
+   const TopologyDimension maxDimension = static_cast<TopologyDimension>(count.size());
+   AdjacencyMap adjacencyMap;
+   for (auto& adj : adjacencies)
+   {
+      const auto pair = std::make_pair(adj->getDimensionLow(), adj->getDimensionHigh());
+      Utilities::Assert(!adjacencyMap.contains(pair));
+      CheckInputAdjacency(maxDimension, count, *adj);
+      adjacencyMap.emplace(pair, std::move(adj));
+   }
+   return std::unique_ptr<TopologicalAdjacencies>(new TopologicalAdjacencies(std::move(countMap), std::move(adjacencyMap)));
 }
 
 TopologyDimension TopologicalAdjacencies::getMaxTopologyDimension() const
