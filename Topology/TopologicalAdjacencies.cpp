@@ -82,6 +82,7 @@ int TopologicalAdjacencies::getCount(TopologyDimension dim) const
 std::pair<bool, const ITopologicalAdjacency*> TopologicalAdjacencies::getAdjacency(TopologyDimension dim1, TopologyDimension dim2) const
 {
    Utilities::Assert(dim1 != dim2);
+   m_checkDimension.check(std::max(dim1, dim2));
    const auto pair = std::make_pair(std::min(dim1, dim2), std::max(dim1, dim2));
    std::pair<bool, const ITopologicalAdjacency*> result = std::make_pair(m_adjecencies.contains(pair), nullptr);
    if (result.first)

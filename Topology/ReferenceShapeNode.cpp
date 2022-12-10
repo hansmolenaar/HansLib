@@ -9,20 +9,22 @@ namespace
 class NodeAdjacencies : public ITopologicalAdjacencies
 {
 public:
-   TopologyDimension getMaxTopologyDimension() const override
+   inline TopologyDimension getMaxTopologyDimension() const override
    {
       return TopologyDimensionDef::Corner;
    }
 
-   int getCount(TopologyDimension dim) const override
+   inline int getCount(TopologyDimension dim) const override
    {
       Checker.check(dim);
       return 1;
    }
 
-   std::pair<bool, const ITopologicalAdjacency*> getAdjacency(TopologyDimension hi, TopologyDimension lo) const override
+   inline std::pair<bool, const ITopologicalAdjacency*> getAdjacency(TopologyDimension hi, TopologyDimension lo) const override
    {
       Utilities::Assert(hi != lo);
+      Checker.check(hi);
+      Checker.check(lo);
       return std::make_pair(false, nullptr);
    }
 };

@@ -49,6 +49,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="TestIReferenceShape.h" />
     <ClInclude Include="TestITopologicalAdjacencies.h" />
     <ClInclude Include="TestITopologicalAdjacency.h" />
   </ItemGroup>
