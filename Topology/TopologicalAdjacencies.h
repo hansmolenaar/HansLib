@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ITopologicalAdjacencies.h"
+#include "Utilities/BoundsCheck.h"
 
 #include <memory>
 #include <map>
@@ -10,8 +11,7 @@
 class TopologicalAdjacencies : public ITopologicalAdjacencies
 {
 public:
-   static std::unique_ptr<TopologicalAdjacencies> Create(const std::vector<int>&, std::vector<std::unique_ptr< ITopologicalAdjacency>>&&);
-
+   static std::unique_ptr<TopologicalAdjacencies> Create(const std::vector<int>&, std::vector<std::unique_ptr<ITopologicalAdjacency>>&&);
 
    TopologyDimension getMaxTopologyDimension() const override;
    int getCount(TopologyDimension dim) const override;
@@ -24,4 +24,5 @@ private:
 
    AdjacencyMap m_adjecencies;
    std::map<TopologyDimension, int> m_count;
+   BoundsCheck<TopologyDimension> m_checkDimension;
 };

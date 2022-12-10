@@ -40,14 +40,8 @@ namespace
    }
 }
 
-TopologicalAdjacencies::TopologicalAdjacencies(const std::array<int, 2>& count, std::unique_ptr<ITopologicalAdjacency>&& edge_2_corner) :
-   m_count{ {TopologyDimensionDef::Corner, std::get<0>(count)} , {TopologyDimensionDef::Edge, std::get<1>(count)} }
-{
-   m_adjecencies.emplace(std::make_pair(TopologyDimensionDef::Corner, TopologyDimensionDef::Edge), std::move(edge_2_corner));
-}
-
 TopologicalAdjacencies::TopologicalAdjacencies(std::map<TopologyDimension, int>&& count, AdjacencyMap&& adjacencies) :
-   m_count(std::move(count)), m_adjecencies(std::move(adjacencies))
+   m_count(std::move(count)), m_adjecencies(std::move(adjacencies)), m_checkDimension(BoundsCheck<TopologyDimension>::CreateUpperBound(getMaxTopologyDimension()))
 {
 }
 
@@ -87,6 +81,7 @@ int TopologicalAdjacencies::getCount(TopologyDimension dim) const
 
 std::pair<bool, const ITopologicalAdjacency*> TopologicalAdjacencies::getAdjacency(TopologyDimension dim1, TopologyDimension dim2) const
 {
+   Utilities::Assert(dim1 != dim2);
    const auto pair = std::make_pair(std::min(dim1, dim2), std::max(dim1, dim2));
    std::pair<bool, const ITopologicalAdjacency*> result = std::make_pair(m_adjecencies.contains(pair), nullptr);
    if (result.first)

@@ -12,7 +12,9 @@ public:
    // Throws if dim > getMaxTopologyDimension()
    virtual int getCount(TopologyDimension dim) const = 0;
 
+   // dim1 and dim2 need not be ordered
    // Should throw if hi == lo
+   // Should throw if dim1 > getMaxTopologyDimension() or dim2 > getMaxTopologyDimension()
    // Adjacency need not be available
-   virtual std::pair<bool, const ITopologicalAdjacency*> getAdjacency(TopologyDimension hi, TopologyDimension lo) const = 0;
+   virtual std::pair<bool, const ITopologicalAdjacency*> getAdjacency(TopologyDimension dim1, TopologyDimension dim2) const = 0;
 };
