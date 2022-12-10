@@ -38,6 +38,7 @@
   <ItemGroup>
     <ClCompile Include="AssertTest.cpp" />
     <ClCompile Include="BinomialCoefficientTest.cpp" />
+    <ClCompile Include="BoolContainerTest.cpp" />
     <ClCompile Include="BoundsCheckTest.cpp" />
     <ClCompile Include="FactorialTest.cpp" />
     <ClCompile Include="IndexerRowMajorTest.cpp" />
