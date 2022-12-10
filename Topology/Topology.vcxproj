@@ -147,14 +147,16 @@
     <ClInclude Include="IReferenceShapeHyperCube.h" />
     <ClInclude Include="ITopologicalAdjacency.h" />
     <ClInclude Include="ITopologicalAdjacencies.h" />
-    <ClInclude Include="ReferenceShapeHyperCubeFactory.h" />
+    <ClInclude Include="ReferenceShape.h" />
+    <ClInclude Include="ReferenceShapeHyperCube.h" />
     <ClInclude Include="ReferenceShapeNode.h" />
     <ClInclude Include="TopologicalAdjacencies.h" />
     <ClInclude Include="TopologicalAdjacency.h" />
     <ClInclude Include="TopologyDimension.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ReferenceShapeHyperCubeFactory.cpp" />
+    <ClCompile Include="ReferenceShape.cpp" />
+    <ClCompile Include="ReferenceShapeHyperCube.cpp" />
     <ClCompile Include="ReferenceShapeNode.cpp" />
     <ClCompile Include="TopologicalAdjacencies.cpp" />
     <ClCompile Include="TopologicalAdjacency.cpp" />

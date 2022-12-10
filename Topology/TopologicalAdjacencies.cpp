@@ -8,7 +8,7 @@
 
 namespace
 {
-   const auto isPositive = BoundsCheck<int>::CreateLowerBound(1);
+   static const auto IsPositive = BoundsCheck<int>::CreateIsPositive();
 
    void CheckEdge2Corner(const ITopologicalAdjacency& e2c)
    {
@@ -52,7 +52,7 @@ std::unique_ptr<TopologicalAdjacencies> TopologicalAdjacencies::Create(const std
    TopologyDimension tdim = TopologyDimensionDef::Corner;
    for (auto c : count)
    {
-      isPositive(c);
+      IsPositive(c);
       countMap.emplace(tdim, c);
       ++tdim;
    }

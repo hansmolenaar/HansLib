@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 #include "Topology/ReferenceShapeNode.h"
-#include  "Utilities/MyException.h"
+#include "Utilities/MyException.h"
 #include "TestIReferenceShape.h"
 
 TEST(ReferenceShapeNodeTest, ReferenceShapeNode)

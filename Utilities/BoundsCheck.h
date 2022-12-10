@@ -9,6 +9,8 @@ public:
    static BoundsCheck<T> Create(T, T);
    static BoundsCheck<T> CreateLowerBound( T);
    static BoundsCheck<T> CreateUpperBound(T);
+   static BoundsCheck<T> CreateIsPositive(); // > 0
+   static BoundsCheck<T> CreateIsNonNegative(); // >= 0
    bool operator()(const T&) const;
    void check(const T&) const;
 private:
@@ -39,6 +41,18 @@ template<typename T>
 BoundsCheck<T> BoundsCheck<T>::CreateUpperBound(T bound)
 {
    return BoundsCheck(false, bound, true, bound);
+}
+
+template<typename T>
+BoundsCheck<T> BoundsCheck<T>::CreateIsPositive()
+{
+   return CreateLowerBound(static_cast<T>(1));
+}
+
+template<typename T>
+BoundsCheck<T> BoundsCheck<T>::CreateIsNonNegative()
+{
+   return CreateLowerBound(static_cast<T>(0));
 }
 
 template<typename T>
