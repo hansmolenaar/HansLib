@@ -15,8 +15,8 @@ TEST(TopologicalAdjacenciesTest, Claw)
    adjacencyList.emplace_back(std::move(adjacency));
    const auto adjacencies = TopologicalAdjacencies::Create(counts, std::move(adjacencyList));
    ASSERT_EQ(adjacencies->getMaxTopologyDimension(), TopologyDimensionDef::Edge);
-   ASSERT_EQ(adjacencies->getCount(TopologyDimensionDef::Corner), 4);
-   ASSERT_EQ(adjacencies->getCount(TopologyDimensionDef::Edge), 3);
+   ASSERT_EQ(adjacencies->getCountSafe(TopologyDimensionDef::Corner), 4);
+   ASSERT_EQ(adjacencies->getCountSafe(TopologyDimensionDef::Edge), 3);
    const auto retval = adjacencies->getAdjacency(TopologyDimensionDef::Edge, TopologyDimensionDef::Corner);
    ASSERT_TRUE(retval.first);
 

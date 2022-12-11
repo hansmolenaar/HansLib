@@ -155,6 +155,7 @@
     <ClInclude Include="TopologyDimension.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ITopologicalAdjacencies.cpp" />
     <ClCompile Include="ReferenceShape.cpp" />
     <ClCompile Include="ReferenceShapeHyperCube.cpp" />
     <ClCompile Include="ReferenceShapeNode.cpp" />

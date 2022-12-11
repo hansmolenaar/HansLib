@@ -14,7 +14,7 @@ public:
    static std::unique_ptr<TopologicalAdjacencies> Create(const std::vector<int>&, std::vector<std::unique_ptr<ITopologicalAdjacency>>&&);
 
    TopologyDimension getMaxTopologyDimension() const override;
-   int getCount(TopologyDimension dim) const override;
+   std::pair<bool, int> getCount(TopologyDimension dim) const override;
    std::pair<bool, const ITopologicalAdjacency*> getAdjacency(TopologyDimension hi, TopologyDimension lo) const override;
 
 private:

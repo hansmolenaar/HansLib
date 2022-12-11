@@ -14,10 +14,10 @@ public:
       return TopologyDimensionDef::Corner;
    }
 
-   inline int getCount(TopologyDimension dim) const override
+   inline std::pair<bool, int> getCount(TopologyDimension dim) const override
    {
       Checker.check(dim);
-      return 1;
+      return std::make_pair(true,  1);
    }
 
    inline std::pair<bool, const ITopologicalAdjacency*> getAdjacency(TopologyDimension hi, TopologyDimension lo) const override
