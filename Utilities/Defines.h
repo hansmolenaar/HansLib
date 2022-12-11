@@ -6,5 +6,6 @@
 #include <array>
 #include <memory>
 #include <map>
+#include <numeric>
 
 namespace str = std::ranges;

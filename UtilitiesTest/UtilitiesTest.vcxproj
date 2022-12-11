@@ -43,6 +43,7 @@
     <ClCompile Include="FactorialTest.cpp" />
     <ClCompile Include="IndexerRowMajorTest.cpp" />
     <ClCompile Include="IndexerSymmetricTest.cpp" />
+    <ClCompile Include="MultiIndexTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Utilities\Utilities.vcxproj">

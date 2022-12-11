@@ -120,6 +120,7 @@
       <AdditionalIncludeDirectories>C:\Users\Hans\source\repos\HansLib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <LanguageStandard>stdcpplatest</LanguageStandard>
+      <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -156,13 +157,13 @@
     <ClInclude Include="IndexerSymmetric.h" />
     <ClInclude Include="Iota.h" />
     <ClInclude Include="MathConstants.h" />
+    <ClInclude Include="MultiIndex.h" />
     <ClInclude Include="MyException.h" />
     <ClInclude Include="Plotting.h" />
     <ClInclude Include="ToString.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Assert.cpp" />
-    <ClCompile Include="BinomialCoefficient.cpp" />
     <ClCompile Include="BoolContainer.cpp" />
     <ClCompile Include="EigenValueSolverSym2x2.cpp" />
     <ClCompile Include="EigenValueSolverSym3x3.cpp" />

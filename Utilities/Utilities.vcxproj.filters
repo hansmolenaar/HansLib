@@ -63,6 +63,9 @@
     <ClInclude Include="BoolContainer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MultiIndex.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EigenValueSolverSym2x2.cpp">
@@ -78,9 +81,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Assert.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="BinomialCoefficient.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="BoolContainer.cpp">

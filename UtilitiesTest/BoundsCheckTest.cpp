@@ -35,3 +35,12 @@ TEST(BoundsCheckTest, CreationFailure)
 {
    ASSERT_THROW(BoundsCheck<int>::Create(2, 1), MyException);
 }
+
+
+TEST(BoundsCheckTest, Default)
+{
+   const BoundsCheck<long> checker;
+   ASSERT_TRUE(checker(-1));
+   ASSERT_TRUE(checker(0));
+   ASSERT_TRUE(checker(1));
+}

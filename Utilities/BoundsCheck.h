@@ -6,6 +6,7 @@ template<typename T>
 class BoundsCheck
 {
 public:
+   BoundsCheck() = default; // anything goes
    static BoundsCheck<T> Create(T, T);
    static BoundsCheck<T> CreateLowerBound( T);
    static BoundsCheck<T> CreateUpperBound(T);
@@ -15,10 +16,10 @@ public:
    void check(const T&) const;
 private:
    BoundsCheck(bool, T, bool, T);
-   bool m_hasLb = true;
-   bool m_hasUb = true;
-   T m_lb;
-   T m_ub;
+   bool m_hasLb = false;
+   bool m_hasUb = false;
+   T m_lb = 0;
+   T m_ub = 0;
 
 };
 
