@@ -11,6 +11,10 @@
 
 namespace
 {
+   class ReferenceShapeHyperCube : public IReferenceShapeHyperCube
+   {
+
+   };
 
    std::unique_ptr<ITopologicalAdjacency> CreateEdge2Corner(TopologyDimension dim)
    {
@@ -120,7 +124,7 @@ namespace
       return adjacencyList;
    }
 
-   std::unique_ptr<IReferenceShape> Create(TopologyDimension dim)
+   std::unique_ptr<IReferenceShapeHyperCube> Create(TopologyDimension dim)
    {
       std::vector<int> counts;
       for (TopologyDimension m = 0; m <= dim; ++m)
@@ -129,14 +133,14 @@ namespace
       }
 
       auto adjacencies = TopologicalAdjacencies::Create(counts, CreateAdjecencyList(dim, counts));
-      auto referenceShape = std::make_unique<ReferenceShape>(std::move(adjacencies));
+      auto referenceShape = std::make_unique<ReferenceShapeHyperCube>(std::move(adjacencies));
       return referenceShape;
    }
 
-   std::map<TopologyDimension, std::unique_ptr<IReferenceShape>> Shapes;
+   std::map<TopologyDimension, std::unique_ptr<IReferenceShapeHyperCube>> Shapes;
 }
 
-const IReferenceShape& ReferenceShapeHyperCube::Get(TopologyDimension dim)
+const IReferenceShapeHyperCube& ReferenceShapeHyperCube::Get(TopologyDimension dim)
 {
    if (!Shapes.contains(dim))
    {

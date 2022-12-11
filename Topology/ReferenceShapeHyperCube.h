@@ -1,8 +1,8 @@
 #pragma once
 
-#include "IReferenceShape.h"
+#include "IReferenceShapeHyperCube.h"
 
 namespace ReferenceShapeHyperCube
 {
-   const IReferenceShape& Get(TopologyDimension dim);
+   const IReferenceShapeHyperCube& Get(TopologyDimension dim);
 }

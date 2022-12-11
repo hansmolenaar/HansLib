@@ -26,7 +26,6 @@ TEST(ReferenceShapeHyperCubeTest, Square)
    
 }
 
-
 TEST(ReferenceShapeHyperCubeTest, Cube)
 {
    const auto& cube = ReferenceShapeHyperCube::Get(TopologyDimensionDef::Volume);
@@ -38,7 +37,6 @@ TEST(ReferenceShapeHyperCubeTest, Cube)
    ASSERT_TRUE(adjacencies.isComplete());
    TopologyTest::TestIReferenceShape(cube);
 }
-
 
 TEST(ReferenceShapeHyperCubeTest, Tesseract)
 {

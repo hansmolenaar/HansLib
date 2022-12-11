@@ -143,6 +143,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="GridTopology.h" />
     <ClInclude Include="IReferenceShape.h" />
     <ClInclude Include="IReferenceShapeHyperCube.h" />
     <ClInclude Include="ITopologicalAdjacency.h" />
@@ -155,6 +156,7 @@
     <ClInclude Include="TopologyDimension.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="GridTopology.cpp" />
     <ClCompile Include="ITopologicalAdjacencies.cpp" />
     <ClCompile Include="ReferenceShape.cpp" />
     <ClCompile Include="ReferenceShapeHyperCube.cpp" />
