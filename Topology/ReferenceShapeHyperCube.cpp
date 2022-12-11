@@ -41,6 +41,30 @@ namespace
       return TopologicalAdjacency::Create(TopologyDimensionDef::Edge, edgeId, TopologyDimensionDef::Corner, 1 << dim, edgeMap);
    }
 
+   std::unique_ptr<ITopologicalAdjacency> CreateToEdge(const ITopologicalAdjacency& toCorner, const ITopologicalAdjacency& edgeToCorner, const std::vector<int>& counts)
+   {
+      Utilities::Assert(toCorner.getDimensionLow() == TopologyDimensionDef::Corner);
+      Utilities::Assert(toCorner.getDimensionHigh() > TopologyDimensionDef::Edge);
+      Utilities::Assert(edgeToCorner.getDimensionLow() == TopologyDimensionDef::Corner);
+      Utilities::Assert(edgeToCorner.getDimensionHigh() == TopologyDimensionDef::Edge);
+      std::map<int, std::vector<int>> toEdge;
+      for (auto id = 0; id < counts.at(toCorner.getDimensionHigh()); ++id)
+      {
+         toEdge.emplace(id, std::vector<int>{});
+         const auto& cornersInHigh = toCorner.getConnectedLowers(id);
+         std::set<int> corners;
+         corners.insert(cornersInHigh.begin(), cornersInHigh.end());
+         for (auto edgeId = 0; edgeId < counts.at(TopologyDimensionDef::Edge); ++edgeId)
+         {
+            const auto& edge2corner = edgeToCorner.getConnectedLowers(edgeId);
+            if (corners.contains(edge2corner.at(0)) && corners.contains(edge2corner.at(1)))
+            {
+               toEdge.at(id).push_back(edgeId);
+            }
+         }
+      }
+      return TopologicalAdjacency::Create(toCorner.getDimensionHigh(), counts.at(toCorner.getDimensionHigh()), TopologyDimensionDef::Edge, counts.at(TopologyDimensionDef::Edge), toEdge);
+   }
 
    std::unique_ptr<ITopologicalAdjacency> CreateHyperFace2Corner(TopologyDimension dim)
    {
@@ -87,7 +111,11 @@ namespace
       if (dim <= TopologyDimensionDef::Volume)
       {
          adjacencyList.emplace_back(CreateHyperFace2Corner(dim));
+         const auto hf2c = adjacencyList.size() - 1;
          if (dim == TopologyDimensionDef::Face) return adjacencyList;
+         adjacencyList.emplace_back(CreateEdge2Corner(dim));
+         const auto e2c = adjacencyList.size() - 1;
+         adjacencyList.emplace_back(CreateToEdge(*adjacencyList.at(hf2c), *adjacencyList.at(e2c), counts));
       }
       return adjacencyList;
    }

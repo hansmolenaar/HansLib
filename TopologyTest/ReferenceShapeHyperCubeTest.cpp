@@ -35,7 +35,7 @@ TEST(ReferenceShapeHyperCubeTest, Cube)
    ASSERT_EQ(adjacencies.getCountSafe(TopologyDimensionDef::Corner), 8);
    ASSERT_EQ(adjacencies.getCountSafe(TopologyDimensionDef::Edge), 12);
    ASSERT_EQ(adjacencies.getCountSafe(TopologyDimensionDef::Face), 6);
-   //ASSERT_TRUE(adjacencies.isComplete());
+   ASSERT_TRUE(adjacencies.isComplete());
    TopologyTest::TestIReferenceShape(cube);
 }
 
