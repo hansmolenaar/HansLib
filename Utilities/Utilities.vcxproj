@@ -166,7 +166,6 @@
     <ClCompile Include="BoolContainer.cpp" />
     <ClCompile Include="EigenValueSolverSym2x2.cpp" />
     <ClCompile Include="EigenValueSolverSym3x3.cpp" />
-    <ClCompile Include="Factorial.cpp" />
     <ClCompile Include="IndexerSymmetric.cpp" />
     <ClCompile Include="Plotting.cpp" />
   </ItemGroup>
