@@ -33,14 +33,14 @@ GridTopology::GridTopology(const std::vector<int>& cellDimensions) :
          for (auto c : crnrMultiplet)
          {
             cellMultiplet.at(pos) += crnrMultiplet.at(pos);
-            const auto crnrId = cornerInCellIndexer.toFlat(cellMultiplet);
+            const auto crnrId = cornerIndexer.toFlat(cellMultiplet);
             cellMultiplet.at(pos) -= crnrMultiplet.at(pos);
             cellToCorner.at(cellId).push_back(crnrId);
          }
       }
    }
    std::map<TopologyDimension, int> counts{
-      {TopologyDimensionDef::Corner, cornerInCellIndexer.getFlatSize()},
+      {TopologyDimensionDef::Corner, cornerIndexer.getFlatSize()},
       { m_shape.getAdjacencies().getMaxTopologyDimension(),numCells} };
    std::vector<std::unique_ptr<ITopologicalAdjacency>> adjacenciesList;
    adjacenciesList.emplace_back(TopologicalAdjacency::Create(maxdim, numCells, TopologyDimensionDef::Corner, numCorners, cellToCorner));

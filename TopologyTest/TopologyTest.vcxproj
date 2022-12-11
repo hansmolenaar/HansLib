@@ -33,6 +33,7 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <ItemGroup>
+    <ClCompile Include="GridTopologyTest.cpp" />
     <ClCompile Include="ITopologicalAdjacenciesTest.cpp" />
     <ClCompile Include="ReferenceShapeHyperCubeTest.cpp" />
     <ClCompile Include="ReferenceShapeNodeTest.cpp" />

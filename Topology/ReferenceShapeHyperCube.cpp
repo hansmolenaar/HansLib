@@ -11,9 +11,13 @@
 
 namespace
 {
-   class ReferenceShapeHyperCube : public IReferenceShapeHyperCube
+   class ReferenceShapeHyperCubeImpl : public IReferenceShapeHyperCube
    {
-
+   public:
+      ReferenceShapeHyperCubeImpl(std::unique_ptr<ITopologicalAdjacencies>&& adjacencies) : m_shape(std::make_unique<ReferenceShape>(std::move(adjacencies))) {}
+      const ITopologicalAdjacencies& getAdjacencies() const override { return m_shape->getAdjacencies(); }
+   private:
+      std::unique_ptr<ReferenceShape> m_shape;
    };
 
    std::unique_ptr<ITopologicalAdjacency> CreateEdge2Corner(TopologyDimension dim)
@@ -133,7 +137,7 @@ namespace
       }
 
       auto adjacencies = TopologicalAdjacencies::Create(counts, CreateAdjecencyList(dim, counts));
-      auto referenceShape = std::make_unique<ReferenceShapeHyperCube>(std::move(adjacencies));
+      std::unique_ptr<IReferenceShapeHyperCube> referenceShape = std::make_unique<ReferenceShapeHyperCubeImpl>(std::move(adjacencies));
       return referenceShape;
    }
 
