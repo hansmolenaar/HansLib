@@ -9,6 +9,7 @@ TEST(ReferenceShapeHyperCubeTest, Edge)
    const auto& adjacencies = edge.getAdjacencies();
    ASSERT_EQ(adjacencies.getMaxTopologyDimension(), TopologyDimensionDef::Edge);
    ASSERT_EQ(adjacencies.getCountSafe(TopologyDimensionDef::Corner), 2);
+   ASSERT_TRUE(adjacencies.isComplete());
    TopologyTest::TestIReferenceShape(edge);
 }
 
@@ -20,7 +21,9 @@ TEST(ReferenceShapeHyperCubeTest, Square)
    ASSERT_EQ(adjacencies.getMaxTopologyDimension(), TopologyDimensionDef::Face);
    ASSERT_EQ(adjacencies.getCountSafe(TopologyDimensionDef::Corner), 4);
    ASSERT_EQ(adjacencies.getCountSafe(TopologyDimensionDef::Edge), 4);
+   ASSERT_TRUE(adjacencies.isComplete());
    TopologyTest::TestIReferenceShape(square);
+   
 }
 
 
@@ -32,6 +35,7 @@ TEST(ReferenceShapeHyperCubeTest, Cube)
    ASSERT_EQ(adjacencies.getCountSafe(TopologyDimensionDef::Corner), 8);
    ASSERT_EQ(adjacencies.getCountSafe(TopologyDimensionDef::Edge), 12);
    ASSERT_EQ(adjacencies.getCountSafe(TopologyDimensionDef::Face), 6);
+   //ASSERT_TRUE(adjacencies.isComplete());
    TopologyTest::TestIReferenceShape(cube);
 }
 
@@ -45,6 +49,7 @@ TEST(ReferenceShapeHyperCubeTest, Tesseract)
    ASSERT_EQ(adjacencies.getCountSafe(TopologyDimensionDef::Edge), 32);
    ASSERT_EQ(adjacencies.getCountSafe(TopologyDimensionDef::Face), 24);
    ASSERT_EQ(adjacencies.getCountSafe(TopologyDimensionDef::Volume), 8);
+   ASSERT_FALSE(adjacencies.isComplete());
    TopologyTest::TestIReferenceShape(tesseract);
 }
 

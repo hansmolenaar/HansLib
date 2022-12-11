@@ -12,6 +12,7 @@ class TopologicalAdjacencies : public ITopologicalAdjacencies
 {
 public:
    static std::unique_ptr<TopologicalAdjacencies> Create(const std::vector<int>&, std::vector<std::unique_ptr<ITopologicalAdjacency>>&&);
+   static std::unique_ptr<TopologicalAdjacencies> CreateWithPartialCounts(TopologyDimension, std::map<TopologyDimension, int>&&, std::vector<std::unique_ptr<ITopologicalAdjacency>>&&);
 
    TopologyDimension getMaxTopologyDimension() const override;
    std::pair<bool, int> getCount(TopologyDimension dim) const override;

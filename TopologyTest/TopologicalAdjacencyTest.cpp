@@ -53,7 +53,6 @@ TEST(TopologicalAdjacencyTest, error5)
    ASSERT_ANY_THROW(TopologicalAdjacency::Create(TopologyDimensionDef::Edge, 1, TopologyDimensionDef::Corner, 2, std::map<int, std::vector<int>>{ {1, std::vector<int>{0, 1}} }));
 }
 
-
 TEST(TopologicalAdjacencyTest, error6)
 {
    ASSERT_ANY_THROW(TopologicalAdjacency::Create(TopologyDimensionDef::Edge, 1, TopologyDimensionDef::Corner, 2, std::map<int, std::vector<int>>{ {0, std::vector<int>{0, 2}} }));

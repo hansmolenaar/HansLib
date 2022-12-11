@@ -18,5 +18,9 @@ public:
    // Adjacency need not be available
    virtual std::pair<bool, const ITopologicalAdjacency*> getAdjacency(TopologyDimension dim1, TopologyDimension dim2) const = 0;
 
+   // Throws if not available, or dim > getMaxTopologyDimension()
    int getCountSafe(TopologyDimension dim) const;
+
+   // counts and all adjacencies are available
+   bool isComplete() const;
 };

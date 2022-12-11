@@ -1,5 +1,6 @@
 #include "TopologicalAdjacency.h"
 #include "Utilities/Iota.h"
+#include "Utilities/Assert.h"
 
 #include <algorithm>
 
@@ -41,11 +42,13 @@ TopologyDimension TopologicalAdjacency::getDimensionHigh() const
 
 const std::vector<int> TopologicalAdjacency::getConnectedLowers(int posHi) const
 {
+   Utilities::Assert(m_high_2_low.contains(posHi));
    return m_high_2_low.at(posHi);
 }
 
 const std::vector<int> TopologicalAdjacency::getConnectedHighers(int posLo) const
 {
+   Utilities::Assert(m_low_2_high.contains(posLo));
    return m_low_2_high.at(posLo);
 }
 

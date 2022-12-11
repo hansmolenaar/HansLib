@@ -16,11 +16,11 @@ namespace
       if (e2c.getDimensionHigh() != TopologyDimensionDef::Edge) throw MyException("CheckEdge2Corner high dime");
    }
 
-   void CheckInputAdjacency(TopologyDimension maxDim, const std::vector<int>& count, const ITopologicalAdjacency& adjacency)
+   void CheckInputAdjacency(TopologyDimension maxDim, const std::map<TopologyDimension, int>& count, const ITopologicalAdjacency& adjacency)
    {
       BoundsCheck<TopologyDimension>::CreateUpperBound(maxDim)(adjacency.getDimensionHigh());
-      const int countLo = count.at(static_cast<size_t>(adjacency.getDimensionLow()));
-      const int countHi = count.at(static_cast<size_t>(adjacency.getDimensionHigh()));
+      const int countLo = count.at(adjacency.getDimensionLow());
+      const int countHi = count.at(adjacency.getDimensionHigh());
       const auto checkLo = BoundsCheck<int>::Create(0, countLo - 1);
       const auto checkHi = BoundsCheck<int>::Create(0, countHi - 1);
       for (int lo = 0; lo < countLo; ++lo)
@@ -47,6 +47,7 @@ TopologicalAdjacencies::TopologicalAdjacencies(std::map<TopologyDimension, int>&
 
 std::unique_ptr<TopologicalAdjacencies> TopologicalAdjacencies::Create(const std::vector<int>& count, std::vector<std::unique_ptr<ITopologicalAdjacency>>&& adjacencies)
 {
+   Utilities::Assert(!count.empty());
    std::map<TopologyDimension, int> countMap;
 
    TopologyDimension tdim = TopologyDimensionDef::Corner;
@@ -56,14 +57,30 @@ std::unique_ptr<TopologicalAdjacencies> TopologicalAdjacencies::Create(const std
       countMap.emplace(tdim, c);
       ++tdim;
    }
+   const TopologyDimension maxDimension = static_cast<TopologyDimension>(count.size() - 1);
+   return CreateWithPartialCounts(maxDimension, std::move(countMap), std::move(adjacencies));
+}
 
-   const TopologyDimension maxDimension = static_cast<TopologyDimension>(count.size());
+std::unique_ptr<TopologicalAdjacencies> TopologicalAdjacencies::CreateWithPartialCounts(
+   const TopologyDimension maxDim,
+   std::map<TopologyDimension, int>&& countMap,
+   std::vector<std::unique_ptr<ITopologicalAdjacency>>&& adjacencies)
+{
+   // Want to know something
+   Utilities::Assert(!countMap.empty());
+   Utilities::Assert(countMap.begin()->first == TopologyDimensionDef::Corner);
+   Utilities::Assert(countMap.rbegin()->first == maxDim);
+   for (auto& itr : countMap)
+   {
+      IsPositive(itr.second);
+   }
+
    AdjacencyMap adjacencyMap;
    for (auto& adj : adjacencies)
    {
       const auto pair = std::make_pair(adj->getDimensionLow(), adj->getDimensionHigh());
       Utilities::Assert(!adjacencyMap.contains(pair));
-      CheckInputAdjacency(maxDimension, count, *adj);
+      CheckInputAdjacency(maxDim, countMap, *adj);
       adjacencyMap.emplace(pair, std::move(adj));
    }
    return std::unique_ptr<TopologicalAdjacencies>(new TopologicalAdjacencies(std::move(countMap), std::move(adjacencyMap)));
