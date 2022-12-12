@@ -10,4 +10,4 @@
 
 namespace str = std::ranges;
 
-using PointIndex = int;
+using PointIndex = size_t;

@@ -2,7 +2,6 @@
 
 #include "Utilities/Assert.h"
 #include "Utilities/BoundsCheck.h"
-
 #include "Utilities//Defines.h"
 
 template <typename T>
