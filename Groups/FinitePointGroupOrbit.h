@@ -9,7 +9,7 @@ class FinitePointGroupOrbit : public IUniquePointCollection<double, N>
 {
 public:
    FinitePointGroupOrbit(const IFinitePointGroupAction<N>&, const Point<double, N>&, const IGeometryPredicate<double, N>&);
-   Point<double, N> getPoint(int) const override;
+   Point<double, N> getPoint(PointIndex) const override;
    int getNumPoints() const override;
    std::tuple<bool, int>  tryGetClosePoint(const Point<double, N>&) const override;
    const IGeometryPredicate<double, N>& getGeometryPredicate() const override;
@@ -41,7 +41,7 @@ const IGeometryPredicate<double, N>& FinitePointGroupOrbit<N>::getGeometryPredic
 }
 
 template<int N>
-Point<double, N> FinitePointGroupOrbit<N>::getPoint(int n) const
+Point<double, N> FinitePointGroupOrbit<N>::getPoint(PointIndex n) const
 {
    return m_uniquePoints.at(n);
 }

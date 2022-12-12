@@ -9,3 +9,5 @@
 #include <numeric>
 
 namespace str = std::ranges;
+
+using PointIndex = int;

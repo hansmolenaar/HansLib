@@ -7,6 +7,7 @@ class IPointCollection
 {
 public:
    ~IPointCollection() = default;
-   virtual Point<T, N> getPoint(int) const = 0;
+
+   virtual Point<T, N> getPoint(PointIndex) const = 0;
    virtual int getNumPoints() const = 0;
 };
