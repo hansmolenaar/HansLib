@@ -27,3 +27,19 @@ TEST(TartanGridTest, 2D)
    ASSERT_EQ(grid.getCellIndexer().getFlatSize(), 6);
    ASSERT_EQ(grid.getPointIndexer().getFlatSize(), 12);
 }
+
+
+TEST(TartanGridTest, locate1D)
+{
+   auto coordinates = std::vector<std::vector<int>>{ std::vector<int> {0, 1, 3, 5 } };
+   const TartanGrid<int, 1> grid(std::move(coordinates));
+   ASSERT_EQ(grid.locatePointInCell(IntPoint1{ 0 }), 0);
+   ASSERT_EQ(grid.locatePointInCell(IntPoint1{ 1 }), 0);
+   ASSERT_EQ(grid.locatePointInCell(IntPoint1{ 2 }), 1);
+   ASSERT_EQ(grid.locatePointInCell(IntPoint1{ 3 }), 1);
+   ASSERT_EQ(grid.locatePointInCell(IntPoint1{ 4 }), 2);
+   ASSERT_EQ(grid.locatePointInCell(IntPoint1{ 5 }), 2);
+
+   ASSERT_EQ(grid.locatePointInCell(IntPoint1{ -1 }), PointIndexInvalied);
+   ASSERT_EQ(grid.locatePointInCell(IntPoint1{ 6 }), PointIndexInvalied);
+}

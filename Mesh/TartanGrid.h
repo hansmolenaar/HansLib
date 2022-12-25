@@ -5,6 +5,8 @@
 #include "Utilities/MultiIndex.h"
 #include "Utilities/MyException.h"
 
+#include <span>
+
 template<typename T, int N>
 class TartanGrid : public IMesh<T, N>, IPointCollection<T, N>
 {
@@ -20,6 +22,10 @@ public:
    const MultiIndex<PointIndex>& getPointIndexer() const;
    const MultiIndex<CellIndex>& getCellIndexer() const;
 
+   // Return CellIndexInvalied if not found
+   // Return first in lexicographical order if multiple matches
+   CellIndex locatePointInCell(const Point<T, N>&) const;
+
 private:
    static MultiIndex<CellIndex> CreateCellIndexer(const MultiIndex<PointIndex>&);
    static MultiIndex<PointIndex> CreateMultiIndex(const std::vector<std::vector<T>>& coordinates);
@@ -29,7 +35,7 @@ private:
    std::unique_ptr<GridTopology> m_topology;
    MultiIndex<PointIndex> m_multiIndexPoint;
    MultiIndex<CellIndex> m_multiIndexCell;
-   
+
 };
 
 template<typename T, int N>
@@ -54,7 +60,7 @@ template<typename T, int N>
 std::unique_ptr<GridTopology> TartanGrid<T, N>::CreateTopology(const std::vector<std::vector<T>>& coordinates)
 {
    std::vector<int> dimensions(coordinates.size());
-   str::transform(coordinates, dimensions.begin(), [](const auto& d) {return static_cast<int>(d.size()-1); });
+   str::transform(coordinates, dimensions.begin(), [](const auto& d) {return static_cast<int>(d.size() - 1); });
    return std::make_unique<GridTopology>(dimensions);
 }
 
@@ -65,7 +71,7 @@ TartanGrid<T, N>::TartanGrid(std::vector<std::vector<T>>&& coordinates) :
    m_topology(CreateTopology(m_coordinates)),
    m_multiIndexPoint(CreateMultiIndex(m_coordinates)),
    m_multiIndexCell(CreateCellIndexer(m_multiIndexPoint))
-   
+
 {}
 
 template<typename T, int N>
@@ -102,4 +108,25 @@ template<typename T, int N>
 const MultiIndex<CellIndex>& TartanGrid<T, N>::getCellIndexer() const
 {
    return m_multiIndexCell;
+}
+
+template<typename T, int N>
+CellIndex TartanGrid<T, N>::locatePointInCell(const Point<T, N>& point) const
+{
+   std::array<PointIndex, N> position;
+   for (int n = 0; n < N; ++n)
+   {
+      if (point[n] < m_coordinates.at(n).front()) return PointIndexInvalied;
+      if (point[n] > m_coordinates.at(n).back()) return PointIndexInvalied;
+      if (point[n] == m_coordinates.at(n).front())
+      {
+         position[n] = 0;
+      }
+      else
+      {
+         const auto found = std::lower_bound(m_coordinates.at(n).begin(), m_coordinates.at(n).end(), point[n]);
+         position[n] = std::distance(m_coordinates.at(n).begin(), found) - 1;
+      }
+   }
+   return m_multiIndexCell.ToFlat(std::span<const PointIndex>(position));
 }

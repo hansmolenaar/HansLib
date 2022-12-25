@@ -3,6 +3,7 @@
 #include "Utilities/Assert.h"
 #include "Utilities/BoundsCheck.h"
 #include "Utilities//Defines.h"
+#include <span>
 
 template <typename T>
 class MultiIndex
@@ -16,6 +17,7 @@ public:
    T at(size_t) const;
    std::vector<T> toMultiplet(T) const;
    T toFlat(const std::vector<T>&) const;
+   T ToFlat(std::span<const T>) const;
 
 private:
    explicit  MultiIndex(std::vector<T> dimensions);
@@ -44,7 +46,7 @@ MultiIndex<T>::MultiIndex(std::vector<T> dimensions) :
       m_flatLength *= d;
    }
    checker.check(m_flatLength);
-   m_checkFlat = BoundsCheck<T>::Create(0, m_flatLength-1);
+   m_checkFlat = BoundsCheck<T>::Create(0, m_flatLength - 1);
 }
 
 template <typename T>
@@ -92,6 +94,24 @@ std::vector<T> MultiIndex<T>::toMultiplet(T flat) const
 
 template <typename T>
 T MultiIndex<T>::toFlat(const std::vector<T>& multiplet) const
+{
+   Utilities::Assert(multiplet.size() == getNumDimensions());
+   T result = 0;
+   size_t count = 0;
+   for (auto indx : multiplet)
+   {
+      m_checkIndex.at(count).check(indx);
+      result += indx * m_factors[count];
+      ++count;
+   }
+
+   return result;
+}
+
+
+// TODO multiple coding
+template <typename T>
+T MultiIndex<T>::ToFlat(std::span<const T> multiplet) const
 {
    Utilities::Assert(multiplet.size() == getNumDimensions());
    T result = 0;
