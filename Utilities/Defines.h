@@ -12,6 +12,6 @@
 namespace str = std::ranges;
 
 using PointIndex = size_t;
-inline constexpr PointIndex PointIndexInvalied = std::numeric_limits<size_t>::max();
+inline constexpr PointIndex PointIndexInvalid = std::numeric_limits<size_t>::max();
 using CellIndex = size_t;
-inline constexpr CellIndex CellIndexInvalied = std::numeric_limits<size_t>::max();
+inline constexpr CellIndex CellIndexInvalid = std::numeric_limits<size_t>::max();

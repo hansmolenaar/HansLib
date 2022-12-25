@@ -116,8 +116,8 @@ CellIndex TartanGrid<T, N>::locatePointInCell(const Point<T, N>& point) const
    std::array<PointIndex, N> position;
    for (int n = 0; n < N; ++n)
    {
-      if (point[n] < m_coordinates.at(n).front()) return PointIndexInvalied;
-      if (point[n] > m_coordinates.at(n).back()) return PointIndexInvalied;
+      if (point[n] < m_coordinates.at(n).front()) return PointIndexInvalid;
+      if (point[n] > m_coordinates.at(n).back()) return PointIndexInvalid;
       if (point[n] == m_coordinates.at(n).front())
       {
          position[n] = 0;

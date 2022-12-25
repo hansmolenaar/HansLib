@@ -6,7 +6,7 @@
 TEST(TartanGridTest, 1D)
 {
    auto coordinates = std::vector<std::vector<double>>{ std::vector<double > {2, 3, 4 } };
-   const TartanGrid<double,1> grid(std::move(coordinates));
+   const TartanGrid<double, 1> grid(std::move(coordinates));
    ASSERT_EQ(grid.getNumPoints(), 3);
    ASSERT_EQ(grid.getPointIndexer().getFlatSize(), 3);
    ASSERT_EQ(grid.getTopology().getMaxTopologyDimension(), TopologyDimensionDef::Edge);
@@ -40,6 +40,20 @@ TEST(TartanGridTest, locate1D)
    ASSERT_EQ(grid.locatePointInCell(IntPoint1{ 4 }), 2);
    ASSERT_EQ(grid.locatePointInCell(IntPoint1{ 5 }), 2);
 
-   ASSERT_EQ(grid.locatePointInCell(IntPoint1{ -1 }), PointIndexInvalied);
-   ASSERT_EQ(grid.locatePointInCell(IntPoint1{ 6 }), PointIndexInvalied);
+   ASSERT_EQ(grid.locatePointInCell(IntPoint1{ -1 }), PointIndexInvalid);
+   ASSERT_EQ(grid.locatePointInCell(IntPoint1{ 6 }), PointIndexInvalid);
+}
+
+
+TEST(TartanGridTest, locate2D)
+{
+   auto coordinates = std::vector<std::vector<int>>{ std::vector<int> {0, 1, 3, 5 }, std::vector<int>{1,3,9} };
+   const TartanGrid<int, 2> grid(std::move(coordinates));
+   ASSERT_EQ(grid.locatePointInCell(IntPoint2{ 0,1 }), 0);
+   ASSERT_EQ(grid.locatePointInCell(IntPoint2{ 0,3 }), 0);
+   ASSERT_EQ(grid.locatePointInCell(IntPoint2{ 4, 8 }), 5);
+   ASSERT_EQ(grid.locatePointInCell(IntPoint2{ 5, 9 }), 5);
+   ASSERT_EQ(grid.locatePointInCell(IntPoint2{ 2, 2 }), 1);
+   ASSERT_EQ(grid.locatePointInCell(IntPoint2{ 0, 5 }), 3);
+   ASSERT_EQ(grid.locatePointInCell(IntPoint2{ 2, 5 }), 4);
 }
