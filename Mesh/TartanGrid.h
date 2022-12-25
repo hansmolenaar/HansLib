@@ -128,5 +128,5 @@ CellIndex TartanGrid<T, N>::locatePointInCell(const Point<T, N>& point) const
          position[n] = std::distance(m_coordinates.at(n).begin(), found) - 1;
       }
    }
-   return m_multiIndexCell.ToFlat(std::span<const PointIndex>(position));
+   return m_multiIndexCell.toFlat(position);
 }

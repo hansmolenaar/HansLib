@@ -16,8 +16,7 @@ public:
    T getFlatSize() const;
    T at(size_t) const;
    std::vector<T> toMultiplet(T) const;
-   T toFlat(const std::vector<T>&) const;
-   T ToFlat(std::span<const T>) const;
+   T toFlat(std::span<const T>) const;
 
 private:
    explicit  MultiIndex(std::vector<T> dimensions);
@@ -92,26 +91,9 @@ std::vector<T> MultiIndex<T>::toMultiplet(T flat) const
    return result;
 }
 
+
 template <typename T>
-T MultiIndex<T>::toFlat(const std::vector<T>& multiplet) const
-{
-   Utilities::Assert(multiplet.size() == getNumDimensions());
-   T result = 0;
-   size_t count = 0;
-   for (auto indx : multiplet)
-   {
-      m_checkIndex.at(count).check(indx);
-      result += indx * m_factors[count];
-      ++count;
-   }
-
-   return result;
-}
-
-
-// TODO multiple coding
-template <typename T>
-T MultiIndex<T>::ToFlat(std::span<const T> multiplet) const
+T MultiIndex<T>::toFlat(std::span<const T> multiplet) const
 {
    Utilities::Assert(multiplet.size() == getNumDimensions());
    T result = 0;
