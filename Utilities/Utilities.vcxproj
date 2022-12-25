@@ -152,6 +152,7 @@
     <ClInclude Include="EigenValueSolverSym2x2.h" />
     <ClInclude Include="EigenValueSolverSym3x3.h" />
     <ClInclude Include="Factorial.h" />
+    <ClInclude Include="Functors.h" />
     <ClInclude Include="IIndexer.h" />
     <ClInclude Include="IndexerRowMajor.h" />
     <ClInclude Include="IndexerSymmetric.h" />

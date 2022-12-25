@@ -41,6 +41,7 @@
     <ClCompile Include="BoolContainerTest.cpp" />
     <ClCompile Include="BoundsCheckTest.cpp" />
     <ClCompile Include="FactorialTest.cpp" />
+    <ClCompile Include="FunctorTest.cpp" />
     <ClCompile Include="IndexerRowMajorTest.cpp" />
     <ClCompile Include="IndexerSymmetricTest.cpp" />
     <ClCompile Include="MultiIndexTest.cpp" />

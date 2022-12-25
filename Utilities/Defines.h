@@ -11,3 +11,4 @@
 namespace str = std::ranges;
 
 using PointIndex = size_t;
+using CellIndex = size_t;

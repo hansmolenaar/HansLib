@@ -29,16 +29,14 @@ GridTopology::GridTopology(const std::vector<int>& cellDimensions) :
       for (int crnr = 0; crnr < numCornersInCell; ++crnr)
       {
          const auto crnrMultiplet = cornerInCellIndexer.toMultiplet(crnr);
-         size_t pos = 0;
-         for (auto c : crnrMultiplet)
-         {
-            cellMultiplet.at(pos) += crnrMultiplet.at(pos);
-            const auto crnrId = cornerIndexer.toFlat(cellMultiplet);
-            cellMultiplet.at(pos) -= crnrMultiplet.at(pos);
-            cellToCorner.at(cellId).push_back(crnrId);
-         }
+         str::transform(cellMultiplet, crnrMultiplet, cellMultiplet.begin(), std::plus());
+         const auto crnrId = cornerIndexer.toFlat(cellMultiplet);
+         // Restore
+         str::transform(cellMultiplet, crnrMultiplet, cellMultiplet.begin(), std::minus());
+         cellToCorner.at(cellId).push_back(crnrId);
       }
    }
+
    std::map<TopologyDimension, int> counts{
       {TopologyDimensionDef::Corner, cornerIndexer.getFlatSize()},
       { m_shape.getAdjacencies().getMaxTopologyDimension(),numCells} };
