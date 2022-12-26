@@ -10,6 +10,9 @@ public:
    const std::vector<size_t> getLevel() const;
    const std::vector<size_t> getIndex() const;
 
+   size_t getL1NormLevel() const;
+   size_t getSupNormLevel() const;
+
 private:
    std::vector<size_t> m_level;
    std::vector<size_t> m_index;
