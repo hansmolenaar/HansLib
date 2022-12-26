@@ -21,12 +21,23 @@
   <ItemGroup>
     <ClInclude Include="ChebyshevPoints.h" />
     <ClInclude Include="EquidistantPoints.h" />
+    <ClInclude Include="HierarchicalBasisFunction1D.h" />
+    <ClInclude Include="HierarchicalMultiIndex.h" />
     <ClInclude Include="LagrangeInterpolation.h" />
+    <ClInclude Include="NodalBasis1D.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ChebyshevPoints.cpp" />
     <ClCompile Include="EquidistantPoints.cpp" />
+    <ClCompile Include="HierarchicalBasisFunction1D.cpp" />
+    <ClCompile Include="HierarchicalMultiIndex.cpp" />
     <ClCompile Include="LagrangeInterpolation.cpp" />
+    <ClCompile Include="NodalBasis1D.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Mesh\Mesh.vcxproj">
+      <Project>{7ce9e558-f8f6-464d-ba33-8f82a73ac8e5}</Project>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

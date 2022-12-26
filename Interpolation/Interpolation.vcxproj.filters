@@ -24,6 +24,15 @@
     <ClInclude Include="ChebyshevPoints.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="NodalBasis1D.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HierarchicalMultiIndex.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HierarchicalBasisFunction1D.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="LagrangeInterpolation.cpp">
@@ -33,6 +42,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ChebyshevPoints.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NodalBasis1D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="HierarchicalMultiIndex.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="HierarchicalBasisFunction1D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

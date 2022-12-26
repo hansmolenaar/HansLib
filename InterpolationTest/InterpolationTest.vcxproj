@@ -42,11 +42,19 @@
     <ProjectReference Include="..\Interpolation\Interpolation.vcxproj">
       <Project>{7cae9120-d61e-4c01-bd91-0af520784227}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\Mesh\Mesh.vcxproj">
+      <Project>{7ce9e558-f8f6-464d-ba33-8f82a73ac8e5}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Topology\Topology.vcxproj">
+      <Project>{2fa0689d-ec40-4dc8-8358-eb63ab3f4266}</Project>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ChebyshevPointsTest.cpp" />
     <ClCompile Include="EquidistantPointsTest.cpp" />
+    <ClCompile Include="HierarchicalBasisFunction1DTest.cpp" />
     <ClCompile Include="LagrangeInterpolationTest.cpp" />
+    <ClCompile Include="NodalBasis1DTest.cpp" />
   </ItemGroup>
   <ItemDefinitionGroup />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
