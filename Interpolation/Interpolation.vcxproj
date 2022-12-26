@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClInclude Include="ChebyshevPoints.h" />
     <ClInclude Include="EquidistantPoints.h" />
+    <ClInclude Include="HierarchicalBasisFunction.h" />
     <ClInclude Include="HierarchicalBasisFunction1D.h" />
     <ClInclude Include="HierarchicalMultiIndex.h" />
     <ClInclude Include="LagrangeInterpolation.h" />
@@ -29,6 +30,7 @@
   <ItemGroup>
     <ClCompile Include="ChebyshevPoints.cpp" />
     <ClCompile Include="EquidistantPoints.cpp" />
+    <ClCompile Include="HierarchicalBasisFunction.cpp" />
     <ClCompile Include="HierarchicalBasisFunction1D.cpp" />
     <ClCompile Include="HierarchicalMultiIndex.cpp" />
     <ClCompile Include="LagrangeInterpolation.cpp" />

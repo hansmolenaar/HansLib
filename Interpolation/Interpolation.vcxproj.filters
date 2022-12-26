@@ -33,6 +33,9 @@
     <ClInclude Include="HierarchicalBasisFunction1D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="HierarchicalBasisFunction.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="LagrangeInterpolation.cpp">
@@ -51,6 +54,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="HierarchicalBasisFunction1D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="HierarchicalBasisFunction.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
