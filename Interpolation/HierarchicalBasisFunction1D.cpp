@@ -17,7 +17,7 @@ void HierarchicalBasisFunction1D::CheckLevelIndex(size_t level, size_t index)
 {
    if (level == 0)
    {
-      if (level > 1) throw MyException("HierarchicalMultiIndex CheckIndex level=" + std::to_string(level) + " index=" + std::to_string(index));
+      if (index > 1) throw MyException("HierarchicalMultiIndex CheckIndex level=" + std::to_string(level) + " index=" + std::to_string(index));
       return;
    }
 

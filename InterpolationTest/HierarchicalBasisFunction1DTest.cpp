@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "Interpolation/HierarchicalBasisFunction1D.h"
+#include "Utilities/MyException.h"
 
 inline constexpr double Epsilon = 1.0e-10;
 
@@ -84,6 +85,18 @@ TEST(HierarchicalBasisFunction1D, Basis_3_5)
    ASSERT_NEAR(fie.evaluate(5.5 / 8.0), 0.5, Epsilon);
    ASSERT_NEAR(fie.evaluate(6.0 / 8.0), 0.0, Epsilon);
    ASSERT_NEAR(fie.evaluate(1.0), 0.0, Epsilon);
+}
+
+
+TEST(HierarchicalBasisFunction1D, CheckLevelIndex)
+{
+   ASSERT_THROW(HierarchicalBasisFunction1D::CheckLevelIndex(0, 2), MyException);
+   ASSERT_NO_THROW(HierarchicalBasisFunction1D::CheckLevelIndex(1, 2));
+   ASSERT_THROW(HierarchicalBasisFunction1D::CheckLevelIndex(1, 3), MyException);
+   ASSERT_NO_THROW(HierarchicalBasisFunction1D::CheckLevelIndex(2, 4));
+   ASSERT_THROW(HierarchicalBasisFunction1D::CheckLevelIndex(2, 5), MyException);
+   ASSERT_NO_THROW(HierarchicalBasisFunction1D::CheckLevelIndex(3, 8));
+   ASSERT_THROW(HierarchicalBasisFunction1D::CheckLevelIndex(3, 9), MyException);
 }
 
 
