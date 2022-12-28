@@ -39,6 +39,12 @@
     <ClInclude Include="HierarchicalLevelIndex.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="HierarchicalApproximationFunction.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HierarchicalApproximation1D.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="LagrangeInterpolation.cpp">
@@ -63,6 +69,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="HierarchicalLevelIndex.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="HierarchicalApproximationFunction.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="HierarchicalApproximation1D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

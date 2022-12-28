@@ -52,6 +52,8 @@
   <ItemGroup>
     <ClCompile Include="ChebyshevPointsTest.cpp" />
     <ClCompile Include="EquidistantPointsTest.cpp" />
+    <ClCompile Include="HierarchicalApproximation1DTest.cpp" />
+    <ClCompile Include="HierarchicalApproximationFunctionTest.cpp" />
     <ClCompile Include="HierarchicalBasisFunction1DTest.cpp" />
     <ClCompile Include="HierarchicalBasisFunctionTest.cpp" />
     <ClCompile Include="HierarchicalLevelIndexTest.cpp" />

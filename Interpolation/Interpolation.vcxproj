@@ -21,6 +21,8 @@
   <ItemGroup>
     <ClInclude Include="ChebyshevPoints.h" />
     <ClInclude Include="EquidistantPoints.h" />
+    <ClInclude Include="HierarchicalApproximation1D.h" />
+    <ClInclude Include="HierarchicalApproximationFunction.h" />
     <ClInclude Include="HierarchicalBasisFunction.h" />
     <ClInclude Include="HierarchicalBasisFunction1D.h" />
     <ClInclude Include="HierarchicalLevelIndex.h" />
@@ -31,6 +33,8 @@
   <ItemGroup>
     <ClCompile Include="ChebyshevPoints.cpp" />
     <ClCompile Include="EquidistantPoints.cpp" />
+    <ClCompile Include="HierarchicalApproximation1D.cpp" />
+    <ClCompile Include="HierarchicalApproximationFunction.cpp" />
     <ClCompile Include="HierarchicalBasisFunction.cpp" />
     <ClCompile Include="HierarchicalBasisFunction1D.cpp" />
     <ClCompile Include="HierarchicalLevelIndex.cpp" />
@@ -39,6 +43,9 @@
     <ClCompile Include="NodalBasis1D.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Functions\Functions.vcxproj">
+      <Project>{f795c850-01b9-4cbd-ba0a-94c8f230a240}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\Mesh\Mesh.vcxproj">
       <Project>{7ce9e558-f8f6-464d-ba33-8f82a73ac8e5}</Project>
     </ProjectReference>

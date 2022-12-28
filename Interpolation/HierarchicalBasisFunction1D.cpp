@@ -9,7 +9,7 @@ HierarchicalBasisFunction1D::HierarchicalBasisFunction1D(HierarchicalLevelIndex 
 {
 }
 
-double HierarchicalBasisFunction1D::evaluate(double x) const
+double HierarchicalBasisFunction1D::operator()(double x) const
 {
    if (x < 0.0) return 0;
    if (x > 1.0) return 0;

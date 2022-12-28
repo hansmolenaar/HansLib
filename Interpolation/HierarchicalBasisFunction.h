@@ -7,7 +7,7 @@ class HierarchicalBasisFunction
 {
 public:
    explicit HierarchicalBasisFunction(HierarchicalMultiIndex&&);
-   double evaluate(std::span<const double> x) const;
+   double operator()(std::span<const double> x) const;
    size_t getDimension() const;
 private:
    HierarchicalMultiIndex m_hierIndex;

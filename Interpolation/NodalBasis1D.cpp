@@ -3,22 +3,6 @@
 
 #include <cmath>
 
-#if false
-class NodalBasis1D : ISingleVariableRealValuedFunction
-{
-public:
-   NodalBasis1D(std::unique_ptr<TartanGrid<double, 1>>&&, std::vector<double>&&);
-   bool HasDerivative() const override;
-   bool DerivativeAlwaysZero(int eqn, int var) const override;
-
-   NodalBasis1D::double Derivative(double x)const override;
-   NodalBasis1D::bool IsNonConstant() const override;
-private:
-   std::unique_ptr<TartanGrid<double, 1>> m_grid;
-   std::vector<double> m_coefficients;
-};
-#endif
-
 NodalBasis1D::NodalBasis1D(std::unique_ptr<TartanGrid<double, 1>>&& grid, std::vector<double>&& coefficients) :
    m_grid(std::move(grid)), m_coefficients(std::move(coefficients))
 {}

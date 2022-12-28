@@ -7,7 +7,7 @@
 
 TEST(HierarchicalMultiIndex, Basics)
 {
-   const HierarchicalMultiIndex mi(std::vector<HierarchicalLevelIndex>{HierarchicalLevelIndex{ 2,1 }, HierarchicalLevelIndex{ 3,8 }});
+   const HierarchicalMultiIndex mi(std::vector<HierarchicalLevelIndex>{HierarchicalLevelIndex{ 2,1 }, HierarchicalLevelIndex{ 3,7 }});
    ASSERT_EQ(mi.getDimension(), 2);
 
    std::vector<size_t> expect{ 2,3 };
@@ -15,7 +15,7 @@ TEST(HierarchicalMultiIndex, Basics)
    str::transform(mi.get(), test.begin(), [](const HierarchicalLevelIndex& li) {return li.getLevel(); });
    ASSERT_TRUE(str::equal(test, expect));
 
-   expect = std::vector<size_t>{ 1,8 };
+   expect = std::vector<size_t>{ 1,7 };
    str::transform(mi.get(), test.begin(), [](const HierarchicalLevelIndex& li) {return li.getIndex(); });
    ASSERT_TRUE(str::equal(test, expect));
 
