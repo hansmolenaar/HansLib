@@ -11,7 +11,7 @@ HierarchicalMultiIndex::HierarchicalMultiIndex(std::vector<HierarchicalLevelInde
    Utilities::Assert(!m_levelsIndices.empty());
 }
 
-HierarchicalMultiIndex::HierarchicalMultiIndex(HierarchicalLevelIndex levelIndex) : 
+HierarchicalMultiIndex::HierarchicalMultiIndex(HierarchicalLevelIndex levelIndex) :
    m_levelsIndices(std::vector<HierarchicalLevelIndex>{levelIndex})
 {
 }
@@ -33,7 +33,5 @@ size_t HierarchicalMultiIndex::getL1NormLevel() const
 
 size_t HierarchicalMultiIndex::getSupNormLevel() const
 {
-   auto tmp1 = m_levelsIndices | std::views::transform([](const HierarchicalLevelIndex& li) {return li.getLevel(); });
-   auto tmp2 = std::ranges::max(tmp1);
-   return std::ranges::max(m_levelsIndices | std::views::transform([](const HierarchicalLevelIndex& li) {return li.getLevel(); }));
+   return str::max(m_levelsIndices | stv::transform([](const HierarchicalLevelIndex& li) {return li.getLevel(); }));
 }
