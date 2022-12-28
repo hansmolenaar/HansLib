@@ -21,6 +21,7 @@ public:
    size_t getDimension() const;
    bool isLeaf(const HierarchicalLevelIndex&) const;
    double getMaxSurplus() const;
+   size_t numLeaves() const;
 private:
    HierarchicalApproximation1D() = default;
    std::map<HierarchicalLevelIndex, ValueSurplus> m_functions;

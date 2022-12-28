@@ -68,7 +68,7 @@ TEST(HierarchicalApproximation1DTest, isleaf)
 
 
 
-TEST(HierarchicalApproximation1DTest, RungeFunction)
+TEST(HierarchicalApproximation1DTest, Square)
 {
    const SingleVariableMonomial square(2);
    constexpr size_t maxLevel = 8;
@@ -83,4 +83,15 @@ TEST(HierarchicalApproximation1DTest, RungeFunction)
    {
       ASSERT_TRUE(maxSurplus.at(n) < 0.5 * maxSurplus.at(n - 1));
    }
+}
+
+
+TEST(HierarchicalApproximation1DTest, NumLeaves)
+{
+   const SingleVariableMonomial square(2);
+   ASSERT_EQ(HierarchicalApproximation1D::CreateToLevel(square, 0)->numLeaves(), 0);
+   ASSERT_EQ(HierarchicalApproximation1D::CreateToLevel(square, 1)->numLeaves(), 1);
+   ASSERT_EQ(HierarchicalApproximation1D::CreateToLevel(square, 2)->numLeaves(), 2);
+   ASSERT_EQ(HierarchicalApproximation1D::CreateToLevel(square, 3)->numLeaves(), 4);
+   ASSERT_EQ(HierarchicalApproximation1D::CreateToLevel(square, 4)->numLeaves(), 8);
 }

@@ -27,11 +27,16 @@ std::unique_ptr<HierarchicalApproximation1D> HierarchicalApproximation1D::Create
 
    if (level == 0) return result;
 
-   const double fieM = fie.Evaluate(std::array<double, 1>{0.5});
-   result->m_functions.emplace(HierarchicalLevelIndex(1, 1), ValueSurplus{ fieM, fieM });
+   // Recursion only possible from first level
+   const HierarchicalLevelIndex mid(1,1);
+   const double fieM = fie.Evaluate(std::array<double, 1>{mid.toDouble()});
+   result->m_functions.emplace(mid, ValueSurplus{ fieM, fieM });
 
    std::set<HierarchicalLevelIndex> active;
-   active.insert(HierarchicalLevelIndex(1, 1));
+   for (const auto& nxt : mid.next())
+   {
+      active.insert(nxt);
+   }
    while (!active.empty())
    {
       std::vector< HierarchicalLevelIndex> todo(active.begin(), active.end());
@@ -47,10 +52,13 @@ std::unique_ptr<HierarchicalApproximation1D> HierarchicalApproximation1D::Create
             const double rightValue = result->m_functions.at(right).Value;
             const double value = fie.Evaluate(std::array<double, 1>{ref.toDouble()});
             const double surplus = value - 0.5 * (leftValue + rightValue);
-            result->m_functions.emplace(ref, ValueSurplus{ value, surplus });
+            const auto checkIsNew = result->m_functions.emplace(ref, ValueSurplus{ value, surplus });
+            Utilities::Assert(checkIsNew.second);
 
-            active.insert(HierarchicalLevelIndex(ref.getLevel() + 1, 2 * ref.getIndex() - 1));
-            active.insert(HierarchicalLevelIndex(ref.getLevel() + 1, 2 * ref.getIndex() + 1));
+            for (const auto& nxt : ref.next())
+            {
+               active.insert(nxt);
+            }
          }
       }
    }
@@ -77,4 +85,9 @@ double HierarchicalApproximation1D::getMaxSurplus() const
       }
    }
    return result;
+}
+
+size_t HierarchicalApproximation1D::numLeaves() const
+{
+   return str::count_if(m_functions, [this](const auto& itr) {return isLeaf(itr.first); });
 }
