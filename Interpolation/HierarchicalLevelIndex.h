@@ -2,6 +2,7 @@
 
 #include <compare>
 #include <string>
+#include <array>
 
 class HierarchicalLevelIndex
 {
@@ -12,6 +13,7 @@ public:
 
    HierarchicalLevelIndex left() const;
    HierarchicalLevelIndex right() const;
+   std::array<HierarchicalLevelIndex, 2> next() const;
 
    std::string toString() const;
    double toDouble() const;

@@ -19,7 +19,10 @@ public:
    static std::unique_ptr<HierarchicalApproximation1D> CreateToLevel(const ISingleVariableRealValuedFunction& fie, size_t level);
    double operator()(std::span<const double> x) const;
    size_t getDimension() const;
+   bool isLeaf(const HierarchicalLevelIndex&) const;
+   double getMaxSurplus() const;
 private:
    HierarchicalApproximation1D() = default;
    std::map<HierarchicalLevelIndex, ValueSurplus> m_functions;
+  
 };

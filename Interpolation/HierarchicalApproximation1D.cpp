@@ -1,10 +1,11 @@
 #include "HierarchicalApproximation1D.h"
 
+#include "Utilities//Defines.h"
 #include  "Functions/ISingleVariableRealValuedFunction.h"
 #include  "Utilities/Pow2.h"
-#include <numeric>
-#include <array>
+
 #include <set>
+#include <limits>
 
 size_t HierarchicalApproximation1D::getDimension() const
 {
@@ -54,5 +55,26 @@ std::unique_ptr<HierarchicalApproximation1D> HierarchicalApproximation1D::Create
       }
    }
 
+   return result;
+}
+
+bool HierarchicalApproximation1D::isLeaf(const HierarchicalLevelIndex& li) const
+{
+   Utilities::Assert(m_functions.contains(li));
+   if (li.getLevel() == 0) return false;
+   const auto kids = li.next();
+   return !m_functions.contains(kids[0]) && !m_functions.contains(kids[1]);
+}
+
+double HierarchicalApproximation1D::getMaxSurplus() const
+{
+   double result = 0;
+   for (const auto& itr : m_functions)
+   {
+      if (isLeaf(itr.first))
+      {
+         result = std::max(result, std::abs(itr.second.Surplus));
+      }
+   }
    return result;
 }

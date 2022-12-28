@@ -1,6 +1,7 @@
 #include "HierarchicalLevelIndex.h"
 #include "Utilities/MyException.h"
 #include "Utilities/Pow2.h"
+#include "Utilities/Assert.h"
 
 namespace
 {
@@ -50,13 +51,22 @@ size_t HierarchicalLevelIndex::getIndex() const
 HierarchicalLevelIndex HierarchicalLevelIndex::left() const
 {
    if (getLevel() == 0) throw MyException("No neighbors at level 0: " + this->toString());
-   return Reduce( getLevel() - 1, (getIndex() - 1) / 2 );
+   return Reduce(getLevel() - 1, (getIndex() - 1) / 2);
 }
 
 HierarchicalLevelIndex HierarchicalLevelIndex::right() const
 {
    if (getLevel() == 0) throw MyException("No neighbors at level 0: " + this->toString());
-   return Reduce( getLevel() - 1, (getIndex() + 1) / 2 );
+   return Reduce(getLevel() - 1, (getIndex() + 1) / 2);
+}
+
+std::array<HierarchicalLevelIndex, 2> HierarchicalLevelIndex::next() const
+{
+   Utilities::Assert(getLevel() > 0);
+   return {
+      HierarchicalLevelIndex(getLevel() + 1, 2 * getIndex() - 1),
+      HierarchicalLevelIndex(getLevel() + 1, 2 * getIndex() + 1)
+   };
 }
 
 std::string HierarchicalLevelIndex::toString() const

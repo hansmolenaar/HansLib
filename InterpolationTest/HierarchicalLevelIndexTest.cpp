@@ -111,10 +111,31 @@ TEST(HierarchicalLevelIndex, LeftRight_4_7)
 
 TEST(HierarchicalLevelIndex, ToDouble)
 {
-   ASSERT_NEAR( HierarchicalLevelIndex(0,0).toDouble(), 0.0, Epsilon);
+   ASSERT_NEAR(HierarchicalLevelIndex(0, 0).toDouble(), 0.0, Epsilon);
    ASSERT_NEAR(HierarchicalLevelIndex(3, 1).toDouble(), 0.125, Epsilon);
    ASSERT_NEAR(HierarchicalLevelIndex(3, 3).toDouble(), 0.375, Epsilon);
    ASSERT_NEAR(HierarchicalLevelIndex(3, 5).toDouble(), 0.625, Epsilon);
    ASSERT_NEAR(HierarchicalLevelIndex(3, 7).toDouble(), 0.875, Epsilon);
 }
 
+
+TEST(HierarchicalLevelIndex, Next_UnahppyPath)
+{
+   ASSERT_THROW(HierarchicalLevelIndex(0, 0).next(), MyException);
+   ASSERT_THROW(HierarchicalLevelIndex(0, 1).next(), MyException);
+}
+
+TEST(HierarchicalLevelIndex, Next_1_1)
+{
+   const HierarchicalLevelIndex li(1, 1);
+   ASSERT_TRUE(li.next()[0] == HierarchicalLevelIndex(2, 1));
+   ASSERT_TRUE(li.next()[1] == HierarchicalLevelIndex(2, 3));
+}
+
+
+TEST(HierarchicalLevelIndex, Next_2_3)
+{
+   const HierarchicalLevelIndex li(2, 3);
+   ASSERT_TRUE(li.next()[0] == HierarchicalLevelIndex(3, 5));
+   ASSERT_TRUE(li.next()[1] == HierarchicalLevelIndex(3, 7));
+}
