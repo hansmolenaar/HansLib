@@ -5,21 +5,8 @@
 
 #include <cmath>
 
-void HierarchicalBasisFunction1D::CheckLevelIndex(size_t level, size_t index)
+HierarchicalBasisFunction1D::HierarchicalBasisFunction1D(HierarchicalLevelIndex li)  : m_levelIndex(li)
 {
-   if (level == 0)
-   {
-      if (index > 1) throw MyException("HierarchicalMultiIndex CheckIndex level=" + std::to_string(level) + " index=" + std::to_string(index));
-      return;
-   }
-
-   if (index > Pow2()(level)) throw MyException("HierarchicalMultiIndex CheckIndex level=" + std::to_string(level) + " index=" + std::to_string(index));
-}
-
-HierarchicalBasisFunction1D::HierarchicalBasisFunction1D(size_t level, size_t index) :
-   m_level(level), m_index(index)
-{
-   CheckLevelIndex(level, index);
 }
 
 double HierarchicalBasisFunction1D::evaluate(double x) const
@@ -27,11 +14,14 @@ double HierarchicalBasisFunction1D::evaluate(double x) const
    if (x < 0.0) return 0;
    if (x > 1.0) return 0;
 
+   const auto level = m_levelIndex.getLevel();
+   const auto index = m_levelIndex.getIndex();
+
    // Level 0 is different
-   if (m_level == 0)
+   if (level == 0)
    {
       const double h = 0.5;
-      if (m_index == 0)
+      if (index == 0)
       {
          return std::max(1.0 - x / h, 0.0);
       }
@@ -41,9 +31,9 @@ double HierarchicalBasisFunction1D::evaluate(double x) const
       }
    }
 
-   const double h = 1.0 / Pow2()(m_level);
-   if (x < (m_index - 1.0) * h) return 0.0;
-   if (x > (m_index + 1.0) * h) return 0.0;
+   const double h = 1.0 / Pow2()(level);
+   if (x < (index - 1.0) * h) return 0.0;
+   if (x > (index + 1.0) * h) return 0.0;
 
-   return 1.0 - std::abs(x / h - m_index);
+   return 1.0 - std::abs(x / h - index);
 }

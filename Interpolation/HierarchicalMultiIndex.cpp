@@ -5,39 +5,35 @@
 #include "Utilities/Defines.h"
 #include <numeric>
 
-
-HierarchicalMultiIndex::HierarchicalMultiIndex(std::vector<size_t>&& level, std::vector<size_t>&& index) :
-   m_level(std::move(level)), m_index(std::move(index))
+HierarchicalMultiIndex::HierarchicalMultiIndex(std::vector<HierarchicalLevelIndex>&& levelsIndices) :
+   m_levelsIndices(std::move(levelsIndices))
 {
-   Utilities::Assert(m_level.size() == m_index.size());
-   Utilities::Assert(!m_level.empty());
-   for (size_t n = 0; n < m_level.size(); ++n)
-   {
-      HierarchicalBasisFunction1D::CheckLevelIndex(m_level.at(n), m_index.at(n));
-   }
+   Utilities::Assert(!m_levelsIndices.empty());
+}
+
+HierarchicalMultiIndex::HierarchicalMultiIndex(HierarchicalLevelIndex levelIndex) : 
+   m_levelsIndices(std::vector<HierarchicalLevelIndex>{levelIndex})
+{
 }
 
 size_t HierarchicalMultiIndex::getDimension() const
 {
-   return m_level.size();
+   return m_levelsIndices.size();
 }
 
-const std::vector<size_t> HierarchicalMultiIndex::getLevel() const
+const std::vector<HierarchicalLevelIndex>& HierarchicalMultiIndex::get() const
 {
-   return m_level;
-}
-
-const std::vector<size_t> HierarchicalMultiIndex::getIndex() const
-{
-   return m_index;
+   return m_levelsIndices;
 }
 
 size_t HierarchicalMultiIndex::getL1NormLevel() const
 {
-   return std::accumulate(m_level.begin(), m_level.end(),static_cast<size_t>(0), std::plus<size_t>() );
+   return std::accumulate(m_levelsIndices.begin(), m_levelsIndices.end(), static_cast<size_t>(0), [](size_t acc, const HierarchicalLevelIndex& add) {return acc + add.getLevel(); });
 }
 
 size_t HierarchicalMultiIndex::getSupNormLevel() const
 {
-   return *str::max_element(m_level);
+   auto tmp1 = m_levelsIndices | std::views::transform([](const HierarchicalLevelIndex& li) {return li.getLevel(); });
+   auto tmp2 = std::ranges::max(tmp1);
+   return std::ranges::max(m_levelsIndices | std::views::transform([](const HierarchicalLevelIndex& li) {return li.getLevel(); }));
 }

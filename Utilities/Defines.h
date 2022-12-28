@@ -10,6 +10,7 @@
 #include <limits>
 
 namespace str = std::ranges;
+namespace stv = std::views;
 
 using PointIndex = size_t;
 inline constexpr PointIndex PointIndexInvalid = std::numeric_limits<size_t>::max();

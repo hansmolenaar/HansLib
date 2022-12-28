@@ -7,7 +7,7 @@ inline constexpr double Epsilon = 1.0e-10;
 
 TEST(HierarchicalBasisFunction1D, Basis_0_0)
 {
-   const  HierarchicalBasisFunction1D fie(0, 0);
+   const  HierarchicalBasisFunction1D fie(HierarchicalLevelIndex(0, 0));
 
    ASSERT_NEAR(fie.evaluate(-0.1), 0.0, Epsilon);
    ASSERT_NEAR(fie.evaluate(0.0), 1.0, Epsilon);
@@ -21,7 +21,7 @@ TEST(HierarchicalBasisFunction1D, Basis_0_0)
 
 TEST(HierarchicalBasisFunction1D, Basis_0_1)
 {
-   const  HierarchicalBasisFunction1D fie(0, 1);
+   const  HierarchicalBasisFunction1D fie(HierarchicalLevelIndex(0, 1));
 
    ASSERT_NEAR(fie.evaluate(-0.1), 0.0, Epsilon);
    ASSERT_NEAR(fie.evaluate(0.0), 0.0, Epsilon);
@@ -35,7 +35,7 @@ TEST(HierarchicalBasisFunction1D, Basis_0_1)
 
 TEST(HierarchicalBasisFunction1D, Basis_1_1)
 {
-   const  HierarchicalBasisFunction1D fie(1, 1);
+   const  HierarchicalBasisFunction1D fie(HierarchicalLevelIndex(1, 1));
 
    ASSERT_NEAR(fie.evaluate(-0.1), 0.0, Epsilon);
    ASSERT_NEAR(fie.evaluate(0.0), 0.0, Epsilon);
@@ -49,7 +49,7 @@ TEST(HierarchicalBasisFunction1D, Basis_1_1)
 
 TEST(HierarchicalBasisFunction1D, Basis_2_1)
 {
-   const  HierarchicalBasisFunction1D fie(2, 1);
+   const  HierarchicalBasisFunction1D fie(HierarchicalLevelIndex(2, 1));
 
    ASSERT_NEAR(fie.evaluate(-0.1), 0.0, Epsilon);
    ASSERT_NEAR(fie.evaluate(0.0), 0.0, Epsilon);
@@ -63,7 +63,7 @@ TEST(HierarchicalBasisFunction1D, Basis_2_1)
 
 TEST(HierarchicalBasisFunction1D, Basis_2_3)
 {
-   const  HierarchicalBasisFunction1D fie(2, 3);
+   const  HierarchicalBasisFunction1D fie(HierarchicalLevelIndex(2, 3));
 
    ASSERT_NEAR(fie.evaluate(-0.1), 0.0, Epsilon);
    ASSERT_NEAR(fie.evaluate(0.0), 0.0, Epsilon);
@@ -76,7 +76,7 @@ TEST(HierarchicalBasisFunction1D, Basis_2_3)
 
 TEST(HierarchicalBasisFunction1D, Basis_3_5)
 {
-   const  HierarchicalBasisFunction1D fie(3, 5);
+   const  HierarchicalBasisFunction1D fie(HierarchicalLevelIndex(3, 5));
 
    ASSERT_NEAR(fie.evaluate(0.0), 0.0, Epsilon);
    ASSERT_NEAR(fie.evaluate(4.0 / 8.0), 0.0, Epsilon);

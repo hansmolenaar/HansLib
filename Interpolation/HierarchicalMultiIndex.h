@@ -1,19 +1,22 @@
 #pragma once
 
+#include "HierarchicalLevelIndex.h"
+
 #include <vector>
 
 class HierarchicalMultiIndex
 {
 public:
-   HierarchicalMultiIndex(std::vector<size_t>&& level, std::vector<size_t>&& index);
+   explicit HierarchicalMultiIndex(HierarchicalLevelIndex levelIndex);
+   explicit HierarchicalMultiIndex(std::vector<HierarchicalLevelIndex>&& levelsIndices);
    size_t getDimension() const;
-   const std::vector<size_t> getLevel() const;
-   const std::vector<size_t> getIndex() const;
+   const std::vector<HierarchicalLevelIndex>& get() const;
+
+   auto operator<=>(const HierarchicalMultiIndex&) const = default;
 
    size_t getL1NormLevel() const;
    size_t getSupNormLevel() const;
 
 private:
-   std::vector<size_t> m_level;
-   std::vector<size_t> m_index;
+   std::vector<HierarchicalLevelIndex> m_levelsIndices;
 };
