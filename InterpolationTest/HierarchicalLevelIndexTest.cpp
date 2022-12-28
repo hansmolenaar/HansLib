@@ -4,6 +4,8 @@
 #include "Utilities/MyException.h"
 
 
+inline constexpr double Epsilon = 1.0e-10;
+
 TEST(HierarchicalLevelIndex, Basis)
 {
    const  HierarchicalLevelIndex li(2, 1);
@@ -104,5 +106,15 @@ TEST(HierarchicalLevelIndex, LeftRight_4_7)
    const  HierarchicalLevelIndex li(4, 7);
    ASSERT_TRUE(li.left() == HierarchicalLevelIndex(3, 3));
    ASSERT_TRUE(li.right() == HierarchicalLevelIndex(1, 1));
+}
+
+
+TEST(HierarchicalLevelIndex, ToDouble)
+{
+   ASSERT_NEAR( HierarchicalLevelIndex(0,0).toDouble(), 0.0, Epsilon);
+   ASSERT_NEAR(HierarchicalLevelIndex(3, 1).toDouble(), 0.125, Epsilon);
+   ASSERT_NEAR(HierarchicalLevelIndex(3, 3).toDouble(), 0.375, Epsilon);
+   ASSERT_NEAR(HierarchicalLevelIndex(3, 5).toDouble(), 0.625, Epsilon);
+   ASSERT_NEAR(HierarchicalLevelIndex(3, 7).toDouble(), 0.875, Epsilon);
 }
 

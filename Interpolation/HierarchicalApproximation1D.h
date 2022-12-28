@@ -3,9 +3,15 @@
 
 #include <memory>
 #include <span>
-#include <array>
+#include <map>
 
 class ISingleVariableRealValuedFunction;
+
+struct ValueSurplus
+{
+   double Value;
+   double Surplus;
+};
 
 class HierarchicalApproximation1D
 {
@@ -15,5 +21,5 @@ public:
    size_t getDimension() const;
 private:
    HierarchicalApproximation1D() = default;
-   std::vector<HierarchicalApproximationFunction> m_functions;
+   std::map<HierarchicalLevelIndex, ValueSurplus> m_functions;
 };

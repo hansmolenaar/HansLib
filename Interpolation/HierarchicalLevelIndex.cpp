@@ -63,3 +63,8 @@ std::string HierarchicalLevelIndex::toString() const
 {
    return "{" + std::to_string(getLevel()) + ", " + std::to_string(getIndex()) + "}";
 }
+
+double HierarchicalLevelIndex::toDouble() const
+{
+   return  static_cast<double>(getIndex()) / Pow2()(getLevel());
+}

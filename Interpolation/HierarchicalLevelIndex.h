@@ -14,6 +14,7 @@ public:
    HierarchicalLevelIndex right() const;
 
    std::string toString() const;
+   double toDouble() const;
 
    auto operator<=>(const HierarchicalLevelIndex&) const = default;
 private:
