@@ -1,17 +1,9 @@
 #include "HierarchicalBasisFunction1D.h"
 
 #include "Utilities/MyException.h"
+#include "Utilities/Pow2.h"
 
 #include <cmath>
-
-
-namespace
-{
-   size_t GetPow2(size_t n)
-   {
-      return static_cast<size_t>(1) << n;
-   }
-}
 
 void HierarchicalBasisFunction1D::CheckLevelIndex(size_t level, size_t index)
 {
@@ -21,7 +13,7 @@ void HierarchicalBasisFunction1D::CheckLevelIndex(size_t level, size_t index)
       return;
    }
 
-   if (index > GetPow2(level)) throw MyException("HierarchicalMultiIndex CheckIndex level=" + std::to_string(level) + " index=" + std::to_string(index));
+   if (index > Pow2()(level)) throw MyException("HierarchicalMultiIndex CheckIndex level=" + std::to_string(level) + " index=" + std::to_string(index));
 }
 
 HierarchicalBasisFunction1D::HierarchicalBasisFunction1D(size_t level, size_t index) :
@@ -49,7 +41,7 @@ double HierarchicalBasisFunction1D::evaluate(double x) const
       }
    }
 
-   const double h = 1.0 / GetPow2(m_level);
+   const double h = 1.0 / Pow2()(m_level);
    if (x < (m_index - 1.0) * h) return 0.0;
    if (x > (m_index + 1.0) * h) return 0.0;
 

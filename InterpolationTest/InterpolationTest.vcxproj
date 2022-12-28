@@ -54,6 +54,7 @@
     <ClCompile Include="EquidistantPointsTest.cpp" />
     <ClCompile Include="HierarchicalBasisFunction1DTest.cpp" />
     <ClCompile Include="HierarchicalBasisFunctionTest.cpp" />
+    <ClCompile Include="HierarchicalLevelIndexTest.cpp" />
     <ClCompile Include="HierarchicalMultiIndexTest.cpp" />
     <ClCompile Include="LagrangeInterpolationTest.cpp" />
     <ClCompile Include="NodalBasis1DTest.cpp" />

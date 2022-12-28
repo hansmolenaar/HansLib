@@ -69,6 +69,9 @@
     <ClInclude Include="Functors.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Pow2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EigenValueSolverSym2x2.cpp">

@@ -23,6 +23,7 @@
     <ClInclude Include="EquidistantPoints.h" />
     <ClInclude Include="HierarchicalBasisFunction.h" />
     <ClInclude Include="HierarchicalBasisFunction1D.h" />
+    <ClInclude Include="HierarchicalLevelIndex.h" />
     <ClInclude Include="HierarchicalMultiIndex.h" />
     <ClInclude Include="LagrangeInterpolation.h" />
     <ClInclude Include="NodalBasis1D.h" />
@@ -32,6 +33,7 @@
     <ClCompile Include="EquidistantPoints.cpp" />
     <ClCompile Include="HierarchicalBasisFunction.cpp" />
     <ClCompile Include="HierarchicalBasisFunction1D.cpp" />
+    <ClCompile Include="HierarchicalLevelIndex.cpp" />
     <ClCompile Include="HierarchicalMultiIndex.cpp" />
     <ClCompile Include="LagrangeInterpolation.cpp" />
     <ClCompile Include="NodalBasis1D.cpp" />
