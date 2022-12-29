@@ -16,12 +16,12 @@ TEST(SingleVariablePolynomial, Test0)
 	ASSERT_TRUE(fie.IsNonConstant());
 	ASSERT_EQ(fie.Evaluate(1.0), 3.0);
 	ASSERT_EQ(fie.Derivative(1.0), 6.0);
-	CheckDerivative(fie, 1.0, 0.1);
+	ISingleVariableRealValuedFunctionUtils::CheckDerivative(fie, 1.0, 0.1);
 
 	fie.Add(2.0, 1);
 	ASSERT_EQ(fie.Evaluate(1.0), 5.0);
 	ASSERT_EQ(fie.Derivative(1.0), 8.0);
-	CheckDerivative(fie, 1.0, 0.1);
+	ISingleVariableRealValuedFunctionUtils::CheckDerivative(fie, 1.0, 0.1);
 }
 
 

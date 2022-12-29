@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="HatFunction.h" />
     <ClInclude Include="IMultiVariableRealValuedFunction.h" />
     <ClInclude Include="IRealFunction.h" />
     <ClInclude Include="IRealFunctionUtils.h" />

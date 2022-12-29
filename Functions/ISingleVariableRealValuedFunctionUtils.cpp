@@ -2,13 +2,27 @@
 #include "Functions/ISingleVariableRealValuedFunction.h"
 #include "NonLinearSolver/NonLinearSolverStrategyResidualReduction.h"
 #include "NonLinearSolver/NonLinearSolver.h"
+#include "Utilities/Assert.h"
+#include "Utilities/MyException.h"
 
 #include <string>
 #include <sstream>
 #include <array>
+#include <filesystem>
+#include <fstream>
 
+namespace
+{
+   std::filesystem::path GenerateFullFilePath(const std::string& functionName, const std::string& folderName)
+   {
+      std::filesystem::path path{ folderName };
+      const auto fileName = functionName + ".txt";
+      path /= fileName;
+      return path;
+   }
+};
 
-double Evaluate(ISingleVariableRealValuedFunction& fie, double x)
+double ISingleVariableRealValuedFunctionUtils::Evaluate(ISingleVariableRealValuedFunction& fie, double x)
 {
 	double result;
 	fie.Evaluate(std::span<const double>(&x, 1), std::span<double>(&result, 1));
@@ -18,7 +32,7 @@ double Evaluate(ISingleVariableRealValuedFunction& fie, double x)
 
 
 
-void CheckDerivative(ISingleVariableRealValuedFunction& fie, double x, double delx, bool isLinear)
+void ISingleVariableRealValuedFunctionUtils::CheckDerivative(ISingleVariableRealValuedFunction& fie, double x, double delx, bool isLinear)
 {
 #if 0
    static int callCount; 
@@ -42,3 +56,23 @@ void CheckDerivative(ISingleVariableRealValuedFunction& fie, double x, double de
    }
 }
 
+void ISingleVariableRealValuedFunctionUtils::ToFile(const ISingleVariableRealValuedFunction& fie, double xmin, double xmax, int nPoints,  const std::string& functionName, std::string folderName )
+{
+   Utilities::Assert(nPoints > 1);
+   Utilities::Assert(xmax > xmin);
+   if (folderName.empty())
+   {
+      folderName = "C:\\\\Users\\Hans\\Documents\\tmp";
+   }
+   std::ofstream ofs(GenerateFullFilePath(functionName, folderName));
+   if (!ofs.is_open()) throw MyException(std::string("Unable to create file ") + functionName + "in folder " + folderName);
+   const double del = (xmax - xmin) / (nPoints - 1);
+   ofs << "x" << " , " << "y" << "\n";
+   for (int n = 0; n < nPoints; ++n)
+   {
+      const double x = xmin + n * del;
+      const double eval = fie.Evaluate(x);
+      ofs << x << " , " << eval << "\n";
+   }
+   ofs.close();
+}

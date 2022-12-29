@@ -45,6 +45,18 @@
     <ClInclude Include="HierarchicalApproximation1D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="HierLevelIndex.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HierMultiIndex.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IHierBasisFunction1D.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HierBasisFunction1D_HomogenousBC.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="LagrangeInterpolation.cpp">
@@ -75,6 +87,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="HierarchicalApproximation1D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="HierLevelIndex.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="HierMultiIndex.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="HierBasisFunction1D_HomogenousBC.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

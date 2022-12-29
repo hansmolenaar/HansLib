@@ -8,8 +8,8 @@
 NonLinearSolverStatus FindRootIllinois::FindInInterval(ISingleVariableRealValuedFunction& fie, double a, double b, INonLinearSolverStrategy& strategy, double& result)
 {
    int iter = 0;
-   double fa = Evaluate(fie, a);
-   double fb = Evaluate(fie, b);
+   double fa = ISingleVariableRealValuedFunctionUtils::Evaluate(fie, a);
+   double fb = ISingleVariableRealValuedFunctionUtils::Evaluate(fie, b);
    const double rsd = (fa + fb) / 2;
    auto status = strategy.GetStatus(iter, { std::addressof(rsd), 1 });
    if (status == NonLinearSolverStatus::Converged)
@@ -23,7 +23,7 @@ NonLinearSolverStatus FindRootIllinois::FindInInterval(ISingleVariableRealValued
       ++iter;
       double x = (a * fb - b * fa) / (fb - fa);
       result = x;
-      double fx = Evaluate(fie, x);
+      double fx = ISingleVariableRealValuedFunctionUtils::Evaluate(fie, x);
       status = strategy.GetStatus(iter, { std::addressof(fx), 1 });
 
       if (status == NonLinearSolverStatus::Converged) break;

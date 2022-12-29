@@ -7,8 +7,8 @@
 
 NonLinearSolverStatus FindRootBisection::FindInInterval(ISingleVariableRealValuedFunction& fie, double xmin, double xmax, INonLinearSolverStrategy& strategy, double& result)
 {
-   const double fmin = Evaluate(fie, xmin);
-   const double fmax = Evaluate(fie, xmax);
+   const double fmin = ISingleVariableRealValuedFunctionUtils::Evaluate(fie, xmin);
+   const double fmax = ISingleVariableRealValuedFunctionUtils::Evaluate(fie, xmax);
 
    if (fmin > fmax)
    {
@@ -27,8 +27,8 @@ NonLinearSolverStatus FindRootBisection::FindInInterval(ISingleVariableRealValue
    {
       ++iter;
       result = (xmin + xmax) / 2;
-      double fmid = Evaluate(fie, result);
-      status = strategy.GetStatus(iter, { std::addressof(fmid), 1 } );
+      double fmid = ISingleVariableRealValuedFunctionUtils::Evaluate(fie, result);
+      status = strategy.GetStatus(iter, { std::addressof(fmid), 1 });
 
       if (fmid > 0)
       {

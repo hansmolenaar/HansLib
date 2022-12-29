@@ -42,8 +42,14 @@
     <ProjectReference Include="..\Interpolation\Interpolation.vcxproj">
       <Project>{7cae9120-d61e-4c01-bd91-0af520784227}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\MatrixVector\MatrixVector.vcxproj">
+      <Project>{04dbb236-8fb0-448c-9504-f587dcc2e150}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\Mesh\Mesh.vcxproj">
       <Project>{7ce9e558-f8f6-464d-ba33-8f82a73ac8e5}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\NonLinearSolver\NonLinearSolver.vcxproj">
+      <Project>{0ca8e5ac-0b7e-49f9-80bc-1168d9c6bcec}</Project>
     </ProjectReference>
     <ProjectReference Include="..\Topology\Topology.vcxproj">
       <Project>{2fa0689d-ec40-4dc8-8358-eb63ab3f4266}</Project>
@@ -58,6 +64,9 @@
     <ClCompile Include="HierarchicalBasisFunctionTest.cpp" />
     <ClCompile Include="HierarchicalLevelIndexTest.cpp" />
     <ClCompile Include="HierarchicalMultiIndexTest.cpp" />
+    <ClCompile Include="HierBasisFunction1D_HomogenousBCTest.cpp" />
+    <ClCompile Include="HierLevelIndexTest.cpp" />
+    <ClCompile Include="HierMultiIndexTest.cpp" />
     <ClCompile Include="LagrangeInterpolationTest.cpp" />
     <ClCompile Include="NodalBasis1DTest.cpp" />
   </ItemGroup>

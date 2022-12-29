@@ -36,6 +36,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="HatFunctionTest.cpp" />
     <ClCompile Include="IRealFunctionUtilsTest.cpp" />
     <ClCompile Include="MultiVariableMonomialTest.cpp" />
     <ClCompile Include="MultiVariableMultiplicativeInverseFunctionTest.cpp" />

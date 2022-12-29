@@ -27,6 +27,10 @@
     <ClInclude Include="HierarchicalBasisFunction1D.h" />
     <ClInclude Include="HierarchicalLevelIndex.h" />
     <ClInclude Include="HierarchicalMultiIndex.h" />
+    <ClInclude Include="HierBasisFunction1D_HomogenousBC.h" />
+    <ClInclude Include="HierLevelIndex.h" />
+    <ClInclude Include="HierMultiIndex.h" />
+    <ClInclude Include="IHierBasisFunction1D.h" />
     <ClInclude Include="LagrangeInterpolation.h" />
     <ClInclude Include="NodalBasis1D.h" />
   </ItemGroup>
@@ -39,6 +43,9 @@
     <ClCompile Include="HierarchicalBasisFunction1D.cpp" />
     <ClCompile Include="HierarchicalLevelIndex.cpp" />
     <ClCompile Include="HierarchicalMultiIndex.cpp" />
+    <ClCompile Include="HierBasisFunction1D_HomogenousBC.cpp" />
+    <ClCompile Include="HierLevelIndex.cpp" />
+    <ClCompile Include="HierMultiIndex.cpp" />
     <ClCompile Include="LagrangeInterpolation.cpp" />
     <ClCompile Include="NodalBasis1D.cpp" />
   </ItemGroup>

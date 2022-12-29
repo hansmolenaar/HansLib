@@ -4,6 +4,7 @@
 
 #include "Interpolation/HierarchicalBasisFunction.h"
 #include "Utilities/MyException.h"
+#include "Functions/ISingleVariableRealValuedFunctionUtils.h"
 
 #include "Utilities/Defines.h"
 

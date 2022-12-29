@@ -72,6 +72,9 @@
     <ClInclude Include="SingleVariableRealValuedFunction.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="HatFunction.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="IMultiVariableRealValuedFunction.cpp">
