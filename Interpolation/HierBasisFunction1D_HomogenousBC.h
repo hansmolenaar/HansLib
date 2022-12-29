@@ -16,6 +16,6 @@ private:
 class HierBasisFunction1D_HomogenousBC_Factory : public IHierBasisFunction1D_Factory
 {
 public:
-   inline bool hasLevel0() const override { return false; }
-   inline std::unique_ptr<IHierBasisFunction1D> create(const HierLevelIndex& li) override { return std::make_unique<HierBasisFunction1D_HomogenousBC>(li); }
+   inline std::unique_ptr<IHierBasisFunction1D> create(const HierLevelIndex& li) const override { return std::make_unique<HierBasisFunction1D_HomogenousBC>(li); }
+   inline std::vector<HierLevelIndex> getLowestLevel() const override { return std::vector<HierLevelIndex>{HierLevelIndex(1,1)}; }
 };

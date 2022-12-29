@@ -21,6 +21,6 @@ class  IHierBasisFunction1D_Factory
 {
 public:
    virtual ~IHierBasisFunction1D_Factory() = default;
-   virtual bool hasLevel0() const = 0;
-   virtual std::unique_ptr<IHierBasisFunction1D> create(const HierLevelIndex&) = 0;
+   virtual std::vector<HierLevelIndex> getLowestLevel() const = 0;
+   virtual std::unique_ptr<IHierBasisFunction1D> create(const HierLevelIndex&) const = 0;
 };

@@ -13,9 +13,11 @@ inline constexpr double Epsilon = 1.0e-10;
 
 TEST(HierBasisFunction1D_HomogenousBCTest, Basis_1_1)
 {
-   HierBasisFunction1D_HomogenousBC_Factory factory;
-   ASSERT_FALSE(factory.hasLevel0());
-   const auto fiePtr = factory.create(HierLevelIndex{ 1,1 });
+   const HierBasisFunction1D_HomogenousBC_Factory factory;
+   const auto lowestLevel = factory.getLowestLevel();
+   ASSERT_EQ(lowestLevel.size(), 1);
+   ASSERT_EQ(lowestLevel.front(), HierLevelIndex( 1,1 ));
+   const auto fiePtr = factory.create(lowestLevel.front());
    const auto& fie = *fiePtr;
 
    ASSERT_NEAR(fie(-1.0), 0.0, Epsilon);
