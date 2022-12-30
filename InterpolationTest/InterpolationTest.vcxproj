@@ -65,6 +65,7 @@
     <ClCompile Include="HierarchicalBasisFunctionTest.cpp" />
     <ClCompile Include="HierarchicalLevelIndexTest.cpp" />
     <ClCompile Include="HierarchicalMultiIndexTest.cpp" />
+    <ClCompile Include="HierBasisFunction1D_ExtendedLevelOneBCTest.cpp" />
     <ClCompile Include="HierBasisFunction1D_HomogenousBCTest.cpp" />
     <ClCompile Include="HierLevelIndexTest.cpp" />
     <ClCompile Include="HierMultiIndexTest.cpp" />

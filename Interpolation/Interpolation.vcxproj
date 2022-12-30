@@ -28,6 +28,7 @@
     <ClInclude Include="HierarchicalBasisFunction1D.h" />
     <ClInclude Include="HierarchicalLevelIndex.h" />
     <ClInclude Include="HierarchicalMultiIndex.h" />
+    <ClInclude Include="HierBasisFunction1D_ExtendedLevelOneBC.h" />
     <ClInclude Include="HierBasisFunction1D_HomogenousBC.h" />
     <ClInclude Include="HierLevelIndex.h" />
     <ClInclude Include="HierMultiIndex.h" />
@@ -45,6 +46,7 @@
     <ClCompile Include="HierarchicalBasisFunction1D.cpp" />
     <ClCompile Include="HierarchicalLevelIndex.cpp" />
     <ClCompile Include="HierarchicalMultiIndex.cpp" />
+    <ClCompile Include="HierBasisFunction1D_ExtendedLevelOneBC.cpp" />
     <ClCompile Include="HierBasisFunction1D_HomogenousBC.cpp" />
     <ClCompile Include="HierLevelIndex.cpp" />
     <ClCompile Include="HierMultiIndex.cpp" />

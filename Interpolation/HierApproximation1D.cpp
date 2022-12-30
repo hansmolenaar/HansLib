@@ -11,8 +11,23 @@ namespace
       {
          return htn.Kids.empty();
       }
+
+      bool operator()(const HierTreeNode* htn) const
+      {
+         return (*this)(*htn);
+      }
    };
 
+   struct IsRefinable
+   {
+      const IHierBasisFunction1D_Factory& Factory;
+
+      bool operator()(const HierTreeNode* htn) const
+      {
+         const auto li = htn->BasisFunction->getLevelIndex();
+         return Factory.canBeRefined(li);
+      }
+   };
 
    struct DoRefine
    {
@@ -21,8 +36,8 @@ namespace
 
       bool operator()(const HierTreeNode* htn) const
       {
+         if (!IsRefinable{Factory}(htn)) return false;
          const auto li = htn->BasisFunction->getLevelIndex();
-         if (!Factory.canBeRefined(li)) return false;
          const HierRefinementInfo refinementInfo{ li.getLevel() };
          return RefinementPredicate(refinementInfo);
       }
@@ -76,6 +91,9 @@ namespace
 
 }
 
+HierApproximation1D::HierApproximation1D(const IHierBasisFunction1D_Factory& factory) : m_factory(factory)
+{
+}
 
 double HierTreeNode::operator()(double x) const
 {
@@ -124,7 +142,7 @@ double HierApproximation1D::operator()(double x) const
 std::unique_ptr<HierApproximation1D> HierApproximation1D::Create(
    const ISingleVariableRealValuedFunction& fie, const IHierBasisFunction1D_Factory& factory, const std::function<bool(const HierRefinementInfo&)>& doRefine)
 {
-   std::unique_ptr<HierApproximation1D> result(new HierApproximation1D);
+   std::unique_ptr<HierApproximation1D> result(new HierApproximation1D(factory));
    const DoRefine refinementPredicate{ factory, doRefine };
    const CreateKid createKid(factory, fie, *result);
 
@@ -167,4 +185,11 @@ std::vector<std::vector<double>> HierApproximation1D::getCollocationPoints() con
    std::vector<std::vector<double>> result(allTreeNodes.size());
    str::transform(allTreeNodes, result.begin(), [](const HierTreeNode* tn) {return std::vector<double>{ tn->BasisFunction->getLevelIndex().toDouble()}; });
    return result;
+}
+
+double HierApproximation1D::getMaxSurplus() const
+{
+   std::vector< HierTreeNode*> active;
+   str::copy_if(getLeafNodes(), std::back_inserter(active), IsRefinable{ m_factory });
+   return str::max(active | stv::transform([](const HierTreeNode* leaf) {return std::abs(leaf->Surplus); }));
 }

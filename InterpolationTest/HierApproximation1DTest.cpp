@@ -6,6 +6,8 @@
 #include "Functions/SingleVariableRealValuedFunction.h"
 #include "Utilities/Single.h"
 #include "Functions/ISingleVariableRealValuedFunctionUtils.h"
+#include "Functions/SingleVariablePolynomial.h"
+#include "Interpolation/HierBasisFunction1D_ExtendedLevelOneBC.h"
 
 inline constexpr double Epsilon = 1.0e-10;
 
@@ -58,4 +60,39 @@ TEST(HierApproximation1DTest, CubicPolynomialHomogeneousBC_level5)
    const ISingleVariableRealValuedFunction& tmp2 = *approximation;
 
    //ISingleVariableRealValuedFunctionUtils::ToFile(functionToApproximate, *approximation, 0.0, 1.0, 1000, "CubicPolynomialHomogeneousBC_level5");
+}
+
+TEST(HierApproximation1DTest, Basis_Extended)
+{
+   SingleVariablePolynomial functionToApproximate;
+   functionToApproximate.Add(2.0, SingleVariableMonomial(0));
+   functionToApproximate.Add(3.0, SingleVariableMonomial(1));
+
+   const HierBasisFunction1D_ExtendedLevelOneBC_Factory factory;
+   auto predicate = [](const HierRefinementInfo& hri) {return false; };
+
+   const auto approximation = HierApproximation1D::Create(functionToApproximate, factory, predicate);
+   ASSERT_EQ(approximation->getCollocationPoints().size(), 3);
+   TestCollocationPoints(functionToApproximate, *approximation);
+}
+
+TEST(HierApproximation1DTest, Square)
+{
+   const SingleVariableMonomial square(2);
+   constexpr size_t maxLevel = 8;
+   std::vector<double> maxSurplus;
+   for (size_t n = 1; n < maxLevel; ++n)
+   {
+      const HierBasisFunction1D_ExtendedLevelOneBC_Factory factory;
+      auto predicate = [n](const HierRefinementInfo& hri) {return hri.Level < n; };
+
+      const auto approximation = HierApproximation1D::Create(square, factory, predicate);
+      TestCollocationPoints(square, *approximation);
+      maxSurplus.push_back(approximation->getMaxSurplus());
+   }
+
+   for (size_t n = 1; n < maxSurplus.size(); ++n)
+   {
+      ASSERT_TRUE(maxSurplus.at(n) < 0.5 * maxSurplus.at(n - 1));
+   }
 }

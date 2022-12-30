@@ -68,24 +68,6 @@ TEST(HierarchicalApproximation1DTest, isleaf)
 
 
 
-TEST(HierarchicalApproximation1DTest, Square)
-{
-   const SingleVariableMonomial square(2);
-   constexpr size_t maxLevel = 8;
-   std::vector<double> maxSurplus;
-   for (size_t n = 1; n < maxLevel; ++n)
-   {
-      const auto approx = HierarchicalApproximation1D::CreateToLevel(square, n);
-      maxSurplus.push_back(approx->getMaxSurplus());
-   }
-
-   for (size_t n = 1; n < maxSurplus.size(); ++n)
-   {
-      ASSERT_TRUE(maxSurplus.at(n) < 0.5 * maxSurplus.at(n - 1));
-   }
-}
-
-
 TEST(HierarchicalApproximation1DTest, NumLeaves)
 {
    const SingleVariableMonomial square(2);
