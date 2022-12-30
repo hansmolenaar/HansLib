@@ -58,3 +58,8 @@ double HierLevelIndex::toDouble() const
 {
    return  static_cast<double>(getIndex()) / Pow2()(getLevel());
 }
+
+std::array<HierLevelIndex, 2> HierLevelIndex::refine() const
+{
+   return { HierLevelIndex(getLevel() + 1, 2 * getIndex() - 1), HierLevelIndex(getLevel() + 1, 2 * getIndex() + 1) };
+}

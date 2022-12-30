@@ -162,6 +162,7 @@
     <ClInclude Include="MyException.h" />
     <ClInclude Include="Plotting.h" />
     <ClInclude Include="Pow2.h" />
+    <ClInclude Include="Single.h" />
     <ClInclude Include="ToString.h" />
   </ItemGroup>
   <ItemGroup>

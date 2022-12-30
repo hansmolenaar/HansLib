@@ -14,6 +14,8 @@ public:
    std::string toString() const;
    double toDouble() const;
 
+   std::array<HierLevelIndex, 2> refine() const;
+
    auto operator<=>(const HierLevelIndex&) const = default;
 private:
    size_t m_level;

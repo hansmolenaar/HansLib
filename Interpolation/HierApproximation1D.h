@@ -38,5 +38,5 @@ public:
    //size_t numLeaves() const;
 private:
    HierApproximation1D() = default;
-   std::vector<HierTreeNode> m_root;
+   std::vector<std::shared_ptr<HierTreeNode>> m_root;
 };

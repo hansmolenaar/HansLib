@@ -48,3 +48,12 @@ TEST(HierLevelIndex, ToDouble)
    ASSERT_NEAR(HierLevelIndex(3, 7).toDouble(), 0.875, Epsilon);
 }
 
+
+TEST(HierLevelIndex, Refine)
+{
+   const  HierLevelIndex li(4, 7);
+   const auto kids = li.refine();
+   ASSERT_EQ(kids.at(0), HierLevelIndex(5, 13));
+   ASSERT_EQ(kids.at(1), HierLevelIndex(5, 15));
+}
+

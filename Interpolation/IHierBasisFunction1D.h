@@ -25,6 +25,6 @@ class  IHierBasisFunction1D_Factory
 public:
    virtual ~IHierBasisFunction1D_Factory() = default;
    virtual std::vector<HierLevelIndex> getLowestLevel() const = 0;
-   virtual bool isBoundaryFunction(const HierLevelIndex&) const = 0;
+   virtual bool canBeRefined(const HierLevelIndex&) const = 0;
    virtual std::unique_ptr<IHierBasisFunction1D> create(const HierLevelIndex&) const = 0;
 };
