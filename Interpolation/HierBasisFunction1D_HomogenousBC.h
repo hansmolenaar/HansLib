@@ -10,6 +10,8 @@ public:
    double operator()(double x) const override;
    HierLevelIndex getLevelIndex() const override;
    Interval<double> getSupport() const override;
+   static double Evaluate(const HierLevelIndex&, double);
+   static Interval<double> GetSupport(const HierLevelIndex&);
   
 private:
    HierLevelIndex m_levelIndex;

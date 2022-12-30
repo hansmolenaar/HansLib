@@ -20,4 +20,18 @@ inline void IHierBasisFunction1DTest_Interface(const IHierBasisFunction1D& fie)
       const double fieM = fie(std::midpoint(support.getLower(), support.getUpper()));
       ASSERT_NEAR(fieM, 1.0, epsilon);
    }
+
+   constexpr size_t nPoints = 100;
+   constexpr double del = 1.0 / nPoints;
+   for (size_t n = 0; n < nPoints; ++n)
+   {
+      const double x = n * del;
+      const double eval = fie(x);
+      ASSERT_GE(eval, 0.0);
+      ASSERT_LE(eval, 2.0);
+      if (eval > 0.0)
+      {
+         ASSERT_TRUE(fie.getSupport().contains(x));
+      }
+   }
 }

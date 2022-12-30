@@ -59,13 +59,8 @@
     <ClCompile Include="ChebyshevPointsTest.cpp" />
     <ClCompile Include="EquidistantPointsTest.cpp" />
     <ClCompile Include="HierApproximation1DTest.cpp" />
-    <ClCompile Include="HierarchicalApproximation1DTest.cpp" />
-    <ClCompile Include="HierarchicalApproximationFunctionTest.cpp" />
-    <ClCompile Include="HierarchicalBasisFunction1DTest.cpp" />
-    <ClCompile Include="HierarchicalBasisFunctionTest.cpp" />
-    <ClCompile Include="HierarchicalLevelIndexTest.cpp" />
-    <ClCompile Include="HierarchicalMultiIndexTest.cpp" />
     <ClCompile Include="HierBasisFunction1D_ExtendedLevelOneBCTest.cpp" />
+    <ClCompile Include="HierBasisFunction1D_ExtraplolateBCTest.cpp" />
     <ClCompile Include="HierBasisFunction1D_HomogenousBCTest.cpp" />
     <ClCompile Include="HierLevelIndexTest.cpp" />
     <ClCompile Include="HierMultiIndexTest.cpp" />

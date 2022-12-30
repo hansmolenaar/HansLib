@@ -1,6 +1,7 @@
 #include "HierBasisFunction1D_ExtendedLevelOneBC.h"
 #include "Functions/HatFunction.h"
 #include "Utilities/Pow2.h"
+#include "HierBasisFunction1D_HomogenousBC.h"
 
 HierBasisFunction1D_ExtendedLevelOneBC::HierBasisFunction1D_ExtendedLevelOneBC(HierLevelIndex hli) : m_levelIndex(hli)
 {
@@ -20,8 +21,7 @@ double HierBasisFunction1D_ExtendedLevelOneBC::operator()(double x) const
 Interval<double> HierBasisFunction1D_ExtendedLevelOneBC::getSupport() const
 {
    if (m_levelIndex.getLevel() == 0) return Interval<double>(0, 1);
-   const double invpow2 = 1.0 / Pow2()(m_levelIndex.getLevel());
-   return Interval<double>(invpow2 * (m_levelIndex.getIndex() - 1), invpow2 * (m_levelIndex.getIndex() + 1));
+   return HierBasisFunction1D_HomogenousBC::GetSupport(m_levelIndex);
 }
 
 std::unique_ptr<IHierBasisFunction1D> HierBasisFunction1D_ExtendedLevelOneBC_Factory::create(const HierLevelIndex& li) const

@@ -27,24 +27,6 @@
     <ClInclude Include="NodalBasis1D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="HierarchicalMultiIndex.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="HierarchicalBasisFunction1D.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="HierarchicalBasisFunction.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="HierarchicalLevelIndex.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="HierarchicalApproximationFunction.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="HierarchicalApproximation1D.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="HierLevelIndex.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -63,6 +45,9 @@
     <ClInclude Include="HierBasisFunction1D_ExtendedLevelOneBC.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="HierBasisFunction1D_ExtraplolateBC.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="LagrangeInterpolation.cpp">
@@ -75,24 +60,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="NodalBasis1D.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="HierarchicalMultiIndex.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="HierarchicalBasisFunction1D.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="HierarchicalBasisFunction.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="HierarchicalLevelIndex.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="HierarchicalApproximationFunction.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="HierarchicalApproximation1D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="HierLevelIndex.cpp">
@@ -108,6 +75,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="HierBasisFunction1D_ExtendedLevelOneBC.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="HierBasisFunction1D_ExtraplolateBC.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

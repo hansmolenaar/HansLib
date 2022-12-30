@@ -36,9 +36,9 @@ namespace
 
       bool operator()(const HierTreeNode* htn) const
       {
-         if (!IsRefinable{Factory}(htn)) return false;
+         if (!IsRefinable{ Factory }(htn)) return false;
          const auto li = htn->BasisFunction->getLevelIndex();
-         const HierRefinementInfo refinementInfo{ li.getLevel() };
+         const HierRefinementInfo refinementInfo{ li, std::abs(htn->Surplus) };
          return RefinementPredicate(refinementInfo);
       }
    };
@@ -184,6 +184,7 @@ std::vector<std::vector<double>> HierApproximation1D::getCollocationPoints() con
    const std::vector< HierTreeNode*> allTreeNodes = getAllTreeNodes();
    std::vector<std::vector<double>> result(allTreeNodes.size());
    str::transform(allTreeNodes, result.begin(), [](const HierTreeNode* tn) {return std::vector<double>{ tn->BasisFunction->getLevelIndex().toDouble()}; });
+   str::sort(result);
    return result;
 }
 

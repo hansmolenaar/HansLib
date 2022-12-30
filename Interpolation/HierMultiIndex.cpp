@@ -1,5 +1,4 @@
 #include "HierMultiIndex.h"
-#include "HierarchicalBasisFunction1D.h"
 #include "Utilities/Assert.h"
 
 #include "Utilities/Defines.h"

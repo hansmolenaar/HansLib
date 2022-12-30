@@ -11,7 +11,7 @@ HierBasisFunction1D_HomogenousBC::HierBasisFunction1D_HomogenousBC(HierLevelInde
 
 double HierBasisFunction1D_HomogenousBC::operator()(double x) const
 {
-   return HatFunction()(Pow2()(m_levelIndex.getLevel())*x - m_levelIndex.getIndex());
+   return Evaluate(m_levelIndex, x);
 }
 
 HierLevelIndex HierBasisFunction1D_HomogenousBC::getLevelIndex() const
@@ -21,6 +21,16 @@ HierLevelIndex HierBasisFunction1D_HomogenousBC::getLevelIndex() const
 
 Interval<double> HierBasisFunction1D_HomogenousBC::getSupport() const
 {
-   const double invpow2 = 1.0 / Pow2()(m_levelIndex.getLevel());
-   return Interval<double>(invpow2 * (m_levelIndex.getIndex() - 1), invpow2 * (m_levelIndex.getIndex() + 1));
+   return GetSupport(m_levelIndex);
+}
+
+double HierBasisFunction1D_HomogenousBC::Evaluate(const HierLevelIndex& levelIndex, double x)
+{
+   return HatFunction()(Pow2()(levelIndex.getLevel()) * x - levelIndex.getIndex());
+}
+
+Interval<double> HierBasisFunction1D_HomogenousBC::GetSupport(const HierLevelIndex& levelIndex)
+{
+   const double invpow2 = 1.0 / Pow2()(levelIndex.getLevel());
+   return Interval<double>(invpow2 * (levelIndex.getIndex() - 1), invpow2 * (levelIndex.getIndex() + 1));
 }

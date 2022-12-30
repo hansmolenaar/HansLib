@@ -15,7 +15,8 @@ struct ValueSurplus
 
 struct HierRefinementInfo
 {
-   size_t Level;
+   HierLevelIndex LevelIndex;
+   double Surplus;
 };
 
 struct HierTreeNode
