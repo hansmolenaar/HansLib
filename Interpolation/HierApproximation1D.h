@@ -39,7 +39,8 @@ public:
    //double getMaxSurplus() const;
    //size_t numLeaves() const;
 private:
-   std::vector<const HierTreeNode*> getAllTreeNodes() const;
+   std::vector< HierTreeNode*> getAllTreeNodes() const;
+   std::vector< HierTreeNode*> getLeafNodes() const;
 
    HierApproximation1D() = default;
    std::vector<std::shared_ptr<HierTreeNode>> m_root;

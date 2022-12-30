@@ -24,19 +24,30 @@ TEST(HierApproximation1DTest, Basis_1_1)
    const HierBasisFunction1D_HomogenousBC_Factory factory;
    auto predicate = [](const HierRefinementInfo&) {return false; };
    const HierBasisFunction1D_HomogenousBC functionToApproximate(HierLevelIndex(1, 1));
-   const auto approxomation = HierApproximation1D::Create(functionToApproximate, factory, predicate);
-   ASSERT_NEAR((*approxomation)(0.25), 0.5, Epsilon);
-   ASSERT_NEAR((*approxomation)(0.5), 1.0, Epsilon);
-   ASSERT_NEAR((*approxomation)(0.75), 0.5, Epsilon);
+   const auto approximation = HierApproximation1D::Create(functionToApproximate, factory, predicate);
+   ASSERT_EQ(approximation->getCollocationPoints().size(), 1);
+   ASSERT_NEAR((*approximation)(0.25), 0.5, Epsilon);
+   ASSERT_NEAR((*approximation)(0.5), 1.0, Epsilon);
+   ASSERT_NEAR((*approximation)(0.75), 0.5, Epsilon);
 }
 
 
 TEST(HierApproximation1DTest, PolynomialHomogeneousBC_level2)
 {
    const HierBasisFunction1D_HomogenousBC_Factory factory;
-   auto predicate = [](const HierRefinementInfo&) {return false; };
-   auto functionToApproximate = SingleVariableRealValuedFunction([](double x) {return x * x * (1- x); });
-   const auto approxomation = HierApproximation1D::Create(functionToApproximate, factory, predicate);
-   ASSERT_EQ(approxomation->getCollocationPoints().size(), 3);
-   TestCollocationPoints(functionToApproximate, *approxomation);
+   auto predicate = [](const HierRefinementInfo& hri) {return hri.Level < 2; };
+   auto functionToApproximate = SingleVariableRealValuedFunction([](double x) {return x * x * (1 - x); });
+   const auto approximation = HierApproximation1D::Create(functionToApproximate, factory, predicate);
+   ASSERT_EQ(approximation->getCollocationPoints().size(), 3);
+   TestCollocationPoints(functionToApproximate, *approximation);
+}
+
+TEST(HierApproximation1DTest, PolynomialHomogeneousBC_level5)
+{
+   const HierBasisFunction1D_HomogenousBC_Factory factory;
+   auto predicate = [](const HierRefinementInfo& hri) {return hri.Level < 5; };
+   auto functionToApproximate = SingleVariableRealValuedFunction([](double x) {return x * x * (1 - x); });
+   const auto approximation = HierApproximation1D::Create(functionToApproximate, factory, predicate);
+   ASSERT_EQ(approximation->getCollocationPoints().size(), 31);
+   TestCollocationPoints(functionToApproximate, *approximation);
 }
