@@ -33,10 +33,14 @@ class HierApproximation1D
 public:
    static std::unique_ptr<HierApproximation1D> Create(const ISingleVariableRealValuedFunction& fie, const IHierBasisFunction1D_Factory& factory, const std::function<bool(const HierRefinementInfo&)>& doRefine);
    double operator()(double) const;
+   std::vector<std::vector<double>> getCollocationPoints() const;
+
    //bool isLeaf(const HierLevelIndex&) const;
    //double getMaxSurplus() const;
    //size_t numLeaves() const;
 private:
+   std::vector<const HierTreeNode*> getAllTreeNodes() const;
+
    HierApproximation1D() = default;
    std::vector<std::shared_ptr<HierTreeNode>> m_root;
 };

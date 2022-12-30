@@ -1,8 +1,18 @@
 #include "HierApproximation1D.h"
 #include "Utilities/Single.h"
+#include "Utilities/Defines.h"
 
-#include <numeric>
-#include <map>
+namespace
+{
+   void GetAllTreeNodesRecur(const std::vector<std::shared_ptr<HierTreeNode>>& treeNodes, std::vector<const HierTreeNode*>& result)
+   {
+      str::transform(treeNodes, std::back_inserter(result), [](const auto& sharedPointer) {return sharedPointer.get(); });
+      for (const auto& tn : treeNodes)
+      {
+         GetAllTreeNodesRecur(tn->Kids, result);
+      }
+   }
+}
 
 double HierTreeNode::operator()(double x) const
 {
@@ -78,5 +88,20 @@ std::unique_ptr<HierApproximation1D> HierApproximation1D::Create(
       }
    }
 
+   return result;
+}
+
+std::vector<const HierTreeNode*> HierApproximation1D::getAllTreeNodes() const
+{
+   std::vector<const HierTreeNode*> result;
+   GetAllTreeNodesRecur(m_root, result);
+   return result;
+}
+
+std::vector<std::vector<double>> HierApproximation1D::getCollocationPoints() const
+{
+   const std::vector<const HierTreeNode*> allTreeNodes = getAllTreeNodes();
+   std::vector<std::vector<double>> result(allTreeNodes.size());
+   str::transform(allTreeNodes, result.begin(), [](const HierTreeNode* tn) {return std::vector<double>{ tn->BasisFunction->getLevelIndex().toDouble()}; });
    return result;
 }
