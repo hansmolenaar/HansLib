@@ -5,6 +5,7 @@
 #include "Utilities/MyException.h"
 #include "Functions/SingleVariableRealValuedFunction.h"
 #include "Utilities/Single.h"
+#include "Functions/ISingleVariableRealValuedFunctionUtils.h"
 
 inline constexpr double Epsilon = 1.0e-10;
 
@@ -32,7 +33,7 @@ TEST(HierApproximation1DTest, Basis_1_1)
 }
 
 
-TEST(HierApproximation1DTest, PolynomialHomogeneousBC_level2)
+TEST(HierApproximation1DTest, CubicPolynomialHomogeneousBC_level2)
 {
    const HierBasisFunction1D_HomogenousBC_Factory factory;
    auto predicate = [](const HierRefinementInfo& hri) {return hri.Level < 2; };
@@ -40,9 +41,11 @@ TEST(HierApproximation1DTest, PolynomialHomogeneousBC_level2)
    const auto approximation = HierApproximation1D::Create(functionToApproximate, factory, predicate);
    ASSERT_EQ(approximation->getCollocationPoints().size(), 3);
    TestCollocationPoints(functionToApproximate, *approximation);
+
+   //ISingleVariableRealValuedFunctionUtils::ToFile(functionToApproximate, *approximation, 0.0, 1.0, 1000, "CubicPolynomialHomogeneousBC_level2");
 }
 
-TEST(HierApproximation1DTest, PolynomialHomogeneousBC_level5)
+TEST(HierApproximation1DTest, CubicPolynomialHomogeneousBC_level5)
 {
    const HierBasisFunction1D_HomogenousBC_Factory factory;
    auto predicate = [](const HierRefinementInfo& hri) {return hri.Level < 5; };
@@ -50,4 +53,9 @@ TEST(HierApproximation1DTest, PolynomialHomogeneousBC_level5)
    const auto approximation = HierApproximation1D::Create(functionToApproximate, factory, predicate);
    ASSERT_EQ(approximation->getCollocationPoints().size(), 31);
    TestCollocationPoints(functionToApproximate, *approximation);
+
+   const ISingleVariableRealValuedFunction& tmp1 = functionToApproximate;
+   const ISingleVariableRealValuedFunction& tmp2 = *approximation;
+
+   //ISingleVariableRealValuedFunctionUtils::ToFile(functionToApproximate, *approximation, 0.0, 1.0, 1000, "CubicPolynomialHomogeneousBC_level5");
 }

@@ -20,13 +20,24 @@ namespace
       path /= fileName;
       return path;
    }
+
+   std::ofstream GetFile(const std::string& functionName, std::string folderName)
+   {
+      if (folderName.empty())
+      {
+         folderName = "C:\\\\Users\\Hans\\Documents\\tmp";
+      }
+      std::ofstream ofs(GenerateFullFilePath(functionName, folderName));
+      if (!ofs.is_open()) throw MyException(std::string("Unable to create file ") + functionName + "in folder " + folderName);
+      return ofs;
+   }
 };
 
 double ISingleVariableRealValuedFunctionUtils::Evaluate(ISingleVariableRealValuedFunction& fie, double x)
 {
-	double result;
-	fie.Evaluate(std::span<const double>(&x, 1), std::span<double>(&result, 1));
-	return result;
+   double result;
+   fie.Evaluate(std::span<const double>(&x, 1), std::span<double>(&result, 1));
+   return result;
 }
 
 
@@ -35,7 +46,7 @@ double ISingleVariableRealValuedFunctionUtils::Evaluate(ISingleVariableRealValue
 void ISingleVariableRealValuedFunctionUtils::CheckDerivative(ISingleVariableRealValuedFunction& fie, double x, double delx, bool isLinear)
 {
 #if 0
-   static int callCount; 
+   static int callCount;
    ++callCount;
    if (callCount == 172)
    {
@@ -43,7 +54,7 @@ void ISingleVariableRealValuedFunctionUtils::CheckDerivative(ISingleVariableReal
    }
 #endif
    const double minDeriv = 1.0e-10;
-	const  std::array<double, 1> rhs = { fie.Evaluate(x) };
+   const  std::array<double, 1> rhs = { fie.Evaluate(x) };
    const double deriv = fie.Derivative(x);
    if (std::abs(deriv) > minDeriv)
    {
@@ -56,16 +67,12 @@ void ISingleVariableRealValuedFunctionUtils::CheckDerivative(ISingleVariableReal
    }
 }
 
-void ISingleVariableRealValuedFunctionUtils::ToFile(const ISingleVariableRealValuedFunction& fie, double xmin, double xmax, int nPoints,  const std::string& functionName, std::string folderName )
+void ISingleVariableRealValuedFunctionUtils::ToFile(const ISingleVariableRealValuedFunction& fie, double xmin, double xmax, int nPoints, const std::string& functionName, std::string folderName)
 {
    Utilities::Assert(nPoints > 1);
    Utilities::Assert(xmax > xmin);
-   if (folderName.empty())
-   {
-      folderName = "C:\\\\Users\\Hans\\Documents\\tmp";
-   }
-   std::ofstream ofs(GenerateFullFilePath(functionName, folderName));
-   if (!ofs.is_open()) throw MyException(std::string("Unable to create file ") + functionName + "in folder " + folderName);
+
+   std::ofstream ofs(GetFile(functionName, folderName));
    const double del = (xmax - xmin) / (nPoints - 1);
    ofs << "x" << " , " << "y" << "\n";
    for (int n = 0; n < nPoints; ++n)
@@ -73,6 +80,25 @@ void ISingleVariableRealValuedFunctionUtils::ToFile(const ISingleVariableRealVal
       const double x = xmin + n * del;
       const double eval = fie.Evaluate(x);
       ofs << x << " , " << eval << "\n";
+   }
+   ofs.close();
+}
+
+
+void ISingleVariableRealValuedFunctionUtils::ToFile(const ISingleVariableRealValuedFunction& expect, const ISingleVariableRealValuedFunction& approximate, double xmin, double xmax, int nPoints, const std::string& functionName, std::string folderName)
+{
+   Utilities::Assert(nPoints > 1);
+   Utilities::Assert(xmax > xmin);
+
+   std::ofstream ofs(GetFile(functionName, folderName));
+   const double del = (xmax - xmin) / (nPoints - 1);
+   ofs << "x , Expect , Actual\n";
+   for (int n = 0; n < nPoints; ++n)
+   {
+      const double x = xmin + n * del;
+      const double e = expect.Evaluate(x);
+      const double a = approximate.Evaluate(x);
+      ofs << x << " , " << e << " , " << a << "\n";
    }
    ofs.close();
 }

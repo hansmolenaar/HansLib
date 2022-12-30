@@ -22,7 +22,7 @@ namespace
       bool operator()(const HierTreeNode* htn) const
       {
          const auto li = htn->BasisFunction->getLevelIndex();
-         if ( !Factory.canBeRefined(li)) return false;
+         if (!Factory.canBeRefined(li)) return false;
          const HierRefinementInfo refinementInfo{ li.getLevel() };
          return RefinementPredicate(refinementInfo);
       }
@@ -54,20 +54,28 @@ namespace
       }
    }
 
-   std::shared_ptr<HierTreeNode> CreateKid(const IHierBasisFunction1D_Factory& factory, const HierLevelIndex& kidLevelIndex, const ISingleVariableRealValuedFunction& fie, const HierApproximation1D& approximation)
+   struct CreateKid
    {
-      auto kid = std::make_shared<HierTreeNode>(factory.create(kidLevelIndex), 0.0);
+      const IHierBasisFunction1D_Factory& Factory;
+      const ISingleVariableRealValuedFunction& FunctionToApproximate;
+      const HierApproximation1D& Approximation;
 
-      // Calculate the surplus
-      const double x = kidLevelIndex.toDouble();
-      const double functionEval = fie.Evaluate(x);
-      // Basis function may overlap
-      const double approx = approximation(x);
-      kid->Surplus = functionEval - approx;
-      return kid;
-   }
+      std::shared_ptr<HierTreeNode> operator()(const HierLevelIndex& kidLevelIndex) const
+      {
+         auto kid = std::make_shared<HierTreeNode>(Factory.create(kidLevelIndex), 0.0);
+
+         // Calculate the surplus
+         const double x = kidLevelIndex.toDouble();
+         const double functionEval = FunctionToApproximate.Evaluate(x);
+         // Basis function may overlap
+         const double approx = Approximation(x);
+         kid->Surplus = functionEval - approx;
+         return kid;
+      }
+   };
 
 }
+
 
 double HierTreeNode::operator()(double x) const
 {
@@ -78,6 +86,28 @@ double HierTreeNode::operator()(double x) const
       result += (*kid)(x);
    }
    return result;
+}
+
+// Implementaton ISingleVariableRealValuedFunction
+
+double HierApproximation1D::Evaluate(double x)const
+{
+   return (*this)(x);
+}
+
+double HierApproximation1D::Derivative(double x)const
+{
+   throw MyException("HierApproximation1D::Derivative not differentiable");
+}
+
+bool HierApproximation1D::IsNonConstant() const
+{
+   return true;
+}
+
+bool HierApproximation1D::HasDerivative() const
+{
+   return false;
 }
 
 
@@ -95,30 +125,23 @@ std::unique_ptr<HierApproximation1D> HierApproximation1D::Create(
    const ISingleVariableRealValuedFunction& fie, const IHierBasisFunction1D_Factory& factory, const std::function<bool(const HierRefinementInfo&)>& doRefine)
 {
    std::unique_ptr<HierApproximation1D> result(new HierApproximation1D);
-   const DoRefine refinementPredicate{factory, doRefine };
+   const DoRefine refinementPredicate{ factory, doRefine };
+   const CreateKid createKid(factory, fie, *result);
 
-   for (auto b : factory.getLowestLevel())
-   {
-      result->m_root.emplace_back(CreateKid(factory, b, fie, *result));
-   }
+   str::transform(factory.getLowestLevel(), std::back_inserter(result->m_root), createKid);
 
-   const auto leafNodes = result->getLeafNodes();
-   std::vector<HierTreeNode* > toRefine;
-   str::copy_if(leafNodes, std::back_inserter(toRefine), refinementPredicate);
+   std::vector<HierTreeNode*> toRefine;
+   str::copy_if(result->getLeafNodes(), std::back_inserter(toRefine), refinementPredicate);
 
    while (!toRefine.empty())
    {
       for (auto ref : toRefine)
       {
-         for (const auto& k : ref->BasisFunction->getLevelIndex().refine())
-         {
-            ref->Kids.emplace_back(CreateKid(factory, k, fie, *result));
-         }
+         str::transform(ref->BasisFunction->getLevelIndex().refine(), std::back_inserter(ref->Kids), createKid);
       }
 
-      const auto leafNodes = result->getLeafNodes();
       toRefine.clear();
-      str::copy_if(leafNodes, std::back_inserter(toRefine), refinementPredicate);
+      str::copy_if(result->getLeafNodes(), std::back_inserter(toRefine), refinementPredicate);
    }
 
    return result;
