@@ -11,7 +11,7 @@ public:
 
    double operator()(std::span<const double> x) const override;
    const HierMultiIndex& getMultiIndex() const override;
-   Interval<double> getSupportInDirection(size_t) const override;
+   const std::vector<const IHierBasisFunction1D*>& getBasisFunctions1D() const override;
 
 private:
    std::vector<const IHierBasisFunction1D*> m_basisFunctions;

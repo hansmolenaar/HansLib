@@ -6,13 +6,15 @@
 
 #include <memory>
 
+class IHierBasisFunction1D;
+
 class  IHierBasisFunction : public IMultiVariableRealValuedFunction
 {
 public:
 
    virtual double operator()(std::span<const double> x) const = 0;
    virtual const HierMultiIndex& getMultiIndex() const = 0;
-   virtual Interval<double> getSupportInDirection(size_t) const = 0;
+   virtual const std::vector<const IHierBasisFunction1D*>& getBasisFunctions1D() const = 0;
 
    // Partial implementation IMultiVariableRealValuedFunction
    inline double Evaluate(std::span<const double> x) const override { return (*this)(x); }

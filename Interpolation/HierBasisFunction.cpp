@@ -24,9 +24,9 @@ const HierMultiIndex& HierBasisFunction::getMultiIndex() const
    return m_multiIndex;
 }
 
-Interval<double> HierBasisFunction::getSupportInDirection(size_t n) const
+const std::vector<const IHierBasisFunction1D*>& HierBasisFunction::getBasisFunctions1D() const
 {
-   return m_basisFunctions.at(n)->getSupport();
+   return m_basisFunctions;
 }
 
 double HierBasisFunction::operator()(std::span<const double> x) const
