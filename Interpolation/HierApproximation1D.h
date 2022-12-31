@@ -18,7 +18,7 @@ struct HierTreeNode
 {
    double operator()(double) const;
 
-   std::unique_ptr<IHierBasisFunction1D> BasisFunction;
+   const IHierBasisFunction1D* BasisFunction;
    double Surplus;
    std::vector<std::shared_ptr<HierTreeNode>> Kids;
 };

@@ -43,6 +43,7 @@
     <ClCompile Include="HierBasisFunction1D_HomogenousBC.cpp" />
     <ClCompile Include="HierLevelIndex.cpp" />
     <ClCompile Include="HierMultiIndex.cpp" />
+    <ClCompile Include="IHierBasisFunction.cpp" />
     <ClCompile Include="LagrangeInterpolation.cpp" />
     <ClCompile Include="NodalBasis1D.cpp" />
   </ItemGroup>

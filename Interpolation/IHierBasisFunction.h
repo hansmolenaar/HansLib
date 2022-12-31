@@ -20,6 +20,9 @@ public:
    inline bool DerivativeAlwaysZero(int var) const override { return false; }
    virtual bool HasDerivative() const override { return false; };
    virtual 	 int GetDomainDimension() const override { return static_cast<int>(getMultiIndex().getDimension()); }
+
+   // Helper function
+   bool contains(std::span<const double> x) const;
 };
 
 
@@ -27,7 +30,7 @@ class  IHierBasisFunction_Factory
 {
 public:
    virtual ~IHierBasisFunction_Factory() = default;
-   virtual const HierMultiIndex& getLowestLevel() const = 0;
+   virtual std::vector<HierMultiIndex> getLowestLevel() const = 0;
    virtual bool canBeRefined(const HierMultiIndex&) const = 0;
    virtual std::unique_ptr<IHierBasisFunction> create(const HierMultiIndex&) const = 0;
 };

@@ -19,8 +19,7 @@ TEST(HierBasisFunction1D_HomogenousBCTest, Basis_1_1)
    ASSERT_EQ(lowestLevel.size(), 1);
    ASSERT_EQ(lowestLevel.front(), HierLevelIndex(1, 1));
    ASSERT_TRUE(factory.canBeRefined(lowestLevel.front()));
-   const auto fiePtr = factory.create(lowestLevel.front());
-   const auto& fie = *fiePtr;
+   const auto& fie = *factory.get(lowestLevel.front());
 
    IHierBasisFunction1DTest_Interface(fie);
 

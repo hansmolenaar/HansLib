@@ -3,6 +3,8 @@
 #include "Functions/HatFunction.h"
 #include "HierBasisFunction1D_HomogenousBC.h"
 
+#include <map>
+#include <memory>
 
 HierBasisFunction1D_ExtraplolateBC::HierBasisFunction1D_ExtraplolateBC(HierLevelIndex li) : m_levelIndex(li)
 {}
@@ -43,7 +45,7 @@ Interval<double> HierBasisFunction1D_ExtraplolateBC::getSupport() const
 }
 
 
-std::unique_ptr<IHierBasisFunction1D> HierBasisFunction1D_ExtraplolateBC_Factory::create(const HierLevelIndex& li) const
+std::unique_ptr<HierBasisFunction1D_ExtraplolateBC> HierBasisFunction1D_ExtraplolateBC_Factory::create(const HierLevelIndex& li) const
 {
    return std::make_unique<HierBasisFunction1D_ExtraplolateBC>(li);
 }
@@ -56,4 +58,15 @@ std::vector<HierLevelIndex> HierBasisFunction1D_ExtraplolateBC_Factory::getLowes
 bool HierBasisFunction1D_ExtraplolateBC_Factory::canBeRefined(const HierLevelIndex&) const
 {
    return true;
+}
+
+
+const IHierBasisFunction1D* HierBasisFunction1D_ExtraplolateBC_Factory::get(const HierLevelIndex& li) const
+{
+   static std::map<HierLevelIndex, std::unique_ptr<HierBasisFunction1D_ExtraplolateBC>> s_basisFuncions;
+   if (!s_basisFuncions.contains(li))
+   {
+      s_basisFuncions.emplace(li, create(li));
+   }
+   return s_basisFuncions.at(li).get();
 }

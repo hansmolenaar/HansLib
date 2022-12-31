@@ -12,7 +12,7 @@ public:
    Interval<double> getSupport() const override;
    static double Evaluate(const HierLevelIndex&, double);
    static Interval<double> GetSupport(const HierLevelIndex&);
-  
+
 private:
    HierLevelIndex m_levelIndex;
 };
@@ -20,7 +20,9 @@ private:
 class HierBasisFunction1D_HomogenousBC_Factory : public IHierBasisFunction1D_Factory
 {
 public:
-   inline std::unique_ptr<IHierBasisFunction1D> create(const HierLevelIndex& li) const override { return std::make_unique<HierBasisFunction1D_HomogenousBC>(li); }
-   inline std::vector<HierLevelIndex> getLowestLevel() const override { return std::vector<HierLevelIndex>{HierLevelIndex(1,1)}; }
+   const IHierBasisFunction1D* get(const HierLevelIndex& li) const override;
+   inline std::vector<HierLevelIndex> getLowestLevel() const override { return std::vector<HierLevelIndex>{HierLevelIndex(1, 1)}; }
    inline bool canBeRefined(const HierLevelIndex&) const { return true; }
+private:
+   inline std::unique_ptr<HierBasisFunction1D_HomogenousBC> create(const HierLevelIndex& li) const { return std::make_unique<HierBasisFunction1D_HomogenousBC>(li); }
 };

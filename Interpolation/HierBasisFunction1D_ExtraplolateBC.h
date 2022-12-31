@@ -18,7 +18,9 @@ private:
 class HierBasisFunction1D_ExtraplolateBC_Factory : public IHierBasisFunction1D_Factory
 {
 public:
-   std::unique_ptr<IHierBasisFunction1D> create(const HierLevelIndex& li) const override;
+   const IHierBasisFunction1D* get(const HierLevelIndex& li) const override;
    std::vector<HierLevelIndex> getLowestLevel() const override;
    bool canBeRefined(const HierLevelIndex&) const override;
+private:
+   std::unique_ptr<HierBasisFunction1D_ExtraplolateBC> create(const HierLevelIndex& li) const;
 };

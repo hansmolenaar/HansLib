@@ -3,6 +3,24 @@
 #include "Utilities/Assert.h"
 #include "Utilities/Pow2.h"
 
+#include <map>
+#include <memory>
+
+// Factory
+
+const IHierBasisFunction1D* HierBasisFunction1D_HomogenousBC_Factory::get(const HierLevelIndex& li) const
+{
+   static std::map<HierLevelIndex, std::unique_ptr<IHierBasisFunction1D>> s_basisFuncions;
+   if (!s_basisFuncions.contains(li))
+   {
+      s_basisFuncions.emplace(li, create(li));
+   }
+   return s_basisFuncions.at(li).get();
+}
+
+// Function
+
+
 HierBasisFunction1D_HomogenousBC::HierBasisFunction1D_HomogenousBC(HierLevelIndex levelIndex) :
    m_levelIndex(levelIndex)
 {

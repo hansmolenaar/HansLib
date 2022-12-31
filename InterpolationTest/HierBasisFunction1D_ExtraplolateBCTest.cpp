@@ -18,8 +18,7 @@ TEST(HierBasisFunction1D_ExtraplolateBCTest, Basis_1_1)
    const auto li_1_1 = Utilities::Single(lowestLevel);
    ASSERT_EQ(li_1_1, HierLevelIndex(1, 1));
    ASSERT_TRUE(factory.canBeRefined(li_1_1));
-   const auto fiePtr = factory.create(lowestLevel.front());
-   const auto& fie = *fiePtr;
+   const auto& fie = *factory.get(lowestLevel.front());
 
    IHierBasisFunction1DTest_Interface(fie);
 

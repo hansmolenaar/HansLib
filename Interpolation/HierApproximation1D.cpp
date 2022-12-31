@@ -78,7 +78,7 @@ namespace
 
       std::shared_ptr<HierTreeNode> operator()(const HierLevelIndex& kidLevelIndex) const
       {
-         auto kid = std::make_shared<HierTreeNode>(Factory.create(kidLevelIndex), 0.0);
+         auto kid = std::make_shared<HierTreeNode>(Factory.get(kidLevelIndex), 0.0);
 
          // Calculate the surplus
          const double x = kidLevelIndex.toDouble();
