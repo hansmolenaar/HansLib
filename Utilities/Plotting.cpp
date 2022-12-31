@@ -28,16 +28,32 @@ std::string Plotting::PlotFunction(std::initializer_list< std::function<double(d
       {
          x = xmin + delx * n;
       }
-      
+
 
       result << x;
       for (auto& fie : fies)
       {
          const double y = fie(x);
          result << " , " << y;
-      } 
+      }
       result << std::endl;
    }
    const std::string str = result.str();
    return str;
+}
+
+std::filesystem::path Plotting::GenerateFullFilePath(const std::string& name, std::string folderName)
+{
+   std::filesystem::path path{ folderName };
+   const auto fileName = name + ".txt";
+   path /= fileName;
+   return path;
+}
+
+std::ofstream Plotting::GetFile(const std::string& name, std::string folderName)
+{
+   const auto& fullPath = Plotting::GenerateFullFilePath(name);
+   std::ofstream ofs(fullPath);
+   if (!ofs.is_open()) throw MyException(std::string("Unable to create file ") + fullPath.string());
+   return ofs;
 }

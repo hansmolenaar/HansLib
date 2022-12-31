@@ -54,3 +54,13 @@ TEST(HierBasisFunctionTest, Factory)
    ASSERT_NEAR((*basisFunction)(std::array<double, 2>{0.75, 0.25}), 0.25, Epsilon);
 }
 
+
+TEST(HierBasisFunctionTest, Factory_plot)
+{
+   const HierBasisFunction1D_HomogenousBC_Factory factory1D;
+   const HierBasisFunction_Factory factory(2, &factory1D);
+   const auto fiePtr = factory.create(HierMultiIndex(std::vector<HierLevelIndex>{ {2,1}, {2,3} }));
+   const auto& fie = *fiePtr;
+ 
+}
+

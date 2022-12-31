@@ -10,6 +10,7 @@
 #include "Interpolation/HierBasisFunction1D_ExtendedLevelOneBC.h"
 #include "Interpolation/HierBasisFunction1D_ExtraplolateBC.h"
 #include "Functions/SingleVariableFunctionExamples.h"
+#include "Utilities/Plotting.h"
 
 #include <filesystem>
 #include <fstream>
@@ -27,25 +28,10 @@ namespace
       }
    }
 
-   std::filesystem::path GenerateFullFilePath(const std::string& functionName, const std::string& folderName)
-   {
-      std::filesystem::path path{ folderName };
-      const auto fileName = functionName + ".txt";
-      path /= fileName;
-      return path;
-   }
-
-   std::ofstream GetFile(const std::string& functionName)
-   {
-      const std::string         folderName = "C:\\\\Users\\Hans\\Documents\\tmp";
-      std::ofstream ofs(GenerateFullFilePath(functionName, folderName));
-      if (!ofs.is_open()) throw MyException(std::string("Unable to create file ") + functionName + "in folder " + folderName);
-      return ofs;
-   }
 
    void CollocationPointsToFile(std::string functionName, const HierApproximation1D& approx)
    {
-      std::ofstream ofs(GetFile(functionName));
+      std::ofstream ofs(Plotting::GetFile(functionName));
       ofs << "x" << " , " << "y" << "\n";
       for (const auto& xvec : approx.getCollocationPoints())
       {

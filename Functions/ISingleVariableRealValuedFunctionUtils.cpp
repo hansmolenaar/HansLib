@@ -4,6 +4,7 @@
 #include "NonLinearSolver/NonLinearSolver.h"
 #include "Utilities/Assert.h"
 #include "Utilities/MyException.h"
+#include "Utilities/Plotting.h"
 
 #include <string>
 #include <sstream>
@@ -11,36 +12,12 @@
 #include <filesystem>
 #include <fstream>
 
-namespace
-{
-   std::filesystem::path GenerateFullFilePath(const std::string& functionName, const std::string& folderName)
-   {
-      std::filesystem::path path{ folderName };
-      const auto fileName = functionName + ".txt";
-      path /= fileName;
-      return path;
-   }
-
-   std::ofstream GetFile(const std::string& functionName, std::string folderName)
-   {
-      if (folderName.empty())
-      {
-         folderName = "C:\\\\Users\\Hans\\Documents\\tmp";
-      }
-      std::ofstream ofs(GenerateFullFilePath(functionName, folderName));
-      if (!ofs.is_open()) throw MyException(std::string("Unable to create file ") + functionName + "in folder " + folderName);
-      return ofs;
-   }
-};
-
 double ISingleVariableRealValuedFunctionUtils::Evaluate(ISingleVariableRealValuedFunction& fie, double x)
 {
    double result;
    fie.Evaluate(std::span<const double>(&x, 1), std::span<double>(&result, 1));
    return result;
 }
-
-
 
 
 void ISingleVariableRealValuedFunctionUtils::CheckDerivative(ISingleVariableRealValuedFunction& fie, double x, double delx, bool isLinear)
@@ -67,12 +44,12 @@ void ISingleVariableRealValuedFunctionUtils::CheckDerivative(ISingleVariableReal
    }
 }
 
-void ISingleVariableRealValuedFunctionUtils::ToFile(const ISingleVariableRealValuedFunction& fie, double xmin, double xmax, int nPoints, const std::string& functionName, std::string folderName)
+void ISingleVariableRealValuedFunctionUtils::ToFile(const ISingleVariableRealValuedFunction& fie, double xmin, double xmax, int nPoints, const std::string& functionName)
 {
    Utilities::Assert(nPoints > 1);
    Utilities::Assert(xmax > xmin);
 
-   std::ofstream ofs(GetFile(functionName, folderName));
+   std::ofstream ofs(Plotting::GetFile(functionName));
    const double del = (xmax - xmin) / (nPoints - 1);
    ofs << "x" << " , " << "y" << "\n";
    for (int n = 0; n < nPoints; ++n)
@@ -85,12 +62,12 @@ void ISingleVariableRealValuedFunctionUtils::ToFile(const ISingleVariableRealVal
 }
 
 
-void ISingleVariableRealValuedFunctionUtils::ToFile(const ISingleVariableRealValuedFunction& expect, const ISingleVariableRealValuedFunction& approximate, double xmin, double xmax, int nPoints, const std::string& functionName, std::string folderName)
+void ISingleVariableRealValuedFunctionUtils::ToFile(const ISingleVariableRealValuedFunction& expect, const ISingleVariableRealValuedFunction& approximate, double xmin, double xmax, int nPoints, const std::string& functionName)
 {
    Utilities::Assert(nPoints > 1);
    Utilities::Assert(xmax > xmin);
 
-   std::ofstream ofs(GetFile(functionName, folderName));
+   std::ofstream ofs(Plotting::GetFile(functionName));
    const double del = (xmax - xmin) / (nPoints - 1);
    ofs << "x , Expect , Actual\n";
    for (int n = 0; n < nPoints; ++n)
