@@ -7,16 +7,11 @@
 #include <memory>
 #include <functional>
 
-struct ValueSurplus
-{
-   double Value;
-   double Surplus;
-};
-
 struct HierRefinementInfo
 {
    HierLevelIndex LevelIndex;
    double Surplus;
+   double MaxSurplus;
 };
 
 struct HierTreeNode
@@ -40,10 +35,8 @@ public:
    bool IsNonConstant() const override;
    bool HasDerivative() const override;
 
-
-   //bool isLeaf(const HierLevelIndex&) const;
    double getMaxSurplus() const;
-   //size_t numLeaves() const;
+
 private:
    explicit HierApproximation1D(const IHierBasisFunction1D_Factory&);
    std::vector< HierTreeNode*> getAllTreeNodes() const;

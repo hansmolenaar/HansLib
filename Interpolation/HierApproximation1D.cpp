@@ -33,12 +33,13 @@ namespace
    {
       const IHierBasisFunction1D_Factory& Factory;
       const std::function<bool(const HierRefinementInfo&)>& RefinementPredicate;
+      double MaxSurplus = 0;
 
       bool operator()(const HierTreeNode* htn) const
       {
          if (!IsRefinable{ Factory }(htn)) return false;
          const auto li = htn->BasisFunction->getLevelIndex();
-         const HierRefinementInfo refinementInfo{ li, std::abs(htn->Surplus) };
+         const HierRefinementInfo refinementInfo{ li, std::abs(htn->Surplus), MaxSurplus };
          return RefinementPredicate(refinementInfo);
       }
    };
@@ -143,7 +144,7 @@ std::unique_ptr<HierApproximation1D> HierApproximation1D::Create(
    const ISingleVariableRealValuedFunction& fie, const IHierBasisFunction1D_Factory& factory, const std::function<bool(const HierRefinementInfo&)>& doRefine)
 {
    std::unique_ptr<HierApproximation1D> result(new HierApproximation1D(factory));
-   const DoRefine refinementPredicate{ factory, doRefine };
+   DoRefine refinementPredicate{ factory, doRefine };
    const CreateKid createKid(factory, fie, *result);
 
    str::transform(factory.getLowestLevel(), std::back_inserter(result->m_root), createKid);
@@ -159,6 +160,7 @@ std::unique_ptr<HierApproximation1D> HierApproximation1D::Create(
       }
 
       toRefine.clear();
+      refinementPredicate.MaxSurplus = result->getMaxSurplus();
       str::copy_if(result->getLeafNodes(), std::back_inserter(toRefine), refinementPredicate);
    }
 
