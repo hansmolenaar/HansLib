@@ -32,3 +32,22 @@ TEST(HierMultiIndex, Simple)
    ASSERT_EQ(mi.getL1NormLevel(), 2);
    ASSERT_EQ(mi.getSupNormLevel(), 2);
 }
+
+
+TEST(HierMultiIndex, SpaceShip)
+{
+   const HierMultiIndex mi(std::vector<HierLevelIndex>{ { 5, 5 }, { 7,7 }});
+   auto other = HierMultiIndex(std::vector<HierLevelIndex>{ { 5, 7 }, { 4,7 }});
+   ASSERT_TRUE(mi > other);
+   ASSERT_TRUE(other < mi);
+   ASSERT_TRUE(mi != other);
+   ASSERT_TRUE(mi == mi);
+
+   other = HierMultiIndex(std::vector<HierLevelIndex>{ { 5, 5 }, { 7,5 }});
+   ASSERT_TRUE(mi > other);
+   ASSERT_TRUE(other < mi);
+
+   other = HierMultiIndex(std::vector<HierLevelIndex>{ { 5, 5 }});
+   ASSERT_TRUE(mi > other);
+   ASSERT_TRUE(other < mi);
+}

@@ -34,3 +34,24 @@ size_t HierMultiIndex::getSupNormLevel() const
 {
    return str::max(m_levelsIndices | stv::transform([](const HierLevelIndex& li) {return li.getLevel(); }));
 }
+
+std::strong_ordering operator<=>(const HierMultiIndex& lhs, const HierMultiIndex& rhs)
+{
+   auto result = lhs.m_levelsIndices.size() <=> rhs.m_levelsIndices.size();
+   if (result != std::strong_ordering::equivalent) return result;
+
+   // First compare levels, then indices
+   for (size_t n = 0; n < lhs.m_levelsIndices.size(); ++n)
+   {
+      result = lhs.m_levelsIndices.at(n).getLevel() <=> rhs.m_levelsIndices.at(n).getLevel();
+      if (result != std::strong_ordering::equivalent) return result;
+   }
+
+   for (size_t n = 0; n < lhs.m_levelsIndices.size(); ++n)
+   {
+      result = lhs.m_levelsIndices.at(n).getIndex() <=> rhs.m_levelsIndices.at(n).getIndex();
+      if (result != std::strong_ordering::equivalent) return result;
+   }
+
+   return std::strong_ordering::equivalent;
+}

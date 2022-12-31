@@ -12,7 +12,8 @@ public:
    size_t getDimension() const;
    const std::vector<HierLevelIndex>& get() const;
 
-   auto operator<=>(const HierMultiIndex&) const = default;
+   friend  std::strong_ordering operator<=>(const HierMultiIndex&, const HierMultiIndex&);
+   bool operator==(const HierMultiIndex&) const = default;
 
    size_t getL1NormLevel() const;
    size_t getSupNormLevel() const;
