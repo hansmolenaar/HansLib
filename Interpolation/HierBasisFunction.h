@@ -1,8 +1,7 @@
 #pragma once
 
 #include "IHierBasisFunction.h"
-
-class IHierBasisFunction1D;
+#include "IHierBasisFunction1D.h"
 
 class HierBasisFunction : public IHierBasisFunction
 {
@@ -16,4 +15,18 @@ public:
 private:
    std::vector<const IHierBasisFunction1D*> m_basisFunctions;
    HierMultiIndex m_multiIndex;
+};
+
+
+
+class  HierBasisFunction_Factory : public IHierBasisFunction_Factory
+{
+public:
+   HierBasisFunction_Factory(size_t, const IHierBasisFunction1D_Factory*);
+   std::vector<HierMultiIndex> getLowestLevel() const override;
+   bool canBeRefined(const HierMultiIndex&) const override;
+   std::unique_ptr<IHierBasisFunction> create(const HierMultiIndex&) const override;
+private:
+   size_t m_dimension;
+   const IHierBasisFunction1D_Factory* m_factory1D;
 };
