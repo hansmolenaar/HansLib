@@ -146,6 +146,9 @@
     <ClInclude Include="IMesh.h" />
     <ClInclude Include="TartanGrid.h" />
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Dummy.cpp" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
