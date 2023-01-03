@@ -6,6 +6,7 @@
 #include "Utilities/MyException.h"
 #include "Utilities/Defines.h"
 #include "Utilities/Single.h"
+#include "Utilities/Plotting.h"
 
 inline constexpr double Epsilon = 1.0e-10;
 
@@ -52,6 +53,8 @@ TEST(HierBasisFunctionTest, Factory)
    const auto basisFunction = factory.create(Utilities::Single(basis_1_1));
    ASSERT_NEAR((*basisFunction)(std::array<double, 2>{0.5, 0.5}), 1.0, Epsilon);
    ASSERT_NEAR((*basisFunction)(std::array<double, 2>{0.75, 0.25}), 0.25, Epsilon);
+   const auto fie = [&basisFunction](const std::vector<double>& x) {return (*basisFunction)(x); };
+   Plotting::MdFunctionsOnUnityToFile("Testje", 2, { fie }, 200);
 }
 
 
@@ -60,7 +63,8 @@ TEST(HierBasisFunctionTest, Factory_plot)
    const HierBasisFunction1D_HomogenousBC_Factory factory1D;
    const HierBasisFunction_Factory factory(2, &factory1D);
    const auto fiePtr = factory.create(HierMultiIndex(std::vector<HierLevelIndex>{ {2,1}, {2,3} }));
-   const auto& fie = *fiePtr;
- 
+   ASSERT_NEAR((*fiePtr)(std::array<double, 2>{0.25, 0.75}), 1.0, Epsilon);
+   const auto fie = [&fiePtr](const std::vector<double>& x) {return (*fiePtr)(x); };
+   Plotting::MdFunctionsOnUnityToFile("Testje", 2, { fie }, 100);
 }
 

@@ -50,14 +50,9 @@ void ISingleVariableRealValuedFunctionUtils::ToFile(const ISingleVariableRealVal
    Utilities::Assert(xmax > xmin);
 
    std::ofstream ofs(Plotting::GetFile(functionName));
-   const double del = (xmax - xmin) / (nPoints - 1);
-   ofs << "x" << " , " << "y" << "\n";
-   for (int n = 0; n < nPoints; ++n)
-   {
-      const double x = xmin + n * del;
-      const double eval = fie.Evaluate(x);
-      ofs << x << " , " << eval << "\n";
-   }
+   auto function = [&fie](double x) {return fie.Evaluate(x); };
+   const auto values = Plotting::EvaluateFunctions({function}, xmin, xmax, nPoints);
+   Plotting::ToStream(ofs, values);
    ofs.close();
 }
 
@@ -68,14 +63,9 @@ void ISingleVariableRealValuedFunctionUtils::ToFile(const ISingleVariableRealVal
    Utilities::Assert(xmax > xmin);
 
    std::ofstream ofs(Plotting::GetFile(functionName));
-   const double del = (xmax - xmin) / (nPoints - 1);
-   ofs << "x , Expect , Actual\n";
-   for (int n = 0; n < nPoints; ++n)
-   {
-      const double x = xmin + n * del;
-      const double e = expect.Evaluate(x);
-      const double a = approximate.Evaluate(x);
-      ofs << x << " , " << e << " , " << a << "\n";
-   }
+   const auto eval = [&expect](double x) {return expect.Evaluate(x); };
+   const auto actl = [&approximate](double x) {return approximate.Evaluate(x); };
+   const auto values = Plotting::EvaluateFunctions({eval, actl}, xmin, xmax, nPoints );
+   Plotting::ToStream(ofs, std::vector<std::string>{"x", "Expect", "Actual"}, values);
    ofs.close();
 }
