@@ -53,8 +53,6 @@ TEST(HierBasisFunctionTest, Factory)
    const auto basisFunction = factory.create(Utilities::Single(basis_1_1));
    ASSERT_NEAR((*basisFunction)(std::array<double, 2>{0.5, 0.5}), 1.0, Epsilon);
    ASSERT_NEAR((*basisFunction)(std::array<double, 2>{0.75, 0.25}), 0.25, Epsilon);
-   const auto fie = [&basisFunction](const std::vector<double>& x) {return (*basisFunction)(x); };
-   Plotting::MdFunctionsOnUnityToFile("Testje", 2, { fie }, 200);
 }
 
 

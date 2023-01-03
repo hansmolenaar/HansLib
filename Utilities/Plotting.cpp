@@ -54,7 +54,7 @@ std::vector<std::vector<double>> Plotting::EvaluateFunctions(std::initializer_li
 void Plotting::ToStream(std::ostream& stream, const std::vector<std::vector<double>>& values)
 {
    std::vector<std::string> headers{ "x" };
-   for (size_t n = 0; n < values.front().size(); ++n)
+   for (size_t n = 0; n < values.front().size()-1; ++n)
    {
       headers.push_back("y" + std::to_string(n));
    }
