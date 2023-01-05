@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClInclude Include="ChebyshevPoints.h" />
     <ClInclude Include="EquidistantPoints.h" />
+    <ClInclude Include="HierApproximation.h" />
     <ClInclude Include="HierApproximation1D.h" />
     <ClInclude Include="HierBasisFunction.h" />
     <ClInclude Include="HierBasisFunction1D_ExtendedLevelOneBC.h" />
@@ -37,6 +38,7 @@
   <ItemGroup>
     <ClCompile Include="ChebyshevPoints.cpp" />
     <ClCompile Include="EquidistantPoints.cpp" />
+    <ClCompile Include="HierApproximation.cpp" />
     <ClCompile Include="HierApproximation1D.cpp" />
     <ClCompile Include="HierBasisFunction.cpp" />
     <ClCompile Include="HierBasisFunction1D_ExtendedLevelOneBC.cpp" />
