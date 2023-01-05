@@ -3,9 +3,11 @@
 #include "HierLevelIndex.h"
 #include "IHierBasisFunction1D.h"
 #include "Functions/ISingleVariableRealValuedFunction.h"
+#include "HierMultiIndex.h"
 
 #include <memory>
 #include <functional>
+#include <map>
 
 struct HierRefinementInfo
 {
@@ -20,7 +22,7 @@ struct HierTreeNode
 
    const IHierBasisFunction1D* BasisFunction;
    double Surplus;
-   std::vector<std::shared_ptr<HierTreeNode>> Kids;
+   std::vector<HierTreeNode*> Kids;
 };
 
 class HierApproximation1D : public ISingleVariableRealValuedFunction
@@ -42,6 +44,7 @@ private:
    std::vector< HierTreeNode*> getAllTreeNodes() const;
    std::vector< HierTreeNode*> getLeafNodes() const;
 
-   std::vector<std::shared_ptr<HierTreeNode>> m_root;
+   std::map<HierLevelIndex, std::unique_ptr<HierTreeNode>> m_treeNodeMap;
+   std::vector<HierTreeNode*> m_root;
    const IHierBasisFunction1D_Factory& m_factory;
 };

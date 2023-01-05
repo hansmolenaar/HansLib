@@ -44,9 +44,9 @@ namespace
       }
    };
 
-   void GetAllTreeNodesRecur(const std::vector<std::shared_ptr<HierTreeNode>>& treeNodes, std::vector< HierTreeNode*>& result)
+   void GetAllTreeNodesRecur(const std::vector<HierTreeNode*>& treeNodes, std::vector< HierTreeNode*>& result)
    {
-      str::transform(treeNodes, std::back_inserter(result), [](const auto& sharedPointer) {return sharedPointer.get(); });
+      str::copy(treeNodes, std::back_inserter(result));
       for (const auto& tn : treeNodes)
       {
          GetAllTreeNodesRecur(tn->Kids, result);
@@ -54,14 +54,14 @@ namespace
    }
 
 
-   void GetLeafNodesRecur(const std::vector<std::shared_ptr<HierTreeNode>>& treeNodes, std::vector< HierTreeNode*>& result)
+   void GetLeafNodesRecur(const std::vector<HierTreeNode*>& treeNodes, std::vector< HierTreeNode*>& result)
    {
       constexpr IsLeaf isLeaf;
       for (const auto& tn : treeNodes)
       {
          if (isLeaf(*tn))
          {
-            result.push_back(tn.get());
+            result.push_back(tn);
          }
          else
          {
@@ -76,9 +76,9 @@ namespace
       const ISingleVariableRealValuedFunction& FunctionToApproximate;
       const HierApproximation1D& Approximation;
 
-      std::shared_ptr<HierTreeNode> operator()(const HierLevelIndex& kidLevelIndex) const
+      std::unique_ptr<HierTreeNode> operator()(const HierLevelIndex& kidLevelIndex) const
       {
-         auto kid = std::make_shared<HierTreeNode>(Factory.get(kidLevelIndex), 0.0);
+         auto kid = std::make_unique<HierTreeNode>(Factory.get(kidLevelIndex), 0.0);
 
          // Calculate the surplus
          const double x = kidLevelIndex.toDouble();
@@ -89,6 +89,18 @@ namespace
          return kid;
       }
    };
+
+
+   void DoCreate(const HierLevelIndex& kidIndex, const CreateKid& creator, std::vector<HierTreeNode*>& kidArray, std::map<HierLevelIndex, std::unique_ptr<HierTreeNode>>& treeNodeMap)
+   {
+      if (!treeNodeMap.contains(kidIndex))
+      {
+         auto kidPtr = creator(kidIndex);
+         treeNodeMap.emplace(kidIndex, std::move(kidPtr));
+      }
+    
+      kidArray.emplace_back(treeNodeMap.at(kidIndex).get());
+   }
 
 }
 
@@ -140,6 +152,7 @@ double HierApproximation1D::operator()(double x) const
    return result;
 }
 
+
 std::unique_ptr<HierApproximation1D> HierApproximation1D::Create(
    const ISingleVariableRealValuedFunction& fie, const IHierBasisFunction1D_Factory& factory, const std::function<bool(const HierRefinementInfo&)>& doRefine)
 {
@@ -147,7 +160,10 @@ std::unique_ptr<HierApproximation1D> HierApproximation1D::Create(
    DoRefine refinementPredicate{ factory, doRefine };
    const CreateKid createKid(factory, fie, *result);
 
-   str::transform(factory.getLowestLevel(), std::back_inserter(result->m_root), createKid);
+   for (auto ref : factory.getLowestLevel())
+   {
+      DoCreate(ref, createKid, result->m_root, result->m_treeNodeMap);
+   }
 
    std::vector<HierTreeNode*> toRefine;
    str::copy_if(result->getLeafNodes(), std::back_inserter(toRefine), refinementPredicate);
@@ -156,7 +172,10 @@ std::unique_ptr<HierApproximation1D> HierApproximation1D::Create(
    {
       for (auto ref : toRefine)
       {
-         str::transform(ref->BasisFunction->getLevelIndex().refine(), std::back_inserter(ref->Kids), createKid);
+         for (auto kid : ref->BasisFunction->getLevelIndex().refine())
+         {
+            DoCreate(kid, createKid, ref->Kids, result->m_treeNodeMap);
+         }
       }
 
       toRefine.clear();
