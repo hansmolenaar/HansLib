@@ -54,6 +54,9 @@
     <ClInclude Include="HierBasisFunction.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="HierRefinementInfo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="LagrangeInterpolation.cpp">

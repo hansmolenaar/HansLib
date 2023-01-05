@@ -28,6 +28,7 @@
     <ClInclude Include="HierBasisFunction1D_HomogenousBC.h" />
     <ClInclude Include="HierLevelIndex.h" />
     <ClInclude Include="HierMultiIndex.h" />
+    <ClInclude Include="HierRefinementInfo.h" />
     <ClInclude Include="IHierBasisFunction.h" />
     <ClInclude Include="IHierBasisFunction1D.h" />
     <ClInclude Include="LagrangeInterpolation.h" />

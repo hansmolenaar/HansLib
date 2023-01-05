@@ -7,12 +7,12 @@ namespace
 
    struct IsLeaf
    {
-      bool operator()(const HierTreeNode& htn) const
+      bool operator()(const HierTreeNode1D& htn) const
       {
          return htn.Kids.empty();
       }
 
-      bool operator()(const HierTreeNode* htn) const
+      bool operator()(const HierTreeNode1D* htn) const
       {
          return (*this)(*htn);
       }
@@ -22,7 +22,7 @@ namespace
    {
       const IHierBasisFunction1D_Factory& Factory;
 
-      bool operator()(const HierTreeNode* htn) const
+      bool operator()(const HierTreeNode1D* htn) const
       {
          const auto li = htn->BasisFunction->getLevelIndex();
          return Factory.canBeRefined(li);
@@ -35,16 +35,16 @@ namespace
       const std::function<bool(const HierRefinementInfo&)>& RefinementPredicate;
       double MaxSurplus = 0;
 
-      bool operator()(const HierTreeNode* htn) const
+      bool operator()(const HierTreeNode1D* htn) const
       {
          if (!IsRefinable{ Factory }(htn)) return false;
          const auto li = htn->BasisFunction->getLevelIndex();
-         const HierRefinementInfo refinementInfo{ li, std::abs(htn->Surplus), MaxSurplus };
+         const HierRefinementInfo refinementInfo{ HierMultiIndex(li), std::abs(htn->Surplus), MaxSurplus };
          return RefinementPredicate(refinementInfo);
       }
    };
 
-   void GetAllTreeNodesRecur(const std::vector<HierTreeNode*>& treeNodes, std::vector< HierTreeNode*>& result)
+   void GetAllTreeNodesRecur(const std::vector<HierTreeNode1D*>& treeNodes, std::vector< HierTreeNode1D*>& result)
    {
       str::copy(treeNodes, std::back_inserter(result));
       for (const auto& tn : treeNodes)
@@ -54,7 +54,7 @@ namespace
    }
 
 
-   void GetLeafNodesRecur(const std::vector<HierTreeNode*>& treeNodes, std::vector< HierTreeNode*>& result)
+   void GetLeafNodesRecur(const std::vector<HierTreeNode1D*>& treeNodes, std::vector< HierTreeNode1D*>& result)
    {
       constexpr IsLeaf isLeaf;
       for (const auto& tn : treeNodes)
@@ -76,9 +76,9 @@ namespace
       const ISingleVariableRealValuedFunction& FunctionToApproximate;
       const HierApproximation1D& Approximation;
 
-      std::unique_ptr<HierTreeNode> operator()(const HierLevelIndex& kidLevelIndex) const
+      std::unique_ptr<HierTreeNode1D> operator()(const HierLevelIndex& kidLevelIndex) const
       {
-         auto kid = std::make_unique<HierTreeNode>(Factory.get(kidLevelIndex), 0.0);
+         auto kid = std::make_unique<HierTreeNode1D>(Factory.get(kidLevelIndex), 0.0);
 
          // Calculate the surplus
          const double x = kidLevelIndex.toDouble();
@@ -91,15 +91,16 @@ namespace
    };
 
 
-   HierTreeNode* GetOrCreate(const HierLevelIndex& kidIndex, const CreateKid& creator, std::map<HierLevelIndex, std::unique_ptr<HierTreeNode>>& treeNodeMap)
+   HierTreeNode1D* GetOrCreate(const HierLevelIndex& kidIndex, const CreateKid& creator, std::map<HierMultiIndex, std::unique_ptr<HierTreeNode1D>>& treeNodeMap)
    {
-      if (!treeNodeMap.contains(kidIndex))
+      const HierMultiIndex hmi(kidIndex);
+      if (!treeNodeMap.contains(hmi))
       {
          auto kidPtr = creator(kidIndex);
          treeNodeMap.emplace(kidIndex, std::move(kidPtr));
       }
 
-      return treeNodeMap.at(kidIndex).get();
+      return treeNodeMap.at(hmi).get();
    }
 
 }
@@ -108,7 +109,7 @@ HierApproximation1D::HierApproximation1D(const IHierBasisFunction1D_Factory& fac
 {
 }
 
-double HierTreeNode::operator()(double x) const
+double HierTreeNode1D::operator()(double x) const
 {
    if (!BasisFunction->getSupport().contains(x)) return 0;
    double result = Surplus * (*BasisFunction)(x);;
@@ -162,7 +163,7 @@ std::unique_ptr<HierApproximation1D> HierApproximation1D::Create(
 
    str::transform(factory.getLowestLevel(), std::back_inserter(result->m_root), [&createKid, &result](const auto& li) {return GetOrCreate(li, createKid, result->m_treeNodeMap); });
 
-   std::vector<HierTreeNode*> toRefine;
+   std::vector<HierTreeNode1D*> toRefine;
    str::copy_if(result->getLeafNodes(), std::back_inserter(toRefine), refinementPredicate);
 
    while (!toRefine.empty())
@@ -180,32 +181,32 @@ std::unique_ptr<HierApproximation1D> HierApproximation1D::Create(
    return result;
 }
 
-std::vector< HierTreeNode*> HierApproximation1D::getAllTreeNodes() const
+std::vector< HierTreeNode1D*> HierApproximation1D::getAllTreeNodes() const
 {
-   std::vector< HierTreeNode*> result;
+   std::vector< HierTreeNode1D*> result;
    GetAllTreeNodesRecur(m_root, result);
    return result;
 }
 
-std::vector< HierTreeNode*> HierApproximation1D::getLeafNodes() const
+std::vector< HierTreeNode1D*> HierApproximation1D::getLeafNodes() const
 {
-   std::vector< HierTreeNode*> result;
+   std::vector< HierTreeNode1D*> result;
    GetLeafNodesRecur(m_root, result);
    return result;
 }
 
 std::vector<std::vector<double>> HierApproximation1D::getCollocationPoints() const
 {
-   const std::vector< HierTreeNode*> allTreeNodes = getAllTreeNodes();
+   const std::vector< HierTreeNode1D*> allTreeNodes = getAllTreeNodes();
    std::vector<std::vector<double>> result(allTreeNodes.size());
-   str::transform(allTreeNodes, result.begin(), [](const HierTreeNode* tn) {return std::vector<double>{ tn->BasisFunction->getLevelIndex().toDouble()}; });
+   str::transform(allTreeNodes, result.begin(), [](const HierTreeNode1D* tn) {return std::vector<double>{ tn->BasisFunction->getLevelIndex().toDouble()}; });
    str::sort(result);
    return result;
 }
 
 double HierApproximation1D::getMaxSurplus() const
 {
-   std::vector< HierTreeNode*> active;
+   std::vector< HierTreeNode1D*> active;
    str::copy_if(getLeafNodes(), std::back_inserter(active), IsRefinable{ m_factory });
-   return str::max(active | stv::transform([](const HierTreeNode* leaf) {return std::abs(leaf->Surplus); }));
+   return str::max(active | stv::transform([](const HierTreeNode1D* leaf) {return std::abs(leaf->Surplus); }));
 }

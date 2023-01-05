@@ -4,25 +4,20 @@
 #include "IHierBasisFunction1D.h"
 #include "Functions/ISingleVariableRealValuedFunction.h"
 #include "HierMultiIndex.h"
+#include "HierRefinementInfo.h"
 
 #include <memory>
 #include <functional>
 #include <map>
 
-struct HierRefinementInfo
-{
-   HierLevelIndex LevelIndex;
-   double Surplus;
-   double MaxSurplus;
-};
 
-struct HierTreeNode
+struct HierTreeNode1D
 {
    double operator()(double) const;
 
    const IHierBasisFunction1D* BasisFunction;
    double Surplus;
-   std::vector<HierTreeNode*> Kids;
+   std::vector<HierTreeNode1D*> Kids;
 };
 
 class HierApproximation1D : public ISingleVariableRealValuedFunction
@@ -41,10 +36,10 @@ public:
 
 private:
    explicit HierApproximation1D(const IHierBasisFunction1D_Factory&);
-   std::vector< HierTreeNode*> getAllTreeNodes() const;
-   std::vector< HierTreeNode*> getLeafNodes() const;
+   std::vector< HierTreeNode1D*> getAllTreeNodes() const;
+   std::vector< HierTreeNode1D*> getLeafNodes() const;
 
-   std::map<HierLevelIndex, std::unique_ptr<HierTreeNode>> m_treeNodeMap;
-   std::vector<HierTreeNode*> m_root;
+   std::map<HierMultiIndex, std::unique_ptr<HierTreeNode1D>> m_treeNodeMap;
+   std::vector<HierTreeNode1D*> m_root;
    const IHierBasisFunction1D_Factory& m_factory;
 };
