@@ -91,15 +91,15 @@ namespace
    };
 
 
-   void DoCreate(const HierLevelIndex& kidIndex, const CreateKid& creator, std::vector<HierTreeNode*>& kidArray, std::map<HierLevelIndex, std::unique_ptr<HierTreeNode>>& treeNodeMap)
+   HierTreeNode* GetOrCreate(const HierLevelIndex& kidIndex, const CreateKid& creator, std::map<HierLevelIndex, std::unique_ptr<HierTreeNode>>& treeNodeMap)
    {
       if (!treeNodeMap.contains(kidIndex))
       {
          auto kidPtr = creator(kidIndex);
          treeNodeMap.emplace(kidIndex, std::move(kidPtr));
       }
-    
-      kidArray.emplace_back(treeNodeMap.at(kidIndex).get());
+
+      return treeNodeMap.at(kidIndex).get();
    }
 
 }
@@ -160,10 +160,7 @@ std::unique_ptr<HierApproximation1D> HierApproximation1D::Create(
    DoRefine refinementPredicate{ factory, doRefine };
    const CreateKid createKid(factory, fie, *result);
 
-   for (auto ref : factory.getLowestLevel())
-   {
-      DoCreate(ref, createKid, result->m_root, result->m_treeNodeMap);
-   }
+   str::transform(factory.getLowestLevel(), std::back_inserter(result->m_root), [&createKid, &result](const auto& li) {return GetOrCreate(li, createKid, result->m_treeNodeMap); });
 
    std::vector<HierTreeNode*> toRefine;
    str::copy_if(result->getLeafNodes(), std::back_inserter(toRefine), refinementPredicate);
@@ -172,10 +169,7 @@ std::unique_ptr<HierApproximation1D> HierApproximation1D::Create(
    {
       for (auto ref : toRefine)
       {
-         for (auto kid : ref->BasisFunction->getLevelIndex().refine())
-         {
-            DoCreate(kid, createKid, ref->Kids, result->m_treeNodeMap);
-         }
+         str::transform(ref->BasisFunction->getLevelIndex().refine(), std::back_inserter(ref->Kids), [&createKid, &result](const auto& li) {return GetOrCreate(li, createKid, result->m_treeNodeMap); });
       }
 
       toRefine.clear();
