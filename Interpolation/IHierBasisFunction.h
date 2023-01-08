@@ -32,7 +32,8 @@ class  IHierBasisFunction_Factory
 {
 public:
    virtual ~IHierBasisFunction_Factory() = default;
+   virtual size_t getDimension() const = 0;
    virtual std::vector<HierMultiIndex> getLowestLevel() const = 0;
    virtual bool canBeRefined(const HierMultiIndex&) const = 0;
-   virtual std::unique_ptr<IHierBasisFunction> create(const HierMultiIndex&) const = 0;
+   virtual const IHierBasisFunction* get(const HierMultiIndex&) const = 0;
 };

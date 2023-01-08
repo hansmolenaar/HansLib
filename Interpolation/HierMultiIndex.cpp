@@ -1,7 +1,7 @@
 #include "HierMultiIndex.h"
 #include "Utilities/Assert.h"
-
 #include "Utilities/Defines.h"
+
 #include <numeric>
 
 HierMultiIndex::HierMultiIndex(std::vector<HierLevelIndex>&& levelsIndices) :
@@ -54,4 +54,11 @@ std::strong_ordering operator<=>(const HierMultiIndex& lhs, const HierMultiIndex
    }
 
    return std::strong_ordering::equivalent;
+}
+
+std::vector<double> HierMultiIndex::toDoubles() const
+{
+   std::vector<double> result(getDimension());
+   str::transform(m_levelsIndices, result.begin(), [](const auto& li) {return li.toDouble(); });
+   return result;
 }

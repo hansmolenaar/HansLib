@@ -2,7 +2,7 @@
 
 #include "Interpolation/HierMultiIndex.h"
 #include "Utilities/MyException.h"
-
+#include "Utilities/Functors.h"
 #include "Utilities/Defines.h"
 
 TEST(HierMultiIndex, Basics)
@@ -50,4 +50,13 @@ TEST(HierMultiIndex, SpaceShip)
    other = HierMultiIndex(std::vector<HierLevelIndex>{ { 5, 5 }});
    ASSERT_TRUE(mi > other);
    ASSERT_TRUE(other < mi);
+}
+
+
+TEST(HierMultiIndex, ToDoubles)
+{
+   const HierMultiIndex mi(std::vector<HierLevelIndex>{ { 2, 3 }, { 3, 1 }});
+   const auto doubles = mi.toDoubles();
+   const std::vector<double> expect{0.75, 0.125};
+   ASSERT_TRUE(str::equal(doubles, expect, Functors::AreClose{}));
 }

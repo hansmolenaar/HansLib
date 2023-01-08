@@ -51,12 +51,18 @@ bool HierBasisFunction_Factory::canBeRefined(const HierMultiIndex& hmi) const
    return str::all_of(hmi.get(), [this](const auto& li) { return m_factory1D->canBeRefined(li); });
 }
 
-std::unique_ptr<IHierBasisFunction> HierBasisFunction_Factory::create(const HierMultiIndex& hmi) const
+const IHierBasisFunction* HierBasisFunction_Factory::get(const HierMultiIndex& hmi) const
 {
-   Utilities::Assert(m_dimension == hmi.getDimension());
-   std::vector<const IHierBasisFunction1D*> basisFunctions;
-   str::transform(hmi.get(), std::back_inserter(basisFunctions), [this](const auto& li) {return m_factory1D->get(li); });
-   return std::make_unique<HierBasisFunction>(basisFunctions);
+   static std::map<HierMultiIndex, std::unique_ptr<HierBasisFunction>> s_basisFuncions;
+   if (!s_basisFuncions.contains(hmi))
+   {
+      Utilities::Assert(m_dimension == hmi.getDimension());
+      std::vector<const IHierBasisFunction1D*> basisFunctions;
+      str::transform(hmi.get(), std::back_inserter(basisFunctions), [this](const auto& li) {return m_factory1D->get(li); });
+      s_basisFuncions.emplace(hmi, std::make_unique<HierBasisFunction>(basisFunctions));
+   }
+
+   return s_basisFuncions.at(hmi).get();
 }
 
 std::vector<HierMultiIndex> HierBasisFunction_Factory::getLowestLevel() const
@@ -73,4 +79,9 @@ std::vector<HierMultiIndex> HierBasisFunction_Factory::getLowestLevel() const
       result.emplace_back(std::move(levelsIndices));
    }
    return result;
+}
+
+size_t HierBasisFunction_Factory::getDimension() const
+{
+   return m_dimension;
 }

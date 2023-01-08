@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "Utilities/Functors.h"
+#include <limits>
 
 TEST(FunctorTest, IsEqualTo)
 {
@@ -36,4 +37,14 @@ TEST(FunctorTest, PointerIsOfType)
   ASSERT_FALSE(Functors::IsOfDerivedType<Derived_1>()(b2));
   ASSERT_FALSE(Functors::IsOfDerivedType<Derived_1>()(&ab));
 }
+
+TEST(FunctorTest, AreClose)
+{
+   constexpr Functors::AreClose areClose;
+   ASSERT_TRUE(areClose(0,0));
+   ASSERT_TRUE(areClose(0, std::numeric_limits<double>::min()));
+   ASSERT_FALSE(areClose(0, 1.0));
+   ASSERT_FALSE(areClose(-1.0, 1.0));
+}
+
 

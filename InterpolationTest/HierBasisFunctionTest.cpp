@@ -50,7 +50,7 @@ TEST(HierBasisFunctionTest, Factory)
    ASSERT_EQ(lowest.size(), 9);
    std::vector<HierMultiIndex> basis_1_1;
    str::copy_if(lowest, std::back_inserter(basis_1_1), [&factory](const HierMultiIndex& hmi) {return factory.canBeRefined(hmi); });
-   const auto basisFunction = factory.create(Utilities::Single(basis_1_1));
+   const auto* basisFunction = factory.get(Utilities::Single(basis_1_1));
    ASSERT_NEAR((*basisFunction)(std::array<double, 2>{0.5, 0.5}), 1.0, Epsilon);
    ASSERT_NEAR((*basisFunction)(std::array<double, 2>{0.75, 0.25}), 0.25, Epsilon);
 }
@@ -60,7 +60,7 @@ TEST(HierBasisFunctionTest, Factory_plot)
 {
    const HierBasisFunction1D_HomogenousBC_Factory factory1D;
    const HierBasisFunction_Factory factory(2, &factory1D);
-   const auto fiePtr = factory.create(HierMultiIndex(std::vector<HierLevelIndex>{ {2,1}, {2,3} }));
+   const auto* fiePtr = factory.get(HierMultiIndex(std::vector<HierLevelIndex>{ {2,1}, {2,3} }));
    ASSERT_NEAR((*fiePtr)(std::array<double, 2>{0.25, 0.75}), 1.0, Epsilon);
    const auto fie = [&fiePtr](const std::vector<double>& x) {return (*fiePtr)(x); };
    Plotting::MdFunctionsOnUnityToFile("Testje", 2, { fie }, 100);
