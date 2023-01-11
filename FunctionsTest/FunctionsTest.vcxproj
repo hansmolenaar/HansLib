@@ -47,6 +47,7 @@
     <ClCompile Include="RealFunctionAddTest.cpp" />
     <ClCompile Include="RealFunctionComposeTest.cpp" />
     <ClCompile Include="RealFunctionNullTest.cpp" />
+    <ClCompile Include="SingleVariableFunctionExamplesTest.cpp" />
     <ClCompile Include="SingleVariableMonomialTest.cpp" />
     <ClCompile Include="SingleVariablePolynomialTest.cpp" />
     <ClCompile Include="SingleVariableRealValuedFunctionTest.cpp" />

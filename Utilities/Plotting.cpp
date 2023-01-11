@@ -54,7 +54,7 @@ std::vector<std::vector<double>> Plotting::EvaluateFunctions(std::initializer_li
 void Plotting::ToStream(std::ostream& stream, const std::vector<std::vector<double>>& values)
 {
    std::vector<std::string> headers{ "x" };
-   for (size_t n = 0; n < values.front().size()-1; ++n)
+   for (size_t n = 0; n < values.front().size() - 1; ++n)
    {
       headers.push_back("y" + std::to_string(n));
    }
@@ -146,9 +146,16 @@ void Plotting::MdFunctionsOnUnityToStream(std::ostream& stream, size_t dim, std:
    ToStream(stream, headers, values);
 }
 
-void Plotting::MdFunctionsOnUnityToFile(const std::string& name, size_t dim, std::initializer_list< std::function<double(std::vector<double>)> > functions, int  npoints, std::vector<std::string> headers )
+void Plotting::MdFunctionsOnUnityToFile(const std::string& name, size_t dim, std::initializer_list< std::function<double(std::vector<double>)> > functions, int  npoints, std::vector<std::string> headers)
 {
    std::ofstream file = Plotting::GetFile(name);
    MdFunctionsOnUnityToStream(file, dim, functions, npoints, headers);
+   file.close();
+}
+
+void Plotting::ToFile(const std::vector<std::string>& headers, const std::vector<std::vector<double>>& values, const std::string& name, std::string folderName)
+{
+   std::ofstream file = GetFile(name, folderName);
+   ToStream(file, headers, values);
    file.close();
 }

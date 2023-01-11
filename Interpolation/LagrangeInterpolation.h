@@ -2,7 +2,7 @@
 
 #include "Functions/ISingleVariableRealValuedFunction.h"
 
-class LagrangeInterpolation : ISingleVariableRealValuedFunction
+class LagrangeInterpolation : public ISingleVariableRealValuedFunction
 {
 public:
    LagrangeInterpolation(std::span<const double>x, std::span<const double>y);

@@ -4,6 +4,8 @@
 #include "Interpolation/EquidistantPoints.h"
 #include "Functions/SingleVariableFunctionExamples.h"
 #include "Utilities/Plotting.h"
+#include "Functions/ISingleVariableRealValuedFunctionUtils.h"
+#include <Interpolation/ChebyshevPoints.h>
 
 TEST(LagrangeInterpolationTest, Basics)
 {
@@ -40,9 +42,60 @@ TEST(LagrangeInterpolationTest, Runge5)
       yvals.push_back(rungeFie->Evaluate(x));
    }
    const LagrangeInterpolation li(xvals, yvals);
-   const auto& plot = Plotting::PlotFunction({ [&rungeFie](double x) {return rungeFie->Evaluate(x); }, [&li](double x) {return li.Evaluate(x); } }, -1, 1, 100);
+   //const auto& plot = Plotting::PlotFunction({ [&rungeFie](double x) {return rungeFie->Evaluate(x); }, [&li](double x) {return li.Evaluate(x); } }, -1, 1, 100);
 }
 
+
+TEST(LagrangeInterpolationTest, SkewedHat)
+{
+   constexpr int numPoints = 10;
+   const double xpeak = std::sqrt(0.5);
+   const auto hatFie = SingleVariableFunctionExamples::GetSkewedtHatFunction(xpeak);
+
+   std::vector<double> xvals = EquidistantPoints::Generate(0.0, 1.0, numPoints-1);
+   std::vector<double> yvals(numPoints);
+   std::transform(xvals.begin(), xvals.end(), yvals.begin(), [&hatFie](double x) {return hatFie->Evaluate(x); });
+   const LagrangeInterpolation lagrangeEquidistant(xvals, yvals);
+
+   xvals = ChebyshevPoints::Generate(0.0, 1.0, 10);
+   std::transform(xvals.begin(), xvals.end(), yvals.begin(), [&hatFie](double x) {return hatFie->Evaluate(x); });
+   const LagrangeInterpolation lagrangeChebyshev(xvals, yvals);
+
+   const auto values = Plotting::EvaluateFunctions(
+      {
+         [&hatFie](double x) {return hatFie->Evaluate(x); },
+         [&lagrangeEquidistant](double x) {return lagrangeEquidistant.Evaluate(x); },
+         [&lagrangeChebyshev](double x) {return lagrangeChebyshev.Evaluate(x); }
+      },
+      0.0, 1.0, 100);
+   Plotting::ToFile(std::vector<std::string>{"x", "Exact", "Lagrange-Equidistant", "Lagrange-Chebyshev"}, values, "SkewedHatFunction");
+}
+
+
+TEST(LagrangeInterpolationTest, Step)
+{
+   constexpr int numPoints = 20;
+   const double xpeak = std::sqrt(0.5);
+   const auto hatFie = SingleVariableFunctionExamples::GetStepFunction(xpeak);
+
+   std::vector<double> xvals = EquidistantPoints::Generate(0.0, 1.0, numPoints - 1);
+   std::vector<double> yvals(numPoints);
+   std::transform(xvals.begin(), xvals.end(), yvals.begin(), [&hatFie](double x) {return hatFie->Evaluate(x); });
+   const LagrangeInterpolation lagrangeEquidistant(xvals, yvals);
+
+   xvals = ChebyshevPoints::Generate(0.0, 1.0, numPoints);
+   std::transform(xvals.begin(), xvals.end(), yvals.begin(), [&hatFie](double x) {return hatFie->Evaluate(x); });
+   const LagrangeInterpolation lagrangeChebyshev(xvals, yvals);
+
+   const auto values = Plotting::EvaluateFunctions(
+      {
+         [&hatFie](double x) {return hatFie->Evaluate(x); },
+         [&lagrangeEquidistant](double x) {return lagrangeEquidistant.Evaluate(x); },
+         [&lagrangeChebyshev](double x) {return lagrangeChebyshev.Evaluate(x); }
+      },
+      0.0, 1.0, 200);
+   Plotting::ToFile(std::vector<std::string>{"x", "Exact", "Lagrange-Equidistant", "Lagrange-Chebyshev"}, values, "Stepfunction");
+}
 
 
 

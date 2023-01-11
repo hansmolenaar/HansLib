@@ -19,4 +19,6 @@ namespace Plotting
    void ToStream(std::ostream& stream, const std::vector<std::string>& header, const std::vector<std::vector<double>>& values);
    void MdFunctionsOnUnityToStream(std::ostream& stream, size_t dim, std::initializer_list< std::function<double(std::vector<double>)> > functions, int  npoints, std::vector<std::string> headers = std::vector<std::string>{});
    void MdFunctionsOnUnityToFile(const std::string& name, size_t dim, std::initializer_list< std::function<double(std::vector<double>)> > functions, int  npoints, std::vector<std::string> headers = std::vector<std::string>{});
+
+   void ToFile(const std::vector<std::string>& header, const std::vector<std::vector<double>>& values, const std::string& name, std::string folderName = "C:\\\\Users\\Hans\\Documents\\tmp");
 };
