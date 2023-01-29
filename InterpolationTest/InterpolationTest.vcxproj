@@ -59,6 +59,7 @@
     <ClCompile Include="ChebyshevPointsTest.cpp" />
     <ClCompile Include="EquidistantPointsTest.cpp" />
     <ClCompile Include="HierApproximation1DTest.cpp" />
+    <ClCompile Include="HierApproximationTest.cpp" />
     <ClCompile Include="HierBasisFunction1D_ExtendedLevelOneBCTest.cpp" />
     <ClCompile Include="HierBasisFunction1D_ExtraplolateBCTest.cpp" />
     <ClCompile Include="HierBasisFunction1D_HomogenousBCTest.cpp" />

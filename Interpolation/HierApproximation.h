@@ -25,7 +25,7 @@ struct HierTreeNode
 class HierApproximation // : public IMultiVariableRealValuedFunction
 {
 public:
-   static std::unique_ptr<HierApproximation> Create(const HierApproximation& fie, const IHierBasisFunction_Factory& factory, const std::function<bool(const HierRefinementInfo&)>& doRefine);
+   static std::unique_ptr<HierApproximation> Create(const IMultiVariableRealValuedFunction& fie, const IHierBasisFunction_Factory& factory, const std::function<bool(const HierRefinementInfo&)>& doRefine);
 
    double operator()(std::span<const double>) const;
 private:

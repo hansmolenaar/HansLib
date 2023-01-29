@@ -88,6 +88,28 @@ namespace
    };
 
 
+#if false
+   struct CreateKid
+   {
+      const IHierBasisFunction_Factory& Factory;
+      const IMultiVariableRealValuedFunction& FunctionToApproximate;
+      const HierApproximation& Approximation;
+
+      std::unique_ptr<HierTreeNode> operator()(const HierMultiIndex& kidLevelIndex) const
+      {
+         auto kid = std::make_unique<HierTreeNode>(Factory.get(kidLevelIndex), 0.0);
+
+         // Calculate the surplus
+         const auto x = kidLevelIndex.toDoubles();
+         const double functionEval = FunctionToApproximate.Evaluate(x);
+         // Basis function may overlap
+         const double approx = Approximation(x);
+         kid->Surplus = functionEval - approx;
+         return kid;
+      }
+   };
+#endif
+
    HierTreeNode* GetOrCreate(const HierMultiIndex& hmi, const CreateHierNode& creator, std::map<HierMultiIndex, std::unique_ptr<HierTreeNode>>& treeNodeMap)
    {
       if (!treeNodeMap.contains(hmi))
@@ -98,6 +120,7 @@ namespace
 
       return treeNodeMap.at(hmi).get();
    }
+
 
 }
 
@@ -119,16 +142,17 @@ double HierTreeNode::operator()(std::span<const double> x) const
    return result;
 }
 
-std::unique_ptr<HierApproximation> HierApproximation::Create(const HierApproximation& fie, const IHierBasisFunction_Factory& factory, const std::function<bool(const HierRefinementInfo&)>& doRefine)
+std::unique_ptr<HierApproximation> HierApproximation::Create(const IMultiVariableRealValuedFunction& fie, const IHierBasisFunction_Factory& factory, const std::function<bool(const HierRefinementInfo&)>& doRefine)
 {
    std::unique_ptr<HierApproximation> result(new HierApproximation(factory));
 
    DoRefine refinementPredicate{ factory, doRefine };
+
+
+   const CreateHierNode createHierNode(factory, fie, *result);
+
+   str::transform(factory.getLowestLevel(), std::back_inserter(result->m_root), [&createHierNode, &result](const auto& li) {return GetOrCreate(li, createHierNode, result->m_treeNodeMap); });
 #if false
-   const CreateKid createKid(factory, fie, *result);
-
-   str::transform(factory.getLowestLevel(), std::back_inserter(result->m_root), [&createKid, &result](const auto& li) {return GetOrCreate(li, createKid, result->m_treeNodeMap); });
-
    std::vector<HierTreeNode1D*> toRefine;
    str::copy_if(result->getLeafNodes(), std::back_inserter(toRefine), refinementPredicate);
 

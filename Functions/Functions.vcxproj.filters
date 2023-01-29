@@ -75,6 +75,9 @@
     <ClInclude Include="HatFunction.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MultiVariableFunctionExamples.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="IMultiVariableRealValuedFunction.cpp">
@@ -126,6 +129,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SingleVariableRealValuedFunction.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MultiVariableFunctionExamples.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

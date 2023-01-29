@@ -186,3 +186,22 @@ TEST(HierApproximation1DTest, Runge_Extrapolate_Adaptive)
    CollocationPointsToFile("Runge_Extrapolate_Adaptive_Points", *approximation);
    ISingleVariableRealValuedFunctionUtils::ToFile(functionToApproximate, *approximation, 0.0, 1.0, 1000, "Runge_Extrapolate_Adaptive");
 }
+
+
+TEST(HierApproximation1DTest, Hat_Adaptive)
+{
+   const double xpeak = std::sqrt(0.5);
+   const auto fiePtr = SingleVariableFunctionExamples::GetSkewedtHatFunction(xpeak);
+   auto hat = [&fiePtr](const double x) {return fiePtr->Evaluate(x); };
+   const SingleVariableRealValuedFunction functionToApproximate(hat);
+
+   const HierBasisFunction1D_HomogenousBC_Factory factory;
+   auto predicate = [](const HierRefinementInfo& hri) {return hri.MultiLevelIndex.get().front().getLevel() < 4 && (hri.Surplus > 1.0e-3); };
+
+   const auto approximation = HierApproximation1D::Create(functionToApproximate, factory, predicate);
+   const auto points = approximation->getCollocationPoints();
+   //ASSERT_EQ(points.size(), 135);
+   TestCollocationPoints(functionToApproximate, *approximation);
+   CollocationPointsToFile("HierApproximation1DTest_Hat_Adaptive_Points", *approximation);
+   ISingleVariableRealValuedFunctionUtils::ToFile(functionToApproximate, *approximation, 0.0, 1.0, 1000, "HierApproximation1DTest_Hat_Adaptive");
+}

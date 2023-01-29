@@ -46,6 +46,7 @@ TEST(HierBasisFunctionTest, Factory)
 {
    const HierBasisFunction1D_ExtendedLevelOneBC_Factory factory1D;
    const HierBasisFunction_Factory factory(2, &factory1D);
+   ASSERT_EQ(factory.getDimension(), 2);
    const auto lowest = factory.getLowestLevel();
    ASSERT_EQ(lowest.size(), 9);
    std::vector<HierMultiIndex> basis_1_1;

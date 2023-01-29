@@ -74,7 +74,7 @@ TEST(LagrangeInterpolationTest, SkewedHat)
 
 TEST(LagrangeInterpolationTest, Step)
 {
-   constexpr int numPoints = 20;
+   constexpr int numPoints = 10;
    const double xpeak = std::sqrt(0.5);
    const auto hatFie = SingleVariableFunctionExamples::GetStepFunction(xpeak);
 
