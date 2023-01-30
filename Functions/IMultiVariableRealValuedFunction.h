@@ -18,6 +18,8 @@ public:
 	void Evaluate(std::span<const double>x, std::span< double> y) const override;
 	void Derivative(std::span<const double>x, IMatrix& dfdx) const override;
 	bool DerivativeAlwaysZero(int eqn, int var) const override;
+
+	double operator()(std::span<const double> x) const { return Evaluate(x); }
 };
 
 

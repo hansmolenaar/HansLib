@@ -152,11 +152,11 @@ std::unique_ptr<HierApproximation> HierApproximation::Create(const IMultiVariabl
    const CreateHierNode createHierNode(factory, fie, *result);
 
    str::transform(factory.getLowestLevel(), std::back_inserter(result->m_root), [&createHierNode, &result](const auto& li) {return GetOrCreate(li, createHierNode, result->m_treeNodeMap); });
-#if false
-   std::vector<HierTreeNode1D*> toRefine;
+
+   std::vector<HierTreeNode*> toRefine;
    str::copy_if(result->getLeafNodes(), std::back_inserter(toRefine), refinementPredicate);
 
-
+#if false
    while (!toRefine.empty())
    {
       for (auto ref : toRefine)
@@ -188,5 +188,12 @@ std::vector< HierTreeNode*> HierApproximation::getAllTreeNodes() const
 {
    std::vector< HierTreeNode*> result;
    GetAllTreeNodesRecur(m_root, result);
+   return result;
+}
+
+std::vector< HierTreeNode*> HierApproximation::getLeafNodes() const
+{
+   std::vector< HierTreeNode*> result;
+   GetLeafNodesRecur(m_root, result);
    return result;
 }

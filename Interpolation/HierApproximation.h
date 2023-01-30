@@ -28,9 +28,11 @@ public:
    static std::unique_ptr<HierApproximation> Create(const IMultiVariableRealValuedFunction& fie, const IHierBasisFunction_Factory& factory, const std::function<bool(const HierRefinementInfo&)>& doRefine);
 
    double operator()(std::span<const double>) const;
+
 private:
    explicit HierApproximation(const IHierBasisFunction_Factory&);
 
+   std::vector< HierTreeNode*> getLeafNodes() const;
    std::vector< HierTreeNode*> getAllTreeNodes() const;
 
    std::map<HierMultiIndex, std::unique_ptr<HierTreeNode>> m_treeNodeMap;
