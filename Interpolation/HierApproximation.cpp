@@ -136,7 +136,7 @@ std::unique_ptr<HierApproximation> HierApproximation::Create(const IMultiVariabl
       }
 
       toRefine.clear();
-      //refinementPredicate.MaxSurplus = result->getMaxSurplus();
+      refinementPredicate.MaxSurplus = result->getMaxSurplus();
       toRefine = GetRefinements(*result, refinementPredicate);
    }
 
@@ -193,4 +193,13 @@ double HierApproximation::getMaxSurplus() const
    std::vector< HierTreeNode*> active;
    str::copy_if(getLeafNodes(), std::back_inserter(active), IsRefinable{ m_factory });
    return str::max(active | stv::transform([](const HierTreeNode* leaf) {return std::abs(leaf->Surplus); }));
+}
+
+std::vector<std::vector<double>> HierApproximation::getCollocationPoints() const
+{
+   const std::vector<const HierTreeNode*> allTreeNodes = getAllTreeNodesRO();
+   std::vector<std::vector<double>> result(allTreeNodes.size());
+   str::transform(allTreeNodes, result.begin(), [](const HierTreeNode* tn) {return std::vector<double>{ tn->BasisFunction->getMultiIndex().toDoubles()}; });
+   str::sort(result);
+   return result;
 }

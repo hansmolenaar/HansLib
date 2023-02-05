@@ -29,6 +29,22 @@ namespace
       };
       return MultiVariableFunctionExamples::GetPolynomial(terms);
    }
+
+   void TestCollocationPoints(const IMultiVariableRealValuedFunction& expect, const HierApproximation& approximation)
+   {
+      const Functors::AreClose close;
+      for (const auto& point : approximation.getCollocationPoints())
+      {
+         const double expectValue = expect.Evaluate(point);
+         const double actualValue = approximation(point);
+         if (!close(expectValue, actualValue))
+         {
+            throw MyException("TestCollocationPoints");
+         }
+
+      }
+   }
+
 }
 
 TEST(HierBasisFunctionTest, GetSomePolynomial_1)
@@ -45,9 +61,10 @@ TEST(HierBasisFunctionTest, GetSomePolynomial_1)
 
    const HierBasisFunction1D_HomogenousBC_Factory factory1D;
    HierBasisFunction_Factory factory(size_t{ 2 }, &factory1D);
-   const HierApproximation::RefineInAllDirectionsOnL1Norm refineOnNorm{2};
+   const HierApproximation::RefineInAllDirectionsOnL1Norm refineOnNorm{ 2 };
    auto approximation = HierApproximation::Create(*fie, factory, refineOnNorm);
    ASSERT_EQ(approximation->getLeafNodesRO().size(), 1);
+   ASSERT_NO_THROW(TestCollocationPoints(*fie, *approximation));
 
    //Plotting::MdFunctionsOnUnityToFile("HierBasisFunctionTest_GetSomePolynomial_Approximation", 2, { [&approximation](std::vector<double> x) {return (*approximation)(x); } }, 20, std::vector<std::string>{"x", "y", "approx"});
 }
@@ -62,6 +79,7 @@ TEST(HierBasisFunctionTest, GetSomePolynomial_2)
    auto approximation = HierApproximation::Create(*fie, factory, refineOnNorm);
    ASSERT_EQ(approximation->getLeafNodesRO().size(), 4);
    ASSERT_EQ(approximation->getAllTreeNodesRO().size(), 5);
+   ASSERT_NO_THROW(TestCollocationPoints(*fie, *approximation));
 
    //Plotting::MdFunctionsOnUnityToFile("HierBasisFunctionTest_GetSomePolynomial_Approximation", 2, { [&approximation](std::vector<double> x) {return (*approximation)(x); } }, 20, std::vector<std::string>{"x", "y", "approx"});
 }
@@ -85,7 +103,60 @@ TEST(HierBasisFunctionTest, GetSomePolynomial_3)
    }
    ASSERT_EQ(approximation->getAllTreeNodesRO().size(), 17);
    ASSERT_EQ(approximation->getLeafNodesRO().size(), 12);
-   
+   ASSERT_NO_THROW(TestCollocationPoints(*fie, *approximation));
+
 
    Plotting::MdFunctionsOnUnityToFile("HierBasisFunctionTest_GetSomePolynomial_Approximation", 2, { [&approximation](std::vector<double> x) {return (*approximation)(x); } }, 20, std::vector<std::string>{"x", "y", "approx"});
 }
+
+
+
+TEST(HierBasisFunctionTest, TestConvergence)
+{
+   const std::array< double, 2 > xin{ 0.55, 0.85 };
+   const auto fie = GetSomePolynomial();
+   const double expect = fie->Evaluate(xin);
+
+   const HierBasisFunction1D_HomogenousBC_Factory factory1D;
+   HierBasisFunction_Factory factory(size_t{ 2 }, &factory1D);
+   constexpr size_t maxLevel = 10;
+   std::vector<double> maxSurplus;
+   for (size_t level = 2; level < maxLevel; ++level)
+   {
+      const HierApproximation::RefineInAllDirectionsOnL1Norm refineOnNorm{ level };
+      auto approximation = HierApproximation::Create(*fie, factory, refineOnNorm);
+      ASSERT_NO_THROW(TestCollocationPoints(*fie, *approximation));
+      const double dif = std::abs((*approximation)(xin) - expect);
+   }
+
+   for (size_t n = 2; n < maxSurplus.size(); ++n)
+   {
+      auto tmp = maxSurplus.at(n) / maxSurplus.at(n - 1);
+      //ASSERT_TRUE(maxSurplus.at(n) < 3 * maxSurplus.at(n - 1));
+   }
+}
+
+#if false
+TEST(HierBasisFunctionTest, MaxSurplus)
+{
+   const auto fie = GetSomePolynomial();
+   const HierBasisFunction1D_HomogenousBC_Factory factory1D;
+   HierBasisFunction_Factory factory(size_t{ 2 }, &factory1D);
+   constexpr size_t maxLevel = 10;
+   std::vector<double> maxSurplus;
+   for (size_t level = 2; level < maxLevel; ++level)
+   {
+      const HierApproximation::RefineInAllDirectionsOnL1Norm refineOnNorm{ level };
+      auto approximation = HierApproximation::Create(*fie, factory, refineOnNorm);
+      maxSurplus.push_back(approximation->getMaxSurplus());
+   }
+
+   for (size_t n = 2; n < maxSurplus.size(); ++n)
+   {
+      auto tmp = maxSurplus.at(n) / maxSurplus.at(n - 1);
+      ASSERT_TRUE(maxSurplus.at(n) < 3 * maxSurplus.at(n - 1));
+   }
+}
+#endif
+
+

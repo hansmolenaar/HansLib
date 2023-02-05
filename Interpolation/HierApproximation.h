@@ -45,6 +45,7 @@ public:
    std::vector< HierTreeNode*> getLeafNodes() const;
    std::vector<const HierTreeNode*> getAllTreeNodesRO() const;
 
+   std::vector<std::vector<double>> getCollocationPoints() const;
    double getMaxSurplus() const;
 
 private:
