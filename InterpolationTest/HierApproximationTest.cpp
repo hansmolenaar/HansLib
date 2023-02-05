@@ -7,6 +7,7 @@
 #include "Utilities/Single.h"
 #include "Utilities/Functors.h"
 #include "Interpolation/HierBasisFunction.h"
+#include "Interpolation/HierBasisFunction1D_ExtendedLevelOneBC.h"
 
 #include "Functions/MultiVariableFunctionExamples.h"
 
@@ -110,53 +111,51 @@ TEST(HierBasisFunctionTest, GetSomePolynomial_3)
 }
 
 
+TEST(HierBasisFunctionTest, Linear)
+{
+   const std::array< double, 2 > xin{ 0.52, 0.51 };
+   // 2*x + 3*y
+   const auto linear = MultiVariableFunctionExamples::GetPolynomial(std::vector< std::pair<std::vector<int>, double>>{ {std::vector<int>{1, 0}, 2.0}, { std::vector<int>{0,1}, 3.0 }});
+   const double expect = linear->Evaluate(xin);
+
+   const HierBasisFunction1D_ExtendedLevelOneBC_Factory factory1D;
+   HierBasisFunction_Factory factory(size_t{ 2 }, &factory1D);
+   constexpr size_t maxLevel = 5;
+   std::vector<double> maxSurplus;
+   for (size_t level = 2; level < maxLevel; ++level)
+   {
+      const HierApproximation::RefineInAllDirectionsOnL1Norm refineOnNorm{ level };
+      auto approximation = HierApproximation::Create(*linear, factory, refineOnNorm);
+      ASSERT_NO_THROW(TestCollocationPoints(*linear, *approximation));
+      const double dif = std::abs((*approximation)(xin) - expect);
+      const Functors::AreClose close;
+      ASSERT_TRUE(close((*approximation)(xin), expect));
+   }
+}
 
 TEST(HierBasisFunctionTest, TestConvergence)
 {
-   const std::array< double, 2 > xin{ 0.55, 0.85 };
+   const std::array< double, 2 > xin{ 0.52, 0.53 };
    const auto fie = GetSomePolynomial();
    const double expect = fie->Evaluate(xin);
 
    const HierBasisFunction1D_HomogenousBC_Factory factory1D;
    HierBasisFunction_Factory factory(size_t{ 2 }, &factory1D);
-   constexpr size_t maxLevel = 10;
+   constexpr size_t maxLevel = 6;
    std::vector<double> maxSurplus;
    for (size_t level = 2; level < maxLevel; ++level)
    {
       const HierApproximation::RefineInAllDirectionsOnL1Norm refineOnNorm{ level };
       auto approximation = HierApproximation::Create(*fie, factory, refineOnNorm);
       ASSERT_NO_THROW(TestCollocationPoints(*fie, *approximation));
-      const double dif = std::abs((*approximation)(xin) - expect);
-   }
-
-   for (size_t n = 2; n < maxSurplus.size(); ++n)
-   {
-      auto tmp = maxSurplus.at(n) / maxSurplus.at(n - 1);
-      //ASSERT_TRUE(maxSurplus.at(n) < 3 * maxSurplus.at(n - 1));
-   }
-}
-
-#if false
-TEST(HierBasisFunctionTest, MaxSurplus)
-{
-   const auto fie = GetSomePolynomial();
-   const HierBasisFunction1D_HomogenousBC_Factory factory1D;
-   HierBasisFunction_Factory factory(size_t{ 2 }, &factory1D);
-   constexpr size_t maxLevel = 10;
-   std::vector<double> maxSurplus;
-   for (size_t level = 2; level < maxLevel; ++level)
-   {
-      const HierApproximation::RefineInAllDirectionsOnL1Norm refineOnNorm{ level };
-      auto approximation = HierApproximation::Create(*fie, factory, refineOnNorm);
       maxSurplus.push_back(approximation->getMaxSurplus());
    }
 
    for (size_t n = 2; n < maxSurplus.size(); ++n)
    {
       auto tmp = maxSurplus.at(n) / maxSurplus.at(n - 1);
-      ASSERT_TRUE(maxSurplus.at(n) < 3 * maxSurplus.at(n - 1));
+      ASSERT_TRUE(maxSurplus.at(n) < 0.5 * maxSurplus.at(n - 1));
    }
 }
-#endif
 
 
