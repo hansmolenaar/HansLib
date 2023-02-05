@@ -45,7 +45,8 @@ TEST(HierBasisFunctionTest, GetSomePolynomial_1)
 
    const HierBasisFunction1D_HomogenousBC_Factory factory1D;
    HierBasisFunction_Factory factory(size_t{ 2 }, &factory1D);
-   auto approximation = HierApproximation::Create(*fie, factory, [](const HierRefinementInfo& info) {const auto norm = info.MultiLevelIndex.getL1NormLevel(); return norm < 2; });
+   const HierApproximation::RefineInAllDirectionsOnL1Norm refineOnNorm{2};
+   auto approximation = HierApproximation::Create(*fie, factory, refineOnNorm);
    ASSERT_EQ(approximation->getLeafNodesRO().size(), 1);
 
    //Plotting::MdFunctionsOnUnityToFile("HierBasisFunctionTest_GetSomePolynomial_Approximation", 2, { [&approximation](std::vector<double> x) {return (*approximation)(x); } }, 20, std::vector<std::string>{"x", "y", "approx"});
@@ -57,7 +58,8 @@ TEST(HierBasisFunctionTest, GetSomePolynomial_2)
    const auto fie = GetSomePolynomial();
    const HierBasisFunction1D_HomogenousBC_Factory factory1D;
    HierBasisFunction_Factory factory(size_t{ 2 }, &factory1D);
-   auto approximation = HierApproximation::Create(*fie, factory, [](const HierRefinementInfo& info) {const auto norm = info.MultiLevelIndex.getL1NormLevel(); return norm < 3; });
+   const HierApproximation::RefineInAllDirectionsOnL1Norm refineOnNorm{ 3 };
+   auto approximation = HierApproximation::Create(*fie, factory, refineOnNorm);
    ASSERT_EQ(approximation->getLeafNodesRO().size(), 4);
 
    //Plotting::MdFunctionsOnUnityToFile("HierBasisFunctionTest_GetSomePolynomial_Approximation", 2, { [&approximation](std::vector<double> x) {return (*approximation)(x); } }, 20, std::vector<std::string>{"x", "y", "approx"});

@@ -70,13 +70,27 @@ std::vector<HierMultiIndex> HierMultiIndex::refine(const RefineInDirectionPredic
    {
       if (predicate(*this, d))
       {
-         for (const auto& level1D : m_levelsIndices[d].refine())
+         for (auto& hmi : refine(d))
          {
-            auto levels = m_levelsIndices;
-            levels[d] = level1D;
-            result.emplace_back(std::move(levels));
+            result.emplace_back(hmi);
          }
       }
    }
    return result;
 }
+
+std::array<HierMultiIndex, 2> HierMultiIndex::refine(size_t dir) const
+{
+   std::array<HierMultiIndex, 2> result{ HierMultiIndex{ HierLevelIndex(0,0)},HierMultiIndex{ HierLevelIndex(0,0)} };
+   size_t pos01 = 0;
+   for (const auto& level1D : m_levelsIndices[dir].refine())
+   {
+      auto levels = m_levelsIndices;
+      levels[dir] = level1D;
+      result.at(pos01) = HierMultiIndex{ std::move(levels) };
+      ++pos01;
+   }
+
+   return result;
+}
+

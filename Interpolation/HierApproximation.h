@@ -5,6 +5,7 @@
 #include "HierMultiIndex.h"
 #include "HierRefinementInfo.h"
 #include "Utilities/MultiIndex.h"
+#include "Utilities/Iota.h"
 
 #include <memory>
 #include <functional>
@@ -25,14 +26,28 @@ struct HierTreeNode
 class HierApproximation // : public IMultiVariableRealValuedFunction
 {
 public:
-   static std::unique_ptr<HierApproximation> Create(const IMultiVariableRealValuedFunction& fie, const IHierBasisFunction_Factory& factory, const std::function<bool(const HierRefinementInfo&)>& doRefine);
+   using RefineInDirections = std::function<std::vector<size_t>(const HierRefinementInfo&)>;
+
+   struct RefineInAllDirectionsOnL1Norm
+   {
+      size_t MaxL1Norm = std::numeric_limits<size_t>::max();
+      std::vector<size_t> operator()(const HierRefinementInfo& hri) const
+      {
+         if (hri.MultiLevelIndex.getL1NormLevel() >= MaxL1Norm) return {};
+         return Iota::GenerateVector<size_t>(hri.MultiLevelIndex.getDimension());
+      }
+   };
+   static std::unique_ptr<HierApproximation> Create(const IMultiVariableRealValuedFunction& fie, const IHierBasisFunction_Factory& factory, const RefineInDirections& toRefine);
 
    double operator()(std::span<const double>) const;
+
    std::vector<const HierTreeNode*> getLeafNodesRO() const;
+   std::vector< HierTreeNode*> getLeafNodes() const;
+
 private:
    explicit HierApproximation(const IHierBasisFunction_Factory&);
 
-   std::vector< HierTreeNode*> getLeafNodes() const;
+
    std::vector< HierTreeNode*> getAllTreeNodes() const;
 
    std::map<HierMultiIndex, std::unique_ptr<HierTreeNode>> m_treeNodeMap;

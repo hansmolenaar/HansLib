@@ -2,6 +2,7 @@
 
 #include "HierLevelIndex.h"
 
+#include <array>
 #include <vector>
 #include <functional>
 
@@ -21,6 +22,7 @@ public:
    };
 
    std::vector<HierMultiIndex> refine(const RefineInDirectionPredicate&) const;
+   std::array<HierMultiIndex, 2> refine(size_t dir) const;
 
    friend  std::strong_ordering operator<=>(const HierMultiIndex&, const HierMultiIndex&);
    bool operator==(const HierMultiIndex&) const = default;
@@ -29,5 +31,6 @@ public:
    size_t getSupNormLevel() const;
 
 private:
+   HierMultiIndex() = default;
    std::vector<HierLevelIndex> m_levelsIndices;
 };
