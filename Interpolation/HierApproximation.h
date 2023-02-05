@@ -43,6 +43,9 @@ public:
 
    std::vector<const HierTreeNode*> getLeafNodesRO() const;
    std::vector< HierTreeNode*> getLeafNodes() const;
+   std::vector<const HierTreeNode*> getAllTreeNodesRO() const;
+
+   double getMaxSurplus() const;
 
 private:
    explicit HierApproximation(const IHierBasisFunction_Factory&);

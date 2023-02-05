@@ -66,18 +66,16 @@ TEST(HierMultiIndex, RefineInDir3)
 {
    const HierMultiIndex mi(std::vector<HierLevelIndex>{ { 2, 3 }, { 3, 1 }, { 4,7 }});
 
-   const auto refineNone = [](const HierMultiIndex&, size_t) {return false; };
-   auto refinements = mi.refine(refineNone);
-   ASSERT_TRUE(refinements.empty());
-
-   const HierMultiIndex::RefineInAllDirections refineAll;
-   refinements = mi.refine(refineAll);
-   ASSERT_EQ(refinements.size(), 6);
-
-   const auto refine1 = [](const HierMultiIndex&, size_t d) {return d == 1; };
-   refinements = mi.refine(refine1);
+   auto refinements = mi.refine(1);
    str::sort(refinements);
-   ASSERT_EQ(refinements.size(), 2);
    ASSERT_EQ(refinements.at(0), HierMultiIndex(std::vector<HierLevelIndex>{ { 2, 3 }, { 4, 1 }, { 4,7 }}));
    ASSERT_EQ(refinements.at(1), HierMultiIndex(std::vector<HierLevelIndex>{ { 2, 3 }, { 4, 3 }, { 4,7 }}));
+}
+
+
+TEST(HierMultiIndex, ToString)
+{
+   const HierMultiIndex mi(std::vector<HierLevelIndex>{ { 2, 3 }, { 3, 1 }, { 4,7 }});
+   const std::string res = mi.toString();
+   ASSERT_EQ(res, "{2, 3} {3, 1} {4, 7}");
 }

@@ -14,14 +14,9 @@ public:
    size_t getDimension() const;
    const std::vector<HierLevelIndex>& get() const;
    std::vector< double> toDoubles() const;
+   std::string toString() const;
 
-   using RefineInDirectionPredicate = std::function<bool(const HierMultiIndex&, size_t)>;
-   struct RefineInAllDirections
-   {
-      bool operator()(const HierMultiIndex&, size_t) const { return true; }
-   };
 
-   std::vector<HierMultiIndex> refine(const RefineInDirectionPredicate&) const;
    std::array<HierMultiIndex, 2> refine(size_t dir) const;
 
    friend  std::strong_ordering operator<=>(const HierMultiIndex&, const HierMultiIndex&);

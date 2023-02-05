@@ -48,24 +48,6 @@ namespace
       }
    }
 
-
-   void GetLeafNodesRecur(const std::vector<HierTreeNode*>& treeNodes, std::vector< HierTreeNode*>& result)
-   {
-      constexpr IsLeaf isLeaf;
-      for (const auto& tn : treeNodes)
-      {
-         if (isLeaf(tn))
-         {
-            result.push_back(tn);
-         }
-         else
-         {
-            GetLeafNodesRecur(tn->Kids, result);
-         }
-      }
-   }
-
-
    struct CreateHierNode
    {
       const IHierBasisFunction_Factory& Factory;
@@ -143,7 +125,6 @@ std::unique_ptr<HierApproximation> HierApproximation::Create(const IMultiVariabl
 
    std::vector<std::pair<HierTreeNode*, size_t>> toRefine = GetRefinements(*result, refinementPredicate);
 
-#if true
    while (!toRefine.empty())
    {
       for (auto& ref : toRefine)
@@ -158,7 +139,6 @@ std::unique_ptr<HierApproximation> HierApproximation::Create(const IMultiVariabl
       //refinementPredicate.MaxSurplus = result->getMaxSurplus();
       toRefine = GetRefinements(*result, refinementPredicate);
    }
-#endif
 
    return result;
 }
@@ -178,13 +158,25 @@ std::vector< HierTreeNode*> HierApproximation::getAllTreeNodes() const
 {
    std::vector< HierTreeNode*> result;
    GetAllTreeNodesRecur(m_root, result);
+   // Remove the duplicates
+   str::sort(result);
+   result.erase(std::unique(result.begin(), result.end()), result.end());
+   if (result.size() != m_treeNodeMap.size()) throw MyException("HierApproximation::getAllTreeNodes problem");
+   return result;
+}
+
+std::vector<const HierTreeNode*> HierApproximation::getAllTreeNodesRO() const
+{
+   const auto& treeNodes = getAllTreeNodes();
+   std::vector<const HierTreeNode*> result(treeNodes.size());
+   str::transform(treeNodes, result.begin(), [](auto* ptr) {return ptr; });
    return result;
 }
 
 std::vector< HierTreeNode*> HierApproximation::getLeafNodes() const
 {
    std::vector< HierTreeNode*> result;
-   GetLeafNodesRecur(m_root, result);
+   str::copy_if(getAllTreeNodes(), std::back_inserter(result), IsLeaf());
    return result;
 }
 
@@ -194,4 +186,11 @@ std::vector<const HierTreeNode*> HierApproximation::getLeafNodesRO() const
    std::vector<const HierTreeNode*> result(leafNodes.size());
    str::transform(leafNodes, result.begin(), [](auto* ptr) {return ptr; });
    return result;
+}
+
+double HierApproximation::getMaxSurplus() const
+{
+   std::vector< HierTreeNode*> active;
+   str::copy_if(getLeafNodes(), std::back_inserter(active), IsRefinable{ m_factory });
+   return str::max(active | stv::transform([](const HierTreeNode* leaf) {return std::abs(leaf->Surplus); }));
 }

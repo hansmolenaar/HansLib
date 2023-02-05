@@ -61,6 +61,31 @@ TEST(HierBasisFunctionTest, GetSomePolynomial_2)
    const HierApproximation::RefineInAllDirectionsOnL1Norm refineOnNorm{ 3 };
    auto approximation = HierApproximation::Create(*fie, factory, refineOnNorm);
    ASSERT_EQ(approximation->getLeafNodesRO().size(), 4);
+   ASSERT_EQ(approximation->getAllTreeNodesRO().size(), 5);
 
    //Plotting::MdFunctionsOnUnityToFile("HierBasisFunctionTest_GetSomePolynomial_Approximation", 2, { [&approximation](std::vector<double> x) {return (*approximation)(x); } }, 20, std::vector<std::string>{"x", "y", "approx"});
+}
+
+
+TEST(HierBasisFunctionTest, GetSomePolynomial_3)
+{
+   const auto fie = GetSomePolynomial();
+   const HierBasisFunction1D_HomogenousBC_Factory factory1D;
+   HierBasisFunction_Factory factory(size_t{ 2 }, &factory1D);
+   const HierApproximation::RefineInAllDirectionsOnL1Norm refineOnNorm{ 4 };
+   auto approximation = HierApproximation::Create(*fie, factory, refineOnNorm);
+
+   std::vector<HierMultiIndex> indices;
+   str::transform(approximation->getAllTreeNodesRO(), std::back_inserter(indices), [](const HierTreeNode* hn) {return hn->BasisFunction->getMultiIndex(); });
+   str::sort(indices);
+   std::string str;
+   for (const auto& s : indices)
+   {
+      str += (s.toString() + "\n");
+   }
+   ASSERT_EQ(approximation->getAllTreeNodesRO().size(), 17);
+   ASSERT_EQ(approximation->getLeafNodesRO().size(), 12);
+   
+
+   Plotting::MdFunctionsOnUnityToFile("HierBasisFunctionTest_GetSomePolynomial_Approximation", 2, { [&approximation](std::vector<double> x) {return (*approximation)(x); } }, 20, std::vector<std::string>{"x", "y", "approx"});
 }

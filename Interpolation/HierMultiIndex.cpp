@@ -63,22 +63,6 @@ std::vector<double> HierMultiIndex::toDoubles() const
    return result;
 }
 
-std::vector<HierMultiIndex> HierMultiIndex::refine(const RefineInDirectionPredicate& predicate) const
-{
-   std::vector <HierMultiIndex> result;
-   for (size_t d = 0; d < m_levelsIndices.size(); ++d)
-   {
-      if (predicate(*this, d))
-      {
-         for (auto& hmi : refine(d))
-         {
-            result.emplace_back(hmi);
-         }
-      }
-   }
-   return result;
-}
-
 std::array<HierMultiIndex, 2> HierMultiIndex::refine(size_t dir) const
 {
    std::array<HierMultiIndex, 2> result{ HierMultiIndex{ HierLevelIndex(0,0)},HierMultiIndex{ HierLevelIndex(0,0)} };
@@ -94,3 +78,15 @@ std::array<HierMultiIndex, 2> HierMultiIndex::refine(size_t dir) const
    return result;
 }
 
+std::string HierMultiIndex::toString() const
+{
+   std::string result;
+   bool first = true;
+   for (const auto& li : m_levelsIndices)
+   {
+      if (!first) result += " ";
+      first = false;
+      result += li.toString();
+   }
+   return result;
+}
