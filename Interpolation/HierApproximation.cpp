@@ -101,21 +101,6 @@ namespace
       return result;
    }
 
-   // TODO remove me
-   void TestCollocationPoints(const IMultiVariableRealValuedFunction& expect, const HierApproximation& approximation)
-   {
-      const Functors::AreClose close;
-      for (const auto& point : approximation.getCollocationPoints())
-      {
-         const double expectValue = expect.Evaluate(point);
-         const double actualValue = approximation(point);
-         if (!close(expectValue, actualValue))
-         {
-            throw MyException("TestCollocationPoints");
-         }
-
-      }
-   }
 }
 
 HierApproximation::HierApproximation(const IHierBasisFunction_Factory& factory) :
@@ -153,10 +138,8 @@ std::unique_ptr<HierApproximation> HierApproximation::Create(const IMultiVariabl
       {
          for (const auto& kid : parentDir.first.refine(parentDir.second))
          {
-            const auto tmp = kid.toDoubles(); // TODO
             auto* parent = Get(parentDir.first, result->m_treeNodeMap);
             parent->Kids.emplace_back(GetOrCreate(kid, createHierNode, result->m_treeNodeMap));
-            TestCollocationPoints(fie, *result);
          }
       }
 

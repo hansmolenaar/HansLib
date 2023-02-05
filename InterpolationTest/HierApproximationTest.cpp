@@ -120,7 +120,7 @@ TEST(HierBasisFunctionTest, Linear)
 
    const HierBasisFunction1D_ExtendedLevelOneBC_Factory factory1D;
    HierBasisFunction_Factory factory(size_t{ 2 }, &factory1D);
-   constexpr size_t maxLevel = 5;
+   constexpr size_t maxLevel = 6;
    std::vector<double> maxSurplus;
    for (size_t level = 2; level < maxLevel; ++level)
    {
@@ -141,7 +141,7 @@ TEST(HierBasisFunctionTest, TestConvergence)
 
    const HierBasisFunction1D_HomogenousBC_Factory factory1D;
    HierBasisFunction_Factory factory(size_t{ 2 }, &factory1D);
-   constexpr size_t maxLevel = 6;
+   constexpr size_t maxLevel = 8;
    std::vector<double> maxSurplus;
    for (size_t level = 2; level < maxLevel; ++level)
    {
@@ -153,7 +153,6 @@ TEST(HierBasisFunctionTest, TestConvergence)
 
    for (size_t n = 2; n < maxSurplus.size(); ++n)
    {
-      auto tmp = maxSurplus.at(n) / maxSurplus.at(n - 1);
       ASSERT_TRUE(maxSurplus.at(n) < 0.5 * maxSurplus.at(n - 1));
    }
 }
