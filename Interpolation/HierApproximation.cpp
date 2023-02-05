@@ -156,16 +156,17 @@ std::unique_ptr<HierApproximation> HierApproximation::Create(const IMultiVariabl
    std::vector<HierTreeNode*> toRefine;
    str::copy_if(result->getLeafNodes(), std::back_inserter(toRefine), refinementPredicate);
 
-#if false
+#if true
    while (!toRefine.empty())
    {
+      const HierMultiIndex::RefineInAllDirections refineAll;
       for (auto ref : toRefine)
       {
-         str::transform(ref->BasisFunction->getLevelIndex().refine(), std::back_inserter(ref->Kids), [&createKid, &result](const auto& li) {return GetOrCreate(li, createKid, result->m_treeNodeMap); });
+         str::transform(ref->BasisFunction->getMultiIndex().refine(refineAll), std::back_inserter(ref->Kids), [&createHierNode, &result](const auto& li) {return GetOrCreate(li, createHierNode, result->m_treeNodeMap); });
       }
 
       toRefine.clear();
-      refinementPredicate.MaxSurplus = result->getMaxSurplus();
+      //refinementPredicate.MaxSurplus = result->getMaxSurplus();
       str::copy_if(result->getLeafNodes(), std::back_inserter(toRefine), refinementPredicate);
    }
 #endif
@@ -195,5 +196,13 @@ std::vector< HierTreeNode*> HierApproximation::getLeafNodes() const
 {
    std::vector< HierTreeNode*> result;
    GetLeafNodesRecur(m_root, result);
+   return result;
+}
+
+std::vector<const HierTreeNode*> HierApproximation::getLeafNodesRO() const
+{
+   const auto& leafNodes = getLeafNodes();
+   std::vector<const HierTreeNode*> result(leafNodes.size());
+   str::transform(leafNodes, result.begin(), [](auto* ptr) {return ptr; });
    return result;
 }

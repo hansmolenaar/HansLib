@@ -62,3 +62,21 @@ std::vector<double> HierMultiIndex::toDoubles() const
    str::transform(m_levelsIndices, result.begin(), [](const auto& li) {return li.toDouble(); });
    return result;
 }
+
+std::vector<HierMultiIndex> HierMultiIndex::refine(const RefineInDirectionPredicate& predicate) const
+{
+   std::vector <HierMultiIndex> result;
+   for (size_t d = 0; d < m_levelsIndices.size(); ++d)
+   {
+      if (predicate(*this, d))
+      {
+         for (const auto& level1D : m_levelsIndices[d].refine())
+         {
+            auto levels = m_levelsIndices;
+            levels[d] = level1D;
+            result.emplace_back(std::move(levels));
+         }
+      }
+   }
+   return result;
+}
