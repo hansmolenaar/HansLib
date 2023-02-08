@@ -95,7 +95,7 @@ TEST(HierBasisFunctionTest, GetSomePolynomial_3)
    auto approximation = HierApproximation::Create(*fie, factory, refineOnNorm);
 
    std::vector<HierMultiIndex> indices;
-   str::transform(approximation->getAllTreeNodesRO(), std::back_inserter(indices), [](const HierTreeNode* hn) {return hn->BasisFunction->getMultiIndex(); });
+   str::transform(approximation->getAllTreeNodesRO(), std::back_inserter(indices), [](const HierTreeNode* hn) {return hn->getMultiIndex(); });
    str::sort(indices);
    std::string str;
    for (const auto& s : indices)

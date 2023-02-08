@@ -20,7 +20,7 @@ namespace
 
       bool operator()(const HierTreeNode* htn) const
       {
-         const auto& mli = htn->BasisFunction->getMultiIndex();
+         const auto& mli = htn->getMultiIndex();
          return Factory.canBeRefined(mli);
       }
    };
@@ -35,20 +35,11 @@ namespace
       std::vector<size_t> operator()(const HierTreeNode* htn) const
       {
          if (!IsRefinable{ Factory }(htn)) return {};
-         const auto& mli = htn->BasisFunction->getMultiIndex();
+         const auto& mli = htn->getMultiIndex();
          const HierRefinementInfo refinementInfo{ HierMultiIndex(mli), std::abs(htn->Surplus), MaxSurplus };
          return RefinementTest(refinementInfo);
       }
    };
-
-   void GetAllTreeNodesRecur(const std::vector<HierTreeNode*>& treeNodes, std::vector< HierTreeNode*>& result)
-   {
-      str::copy(treeNodes, std::back_inserter(result));
-      for (const auto& tn : treeNodes)
-      {
-         GetAllTreeNodesRecur(tn->Kids, result);
-      }
-   }
 
    struct CreateHierNode
    {
@@ -86,17 +77,6 @@ namespace
       return Get(hmi, treeNodeMap);
    }
 
-   HierTreeNode* GetOrCreate(const HierMultiIndex& hmi, const CreateHierNode& creator, std::map<HierMultiIndex, std::unique_ptr<HierTreeNode>>& treeNodeMap)
-   {
-      if (!treeNodeMap.contains(hmi))
-      {
-         auto ptr = creator(hmi);
-         treeNodeMap.emplace(hmi, std::move(ptr));
-      }
-
-      return Get(hmi, treeNodeMap);
-   }
-
    std::vector<std::pair<HierMultiIndex, size_t>> GetRefinements(const HierApproximation& approximation, const DoRefine& doRefine)
    {
       std::vector<std::pair<HierMultiIndex, size_t>> result;
@@ -104,7 +84,7 @@ namespace
       {
          for (size_t dir : doRefine(leaf))
          {
-            result.emplace_back(leaf->BasisFunction->getMultiIndex(), dir);
+            result.emplace_back(leaf->getMultiIndex(), dir);
          }
       }
       return result;
@@ -206,22 +186,15 @@ double HierApproximation::operator()(std::span<const double> xyz) const
 
 std::vector< HierTreeNode*> HierApproximation::getAllTreeNodes() const
 {
-   std::vector< HierTreeNode*> result;
-   GetAllTreeNodesRecur(m_root, result);
-   const auto before = result.size();
-   // Remove the duplicates
-   str::sort(result, [](const HierTreeNode* hn1, const HierTreeNode* hn2) {return hn1->getMultiIndex() < hn2->getMultiIndex(); });
-   result.erase(std::unique(result.begin(), result.end()), result.end());
-   if (result.size() != m_treeNodeMap.size()) throw MyException("HierApproximation::getAllTreeNodes problem");
-   if (result.size() != before) throw MyException("HierApproximation::getAllTreeNodes duplicates???");
+   std::vector< HierTreeNode*> result(m_treeNodeMap.size());
+   str::transform(m_treeNodeMap, result.begin(), [](const auto& itr) {return itr.second.get(); });
    return result;
 }
 
 std::vector<const HierTreeNode*> HierApproximation::getAllTreeNodesRO() const
 {
-   const auto& treeNodes = getAllTreeNodes();
-   std::vector<const HierTreeNode*> result(treeNodes.size());
-   str::transform(treeNodes, result.begin(), [](auto* ptr) {return ptr; });
+   std::vector<const HierTreeNode*> result(m_treeNodeMap.size());
+   str::transform(m_treeNodeMap, result.begin(), [](const auto& itr) {return itr.second.get(); });
    return result;
 }
 
@@ -234,9 +207,8 @@ std::vector< HierTreeNode*> HierApproximation::getLeafNodes() const
 
 std::vector<const HierTreeNode*> HierApproximation::getLeafNodesRO() const
 {
-   const auto& leafNodes = getLeafNodes();
-   std::vector<const HierTreeNode*> result(leafNodes.size());
-   str::transform(leafNodes, result.begin(), [](auto* ptr) {return ptr; });
+   std::vector<const HierTreeNode*> result;
+   str::copy_if(getAllTreeNodesRO(), std::back_inserter(result), IsLeaf());
    return result;
 }
 
@@ -251,7 +223,7 @@ std::vector<std::vector<double>> HierApproximation::getCollocationPoints() const
 {
    const std::vector<const HierTreeNode*> allTreeNodes = getAllTreeNodesRO();
    std::vector<std::vector<double>> result(allTreeNodes.size());
-   str::transform(allTreeNodes, result.begin(), [](const HierTreeNode* tn) {return std::vector<double>{ tn->BasisFunction->getMultiIndex().toDoubles()}; });
+   str::transform(allTreeNodes, result.begin(), [](const HierTreeNode* tn) {return std::vector<double>{ tn->getMultiIndex().toDoubles()}; });
    str::sort(result);
    return result;
 }
