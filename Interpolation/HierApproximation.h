@@ -19,6 +19,7 @@ struct HierTreeNode
    const IHierBasisFunction* BasisFunction;
    double Surplus = 0.0;
    std::vector<HierTreeNode*> Kids;
+   const HierMultiIndex& getMultiIndex() const { return BasisFunction->getMultiIndex(); }
 };
 
 
@@ -55,7 +56,7 @@ private:
    std::vector< HierTreeNode*> getAllTreeNodes() const;
 
    std::map<HierMultiIndex, std::unique_ptr<HierTreeNode>> m_treeNodeMap;
-   std::vector<HierTreeNode*> m_root;
+   std::vector<HierTreeNode*> m_root;;
    const IHierBasisFunction_Factory& m_factory;
    MultiIndex<size_t> m_indexer;
 };

@@ -1,6 +1,7 @@
 #include "HierApproximation.h"
 #include "Utilities/Defines.h"
 #include "Utilities/Functors.h"
+#include "Utilities/Logger.h"
 
 namespace
 {
@@ -77,6 +78,14 @@ namespace
       return found->second.get();
    }
 
+   // Return nullptr if already existing
+   HierTreeNode* CreateIfNew(const HierMultiIndex& hmi, const CreateHierNode& creator, std::map<HierMultiIndex, std::unique_ptr<HierTreeNode>>& treeNodeMap)
+   {
+      if (treeNodeMap.contains(hmi)) return nullptr;
+      treeNodeMap.emplace(hmi, creator(hmi));
+      return Get(hmi, treeNodeMap);
+   }
+
    HierTreeNode* GetOrCreate(const HierMultiIndex& hmi, const CreateHierNode& creator, std::map<HierMultiIndex, std::unique_ptr<HierTreeNode>>& treeNodeMap)
    {
       if (!treeNodeMap.contains(hmi))
@@ -123,29 +132,62 @@ double HierTreeNode::operator()(std::span<const double> x) const
 
 std::unique_ptr<HierApproximation> HierApproximation::Create(const IMultiVariableRealValuedFunction& fie, const IHierBasisFunction_Factory& factory, const RefineInDirections& refineInDirections)
 {
+   Logger logger;
+   std::vector<std::string> loglines;
    std::unique_ptr<HierApproximation> result(new HierApproximation(factory));
    DoRefine refinementPredicate{ factory, refineInDirections };
 
    const CreateHierNode createHierNode(factory, fie, *result);
 
-   str::transform(factory.getLowestLevel(), std::back_inserter(result->m_root), [&createHierNode, &result](const auto& li) {return GetOrCreate(li, createHierNode, result->m_treeNodeMap); });
+   for (const auto& hmi : factory.getLowestLevel())
+   {
+      auto* kid = CreateIfNew(hmi, createHierNode, result->m_treeNodeMap);
+      if (kid != nullptr) result->m_root.push_back(kid);
+   }
+
+   for (const auto& tr : result->m_treeNodeMap) loglines.push_back(tr.first.toString());
+   logger.LogLine(loglines);
 
    auto toRefine = GetRefinements(*result, refinementPredicate);
 
    while (!toRefine.empty())
    {
+#if false
+      loglines = std::vector<std::string> { {"cells to refine:"} };
+      for (const auto& tr : toRefine) loglines.push_back(tr.first.toString() + " -> " + std::to_string(tr.second));
+      logger.LogLine(loglines);
+#endif
+
       for (auto& parentDir : toRefine)
       {
          for (const auto& kid : parentDir.first.refine(parentDir.second))
          {
             auto* parent = Get(parentDir.first, result->m_treeNodeMap);
-            parent->Kids.emplace_back(GetOrCreate(kid, createHierNode, result->m_treeNodeMap));
+            auto* kidPtr = CreateIfNew(kid, createHierNode, result->m_treeNodeMap);
+            if (kidPtr != nullptr) parent->Kids.emplace_back(kidPtr);
          }
       }
 
+#if false
+      loglines = std::vector<std::string>{ {"after refinement:"} };
+      for (const auto& tr : result->m_treeNodeMap) loglines.push_back(tr.first.toString());
+      loglines.push_back("Total number of cells: " + std::to_string(result->getAllTreeNodesRO().size()));
+      loglines = std::vector<std::string>{ {"leaf nodes:"} };
+      for (const auto& leaf : result->getLeafNodesRO()) loglines.push_back(leaf->BasisFunction->getMultiIndex().toString());
+      logger.LogLine(loglines);
+#endif
+  
       refinementPredicate.MaxSurplus = result->getMaxSurplus();
       toRefine = GetRefinements(*result, refinementPredicate);
    }
+
+
+#if true
+   loglines = std::vector<std::string>{ {"READY"} };
+   loglines.push_back("Number of cells: " + std::to_string(result->getAllTreeNodesRO().size()));
+   loglines.push_back("Number of leaf cells: " + std::to_string(result->getLeafNodesRO().size()));
+   logger.LogLine(loglines);
+#endif
 
    return result;
 }
@@ -166,10 +208,12 @@ std::vector< HierTreeNode*> HierApproximation::getAllTreeNodes() const
 {
    std::vector< HierTreeNode*> result;
    GetAllTreeNodesRecur(m_root, result);
+   const auto before = result.size();
    // Remove the duplicates
-   str::sort(result);
+   str::sort(result, [](const HierTreeNode* hn1, const HierTreeNode* hn2) {return hn1->getMultiIndex() < hn2->getMultiIndex(); });
    result.erase(std::unique(result.begin(), result.end()), result.end());
    if (result.size() != m_treeNodeMap.size()) throw MyException("HierApproximation::getAllTreeNodes problem");
+   if (result.size() != before) throw MyException("HierApproximation::getAllTreeNodes duplicates???");
    return result;
 }
 

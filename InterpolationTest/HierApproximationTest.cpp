@@ -120,8 +120,7 @@ TEST(HierBasisFunctionTest, Linear)
 
    const HierBasisFunction1D_ExtendedLevelOneBC_Factory factory1D;
    HierBasisFunction_Factory factory(size_t{ 2 }, &factory1D);
-   constexpr size_t maxLevel = 6;
-   std::vector<double> maxSurplus;
+   constexpr size_t maxLevel = 8;
    for (size_t level = 2; level < maxLevel; ++level)
    {
       const HierApproximation::RefineInAllDirectionsOnL1Norm refineOnNorm{ level };
@@ -141,7 +140,7 @@ TEST(HierBasisFunctionTest, TestConvergence)
 
    const HierBasisFunction1D_HomogenousBC_Factory factory1D;
    HierBasisFunction_Factory factory(size_t{ 2 }, &factory1D);
-   constexpr size_t maxLevel = 8;
+   constexpr size_t maxLevel = 9;
    std::vector<double> maxSurplus;
    for (size_t level = 2; level < maxLevel; ++level)
    {

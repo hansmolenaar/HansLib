@@ -157,6 +157,7 @@
     <ClInclude Include="IndexerRowMajor.h" />
     <ClInclude Include="IndexerSymmetric.h" />
     <ClInclude Include="Iota.h" />
+    <ClInclude Include="Logger.h" />
     <ClInclude Include="MathConstants.h" />
     <ClInclude Include="MultiIndex.h" />
     <ClInclude Include="MyException.h" />
@@ -171,6 +172,7 @@
     <ClCompile Include="EigenValueSolverSym2x2.cpp" />
     <ClCompile Include="EigenValueSolverSym3x3.cpp" />
     <ClCompile Include="IndexerSymmetric.cpp" />
+    <ClCompile Include="Logger.cpp" />
     <ClCompile Include="Plotting.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
