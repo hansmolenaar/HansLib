@@ -12,7 +12,7 @@ public:
 
    bool contains(const T&) const;
    bool contains(const Interval<T>&) const;
-   
+
    T getMeasure() const;
 
    static bool TryIntersect(const Interval<T>&, const Interval<T>&, T&, T&);
@@ -37,7 +37,7 @@ Interval<T>::Interval(const T& val1, const T& val2) : Interval<T>(val1)
 }
 
 template<typename T>
-void Interval<T>::add(const T& val) 
+void Interval<T>::add(const T& val)
 {
    m_lower = std::min(m_lower, val);
    m_upper = std::max(m_upper, val);
@@ -62,7 +62,7 @@ bool Interval<T>::TryIntersect(const Interval<T>& intv0, const Interval<T>& intv
    lo = std::max(intv0.getLower(), intv1.getLower());
    hi = std::min(intv0.getUpper(), intv1.getUpper());
    return lo <= hi;
- }
+}
 
 template<typename T>
 T Interval<T>::getMeasure() const

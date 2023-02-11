@@ -20,17 +20,20 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="HatFunction.h" />
+    <ClInclude Include="IMultiVariableFunctionEvaluate.h" />
     <ClInclude Include="IMultiVariableRealValuedFunction.h" />
     <ClInclude Include="IRealFunction.h" />
     <ClInclude Include="IRealFunctionUtils.h" />
     <ClInclude Include="ISingleVariableRealValuedFunction.h" />
     <ClInclude Include="ISingleVariableRealValuedFunctionUtils.h" />
+    <ClInclude Include="MultiVariableFunctionEvaluateFrom01.h" />
     <ClInclude Include="MultiVariableFunctionExamples.h" />
     <ClInclude Include="MultiVariableMonomial.h" />
     <ClInclude Include="MultiVariableMultiplicativeInverseFunction.h" />
     <ClInclude Include="MultiVariablePolynomial.h" />
     <ClInclude Include="MultiVariableProductFunction.h" />
     <ClInclude Include="MultiVariableRealValuedFunction.h" />
+    <ClInclude Include="MultiVariableRealValuedFunctionNoDerivatives.h" />
     <ClInclude Include="MultiVariableVectorComponentFunction.h" />
     <ClInclude Include="MultiVariableVectorValuedFunction.h" />
     <ClInclude Include="RealFunctionAdd.h" />
@@ -45,12 +48,14 @@
     <ClCompile Include="IMultiVariableRealValuedFunction.cpp" />
     <ClCompile Include="IRealFunctionUtils.cpp" />
     <ClCompile Include="ISingleVariableRealValuedFunctionUtils.cpp" />
+    <ClCompile Include="MultiVariableFunctionEvaluateFrom01.cpp" />
     <ClCompile Include="MultiVariableFunctionExamples.cpp" />
     <ClCompile Include="MultiVariableMonomial.cpp" />
     <ClCompile Include="MultiVariableMultiplicativeInverseFunction.cpp" />
     <ClCompile Include="MultiVariablePolynomial.cpp" />
     <ClCompile Include="MultiVariableProductFunction.cpp" />
     <ClCompile Include="MultiVariableRealValuedFunction.cpp" />
+    <ClCompile Include="MultiVariableRealValuedFunctionNoDerivatives.cpp" />
     <ClCompile Include="MultiVariableVectorComponentFunction.cpp" />
     <ClCompile Include="MultiVariableVectorValuedFunction.cpp" />
     <ClCompile Include="RealFunctionAdd.cpp" />
@@ -62,6 +67,9 @@
     <ClCompile Include="SingleVariableRealValuedFunction.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Interval\Interval.vcxproj">
+      <Project>{1cd55d85-e025-45c1-8e1c-5c3e9477555a}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\Utilities\Utilities.vcxproj">
       <Project>{e68fc7e3-1402-4bbe-9d0f-f4bd88acfd45}</Project>
     </ProjectReference>

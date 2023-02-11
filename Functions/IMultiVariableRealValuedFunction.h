@@ -2,10 +2,11 @@
 
 #include "IRealFunction.h"
 #include "MatrixVector/IMatrix.h"
+#include "IMultiVariableFunctionEvaluate.h"
 #include <span>
 
 
-class IMultiVariableRealValuedFunction : public IRealFunction
+class IMultiVariableRealValuedFunction : public IRealFunction, public IMultiVariableFunctionEvaluate
 {
 public:
 	virtual ~IMultiVariableRealValuedFunction() = default;
@@ -19,7 +20,8 @@ public:
 	void Derivative(std::span<const double>x, IMatrix& dfdx) const override;
 	bool DerivativeAlwaysZero(int eqn, int var) const override;
 
-	double operator()(std::span<const double> x) const { return Evaluate(x); }
+	double operator()(std::span<const double> x) const override { return Evaluate(x); }
+	int getDimension() const override { return GetDomainDimension(); };
 };
 
 

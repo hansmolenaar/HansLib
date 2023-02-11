@@ -38,11 +38,13 @@
   <ItemGroup>
     <ClCompile Include="HatFunctionTest.cpp" />
     <ClCompile Include="IRealFunctionUtilsTest.cpp" />
+    <ClCompile Include="MultiVariableFunctionEvaluateFrom01Test.cpp" />
     <ClCompile Include="MultiVariableFunctionExamplesTest.cpp" />
     <ClCompile Include="MultiVariableMonomialTest.cpp" />
     <ClCompile Include="MultiVariableMultiplicativeInverseFunctionTest.cpp" />
     <ClCompile Include="MultiVariablePolynomialTest.cpp" />
     <ClCompile Include="MultiVariableProductFunctionTest.cpp" />
+    <ClCompile Include="MultiVariableRealValuedFunctionNoDerivativesTest.cpp" />
     <ClCompile Include="MultiVariableRealValuedFunctionTest.cpp" />
     <ClCompile Include="MultiVariableVectorComponentFunctionTest.cpp" />
     <ClCompile Include="RealFunctionAddTest.cpp" />
@@ -56,6 +58,9 @@
   <ItemGroup>
     <ProjectReference Include="..\Functions\Functions.vcxproj">
       <Project>{f795c850-01b9-4cbd-ba0a-94c8f230a240}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Interval\Interval.vcxproj">
+      <Project>{1cd55d85-e025-45c1-8e1c-5c3e9477555a}</Project>
     </ProjectReference>
     <ProjectReference Include="..\MatrixVector\MatrixVector.vcxproj">
       <Project>{04dbb236-8fb0-448c-9504-f587dcc2e150}</Project>

@@ -1,15 +1,10 @@
 #include "MultiVariableFunctionExamples.h"
 #include "MultiVariablePolynomial.h"
+#include "MultiVariableRealValuedFunctionNoDerivatives.h"
 
-
+#if false
 namespace
 {
-   class IMultiVariableEvaluate
-   {
-   public:
-      virtual ~IMultiVariableEvaluate() noexcept = default;
-      virtual double Eval(std::span<const double>) const = 0;
-   };
 
    class IScaleInput
    {
@@ -18,38 +13,13 @@ namespace
       virtual std::vector<double> Scale(std::span<const double>) const = 0;
    };
 
-   class FunctionNoDerivativesGiven : public IMultiVariableRealValuedFunction
-   {
-   public:
-      FunctionNoDerivativesGiven(int dim, std::unique_ptr<IMultiVariableEvaluate>&& function);
-      int GetDomainDimension() const override { return m_dim; }
-      double Evaluate(std::span<const double>x)const override;
-      void Derivative(std::span<const double>x, std::span< double> dfdx)const override { throw MyException("Not implemented"); }
-      virtual bool DerivativeAlwaysZero(int var) const override { throw MyException("Not implemented"); }
-      bool HasDerivative() const override { return false; }
-
-   private:
-      int m_dim;
-      std::unique_ptr<IMultiVariableEvaluate> m_function;
-   };
-
-   double FunctionNoDerivativesGiven::Evaluate(std::span<const double>x) const
-   {
-      if (x.size() != m_dim) throw MyException("FunctionNoDerivativesGiven::Evaluate: input dimension incorrect");
-      return m_function->Eval(x);
-   }
-
-   FunctionNoDerivativesGiven::FunctionNoDerivativesGiven(int dim, std::unique_ptr<IMultiVariableEvaluate>&& function) :
-      m_dim(dim), m_function(std::move(function))
-   {}
-
-   class ScaledFunction : public IMultiVariableEvaluate
+   class ScaledFunction : public MultiVariableRealValuedFunctionNoDerivatives
    {
    public:
       ScaledFunction(std::unique_ptr<IMultiVariableRealValuedFunction>&& fie,
          std::unique_ptr<IScaleInput>&& scaleXyz);
 
-      double Eval(std::span<const double> xy) const override;
+      double operator()(std::span<const double> xy) const override;
 
    private:
       std::unique_ptr<IScaleInput> m_xyzScaling;
@@ -61,7 +31,7 @@ namespace
       m_xyzScaling(std::move(scaleXyz)), m_function(std::move(fie))
    {}
 
-   double ScaledFunction::Eval(std::span<const double> xy) const
+   double  ScaledFunction::operator()(std::span<const double> xy) const
    {
       const auto scaledInput = m_xyzScaling->Scale(xy);
       return (*m_function)(scaledInput);
@@ -78,7 +48,7 @@ namespace
 
 
 }
-
+#endif
 
 std::unique_ptr<IMultiVariableRealValuedFunction> MultiVariableFunctionExamples::GetPolynomial(const std::vector< std::pair<std::vector<int>, double>>& terms)
 {
@@ -103,12 +73,13 @@ std::unique_ptr<IMultiVariableRealValuedFunction> MultiVariableFunctionExamples:
    return GetPolynomial(terms);
 }
 
+#if false
 std::unique_ptr<IMultiVariableRealValuedFunction> MultiVariableFunctionExamples::ScaleInput(
    std::unique_ptr<IMultiVariableRealValuedFunction>&& fie,
    std::unique_ptr<std::function<std::vector<double>(const std::vector<double>&)>>&& scaleXyz)
 {
    throw MyException("MultiVariableFunctionExamples::ScaleInput not implemented");
-#if false
+
    auto fie = MultiVariableFunctionExamples::SixHumpCamelFunction();
    auto scale = [](std::span<const double> s) {return std::vector<double>(s.begin(), s.end()); };
    auto scalePtr = new  [](std::span<const double> s) {return std::vector<double>(s.begin(), s.end()); };
@@ -120,5 +91,6 @@ std::unique_ptr<IMultiVariableRealValuedFunction> MultiVariableFunctionExamples:
       FunctionNoDerivativesGiven(dim, std::make_unique<std::function<std::vector<double>(std::span<const double>)>>(ScaledFunction(std::move(fie), std::move(scaleXyz))))
 
          return std::make_unique<ScaledFunction>(fie, scaleXyz);
-#endif
+
 }
+#endif

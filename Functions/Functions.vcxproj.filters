@@ -78,6 +78,15 @@
     <ClInclude Include="MultiVariableFunctionExamples.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="IMultiVariableFunctionEvaluate.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MultiVariableRealValuedFunctionNoDerivatives.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MultiVariableFunctionEvaluateFrom01.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="IMultiVariableRealValuedFunction.cpp">
@@ -132,6 +141,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MultiVariableFunctionExamples.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MultiVariableRealValuedFunctionNoDerivatives.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MultiVariableFunctionEvaluateFrom01.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
