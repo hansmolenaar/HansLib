@@ -38,6 +38,7 @@
   <ItemGroup>
     <ClCompile Include="HatFunctionTest.cpp" />
     <ClCompile Include="IRealFunctionUtilsTest.cpp" />
+    <ClCompile Include="MultiVariableFunctionEvaluateFlippedTest.cpp" />
     <ClCompile Include="MultiVariableFunctionEvaluateFrom01Test.cpp" />
     <ClCompile Include="MultiVariableFunctionExamplesTest.cpp" />
     <ClCompile Include="MultiVariableMonomialTest.cpp" />

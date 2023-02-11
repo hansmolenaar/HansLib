@@ -87,6 +87,9 @@
     <ClInclude Include="MultiVariableFunctionEvaluateFrom01.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MultiVariableFunctionEvaluateFlipped.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="IMultiVariableRealValuedFunction.cpp">
@@ -147,6 +150,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MultiVariableFunctionEvaluateFrom01.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MultiVariableFunctionEvaluateFlipped.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

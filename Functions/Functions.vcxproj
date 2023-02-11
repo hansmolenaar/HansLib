@@ -26,6 +26,7 @@
     <ClInclude Include="IRealFunctionUtils.h" />
     <ClInclude Include="ISingleVariableRealValuedFunction.h" />
     <ClInclude Include="ISingleVariableRealValuedFunctionUtils.h" />
+    <ClInclude Include="MultiVariableFunctionEvaluateFlipped.h" />
     <ClInclude Include="MultiVariableFunctionEvaluateFrom01.h" />
     <ClInclude Include="MultiVariableFunctionExamples.h" />
     <ClInclude Include="MultiVariableMonomial.h" />
@@ -48,6 +49,7 @@
     <ClCompile Include="IMultiVariableRealValuedFunction.cpp" />
     <ClCompile Include="IRealFunctionUtils.cpp" />
     <ClCompile Include="ISingleVariableRealValuedFunctionUtils.cpp" />
+    <ClCompile Include="MultiVariableFunctionEvaluateFlipped.cpp" />
     <ClCompile Include="MultiVariableFunctionEvaluateFrom01.cpp" />
     <ClCompile Include="MultiVariableFunctionExamples.cpp" />
     <ClCompile Include="MultiVariableMonomial.cpp" />
