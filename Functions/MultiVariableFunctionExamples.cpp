@@ -24,3 +24,10 @@ std::unique_ptr<IMultiVariableRealValuedFunction> MultiVariableFunctionExamples:
    terms.emplace_back(std::vector<int>{0, 4}, 4.0);
    return GetPolynomial(terms);
 }
+
+
+std::vector<Interval<double>> MultiVariableFunctionExamples::TridBounds(int dim)
+{
+   const Interval<double> intv(-dim * dim, dim * dim);
+   return { static_cast<size_t>(dim), intv };
+}
