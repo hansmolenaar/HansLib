@@ -8,8 +8,11 @@
 #include "Utilities/Functors.h"
 #include "Interpolation/HierBasisFunction.h"
 #include "Interpolation/HierBasisFunction1D_ExtendedLevelOneBC.h"
-
+#include "Functions/MultiVariableFunctionEvaluateFlipped.h"
+#include "Functions/MultiVariableFunctionEvaluateFrom01.h"
 #include "Functions/MultiVariableFunctionExamples.h"
+#include "Functions/MultiVariableRealValuedFunctionNoDerivatives.h"
+#include "Interval/Interval.h"
 
 #include "Utilities/Plotting.h"
 
@@ -107,7 +110,7 @@ TEST(HierBasisFunctionTest, GetSomePolynomial_3)
    ASSERT_NO_THROW(TestCollocationPoints(*fie, *approximation));
 
 
-   Plotting::MdFunctionsOnUnityToFile("HierBasisFunctionTest_GetSomePolynomial_Approximation", 2, { [&approximation](std::vector<double> x) {return (*approximation)(x); } }, 20, std::vector<std::string>{"x", "y", "approx"});
+   //Plotting::MdFunctionsOnUnityToFile("HierBasisFunctionTest_GetSomePolynomial_Approximation", 2, { [&approximation](std::vector<double> x) {return (*approximation)(x); } }, 20, std::vector<std::string>{"x", "y", "approx"});
 }
 
 
@@ -157,3 +160,23 @@ TEST(HierBasisFunctionTest, TestConvergence)
 }
 
 
+TEST(HierBasisFunctionTest, CamelBack)
+{
+   auto camelHump = MultiVariableFunctionExamples::SixHumpCamelFunction();
+   auto flipped = std::make_unique< MultiVariableFunctionEvaluateFlipped>(std::move(camelHump));
+   auto scaled = std::make_unique< MultiVariableFunctionEvaluateFrom01>(std::move(flipped), std::vector<Interval<double>>{ Interval<double>(-3, 3), Interval<double>(-2, 2)});
+   auto fie = std::make_unique<MultiVariableRealValuedFunctionNoDerivatives>(2, std::move(scaled));
+
+   const HierBasisFunction1D_ExtendedLevelOneBC_Factory factory1D;
+   HierBasisFunction_Factory factory(size_t{ 2 }, &factory1D);
+   constexpr size_t maxLevel = 8;
+
+   const HierApproximation::RefineInAllDirectionsOnL1Norm refineOnNorm{ maxLevel };
+   auto approximation = HierApproximation::Create(*fie, factory, refineOnNorm);
+   const auto& nodes = approximation->getAllTreeNodesRO();
+   std::vector<double> values(nodes.size());
+   str::transform(nodes, values.begin(), [](const auto* hn) {return hn->Value; });
+   const double maxValue = *std::max_element(values.begin(), values.end());
+   ASSERT_NEAR(maxValue, 1.0, 0.01);
+   Plotting::MdFunctionsOnUnityToFile("HierBasisFunctionTest_CamelBack", 2, { [&approximation](std::vector<double> x) {return (*approximation)(x); } }, 64, std::vector<std::string>{"x", "y", "approx"});
+}

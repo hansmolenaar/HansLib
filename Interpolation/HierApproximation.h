@@ -10,6 +10,7 @@
 #include <memory>
 #include <functional>
 #include <map>
+#include <limits>
 
 
 struct HierTreeNode
@@ -17,7 +18,8 @@ struct HierTreeNode
    double operator()(std::span<const double>) const;
 
    const IHierBasisFunction* BasisFunction;
-   double Surplus = 0.0;
+   double Surplus = std::numeric_limits<double>::quiet_NaN();
+   double Value = std::numeric_limits<double>::quiet_NaN();
    std::vector<HierTreeNode*> Kids;
    const HierMultiIndex& getMultiIndex() const { return BasisFunction->getMultiIndex(); }
 };

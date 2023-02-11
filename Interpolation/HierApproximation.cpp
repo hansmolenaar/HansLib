@@ -54,10 +54,10 @@ namespace
 
          // Calculate the surplus
          const auto& xyz = hmi.toDoubles();
-         const double functionEval = FunctionToApproximate.Evaluate(xyz);
+         node->Value = FunctionToApproximate.Evaluate(xyz);
          // Basis function may overlap
          const double approx = Approximation(xyz);
-         node->Surplus = functionEval - approx;
+         node->Surplus = node->Value - approx;
          return node;
       }
    };
