@@ -181,10 +181,9 @@ std::unique_ptr<HierApproximation> HierApproximation::Create(const IMultiVariabl
 double HierApproximation::operator()(std::span<const double> xyz) const
 {
    double result = 0;
-   for (const auto& node : m_treeNodeMap)
+   for (const auto* node : m_root)
    {
-      const auto& htn = *node.second;
-      result += htn.Surplus * htn.BasisFunction->Evaluate(xyz);
+      result += (*node)(xyz);
    }
    return result;
 }

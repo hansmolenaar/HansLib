@@ -191,7 +191,7 @@ TEST(HierBasisFunctionTest, SquaredHat)
 
    const HierBasisFunction1D_HomogenousBC_Factory factory1D;
    HierBasisFunction_Factory factory(dimension, &factory1D);
-   constexpr size_t maxLevel = 4;
+   constexpr size_t maxLevel = 3;
 
    const HierApproximation::RefineInAllDirectionsOnRefinementLevel refineOnNorm{ maxLevel };
    auto approximation = HierApproximation::Create(*squaredHat.Function, factory, refineOnNorm);
@@ -199,6 +199,7 @@ TEST(HierBasisFunctionTest, SquaredHat)
    std::vector<double> values(nodes.size());
    str::transform(nodes, values.begin(), [](const auto* hn) {return hn->Value; });
    const double maxValue = *std::max_element(values.begin(), values.end());
-   //ASSERT_NEAR(maxValue, 1.0, 0.01);
-   Plotting::MdFunctionsOnUnityToFile("HierBasisFunctionTest_SquaredHat", 2, { [&squaredHat](std::vector<double> x) {return (*squaredHat.Function)(x); } }, 64, std::vector<std::string>{"x", "y", "approx"});
+   ASSERT_EQ(nodes.size(), 2001);
+   ASSERT_NEAR(maxValue, 0.72028645911812739, 1.0e-6);
+   //Plotting::MdFunctionsOnUnityToFile("HierBasisFunctionTest_SquaredHat", 2, { [&squaredHat](std::vector<double> x) {return (*squaredHat.Function)(x); } }, 64, std::vector<std::string>{"x", "y", "approx"});
 }
