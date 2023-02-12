@@ -32,16 +32,6 @@ class HierApproximation // : public IMultiVariableRealValuedFunction
 public:
    using RefineInDirections = std::function<std::vector<size_t>(const HierRefinementInfo&)>;
 
-   struct RefineInAllDirectionsOnL1Norm
-   {
-      size_t MaxL1Norm = std::numeric_limits<size_t>::max();
-      std::vector<size_t> operator()(const HierRefinementInfo& hri) const
-      {
-         if (hri.MultiLevelIndex.getL1NormLevel() >= MaxL1Norm) return {};
-         return Iota::GenerateVector<size_t>(hri.MultiLevelIndex.getDimension());
-      }
-   };
-
    struct RefineInAllDirectionsOnRefinementLevel
    {
       int MaxRefinementLevel = std::numeric_limits<int>::max();

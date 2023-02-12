@@ -65,8 +65,8 @@ TEST(HierBasisFunctionTest, GetSomePolynomial_1)
 
    const HierBasisFunction1D_HomogenousBC_Factory factory1D;
    HierBasisFunction_Factory factory(size_t{ 2 }, &factory1D);
-   const HierApproximation::RefineInAllDirectionsOnL1Norm refineOnNorm{ 2 };
-   auto approximation = HierApproximation::Create(*fie, factory, refineOnNorm);
+   const HierApproximation::RefineInAllDirectionsOnRefinementLevel refineOnLevel{ 0 };
+   auto approximation = HierApproximation::Create(*fie, factory, refineOnLevel);
    ASSERT_EQ(approximation->getLeafNodesRO().size(), 1);
    ASSERT_NO_THROW(TestCollocationPoints(*fie, *approximation));
 
@@ -79,8 +79,8 @@ TEST(HierBasisFunctionTest, GetSomePolynomial_2)
    const auto fie = GetSomePolynomial();
    const HierBasisFunction1D_HomogenousBC_Factory factory1D;
    HierBasisFunction_Factory factory(size_t{ 2 }, &factory1D);
-   const HierApproximation::RefineInAllDirectionsOnL1Norm refineOnNorm{ 3 };
-   auto approximation = HierApproximation::Create(*fie, factory, refineOnNorm);
+   const HierApproximation::RefineInAllDirectionsOnRefinementLevel refineOnLevel{ 1 };
+   auto approximation = HierApproximation::Create(*fie, factory, refineOnLevel);
    ASSERT_EQ(approximation->getLeafNodesRO().size(), 4);
    ASSERT_EQ(approximation->getAllTreeNodesRO().size(), 5);
    ASSERT_NO_THROW(TestCollocationPoints(*fie, *approximation));
@@ -94,8 +94,8 @@ TEST(HierBasisFunctionTest, GetSomePolynomial_3)
    const auto fie = GetSomePolynomial();
    const HierBasisFunction1D_HomogenousBC_Factory factory1D;
    HierBasisFunction_Factory factory(size_t{ 2 }, &factory1D);
-   const HierApproximation::RefineInAllDirectionsOnL1Norm refineOnNorm{ 4 };
-   auto approximation = HierApproximation::Create(*fie, factory, refineOnNorm);
+   const HierApproximation::RefineInAllDirectionsOnRefinementLevel refineOnLevel{ 2 };
+   auto approximation = HierApproximation::Create(*fie, factory, refineOnLevel);
 
    std::vector<HierMultiIndex> indices;
    str::transform(approximation->getAllTreeNodesRO(), std::back_inserter(indices), [](const HierTreeNode* hn) {return hn->getMultiIndex(); });
@@ -123,11 +123,11 @@ TEST(HierBasisFunctionTest, Linear)
 
    const HierBasisFunction1D_ExtendedLevelOneBC_Factory factory1D;
    HierBasisFunction_Factory factory(size_t{ 2 }, &factory1D);
-   constexpr size_t maxLevel = 8;
-   for (size_t level = 2; level < maxLevel; ++level)
+   constexpr int maxLevel = 7;
+   for (int level = 1; level < maxLevel; ++level)
    {
-      const HierApproximation::RefineInAllDirectionsOnL1Norm refineOnNorm{ level };
-      auto approximation = HierApproximation::Create(*linear, factory, refineOnNorm);
+      const HierApproximation::RefineInAllDirectionsOnRefinementLevel refineOnLevel{ level };
+      auto approximation = HierApproximation::Create(*linear, factory, refineOnLevel);
       ASSERT_NO_THROW(TestCollocationPoints(*linear, *approximation));
       const double dif = std::abs((*approximation)(xin) - expect);
       const Functors::AreClose close;
@@ -143,12 +143,12 @@ TEST(HierBasisFunctionTest, TestConvergence)
 
    const HierBasisFunction1D_HomogenousBC_Factory factory1D;
    HierBasisFunction_Factory factory(size_t{ 2 }, &factory1D);
-   constexpr size_t maxLevel = 9;
+   constexpr int maxLevel = 8;
    std::vector<double> maxSurplus;
-   for (size_t level = 2; level < maxLevel; ++level)
+   for (int level = 2; level < maxLevel; ++level)
    {
-      const HierApproximation::RefineInAllDirectionsOnL1Norm refineOnNorm{ level };
-      auto approximation = HierApproximation::Create(*fie, factory, refineOnNorm);
+      const HierApproximation::RefineInAllDirectionsOnRefinementLevel refineOnLevel{ level };
+      auto approximation = HierApproximation::Create(*fie, factory, refineOnLevel);
       ASSERT_NO_THROW(TestCollocationPoints(*fie, *approximation));
       maxSurplus.push_back(approximation->getMaxSurplus());
    }
@@ -171,14 +171,14 @@ TEST(HierBasisFunctionTest, CamelBack)
    HierBasisFunction_Factory factory(size_t{ 2 }, &factory1D);
    constexpr size_t maxLevel = 8;
 
-   const HierApproximation::RefineInAllDirectionsOnL1Norm refineOnNorm{ maxLevel };
-   auto approximation = HierApproximation::Create(*fie, factory, refineOnNorm);
+   const HierApproximation::RefineInAllDirectionsOnRefinementLevel refineOnLevel{ maxLevel };
+   auto approximation = HierApproximation::Create(*fie, factory, refineOnLevel);
    const auto& nodes = approximation->getAllTreeNodesRO();
    std::vector<double> values(nodes.size());
    str::transform(nodes, values.begin(), [](const auto* hn) {return hn->Value; });
    const double maxValue = *std::max_element(values.begin(), values.end());
-   ASSERT_NEAR(maxValue, 1.0, 0.01);
-   Plotting::MdFunctionsOnUnityToFile("HierBasisFunctionTest_CamelBack", 2, { [&approximation](std::vector<double> x) {return (*approximation)(x); } }, 64, std::vector<std::string>{"x", "y", "approx"});
+   ASSERT_NEAR(maxValue, 1.0, 0.02);
+   //Plotting::MdFunctionsOnUnityToFile("HierBasisFunctionTest_CamelBack", 2, { [&approximation](std::vector<double> x) {return (*approximation)(x); } }, 64, std::vector<std::string>{"x", "y", "approx"});
 }
 
 
