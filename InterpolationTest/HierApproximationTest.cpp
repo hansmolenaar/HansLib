@@ -184,21 +184,21 @@ TEST(HierBasisFunctionTest, CamelBack)
 
 TEST(HierBasisFunctionTest, SquaredHat)
 {
-   const size_t dimension = 6;
+   const size_t dimension = 10;
    std::vector<double> pos(dimension);
    str::transform(str::iota_view(size_t{ 0 }, dimension), pos.begin(), [](size_t n) {return 1.0 / std::sqrt(n + 2.0); });
    const auto squaredHat = MultiVariableFunctionExamples::SkewedHatSquared(pos);
 
    const HierBasisFunction1D_HomogenousBC_Factory factory1D;
    HierBasisFunction_Factory factory(dimension, &factory1D);
-   constexpr size_t maxLevel = 6;
+   constexpr size_t maxLevel = 4;
 
-   const HierApproximation::RefineInAllDirectionsOnL1Norm refineOnNorm{ maxLevel };
+   const HierApproximation::RefineInAllDirectionsOnRefinementLevel refineOnNorm{ maxLevel };
    auto approximation = HierApproximation::Create(*squaredHat.Function, factory, refineOnNorm);
    const auto& nodes = approximation->getAllTreeNodesRO();
    std::vector<double> values(nodes.size());
    str::transform(nodes, values.begin(), [](const auto* hn) {return hn->Value; });
    const double maxValue = *std::max_element(values.begin(), values.end());
    //ASSERT_NEAR(maxValue, 1.0, 0.01);
-   //Plotting::MdFunctionsOnUnityToFile("HierBasisFunctionTest_SquaredHat", 2, { [&approximation](std::vector<double> x) {return (*approximation)(x); } }, 64, std::vector<std::string>{"x", "y", "approx"});
+   Plotting::MdFunctionsOnUnityToFile("HierBasisFunctionTest_SquaredHat", 2, { [&squaredHat](std::vector<double> x) {return (*squaredHat.Function)(x); } }, 64, std::vector<std::string>{"x", "y", "approx"});
 }

@@ -7,4 +7,5 @@ struct HierRefinementInfo
    HierMultiIndex MultiLevelIndex;
    double Surplus;
    double MaxSurplus;
+   int RefinementLevel;
 };

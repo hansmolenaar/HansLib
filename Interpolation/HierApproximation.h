@@ -18,6 +18,7 @@ struct HierTreeNode
    double operator()(std::span<const double>) const;
 
    const IHierBasisFunction* BasisFunction;
+   int RefinementLevel = std::numeric_limits<int>::min();
    double Surplus = std::numeric_limits<double>::quiet_NaN();
    double Value = std::numeric_limits<double>::quiet_NaN();
    std::vector<HierTreeNode*> Kids;
@@ -40,6 +41,17 @@ public:
          return Iota::GenerateVector<size_t>(hri.MultiLevelIndex.getDimension());
       }
    };
+
+   struct RefineInAllDirectionsOnRefinementLevel
+   {
+      int MaxRefinementLevel = std::numeric_limits<int>::max();
+      std::vector<size_t> operator()(const HierRefinementInfo& hri) const
+      {
+         if (hri.RefinementLevel >= MaxRefinementLevel) return {};
+         return Iota::GenerateVector<size_t>(hri.MultiLevelIndex.getDimension());
+      }
+   };
+
    static std::unique_ptr<HierApproximation> Create(const IMultiVariableRealValuedFunction& fie, const IHierBasisFunction_Factory& factory, const RefineInDirections& toRefine);
 
    double operator()(std::span<const double>) const;

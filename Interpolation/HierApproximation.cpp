@@ -36,7 +36,7 @@ namespace
       {
          if (!IsRefinable{ Factory }(htn)) return {};
          const auto& mli = htn->getMultiIndex();
-         const HierRefinementInfo refinementInfo{ HierMultiIndex(mli), std::abs(htn->Surplus), MaxSurplus };
+         const HierRefinementInfo refinementInfo{ HierMultiIndex(mli), std::abs(htn->Surplus), MaxSurplus, htn->RefinementLevel };
          return RefinementTest(refinementInfo);
       }
    };
@@ -47,7 +47,7 @@ namespace
       const IMultiVariableRealValuedFunction& FunctionToApproximate;
       const HierApproximation& Approximation;
 
-      std::unique_ptr<HierTreeNode> operator()(const HierMultiIndex& hmi) const
+      std::unique_ptr<HierTreeNode> operator()(const HierMultiIndex& hmi, int level) const
       {
          const auto* basisfunction = Factory.get(hmi);
          auto node = std::make_unique<HierTreeNode>(basisfunction);
@@ -58,6 +58,7 @@ namespace
          // Basis function may overlap
          const double approx = Approximation(xyz);
          node->Surplus = node->Value - approx;
+         node->RefinementLevel = level;
          return node;
       }
    };
@@ -70,10 +71,14 @@ namespace
    }
 
    // Return nullptr if already existing
-   HierTreeNode* CreateIfNew(const HierMultiIndex& hmi, const CreateHierNode& creator, std::map<HierMultiIndex, std::unique_ptr<HierTreeNode>>& treeNodeMap)
+   HierTreeNode* CreateIfNew(const HierMultiIndex& hmi, int level, const CreateHierNode& creator, std::map<HierMultiIndex, std::unique_ptr<HierTreeNode>>& treeNodeMap)
    {
-      if (treeNodeMap.contains(hmi)) return nullptr;
-      treeNodeMap.emplace(hmi, creator(hmi));
+      if (treeNodeMap.contains(hmi))
+      {
+         if (treeNodeMap.at(hmi)->RefinementLevel != level) throw MyException("CreateIfNew");
+         return nullptr;
+      }
+      treeNodeMap.emplace(hmi, creator(hmi, level));
       return Get(hmi, treeNodeMap);
    }
 
@@ -121,7 +126,7 @@ std::unique_ptr<HierApproximation> HierApproximation::Create(const IMultiVariabl
 
    for (const auto& hmi : factory.getLowestLevel())
    {
-      auto* kid = CreateIfNew(hmi, createHierNode, result->m_treeNodeMap);
+      auto* kid = CreateIfNew(hmi, 0, createHierNode, result->m_treeNodeMap);
       if (kid != nullptr) result->m_root.push_back(kid);
    }
 
@@ -143,7 +148,7 @@ std::unique_ptr<HierApproximation> HierApproximation::Create(const IMultiVariabl
          for (const auto& kid : parentDir.first.refine(parentDir.second))
          {
             auto* parent = Get(parentDir.first, result->m_treeNodeMap);
-            auto* kidPtr = CreateIfNew(kid, createHierNode, result->m_treeNodeMap);
+            auto* kidPtr = CreateIfNew(kid, parent->RefinementLevel + 1, createHierNode, result->m_treeNodeMap);
             if (kidPtr != nullptr) parent->Kids.emplace_back(kidPtr);
          }
       }
