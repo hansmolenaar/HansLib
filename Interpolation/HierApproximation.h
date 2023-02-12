@@ -30,19 +30,35 @@ struct HierTreeNode
 class HierApproximation // : public IMultiVariableRealValuedFunction
 {
 public:
-   using RefineInDirections = std::function<std::vector<size_t>(const HierRefinementInfo&)>;
 
-   struct RefineInAllDirectionsOnRefinementLevel
+   using RefinementSpecification = std::pair<HierMultiIndex, size_t>;
+   using GetRefinements = std::function<std::vector<RefinementSpecification>(const HierApproximation&)>;
+
+   struct GetRefineInAllDirectionsOnRefinementLevel
    {
       int MaxRefinementLevel = std::numeric_limits<int>::max();
-      std::vector<size_t> operator()(const HierRefinementInfo& hri) const
+      std::vector<RefinementSpecification> operator()(const HierApproximation& approx) const
       {
-         if (hri.RefinementLevel >= MaxRefinementLevel) return {};
-         return Iota::GenerateVector<size_t>(hri.MultiLevelIndex.getDimension());
+         std::vector<RefinementSpecification> result;
+         const auto& factory = approx.getFactory();
+         for (const auto* leaf : approx.getLeafNodesRO())
+         {
+            const auto& mi = leaf->getMultiIndex();
+            if (!factory.canBeRefined(mi)) continue;
+            if (leaf->RefinementLevel < MaxRefinementLevel)
+            {
+
+               for (size_t d = 0; d < mi.getDimension(); ++d)
+               {
+                  result.emplace_back(mi, d);
+               }
+            }
+         }
+         return result;
       }
    };
 
-   static std::unique_ptr<HierApproximation> Create(const IMultiVariableRealValuedFunction& fie, const IHierBasisFunction_Factory& factory, const RefineInDirections& toRefine);
+   static std::unique_ptr<HierApproximation> Create(const IMultiVariableRealValuedFunction& fie, const IHierBasisFunction_Factory& factory, const GetRefinements& getRefinements);
 
    double operator()(std::span<const double>) const;
 
@@ -52,6 +68,7 @@ public:
 
    std::vector<std::vector<double>> getCollocationPoints() const;
    double getMaxSurplus() const;
+   const IHierBasisFunction_Factory& getFactory() const;
 
 private:
    explicit HierApproximation(const IHierBasisFunction_Factory&);

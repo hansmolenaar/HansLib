@@ -26,21 +26,6 @@ namespace
    };
 
 
-   struct DoRefine
-   {
-      const IHierBasisFunction_Factory& Factory;
-      const HierApproximation::RefineInDirections& RefinementTest;
-      double MaxSurplus = 0;
-
-      std::vector<size_t> operator()(const HierTreeNode* htn) const
-      {
-         if (!IsRefinable{ Factory }(htn)) return {};
-         const auto& mli = htn->getMultiIndex();
-         const HierRefinementInfo refinementInfo{ HierMultiIndex(mli), std::abs(htn->Surplus), MaxSurplus, htn->RefinementLevel };
-         return RefinementTest(refinementInfo);
-      }
-   };
-
    struct CreateHierNode
    {
       const IHierBasisFunction_Factory& Factory;
@@ -82,19 +67,6 @@ namespace
       return Get(hmi, treeNodeMap);
    }
 
-   std::vector<std::pair<HierMultiIndex, size_t>> GetRefinements(const HierApproximation& approximation, const DoRefine& doRefine)
-   {
-      std::vector<std::pair<HierMultiIndex, size_t>> result;
-      for (const auto& leaf : approximation.getLeafNodesRO())
-      {
-         for (size_t dir : doRefine(leaf))
-         {
-            result.emplace_back(leaf->getMultiIndex(), dir);
-         }
-      }
-      return result;
-   }
-
 }
 
 HierApproximation::HierApproximation(const IHierBasisFunction_Factory& factory) :
@@ -115,12 +87,11 @@ double HierTreeNode::operator()(std::span<const double> x) const
    return result;
 }
 
-std::unique_ptr<HierApproximation> HierApproximation::Create(const IMultiVariableRealValuedFunction& fie, const IHierBasisFunction_Factory& factory, const RefineInDirections& refineInDirections)
+std::unique_ptr<HierApproximation> HierApproximation::Create(const IMultiVariableRealValuedFunction& fie, const IHierBasisFunction_Factory& factory, const GetRefinements& getRefinements)
 {
    Logger logger;
    std::vector<std::string> loglines;
    std::unique_ptr<HierApproximation> result(new HierApproximation(factory));
-   DoRefine refinementPredicate{ factory, refineInDirections };
 
    const CreateHierNode createHierNode(factory, fie, *result);
 
@@ -133,7 +104,7 @@ std::unique_ptr<HierApproximation> HierApproximation::Create(const IMultiVariabl
    for (const auto& tr : result->m_treeNodeMap) loglines.push_back(tr.first.toString());
    logger.LogLine(loglines);
 
-   auto toRefine = GetRefinements(*result, refinementPredicate);
+   auto toRefine = getRefinements(*result);
 
    while (!toRefine.empty())
    {
@@ -162,8 +133,7 @@ std::unique_ptr<HierApproximation> HierApproximation::Create(const IMultiVariabl
       logger.LogLine(loglines);
 #endif
   
-      refinementPredicate.MaxSurplus = result->getMaxSurplus();
-      toRefine = GetRefinements(*result, refinementPredicate);
+      toRefine = getRefinements(*result);
    }
 
 
@@ -176,7 +146,6 @@ std::unique_ptr<HierApproximation> HierApproximation::Create(const IMultiVariabl
 
    return result;
 }
-
 
 double HierApproximation::operator()(std::span<const double> xyz) const
 {
@@ -230,4 +199,9 @@ std::vector<std::vector<double>> HierApproximation::getCollocationPoints() const
    str::transform(allTreeNodes, result.begin(), [](const HierTreeNode* tn) {return std::vector<double>{ tn->getMultiIndex().toDoubles()}; });
    str::sort(result);
    return result;
+}
+
+const IHierBasisFunction_Factory& HierApproximation::getFactory() const
+{
+   return m_factory;
 }
