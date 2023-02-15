@@ -6,6 +6,7 @@
 #include "HierRefinementInfo.h"
 #include "Utilities/MultiIndex.h"
 #include "Utilities/Iota.h"
+#include "INodeRefinePredicateFactory.h"
 
 #include <memory>
 #include <functional>
@@ -32,33 +33,8 @@ class HierApproximation // : public IMultiVariableRealValuedFunction
 public:
 
    using RefinementSpecification = std::pair<HierMultiIndex, size_t>;
-   using GetRefinements = std::function<std::vector<RefinementSpecification>(const HierApproximation&)>;
 
-   struct GetRefineInAllDirectionsOnRefinementLevel
-   {
-      int MaxRefinementLevel = std::numeric_limits<int>::max();
-      std::vector<RefinementSpecification> operator()(const HierApproximation& approx) const
-      {
-         std::vector<RefinementSpecification> result;
-         const auto& factory = approx.getFactory();
-         for (const auto* leaf : approx.getLeafNodesRO())
-         {
-            const auto& mi = leaf->getMultiIndex();
-            if (!factory.canBeRefined(mi)) continue;
-            if (leaf->RefinementLevel < MaxRefinementLevel)
-            {
-
-               for (size_t d = 0; d < mi.getDimension(); ++d)
-               {
-                  result.emplace_back(mi, d);
-               }
-            }
-         }
-         return result;
-      }
-   };
-
-   static std::unique_ptr<HierApproximation> Create(const IMultiVariableRealValuedFunction& fie, const IHierBasisFunction_Factory& factory, const GetRefinements& getRefinements);
+   static std::unique_ptr<HierApproximation> Create(const IMultiVariableRealValuedFunction& fie, const IHierBasisFunction_Factory& factory, INodeRefinePredicateFactory& refinementFactory);
 
    double operator()(std::span<const double>) const;
 

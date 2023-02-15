@@ -60,6 +60,21 @@
     <ClInclude Include="HierApproximation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="INodeRefinePredicate.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="INodeRefinePredicateFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NodeRefinePredicateNever.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NodeRefinePredicateAlways.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="NodeRefinePredicateFactoryByLevel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="LagrangeInterpolation.cpp">
@@ -99,6 +114,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="HierApproximation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NodeRefinePredicateFactoryByLevel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -67,6 +67,27 @@ namespace
       return Get(hmi, treeNodeMap);
    }
 
+   std::vector<HierApproximation::RefinementSpecification> GetAllRefinements(const HierApproximation& approx, const IHierBasisFunction_Factory& basisFunctionFactory, INodeRefinePredicateFactory& refinementFactory)
+   {
+      std::vector<HierApproximation::RefinementSpecification> result;
+      const auto predicate = refinementFactory.create(approx);
+      const int numDirections = static_cast<int>(basisFunctionFactory.getDimension());
+      for (const auto* leaf : approx.getLeafNodesRO())
+      {
+         const auto& mi = leaf->getMultiIndex();
+         if (!basisFunctionFactory.canBeRefined(mi)) continue;
+         for (int d = 0; d < numDirections; ++d)
+         {
+            if ((*predicate)(leaf, d))
+            {
+               result.emplace_back(mi, d);
+            }
+         }
+      }
+      return result;
+   }
+
+
 }
 
 HierApproximation::HierApproximation(const IHierBasisFunction_Factory& factory) :
@@ -87,7 +108,7 @@ double HierTreeNode::operator()(std::span<const double> x) const
    return result;
 }
 
-std::unique_ptr<HierApproximation> HierApproximation::Create(const IMultiVariableRealValuedFunction& fie, const IHierBasisFunction_Factory& factory, const GetRefinements& getRefinements)
+std::unique_ptr<HierApproximation> HierApproximation::Create(const IMultiVariableRealValuedFunction& fie, const IHierBasisFunction_Factory& factory, INodeRefinePredicateFactory& refinementFactory)
 {
    Logger logger;
    std::vector<std::string> loglines;
@@ -104,12 +125,12 @@ std::unique_ptr<HierApproximation> HierApproximation::Create(const IMultiVariabl
    for (const auto& tr : result->m_treeNodeMap) loglines.push_back(tr.first.toString());
    logger.LogLine(loglines);
 
-   auto toRefine = getRefinements(*result);
+   auto toRefine = GetAllRefinements(*result, factory, refinementFactory);
 
    while (!toRefine.empty())
    {
 #if false
-      loglines = std::vector<std::string> { {"cells to refine:"} };
+      loglines = std::vector<std::string>{ {"cells to refine:"} };
       for (const auto& tr : toRefine) loglines.push_back(tr.first.toString() + " -> " + std::to_string(tr.second));
       logger.LogLine(loglines);
 #endif
@@ -132,8 +153,8 @@ std::unique_ptr<HierApproximation> HierApproximation::Create(const IMultiVariabl
       for (const auto& leaf : result->getLeafNodesRO()) loglines.push_back(leaf->BasisFunction->getMultiIndex().toString());
       logger.LogLine(loglines);
 #endif
-  
-      toRefine = getRefinements(*result);
+
+      toRefine = GetAllRefinements(*result, factory, refinementFactory);
    }
 
 

@@ -32,8 +32,13 @@
     <ClInclude Include="HierRefinementInfo.h" />
     <ClInclude Include="IHierBasisFunction.h" />
     <ClInclude Include="IHierBasisFunction1D.h" />
+    <ClInclude Include="INodeRefinePredicate.h" />
+    <ClInclude Include="INodeRefinePredicateFactory.h" />
     <ClInclude Include="LagrangeInterpolation.h" />
     <ClInclude Include="NodalBasis1D.h" />
+    <ClInclude Include="NodeRefinePredicateAlways.h" />
+    <ClInclude Include="NodeRefinePredicateFactoryByLevel.h" />
+    <ClInclude Include="NodeRefinePredicateNever.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ChebyshevPoints.cpp" />
@@ -49,6 +54,7 @@
     <ClCompile Include="IHierBasisFunction.cpp" />
     <ClCompile Include="LagrangeInterpolation.cpp" />
     <ClCompile Include="NodalBasis1D.cpp" />
+    <ClCompile Include="NodeRefinePredicateFactoryByLevel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Functions\Functions.vcxproj">
