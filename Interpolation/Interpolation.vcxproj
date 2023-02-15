@@ -22,14 +22,12 @@
     <ClInclude Include="ChebyshevPoints.h" />
     <ClInclude Include="EquidistantPoints.h" />
     <ClInclude Include="HierApproximation.h" />
-    <ClInclude Include="HierApproximation1D.h" />
     <ClInclude Include="HierBasisFunction.h" />
     <ClInclude Include="HierBasisFunction1D_ExtendedLevelOneBC.h" />
     <ClInclude Include="HierBasisFunction1D_ExtraplolateBC.h" />
     <ClInclude Include="HierBasisFunction1D_HomogenousBC.h" />
     <ClInclude Include="HierLevelIndex.h" />
     <ClInclude Include="HierMultiIndex.h" />
-    <ClInclude Include="HierRefinementInfo.h" />
     <ClInclude Include="IHierBasisFunction.h" />
     <ClInclude Include="IHierBasisFunction1D.h" />
     <ClInclude Include="INodeRefinePredicate.h" />
@@ -45,7 +43,6 @@
     <ClCompile Include="ChebyshevPoints.cpp" />
     <ClCompile Include="EquidistantPoints.cpp" />
     <ClCompile Include="HierApproximation.cpp" />
-    <ClCompile Include="HierApproximation1D.cpp" />
     <ClCompile Include="HierBasisFunction.cpp" />
     <ClCompile Include="HierBasisFunction1D_ExtendedLevelOneBC.cpp" />
     <ClCompile Include="HierBasisFunction1D_ExtraplolateBC.cpp" />

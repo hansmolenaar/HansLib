@@ -26,5 +26,5 @@ public:
    virtual ~IHierBasisFunction1D_Factory() = default;
    virtual std::vector<HierLevelIndex> getLowestLevel() const = 0;
    virtual bool canBeRefined(const HierLevelIndex&) const = 0;
-   virtual const IHierBasisFunction1D* get(const HierLevelIndex& li) const = 0;
+   virtual const IHierBasisFunction1D* get(const HierLevelIndex& li) = 0;
 };

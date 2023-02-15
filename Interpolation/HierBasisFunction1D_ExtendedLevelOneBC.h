@@ -18,7 +18,7 @@ private:
 class HierBasisFunction1D_ExtendedLevelOneBC_Factory : public IHierBasisFunction1D_Factory
 {
 public:
-   const IHierBasisFunction1D* get(const HierLevelIndex& li) const override;
+   const IHierBasisFunction1D* get(const HierLevelIndex& li) override;
    std::vector<HierLevelIndex> getLowestLevel() const override;
    bool canBeRefined(const HierLevelIndex&) const override;
 private:

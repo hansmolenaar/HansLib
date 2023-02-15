@@ -8,7 +8,7 @@
 
 // Factory
 
-const IHierBasisFunction1D* HierBasisFunction1D_HomogenousBC_Factory::get(const HierLevelIndex& li) const
+const IHierBasisFunction1D* HierBasisFunction1D_HomogenousBC_Factory::get(const HierLevelIndex& li)
 {
    static std::map<HierLevelIndex, std::unique_ptr<IHierBasisFunction1D>> s_basisFuncions;
    if (!s_basisFuncions.contains(li))

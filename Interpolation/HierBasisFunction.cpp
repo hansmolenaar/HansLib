@@ -42,7 +42,7 @@ double HierBasisFunction::operator()(std::span<const double> x) const
 }
 
 
-HierBasisFunction_Factory::HierBasisFunction_Factory(size_t dimension, const IHierBasisFunction1D_Factory* factory) :
+HierBasisFunction_Factory::HierBasisFunction_Factory(size_t dimension,  IHierBasisFunction1D_Factory* factory) :
    m_dimension(dimension), m_factory1D(factory)
 {}
 
@@ -51,18 +51,19 @@ bool HierBasisFunction_Factory::canBeRefined(const HierMultiIndex& hmi) const
    return str::all_of(hmi.get(), [this](const auto& li) { return m_factory1D->canBeRefined(li); });
 }
 
-const IHierBasisFunction* HierBasisFunction_Factory::get(const HierMultiIndex& hmi) const
+const IHierBasisFunction* HierBasisFunction_Factory::get(const HierMultiIndex& hmi)
 {
-   static std::map<HierMultiIndex, std::unique_ptr<HierBasisFunction>> s_basisFuncions;
-   if (!s_basisFuncions.contains(hmi))
+
+   if (!m_basisFunctions.contains(hmi))
    {
       Utilities::Assert(m_dimension == hmi.getDimension());
       std::vector<const IHierBasisFunction1D*> basisFunctions;
       str::transform(hmi.get(), std::back_inserter(basisFunctions), [this](const auto& li) {return m_factory1D->get(li); });
-      s_basisFuncions.emplace(hmi, std::make_unique<HierBasisFunction>(basisFunctions));
+      std::unique_ptr<IHierBasisFunction> newBasisFunction = std::make_unique<HierBasisFunction>(basisFunctions);
+      m_basisFunctions.emplace(hmi, std::move(newBasisFunction));
    }
 
-   return s_basisFuncions.at(hmi).get();
+   return m_basisFunctions.at(hmi).get();
 }
 
 std::vector<HierMultiIndex> HierBasisFunction_Factory::getLowestLevel() const

@@ -3,7 +3,6 @@
 #include "IHierBasisFunction.h"
 #include "Functions/IMultiVariableRealValuedFunction.h"
 #include "HierMultiIndex.h"
-#include "HierRefinementInfo.h"
 #include "Utilities/MultiIndex.h"
 #include "Utilities/Iota.h"
 #include "INodeRefinePredicateFactory.h"
@@ -34,7 +33,7 @@ public:
 
    using RefinementSpecification = std::pair<HierMultiIndex, size_t>;
 
-   static std::unique_ptr<HierApproximation> Create(const IMultiVariableRealValuedFunction& fie, const IHierBasisFunction_Factory& factory, INodeRefinePredicateFactory& refinementFactory);
+   static std::unique_ptr<HierApproximation> Create(const IMultiVariableRealValuedFunction& fie, IHierBasisFunction_Factory& factory, INodeRefinePredicateFactory& refinementFactory);
 
    double operator()(std::span<const double>) const;
 
@@ -47,13 +46,13 @@ public:
    const IHierBasisFunction_Factory& getFactory() const;
 
 private:
-   explicit HierApproximation(const IHierBasisFunction_Factory&);
+   explicit HierApproximation(IHierBasisFunction_Factory&);
 
 
    std::vector< HierTreeNode*> getAllTreeNodes() const;
 
    std::map<HierMultiIndex, std::unique_ptr<HierTreeNode>> m_treeNodeMap;
    std::vector<HierTreeNode*> m_root;;
-   const IHierBasisFunction_Factory& m_factory;
+   IHierBasisFunction_Factory& m_factory;
    MultiIndex<size_t> m_indexer;
 };

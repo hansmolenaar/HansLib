@@ -61,7 +61,7 @@ bool HierBasisFunction1D_ExtraplolateBC_Factory::canBeRefined(const HierLevelInd
 }
 
 
-const IHierBasisFunction1D* HierBasisFunction1D_ExtraplolateBC_Factory::get(const HierLevelIndex& li) const
+const IHierBasisFunction1D* HierBasisFunction1D_ExtraplolateBC_Factory::get(const HierLevelIndex& li)
 {
    static std::map<HierLevelIndex, std::unique_ptr<HierBasisFunction1D_ExtraplolateBC>> s_basisFuncions;
    if (!s_basisFuncions.contains(li))

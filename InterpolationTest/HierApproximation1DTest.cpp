@@ -1,6 +1,5 @@
 #include <gtest/gtest.h>
 
-#include "Interpolation/HierApproximation1D.h"
 #include "Interpolation/HierApproximation.h"
 #include "Interpolation/HierBasisFunction1D_HomogenousBC.h"
 #include "Utilities/MyException.h"
@@ -23,14 +22,6 @@ inline constexpr double Epsilon = 1.0e-10;
 
 namespace
 {
-   void TestCollocationPoints(const ISingleVariableRealValuedFunction& expect, const HierApproximation1D& approximation)
-   {
-      for (const auto& point : approximation.getCollocationPoints())
-      {
-         const double x = Utilities::Single(point);
-         ASSERT_NEAR(approximation(x), expect.Evaluate(x), Epsilon);
-      }
-   }
    void TestCollocationPoints(const ISingleVariableRealValuedFunction& expect, const HierApproximation& approximation)
    {
       for (const auto& point : approximation.getCollocationPoints())
@@ -40,19 +31,6 @@ namespace
       }
    }
 
-
-   void CollocationPointsToFile(std::string functionName, const HierApproximation1D& approx)
-   {
-      std::ofstream ofs(Plotting::GetFile(functionName));
-      ofs << "x" << " , " << "y" << "\n";
-      for (const auto& xvec : approx.getCollocationPoints())
-      {
-         const double x = xvec.front();
-         const double eval = approx.Evaluate(x);
-         ofs << x << " , " << eval << "\n";
-      }
-      ofs.close();
-   }
    void CollocationPointsToFile(std::string functionName, const HierApproximation& approx)
    {
       std::ofstream ofs(Plotting::GetFile(functionName));
@@ -69,7 +47,7 @@ namespace
 
 TEST(HierApproximation1DTest, Basis_1_1)
 {
-   const HierBasisFunction1D_HomogenousBC_Factory factory1D;
+   HierBasisFunction1D_HomogenousBC_Factory factory1D;
    HierBasisFunction_Factory factory(size_t{ 1 }, &factory1D);
    NodeRefinePredicateFactoryByLevel predicate(0);
    const HierBasisFunction1D_HomogenousBC functionToApproximate(HierLevelIndex(1, 1));
@@ -83,7 +61,7 @@ TEST(HierApproximation1DTest, Basis_1_1)
 
 TEST(HierApproximation1DTest, CubicPolynomialHomogeneousBC_level2)
 {
-   const HierBasisFunction1D_HomogenousBC_Factory factory1D;
+   HierBasisFunction1D_HomogenousBC_Factory factory1D;
    HierBasisFunction_Factory factory(size_t{ 1 }, &factory1D);
    NodeRefinePredicateFactoryByLevel predicate(1);
    auto functionToApproximate = SingleVariableRealValuedFunction([](double x) {return x * x * (1 - x); });
@@ -96,7 +74,7 @@ TEST(HierApproximation1DTest, CubicPolynomialHomogeneousBC_level2)
 
 TEST(HierApproximation1DTest, CubicPolynomialHomogeneousBC_level5)
 {
-   const HierBasisFunction1D_HomogenousBC_Factory factory1D;
+   HierBasisFunction1D_HomogenousBC_Factory factory1D;
    HierBasisFunction_Factory factory(size_t{ 1 }, &factory1D);
    NodeRefinePredicateFactoryByLevel predicate(4);
    auto functionToApproximate = SingleVariableRealValuedFunction([](double x) {return x * x * (1 - x); });
@@ -113,7 +91,7 @@ TEST(HierApproximation1DTest, Basis_Extended)
    functionToApproximate.Add(2.0, SingleVariableMonomial(0));
    functionToApproximate.Add(3.0, SingleVariableMonomial(1));
 
-   const HierBasisFunction1D_ExtendedLevelOneBC_Factory factory1D;
+   HierBasisFunction1D_ExtendedLevelOneBC_Factory factory1D;
    HierBasisFunction_Factory factory(size_t{ 1 }, &factory1D);
    NodeRefinePredicateFactoryByLevel predicate(0);
 
@@ -129,7 +107,7 @@ TEST(HierApproximation1DTest, Square)
    std::vector<double> maxSurplus;
    for (int n = 1; n < maxLevel; ++n)
    {
-      const HierBasisFunction1D_ExtendedLevelOneBC_Factory factory1D;
+      HierBasisFunction1D_ExtendedLevelOneBC_Factory factory1D;
       HierBasisFunction_Factory factory(size_t{ 1 }, &factory1D);
       NodeRefinePredicateFactoryByLevel predicate(n);
 
@@ -151,7 +129,7 @@ TEST(HierApproximation1DTest, Basis_Extrapolate)
    functionToApproximate.Add(2.0, SingleVariableMonomial(0));
    functionToApproximate.Add(3.0, SingleVariableMonomial(1));
 
-   const HierBasisFunction1D_ExtraplolateBC_Factory factory1D;
+   HierBasisFunction1D_ExtraplolateBC_Factory factory1D;
    HierBasisFunction_Factory factory(size_t{ 1 }, &factory1D);
    NodeRefinePredicateFactoryByLevel predicate(0);
 
@@ -165,7 +143,7 @@ TEST(HierApproximation1DTest, Square_Extrapolate)
 {
    const SingleVariableMonomial functionToApproximate(2);
 
-   const HierBasisFunction1D_ExtraplolateBC_Factory factory1D;
+   HierBasisFunction1D_ExtraplolateBC_Factory factory1D;
    HierBasisFunction_Factory factory(size_t{ 1 }, &factory1D);
    NodeRefinePredicateFactoryByLevel predicate(3);
 
@@ -183,7 +161,7 @@ TEST(HierApproximation1DTest, Square_ExtrapolateSurplus)
    std::vector<double> maxSurplus;
    for (int n = 1; n < maxLevel; ++n)
    {
-      const HierBasisFunction1D_ExtraplolateBC_Factory factory1D;
+      HierBasisFunction1D_ExtraplolateBC_Factory factory1D;
       HierBasisFunction_Factory factory(size_t{ 1 }, &factory1D);
       NodeRefinePredicateFactoryByLevel predicate(n);
 
@@ -205,9 +183,9 @@ TEST(HierApproximation1DTest, Runge_Extrapolate_Adaptive)
    auto runge = [&fiePtr](const double x) {return fiePtr->Evaluate(2 * x - 1); };
    const SingleVariableRealValuedFunction functionToApproximate(runge);
 
-   const HierBasisFunction1D_ExtraplolateBC_Factory factory1D;
+   HierBasisFunction1D_ExtraplolateBC_Factory factory1D;
    HierBasisFunction_Factory factory(size_t{ 1 }, &factory1D);
-   NodeRefinePredicateFactoryByLevelOrSurplus predicate(2, 1.0e-3);
+   NodeRefinePredicateFactoryByLevelOrSurplus predicate(1, 1.0e-3);
    //auto predicate = [](const HierRefinementInfo& hri) {return hri.MultiLevelIndex.get().front().getLevel() < 2 || (hri.Surplus > 1.0e-3); };
 
    const auto approximation = HierApproximation::Create(functionToApproximate, factory, predicate);
@@ -226,7 +204,7 @@ TEST(HierApproximation1DTest, Hat_Adaptive)
    auto hat = [&fiePtr](const double x) {return fiePtr->Evaluate(x); };
    const SingleVariableRealValuedFunction functionToApproximate(hat);
 
-   const HierBasisFunction1D_HomogenousBC_Factory factory1D;
+   HierBasisFunction1D_HomogenousBC_Factory factory1D;
    HierBasisFunction_Factory factory(size_t{ 1 }, &factory1D);
    NodeRefinePredicateFactoryByLevelOrSurplus predicate(3, 1.0e-5);
    //auto predicate = [](const HierRefinementInfo& hri) {return hri.MultiLevelIndex.get().front().getLevel() < 4 || (hri.Surplus > 1.0e-5); };

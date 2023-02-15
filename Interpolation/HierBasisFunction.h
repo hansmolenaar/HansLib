@@ -3,6 +3,8 @@
 #include "IHierBasisFunction.h"
 #include "IHierBasisFunction1D.h"
 
+#include <map>
+
 class HierBasisFunction : public IHierBasisFunction
 {
 public:
@@ -22,12 +24,13 @@ private:
 class  HierBasisFunction_Factory : public IHierBasisFunction_Factory
 {
 public:
-   HierBasisFunction_Factory(size_t, const IHierBasisFunction1D_Factory*);
+   HierBasisFunction_Factory(size_t, IHierBasisFunction1D_Factory*);
    size_t getDimension() const override;
    std::vector<HierMultiIndex> getLowestLevel() const override;
    bool canBeRefined(const HierMultiIndex&) const override;
-   const IHierBasisFunction* get(const HierMultiIndex&) const override;
+   const IHierBasisFunction* get(const HierMultiIndex&) override;
 private:
    size_t m_dimension;
-   const IHierBasisFunction1D_Factory* m_factory1D;
+   IHierBasisFunction1D_Factory* m_factory1D;
+   std::map<HierMultiIndex, std::unique_ptr<IHierBasisFunction>> m_basisFunctions;
 };

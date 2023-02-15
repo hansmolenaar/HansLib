@@ -12,7 +12,7 @@ inline constexpr double Epsilon = 1.0e-10;
 
 TEST(HierBasisFunction1D_ExtendedLevelOneBCTest, Basis_0_0)
 {
-   const HierBasisFunction1D_ExtendedLevelOneBC_Factory factory;
+   HierBasisFunction1D_ExtendedLevelOneBC_Factory factory;
    const auto lowestLevel = factory.getLowestLevel();
    ASSERT_EQ(lowestLevel.size(), 3);
    ASSERT_EQ(lowestLevel.front(), HierLevelIndex(0, 0));
@@ -33,7 +33,7 @@ TEST(HierBasisFunction1D_ExtendedLevelOneBCTest, Basis_0_0)
 
 TEST(HierBasisFunction1D_ExtendedLevelOneBCTest, Basis_0_1)
 {
-   const HierBasisFunction1D_ExtendedLevelOneBC_Factory factory;
+   HierBasisFunction1D_ExtendedLevelOneBC_Factory factory;
    const auto lowestLevel = factory.getLowestLevel();
    ASSERT_EQ(lowestLevel.at(1), HierLevelIndex(0, 1));
    ASSERT_FALSE(factory.canBeRefined(lowestLevel.at(1)));
@@ -53,7 +53,7 @@ TEST(HierBasisFunction1D_ExtendedLevelOneBCTest, Basis_0_1)
 
 TEST(HierBasisFunction1D_ExtendedLevelOneBCTest, Basis_1_1)
 {
-   const HierBasisFunction1D_ExtendedLevelOneBC_Factory factory;
+   HierBasisFunction1D_ExtendedLevelOneBC_Factory factory;
    const auto lowestLevel = factory.getLowestLevel();
    ASSERT_EQ(lowestLevel.at(2), HierLevelIndex(1, 1));
    ASSERT_TRUE(factory.canBeRefined(lowestLevel.at(2)));

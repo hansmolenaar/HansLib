@@ -44,8 +44,8 @@ TEST(HierBasisFunctionTest, BasisFie2_1_3)
 
 TEST(HierBasisFunctionTest, Factory)
 {
-   const HierBasisFunction1D_ExtendedLevelOneBC_Factory factory1D;
-   const HierBasisFunction_Factory factory(2, &factory1D);
+   HierBasisFunction1D_ExtendedLevelOneBC_Factory factory1D;
+   HierBasisFunction_Factory factory(2, &factory1D);
    ASSERT_EQ(factory.getDimension(), 2);
    const auto lowest = factory.getLowestLevel();
    ASSERT_EQ(lowest.size(), 9);
@@ -59,9 +59,9 @@ TEST(HierBasisFunctionTest, Factory)
 
 TEST(HierBasisFunctionTest, Factory_plot)
 {
-   const HierBasisFunction1D_HomogenousBC_Factory factory1D;
-   const HierBasisFunction_Factory factory(2, &factory1D);
-   const auto* fiePtr = factory.get(HierMultiIndex(std::vector<HierLevelIndex>{ {2,1}, {2,3} }));
+   HierBasisFunction1D_HomogenousBC_Factory factory1D;
+   HierBasisFunction_Factory factory(2, &factory1D);
+   const auto* fiePtr = factory.get(HierMultiIndex(std::vector<HierLevelIndex>{ {2, 1}, { 2,3 } }));
    ASSERT_NEAR((*fiePtr)(std::array<double, 2>{0.25, 0.75}), 1.0, Epsilon);
    const auto fie = [&fiePtr](const std::vector<double>& x) {return (*fiePtr)(x); };
    Plotting::MdFunctionsOnUnityToFile("Testje", 2, { fie }, 100);

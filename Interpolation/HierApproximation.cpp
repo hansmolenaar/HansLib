@@ -28,7 +28,7 @@ namespace
 
    struct CreateHierNode
    {
-      const IHierBasisFunction_Factory& Factory;
+      IHierBasisFunction_Factory& Factory;
       const IMultiVariableRealValuedFunction& FunctionToApproximate;
       const HierApproximation& Approximation;
 
@@ -90,7 +90,7 @@ namespace
 
 }
 
-HierApproximation::HierApproximation(const IHierBasisFunction_Factory& factory) :
+HierApproximation::HierApproximation(IHierBasisFunction_Factory& factory) :
    m_factory(factory),
    m_indexer(MultiIndex<size_t>::Create(std::vector<size_t>{2, factory.getDimension()}))
 {
@@ -108,7 +108,7 @@ double HierTreeNode::operator()(std::span<const double> x) const
    return result;
 }
 
-std::unique_ptr<HierApproximation> HierApproximation::Create(const IMultiVariableRealValuedFunction& fie, const IHierBasisFunction_Factory& factory, INodeRefinePredicateFactory& refinementFactory)
+std::unique_ptr<HierApproximation> HierApproximation::Create(const IMultiVariableRealValuedFunction& fie, IHierBasisFunction_Factory& factory, INodeRefinePredicateFactory& refinementFactory)
 {
    Logger logger;
    std::vector<std::string> loglines;

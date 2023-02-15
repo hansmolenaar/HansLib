@@ -14,7 +14,7 @@ inline constexpr double Epsilon = 1.0e-10;
 
 TEST(HierBasisFunction1D_HomogenousBCTest, Basis_1_1)
 {
-   const HierBasisFunction1D_HomogenousBC_Factory factory;
+   HierBasisFunction1D_HomogenousBC_Factory factory;
    const auto lowestLevel = factory.getLowestLevel();
    ASSERT_EQ(lowestLevel.size(), 1);
    ASSERT_EQ(lowestLevel.front(), HierLevelIndex(1, 1));

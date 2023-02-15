@@ -64,7 +64,7 @@ TEST(HierBasisFunctionTest, GetSomePolynomial_1)
    ASSERT_TRUE(areClose(fie->Evaluate(std::vector<double>{ 0.1, 1.0}), 0.0));
    //Plotting::MdFunctionsOnUnityToFile("HierBasisFunctionTest_GetSomePolynomial_", 2, { [&fie](std::vector<double> x) {return (*fie)(x); } }, 20, std::vector<std::string>{"x", "y", "f"});
 
-   const HierBasisFunction1D_HomogenousBC_Factory factory1D;
+   HierBasisFunction1D_HomogenousBC_Factory factory1D;
    HierBasisFunction_Factory factory(size_t{ 2 }, &factory1D);
    NodeRefinePredicateFactoryByLevel refineOnLevel(0);
    auto approximation = HierApproximation::Create(*fie, factory, refineOnLevel);
@@ -78,7 +78,7 @@ TEST(HierBasisFunctionTest, GetSomePolynomial_1)
 TEST(HierBasisFunctionTest, GetSomePolynomial_2)
 {
    const auto fie = GetSomePolynomial();
-   const HierBasisFunction1D_HomogenousBC_Factory factory1D;
+   HierBasisFunction1D_HomogenousBC_Factory factory1D;
    HierBasisFunction_Factory factory(size_t{ 2 }, &factory1D);
    NodeRefinePredicateFactoryByLevel refineOnLevel(1);
    auto approximation = HierApproximation::Create(*fie, factory, refineOnLevel);
@@ -93,7 +93,7 @@ TEST(HierBasisFunctionTest, GetSomePolynomial_2)
 TEST(HierBasisFunctionTest, GetSomePolynomial_3)
 {
    const auto fie = GetSomePolynomial();
-   const HierBasisFunction1D_HomogenousBC_Factory factory1D;
+   HierBasisFunction1D_HomogenousBC_Factory factory1D;
    HierBasisFunction_Factory factory(size_t{ 2 }, &factory1D);
    NodeRefinePredicateFactoryByLevel refineOnLevel(2);
    auto approximation = HierApproximation::Create(*fie, factory, refineOnLevel);
@@ -122,7 +122,7 @@ TEST(HierBasisFunctionTest, Linear)
    const auto linear = MultiVariableFunctionExamples::GetPolynomial(std::vector< std::pair<std::vector<int>, double>>{ {std::vector<int>{1, 0}, 2.0}, { std::vector<int>{0,1}, 3.0 }});
    const double expect = linear->Evaluate(xin);
 
-   const HierBasisFunction1D_ExtendedLevelOneBC_Factory factory1D;
+   HierBasisFunction1D_ExtendedLevelOneBC_Factory factory1D;
    HierBasisFunction_Factory factory(size_t{ 2 }, &factory1D);
    constexpr int maxLevel = 7;
    for (int level = 1; level < maxLevel; ++level)
@@ -142,7 +142,7 @@ TEST(HierBasisFunctionTest, TestConvergence)
    const auto fie = GetSomePolynomial();
    const double expect = fie->Evaluate(xin);
 
-   const HierBasisFunction1D_HomogenousBC_Factory factory1D;
+   HierBasisFunction1D_HomogenousBC_Factory factory1D;
    HierBasisFunction_Factory factory(size_t{ 2 }, &factory1D);
    constexpr int maxLevel = 8;
    std::vector<double> maxSurplus;
@@ -168,7 +168,7 @@ TEST(HierBasisFunctionTest, CamelBack)
    auto scaled = std::make_unique< MultiVariableFunctionEvaluateFrom01>(std::move(flipped), std::vector<Interval<double>>{ Interval<double>(-3, 3), Interval<double>(-2, 2)});
    auto fie = std::make_unique<MultiVariableRealValuedFunctionNoDerivatives>(2, std::move(scaled));
 
-   const HierBasisFunction1D_ExtendedLevelOneBC_Factory factory1D;
+   HierBasisFunction1D_ExtendedLevelOneBC_Factory factory1D;
    HierBasisFunction_Factory factory(size_t{ 2 }, &factory1D);
    constexpr size_t maxLevel = 8;
 
@@ -190,7 +190,7 @@ TEST(HierBasisFunctionTest, SquaredHat)
    str::transform(str::iota_view(size_t{ 0 }, dimension), pos.begin(), [](size_t n) {return 1.0 / std::sqrt(n + 2.0); });
    const auto squaredHat = MultiVariableFunctionExamples::SkewedHatSquared(pos);
 
-   const HierBasisFunction1D_HomogenousBC_Factory factory1D;
+   HierBasisFunction1D_HomogenousBC_Factory factory1D;
    HierBasisFunction_Factory factory(dimension, &factory1D);
    constexpr size_t maxLevel = 3;
 

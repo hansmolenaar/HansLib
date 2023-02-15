@@ -13,7 +13,7 @@ inline constexpr double Epsilon = 1.0e-10;
 
 TEST(HierBasisFunction1D_ExtraplolateBCTest, Basis_1_1)
 {
-   const HierBasisFunction1D_ExtraplolateBC_Factory factory;
+   HierBasisFunction1D_ExtraplolateBC_Factory factory;
    const auto lowestLevel = factory.getLowestLevel();
    const auto li_1_1 = Utilities::Single(lowestLevel);
    ASSERT_EQ(li_1_1, HierLevelIndex(1, 1));
@@ -37,7 +37,7 @@ TEST(HierBasisFunction1D_ExtraplolateBCTest, Basis_1_1)
 
 TEST(HierBasisFunction1D_ExtraplolateBCTest, Basis_2_1)
 {
-   const HierBasisFunction1D_ExtraplolateBC_Factory factory;
+   HierBasisFunction1D_ExtraplolateBC_Factory factory;
    const HierBasisFunction1D_ExtraplolateBC fie({ 2,1 });
    ASSERT_TRUE(factory.canBeRefined({ 2,1 }));
 
@@ -59,7 +59,7 @@ TEST(HierBasisFunction1D_ExtraplolateBCTest, Basis_2_1)
 
 TEST(HierBasisFunction1D_ExtraplolateBCTest, Basis_2_3)
 {
-   const HierBasisFunction1D_ExtraplolateBC_Factory factory;
+   HierBasisFunction1D_ExtraplolateBC_Factory factory;
    const HierBasisFunction1D_ExtraplolateBC fie({ 2,3 });
    ASSERT_TRUE(factory.canBeRefined({ 2,3 }));
 
@@ -81,7 +81,7 @@ TEST(HierBasisFunction1D_ExtraplolateBCTest, Basis_2_3)
 
 TEST(HierBasisFunction1D_ExtraplolateBCTest, Basis_3_1)
 {
-   const HierBasisFunction1D_ExtraplolateBC_Factory factory;
+   HierBasisFunction1D_ExtraplolateBC_Factory factory;
    const HierBasisFunction1D_ExtraplolateBC fie({ 3,1 });
    ASSERT_TRUE(factory.canBeRefined({ 3,1 }));
 
@@ -103,7 +103,7 @@ TEST(HierBasisFunction1D_ExtraplolateBCTest, Basis_3_1)
 
 TEST(HierBasisFunction1D_ExtraplolateBCTest, Basis_3_3)
 {
-   const HierBasisFunction1D_ExtraplolateBC_Factory factory;
+   HierBasisFunction1D_ExtraplolateBC_Factory factory;
    const HierBasisFunction1D_ExtraplolateBC fie({ 3,3 });
    ASSERT_TRUE(factory.canBeRefined({ 3,3 }));
 
@@ -126,7 +126,7 @@ TEST(HierBasisFunction1D_ExtraplolateBCTest, Basis_3_3)
 
 TEST(HierBasisFunction1D_ExtraplolateBCTest, Basis_3_7)
 {
-   const HierBasisFunction1D_ExtraplolateBC_Factory factory;
+   HierBasisFunction1D_ExtraplolateBC_Factory factory;
    const HierBasisFunction1D_ExtraplolateBC fie({ 3,7 });
    ASSERT_TRUE(factory.canBeRefined({ 3,7 }));
 

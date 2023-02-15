@@ -20,7 +20,7 @@ private:
 class HierBasisFunction1D_HomogenousBC_Factory : public IHierBasisFunction1D_Factory
 {
 public:
-   const IHierBasisFunction1D* get(const HierLevelIndex& li) const override;
+   const IHierBasisFunction1D* get(const HierLevelIndex& li) override;
    inline std::vector<HierLevelIndex> getLowestLevel() const override { return std::vector<HierLevelIndex>{HierLevelIndex(1, 1)}; }
    inline bool canBeRefined(const HierLevelIndex&) const { return true; }
 private:

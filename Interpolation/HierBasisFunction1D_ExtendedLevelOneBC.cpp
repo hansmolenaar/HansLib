@@ -43,7 +43,7 @@ bool HierBasisFunction1D_ExtendedLevelOneBC_Factory::canBeRefined(const HierLeve
 }
 
 
-const IHierBasisFunction1D* HierBasisFunction1D_ExtendedLevelOneBC_Factory::get(const HierLevelIndex& li) const
+const IHierBasisFunction1D* HierBasisFunction1D_ExtendedLevelOneBC_Factory::get(const HierLevelIndex& li)
 {
    static std::map<HierLevelIndex, std::unique_ptr<HierBasisFunction1D_ExtendedLevelOneBC>> s_basisFuncions;
    if (!s_basisFuncions.contains(li))
