@@ -38,6 +38,7 @@
     <ClInclude Include="NodalBasis1D.h" />
     <ClInclude Include="NodeRefinePredicateAlways.h" />
     <ClInclude Include="NodeRefinePredicateFactoryByLevel.h" />
+    <ClInclude Include="NodeRefinePredicateFactoryByLevelOrSurplus.h" />
     <ClInclude Include="NodeRefinePredicateNever.h" />
   </ItemGroup>
   <ItemGroup>
@@ -55,6 +56,7 @@
     <ClCompile Include="LagrangeInterpolation.cpp" />
     <ClCompile Include="NodalBasis1D.cpp" />
     <ClCompile Include="NodeRefinePredicateFactoryByLevel.cpp" />
+    <ClCompile Include="NodeRefinePredicateFactoryByLevelOrSurplus.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Functions\Functions.vcxproj">

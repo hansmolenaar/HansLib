@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "Interpolation/HierApproximation1D.h"
+#include "Interpolation/HierApproximation.h"
 #include "Interpolation/HierBasisFunction1D_HomogenousBC.h"
 #include "Utilities/MyException.h"
 #include "Functions/SingleVariableRealValuedFunction.h"
@@ -10,6 +11,9 @@
 #include "Interpolation/HierBasisFunction1D_ExtendedLevelOneBC.h"
 #include "Interpolation/HierBasisFunction1D_ExtraplolateBC.h"
 #include "Functions/SingleVariableFunctionExamples.h"
+#include "Interpolation/NodeRefinePredicateFactoryByLevel.h"
+#include "Interpolation/HierBasisFunction.h"
+#include "Interpolation/NodeRefinePredicateFactoryByLevelOrSurplus.h"
 #include "Utilities/Plotting.h"
 
 #include <filesystem>
@@ -27,6 +31,14 @@ namespace
          ASSERT_NEAR(approximation(x), expect.Evaluate(x), Epsilon);
       }
    }
+   void TestCollocationPoints(const ISingleVariableRealValuedFunction& expect, const HierApproximation& approximation)
+   {
+      for (const auto& point : approximation.getCollocationPoints())
+      {
+         const double x = Utilities::Single(point);
+         ASSERT_NEAR(approximation(std::vector<double>{x}), expect.Evaluate(x), Epsilon);
+      }
+   }
 
 
    void CollocationPointsToFile(std::string functionName, const HierApproximation1D& approx)
@@ -41,27 +53,41 @@ namespace
       }
       ofs.close();
    }
+   void CollocationPointsToFile(std::string functionName, const HierApproximation& approx)
+   {
+      std::ofstream ofs(Plotting::GetFile(functionName));
+      ofs << "x" << " , " << "y" << "\n";
+      for (const auto& xvec : approx.getCollocationPoints())
+      {
+         const double x = xvec.front();
+         const double eval = approx(std::vector<double>{x});
+         ofs << x << " , " << eval << "\n";
+      }
+      ofs.close();
+   }
 };
 
 TEST(HierApproximation1DTest, Basis_1_1)
 {
-   const HierBasisFunction1D_HomogenousBC_Factory factory;
-   auto predicate = [](const HierRefinementInfo&) {return false; };
+   const HierBasisFunction1D_HomogenousBC_Factory factory1D;
+   HierBasisFunction_Factory factory(size_t{ 1 }, &factory1D);
+   NodeRefinePredicateFactoryByLevel predicate(0);
    const HierBasisFunction1D_HomogenousBC functionToApproximate(HierLevelIndex(1, 1));
-   const auto approximation = HierApproximation1D::Create(functionToApproximate, factory, predicate);
+   const auto approximation = HierApproximation::Create(functionToApproximate, factory, predicate);
    ASSERT_EQ(approximation->getCollocationPoints().size(), 1);
-   ASSERT_NEAR((*approximation)(0.25), 0.5, Epsilon);
-   ASSERT_NEAR((*approximation)(0.5), 1.0, Epsilon);
-   ASSERT_NEAR((*approximation)(0.75), 0.5, Epsilon);
+   ASSERT_NEAR((*approximation)(std::vector<double>{0.25}), 0.5, Epsilon);
+   ASSERT_NEAR((*approximation)(std::vector<double>{0.5}), 1.0, Epsilon);
+   ASSERT_NEAR((*approximation)(std::vector<double>{0.75}), 0.5, Epsilon);
 }
 
 
 TEST(HierApproximation1DTest, CubicPolynomialHomogeneousBC_level2)
 {
-   const HierBasisFunction1D_HomogenousBC_Factory factory;
-   auto predicate = [](const HierRefinementInfo& hri) {return hri.MultiLevelIndex.get().front().getLevel() < 2; };
+   const HierBasisFunction1D_HomogenousBC_Factory factory1D;
+   HierBasisFunction_Factory factory(size_t{ 1 }, &factory1D);
+   NodeRefinePredicateFactoryByLevel predicate(1);
    auto functionToApproximate = SingleVariableRealValuedFunction([](double x) {return x * x * (1 - x); });
-   const auto approximation = HierApproximation1D::Create(functionToApproximate, factory, predicate);
+   const auto approximation = HierApproximation::Create(functionToApproximate, factory, predicate);
    ASSERT_EQ(approximation->getCollocationPoints().size(), 3);
    TestCollocationPoints(functionToApproximate, *approximation);
 
@@ -70,15 +96,13 @@ TEST(HierApproximation1DTest, CubicPolynomialHomogeneousBC_level2)
 
 TEST(HierApproximation1DTest, CubicPolynomialHomogeneousBC_level5)
 {
-   const HierBasisFunction1D_HomogenousBC_Factory factory;
-   auto predicate = [](const HierRefinementInfo& hri) {return hri.MultiLevelIndex.get().front().getLevel() < 5; };
+   const HierBasisFunction1D_HomogenousBC_Factory factory1D;
+   HierBasisFunction_Factory factory(size_t{ 1 }, &factory1D);
+   NodeRefinePredicateFactoryByLevel predicate(4);
    auto functionToApproximate = SingleVariableRealValuedFunction([](double x) {return x * x * (1 - x); });
-   const auto approximation = HierApproximation1D::Create(functionToApproximate, factory, predicate);
+   const auto approximation = HierApproximation::Create(functionToApproximate, factory, predicate);
    ASSERT_EQ(approximation->getCollocationPoints().size(), 31);
    TestCollocationPoints(functionToApproximate, *approximation);
-
-   const ISingleVariableRealValuedFunction& tmp1 = functionToApproximate;
-   const ISingleVariableRealValuedFunction& tmp2 = *approximation;
 
    //ISingleVariableRealValuedFunctionUtils::ToFile(functionToApproximate, *approximation, 0.0, 1.0, 1000, "CubicPolynomialHomogeneousBC_level5");
 }
@@ -89,10 +113,11 @@ TEST(HierApproximation1DTest, Basis_Extended)
    functionToApproximate.Add(2.0, SingleVariableMonomial(0));
    functionToApproximate.Add(3.0, SingleVariableMonomial(1));
 
-   const HierBasisFunction1D_ExtendedLevelOneBC_Factory factory;
-   auto predicate = [](const HierRefinementInfo& hri) {return false; };
+   const HierBasisFunction1D_ExtendedLevelOneBC_Factory factory1D;
+   HierBasisFunction_Factory factory(size_t{ 1 }, &factory1D);
+   NodeRefinePredicateFactoryByLevel predicate(0);
 
-   const auto approximation = HierApproximation1D::Create(functionToApproximate, factory, predicate);
+   const auto approximation = HierApproximation::Create(functionToApproximate, factory, predicate);
    ASSERT_EQ(approximation->getCollocationPoints().size(), 3);
    TestCollocationPoints(functionToApproximate, *approximation);
 }
@@ -102,12 +127,13 @@ TEST(HierApproximation1DTest, Square)
    const SingleVariableMonomial square(2);
    constexpr size_t maxLevel = 8;
    std::vector<double> maxSurplus;
-   for (size_t n = 1; n < maxLevel; ++n)
+   for (int n = 1; n < maxLevel; ++n)
    {
-      const HierBasisFunction1D_ExtendedLevelOneBC_Factory factory;
-      auto predicate = [n](const HierRefinementInfo& hri) {return hri.MultiLevelIndex.get().front().getLevel() < n; };
+      const HierBasisFunction1D_ExtendedLevelOneBC_Factory factory1D;
+      HierBasisFunction_Factory factory(size_t{ 1 }, &factory1D);
+      NodeRefinePredicateFactoryByLevel predicate(n);
 
-      const auto approximation = HierApproximation1D::Create(square, factory, predicate);
+      const auto approximation = HierApproximation::Create(square, factory, predicate);
       TestCollocationPoints(square, *approximation);
       maxSurplus.push_back(approximation->getMaxSurplus());
    }
@@ -125,10 +151,11 @@ TEST(HierApproximation1DTest, Basis_Extrapolate)
    functionToApproximate.Add(2.0, SingleVariableMonomial(0));
    functionToApproximate.Add(3.0, SingleVariableMonomial(1));
 
-   const HierBasisFunction1D_ExtraplolateBC_Factory factory;
-   auto predicate = [](const HierRefinementInfo& hri) {return false; };
+   const HierBasisFunction1D_ExtraplolateBC_Factory factory1D;
+   HierBasisFunction_Factory factory(size_t{ 1 }, &factory1D);
+   NodeRefinePredicateFactoryByLevel predicate(0);
 
-   const auto approximation = HierApproximation1D::Create(functionToApproximate, factory, predicate);
+   const auto approximation = HierApproximation::Create(functionToApproximate, factory, predicate);
    ASSERT_EQ(approximation->getCollocationPoints().size(), 1);
    TestCollocationPoints(functionToApproximate, *approximation);
 }
@@ -138,10 +165,11 @@ TEST(HierApproximation1DTest, Square_Extrapolate)
 {
    const SingleVariableMonomial functionToApproximate(2);
 
-   const HierBasisFunction1D_ExtraplolateBC_Factory factory;
-   auto predicate = [](const HierRefinementInfo& hri) {return hri.MultiLevelIndex.get().front().getLevel() < 3; };
+   const HierBasisFunction1D_ExtraplolateBC_Factory factory1D;
+   HierBasisFunction_Factory factory(size_t{ 1 }, &factory1D);
+   NodeRefinePredicateFactoryByLevel predicate(3);
 
-   const auto approximation = HierApproximation1D::Create(functionToApproximate, factory, predicate);
+   const auto approximation = HierApproximation::Create(functionToApproximate, factory, predicate);
    TestCollocationPoints(functionToApproximate, *approximation);
    //ISingleVariableRealValuedFunctionUtils::ToFile(functionToApproximate, *approximation, 0.0, 1.0, 1000, "Square_Extrapolate");
 }
@@ -153,12 +181,13 @@ TEST(HierApproximation1DTest, Square_ExtrapolateSurplus)
    const SingleVariableMonomial square(2);
    constexpr size_t maxLevel = 8;
    std::vector<double> maxSurplus;
-   for (size_t n = 1; n < maxLevel; ++n)
+   for (int n = 1; n < maxLevel; ++n)
    {
-      const HierBasisFunction1D_ExtraplolateBC_Factory factory;
-      auto predicate = [n](const HierRefinementInfo& hri) {return hri.MultiLevelIndex.get().front().getLevel() < n; };
+      const HierBasisFunction1D_ExtraplolateBC_Factory factory1D;
+      HierBasisFunction_Factory factory(size_t{ 1 }, &factory1D);
+      NodeRefinePredicateFactoryByLevel predicate(n);
 
-      const auto approximation = HierApproximation1D::Create(square, factory, predicate);
+      const auto approximation = HierApproximation::Create(square, factory, predicate);
       TestCollocationPoints(square, *approximation);
       maxSurplus.push_back(approximation->getMaxSurplus());
    }
@@ -176,15 +205,17 @@ TEST(HierApproximation1DTest, Runge_Extrapolate_Adaptive)
    auto runge = [&fiePtr](const double x) {return fiePtr->Evaluate(2 * x - 1); };
    const SingleVariableRealValuedFunction functionToApproximate(runge);
 
-   const HierBasisFunction1D_ExtraplolateBC_Factory factory;
-   auto predicate = [](const HierRefinementInfo& hri) {return hri.MultiLevelIndex.get().front().getLevel() < 2 || (hri.Surplus > 1.0e-3); };
+   const HierBasisFunction1D_ExtraplolateBC_Factory factory1D;
+   HierBasisFunction_Factory factory(size_t{ 1 }, &factory1D);
+   NodeRefinePredicateFactoryByLevelOrSurplus predicate(2, 1.0e-3);
+   //auto predicate = [](const HierRefinementInfo& hri) {return hri.MultiLevelIndex.get().front().getLevel() < 2 || (hri.Surplus > 1.0e-3); };
 
-   const auto approximation = HierApproximation1D::Create(functionToApproximate, factory, predicate);
+   const auto approximation = HierApproximation::Create(functionToApproximate, factory, predicate);
    const auto points = approximation->getCollocationPoints();
    ASSERT_EQ(points.size(), 135);
    TestCollocationPoints(functionToApproximate, *approximation);
-   CollocationPointsToFile("Runge_Extrapolate_Adaptive_Points", *approximation);
-   ISingleVariableRealValuedFunctionUtils::ToFile(functionToApproximate, *approximation, 0.0, 1.0, 1000, "Runge_Extrapolate_Adaptive");
+   //CollocationPointsToFile("Runge_Extrapolate_Adaptive_Points", *approximation);
+   //ISingleVariableRealValuedFunctionUtils::ToFile(functionToApproximate, *approximation, 0.0, 1.0, 1000, "Runge_Extrapolate_Adaptive");
 }
 
 
@@ -195,13 +226,15 @@ TEST(HierApproximation1DTest, Hat_Adaptive)
    auto hat = [&fiePtr](const double x) {return fiePtr->Evaluate(x); };
    const SingleVariableRealValuedFunction functionToApproximate(hat);
 
-   const HierBasisFunction1D_HomogenousBC_Factory factory;
-   auto predicate = [](const HierRefinementInfo& hri) {return hri.MultiLevelIndex.get().front().getLevel() < 4 && (hri.Surplus > 1.0e-3); };
+   const HierBasisFunction1D_HomogenousBC_Factory factory1D;
+   HierBasisFunction_Factory factory(size_t{ 1 }, &factory1D);
+   NodeRefinePredicateFactoryByLevelOrSurplus predicate(3, 1.0e-5);
+   //auto predicate = [](const HierRefinementInfo& hri) {return hri.MultiLevelIndex.get().front().getLevel() < 4 || (hri.Surplus > 1.0e-5); };
 
-   const auto approximation = HierApproximation1D::Create(functionToApproximate, factory, predicate);
+   const auto approximation = HierApproximation::Create(functionToApproximate, factory, predicate);
    const auto points = approximation->getCollocationPoints();
-   //ASSERT_EQ(points.size(), 135);
+   ASSERT_EQ(points.size(), 41);
    TestCollocationPoints(functionToApproximate, *approximation);
    CollocationPointsToFile("HierApproximation1DTest_Hat_Adaptive_Points", *approximation);
-   ISingleVariableRealValuedFunctionUtils::ToFile(functionToApproximate, *approximation, 0.0, 1.0, 1000, "HierApproximation1DTest_Hat_Adaptive");
+   //ISingleVariableRealValuedFunctionUtils::ToFile(functionToApproximate, *approximation, 0.0, 1.0, 1000, "HierApproximation1DTest_Hat_Adaptive");
 }
