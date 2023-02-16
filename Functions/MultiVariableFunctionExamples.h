@@ -33,4 +33,6 @@ namespace MultiVariableFunctionExamples
    std::vector<Interval<double>> TridBounds(int dim);
 
    Examplefunction SkewedHatSquared(const std::vector<double>& pos);
+   Examplefunction DiscontinuousHatProduct(const std::vector<double>& xpeak, const std::vector<double>& ypeakLeft, const std::vector<double>& ypeakRight);
+
 }

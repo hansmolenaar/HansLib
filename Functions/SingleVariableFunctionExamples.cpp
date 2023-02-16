@@ -30,3 +30,14 @@ std::unique_ptr<ISingleVariableRealValuedFunction> SingleVariableFunctionExample
       return 1.0;
       });
 }
+
+std::unique_ptr<ISingleVariableRealValuedFunction> SingleVariableFunctionExamples::GetDiscontinuousHatFunction(double xPeak, double yPeakLeft, double yPeakRight)
+{
+   BoundsCheck<double>::Create(0.0, 1.0).check(xPeak);
+   return std::make_unique<SingleVariableRealValuedFunction>([xPeak, yPeakLeft, yPeakRight](double x) {
+      if (x < 0) return 0.0;
+      if (x > 1) return 0.0;
+      if (x < xPeak) return yPeakLeft * x / xPeak;
+      return (1 - x) / (1 - xPeak) * yPeakRight;
+      });
+}
