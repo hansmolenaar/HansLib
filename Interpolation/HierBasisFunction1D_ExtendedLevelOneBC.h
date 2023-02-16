@@ -3,6 +3,8 @@
 #include "IHierBasisFunction1D.h"
 #include "HierLevelIndex.h"
 
+#include <map>
+
 class HierBasisFunction1D_ExtendedLevelOneBC : public IHierBasisFunction1D
 {
 public:
@@ -23,4 +25,5 @@ public:
    bool canBeRefined(const HierLevelIndex&) const override;
 private:
    std::unique_ptr<HierBasisFunction1D_ExtendedLevelOneBC> create(const HierLevelIndex& li) const;
+   std::map<HierLevelIndex, std::unique_ptr<HierBasisFunction1D_ExtendedLevelOneBC>> m_basisFunctions;
 };

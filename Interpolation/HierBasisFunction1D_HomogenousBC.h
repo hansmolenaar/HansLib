@@ -3,6 +3,8 @@
 #include "IHierBasisFunction1D.h"
 #include "HierLevelIndex.h"
 
+#include <map>
+
 class HierBasisFunction1D_HomogenousBC : public IHierBasisFunction1D
 {
 public:
@@ -24,5 +26,6 @@ public:
    inline std::vector<HierLevelIndex> getLowestLevel() const override { return std::vector<HierLevelIndex>{HierLevelIndex(1, 1)}; }
    inline bool canBeRefined(const HierLevelIndex&) const { return true; }
 private:
-   inline std::unique_ptr<HierBasisFunction1D_HomogenousBC> create(const HierLevelIndex& li) const { return std::make_unique<HierBasisFunction1D_HomogenousBC>(li); }
+   std::unique_ptr<HierBasisFunction1D_HomogenousBC> create(const HierLevelIndex& li) const;
+   std::map<HierLevelIndex, std::unique_ptr<HierBasisFunction1D_HomogenousBC>> m_basisFunctions;
 };

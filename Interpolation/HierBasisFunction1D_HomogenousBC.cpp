@@ -3,19 +3,15 @@
 #include "Utilities/Assert.h"
 #include "Utilities/Pow2.h"
 
-#include <map>
-#include <memory>
-
 // Factory
 
 const IHierBasisFunction1D* HierBasisFunction1D_HomogenousBC_Factory::get(const HierLevelIndex& li)
 {
-   static std::map<HierLevelIndex, std::unique_ptr<IHierBasisFunction1D>> s_basisFuncions;
-   if (!s_basisFuncions.contains(li))
+   if (!m_basisFunctions.contains(li))
    {
-      s_basisFuncions.emplace(li, create(li));
+      m_basisFunctions.emplace(li, create(li));
    }
-   return s_basisFuncions.at(li).get();
+   return m_basisFunctions.at(li).get();
 }
 
 // Function
@@ -52,3 +48,8 @@ Interval<double> HierBasisFunction1D_HomogenousBC::GetSupport(const HierLevelInd
    const double invpow2 = 1.0 / Pow2()(levelIndex.getLevel());
    return Interval<double>(invpow2 * (levelIndex.getIndex() - 1), invpow2 * (levelIndex.getIndex() + 1));
 }
+
+ std::unique_ptr<HierBasisFunction1D_HomogenousBC> HierBasisFunction1D_HomogenousBC_Factory::create(const HierLevelIndex& li) const
+ { 
+    return std::make_unique<HierBasisFunction1D_HomogenousBC>(li); 
+ }

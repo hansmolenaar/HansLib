@@ -3,9 +3,6 @@
 #include "Utilities/Pow2.h"
 #include "HierBasisFunction1D_HomogenousBC.h"
 
-#include <map>
-#include <memory>
-
 HierBasisFunction1D_ExtendedLevelOneBC::HierBasisFunction1D_ExtendedLevelOneBC(HierLevelIndex hli) : m_levelIndex(hli)
 {
 }
@@ -45,10 +42,9 @@ bool HierBasisFunction1D_ExtendedLevelOneBC_Factory::canBeRefined(const HierLeve
 
 const IHierBasisFunction1D* HierBasisFunction1D_ExtendedLevelOneBC_Factory::get(const HierLevelIndex& li)
 {
-   static std::map<HierLevelIndex, std::unique_ptr<HierBasisFunction1D_ExtendedLevelOneBC>> s_basisFuncions;
-   if (!s_basisFuncions.contains(li))
+   if (!m_basisFunctions.contains(li))
    {
-      s_basisFuncions.emplace(li, create(li));
+      m_basisFunctions.emplace(li, create(li));
    }
-   return s_basisFuncions.at(li).get();
+   return m_basisFunctions.at(li).get();
 }
