@@ -51,6 +51,30 @@ namespace
       }
    }
 
+   void CollocationPointsToFile(std::string functionName, const HierApproximation& approx)
+   {
+      const size_t dim = approx.getFactory().getDimension();
+      std::ofstream ofs(Plotting::GetFile(functionName));
+      for (auto d = 0; d < dim; ++d)
+      {
+         if (d > 0) ofs << " , ";
+         ofs << "x" << std::to_string(d);
+      }
+      ofs << "\n";
+
+      for (const auto& xvec : approx.getCollocationPoints())
+      {
+
+         for (auto d = 0; d < dim; ++d)
+         {
+            if (d > 0) ofs << " , ";
+            ofs << xvec.at(d);
+         }
+         ofs << "\n";
+      }
+      ofs.close();
+   }
+
 }
 
 TEST(HierBasisFunctionTest, GetSomePolynomial_1)
@@ -224,4 +248,24 @@ TEST(HierBasisFunctionTest, CheckSparseGridSize_Thesis_Bungartz)
       const size_t actualExtrapolated = approximation->getAllTreeNodesRO().size();
       ASSERT_EQ(actualExtrapolated, expectExtrapolated.at(dimension));
    }
+}
+
+
+TEST(HierBasisFunctionTest, PlotCollocationPoints)
+{
+   const size_t dimension = 3;
+   const int level = 5;
+
+   std::vector<double> pos(dimension);
+   str::transform(str::iota_view(size_t{ 0 }, dimension), pos.begin(), [](size_t n) {return 1.0 / std::sqrt(n + 2.0); });
+   const auto squaredHat = MultiVariableFunctionExamples::SkewedHatSquared(pos);
+   NodeRefinePredicateFactoryByLevel refineOnLevel(level);
+
+   HierBasisFunction1D_ExtraplolateBC_Factory factory_extrapolated;
+   HierBasisFunction1D_ExtendedLevelOneBC_Factory factory_extended;
+
+   HierBasisFunction_Factory factory(dimension, &factory_extrapolated);
+   const auto approximation = HierApproximation::Create(*squaredHat.Function, factory, refineOnLevel);
+  
+   //CollocationPointsToFile("HierBasisFunctionTest_PlotCollocationPoints", *approximation);
 }
