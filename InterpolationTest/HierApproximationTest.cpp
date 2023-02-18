@@ -8,6 +8,7 @@
 #include "Utilities/Functors.h"
 #include "Interpolation/HierBasisFunction.h"
 #include "Interpolation/HierBasisFunction1D_ExtendedLevelOneBC.h"
+#include "Interpolation/HierBasisFunction1D_ExtraplolateBC.h"
 #include "Functions/MultiVariableFunctionEvaluateFlipped.h"
 #include "Functions/MultiVariableFunctionEvaluateFrom01.h"
 #include "Functions/MultiVariableFunctionExamples.h"
@@ -168,7 +169,7 @@ TEST(HierBasisFunctionTest, CamelBack)
    auto scaled = std::make_unique< MultiVariableFunctionEvaluateFrom01>(std::move(flipped), std::vector<Interval<double>>{ Interval<double>(-3, 3), Interval<double>(-2, 2)});
    auto fie = std::make_unique<MultiVariableRealValuedFunctionNoDerivatives>(2, std::move(scaled));
 
-   HierBasisFunction1D_ExtendedLevelOneBC_Factory factory1D;
+   HierBasisFunction1D_ExtraplolateBC_Factory factory1D;
    HierBasisFunction_Factory factory(size_t{ 2 }, &factory1D);
    constexpr size_t maxLevel = 8;
 
@@ -203,4 +204,24 @@ TEST(HierBasisFunctionTest, SquaredHat)
    ASSERT_EQ(nodes.size(), 2001);
    ASSERT_NEAR(maxValue, 0.72028645911812739, 1.0e-6);
    //Plotting::MdFunctionsOnUnityToFile("HierBasisFunctionTest_SquaredHat", 2, { [&squaredHat](std::vector<double> x) {return (*squaredHat.Function)(x); } }, 64, std::vector<std::string>{"x", "y", "approx"});
+}
+
+TEST(HierBasisFunctionTest, CheckSparseGridSize_Thesis_Bungartz)
+{
+   constexpr int level = 4;
+   NodeRefinePredicateFactoryByLevel refineOnLevel(level);
+   HierBasisFunction1D_ExtraplolateBC_Factory factory_extrapolated;
+
+   const std::vector<size_t> expectExtrapolated{ 0, 31, 129, 351, 769, 1471, 2561 };
+   for (size_t dimension = 1; dimension < 5; ++dimension)
+   {
+      std::vector<double> pos(dimension);
+      str::transform(str::iota_view(size_t{ 0 }, dimension), pos.begin(), [](size_t n) {return 1.0 / std::sqrt(n + 2.0); });
+      const auto squaredHat = MultiVariableFunctionExamples::SkewedHatSquared(pos);
+
+      HierBasisFunction_Factory factoryExtrapolated(dimension, &factory_extrapolated);
+      const auto approximation = HierApproximation::Create(*squaredHat.Function, factoryExtrapolated, refineOnLevel);
+      const size_t actualExtrapolated = approximation->getAllTreeNodesRO().size();
+      ASSERT_EQ(actualExtrapolated, expectExtrapolated.at(dimension));
+   }
 }
