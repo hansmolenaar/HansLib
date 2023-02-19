@@ -3,6 +3,8 @@
 #include "IRealFunction.h"
 #include "IMultiVariableRealValuedFunction.h"
 
+#include <memory>
+#include <span>
 #include <vector>
 #include <functional>
 
