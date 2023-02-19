@@ -21,6 +21,7 @@ public:
 	bool DerivativeAlwaysZero(int eqn, int var) const override;
 	bool HasDerivative() const override;
 
+
 private:
 	const std::vector<std::shared_ptr< IMultiVariableRealValuedFunction> >  m_components;
 };
