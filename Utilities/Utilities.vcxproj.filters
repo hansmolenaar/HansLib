@@ -15,12 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="EigenValueSolverSym2x2.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="EigenValueSolverSym3x3.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="IIndexer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -80,12 +74,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="EigenValueSolverSym2x2.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="EigenValueSolverSym3x3.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="IndexerSymmetric.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

@@ -21,10 +21,9 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{e68fc7e3-1402-4bbe-9d0f-f4bd88acfd45}</ProjectGuid>
-    <RootNamespace>Utilities</RootNamespace>
+    <ProjectGuid>{311c759d-954b-4656-9a3d-c85943a326f7}</ProjectGuid>
+    <RootNamespace>EigenValue</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>Utilities</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -71,18 +70,6 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <LinkIncremental>true</LinkIncremental>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <LinkIncremental>false</LinkIncremental>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <LinkIncremental>true</LinkIncremental>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LinkIncremental>false</LinkIncremental>
-  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -117,10 +104,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\Hans\source\repos\HansLib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <AdditionalIncludeDirectories>../;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpplatest</LanguageStandard>
-      <TreatWarningAsError>true</TreatWarningAsError>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -144,32 +129,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Assert.h" />
-    <ClInclude Include="BinomialCoefficient.h" />
-    <ClInclude Include="BoolContainer.h" />
-    <ClInclude Include="BoundsCheck.h" />
-    <ClInclude Include="Defines.h" />
-    <ClInclude Include="Factorial.h" />
-    <ClInclude Include="Functors.h" />
-    <ClInclude Include="IIndexer.h" />
-    <ClInclude Include="IndexerRowMajor.h" />
-    <ClInclude Include="IndexerSymmetric.h" />
-    <ClInclude Include="Iota.h" />
-    <ClInclude Include="Logger.h" />
-    <ClInclude Include="MathConstants.h" />
-    <ClInclude Include="MultiIndex.h" />
-    <ClInclude Include="MyException.h" />
-    <ClInclude Include="Plotting.h" />
-    <ClInclude Include="Pow2.h" />
-    <ClInclude Include="Single.h" />
-    <ClInclude Include="ToString.h" />
+    <ClInclude Include="..\Utilities\EigenValueSolverSym2x2.h" />
+    <ClInclude Include="..\Utilities\EigenValueSolverSym3x3.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Assert.cpp" />
-    <ClCompile Include="BoolContainer.cpp" />
-    <ClCompile Include="IndexerSymmetric.cpp" />
-    <ClCompile Include="Logger.cpp" />
-    <ClCompile Include="Plotting.cpp" />
+    <ClCompile Include="..\Utilities\EigenValueSolverSym2x2.cpp" />
+    <ClCompile Include="..\Utilities\EigenValueSolverSym3x3.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Utilities\Utilities.vcxproj">
+      <Project>{e68fc7e3-1402-4bbe-9d0f-f4bd88acfd45}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
