@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "Permutaion/PermutationUtils.h" 
+#include "PermutationUtils.h" 
 
 TEST(PermutationUtils, Trivial)
 {

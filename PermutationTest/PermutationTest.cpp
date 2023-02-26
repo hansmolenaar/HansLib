@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
-#include "Permutaion/Permutation.h" 
-#include "Permutaion/PermutationUtils.h"
+#include "Permutation.h" 
+#include "PermutationUtils.h"
 TEST(PermutaionTest, Trivial)
 {
    const Permutation permut = Permutation::CreateTrivial(2);

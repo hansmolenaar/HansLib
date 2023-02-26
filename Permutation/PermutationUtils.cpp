@@ -1,5 +1,5 @@
 #include "PermutationUtils.h"
-#include "/Defines.h"
+#include "Defines.h"
 #include "MyAssert.h"
 
 bool PermutationUtils::IsPermutation(std::span<const int> permut)

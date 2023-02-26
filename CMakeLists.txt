@@ -45,4 +45,7 @@ add_subdirectory(TopologyTest)
 add_subdirectory(Tree)
 add_subdirectory(TreeTest)
 
+add_subdirectory(Permutation)
+add_subdirectory(PermutationTest)
+
 

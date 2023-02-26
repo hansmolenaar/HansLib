@@ -1,7 +1,7 @@
 #pragma once
 
 #include <span>
-#include "Permutaion/Permutation.h"
+#include "Permutation.h"
 
 namespace PermutationUtils
 {
