@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
 
-#include "Groups/SameFiniteGroupPredicate.h"
-#include "Groups/CyclicGroup.h"
-#include "Groups/DihedralGroup.h"
+#include "SameFiniteGroupPredicate.h"
+#include "CyclicGroup.h"
+#include "DihedralGroup.h"
 
 TEST(SameFiniteGroupPredicateTest, Trivial)
 {

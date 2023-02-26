@@ -1,11 +1,11 @@
 #pragma once
 
 #include "Defines.h"
-#include "Groups/IFiniteGroup.h"
+#include "IFiniteGroup.h"
 #include "IPointTransformation.h"
 #include "IGeometryPredicate.h"
 #include "IndexerRowMajor.h"
-#include "Groups/GroupTable.h"
+#include "GroupTable.h"
 #include "SamePointPredicate.h"
 
 namespace GroupFromOrbit

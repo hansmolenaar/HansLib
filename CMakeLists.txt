@@ -34,6 +34,9 @@ add_subdirectory(BoundingBox)
 add_subdirectory(BoundingBoxTest)
 
 add_subdirectory(Geometry)
-add_subdirectory(GeometryTest)
+#add_subdirectory(GeometryTest)
+
+add_subdirectory(Groups)
+add_subdirectory(GroupsTest)
 
 

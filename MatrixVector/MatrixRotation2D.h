@@ -3,7 +3,7 @@
 
 #include "IMatrixRotation.h"
 #include "MatrixDense.h"
-#include "Groups/IFinitePointGroupAction.h"
+#include "IFinitePointGroupAction.h"
 
 #include <map>
 

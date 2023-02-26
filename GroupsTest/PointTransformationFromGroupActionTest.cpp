@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
 
-#include "Groups/PointTransformationFromGroupAction.h"
-#include "Groups/CyclicGroup.h"
-#include "Groups/ActionRotate2D.h"
+#include "PointTransformationFromGroupAction.h"
+#include "CyclicGroup.h"
+#include "ActionRotate2D.h"
 #include "PointClose.h"
 
 TEST(PointTransformationFromGroupActionTest, Trivial)

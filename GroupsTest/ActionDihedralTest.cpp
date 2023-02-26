@@ -1,9 +1,9 @@
 #include <gtest/gtest.h>
 
-#include "Groups/ActionDihedral.h"
+#include "ActionDihedral.h"
 #include "IFinitePointGroupActionTest.h"
-#include "/PointClose.h"
-#include "Groups/IFinitePointGroupActionUtils.h"
+#include "PointClose.h"
+#include "IFinitePointGroupActionUtils.h"
 
 TEST(ActionDihedralTest, Two)
 {

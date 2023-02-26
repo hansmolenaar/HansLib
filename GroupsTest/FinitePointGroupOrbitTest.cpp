@@ -1,10 +1,10 @@
 #include <gtest/gtest.h>
 
-#include "Groups/FinitePointGroupOrbit.h"
-#include "Groups/ActionReflectOrigin.h"
+#include "FinitePointGroupOrbit.h"
+#include "ActionReflectOrigin.h"
 #include "PointClose.h"
-#include "Groups/DihedralGroup.h"
-#include "Groups/ActionDihedral.h"
+#include "DihedralGroup.h"
+#include "ActionDihedral.h"
 
 TEST(FinitePointGroupOrbitTest, Basic1)
 {

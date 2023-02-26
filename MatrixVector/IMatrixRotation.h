@@ -2,7 +2,7 @@
 
 #include "IMatrixSquare.h"
 #include "MatrixDense.h"
-#include "Groups/IFinitePointGroupAction.h"
+#include "IFinitePointGroupAction.h"
 
 class IMatrixKelvinRepr;
 

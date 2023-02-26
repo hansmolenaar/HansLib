@@ -1,8 +1,8 @@
 #pragma once
 
 #include "IUniquePointCollection.h"
-#include "Groups/IFinitePointGroupAction.h"
-#include "Groups/IFiniteGroupUtils.h"
+#include "IFinitePointGroupAction.h"
+#include "IFiniteGroupUtils.h"
 
 template<int N>
 class FinitePointGroupOrbit : public IUniquePointCollection<double, N>

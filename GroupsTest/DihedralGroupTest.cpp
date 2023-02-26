@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
-#include "Groups/DihedralGroup.h"
-#include "Groups/IFiniteGroupUtils.h"
+#include "DihedralGroup.h"
+#include "IFiniteGroupUtils.h"
 
 TEST(DihedralGroupTest, Basic1)
 {

@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
-#include "Groups/GroupTable.h"
-#include "Groups/IFiniteGroupUtils.h"
+#include "GroupTable.h"
+#include "IFiniteGroupUtils.h"
 #include "IndexerRowMajor.h"
 
 TEST(GroupTable, Trivial)

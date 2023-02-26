@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "Groups/ActionReflectOrigin.h"
+#include "ActionReflectOrigin.h"
 #include "IFinitePointGroupActionTest.h"
 
 TEST(ActionReflectOriginTest, Basic1)

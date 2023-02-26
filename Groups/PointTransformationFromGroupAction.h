@@ -1,7 +1,7 @@
 #pragma once
 
 #include "IPointTransformation.h"
-#include "Groups/IFinitePointGroupAction.h"
+#include "IFinitePointGroupAction.h"
 
 template<int N>
 class PointTransformationFromGroupAction : public IPointTransformation<double, N>

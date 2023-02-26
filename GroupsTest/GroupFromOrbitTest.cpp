@@ -1,14 +1,14 @@
 #include <gtest/gtest.h>
 
-#include "Groups/GroupFromOrbit.h"
+#include "GroupFromOrbit.h"
 #include "PointTransformationIdentity.h"
 #include "PointClose.h"
 #include "Rotate2D.h"
-#include "Groups/CyclicGroup.h"
-#include "Groups/SameFiniteGroupPredicate.h"
-#include "Groups/ActionDihedral.h"
-#include "Groups/DihedralGroup.h"
-#include "Groups/PointTransformationFromGroupAction.h"
+#include "CyclicGroup.h"
+#include "SameFiniteGroupPredicate.h"
+#include "ActionDihedral.h"
+#include "DihedralGroup.h"
+#include "PointTransformationFromGroupAction.h"
 
 #include <numbers>
 

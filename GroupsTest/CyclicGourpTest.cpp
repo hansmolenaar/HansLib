@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
-#include "Groups/CyclicGroup.h"
-#include "Groups/IFiniteGroupUtils.h"
+#include "CyclicGroup.h"
+#include "IFiniteGroupUtils.h"
 
 TEST(GroupTest, Basic1)
 {

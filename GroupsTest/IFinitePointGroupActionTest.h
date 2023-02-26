@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Groups/IFinitePointGroupAction.h"
-#include "/PointClose.h"
-#include "Groups/IFiniteGroupUtils.h"
+#include "IFinitePointGroupAction.h"
+#include "PointClose.h"
+#include "IFiniteGroupUtils.h"
 
 #include <numbers>
 

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Groups/IFinitePointGroupAction.h"
+#include "IFinitePointGroupAction.h"
 #include "IPointTransformation.h"
-#include "Groups/DihedralGroup.h"
+#include "DihedralGroup.h"
 
 class ActionDihedral : public IFinitePointGroupAction<2>
 {

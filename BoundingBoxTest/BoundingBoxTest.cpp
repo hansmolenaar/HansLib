@@ -3,7 +3,7 @@
 #include "BoundingBox.h"
 #include "Point.h" 
 
-TEST(IntervalTest, Basic1)
+TEST(BoundingBoxTest, Basic1)
 {
    const auto bb = BoundingBox<int, 1>::Create(std::vector<int>{ 42 });
    const auto& intv = bb.getInterval(0);
@@ -11,7 +11,7 @@ TEST(IntervalTest, Basic1)
    ASSERT_EQ(intv.getUpper(), 42);
 }
 
-TEST(IntervalTest, Basic2)
+TEST(BoundingBoxTest, Basic2)
 {
    const auto bb = BoundingBox<int, 2>::Create(std::vector<int>{ 42, 43 });
 
@@ -24,7 +24,7 @@ TEST(IntervalTest, Basic2)
    ASSERT_EQ(intv.getUpper(), 43);
 }
 
-TEST(IntervalTest, Add)
+TEST(BoundingBoxTest, Add)
 {
    auto bb = BoundingBox<int, 1>::Create(std::vector<int>{ 42 });
    const auto& intv = bb.getInterval(0);
@@ -38,7 +38,7 @@ TEST(IntervalTest, Add)
    ASSERT_EQ(intv.getUpper(), 43);
 }
 
-TEST(IntervalTest, CreateFromList1)
+TEST(BoundingBoxTest, CreateFromList1)
 {
    std::vector< std::vector<int>> values{ {5},{2},{3} };
    const auto bb = BoundingBox<int, 1>::CreateFromList(values);
@@ -46,7 +46,7 @@ TEST(IntervalTest, CreateFromList1)
    ASSERT_EQ(bb.getInterval(0).getUpper(), 5);
 }
 
-TEST(IntervalTest, CreateFromList2)
+TEST(BoundingBoxTest, CreateFromList2)
 {
    std::vector< std::array<int, 2>> values{ {3,0},{1,2} };
    const auto bb = BoundingBox<int, 2>::CreateFromList(values);
@@ -57,7 +57,7 @@ TEST(IntervalTest, CreateFromList2)
 }
 
 
-TEST(IntervalTest, CreateFromListTransformed)
+TEST(BoundingBoxTest, CreateFromListTransformed)
 {
    std::vector< std::array<short, 1>> values{ {2},{1} };
    const auto bb = BoundingBox<int, 1>::CreateFromListTransformed(values, [](std::array<short, 1> n) {return std::array<int, 1>{ 2 * n[0] }; });
@@ -65,7 +65,7 @@ TEST(IntervalTest, CreateFromListTransformed)
    ASSERT_EQ(bb.getInterval(0).getUpper(), 4);
 }
 
-TEST(IntervalTest, FromPoints)
+TEST(BoundingBoxTest, FromPoints)
 {
    std::vector<IntPoint1> values{ {2},{1} };
    const auto bb = BoundingBox<int, 1>::CreateFromList(values);
@@ -73,7 +73,7 @@ TEST(IntervalTest, FromPoints)
    ASSERT_EQ(bb.getInterval(0).getUpper(), 2);
 }
 
-TEST(IntervalTest, LowerUpper)
+TEST(BoundingBoxTest, LowerUpper)
 {
    const auto bb = BoundingBox<int, 2>::CreateFromList(std::initializer_list<IntPoint2>{ {2, 4}, { 3,1 } });
    ASSERT_EQ(bb.getLower(), IntPoint2({ 2, 1 }));
@@ -81,7 +81,7 @@ TEST(IntervalTest, LowerUpper)
 }
 
 
-TEST(IntervalTest, Contains)
+TEST(BoundingBoxTest, Contains)
 {
    const auto bb = BoundingBox<int, 2>::CreateFromList(std::initializer_list<IntPoint2>{ {2, 4}, { 3,1 } });
    ASSERT_TRUE(bb.contains(IntPoint2({ 2,4 })));
@@ -89,7 +89,7 @@ TEST(IntervalTest, Contains)
    ASSERT_FALSE(bb.contains(IntPoint2({ 6,1 })));
 }
 
-TEST(IntervalTest, LowerUpperDim)
+TEST(BoundingBoxTest, LowerUpperDim)
 {
    const auto bb = BoundingBox<int, 2>::CreateFromList(std::initializer_list<IntPoint2>{ {2, 4}, { 3,1 } });
    ASSERT_EQ(bb.getLower(0), 2);

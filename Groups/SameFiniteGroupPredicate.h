@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Groups/IFiniteGroup.h"
+#include "IFiniteGroup.h"
 
 struct SameFiniteGroupPredicate
 {

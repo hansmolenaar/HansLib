@@ -2,7 +2,7 @@
 
 
 #include "IMatrixRotation.h"
-#include "Groups/IFinitePointGroupAction.h"
+#include "IFinitePointGroupAction.h"
 #include "MatrixDense.h"
 #include "MatrixVector/UnitVector.h"
 

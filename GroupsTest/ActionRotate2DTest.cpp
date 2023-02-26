@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
 
-#include "Groups/ActionRotate2D.h"
+#include "ActionRotate2D.h"
 #include "IFinitePointGroupActionTest.h"
-#include "/PointClose.h"
+#include "PointClose.h"
 
 TEST(ActionRotate2DTest, Interface)
 {
