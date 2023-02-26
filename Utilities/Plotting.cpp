@@ -1,6 +1,6 @@
-#include "Utilities/Plotting.h"
-#include "Utilities/Assert.h"
-#include "Utilities/MultiIndex.h"
+#include "Plotting.h"
+#include "Assert.h"
+#include "MultiIndex.h"
 
 #include <vector>
 #include <vector>
@@ -18,8 +18,8 @@ std::vector<std::vector<double>> Plotting::EvaluateFunctions(std::initializer_li
 {
    std::vector<std::vector<double>> result;
 
-   Utilities::Assert(npoints > 1);
-   Utilities::Assert(xmax > xmin);
+   Utilities::MyAssert(npoints > 1);
+   Utilities::MyAssert(xmax > xmin);
 
    const double delx = (xmax - xmin) / (npoints - 1);
    for (int n = 0; n < npoints; ++n)
@@ -97,7 +97,7 @@ void Plotting::ToStream(std::ostream& stream, const std::vector<std::string>& he
    const auto numColumns = headers.size();
    for (const auto& row : values)
    {
-      Utilities::Assert(row.size() == numColumns);
+      Utilities::MyAssert(row.size() == numColumns);
       isFirst = true;
       for (double val : row)
       {
@@ -117,8 +117,8 @@ void Plotting::ToStream(std::ostream& stream, const std::vector<std::string>& he
 
 std::vector<std::vector<double>> Plotting::EvaluateFunctionsOnUnit(size_t dim, std::initializer_list< std::function<double(std::vector<double>)> > functions, int  npoints)
 {
-   Utilities::Assert(npoints > 1);
-   Utilities::Assert(functions.size() > 0);
+   Utilities::MyAssert(npoints > 1);
+   Utilities::MyAssert(functions.size() > 0);
    std::vector<std::vector<double>> result;
    const auto mi = MultiIndex<size_t>::Create(std::vector<size_t>(dim, npoints));
    const double delx = 1.0 / (npoints - 1);
@@ -141,7 +141,7 @@ void Plotting::MdFunctionsOnUnityToStream(std::ostream& stream, size_t dim, std:
       for (size_t n = 0; n < dim; ++n) headers.push_back("x_" + std::to_string(n));
       for (size_t n = 0; n < functions.size(); ++n) headers.push_back("y_" + std::to_string(n));
    }
-   Utilities::Assert(headers.size() == dim + functions.size());
+   Utilities::MyAssert(headers.size() == dim + functions.size());
    const auto values = Plotting::EvaluateFunctionsOnUnit(dim, functions, npoints);
    ToStream(stream, headers, values);
 }

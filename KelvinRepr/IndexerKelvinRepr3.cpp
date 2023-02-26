@@ -1,6 +1,6 @@
 #include "IndexerKelvinRepr3.h"
 
-#include "Utilities/Assert.h"
+#include "Utilities/MyAssert.h"
 
 #include <algorithm>
 
@@ -16,20 +16,20 @@ IndexerKelvinRepr3::IndexerKelvinRepr3()
 
 int IndexerKelvinRepr3::ToFlat(std::initializer_list<int> ijk) const
 {
-   Utilities::Assert(2 == ijk.size());
+   Utilities::MyAssert(2 == ijk.size());
    const int row = *ijk.begin();
    const int col = *(ijk.begin() + 1);
 
    if (row == col)
    {
-      Utilities::Assert(row >= 0 && row < 3);
+      Utilities::MyAssert(row >= 0 && row < 3);
       return row;
    }
    else
    {
       const int minRC = std::min(row, col);
       const int maxRC = std::max(row, col);
-      Utilities::Assert(minRC >= 0 && maxRC < 3);
+      Utilities::MyAssert(minRC >= 0 && maxRC < 3);
       if (minRC == 0)
       {
          return (maxRC == 1 ? 5 : 4);
@@ -39,7 +39,7 @@ int IndexerKelvinRepr3::ToFlat(std::initializer_list<int> ijk) const
          return 3;
       }
    }
-   Utilities::Assert(false);
+   Utilities::MyAssert(false);
    return -1;
 }
 
@@ -67,7 +67,7 @@ void IndexerKelvinRepr3::ToRowCol(const int flat, int&row, int&col)
       col = 1;
       break;
    default:
-      Utilities::Assert(false);
+      Utilities::MyAssert(false);
       break;
    }
 }

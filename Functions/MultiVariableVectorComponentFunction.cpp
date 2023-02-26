@@ -1,5 +1,5 @@
 #include "Functions/MultiVariableVectorComponentFunction.h"
-#include "Utilities/Assert.h"
+#include "Utilities/MyAssert.h"
 #include <map>
 #include <memory>
 
@@ -11,8 +11,8 @@ namespace {
 MultiVariableVectorComponentFunction::MultiVariableVectorComponentFunction(int ind, int dim)
 	: m_index(ind), m_dim(dim)
 {
-	Utilities::Assert(ind >= 0);
-	Utilities::Assert(ind < dim);
+	Utilities::MyAssert(ind >= 0);
+	Utilities::MyAssert(ind < dim);
 }
 
 const MultiVariableVectorComponentFunction& MultiVariableVectorComponentFunction::Instance(int ind, int dim)
@@ -32,7 +32,7 @@ int MultiVariableVectorComponentFunction::GetDomainDimension() const
 
 bool MultiVariableVectorComponentFunction::DerivativeAlwaysZero(int var) const
 {
-	Utilities::Assert(var >= 0 && var < m_dim);
+	Utilities::MyAssert(var >= 0 && var < m_dim);
 	return var != m_index;
 }
 
@@ -44,7 +44,7 @@ bool MultiVariableVectorComponentFunction::HasDerivative() const
 
 double MultiVariableVectorComponentFunction::Evaluate(std::span<const double>x) const
 {
-	Utilities::Assert(x.size() == GetDomainDimension());
+	Utilities::MyAssert(x.size() == GetDomainDimension());
 	return x[m_index];
 }
 
@@ -52,8 +52,8 @@ void MultiVariableVectorComponentFunction::Derivative(std::span<const double>x, 
 {
 	const int dim = GetDomainDimension();
 
-	Utilities::Assert(x.size() == GetDomainDimension());
-	Utilities::Assert(dfdx.size() == dim);
+	Utilities::MyAssert(x.size() == GetDomainDimension());
+	Utilities::MyAssert(dfdx.size() == dim);
 
 	std::fill(dfdx.begin(), dfdx.end(), 0.0);
 	dfdx[m_index] = 1.0;

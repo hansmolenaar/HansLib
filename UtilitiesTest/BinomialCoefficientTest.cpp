@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "Utilities/BinomialCoefficient.h"
+#include "BinomialCoefficient.h"
 
 TEST(BinomialCoefficientTest, Basics)
 {

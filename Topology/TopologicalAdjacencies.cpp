@@ -47,7 +47,7 @@ TopologicalAdjacencies::TopologicalAdjacencies(std::map<TopologyDimension, int>&
 
 std::unique_ptr<TopologicalAdjacencies> TopologicalAdjacencies::Create(const std::vector<int>& count, std::vector<std::unique_ptr<ITopologicalAdjacency>>&& adjacencies)
 {
-   Utilities::Assert(!count.empty());
+   Utilities::MyAssert(!count.empty());
    std::map<TopologyDimension, int> countMap;
 
    TopologyDimension tdim = TopologyDimensionDef::Corner;
@@ -67,9 +67,9 @@ std::unique_ptr<TopologicalAdjacencies> TopologicalAdjacencies::CreateWithPartia
    std::vector<std::unique_ptr<ITopologicalAdjacency>>&& adjacencies)
 {
    // Want to know something
-   Utilities::Assert(!countMap.empty());
-   Utilities::Assert(countMap.begin()->first == TopologyDimensionDef::Corner);
-   Utilities::Assert(countMap.rbegin()->first == maxDim);
+   Utilities::MyAssert(!countMap.empty());
+   Utilities::MyAssert(countMap.begin()->first == TopologyDimensionDef::Corner);
+   Utilities::MyAssert(countMap.rbegin()->first == maxDim);
    for (auto& itr : countMap)
    {
       IsPositive(itr.second);
@@ -79,7 +79,7 @@ std::unique_ptr<TopologicalAdjacencies> TopologicalAdjacencies::CreateWithPartia
    for (auto& adj : adjacencies)
    {
       const auto pair = std::make_pair(adj->getDimensionLow(), adj->getDimensionHigh());
-      Utilities::Assert(!adjacencyMap.contains(pair));
+      Utilities::MyAssert(!adjacencyMap.contains(pair));
       CheckInputAdjacency(maxDim, countMap, *adj);
       adjacencyMap.emplace(pair, std::move(adj));
    }
@@ -99,7 +99,7 @@ std::pair<bool, int> TopologicalAdjacencies::getCount(TopologyDimension dim) con
 
 std::pair<bool, const ITopologicalAdjacency*> TopologicalAdjacencies::getAdjacency(TopologyDimension dim1, TopologyDimension dim2) const
 {
-   Utilities::Assert(dim1 != dim2);
+   Utilities::MyAssert(dim1 != dim2);
    m_checkDimension.check(std::max(dim1, dim2));
    const auto pair = std::make_pair(std::min(dim1, dim2), std::max(dim1, dim2));
    std::pair<bool, const ITopologicalAdjacency*> result = std::make_pair(m_adjecencies.contains(pair), nullptr);

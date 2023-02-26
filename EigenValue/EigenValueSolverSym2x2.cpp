@@ -1,7 +1,7 @@
 #include "Utilities/EigenValueSolverSym2x2.h"
 #include "KelvinRepr/MatrixKelvinRepr2.h"
 #include "MatrixVector/IMatrixUtils.h"
-#include "Utilities/Assert.h"
+#include "Utilities/MyAssert.h"
 
 #if 0
 #include "Utilities/MathConstants.h"
@@ -43,7 +43,7 @@ bool EigenValueSolverSym2x2Utils::Det::DerivativeAlwaysZero(int) const
 
 double EigenValueSolverSym2x2Utils::Det::Evaluate(std::span<const double>x) const
 {
-   Utilities::Assert(x.size() == 3);
+   Utilities::MyAssert(x.size() == 3);
    const double a = x[0];
    const double b = x[1];
 
@@ -53,8 +53,8 @@ double EigenValueSolverSym2x2Utils::Det::Evaluate(std::span<const double>x) cons
 
 void EigenValueSolverSym2x2Utils::Det::Derivative(std::span<const double>x, std::span< double> dfdx) const
 {
-   Utilities::Assert(x.size() == 3);
-   Utilities::Assert(dfdx.size() == 3);
+   Utilities::MyAssert(x.size() == 3);
+   Utilities::MyAssert(dfdx.size() == 3);
    dfdx[0] = 2 * x[0] - 2 * x[1];
    dfdx[1] = 2 * x[1] - 2 * x[0];
    dfdx[2] = 4 * x[2];
@@ -84,8 +84,8 @@ bool EigenValueSolverSym2x2::HasDerivative() const
 // ( c b )
 void EigenValueSolverSym2x2::Evaluate(std::span<const double> x, std::span< double> eigenValues) const
 {
-   Utilities::Assert(x.size() == 3);
-   Utilities::Assert(eigenValues.size() == 2);
+   Utilities::MyAssert(x.size() == 3);
+   Utilities::MyAssert(eigenValues.size() == 2);
 
    const double a = x[0];
    const double b = x[1];
@@ -99,13 +99,13 @@ void EigenValueSolverSym2x2::Evaluate(std::span<const double> x, std::span< doub
 
 void EigenValueSolverSym2x2::Derivative(std::span<const double>x, IMatrix& dfdx) const
 {
-   Utilities::Assert(x.size() == 3);
-   Utilities::Assert(dfdx.GetRowDimension() == 2);
-   Utilities::Assert(dfdx.GetColDimension() == 3);
+   Utilities::MyAssert(x.size() == 3);
+   Utilities::MyAssert(dfdx.GetRowDimension() == 2);
+   Utilities::MyAssert(dfdx.GetColDimension() == 3);
 
    const double det = EigenValueSolverSym2x2Utils::Det().Evaluate(x);
    const double sqrtDet = std::sqrt(det);
-   Utilities::Assert(sqrtDet != 0.0); // TODO better test
+   Utilities::MyAssert(sqrtDet != 0.0); // TODO better test
    const double sqrtDetDeriv = 0.5 / sqrtDet;
 
    std::array<double, 3> detDeriv;

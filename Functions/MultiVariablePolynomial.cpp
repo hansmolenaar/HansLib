@@ -1,6 +1,6 @@
 #include "Functions/MultiVariablePolynomial.h"
 
-#include "Utilities/Assert.h"
+#include "Utilities/MyAssert.h"
 #include "MatrixVector/IMatrix.h"
 #include "MatrixVector/IMatrixUtils.h"
 #include "Functions/IRealFunctionUtils.h"
@@ -12,19 +12,19 @@
 MultiVariablePolynomial::MultiVariablePolynomial(int dim) :
 	m_dim(dim)
 {
-	Utilities::Assert(dim > 0);
+	Utilities::MyAssert(dim > 0);
 }
 
 
 void MultiVariablePolynomial::Add(double coef, std::span<const int> monomial)
 {
-	Utilities::Assert(monomial.size() == m_dim);
+	Utilities::MyAssert(monomial.size() == m_dim);
 	m_terms.push_back(std::make_pair(coef, MultiVariableMonomial(monomial)));
 }
 
 void MultiVariablePolynomial::Add(double coef, std::initializer_list< int> monomial)
 {
-	Utilities::Assert(monomial.size() == m_dim);
+	Utilities::MyAssert(monomial.size() == m_dim);
 	m_terms.push_back(std::make_pair(coef, MultiVariableMonomial(monomial)));
 }
 
@@ -46,7 +46,7 @@ bool MultiVariablePolynomial::DerivativeAlwaysZero(int var) const
 
 double MultiVariablePolynomial::Evaluate(std::span<const double>x)const
 {
-	Utilities::Assert(x.size() == GetDomainDimension());
+	Utilities::MyAssert(x.size() == GetDomainDimension());
 	double result = 0;
 	for (const auto& term : m_terms)
 	{
@@ -61,8 +61,8 @@ void MultiVariablePolynomial::Derivative(std::span<const double> x, std::span<do
 {
 	const int dim = GetDomainDimension();
 
-	Utilities::Assert(x.size() == GetDomainDimension());
-	Utilities::Assert(dfdx.size() == dim);
+	Utilities::MyAssert(x.size() == GetDomainDimension());
+	Utilities::MyAssert(dfdx.size() == dim);
 
 
 	std::fill(dfdx.begin(), dfdx.end(), 0.0);

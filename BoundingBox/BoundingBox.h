@@ -2,7 +2,7 @@
 
 #include "Utilities/Defines.h"
 #include "Interval/Interval.h"
-#include "Utilities/Assert.h"
+#include "Utilities/MyAssert.h"
 #include "Point/Point.h"
 
 #include <span>
@@ -61,7 +61,7 @@ template<typename T, int N>
 BoundingBox<T, N>::BoundingBox(const std::span<const T>& values) :
    m_intervals(MakeArray<Interval<T>, N>(Interval<T>(T{})))
 {
-   Utilities::Assert(values.size() == N);
+   Utilities::MyAssert(values.size() == N);
    for (int n = 0; n < N; ++n)
    {
       m_intervals.at(n) = Interval<T>(values[n]);

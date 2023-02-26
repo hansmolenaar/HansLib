@@ -1,10 +1,10 @@
 #include "EquidistantPoints.h"
-#include"Utilities/Assert.h"
+#include"Utilities/MyAssert.h"
 
 std::vector<double> EquidistantPoints::Generate(double low, double hig, int nsteps)
 {
-   Utilities::Assert(hig > low);
-   Utilities::Assert(nsteps > 0);
+   Utilities::MyAssert(hig > low);
+   Utilities::MyAssert(nsteps > 0);
    const double del = (hig - low) / nsteps;
    std::vector<double> result(nsteps+1);
    for (int n = 0; n <= nsteps; ++n)

@@ -1,5 +1,5 @@
 #include "Functions/MultiVariableRealValuedFunction.h"
-#include "Utilities/Assert.h"
+#include "Utilities/MyAssert.h"
 #include "MatrixVector/IMatrix.h"
 #include "MatrixVector/MatrixDense.h"
 #include "MatrixVector/IMatrixUtils.h"
@@ -13,12 +13,12 @@ MultiVariableRealValuedFunction::MultiVariableRealValuedFunction(
    m_isActive(isactive), m_function(function), m_derivative(derivative)
 
 {
-   Utilities::Assert(m_isActive.size() > 0);
+   Utilities::MyAssert(m_isActive.size() > 0);
 }
 
 MultiVariableRealValuedFunction MultiVariableRealValuedFunction::CreateNull(int numVar)
 {
-   Utilities::Assert(numVar > 0);
+   Utilities::MyAssert(numVar > 0);
    auto active = std::vector<bool>(numVar, false);
    return MultiVariableRealValuedFunction(
       active,
@@ -51,15 +51,15 @@ bool MultiVariableRealValuedFunction::HasDerivative() const
 
 double MultiVariableRealValuedFunction::Evaluate(std::span<const double>x) const
 {
-   Utilities::Assert(x.size() == GetDomainDimension());
+   Utilities::MyAssert(x.size() == GetDomainDimension());
    return m_function(x);
 }
 
 void MultiVariableRealValuedFunction::Derivative(std::span<const double> x, std::span< double> dfdx) const
 {
    const int dim = GetDomainDimension();
-   Utilities::Assert(x.size() == dim);
-   Utilities::Assert(dfdx.size() == dim);
+   Utilities::MyAssert(x.size() == dim);
+   Utilities::MyAssert(dfdx.size() == dim);
    std::vector<double> deriv(dim);
    m_derivative(x, deriv);
    for (int n = 0; n < dim; ++n)
@@ -73,7 +73,7 @@ void MultiVariableRealValuedFunction::Derivative(std::span<const double> x, std:
 
 MultiVariableRealValuedFunction operator-(const IMultiVariableRealValuedFunction& f, const IMultiVariableRealValuedFunction& g)
 {
-   Utilities::Assert(f.GetDomainDimension() == g.GetDomainDimension());
+   Utilities::MyAssert(f.GetDomainDimension() == g.GetDomainDimension());
    const int dim = f.GetDomainDimension();
 
    std::vector<bool> active(dim);
@@ -91,7 +91,7 @@ MultiVariableRealValuedFunction operator-(const IMultiVariableRealValuedFunction
 
    std::function<void(std::span<const double>, std::span< double>)> deriv = [&](std::span<const double> x, std::span< double> df)
    {
-      Utilities::Assert(x.size() == df.size());
+      Utilities::MyAssert(x.size() == df.size());
       const auto dim = x.size();
 
       std::vector<double> dg(dim);
@@ -109,7 +109,7 @@ MultiVariableRealValuedFunction operator-(const IMultiVariableRealValuedFunction
 
 MultiVariableRealValuedFunction operator/(const IMultiVariableRealValuedFunction& numer, const IMultiVariableRealValuedFunction& denom)
 {
-   Utilities::Assert(numer.GetDomainDimension() == denom.GetDomainDimension());
+   Utilities::MyAssert(numer.GetDomainDimension() == denom.GetDomainDimension());
    const auto dim = numer.GetDomainDimension();
 
    std::vector<bool> active(dim);
@@ -127,7 +127,7 @@ MultiVariableRealValuedFunction operator/(const IMultiVariableRealValuedFunction
 
    std::function<void(std::span<const double>, std::span< double>)> deriv = [&](std::span<const double> x, std::span< double> df)
    {
-      Utilities::Assert(x.size() == df.size());
+      Utilities::MyAssert(x.size() == df.size());
       const auto dim = x.size();
 
       const double evalNumer = Evaluate(numer, x);

@@ -1,6 +1,6 @@
 #include "Functions/RealFunctionCompose.h"
 
-#include "Utilities/Assert.h"
+#include "Utilities/MyAssert.h"
 #include "MatrixVector/MatrixDense.h"
 #include "MatrixVector/IMatrixUtils.h"
 #include "Functions/IRealFunctionUtils.h"
@@ -13,7 +13,7 @@
 RealFunctionCompose::RealFunctionCompose(const IRealFunction& f, const IRealFunction& g) :
 	m_f(f), m_g(g)
 {
-	Utilities::Assert(m_f.GetDomainDimension() == m_g.GetRangeDimension());
+	Utilities::MyAssert(m_f.GetDomainDimension() == m_g.GetRangeDimension());
 }
 
 
@@ -41,8 +41,8 @@ void RealFunctionCompose::Derivative(std::span<const double>x, IMatrix& dfdx)con
 	const int K = m_g.GetRangeDimension();
 	const int N = m_f.GetRangeDimension();
 
-	Utilities::Assert(dfdx.GetRowDimension() == N);
-	Utilities::Assert(dfdx.GetColDimension() == M);
+	Utilities::MyAssert(dfdx.GetRowDimension() == N);
+	Utilities::MyAssert(dfdx.GetColDimension() == M);
 
 	std::vector<double> z(K);
 	m_g.Evaluate(x, z);

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Utilities/Defines.h"
-#include "Utilities/Assert.h"
+#include "Utilities/MyAssert.h"
 
 #include <algorithm>
 
@@ -48,7 +48,7 @@ private:
 template<typename T, int N>
 Point<T, N>::Point(const std::initializer_list<T>& values)
 {
-   Utilities::Assert(values.size() == N);
+   Utilities::MyAssert(values.size() == N);
    std::copy(values.begin(), values.end(), m_values.begin());
 }
 

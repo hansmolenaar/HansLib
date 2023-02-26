@@ -1,6 +1,6 @@
 #include "PermutationUtils.h"
 #include "Utilities//Defines.h"
-#include "Utilities/Assert.h"
+#include "Utilities/MyAssert.h"
 
 bool PermutationUtils::IsPermutation(std::span<const int> permut)
 {
@@ -17,7 +17,7 @@ bool PermutationUtils::IsPermutation(std::span<const int> permut)
 
 Permutation operator*(const Permutation& perm1, const Permutation& perm0)
 {
-   Utilities::Assert(perm1.getCardinality() == perm0.getCardinality());
+   Utilities::MyAssert(perm1.getCardinality() == perm0.getCardinality());
    const auto siz = perm0.getCardinality();
    std::vector<int> permut(siz, -1);
    for (auto n = 0; n < siz; ++n)

@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "Utilities/BoolContainer.h"
+#include "BoolContainer.h"
 
 TEST(BoolContainerTest, Zero)
 {

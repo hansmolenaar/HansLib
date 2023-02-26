@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Utilities/Assert.h"
-#include "Utilities/BoundsCheck.h"
-#include "Utilities//Defines.h"
+#include "Assert.h"
+#include "BoundsCheck.h"
+#include "Defines.h"
 #include <span>
 
 template <typename T>
@@ -32,7 +32,7 @@ MultiIndex<T>::MultiIndex(std::vector<T> dimensions) :
    m_dimensions(std::move(dimensions))
 
 {
-   Utilities::Assert(!m_dimensions.empty());
+   Utilities::MyAssert(!m_dimensions.empty());
    const auto checker = BoundsCheck<T>::CreateIsPositive();
 
    m_flatLength = 1;
@@ -95,7 +95,7 @@ std::vector<T> MultiIndex<T>::toMultiplet(T flat) const
 template <typename T>
 T MultiIndex<T>::toFlat(std::span<const T> multiplet) const
 {
-   Utilities::Assert(multiplet.size() == getNumDimensions());
+   Utilities::MyAssert(multiplet.size() == getNumDimensions());
    T result = 0;
    size_t count = 0;
    for (auto indx : multiplet)

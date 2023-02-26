@@ -1,7 +1,7 @@
 #include "MatrixKelvinRepr3.h"
 
 #include "Utilities/MathConstants.h"
-#include "Utilities/Assert.h"
+#include "Utilities/MyAssert.h"
 #include "IMatrixKelvinReprUtils.h"
 #include "IndexerKelvinRepr3.h"
 
@@ -24,7 +24,7 @@ MatrixKelvinRepr3 MatrixKelvinRepr3::CreateEmpty()
 
 MatrixKelvinRepr3 MatrixKelvinRepr3::CreateFromVector(std::span<const double> values)
 {
-	Utilities::Assert(values.size() == 6);
+	Utilities::MyAssert(values.size() == 6);
 	MatrixKelvinRepr3 result;
 	std::copy(values.begin(), values.end(),result.m_data.begin());
 	return result;
@@ -32,7 +32,7 @@ MatrixKelvinRepr3 MatrixKelvinRepr3::CreateFromVector(std::span<const double> va
 
 MatrixKelvinRepr3 MatrixKelvinRepr3::Create(const IMatrixSymmetric& matrix)
 {
-	Utilities::Assert(matrix.GetDimension() == 3);
+	Utilities::MyAssert(matrix.GetDimension() == 3);
 	auto result = MatrixKelvinRepr3();
 	for (int row = 0; row < 3; ++row)
 	{

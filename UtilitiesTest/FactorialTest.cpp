@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "Utilities/Factorial.h"
+#include "Factorial.h"
 
 TEST(FactorialTest, Basics)
 {

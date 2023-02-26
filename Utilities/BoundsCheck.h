@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Utilities/Assert.h"
+#include "MyAssert.h"
 
 template<typename T>
 class BoundsCheck
@@ -26,7 +26,7 @@ private:
 template<typename T>
 BoundsCheck<T> BoundsCheck<T>::Create(T lb, T ub)
 {
-   Utilities::Assert(lb <= ub);
+   Utilities::MyAssert(lb <= ub);
    return BoundsCheck(true, lb, true, ub);
 }
 
@@ -76,5 +76,5 @@ BoundsCheck<T>::BoundsCheck(bool hasLb, T lb, bool hasUb, T ub) :
 template<typename T>
 void BoundsCheck<T>::check(const T& value) const
 {
-   Utilities::Assert((*this)(value), "Bounds violation");
+   Utilities::MyAssert((*this)(value), "Bounds violation");
 }

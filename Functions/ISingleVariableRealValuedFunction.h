@@ -4,7 +4,7 @@
 
 #include "IMultiVariableRealValuedFunction.h"
 #include "MatrixVector/MatrixSquare.h"
-#include "Utilities/Assert.h"
+#include "Utilities/MyAssert.h"
 
 class ISingleVariableRealValuedFunction :public IMultiVariableRealValuedFunction
 {
@@ -34,20 +34,20 @@ int ISingleVariableRealValuedFunction::GetDomainDimension() const
 
 double ISingleVariableRealValuedFunction::Evaluate(std::span<const double> x)const
 {
-	Utilities::Assert(x.size() == 1);
+	Utilities::MyAssert(x.size() == 1);
 	return Evaluate(x[0]);
 }
 
 
 void ISingleVariableRealValuedFunction::Derivative(std::span<const double>x, std::span< double> dfdx) const
 {
-	Utilities::Assert(x.size() == 1);
-	Utilities::Assert(dfdx.size() == 1);
+	Utilities::MyAssert(x.size() == 1);
+	Utilities::MyAssert(dfdx.size() == 1);
 	dfdx[0] = Derivative(x[0]);
 }
 
 bool ISingleVariableRealValuedFunction::DerivativeAlwaysZero(int var) const
 {
-	Utilities::Assert(var == 0);
+	Utilities::MyAssert(var == 0);
 	return false;
 }

@@ -1,5 +1,5 @@
 #include "GroupTable.h"
-#include "Utilities/Assert.h"
+#include "Utilities/MyAssert.h"
 #include "Utilities/ToString.h"
 #include "IFiniteGroupUtils.h"
 

@@ -2,7 +2,7 @@
 #include "IHierBasisFunction1D.h"
 
 #include "Utilities/Defines.h"
-#include "Utilities/Assert.h"
+#include "Utilities/MyAssert.h"
 #include "Utilities/MultiIndex.h"
 
 namespace
@@ -32,7 +32,7 @@ const std::vector<const IHierBasisFunction1D*>& HierBasisFunction::getBasisFunct
 
 double HierBasisFunction::operator()(std::span<const double> x) const
 {
-   Utilities::Assert(m_basisFunctions.size() == x.size());
+   Utilities::MyAssert(m_basisFunctions.size() == x.size());
    double result = 1.0;
    for (size_t n = 0; n < m_basisFunctions.size(); ++n)
    {
@@ -56,7 +56,7 @@ const IHierBasisFunction* HierBasisFunction_Factory::get(const HierMultiIndex& h
 
    if (!m_basisFunctions.contains(hmi))
    {
-      Utilities::Assert(m_dimension == hmi.getDimension());
+      Utilities::MyAssert(m_dimension == hmi.getDimension());
       std::vector<const IHierBasisFunction1D*> basisFunctions;
       str::transform(hmi.get(), std::back_inserter(basisFunctions), [this](const auto& li) {return m_factory1D->get(li); });
       std::unique_ptr<IHierBasisFunction> newBasisFunction = std::make_unique<HierBasisFunction>(basisFunctions);

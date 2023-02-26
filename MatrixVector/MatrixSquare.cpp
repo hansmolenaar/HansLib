@@ -1,5 +1,5 @@
 #include "MatrixVector/MatrixSquare.h"
-#include "Utilities/Assert.h"
+#include "Utilities/MyAssert.h"
 #include "MatrixVector/IMatrixUtils.h"
 
 
@@ -225,8 +225,8 @@ static int Crout_LU_with_Pivoting_Solve(double *LU, double B[], const int pivot[
 
 bool MatrixSquare::Solve(std::span<const double> rhs, std::span< double> sol)
 {
-	Utilities::Assert(rhs.size() == m_dim);
-	Utilities::Assert(sol.size() == m_dim);
+	Utilities::MyAssert(rhs.size() == m_dim);
+	Utilities::MyAssert(sol.size() == m_dim);
 	int status = 0;
 	if (m_dirty)
 	{

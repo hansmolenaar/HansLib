@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
-#include "Utilities/Assert.h"
-#include "Utilities/BoundsCheck.h"
+#include "Assert.h"
+#include "BoundsCheck.h"
 
 using namespace Utilities;
 

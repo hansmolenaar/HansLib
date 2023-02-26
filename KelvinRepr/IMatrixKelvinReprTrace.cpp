@@ -3,7 +3,7 @@
 #include "IMatrixKelvinRepr.h"
 #include "MatrixVector/IMatrix.h"
 #include "MatrixVector/IMatrixUtils.h"
-#include "Utilities/Assert.h"
+#include "Utilities/MyAssert.h"
 
 #include <algorithm>
 #include <numeric>
@@ -26,7 +26,7 @@ namespace {
 
 	double Eval(int geomdim, std::span<const double>x)
 	{
-		Utilities::Assert(TriangleNumber(geomdim) == x.size());
+		Utilities::MyAssert(TriangleNumber(geomdim) == x.size());
 		return std::accumulate(x.begin(), x.begin() + geomdim, 0.0);
 	}
 
@@ -34,7 +34,7 @@ namespace {
 	void Deriv(int geomdim, std::span<const double>x, std::span< double> df)
 	{
 		const int siz = TriangleNumber(geomdim); 
-		Utilities::Assert(siz == x.size() && siz == df.size()); 
+		Utilities::MyAssert(siz == x.size() && siz == df.size()); 
 		std::fill(df.begin() + geomdim, df.end(), 0.0); 
 		std::fill_n(df.begin(), geomdim, 1.0);
 	}

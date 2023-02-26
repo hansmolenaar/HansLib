@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "Utilities/Functors.h"
+#include "Functors.h"
 #include <limits>
 
 TEST(FunctorTest, IsEqualTo)

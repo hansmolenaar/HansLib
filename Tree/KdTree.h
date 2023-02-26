@@ -66,8 +66,8 @@ private:
 template<typename T, int N>
 KdTreePosition  KdTreeVertex<T, N>::getPosition() const
 {
-   Utilities::Assert (isLeaf(), "KdTreeVertex<T, N>::getPosition() not a leaf");
-   Utilities::Assert(m_position != KdTreePositionInvalid, "KdTreeVertex<T, N>::getPosition() position not set");
+   Utilities::MyAssert (isLeaf(), "KdTreeVertex<T, N>::getPosition() not a leaf");
+   Utilities::MyAssert(m_position != KdTreePositionInvalid, "KdTreeVertex<T, N>::getPosition() position not set");
    return m_position;
 }
 

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "IIndexer.h"
-#include "Utilities/Assert.h"
+#include "Utilities/MyAssert.h"
 #include <vector>
 
 template <typename I>
@@ -27,7 +27,7 @@ int IndexerRowMajor<I>::numberOfIndices() const
 template <typename I>
 IndexerRowMajor<I>::IndexerRowMajor(I dimRow, I dimCol) : m_dimRow(dimRow), m_dimCol(dimCol)
 {
-	Utilities::Assert(dimRow > 0 && dimCol > 0);
+	Utilities::MyAssert(dimRow > 0 && dimCol > 0);
 }
 
 template <typename I>
@@ -45,15 +45,15 @@ I IndexerRowMajor<I>::GetColDimension() const
 template <typename I>
 I IndexerRowMajor<I>::ToFlat(std::initializer_list<I> ijk) const
 {
-	Utilities::Assert(2 == ijk.size());
+	Utilities::MyAssert(2 == ijk.size());
 
 	auto itr = ijk.begin();
 	const auto row = *itr;
 	++itr;
 	const auto col = *itr;
 
-	Utilities::Assert(std::min(row, col) >= 0);
-	Utilities::Assert(row < m_dimRow&& col < m_dimCol);
+	Utilities::MyAssert(std::min(row, col) >= 0);
+	Utilities::MyAssert(row < m_dimRow&& col < m_dimCol);
 
 	return row * m_dimCol + col;
 }

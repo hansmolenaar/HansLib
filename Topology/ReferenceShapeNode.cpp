@@ -22,7 +22,7 @@ public:
 
    inline std::pair<bool, const ITopologicalAdjacency*> getAdjacency(TopologyDimension hi, TopologyDimension lo) const override
    {
-      Utilities::Assert(hi != lo);
+      Utilities::MyAssert(hi != lo);
       Checker.check(hi);
       Checker.check(lo);
       return std::make_pair(false, nullptr);

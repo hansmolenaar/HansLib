@@ -1,6 +1,6 @@
-#include "Assert.h"
+#include "MyAssert.h"
 
-void  Utilities::Assert(bool assertion)
+void  Utilities::MyAssert(bool assertion)
 {
    if (!assertion)
    {
@@ -8,7 +8,7 @@ void  Utilities::Assert(bool assertion)
    }
 }
 
-void  Utilities::Assert(bool assertion, std::string msg)
+void  Utilities::MyAssert(bool assertion, std::string msg)
 {
    if (!assertion)
    {

@@ -1,6 +1,6 @@
 #include "Functions/RealFunctionAdd.h"
 
-#include "Utilities/Assert.h"
+#include "Utilities/MyAssert.h"
 #include "MatrixVector/MatrixDense.h"
 
 
@@ -8,8 +8,8 @@
 RealFunctionAdd::RealFunctionAdd(const IRealFunction& fie1, const IRealFunction& fie2) : 
 	m_fie1(fie1), m_fie2(fie2)
 {
-	Utilities::Assert(m_fie1.GetDomainDimension() == m_fie2.GetDomainDimension());
-	Utilities::Assert(m_fie1.GetRangeDimension() == m_fie2.GetRangeDimension());
+	Utilities::MyAssert(m_fie1.GetDomainDimension() == m_fie2.GetDomainDimension());
+	Utilities::MyAssert(m_fie1.GetRangeDimension() == m_fie2.GetRangeDimension());
 }
 
 

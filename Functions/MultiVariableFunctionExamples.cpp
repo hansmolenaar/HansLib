@@ -129,8 +129,8 @@ MultiVariableFunctionExamples::Examplefunction MultiVariableFunctionExamples::Sk
 
 MultiVariableFunctionExamples::Examplefunction MultiVariableFunctionExamples::DiscontinuousHatProduct(const std::vector<double>& xpeak, const std::vector<double>& ypeakLeft, const std::vector<double>& ypeakRight)
 {
-   Utilities::Assert(xpeak.size() == ypeakLeft.size());
-   Utilities::Assert(xpeak.size() == ypeakRight.size());
+   Utilities::MyAssert(xpeak.size() == ypeakLeft.size());
+   Utilities::MyAssert(xpeak.size() == ypeakRight.size());
    BoundsCheck<double>::Create(0.0, 1.0).check(*str::max_element(xpeak));
    BoundsCheck<double>::CreateIsPositive().check(*str::max_element(ypeakLeft));
    BoundsCheck<double>::CreateIsPositive().check(*str::max_element(ypeakRight));

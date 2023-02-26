@@ -1,6 +1,6 @@
 #include "HierBasisFunction1D_HomogenousBC.h"
 #include "Functions/HatFunction.h"
-#include "Utilities/Assert.h"
+#include "Utilities/MyAssert.h"
 #include "Utilities/Pow2.h"
 
 // Factory
@@ -20,7 +20,7 @@ const IHierBasisFunction1D* HierBasisFunction1D_HomogenousBC_Factory::get(const 
 HierBasisFunction1D_HomogenousBC::HierBasisFunction1D_HomogenousBC(HierLevelIndex levelIndex) :
    m_levelIndex(levelIndex)
 {
-   Utilities::Assert(m_levelIndex.getLevel() > 0);
+   Utilities::MyAssert(m_levelIndex.getLevel() > 0);
 }
 
 double HierBasisFunction1D_HomogenousBC::operator()(double x) const

@@ -1,7 +1,7 @@
 #include "MatrixVector/IMatrixSquareUtils.h"
 
 #include "MatrixVector/IMatrixSquare.h"
-#include "Utilities/Assert.h"
+#include "Utilities/MyAssert.h"
 
 #include <algorithm>
 #include <ranges>
@@ -60,7 +60,7 @@ double GetDeterminant(const IMatrixSquare& m)
 
 double GetDeterminantDerivative(const IMatrixSquare& m, int row, int col)
 {
-	Utilities::Assert(std::min(row, col) >= 0 && std::max(row, col) < m.GetDimension());
+	Utilities::MyAssert(std::min(row, col) >= 0 && std::max(row, col) < m.GetDimension());
 
 	switch (m.GetDimension())
 	{

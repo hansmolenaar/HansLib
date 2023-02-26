@@ -1,6 +1,6 @@
 #include "GridTopology.h"
 #include "ReferenceShapeHyperCube.h"
-#include "Utilities/Assert.h"
+#include "Utilities/MyAssert.h"
 #include "Utilities/BoundsCheck.h"
 #include "Utilities/Defines.h"
 #include "Utilities/MultiIndex.h"
@@ -10,8 +10,8 @@
 GridTopology::GridTopology(const std::vector<int>& cellDimensions) :
    m_shape(ReferenceShapeHyperCube::Get(static_cast<TopologyDimension>(cellDimensions.size())))
 {
-   Utilities::Assert(!cellDimensions.empty());
-   Utilities::Assert(std::ranges::all_of(cellDimensions, BoundsCheck<int>::CreateIsPositive()));
+   Utilities::MyAssert(!cellDimensions.empty());
+   Utilities::MyAssert(std::ranges::all_of(cellDimensions, BoundsCheck<int>::CreateIsPositive()));
    const TopologyDimension maxdim = m_shape.getAdjacencies().getMaxTopologyDimension();
    const auto cellIndexer = MultiIndex<int>::Create(std::vector<int>(cellDimensions));
    const auto numCells = cellIndexer.getFlatSize();

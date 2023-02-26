@@ -1,7 +1,7 @@
 #include "Functions/MultiVariableVectorValuedFunction.h"
 
 #include "Functions/IRealFunctionUtils.h"
-#include "Utilities/Assert.h"
+#include "Utilities/MyAssert.h"
 #include "MatrixVector/MatrixSquare.h"
 
 
@@ -12,7 +12,7 @@ MultiVariableVectorValuedFunction::MultiVariableVectorValuedFunction(std::span< 
    const int numVar = m_components[0]->GetDomainDimension();
    for (const auto cmp : m_components)
    {
-      Utilities::Assert(cmp->GetDomainDimension() == numVar);
+      Utilities::MyAssert(cmp->GetDomainDimension() == numVar);
    }
 }
 
@@ -56,8 +56,8 @@ void MultiVariableVectorValuedFunction::Derivative(std::span<const double>x, IMa
 {
    const int numVar = GetDomainDimension();
    const int numEqn = GetRangeDimension();
-   Utilities::Assert(dfdx.GetRowDimension() == numEqn);
-   Utilities::Assert(dfdx.GetColDimension() == numVar);
+   Utilities::MyAssert(dfdx.GetRowDimension() == numEqn);
+   Utilities::MyAssert(dfdx.GetColDimension() == numVar);
    std::vector<double> deriv(numVar);
    int eqn = 0;
    for (const auto cmp : m_components)

@@ -1,5 +1,5 @@
 #include "HierMultiIndex.h"
-#include "Utilities/Assert.h"
+#include "Utilities/MyAssert.h"
 #include "Utilities/Defines.h"
 
 #include <numeric>
@@ -7,7 +7,7 @@
 HierMultiIndex::HierMultiIndex(std::vector<HierLevelIndex>&& levelsIndices) :
    m_levelsIndices(std::move(levelsIndices))
 {
-   Utilities::Assert(!m_levelsIndices.empty());
+   Utilities::MyAssert(!m_levelsIndices.empty());
 }
 
 HierMultiIndex::HierMultiIndex(HierLevelIndex levelIndex) :

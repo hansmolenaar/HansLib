@@ -1,7 +1,7 @@
 #include "MatrixKelvinRepr2.h"
 
 #include "Utilities/MathConstants.h"
-#include "Utilities/Assert.h"
+#include "Utilities/MyAssert.h"
 #include "IMatrixKelvinReprUtils.h"
 #include "IndexerKelvinRepr2.h"
 

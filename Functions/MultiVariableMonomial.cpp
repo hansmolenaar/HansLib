@@ -1,10 +1,10 @@
 #include "Functions/MultiVariableMonomial.h"
-#include "Utilities/Assert.h"
+#include "Utilities/MyAssert.h"
 
 
 MultiVariableMonomial::MultiVariableMonomial(std::span<const int> powers)
 {
-   Utilities::Assert(powers.size() > 0, "Expect non-empty monomial");
+   Utilities::MyAssert(powers.size() > 0, "Expect non-empty monomial");
    for (int pow : powers)
    {
       m_powers.push_back(SingleVariableMonomial(pow));
@@ -13,7 +13,7 @@ MultiVariableMonomial::MultiVariableMonomial(std::span<const int> powers)
 
 MultiVariableMonomial::MultiVariableMonomial(std::initializer_list<int> powers)
 {
-   Utilities::Assert(powers.size() > 0, "Expect non-empty monomial");
+   Utilities::MyAssert(powers.size() > 0, "Expect non-empty monomial");
    for (int pow : powers)
    {
       m_powers.push_back(SingleVariableMonomial(pow));
@@ -34,13 +34,13 @@ bool MultiVariableMonomial::HasDerivative() const
 
 bool MultiVariableMonomial::DerivativeAlwaysZero(int var) const
 {
-   Utilities::Assert(var >= 0 && var < m_powers.size());
+   Utilities::MyAssert(var >= 0 && var < m_powers.size());
    return m_powers[var].GetPower() == 0;
 }
 
 double MultiVariableMonomial::Evaluate(std::span<const double>x) const
 {
-   Utilities::Assert(x.size() == GetDomainDimension());
+   Utilities::MyAssert(x.size() == GetDomainDimension());
    double result = 1;
    int pos = 0;
    for (auto& factor : m_powers)
@@ -55,8 +55,8 @@ void MultiVariableMonomial::Derivative(std::span<const double>x, std::span< doub
 {
    const int dim = GetDomainDimension();
 
-   Utilities::Assert(x.size() == GetDomainDimension());
-   Utilities::Assert(dfdx.size() == dim);
+   Utilities::MyAssert(x.size() == GetDomainDimension());
+   Utilities::MyAssert(dfdx.size() == dim);
 
    for (int var = 0; var < dim; ++var)
    {

@@ -1,12 +1,12 @@
 #include "Functions/SingleVariableMonomial.h"
-#include "Utilities/Assert.h"
+#include "Utilities/MyAssert.h"
 
 
 #include <cmath>
 
 SingleVariableMonomial::SingleVariableMonomial(int pow) : m_pow(pow)
 {
-	Utilities::Assert(m_pow >= 0, "Expect non-negative power in monomial");
+	Utilities::MyAssert(m_pow >= 0, "Expect non-negative power in monomial");
 }
 
 double SingleVariableMonomial::Evaluate(double x)const

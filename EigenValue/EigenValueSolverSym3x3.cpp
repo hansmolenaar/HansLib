@@ -1,6 +1,6 @@
 #include "Utilities/EigenValueSolverSym3x3.h"
 
-#include "Utilities/Assert.h"
+#include "Utilities/MyAssert.h"
 #include "Utilities/MathConstants.h"
 #include "MatrixVector/IMatrixSymmetric.h"
 #include "MatrixVector/IMatrixSquareUtils.h"
@@ -34,7 +34,7 @@ double EigenValueSolverSym3x3Utils::FunctionP3Inv::Evaluate(std::span<const doub
 {
    const double pval = m_p.Evaluate(x);
    const double pval3 = pval * pval*pval;
-   Utilities::Assert(pval3 != 0.0, "FunctionP3Inv::Evaluate try to divide by 0");
+   Utilities::MyAssert(pval3 != 0.0, "FunctionP3Inv::Evaluate try to divide by 0");
    return 1 / pval3;
 }
 
@@ -43,7 +43,7 @@ void EigenValueSolverSym3x3Utils::FunctionP3Inv::Derivative(std::span<const doub
 {
    const double pval = m_p.Evaluate(x);
    const double pval4 = pval * pval*pval*pval;
-   Utilities::Assert(pval4 != 0.0, "FunctionP3Inv::Derivative try to divide by 0");
+   Utilities::MyAssert(pval4 != 0.0, "FunctionP3Inv::Derivative try to divide by 0");
    const double factor = -3.0 / pval4;
 
    m_p.Derivative(x, dfdx);
@@ -169,7 +169,7 @@ bool EigenValueSolverSym3x3Utils::AuxilaryEquationRoots::DerivativeAlwaysZero(in
 }
 void EigenValueSolverSym3x3Utils::AuxilaryEquationRoots::Evaluate(std::span<const double>x, std::span< double> y) const
 {
-   Utilities::Assert(x.size() == 1);
+   Utilities::MyAssert(x.size() == 1);
    const double detB = ClipDetB(x[0]);
    const double theta = std::acos(detB / 2) / 3;
 
@@ -189,7 +189,7 @@ void EigenValueSolverSym3x3Utils::AuxilaryEquationRoots::Derivative(std::span<co
 
 
    const double arg = 1 - 0.25*detB * detB;
-   Utilities::Assert(arg != 0.0, "AuxilaryEquationRoots::Derivative try to divide by 0");
+   Utilities::MyAssert(arg != 0.0, "AuxilaryEquationRoots::Derivative try to divide by 0");
    const double dThetadDetB = -1 / std::sqrt(arg) / 6;
 
    Clear(derivs);
@@ -203,7 +203,7 @@ void EigenValueSolverSym3x3Utils::AuxilaryEquationRoots::Derivative(std::span<co
 
 double EigenValueSolverSym3x3Utils::EvaluateQ(std::span<const double>x)
 {
-   Utilities::Assert(x.size() == 6);
+   Utilities::MyAssert(x.size() == 6);
    return (x[0] + x[1] + x[2]) / 3;
 
 }
@@ -212,10 +212,10 @@ double EigenValueSolverSym3x3Utils::EvaluateQ(std::span<const double>x)
 double EigenValueSolverSym3x3Utils::ClipDetB(double detB)
 {
    // Accept some noise in detB calculation
-   Utilities::Assert(std::abs(detB) - 2 < 1.0e-10);
+   Utilities::MyAssert(std::abs(detB) - 2 < 1.0e-10);
    detB = std::min(detB, 2.0);
    detB = std::max(detB, -2.0);
-   Utilities::Assert(std::abs(detB) <= 2.0);
+   Utilities::MyAssert(std::abs(detB) <= 2.0);
    return detB;
 }
 
@@ -239,7 +239,7 @@ bool EigenValueSolverSym3x3Utils::FunctionP::HasDerivative() const
 
 double EigenValueSolverSym3x3Utils::FunctionP::Evaluate(std::span<const double>x)const
 {
-   Utilities::Assert(x.size() == 6);
+   Utilities::MyAssert(x.size() == 6);
    double qval = EvaluateQ(x);
    double sum = 0;
    for (int n = 0; n < 6; ++n)
@@ -252,10 +252,10 @@ double EigenValueSolverSym3x3Utils::FunctionP::Evaluate(std::span<const double>x
 
 void EigenValueSolverSym3x3Utils::FunctionP::Derivative(std::span<const double>x, std::span< double> dfdx)const
 {
-   Utilities::Assert(x.size() == 6);
-   Utilities::Assert(dfdx.size() == 6);
+   Utilities::MyAssert(x.size() == 6);
+   Utilities::MyAssert(dfdx.size() == 6);
    const double fie = Evaluate(x);
-   Utilities::Assert(fie != 0.0, "FunctionP::Derivative try to divide by 0");
+   Utilities::MyAssert(fie != 0.0, "FunctionP::Derivative try to divide by 0");
    const double fac = 1 / (2 * fie) / 6.0;
    const double qval = EvaluateQ(x);
    std::fill_n(dfdx.begin(), 6, 0.0);
@@ -287,7 +287,7 @@ bool EigenValueSolverSym3x3Utils::FunctionP::DerivativeAlwaysZero(int var) const
 
 EigenValueSolverSym3x3Utils::ComponentAMinQI::ComponentAMinQI(int n) : m_n(n)
 {
-   Utilities::Assert(n >= 0 && n < 6);
+   Utilities::MyAssert(n >= 0 && n < 6);
 }
 
 int EigenValueSolverSym3x3Utils::ComponentAMinQI::GetDomainDimension() const
@@ -303,7 +303,7 @@ bool EigenValueSolverSym3x3Utils::ComponentAMinQI::HasDerivative() const
 
 double EigenValueSolverSym3x3Utils::ComponentAMinQI::Evaluate(std::span<const double>x)const
 {
-   Utilities::Assert(x.size() == 6);
+   Utilities::MyAssert(x.size() == 6);
    double result = x[m_n];
    if (m_n < 3)
    {
@@ -344,7 +344,7 @@ void EigenValueSolverSym3x3Utils::ComponentAMinQI::Derivative(std::span<const do
 EigenValueSolverSym3x3Utils::FunctionDetB::FunctionDetB(const IMultiVariableRealValuedFunction& p) :
    m_p(p)
 {
-   Utilities::Assert(m_p.GetDomainDimension() == 6);
+   Utilities::MyAssert(m_p.GetDomainDimension() == 6);
 }
 
 int EigenValueSolverSym3x3Utils::FunctionDetB::GetDomainDimension() const
@@ -406,7 +406,7 @@ bool EigenValueSolverSym3x3::HasDerivative() const
 void EigenValueSolverSym3x3::Evaluate(std::span<const double> x, std::span< double> eigenValues) const
 {
    const double c_eps = 1.0e-10;
-   Utilities::Assert(x.size() == 6);
+   Utilities::MyAssert(x.size() == 6);
    const double q = (x[0] + x[1] + x[2]) / 3;
    EigenValueSolverSym3x3Utils::FunctionP pFie;
    const double p = pFie.Evaluate(x);
@@ -435,9 +435,9 @@ void EigenValueSolverSym3x3::Evaluate(std::span<const double> x, std::span< doub
 void EigenValueSolverSym3x3::Derivative(std::span<const double>x, IMatrix& dfdx) const
 {
    const double c_eps = 1.0e-10;
-   Utilities::Assert(x.size() == 6);
-   Utilities::Assert(dfdx.GetRowDimension() == 3);
-   Utilities::Assert(dfdx.GetColDimension() == 6);
+   Utilities::MyAssert(x.size() == 6);
+   Utilities::MyAssert(dfdx.GetRowDimension() == 3);
+   Utilities::MyAssert(dfdx.GetColDimension() == 6);
 
    EigenValueSolverSym3x3Utils::FunctionP pFie;
    const double pEval = pFie.Evaluate(x);

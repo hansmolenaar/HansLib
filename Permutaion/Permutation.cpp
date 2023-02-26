@@ -1,5 +1,5 @@
 #include "Permutation.h"
-#include "Utilities/Assert.h"
+#include "Utilities/MyAssert.h"
 #include "PermutationUtils.h"
 #include "Utilities/BoundsCheck.h"
 #include "Utilities/Defines.h"
@@ -12,7 +12,7 @@ Permutation::Permutation(std::vector<int>&& permut) :
 
 Permutation Permutation::CreateTrivial(int cardinality)
 {
-   Utilities::Assert(cardinality > 0);
+   Utilities::MyAssert(cardinality > 0);
    std::vector<int> permut(cardinality);
    for (int n = 0; n < cardinality; ++n) permut[n] = n;
    return Permutation(std::move(permut));
@@ -31,15 +31,15 @@ int Permutation::getCardinality() const
 Permutation Permutation::Create(std::span<const int> permutSpan)
 {
    std::vector<int> permut(permutSpan.begin(), permutSpan.end());
-   Utilities::Assert(PermutationUtils::IsPermutation(permut));
+   Utilities::MyAssert(PermutationUtils::IsPermutation(permut));
    return Permutation(std::move(permut));
 }
 
 Permutation Permutation::CreateFromCycle(int cardinality, std::span<const int> cycle)
 {
-   Utilities::Assert(cardinality > 0);
+   Utilities::MyAssert(cardinality > 0);
    const auto bounds = BoundsCheck<int>::Create(0, cardinality - 1);
-   Utilities::Assert(str::all_of(cycle, bounds));
+   Utilities::MyAssert(str::all_of(cycle, bounds));
    std::vector<int> permut(cardinality, -1);
    for (size_t n = 0; n < cycle.size(); ++n)
    {

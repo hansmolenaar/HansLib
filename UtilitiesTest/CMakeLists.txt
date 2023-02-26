@@ -1,14 +1,11 @@
 project(UtilitiesTest)
 
 file(GLOB SOURCES CONFIGURE_DEPENDS "*.cpp")
-
-# Setup testing
-enable_testing()
-find_package(GTest REQUIRED)
-include_directories(${GTEST_INCLUDE_DIR})
-
 add_executable(${PROJECT_NAME} ${SOURCES})
-target_include_directories(${PROJECT_NAME} PRIVATE ../)
 
-# Link test executable against gtest & gtest_main
-target_link_libraries(${PROJECT_NAME} Utilities GTest::GTest GTest::Main)
+set(include_dirs ${CMAKE_INCLUDE_DIR} ${CMAKE_INCLUDE_DIR}/Utilities )
+message( "include_dirs" ${include_dirs})
+target_include_directories(${PROJECT_NAME} PRIVATE ${include_dirs})
+
+target_link_libraries(${PROJECT_NAME} Utilities ${GTestLibs})
+gtest_discover_tests(${PROJECT_NAME})

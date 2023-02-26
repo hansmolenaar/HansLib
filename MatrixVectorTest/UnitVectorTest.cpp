@@ -2,7 +2,7 @@
 
 #include "MatrixVector/UnitVector.h"
 #include "IMatrixTest.h"
-#include "Utilities/Assert.h"
+#include "Utilities/MyAssert.h"
 #include "Utilities/MathConstants.h"
 
 namespace {

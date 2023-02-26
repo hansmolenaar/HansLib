@@ -22,7 +22,7 @@ namespace
 
    std::unique_ptr<ITopologicalAdjacency> CreateEdge2Corner(TopologyDimension dim)
    {
-      Utilities::Assert(dim > TopologyDimensionDef::Edge);
+      Utilities::MyAssert(dim > TopologyDimensionDef::Edge);
       const auto mi = MultiIndex<int>::Create(std::vector<int>(dim, 2));
       std::set<std::pair<int, int>> edges;
       for (auto crnr = 0; crnr < mi.getFlatSize(); ++crnr)
@@ -51,10 +51,10 @@ namespace
 
    std::unique_ptr<ITopologicalAdjacency> CreateToEdge(const ITopologicalAdjacency& toCorner, const ITopologicalAdjacency& edgeToCorner, const std::vector<int>& counts)
    {
-      Utilities::Assert(toCorner.getDimensionLow() == TopologyDimensionDef::Corner);
-      Utilities::Assert(toCorner.getDimensionHigh() > TopologyDimensionDef::Edge);
-      Utilities::Assert(edgeToCorner.getDimensionLow() == TopologyDimensionDef::Corner);
-      Utilities::Assert(edgeToCorner.getDimensionHigh() == TopologyDimensionDef::Edge);
+      Utilities::MyAssert(toCorner.getDimensionLow() == TopologyDimensionDef::Corner);
+      Utilities::MyAssert(toCorner.getDimensionHigh() > TopologyDimensionDef::Edge);
+      Utilities::MyAssert(edgeToCorner.getDimensionLow() == TopologyDimensionDef::Corner);
+      Utilities::MyAssert(edgeToCorner.getDimensionHigh() == TopologyDimensionDef::Edge);
       std::map<int, std::vector<int>> toEdge;
       for (auto id = 0; id < counts.at(toCorner.getDimensionHigh()); ++id)
       {
@@ -76,7 +76,7 @@ namespace
 
    std::unique_ptr<ITopologicalAdjacency> CreateHyperFace2Corner(TopologyDimension dim)
    {
-      Utilities::Assert(dim > TopologyDimensionDef::Edge);
+      Utilities::MyAssert(dim > TopologyDimensionDef::Edge);
       const int countHi = 2 * dim;
       const int countLo = 1 << dim;
       const auto mi = MultiIndex<int>::Create(std::vector<int>(dim, 2));

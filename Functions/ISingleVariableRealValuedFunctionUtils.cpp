@@ -2,7 +2,7 @@
 #include "Functions/ISingleVariableRealValuedFunction.h"
 #include "NonLinearSolver/NonLinearSolverStrategyResidualReduction.h"
 #include "NonLinearSolver/NonLinearSolver.h"
-#include "Utilities/Assert.h"
+#include "Utilities/MyAssert.h"
 #include "Utilities/MyException.h"
 #include "Utilities/Plotting.h"
 
@@ -40,14 +40,14 @@ void ISingleVariableRealValuedFunctionUtils::CheckDerivative(ISingleVariableReal
       NonLinearSolverStrategyResidualReduction strategy(NonLinearSolverConvergenceCriteria(reduction, maxIter));
       std::array<double, 1> sol = { x + delx };
       NonLinearSolverStatus status = NonLinearSolver(fie).Solve(rhs, sol, strategy);
-      Utilities::Assert(status == NonLinearSolverStatus::Converged, "Problem with derivative! ");
+      Utilities::MyAssert(status == NonLinearSolverStatus::Converged, "Problem with derivative! ");
    }
 }
 
 void ISingleVariableRealValuedFunctionUtils::ToFile(const ISingleVariableRealValuedFunction& fie, double xmin, double xmax, int nPoints, const std::string& functionName)
 {
-   Utilities::Assert(nPoints > 1);
-   Utilities::Assert(xmax > xmin);
+   Utilities::MyAssert(nPoints > 1);
+   Utilities::MyAssert(xmax > xmin);
 
    std::ofstream ofs(Plotting::GetFile(functionName));
    auto function = [&fie](double x) {return fie.Evaluate(x); };
@@ -59,8 +59,8 @@ void ISingleVariableRealValuedFunctionUtils::ToFile(const ISingleVariableRealVal
 
 void ISingleVariableRealValuedFunctionUtils::ToFile(const ISingleVariableRealValuedFunction& expect, const ISingleVariableRealValuedFunction& approximate, double xmin, double xmax, int nPoints, const std::string& functionName)
 {
-   Utilities::Assert(nPoints > 1);
-   Utilities::Assert(xmax > xmin);
+   Utilities::MyAssert(nPoints > 1);
+   Utilities::MyAssert(xmax > xmin);
 
    std::ofstream ofs(Plotting::GetFile(functionName));
    const auto eval = [&expect](double x) {return expect.Evaluate(x); };

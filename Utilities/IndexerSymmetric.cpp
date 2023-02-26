@@ -1,23 +1,23 @@
-#include "Utilities/IndexerSymmetric.h"
-#include "Utilities/Assert.h"
+#include "IndexerSymmetric.h"
+#include "MyAssert.h"
 
 #include <tuple>
 
 IndexerSymmetric::IndexerSymmetric(int dim) : m_dim(dim)
 {
-	Utilities::Assert(dim > 0);
+	Utilities::MyAssert(dim > 0);
 }
 
 int IndexerSymmetric::ToFlat(std::initializer_list<int> ijk) const
 {
-	Utilities::Assert(2 == ijk.size());
+	Utilities::MyAssert(2 == ijk.size());
 	return ToFlat(*ijk.begin(), *(ijk.begin()+1));
 }
 
 
 int IndexerSymmetric::ToFlat(int row, int col) const
 {
-	Utilities::Assert(row >= 0 && col >= 0 && row < m_dim && col < m_dim);
+	Utilities::MyAssert(row >= 0 && col >= 0 && row < m_dim && col < m_dim);
 	if (row < col) 
 	{
 		return col * (col + 1) / 2 + row;
