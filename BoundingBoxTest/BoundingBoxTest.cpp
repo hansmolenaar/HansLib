@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "BoundingBox/BoundingBox.h"
+#include "BoundingBox.h"
 #include "Point.h" 
 
 TEST(IntervalTest, Basic1)

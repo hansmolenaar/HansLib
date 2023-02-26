@@ -1,7 +1,7 @@
 #pragma once
 
 #include "IMultiVariableRealValuedFunction.h"
-#include "Interval/Interval.h"
+#include "Interval.h"
 #include <memory>
 #include <vector>
 #include <functional>

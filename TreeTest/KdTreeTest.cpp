@@ -3,7 +3,7 @@
 #include "Defines.h"
 #include "Tree/KdTree.h"
 #include "Point.h"
-#include "BoundingBox/BoundingBox.h"
+#include "BoundingBox.h"
 #include "Tree/KdTreeTraversorPointsInRange.h"
 #include <random>
 

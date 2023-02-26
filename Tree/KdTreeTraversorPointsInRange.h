@@ -1,7 +1,7 @@
 #pragma once
 
 #include "IKdTreeTraversor.h"
-#include "BoundingBox/BoundingBox.h"
+#include "BoundingBox.h"
 
 #include <vector>
 

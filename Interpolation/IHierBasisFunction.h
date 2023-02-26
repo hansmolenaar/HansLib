@@ -2,7 +2,7 @@
 
 #include "Functions/IMultiVariableRealValuedFunction.h"
 #include "HierMultiIndex.h"
-#include "Interval/Interval.h"
+#include "Interval.h"
 
 #include <memory>
 

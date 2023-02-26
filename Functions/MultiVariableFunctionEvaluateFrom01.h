@@ -1,7 +1,7 @@
 #pragma once
 
 #include "IMultiVariableFunctionEvaluate.h"
-#include "Interval/Interval.h"
+#include "Interval.h"
 #include <memory>
 #include <vector>
 

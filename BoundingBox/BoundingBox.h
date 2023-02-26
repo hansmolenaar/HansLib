@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Defines.h"
-#include "Interval/Interval.h"
+#include "Interval.h"
 #include "MyAssert.h"
 #include "Point.h"
 

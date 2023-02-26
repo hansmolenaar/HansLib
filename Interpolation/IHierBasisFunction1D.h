@@ -2,7 +2,7 @@
 #include "HierLevelIndex.h"
 #include "Functions/ISingleVariableRealValuedFunction.h"
 #include "MyException.h"
-#include "Interval/Interval.h"
+#include "Interval.h"
 #include <cstddef>
 
 class  IHierBasisFunction1D : public ISingleVariableRealValuedFunction

@@ -27,4 +27,10 @@ add_subdirectory(UtilitiesTest)
 add_subdirectory(Point)
 add_subdirectory(PointTest)
 
+add_subdirectory(Interval)
+add_subdirectory(IntervalTest)
+
+add_subdirectory(BoundingBox)
+add_subdirectory(BoundingBoxTest)
+
 

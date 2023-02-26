@@ -13,7 +13,7 @@
 #include "Functions/MultiVariableFunctionEvaluateFrom01.h"
 #include "Functions/MultiVariableFunctionExamples.h"
 #include "Functions/MultiVariableRealValuedFunctionNoDerivatives.h"
-#include "Interval/Interval.h"
+#include "Interval.h"
 #include "Interpolation/NodeRefinePredicateFactoryByLevel.h"
 
 #include "Plotting.h"

@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "Interval/Interval.h"
+#include "Interval.h"
 
 
 TEST(IntervalTest, Basic1)
