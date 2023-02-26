@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
-#include "Functions/RealFunctionNull.h"
-#include "MatrixVector/MatrixDense.h"
+#include "RealFunctionNull.h"
+#include "MatrixDense.h"
 
 
 TEST(RealFunctionNullTest, Test1)

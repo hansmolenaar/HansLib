@@ -1,7 +1,7 @@
-#include "MatrixVector/IdentityMatrix.h"
+#include "IdentityMatrix.h"
 
 #include "MyAssert.h"
-#include "MatrixVector/IMatrixUtils.h"
+#include "IMatrixUtils.h"
 
 #include <map>
 #include <memory>

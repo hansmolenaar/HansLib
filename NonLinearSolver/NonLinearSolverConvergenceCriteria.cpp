@@ -1,4 +1,4 @@
-#include "NonLinearSolver/NonLinearSolverConvergenceCriteria.h"
+#include "NonLinearSolverConvergenceCriteria.h"
 
 NonLinearSolverConvergenceCriteria::NonLinearSolverConvergenceCriteria(double reduction, int maxIter) :
 	m_rsdReduction(reduction), m_maxIter(maxIter)

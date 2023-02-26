@@ -1,9 +1,9 @@
 #include <gtest/gtest.h>
 
-#include "MatrixVector/IMatrix.h"
-#include "MatrixVector/IMatrixUtils.h"
-#include "MatrixVector/MatrixSquare.h"
-#include "MatrixVector/MatrixDense.h"
+#include "IMatrix.h"
+#include "IMatrixUtils.h"
+#include "MatrixSquare.h"
+#include "MatrixDense.h"
 
 namespace IMatrixTest
 {

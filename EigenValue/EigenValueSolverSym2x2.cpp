@@ -1,23 +1,23 @@
 #include "EigenValueSolverSym2x2.h"
 #include "KelvinRepr/MatrixKelvinRepr2.h"
-#include "MatrixVector/IMatrixUtils.h"
+#include "IMatrixUtils.h"
 #include "MyAssert.h"
 
 #if 0
 #include "MathConstants.h"
-#include "MatrixVector/IMatrixSymmetric.h"
-#include "MatrixVector/IMatrixSquareUtils.h"
-#include "MatrixVector/MatrixKelvinRepr3.h"
-#include "MatrixVector/IMatrixKelvinReprUtils.h"
-#include "Functions/IRealFunctionUtils.h"
-#include "Functions/MultiVariableVectorComponentFunction.h"
-#include "Functions/MultiVariableRealValuedFunction.h"
-#include "Functions/MultiVariableVectorValuedFunction.h"
-#include "Functions/MultiVariableMultiplicativeInverseFunction.h"
-#include "Functions/MultiVariableProductFunction.h"
+#include "IMatrixSymmetric.h"
+#include "IMatrixSquareUtils.h"
+#include "MatrixKelvinRepr3.h"
+#include "IMatrixKelvinReprUtils.h"
+#include "IRealFunctionUtils.h"
+#include "MultiVariableVectorComponentFunction.h"
+#include "MultiVariableRealValuedFunction.h"
+#include "MultiVariableVectorValuedFunction.h"
+#include "MultiVariableMultiplicativeInverseFunction.h"
+#include "MultiVariableProductFunction.h"
 
 
-#include "MatrixVector/MatrixDense.h"
+#include "MatrixDense.h"
 #endif
 
 #include <numeric>

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "IRealFunction.h"
-#include "MatrixVector/IMatrix.h"
+#include "IMatrix.h"
 #include "IMultiVariableFunctionEvaluate.h"
 #include <span>
 

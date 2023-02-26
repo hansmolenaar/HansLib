@@ -1,6 +1,6 @@
-#include "MatrixVector/IMatrixUtils.h"
+#include "IMatrixUtils.h"
 
-#include "MatrixVector/IMatrix.h"
+#include "IMatrix.h"
 #include "MyAssert.h"
 
 #include <span>

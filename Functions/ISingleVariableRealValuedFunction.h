@@ -3,7 +3,7 @@
 #include <span>
 
 #include "IMultiVariableRealValuedFunction.h"
-#include "MatrixVector/MatrixSquare.h"
+#include "MatrixSquare.h"
 #include "MyAssert.h"
 
 class ISingleVariableRealValuedFunction :public IMultiVariableRealValuedFunction

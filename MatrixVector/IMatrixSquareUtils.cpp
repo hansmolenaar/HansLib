@@ -1,6 +1,6 @@
-#include "MatrixVector/IMatrixSquareUtils.h"
+#include "IMatrixSquareUtils.h"
 
-#include "MatrixVector/IMatrixSquare.h"
+#include "IMatrixSquare.h"
 #include "MyAssert.h"
 
 #include <algorithm>

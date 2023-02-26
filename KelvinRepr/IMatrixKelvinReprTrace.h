@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Functions/MultiVariableRealValuedFunction.h"
+#include "MultiVariableRealValuedFunction.h"
 
 class IMatrixKelvinRepr;
 

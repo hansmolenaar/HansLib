@@ -1,9 +1,9 @@
-#include "Functions/RealFunctionNull.h"
+#include "RealFunctionNull.h"
 
 #include "MyAssert.h"
-#include "Functions/IRealFunctionUtils.h"
-#include "MatrixVector/IMatrix.h"
-#include "MatrixVector/IMatrixUtils.h"
+#include "IRealFunctionUtils.h"
+#include "IMatrix.h"
+#include "IMatrixUtils.h"
 
 #include <algorithm>
 

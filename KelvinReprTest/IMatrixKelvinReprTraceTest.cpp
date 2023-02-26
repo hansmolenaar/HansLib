@@ -3,7 +3,7 @@
 #include "KelvinRepr/IMatrixKelvinReprTrace.h"
 #include "KelvinRepr/MatrixKelvinRepr1.h"
 #include "KelvinRepr/IMatrixKelvinReprUtils.h"
-#include "MatrixVector/MatrixDense.h"
+#include "MatrixDense.h"
 
 
 namespace {

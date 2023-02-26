@@ -1,7 +1,7 @@
 #pragma once
 
 #include "IHierBasisFunction.h"
-#include "Functions/IMultiVariableRealValuedFunction.h"
+#include "IMultiVariableRealValuedFunction.h"
 #include "HierMultiIndex.h"
 #include "MultiIndex.h"
 #include "Iota.h"

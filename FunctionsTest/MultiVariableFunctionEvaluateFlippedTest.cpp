@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
 
 
-#include "Functions/MultiVariableFunctionEvaluateFlipped.h"
-#include "Functions//MultiVariableFunctionExamples.h"
+#include "MultiVariableFunctionEvaluateFlipped.h"
+#include "/MultiVariableFunctionExamples.h"
 #include "Functors.h"
 #include <array>
 

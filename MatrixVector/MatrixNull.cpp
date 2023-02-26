@@ -1,4 +1,4 @@
-#include "MatrixVector/MatrixNull.h"
+#include "MatrixNull.h"
 
 #include <exception>
 

@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
-#include "MatrixVector/RowColOfMatrix.h"
-#include "MatrixVector/MatrixSquare.h"
+#include "RowColOfMatrix.h"
+#include "MatrixSquare.h"
 
 const double c_eps = 1.0e-10;
 

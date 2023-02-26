@@ -1,5 +1,5 @@
-#include "Functions/SingleVariableFunctionExamples.h"
-#include "Functions/SingleVariableRealValuedFunction.h"
+#include "SingleVariableFunctionExamples.h"
+#include "SingleVariableRealValuedFunction.h"
 #include "BoundsCheck.h"
 
 

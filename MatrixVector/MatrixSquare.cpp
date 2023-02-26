@@ -1,6 +1,6 @@
-#include "MatrixVector/MatrixSquare.h"
+#include "MatrixSquare.h"
 #include "MyAssert.h"
-#include "MatrixVector/IMatrixUtils.h"
+#include "IMatrixUtils.h"
 
 
 MatrixSquare::MatrixSquare(int dim) : m_matrix(dim*dim), m_inverse(dim*dim), m_pivot(dim), m_indexer(dim, dim), m_dim(dim), m_dirty(true)

@@ -1,4 +1,4 @@
-#include "Functions/IMultiVariableRealValuedFunction.h"
+#include "IMultiVariableRealValuedFunction.h"
 #include "MyAssert.h"
 
 #include <vector>

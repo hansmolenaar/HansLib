@@ -1,11 +1,11 @@
 #include <gtest/gtest.h>
 
 
-#include "MatrixVector/MatrixSquare.h"
-#include "MatrixVector/IMatrixUtils.h"
-#include "MatrixVector/IdentityMatrix.h"
-#include "MatrixVector/SubMatrix.h"
-#include "MatrixVector/MatrixDense.h"
+#include "MatrixSquare.h"
+#include "IMatrixUtils.h"
+#include "IdentityMatrix.h"
+#include "SubMatrix.h"
+#include "MatrixDense.h"
 
 namespace {
    const double c_eps = 1.0e-12;

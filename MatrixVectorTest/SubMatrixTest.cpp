@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
 
 #include "Defines.h"
-#include "MatrixVector/SubMatrix.h"
-#include "MatrixVector/MatrixSquare.h"
+#include "SubMatrix.h"
+#include "MatrixSquare.h"
 
 #include <numeric>
 TEST(SubMatrixTest, Test1)

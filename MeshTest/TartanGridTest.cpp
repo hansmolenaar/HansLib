@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "Mesh/TartanGrid.h"
+#include "TartanGrid.h"
 
 
 TEST(TartanGridTest, 1D)

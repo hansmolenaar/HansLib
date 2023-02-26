@@ -2,7 +2,7 @@
 
 
 #include "KelvinRepr/MatrixKelvinRepr1.h"
-#include "MatrixVector/IMatrixSquareUtils.h"
+#include "IMatrixSquareUtils.h"
 #include "IMatrixKelvinReprTest.h"
 
 TEST(MatrixKelvinRepr1Test, TestInterface)

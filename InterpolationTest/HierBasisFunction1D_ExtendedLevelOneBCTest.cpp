@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "Interpolation/HierBasisFunction1D_ExtendedLevelOneBC.h"
-#include "Functions/ISingleVariableRealValuedFunctionUtils.h"
+#include "ISingleVariableRealValuedFunctionUtils.h"
 #include "MyException.h"
 #include "IHierBasisFunction1DTest.h"
 

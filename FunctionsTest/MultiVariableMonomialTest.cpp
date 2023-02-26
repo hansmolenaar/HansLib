@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
-#include "Functions/MultiVariableMonomial.h"
-#include "Functions/IRealFunctionUtils.h"
+#include "MultiVariableMonomial.h"
+#include "IRealFunctionUtils.h"
 
 #include <array>
 

@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
-#include "Functions/MultiVariableFunctionEvaluateFrom01.h"
-#include "Functions/MultiVariableFunctionExamples.h"
+#include "MultiVariableFunctionEvaluateFrom01.h"
+#include "MultiVariableFunctionExamples.h"
 #include "Functors.h"
 #include <array>
 

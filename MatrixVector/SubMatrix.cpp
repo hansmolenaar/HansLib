@@ -1,7 +1,7 @@
-#include "MatrixVector/SubMatrix.h"
+#include "SubMatrix.h"
 #include "MyAssert.h"
 
-#include "MatrixVector/IMatrixUtils.h"
+#include "IMatrixUtils.h"
 
 
 

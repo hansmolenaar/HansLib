@@ -1,9 +1,9 @@
-#include "Functions/MultiVariableRealValuedFunction.h"
+#include "MultiVariableRealValuedFunction.h"
 #include "MyAssert.h"
-#include "MatrixVector/IMatrix.h"
-#include "MatrixVector/MatrixDense.h"
-#include "MatrixVector/IMatrixUtils.h"
-#include "Functions/IRealFunctionUtils.h"
+#include "IMatrix.h"
+#include "MatrixDense.h"
+#include "IMatrixUtils.h"
+#include "IRealFunctionUtils.h"
 
 
 MultiVariableRealValuedFunction::MultiVariableRealValuedFunction(

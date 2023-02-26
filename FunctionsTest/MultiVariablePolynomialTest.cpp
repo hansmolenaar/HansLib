@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
 
-#include "Functions/ISingleVariableRealValuedFunction.h"
-#include "Functions/MultiVariablePolynomial.h"
-#include "Functions/IRealFunctionUtils.h"
+#include "ISingleVariableRealValuedFunction.h"
+#include "MultiVariablePolynomial.h"
+#include "IRealFunctionUtils.h"
 
 #include <array>
 

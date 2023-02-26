@@ -2,9 +2,9 @@
 
 #include "Interpolation/LagrangeInterpolation.h"
 #include "Interpolation/EquidistantPoints.h"
-#include "Functions/SingleVariableFunctionExamples.h"
+#include "SingleVariableFunctionExamples.h"
 #include "Plotting.h"
-#include "Functions/ISingleVariableRealValuedFunctionUtils.h"
+#include "ISingleVariableRealValuedFunctionUtils.h"
 #include <Interpolation/ChebyshevPoints.h>
 
 TEST(LagrangeInterpolationTest, Basics)

@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
 
-#include "Functions/ISingleVariableRealValuedFunctionUtils.h"
-#include "Functions/ISingleVariableRealValuedFunction.h"
-#include "Functions/SingleVariablePolynomial.h"
+#include "ISingleVariableRealValuedFunctionUtils.h"
+#include "ISingleVariableRealValuedFunction.h"
+#include "SingleVariablePolynomial.h"
 
 
 TEST(SingleVariablePolynomial, Test0)

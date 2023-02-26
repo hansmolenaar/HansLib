@@ -1,4 +1,4 @@
-#include "MatrixVector/MatrixDense.h"
+#include "MatrixDense.h"
 
 MatrixDense::MatrixDense(int numRows, int numCols) : m_indexer(numRows, numCols), m_entries(numRows*numCols)
 {

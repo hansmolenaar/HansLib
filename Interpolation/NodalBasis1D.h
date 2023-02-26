@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Functions/ISingleVariableRealValuedFunction.h"
-#include "Mesh/TartanGrid.h"
+#include "ISingleVariableRealValuedFunction.h"
+#include "TartanGrid.h"
 
 class NodalBasis1D : ISingleVariableRealValuedFunction
 {

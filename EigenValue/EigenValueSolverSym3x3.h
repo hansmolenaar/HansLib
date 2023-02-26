@@ -2,7 +2,7 @@
 
 #include <array>
 #include <span>
-#include "Functions/MultiVariableRealValuedFunction.h"
+#include "MultiVariableRealValuedFunction.h"
 
 class MatrixKelvinRepr3;
 class IRealFunction;

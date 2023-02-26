@@ -1,9 +1,9 @@
-#include "Functions/RealFunctionCompose.h"
+#include "RealFunctionCompose.h"
 
 #include "MyAssert.h"
-#include "MatrixVector/MatrixDense.h"
-#include "MatrixVector/IMatrixUtils.h"
-#include "Functions/IRealFunctionUtils.h"
+#include "MatrixDense.h"
+#include "IMatrixUtils.h"
+#include "IRealFunctionUtils.h"
 
 
 // f: R^k-> R^n

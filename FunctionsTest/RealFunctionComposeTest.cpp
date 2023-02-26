@@ -1,14 +1,14 @@
 #include <gtest/gtest.h>
 
-#include "Functions/RealFunctionCompose.h"
-#include "Functions/MultiVariableMonomial.h"
-#include "Functions/IRealFunctionUtils.h"
-#include "Functions/MultiVariableRealValuedFunction.h"
-#include "Functions/MultiVariableVectorValuedFunction.h"
-#include "Functions/RealFunctionNull.h"
-#include "Functions/SingleVariableMonomial.h"
-#include "Functions/SingleVariableRealValuedFunction.h"
-#include "MatrixVector/MatrixDense.h"
+#include "RealFunctionCompose.h"
+#include "MultiVariableMonomial.h"
+#include "IRealFunctionUtils.h"
+#include "MultiVariableRealValuedFunction.h"
+#include "MultiVariableVectorValuedFunction.h"
+#include "RealFunctionNull.h"
+#include "SingleVariableMonomial.h"
+#include "SingleVariableRealValuedFunction.h"
+#include "MatrixDense.h"
 
 #include <array>
 #include <memory>

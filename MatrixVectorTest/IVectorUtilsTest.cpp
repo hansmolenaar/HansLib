@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
 
 
-#include "MatrixVector/IVectorUtils.h"
-#include "MatrixVector/VectorWrapper.h"
+#include "IVectorUtils.h"
+#include "VectorWrapper.h"
 
 static const double eps = 1.0e-10;
 

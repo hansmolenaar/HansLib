@@ -1,10 +1,10 @@
 #include <gtest/gtest.h>
 
-#include "MatrixVector/IMatrixRotation.h"
-#include "MatrixVector/IMatrixSquareUtils.h"
-#include "MatrixVector/MatrixSquare.h"
-#include "MatrixVector/IdentityMatrix.h"
-#include "MatrixVector/UnitVector.h"
+#include "IMatrixRotation.h"
+#include "IMatrixSquareUtils.h"
+#include "MatrixSquare.h"
+#include "IdentityMatrix.h"
+#include "UnitVector.h"
 
 namespace {
    const double eps = 1.0e-12;

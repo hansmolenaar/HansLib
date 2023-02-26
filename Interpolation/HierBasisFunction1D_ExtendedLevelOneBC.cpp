@@ -1,5 +1,5 @@
 #include "HierBasisFunction1D_ExtendedLevelOneBC.h"
-#include "Functions/HatFunction.h"
+#include "HatFunction.h"
 #include "Pow2.h"
 #include "HierBasisFunction1D_HomogenousBC.h"
 

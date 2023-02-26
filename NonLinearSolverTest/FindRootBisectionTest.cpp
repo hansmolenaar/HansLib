@@ -1,9 +1,9 @@
 #include <gtest/gtest.h>
 
-#include "NonLinearSolver/FindRootBisection.h"
+#include "FindRootBisection.h"
 
-#include "Functions/SingleVariableMonomial.h"
-#include "NonLinearSolver/NonLinearSolverStrategyResidualReduction.h"
+#include "SingleVariableMonomial.h"
+#include "NonLinearSolverStrategyResidualReduction.h"
 
 const double c_eps = 1.0e-10;
 

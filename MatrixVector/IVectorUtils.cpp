@@ -1,6 +1,6 @@
-#include "MatrixVector/IVectorUtils.h"
+#include "IVectorUtils.h"
 
-#include "MatrixVector/IVector.h"
+#include "IVector.h"
 
 
 IVector& operator*=(IVector& vec, double factor)

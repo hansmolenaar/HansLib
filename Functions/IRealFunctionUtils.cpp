@@ -1,12 +1,12 @@
-#include "Functions/IRealFunctionUtils.h"
-#include "Functions/IRealFunction.h"
-#include "MatrixVector/MatrixDense.h"
-#include "Functions/SingleVariableRealValuedFunction.h"
-#include "Functions/ISingleVariableRealValuedFunctionUtils.h"
+#include "IRealFunctionUtils.h"
+#include "IRealFunction.h"
+#include "MatrixDense.h"
+#include "SingleVariableRealValuedFunction.h"
+#include "ISingleVariableRealValuedFunctionUtils.h"
 #include "MyAssert.h"
-#include "Functions/MultiVariableRealValuedFunction.h"
-#include "Functions/RealFunctionAdd.h"
-#include "MatrixVector/IMatrixUtils.h"
+#include "MultiVariableRealValuedFunction.h"
+#include "RealFunctionAdd.h"
+#include "IMatrixUtils.h"
 
 #include <vector>
 

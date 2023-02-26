@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Mesh/IMesh.h"
+#include "IMesh.h"
 #include "GridTopology.h"
 #include "MultiIndex.h"
 #include "MyException.h"

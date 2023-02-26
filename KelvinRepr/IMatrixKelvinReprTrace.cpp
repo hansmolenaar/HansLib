@@ -1,8 +1,8 @@
 #include "IMatrixKelvinReprTrace.h"
 
 #include "IMatrixKelvinRepr.h"
-#include "MatrixVector/IMatrix.h"
-#include "MatrixVector/IMatrixUtils.h"
+#include "IMatrix.h"
+#include "IMatrixUtils.h"
 #include "MyAssert.h"
 
 #include <algorithm>

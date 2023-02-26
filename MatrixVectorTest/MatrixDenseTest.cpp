@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "MatrixVector/MatrixDense.h"
+#include "MatrixDense.h"
 #include "IMatrixTest.h"
 
 

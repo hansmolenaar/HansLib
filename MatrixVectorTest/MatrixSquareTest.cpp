@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
-#include "MatrixVector/MatrixSquare.h"
-#include "MatrixVector/IMatrixUtils.h"
+#include "MatrixSquare.h"
+#include "IMatrixUtils.h"
 #include "IMatrixTest.h"
 
 #include <span>

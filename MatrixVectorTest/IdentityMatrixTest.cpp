@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "MatrixVector/IdentityMatrix.h"
+#include "IdentityMatrix.h"
 #include "IMatrixTest.h"
 
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Functions/IMultiVariableRealValuedFunction.h"
+#include "IMultiVariableRealValuedFunction.h"
 #include "HierMultiIndex.h"
 #include "Interval.h"
 

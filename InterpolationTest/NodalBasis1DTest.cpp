@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "Interpolation/NodalBasis1D.h"
-#include "Mesh/TartanGrid.h"
+#include "TartanGrid.h"
 
 
 TEST(NodalBasis1DTest, Case1)

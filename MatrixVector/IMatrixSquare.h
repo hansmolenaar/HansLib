@@ -1,6 +1,6 @@
 #pragma once
 
-#include "MatrixVector/IMatrix.h"
+#include "IMatrix.h"
 
 class IMatrixSquare : public IMatrix
 {

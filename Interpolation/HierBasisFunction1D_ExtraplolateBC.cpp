@@ -1,6 +1,6 @@
 #include "HierBasisFunction1D_ExtraplolateBC.h"
 #include "Pow2.h"
-#include "Functions/HatFunction.h"
+#include "HatFunction.h"
 #include "HierBasisFunction1D_HomogenousBC.h"
 
 HierBasisFunction1D_ExtraplolateBC::HierBasisFunction1D_ExtraplolateBC(HierLevelIndex li) : m_levelIndex(li)

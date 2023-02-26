@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
 
-#include "Functions/ISingleVariableRealValuedFunctionUtils.h"
-#include "Functions/ISingleVariableRealValuedFunction.h"
-#include "Functions/SingleVariableMonomial.h"
+#include "ISingleVariableRealValuedFunctionUtils.h"
+#include "ISingleVariableRealValuedFunction.h"
+#include "SingleVariableMonomial.h"
 
 
 TEST(SingleVariableMonomialTest, Test0)

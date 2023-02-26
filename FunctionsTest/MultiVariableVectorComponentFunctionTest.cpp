@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "Functions/MultiVariableVectorComponentFunction.h"
+#include "MultiVariableVectorComponentFunction.h"
 
 
 

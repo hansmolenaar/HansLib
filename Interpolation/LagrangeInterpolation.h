@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Functions/ISingleVariableRealValuedFunction.h"
+#include "ISingleVariableRealValuedFunction.h"
 
 class LagrangeInterpolation : public ISingleVariableRealValuedFunction
 {

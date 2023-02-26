@@ -1,4 +1,4 @@
-#include "Functions/MultiVariableProductFunction.h"
+#include "MultiVariableProductFunction.h"
 #include "MyAssert.h"
 
 #include <algorithm>

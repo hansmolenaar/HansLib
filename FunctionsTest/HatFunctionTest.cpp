@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
-#include "Functions/HatFunction.h"
-#include "Functions/ISingleVariableRealValuedFunctionUtils.h"
+#include "HatFunction.h"
+#include "ISingleVariableRealValuedFunctionUtils.h"
 
 inline constexpr double Epsilon = 1.0e-12;
 

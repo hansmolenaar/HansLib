@@ -1,8 +1,8 @@
-#include "NonLinearSolver/FindRootBisection.h"
+#include "FindRootBisection.h"
 
-#include "Functions/ISingleVariableRealValuedFunction.h"
-#include "NonLinearSolver/INonLinearSolverStrategy.h"
-#include "Functions/ISingleVariableRealValuedFunctionUtils.h"
+#include "ISingleVariableRealValuedFunction.h"
+#include "INonLinearSolverStrategy.h"
+#include "ISingleVariableRealValuedFunctionUtils.h"
 #include "MyAssert.h"
 
 NonLinearSolverStatus FindRootBisection::FindInInterval(ISingleVariableRealValuedFunction& fie, double xmin, double xmax, INonLinearSolverStrategy& strategy, double& result)

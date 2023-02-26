@@ -1,8 +1,8 @@
-#include "NonLinearSolver/NonLinearSolver.h"
-#include "MatrixVector/MatrixSquare.h"
-#include "NonLinearSolver/INonLinearSolverStrategy.h"
-#include "Functions/IRealFunction.h"
-#include "Functions/IRealFunctionUtils.h"
+#include "NonLinearSolver.h"
+#include "MatrixSquare.h"
+#include "INonLinearSolverStrategy.h"
+#include "IRealFunction.h"
+#include "IRealFunctionUtils.h"
 #include "MyAssert.h"
 
 #include <algorithm>

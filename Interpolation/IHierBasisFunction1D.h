@@ -1,6 +1,6 @@
 #pragma once
 #include "HierLevelIndex.h"
-#include "Functions/ISingleVariableRealValuedFunction.h"
+#include "ISingleVariableRealValuedFunction.h"
 #include "MyException.h"
 #include "Interval.h"
 #include <cstddef>

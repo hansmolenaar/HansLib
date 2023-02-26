@@ -48,4 +48,19 @@ add_subdirectory(TreeTest)
 add_subdirectory(Permutation)
 add_subdirectory(PermutationTest)
 
+add_subdirectory(Functions)
+#add_subdirectory(FunctionsTest)
 
+add_subdirectory(KelvinRepr)
+#add_subdirectory(KelvinReprTest)
+
+add_subdirectory(NonLinearSolver)
+#add_subdirectory(NonLinearSolverTest)
+
+#add_subdirectory(EigenValue)
+
+#add_subdirectory(Interpolation)
+#add_subdirectory(InterpolationTest)
+
+add_subdirectory(Mesh)
+#add_subdirectory(MeshTest)

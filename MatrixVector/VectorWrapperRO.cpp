@@ -1,5 +1,5 @@
 
-#include "MatrixVector/VectorWrapperRO.h"
+#include "VectorWrapperRO.h"
 
 #include <exception>
 

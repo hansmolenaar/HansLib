@@ -4,7 +4,7 @@
 #include "IMatrixRotation.h"
 #include "IFinitePointGroupAction.h"
 #include "MatrixDense.h"
-#include "MatrixVector/UnitVector.h"
+#include "UnitVector.h"
 
 
 class MatrixRotation3D : public IMatrixRotation

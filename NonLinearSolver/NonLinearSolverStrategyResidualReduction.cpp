@@ -1,4 +1,4 @@
-#include "NonLinearSolver/NonLinearSolverStrategyResidualReduction.h"
+#include "NonLinearSolverStrategyResidualReduction.h"
 
 #include <cassert>
 #include <algorithm>

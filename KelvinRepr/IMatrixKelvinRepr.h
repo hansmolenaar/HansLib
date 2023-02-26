@@ -1,6 +1,6 @@
 #pragma once
 
-#include "MatrixVector/IMatrixSymmetric.h"
+#include "IMatrixSymmetric.h"
 #include <span>
 
 class IMatrixKelvinRepr : public IMatrixSymmetric

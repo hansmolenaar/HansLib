@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
-#include "MatrixVector/IMatrixSquareUtils.h"
-#include "MatrixVector/MatrixRotation2D.h"
+#include "IMatrixSquareUtils.h"
+#include "MatrixRotation2D.h"
 #include "IMatrixTest.h"
 #include "MathConstants.h"
 

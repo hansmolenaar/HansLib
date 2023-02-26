@@ -1,5 +1,5 @@
 
-#include "MatrixVector/VectorWrapper.h"
+#include "VectorWrapper.h"
 
 VectorWrapper::VectorWrapper( std::span<double> data) :
 	 m_data(data)

@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "Functions/SingleVariableFunctionExamples.h"
+#include "SingleVariableFunctionExamples.h"
 #include "Functors.h"
 
 

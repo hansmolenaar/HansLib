@@ -1,5 +1,5 @@
-#include "MatrixVector/MatrixRotation3D.h"
-#include "MatrixVector/IMatrixUtils.h"
+#include "MatrixRotation3D.h"
+#include "IMatrixUtils.h"
 
 int MatrixRotation3D::GetDimension() const
 {

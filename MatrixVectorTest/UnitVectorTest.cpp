@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "MatrixVector/UnitVector.h"
+#include "UnitVector.h"
 #include "IMatrixTest.h"
 #include "MyAssert.h"
 #include "MathConstants.h"

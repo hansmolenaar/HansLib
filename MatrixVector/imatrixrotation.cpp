@@ -1,5 +1,5 @@
-#include "MatrixVector/IMatrixRotation.h"
-#include "MatrixVector/IMatrixSquareUtils.h"
+#include "IMatrixRotation.h"
+#include "IMatrixSquareUtils.h"
 #include "MyAssert.h"
 
 

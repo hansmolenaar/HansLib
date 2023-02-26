@@ -1,6 +1,6 @@
-#include "MatrixVector/RowColOfMatrix.h"
+#include "RowColOfMatrix.h"
 #include "MyAssert.h"
-#include "MatrixVector/IMatrix.h"
+#include "IMatrix.h"
 
 #include <algorithm>
 

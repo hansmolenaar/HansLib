@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "Functions/SingleVariableRealValuedFunction.h"
+#include "SingleVariableRealValuedFunction.h"
 
 
 

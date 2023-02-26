@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
 
-#include "MatrixVector/IMatrixSquareUtils.h"
-#include "MatrixVector/MatrixSquare.h"
-#include "MatrixVector/IdentityMatrix.h"
+#include "IMatrixSquareUtils.h"
+#include "MatrixSquare.h"
+#include "IdentityMatrix.h"
 
 #include <array>
 

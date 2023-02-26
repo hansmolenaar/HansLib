@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
 
-#include "Functions/MultiVariableRealValuedFunction.h"
-#include "Functions/IRealFunctionUtils.h"
-#include "Functions/MultiVariableMonomial.h"
+#include "MultiVariableRealValuedFunction.h"
+#include "IRealFunctionUtils.h"
+#include "MultiVariableMonomial.h"
 
 #include <array>
 

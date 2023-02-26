@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
-#include "Functions/MultiVariableRealValuedFunctionNoDerivatives.h"
-#include "Functions/MultiVariableMonomial.h"
+#include "MultiVariableRealValuedFunctionNoDerivatives.h"
+#include "MultiVariableMonomial.h"
 #include "Functors.h"
 
 #include <array>

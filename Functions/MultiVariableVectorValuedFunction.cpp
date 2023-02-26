@@ -1,8 +1,8 @@
-#include "Functions/MultiVariableVectorValuedFunction.h"
+#include "MultiVariableVectorValuedFunction.h"
 
-#include "Functions/IRealFunctionUtils.h"
+#include "IRealFunctionUtils.h"
 #include "MyAssert.h"
-#include "MatrixVector/MatrixSquare.h"
+#include "MatrixSquare.h"
 
 
 

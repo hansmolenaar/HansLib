@@ -1,5 +1,5 @@
 
-#include "MatrixVector/Vector.h"
+#include "Vector.h"
 
 Vector::Vector(int dim) : m_data(dim)
 {

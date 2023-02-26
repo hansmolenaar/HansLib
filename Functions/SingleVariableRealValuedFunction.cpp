@@ -1,4 +1,4 @@
-#include "Functions/SingleVariableRealValuedFunction.h"
+#include "SingleVariableRealValuedFunction.h"
 
 SingleVariableRealValuedFunction::SingleVariableRealValuedFunction(
 	std::function<double(double)> function,

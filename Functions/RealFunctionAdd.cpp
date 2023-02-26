@@ -1,7 +1,7 @@
-#include "Functions/RealFunctionAdd.h"
+#include "RealFunctionAdd.h"
 
 #include "MyAssert.h"
-#include "MatrixVector/MatrixDense.h"
+#include "MatrixDense.h"
 
 
 

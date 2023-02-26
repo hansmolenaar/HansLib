@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "Functions/MultiVariableFunctionExamples.h"
+#include "MultiVariableFunctionExamples.h"
 #include "Functors.h"
 #include "Plotting.h"
 

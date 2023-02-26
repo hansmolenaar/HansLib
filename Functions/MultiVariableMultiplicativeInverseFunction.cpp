@@ -1,4 +1,4 @@
-#include "Functions/MultiVariableMultiplicativeInverseFunction.h"
+#include "MultiVariableMultiplicativeInverseFunction.h"
 #include "MyAssert.h"
 
 #include <algorithm>

@@ -1,5 +1,5 @@
 #include "HierBasisFunction1D_HomogenousBC.h"
-#include "Functions/HatFunction.h"
+#include "HatFunction.h"
 #include "MyAssert.h"
 #include "Pow2.h"
 
