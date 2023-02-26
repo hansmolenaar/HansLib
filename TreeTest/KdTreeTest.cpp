@@ -1,10 +1,10 @@
 #include <gtest/gtest.h>
 
 #include "Defines.h"
-#include "Tree/KdTree.h"
+#include "KdTree.h"
 #include "Point.h"
 #include "BoundingBox.h"
-#include "Tree/KdTreeTraversorPointsInRange.h"
+#include "KdTreeTraversorPointsInRange.h"
 #include <random>
 
 template<int N>

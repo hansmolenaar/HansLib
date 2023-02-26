@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
-#include "Tree/KdTreeTraversorPointsInRange.h"
-#include "Tree/KdTree.h"
+#include "KdTreeTraversorPointsInRange.h"
+#include "KdTree.h"
 
 TEST(KdTreeTraversorPointsInRangeTest, TestDeterminOverlap1D)
 {
