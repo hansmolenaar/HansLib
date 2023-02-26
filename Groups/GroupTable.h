@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Utilities/Defines.h"
+#include "Defines.h"
 #include "IFiniteGroup.h"
-#include "Utilities/IIndexer.h"
+#include "IIndexer.h"
 
 #include <map>
 

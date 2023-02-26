@@ -1,7 +1,7 @@
 #include "MatrixVector/IMatrixSquareUtils.h"
 
 #include "MatrixVector/IMatrixSquare.h"
-#include "Utilities/MyAssert.h"
+#include "MyAssert.h"
 
 #include <algorithm>
 #include <ranges>

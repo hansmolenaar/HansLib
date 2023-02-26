@@ -1,6 +1,6 @@
 #include "Functions/RealFunctionNull.h"
 
-#include "Utilities/MyAssert.h"
+#include "MyAssert.h"
 #include "Functions/IRealFunctionUtils.h"
 #include "MatrixVector/IMatrix.h"
 #include "MatrixVector/IMatrixUtils.h"

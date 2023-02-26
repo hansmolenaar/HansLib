@@ -4,7 +4,7 @@
 #include "MatrixVector/IMatrixUtils.h"
 #include "MatrixVector/MatrixRotation3D.h"
 #include "IMatrixTest.h"
-#include "Utilities/MathConstants.h"
+#include "MathConstants.h"
 
 namespace {
    const double eps = 1.0e-12;

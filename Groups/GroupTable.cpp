@@ -1,6 +1,6 @@
 #include "GroupTable.h"
-#include "Utilities/MyAssert.h"
-#include "Utilities/ToString.h"
+#include "MyAssert.h"
+#include "ToString.h"
 #include "IFiniteGroupUtils.h"
 
 #include <cmath>

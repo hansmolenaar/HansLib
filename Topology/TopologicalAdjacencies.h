@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ITopologicalAdjacencies.h"
-#include "Utilities/BoundsCheck.h"
+#include "BoundsCheck.h"
 
 #include <memory>
 #include <map>

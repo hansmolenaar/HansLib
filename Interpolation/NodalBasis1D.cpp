@@ -1,5 +1,5 @@
 #include "NodalBasis1D.h"
-#include "Utilities/MyException.h"
+#include "MyException.h"
 
 #include <cmath>
 

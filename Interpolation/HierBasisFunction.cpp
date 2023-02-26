@@ -1,9 +1,9 @@
 #include "HierBasisFunction.h"
 #include "IHierBasisFunction1D.h"
 
-#include "Utilities/Defines.h"
-#include "Utilities/MyAssert.h"
-#include "Utilities/MultiIndex.h"
+#include "Defines.h"
+#include "MyAssert.h"
+#include "MultiIndex.h"
 
 namespace
 {

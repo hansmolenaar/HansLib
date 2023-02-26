@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 #include "Topology/ReferenceShapeNode.h"
-#include "Utilities/MyException.h"
+#include "MyException.h"
 #include "Topology/TopologicalAdjacencies.h"
 #include "Topology/TopologicalAdjacency.h"
 #include "Topology/ReferenceShapeHyperCube.h"

@@ -1,11 +1,11 @@
 #include "ReferenceShapeHyperCube.h"
-#include "Utilities/Defines.h"
-#include "Utilities/MyException.h"
+#include "Defines.h"
+#include "MyException.h"
 #include "TopologicalAdjacencies.h"
 #include "TopologicalAdjacency.h"
 #include "ReferenceShape.h"
-#include "Utilities/BinomialCoefficient.h"
-#include "Utilities/MultiIndex.h"
+#include "BinomialCoefficient.h"
+#include "MultiIndex.h"
 
 #include <set>
 

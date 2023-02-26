@@ -3,7 +3,7 @@
 #include "Functions/ISingleVariableRealValuedFunction.h"
 #include "NonLinearSolver/INonLinearSolverStrategy.h"
 #include "Functions/ISingleVariableRealValuedFunctionUtils.h"
-#include "Utilities/MyAssert.h"
+#include "MyAssert.h"
 
 NonLinearSolverStatus FindRootIllinois::FindInInterval(ISingleVariableRealValuedFunction& fie, double a, double b, INonLinearSolverStrategy& strategy, double& result)
 {

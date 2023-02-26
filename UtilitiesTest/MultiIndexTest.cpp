@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "Utilities/MultiIndex.h"
+#include "MultiIndex.h"
 
 TEST(MultiIndexTest, OneD)
 {

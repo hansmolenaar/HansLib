@@ -1,9 +1,9 @@
 #include <gtest/gtest.h>
 
 #include "Interpolation/HierMultiIndex.h"
-#include "Utilities/MyException.h"
-#include "Utilities/Functors.h"
-#include "Utilities/Defines.h"
+#include "MyException.h"
+#include "Functors.h"
+#include "Defines.h"
 
 TEST(HierMultiIndex, Basics)
 {

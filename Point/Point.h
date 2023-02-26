@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Utilities/Defines.h"
-#include "Utilities/MyAssert.h"
+#include "Defines.h"
+#include "MyAssert.h"
 
 #include <algorithm>
 

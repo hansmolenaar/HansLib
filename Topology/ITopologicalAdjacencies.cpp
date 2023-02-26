@@ -1,5 +1,5 @@
 #include "ITopologicalAdjacencies.h"
-#include "Utilities/MyAssert.h"
+#include "MyAssert.h"
 
 int ITopologicalAdjacencies::getCountSafe(TopologyDimension dim) const
 {

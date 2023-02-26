@@ -2,7 +2,7 @@
 
 #include "Groups/GroupTable.h"
 #include "Groups/IFiniteGroupUtils.h"
-#include "Utilities/IndexerRowMajor.h"
+#include "IndexerRowMajor.h"
 
 TEST(GroupTable, Trivial)
 {

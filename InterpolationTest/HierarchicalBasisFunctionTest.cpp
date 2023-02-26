@@ -3,10 +3,10 @@
 #include <gtest/gtest.h>
 
 #include "Interpolation/HierarchicalBasisFunction.h"
-#include "Utilities/MyException.h"
+#include "MyException.h"
 #include "Functions/ISingleVariableRealValuedFunctionUtils.h"
 
-#include "Utilities/Defines.h"
+#include "Defines.h"
 
 
 inline constexpr double Epsilon = 1.0e-10;

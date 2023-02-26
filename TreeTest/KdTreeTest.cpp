@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "Utilities/Defines.h"
+#include "Defines.h"
 #include "Tree/KdTree.h"
 #include "Point/Point.h"
 #include "BoundingBox/BoundingBox.h"

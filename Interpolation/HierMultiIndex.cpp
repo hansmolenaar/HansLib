@@ -1,6 +1,6 @@
 #include "HierMultiIndex.h"
-#include "Utilities/MyAssert.h"
-#include "Utilities/Defines.h"
+#include "MyAssert.h"
+#include "Defines.h"
 
 #include <numeric>
 

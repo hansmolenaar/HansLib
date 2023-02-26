@@ -1,7 +1,7 @@
 #include "IMatrixKelvinReprUtils.h"
 
 #include "IMatrixKelvinRepr.h"
-#include "Utilities/MyAssert.h"
+#include "MyAssert.h"
 
 
 void SetAll(IMatrixKelvinRepr& matrix, double value)

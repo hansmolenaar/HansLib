@@ -1,9 +1,9 @@
 #include "GridTopology.h"
 #include "ReferenceShapeHyperCube.h"
-#include "Utilities/MyAssert.h"
-#include "Utilities/BoundsCheck.h"
-#include "Utilities/Defines.h"
-#include "Utilities/MultiIndex.h"
+#include "MyAssert.h"
+#include "BoundsCheck.h"
+#include "Defines.h"
+#include "MultiIndex.h"
 #include "TopologicalAdjacencies.h"
 #include "TopologicalAdjacency.h"
 

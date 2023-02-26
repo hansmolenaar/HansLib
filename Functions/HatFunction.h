@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ISingleVariableRealValuedFunction.h"
-#include "Utilities/MyException.h"
+#include "MyException.h"
 
 class HatFunction : public ISingleVariableRealValuedFunction
 {

@@ -1,5 +1,5 @@
 #include "EquidistantPoints.h"
-#include"Utilities/MyAssert.h"
+#include"MyAssert.h"
 
 std::vector<double> EquidistantPoints::Generate(double low, double hig, int nsteps)
 {

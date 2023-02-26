@@ -1,7 +1,7 @@
-#include "Utilities/EigenValueSolverSym3x3.h"
+#include "EigenValueSolverSym3x3.h"
 
-#include "Utilities/MyAssert.h"
-#include "Utilities/MathConstants.h"
+#include "MyAssert.h"
+#include "MathConstants.h"
 #include "MatrixVector/IMatrixSymmetric.h"
 #include "MatrixVector/IMatrixSquareUtils.h"
 #include "KelvinRepr/MatrixKelvinRepr3.h"

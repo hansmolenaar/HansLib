@@ -3,7 +3,7 @@
 #include <memory>
 #include <vector>
 
-#include "Utilities/IndexerRowMajor.h"
+#include "IndexerRowMajor.h"
 #include "IMatrixSquare.h"
 
 class MatrixDense : public IMatrix

@@ -1,6 +1,6 @@
 #include "TopologicalAdjacency.h"
-#include "Utilities/Iota.h"
-#include "Utilities/MyAssert.h"
+#include "Iota.h"
+#include "MyAssert.h"
 
 #include <algorithm>
 

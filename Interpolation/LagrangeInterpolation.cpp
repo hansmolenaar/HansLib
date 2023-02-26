@@ -1,5 +1,5 @@
 #include "LagrangeInterpolation.h"
-#include "Utilities/MyAssert.h"
+#include "MyAssert.h"
 
 LagrangeInterpolation::LagrangeInterpolation(std::span<const double>x, std::span<const double>y) :
    m_xvals(x.begin(), x.end()), m_yvals(y.begin(), y.end())

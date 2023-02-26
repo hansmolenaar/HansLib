@@ -2,11 +2,11 @@
 
 #include "Interpolation/HierBasisFunction1D_ExtraplolateBC.h"
 #include "Functions/ISingleVariableRealValuedFunctionUtils.h"
-#include "Utilities/MyException.h"
-#include "Utilities/Single.h"
+#include "MyException.h"
+#include "Single.h"
 #include "IHierBasisFunction1DTest.h"
 
-#include "Utilities/Defines.h"
+#include "Defines.h"
 
 
 inline constexpr double Epsilon = 1.0e-10;

@@ -1,5 +1,5 @@
 #include "Functions/SingleVariableMonomial.h"
-#include "Utilities/MyAssert.h"
+#include "MyAssert.h"
 
 
 #include <cmath>

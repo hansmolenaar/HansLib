@@ -1,7 +1,7 @@
 #include "HierBasisFunction1D_HomogenousBC.h"
 #include "Functions/HatFunction.h"
-#include "Utilities/MyAssert.h"
-#include "Utilities/Pow2.h"
+#include "MyAssert.h"
+#include "Pow2.h"
 
 // Factory
 

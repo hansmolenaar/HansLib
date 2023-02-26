@@ -3,7 +3,7 @@
 #include "MatrixVector/IMatrixSquareUtils.h"
 #include "MatrixVector/MatrixRotation2D.h"
 #include "IMatrixTest.h"
-#include "Utilities/MathConstants.h"
+#include "MathConstants.h"
 
 #include <array>
 

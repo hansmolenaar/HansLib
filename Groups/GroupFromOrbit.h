@@ -1,10 +1,10 @@
 #pragma once
 
-#include "Utilities/Defines.h"
+#include "Defines.h"
 #include "Groups/IFiniteGroup.h"
 #include "Geometry/IPointTransformation.h"
 #include "Geometry/IGeometryPredicate.h"
-#include "Utilities/IndexerRowMajor.h"
+#include "IndexerRowMajor.h"
 #include "Groups/GroupTable.h"
 #include "Geometry/SamePointPredicate.h"
 

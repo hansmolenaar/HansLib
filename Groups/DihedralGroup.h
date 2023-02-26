@@ -1,7 +1,7 @@
 #pragma once
 
 #include "IFiniteGroup.h"
-#include "Utilities/Defines.h"
+#include "Defines.h"
 
 
 class DihedralGroup : public IFiniteGroup

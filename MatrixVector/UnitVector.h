@@ -2,7 +2,7 @@
 
 
 #include "IVector.h"
-#include "Utilities/MyAssert.h"
+#include "MyAssert.h"
 
 #include <array>
 #include <memory>

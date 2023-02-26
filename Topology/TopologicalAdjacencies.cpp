@@ -1,6 +1,6 @@
 #include "TopologicalAdjacencies.h"
 #include "TopologicalAdjacency.h"
-#include "Utilities/BoundsCheck.h"
+#include "BoundsCheck.h"
 #include "Topology/TopologyDimension.h"
 
 #include <algorithm>

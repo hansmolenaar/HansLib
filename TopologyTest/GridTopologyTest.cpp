@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 #include "Topology/GridTopology.h"
-#include "Utilities/MyException.h"
+#include "MyException.h"
 #include "TestITopologicalAdjacencies.h"
 
 TEST(GridTopologyTest, OneD2cells)

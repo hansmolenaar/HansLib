@@ -1,6 +1,6 @@
 #include "Topology/ReferenceShapeNode.h"
-#include "Utilities/MyException.h"
-#include "Utilities/BoundsCheck.h"
+#include "MyException.h"
+#include "BoundsCheck.h"
 namespace
 {
    const auto Checker = BoundsCheck<TopologyDimension>::CreateUpperBound(TopologyDimensionDef::Corner);

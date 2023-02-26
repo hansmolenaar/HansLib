@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "Utilities/Defines.h"
+#include "Defines.h"
 #include "MatrixVector/SubMatrix.h"
 #include "MatrixVector/MatrixSquare.h"
 

@@ -2,8 +2,8 @@
 
 #include "Mesh/IMesh.h"
 #include "Topology/GridTopology.h"
-#include "Utilities/MultiIndex.h"
-#include "Utilities/MyException.h"
+#include "MultiIndex.h"
+#include "MyException.h"
 
 #include <span>
 

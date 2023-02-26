@@ -1,7 +1,7 @@
 #include "HierApproximation.h"
-#include "Utilities/Defines.h"
-#include "Utilities/Functors.h"
-#include "Utilities/Logger.h"
+#include "Defines.h"
+#include "Functors.h"
+#include "Logger.h"
 
 namespace
 {

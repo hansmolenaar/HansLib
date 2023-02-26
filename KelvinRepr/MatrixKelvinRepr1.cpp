@@ -1,7 +1,7 @@
 #include "MatrixKelvinRepr1.h"
 
 #include "IndexerKelvinRepr1.h"
-#include "Utilities/MyAssert.h"
+#include "MyAssert.h"
 
 namespace
 {

@@ -1,6 +1,6 @@
 #include "IHierBasisFunction.h"
-#include "Utilities/MyAssert.h"
-#include "Utilities/Defines.h"
+#include "MyAssert.h"
+#include "Defines.h"
 #include "IHierBasisFunction1D.h"
 
 bool IHierBasisFunction::contains(std::span<const double> x) const

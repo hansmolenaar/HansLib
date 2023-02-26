@@ -2,9 +2,9 @@
 
 #include "Interpolation/HierApproximation.h"
 #include "Interpolation/HierBasisFunction1D_HomogenousBC.h"
-#include "Utilities/MyException.h"
+#include "MyException.h"
 #include "Functions/SingleVariableRealValuedFunction.h"
-#include "Utilities/Single.h"
+#include "Single.h"
 #include "Functions/ISingleVariableRealValuedFunctionUtils.h"
 #include "Functions/SingleVariablePolynomial.h"
 #include "Interpolation/HierBasisFunction1D_ExtendedLevelOneBC.h"
@@ -13,7 +13,7 @@
 #include "Interpolation/NodeRefinePredicateFactoryByLevel.h"
 #include "Interpolation/HierBasisFunction.h"
 #include "Interpolation/NodeRefinePredicateFactoryByLevelOrSurplus.h"
-#include "Utilities/Plotting.h"
+#include "Plotting.h"
 
 #include <filesystem>
 #include <fstream>

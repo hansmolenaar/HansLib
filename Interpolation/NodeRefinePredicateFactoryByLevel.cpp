@@ -1,6 +1,6 @@
 #include "NodeRefinePredicateFactoryByLevel.h"
 #include "HierApproximation.h"
-#include "Utilities/Defines.h"
+#include "Defines.h"
 #include "NodeRefinePredicateAlways.h"
 #include "NodeRefinePredicateNever.h"
 

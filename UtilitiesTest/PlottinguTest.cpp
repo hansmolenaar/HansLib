@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "Utilities/Plotting.h"
+#include "Plotting.h"
 #include <sstream>
 
 TEST(PlottingTest, ToStream)

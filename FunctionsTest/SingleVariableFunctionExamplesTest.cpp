@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "Functions/SingleVariableFunctionExamples.h"
-#include "Utilities/Functors.h"
+#include "Functors.h"
 
 
 TEST(SingleVariableFunctionExamplesTest, SkewedHat)

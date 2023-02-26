@@ -1,5 +1,5 @@
 #include "Functions/MultiVariableMonomial.h"
-#include "Utilities/MyAssert.h"
+#include "MyAssert.h"
 
 
 MultiVariableMonomial::MultiVariableMonomial(std::span<const int> powers)

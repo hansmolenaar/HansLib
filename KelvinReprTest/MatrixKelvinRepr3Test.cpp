@@ -2,7 +2,7 @@
 
 
 #include "KelvinRepr/MatrixKelvinRepr3.h"
-#include "Utilities/IndexerSymmetric.h"
+#include "IndexerSymmetric.h"
 #include "MatrixVector/IMatrixSquareUtils.h"
 #include "IMatrixKelvinReprTest.h"
 

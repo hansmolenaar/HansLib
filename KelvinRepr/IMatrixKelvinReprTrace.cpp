@@ -3,7 +3,7 @@
 #include "IMatrixKelvinRepr.h"
 #include "MatrixVector/IMatrix.h"
 #include "MatrixVector/IMatrixUtils.h"
-#include "Utilities/MyAssert.h"
+#include "MyAssert.h"
 
 #include <algorithm>
 #include <numeric>

@@ -1,9 +1,9 @@
 #pragma once
 
 #include "IMatrixKelvinRepr.h"
-#include "Utilities/IndexerSymmetric.h"
-#include "Utilities/MyAssert.h"
-#include "Utilities/MathConstants.h"
+#include "IndexerSymmetric.h"
+#include "MyAssert.h"
+#include "MathConstants.h"
 
 #include <array>
 

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Utilities/Defines.h"
+#include "Defines.h"
 #include "Interval/Interval.h"
-#include "Utilities/MyAssert.h"
+#include "MyAssert.h"
 #include "Point/Point.h"
 
 #include <span>

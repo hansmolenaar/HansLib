@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
 
 #include "Functions/MultiVariableFunctionExamples.h"
-#include "Utilities/Functors.h"
-#include "Utilities/Plotting.h"
+#include "Functors.h"
+#include "Plotting.h"
 
 #include <array>
 

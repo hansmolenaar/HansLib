@@ -1,5 +1,5 @@
-#include "Utilities/Defines.h"
-#include "Utilities/MyAssert.h"
+#include "Defines.h"
+#include "MyAssert.h"
 #include "IFiniteGroupUtils.h"
 #include "IFiniteGroup.h"
 

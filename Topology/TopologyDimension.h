@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Utilities/MyException.h"
+#include "MyException.h"
 
 using TopologyDimension = unsigned int;
 

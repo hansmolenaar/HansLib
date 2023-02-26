@@ -2,9 +2,9 @@
 #include "Functions/ISingleVariableRealValuedFunction.h"
 #include "NonLinearSolver/NonLinearSolverStrategyResidualReduction.h"
 #include "NonLinearSolver/NonLinearSolver.h"
-#include "Utilities/MyAssert.h"
-#include "Utilities/MyException.h"
-#include "Utilities/Plotting.h"
+#include "MyAssert.h"
+#include "MyException.h"
+#include "Plotting.h"
 
 #include <string>
 #include <sstream>

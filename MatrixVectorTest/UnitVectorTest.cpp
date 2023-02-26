@@ -2,8 +2,8 @@
 
 #include "MatrixVector/UnitVector.h"
 #include "IMatrixTest.h"
-#include "Utilities/MyAssert.h"
-#include "Utilities/MathConstants.h"
+#include "MyAssert.h"
+#include "MathConstants.h"
 
 namespace {
    const double eps = 1.0e-12;

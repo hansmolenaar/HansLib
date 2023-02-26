@@ -3,7 +3,7 @@
 #include "NonLinearSolver/INonLinearSolverStrategy.h"
 #include "Functions/IRealFunction.h"
 #include "Functions/IRealFunctionUtils.h"
-#include "Utilities/MyAssert.h"
+#include "MyAssert.h"
 
 #include <algorithm>
 #include <vector>

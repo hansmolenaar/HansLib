@@ -4,10 +4,10 @@
 
 #include "Interpolation/HierBasisFunction1D_HomogenousBC.h"
 #include "Functions/ISingleVariableRealValuedFunctionUtils.h"
-#include "Utilities/MyException.h"
+#include "MyException.h"
 #include "IHierBasisFunction1DTest.h"
 
-#include "Utilities/Defines.h"
+#include "Defines.h"
 
 
 inline constexpr double Epsilon = 1.0e-10;

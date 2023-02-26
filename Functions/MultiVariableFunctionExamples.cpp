@@ -2,8 +2,8 @@
 #include "MultiVariablePolynomial.h"
 #include "MultiVariableRealValuedFunctionNoDerivatives.h"
 #include "SingleVariableFunctionExamples.h"
-#include "Utilities/Defines.h"
-#include "Utilities/BoundsCheck.h"
+#include "Defines.h"
+#include "BoundsCheck.h"
 #include <numeric>
 
 

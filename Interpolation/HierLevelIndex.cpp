@@ -1,7 +1,7 @@
 #include "HierLevelIndex.h"
-#include "Utilities/MyException.h"
-#include "Utilities/Pow2.h"
-#include "Utilities/MyAssert.h"
+#include "MyException.h"
+#include "Pow2.h"
+#include "MyAssert.h"
 
 namespace
 {

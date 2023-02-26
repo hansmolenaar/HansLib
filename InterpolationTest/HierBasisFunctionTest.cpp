@@ -3,10 +3,10 @@
 #include "Interpolation/HierBasisFunction.h"
 #include "Interpolation/HierBasisFunction1D_ExtendedLevelOneBC.h"
 #include "Interpolation/HierBasisFunction1D_HomogenousBC.h"
-#include "Utilities/MyException.h"
-#include "Utilities/Defines.h"
-#include "Utilities/Single.h"
-#include "Utilities/Plotting.h"
+#include "MyException.h"
+#include "Defines.h"
+#include "Single.h"
+#include "Plotting.h"
 
 inline constexpr double Epsilon = 1.0e-10;
 

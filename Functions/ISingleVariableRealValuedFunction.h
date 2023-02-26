@@ -4,7 +4,7 @@
 
 #include "IMultiVariableRealValuedFunction.h"
 #include "MatrixVector/MatrixSquare.h"
-#include "Utilities/MyAssert.h"
+#include "MyAssert.h"
 
 class ISingleVariableRealValuedFunction :public IMultiVariableRealValuedFunction
 {

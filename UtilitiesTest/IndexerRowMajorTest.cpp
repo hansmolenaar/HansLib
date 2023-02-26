@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
 
-#include "Utilities/IndexerRowMajor.h"
+#include "IndexerRowMajor.h"
 
 
 

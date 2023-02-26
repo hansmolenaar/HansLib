@@ -1,6 +1,6 @@
 #include "Functions/SingleVariableFunctionExamples.h"
 #include "Functions/SingleVariableRealValuedFunction.h"
-#include "Utilities/BoundsCheck.h"
+#include "BoundsCheck.h"
 
 
 std::unique_ptr<ISingleVariableRealValuedFunction> SingleVariableFunctionExamples::GetRungeFunction()

@@ -1,6 +1,6 @@
 #include "CyclicGroup.h"
 
-#include "Utilities/MyAssert.h"
+#include "MyAssert.h"
 #include "IFiniteGroupUtils.h"
 
 std::unique_ptr<CyclicGroup> CyclicGroup::Create(int order)

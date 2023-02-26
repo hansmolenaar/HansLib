@@ -1,8 +1,8 @@
 #include "Permutation.h"
-#include "Utilities/MyAssert.h"
+#include "MyAssert.h"
 #include "PermutationUtils.h"
-#include "Utilities/BoundsCheck.h"
-#include "Utilities/Defines.h"
+#include "BoundsCheck.h"
+#include "Defines.h"
 
 
 Permutation::Permutation(std::vector<int>&& permut) :

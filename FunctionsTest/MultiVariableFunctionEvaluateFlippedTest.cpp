@@ -3,7 +3,7 @@
 
 #include "Functions/MultiVariableFunctionEvaluateFlipped.h"
 #include "Functions//MultiVariableFunctionExamples.h"
-#include "Utilities/Functors.h"
+#include "Functors.h"
 #include <array>
 
 TEST(MultiVariableFunctionEvaluateFlippedTest, xy)

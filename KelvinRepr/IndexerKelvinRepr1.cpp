@@ -1,6 +1,6 @@
 #include "IndexerKelvinRepr1.h"
 
-#include "Utilities/MyAssert.h"
+#include "MyAssert.h"
 
 
 IndexerKelvinRepr1::IndexerKelvinRepr1() 

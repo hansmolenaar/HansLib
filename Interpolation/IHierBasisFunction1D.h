@@ -1,7 +1,7 @@
 #pragma once
 #include "HierLevelIndex.h"
 #include "Functions/ISingleVariableRealValuedFunction.h"
-#include "Utilities/MyException.h"
+#include "MyException.h"
 #include "Interval/Interval.h"
 #include <cstddef>
 

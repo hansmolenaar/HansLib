@@ -1,7 +1,7 @@
 #pragma once
 
 #include "IIndexer.h"
-#include "Utilities/MyAssert.h"
+#include "MyAssert.h"
 #include <vector>
 
 template <typename I>

@@ -2,7 +2,7 @@
 
 #include "Functions/MultiVariableFunctionEvaluateFrom01.h"
 #include "Functions/MultiVariableFunctionExamples.h"
-#include "Utilities/Functors.h"
+#include "Functors.h"
 #include <array>
 
 TEST(MultiVariableFunctionEvaluateFrom01Test, xy)

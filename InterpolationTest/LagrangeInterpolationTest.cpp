@@ -3,7 +3,7 @@
 #include "Interpolation/LagrangeInterpolation.h"
 #include "Interpolation/EquidistantPoints.h"
 #include "Functions/SingleVariableFunctionExamples.h"
-#include "Utilities/Plotting.h"
+#include "Plotting.h"
 #include "Functions/ISingleVariableRealValuedFunctionUtils.h"
 #include <Interpolation/ChebyshevPoints.h>
 

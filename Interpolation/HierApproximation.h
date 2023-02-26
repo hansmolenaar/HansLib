@@ -3,8 +3,8 @@
 #include "IHierBasisFunction.h"
 #include "Functions/IMultiVariableRealValuedFunction.h"
 #include "HierMultiIndex.h"
-#include "Utilities/MultiIndex.h"
-#include "Utilities/Iota.h"
+#include "MultiIndex.h"
+#include "Iota.h"
 #include "INodeRefinePredicateFactory.h"
 
 #include <memory>

@@ -1,6 +1,6 @@
 #include "MatrixVector/IdentityMatrix.h"
 
-#include "Utilities/MyAssert.h"
+#include "MyAssert.h"
 #include "MatrixVector/IMatrixUtils.h"
 
 #include <map>

@@ -1,7 +1,7 @@
 #include "MatrixVector/IMatrixUtils.h"
 
 #include "MatrixVector/IMatrix.h"
-#include "Utilities/MyAssert.h"
+#include "MyAssert.h"
 
 #include <span>
 

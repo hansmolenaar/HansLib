@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "Utilities/IndexerSymmetric.h"
+#include "IndexerSymmetric.h"
 
 
 namespace {

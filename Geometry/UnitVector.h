@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Utilities/Defines.h"
+#include "Defines.h"
 #include "Point/Point.h"
 
 #include <numeric>

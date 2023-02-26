@@ -1,6 +1,6 @@
 #include "ChebyshevPoints.h"
-#include "Utilities/MyAssert.h"
-#include "Utilities/MathConstants.h"
+#include "MyAssert.h"
+#include "MathConstants.h"
 
 #include <cmath>
 

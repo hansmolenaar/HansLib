@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "Interpolation/HierLevelIndex.h"
-#include "Utilities/MyException.h"
+#include "MyException.h"
 
 
 inline constexpr double Epsilon = 1.0e-10;

@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "Utilities/Pow2.h"
+#include "Pow2.h"
 
 TEST(Pow2Test, Basics)
 {

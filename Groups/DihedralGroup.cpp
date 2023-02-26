@@ -1,6 +1,6 @@
 #include "DihedralGroup.h"
 #include "GroupTable.h"
-#include "Utilities/IndexerRowMajor.h"
+#include "IndexerRowMajor.h"
 
 DihedralGroup::DihedralGroup(std::unique_ptr<IFiniteGroup>& groupTable) :
    m_groupTable(std::move(groupTable))
