@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
 
-#include "KelvinRepr/IMatrixKelvinReprUtils.h"
-#include "KelvinRepr/MatrixKelvinRepr2.h"
-#include "KelvinRepr/MatrixKelvinRepr3.h"
+#include "IMatrixKelvinReprUtils.h"
+#include "MatrixKelvinRepr2.h"
+#include "MatrixKelvinRepr3.h"
 
 
 namespace {

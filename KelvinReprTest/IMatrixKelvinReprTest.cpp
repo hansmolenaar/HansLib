@@ -3,8 +3,8 @@
 #include "IMatrixKelvinReprTest.h"
 
 //#include "IMatrixTest.h"
-#include "KelvinRepr/IMatrixKelvinRepr.h"
-#include "KelvinRepr/IMatrixKelvinReprUtils.h"
+#include "IMatrixKelvinRepr.h"
+#include "IMatrixKelvinReprUtils.h"
 
 #include <numeric>
 #include <ranges>

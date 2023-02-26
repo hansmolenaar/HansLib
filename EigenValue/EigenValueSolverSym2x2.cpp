@@ -1,5 +1,5 @@
 #include "EigenValueSolverSym2x2.h"
-#include "KelvinRepr/MatrixKelvinRepr2.h"
+#include "MatrixKelvinRepr2.h"
 #include "IMatrixUtils.h"
 #include "MyAssert.h"
 

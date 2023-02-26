@@ -57,9 +57,9 @@ add_subdirectory(KelvinRepr)
 add_subdirectory(NonLinearSolver)
 #add_subdirectory(NonLinearSolverTest)
 
-#add_subdirectory(EigenValue)
+add_subdirectory(EigenValue)
 
-#add_subdirectory(Interpolation)
+add_subdirectory(Interpolation)
 #add_subdirectory(InterpolationTest)
 
 add_subdirectory(Mesh)

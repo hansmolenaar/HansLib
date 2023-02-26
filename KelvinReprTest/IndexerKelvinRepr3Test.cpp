@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "KelvinRepr/IndexerKelvinRepr3.h"
+#include "IndexerKelvinRepr3.h"
 
 
 TEST(IndexerKelvinRepr3Test, Test1)

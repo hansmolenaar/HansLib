@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
 
-#include "KelvinRepr/IMatrixKelvinReprTrace.h"
-#include "KelvinRepr/MatrixKelvinRepr1.h"
-#include "KelvinRepr/IMatrixKelvinReprUtils.h"
+#include "IMatrixKelvinReprTrace.h"
+#include "MatrixKelvinRepr1.h"
+#include "IMatrixKelvinReprUtils.h"
 #include "MatrixDense.h"
 
 

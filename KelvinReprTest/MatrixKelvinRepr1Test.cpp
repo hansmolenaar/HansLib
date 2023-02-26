@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
 
-#include "KelvinRepr/MatrixKelvinRepr1.h"
+#include "MatrixKelvinRepr1.h"
 #include "IMatrixSquareUtils.h"
 #include "IMatrixKelvinReprTest.h"
 
