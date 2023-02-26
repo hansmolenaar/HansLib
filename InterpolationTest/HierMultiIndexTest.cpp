@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "Interpolation/HierMultiIndex.h"
+#include "HierMultiIndex.h"
 #include "MyException.h"
 #include "Functors.h"
 #include "Defines.h"

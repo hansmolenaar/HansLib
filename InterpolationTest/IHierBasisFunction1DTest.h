@@ -1,7 +1,7 @@
 #pragma once
 
 #include <gtest/gtest.h>
-#include "Interpolation/IHierBasisFunction1D.h"
+#include "IHierBasisFunction1D.h"
 #include <numeric>
 
 inline void IHierBasisFunction1DTest_Interface(const IHierBasisFunction1D& fie)

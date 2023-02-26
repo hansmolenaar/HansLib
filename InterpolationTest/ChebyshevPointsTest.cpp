@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "Interpolation/ChebyshevPoints.h"
+#include "ChebyshevPoints.h"
 //#include "MathConstants.h"
 
 TEST(ChebyshevPointsTest, Case1)

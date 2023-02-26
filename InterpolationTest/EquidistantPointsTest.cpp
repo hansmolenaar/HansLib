@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "Interpolation/EquidistantPoints.h"
+#include "EquidistantPoints.h"
 #include "MathConstants.h"
 
 TEST(EquidistantPointsTest, Steps1)

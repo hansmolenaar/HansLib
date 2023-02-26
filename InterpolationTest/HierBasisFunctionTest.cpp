@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
 
-#include "Interpolation/HierBasisFunction.h"
-#include "Interpolation/HierBasisFunction1D_ExtendedLevelOneBC.h"
-#include "Interpolation/HierBasisFunction1D_HomogenousBC.h"
+#include "HierBasisFunction.h"
+#include "HierBasisFunction1D_ExtendedLevelOneBC.h"
+#include "HierBasisFunction1D_HomogenousBC.h"
 #include "MyException.h"
 #include "Defines.h"
 #include "Single.h"

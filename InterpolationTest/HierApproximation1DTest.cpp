@@ -1,18 +1,18 @@
 #include <gtest/gtest.h>
 
-#include "Interpolation/HierApproximation.h"
-#include "Interpolation/HierBasisFunction1D_HomogenousBC.h"
+#include "HierApproximation.h"
+#include "HierBasisFunction1D_HomogenousBC.h"
 #include "MyException.h"
 #include "SingleVariableRealValuedFunction.h"
 #include "Single.h"
 #include "ISingleVariableRealValuedFunctionUtils.h"
 #include "SingleVariablePolynomial.h"
-#include "Interpolation/HierBasisFunction1D_ExtendedLevelOneBC.h"
-#include "Interpolation/HierBasisFunction1D_ExtraplolateBC.h"
+#include "HierBasisFunction1D_ExtendedLevelOneBC.h"
+#include "HierBasisFunction1D_ExtraplolateBC.h"
 #include "SingleVariableFunctionExamples.h"
-#include "Interpolation/NodeRefinePredicateFactoryByLevel.h"
-#include "Interpolation/HierBasisFunction.h"
-#include "Interpolation/NodeRefinePredicateFactoryByLevelOrSurplus.h"
+#include "NodeRefinePredicateFactoryByLevel.h"
+#include "HierBasisFunction.h"
+#include "NodeRefinePredicateFactoryByLevelOrSurplus.h"
 #include "Plotting.h"
 
 #include <filesystem>

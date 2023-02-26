@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "Interpolation/NodalBasis1D.h"
+#include "NodalBasis1D.h"
 #include "TartanGrid.h"
 
 

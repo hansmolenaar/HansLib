@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "Interpolation/HierBasisFunction1D_ExtraplolateBC.h"
+#include "HierBasisFunction1D_ExtraplolateBC.h"
 #include "ISingleVariableRealValuedFunctionUtils.h"
 #include "MyException.h"
 #include "Single.h"

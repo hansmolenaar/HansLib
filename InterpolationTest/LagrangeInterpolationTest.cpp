@@ -1,11 +1,11 @@
 #include <gtest/gtest.h>
 
-#include "Interpolation/LagrangeInterpolation.h"
-#include "Interpolation/EquidistantPoints.h"
+#include "LagrangeInterpolation.h"
+#include "EquidistantPoints.h"
 #include "SingleVariableFunctionExamples.h"
 #include "Plotting.h"
 #include "ISingleVariableRealValuedFunctionUtils.h"
-#include <Interpolation/ChebyshevPoints.h>
+#include <ChebyshevPoints.h>
 
 TEST(LagrangeInterpolationTest, Basics)
 {

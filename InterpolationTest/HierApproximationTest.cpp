@@ -1,20 +1,20 @@
 #include <gtest/gtest.h>
 
-#include "Interpolation/HierApproximation.h"
-#include "Interpolation/HierBasisFunction1D_HomogenousBC.h"
+#include "HierApproximation.h"
+#include "HierBasisFunction1D_HomogenousBC.h"
 #include "MyException.h"
 #include "IMultiVariableRealValuedFunction.h"
 #include "Single.h"
 #include "Functors.h"
-#include "Interpolation/HierBasisFunction.h"
-#include "Interpolation/HierBasisFunction1D_ExtendedLevelOneBC.h"
-#include "Interpolation/HierBasisFunction1D_ExtraplolateBC.h"
+#include "HierBasisFunction.h"
+#include "HierBasisFunction1D_ExtendedLevelOneBC.h"
+#include "HierBasisFunction1D_ExtraplolateBC.h"
 #include "MultiVariableFunctionEvaluateFlipped.h"
 #include "MultiVariableFunctionEvaluateFrom01.h"
 #include "MultiVariableFunctionExamples.h"
 #include "MultiVariableRealValuedFunctionNoDerivatives.h"
 #include "Interval.h"
-#include "Interpolation/NodeRefinePredicateFactoryByLevel.h"
+#include "NodeRefinePredicateFactoryByLevel.h"
 
 #include "Plotting.h"
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Assert.h"
+#include "MyAssert.h"
 #include <vector>
 
 namespace Utilities
@@ -17,13 +17,13 @@ namespace Utilities
 template<typename T>
 const T& Utilities::Single(const std::vector<T>& container)
 {
-   Assert(container.size() == 1);
+   MyAssert(container.size() == 1);
    return container.front();
 }
 
 template<typename T>
 T& Utilities::Single(std::vector<T>& container)
 {
-   Assert(container.size() == 1);
+   MyAssert(container.size() == 1);
    return container.front();
 }

@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "Interpolation/HierLevelIndex.h"
+#include "HierLevelIndex.h"
 #include "MyException.h"
 
 
