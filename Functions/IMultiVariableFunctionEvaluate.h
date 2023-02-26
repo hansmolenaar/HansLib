@@ -1,7 +1,6 @@
 #pragma once
 
 #include "IRealFunction.h"
-#include "IMatrix.h"
 #include <span>
 
 

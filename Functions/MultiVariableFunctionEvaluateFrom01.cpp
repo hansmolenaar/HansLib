@@ -1,5 +1,6 @@
 #include "MultiVariableFunctionEvaluateFrom01.h"
 #include "Defines.h"
+#include "MyException.h"
 
 namespace
 {

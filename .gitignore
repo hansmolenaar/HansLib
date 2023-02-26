@@ -3,6 +3,7 @@
 
 #cmake
 CMakeFiles/
+.vs
 
 # User-specific files
 *.suo

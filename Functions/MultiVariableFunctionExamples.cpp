@@ -108,13 +108,6 @@ std::unique_ptr<IMultiVariableRealValuedFunction> MultiVariableFunctionExamples:
    return GetPolynomial(terms);
 }
 
-
-std::vector<Interval<double>> MultiVariableFunctionExamples::TridBounds(int dim)
-{
-   const Interval<double> intv(-dim * dim, dim * dim);
-   return { static_cast<size_t>(dim), intv };
-}
-
 MultiVariableFunctionExamples::Examplefunction MultiVariableFunctionExamples::SkewedHatSquared(const std::vector<double>& pos)
 {
    const int dim = static_cast<int>(pos.size());

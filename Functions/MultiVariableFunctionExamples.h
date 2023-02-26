@@ -29,8 +29,6 @@ namespace MultiVariableFunctionExamples
    std::unique_ptr<IMultiVariableRealValuedFunction> ScaleInput(
       std::unique_ptr<IMultiVariableRealValuedFunction>&&, 
       std::unique_ptr<std::function<std::vector<double>(const std::vector<double>&)>>&&);
-   std::unique_ptr<IMultiVariableRealValuedFunction> TridFunction(int dim);
-   std::vector<Interval<double>> TridBounds(int dim);
 
    Examplefunction SkewedHatSquared(const std::vector<double>& pos);
    Examplefunction DiscontinuousHatProduct(const std::vector<double>& xpeak, const std::vector<double>& ypeakLeft, const std::vector<double>& ypeakRight);
