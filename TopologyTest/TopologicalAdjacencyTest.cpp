@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "Topology/TopologicalAdjacency.h"
+#include "TopologicalAdjacency.h"
 #include "TestITopologicalAdjacency.h"
 
 TEST(TopologicalAdjacencyTest, edge)

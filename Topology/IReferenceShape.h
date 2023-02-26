@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Topology/ITopologicalAdjacencies.h"
+#include "ITopologicalAdjacencies.h"
 
 class IReferenceShape 
 {

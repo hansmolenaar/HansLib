@@ -1,10 +1,10 @@
 #include <gtest/gtest.h>
-#include "Topology/ReferenceShapeNode.h"
+#include "ReferenceShapeNode.h"
 #include "MyException.h"
-#include "Topology/TopologicalAdjacencies.h"
-#include "Topology/TopologicalAdjacency.h"
-#include "Topology/ReferenceShapeHyperCube.h"
-#include "Topology/IReferenceShape.h"
+#include "TopologicalAdjacencies.h"
+#include "TopologicalAdjacency.h"
+#include "ReferenceShapeHyperCube.h"
+#include "IReferenceShape.h"
 
 TEST(ITopologicalAdjacenciesTest, CountSafe)
 {

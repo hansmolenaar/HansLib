@@ -1,8 +1,8 @@
 #pragma once
 
 #include <gtest/gtest.h>
-#include "Topology/ITopologicalAdjacencies.h"
-#include "Topology/ITopologicalAdjacency.h"
+#include "ITopologicalAdjacencies.h"
+#include "ITopologicalAdjacency.h"
 #include "TestITopologicalAdjacency.h"
 
 namespace TopologyTest

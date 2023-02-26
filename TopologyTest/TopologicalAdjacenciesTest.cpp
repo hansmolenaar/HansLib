@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
-#include "Topology/TopologicalAdjacencies.h"
+#include "TopologicalAdjacencies.h"
 #include "TestITopologicalAdjacencies.h"
-#include "Topology/TopologicalAdjacency.h"
+#include "TopologicalAdjacency.h"
 
 namespace
 {

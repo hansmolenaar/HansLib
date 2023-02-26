@@ -39,4 +39,7 @@ add_subdirectory(GeometryTest)
 add_subdirectory(Groups)
 add_subdirectory(GroupsTest)
 
+add_subdirectory(Topology)
+add_subdirectory(TopologyTest)
+
 

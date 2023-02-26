@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "Topology/GridTopology.h"
+#include "GridTopology.h"
 #include "MyException.h"
 #include "TestITopologicalAdjacencies.h"
 

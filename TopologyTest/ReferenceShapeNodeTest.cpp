@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "Topology/ReferenceShapeNode.h"
+#include "ReferenceShapeNode.h"
 #include "MyException.h"
 #include "TestIReferenceShape.h"
 

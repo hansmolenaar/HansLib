@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Mesh/IMesh.h"
-#include "Topology/GridTopology.h"
+#include "GridTopology.h"
 #include "MultiIndex.h"
 #include "MyException.h"
 

@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "Topology/ReferenceShapeHyperCube.h"
+#include "ReferenceShapeHyperCube.h"
 #include "TestIReferenceShape.h"
 
 TEST(ReferenceShapeHyperCubeTest, Edge)

@@ -1,8 +1,8 @@
 #pragma once
 
 #include <gtest/gtest.h>
-#include "Topology/IReferenceShape.h"
-#include "TopologyTest/TestITopologicalAdjacencies.h"
+#include "IReferenceShape.h"
+#include "TestITopologicalAdjacencies.h"
 #include <set>
 
 namespace TopologyTest

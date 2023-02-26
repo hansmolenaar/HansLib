@@ -1,7 +1,7 @@
 #include "TopologicalAdjacencies.h"
 #include "TopologicalAdjacency.h"
 #include "BoundsCheck.h"
-#include "Topology/TopologyDimension.h"
+#include "TopologyDimension.h"
 
 #include <algorithm>
 #include <set>

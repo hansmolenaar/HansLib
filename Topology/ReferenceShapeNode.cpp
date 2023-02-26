@@ -1,4 +1,4 @@
-#include "Topology/ReferenceShapeNode.h"
+#include "ReferenceShapeNode.h"
 #include "MyException.h"
 #include "BoundsCheck.h"
 namespace
