@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
 
-#include "Geometry/Rotate2D.h"
-#include "Geometry/PointClose.h"
-#include "Geometry/UnitVector.h"
+#include "Rotate2D.h"
+#include "PointClose.h"
+#include "UnitVector.h"
 
 #include <numbers>
 

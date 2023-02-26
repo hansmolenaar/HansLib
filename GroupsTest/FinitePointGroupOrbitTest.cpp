@@ -2,7 +2,7 @@
 
 #include "Groups/FinitePointGroupOrbit.h"
 #include "Groups/ActionReflectOrigin.h"
-#include "Geometry/PointClose.h"
+#include "PointClose.h"
 #include "Groups/DihedralGroup.h"
 #include "Groups/ActionDihedral.h"
 

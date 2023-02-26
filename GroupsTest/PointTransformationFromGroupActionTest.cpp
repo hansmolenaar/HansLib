@@ -3,7 +3,7 @@
 #include "Groups/PointTransformationFromGroupAction.h"
 #include "Groups/CyclicGroup.h"
 #include "Groups/ActionRotate2D.h"
-#include "Geometry/PointClose.h"
+#include "PointClose.h"
 
 TEST(PointTransformationFromGroupActionTest, Trivial)
 {

@@ -1,9 +1,9 @@
 #pragma once
 
 #include "Groups/IFinitePointGroupAction.h"
-#include "Geometry/Hyperplane.h"
+#include "Hyperplane.h"
 #include "Groups/DihedralGroup.h"
-#include "Geometry/PointReflection.h"
+#include "PointReflection.h"
 
 template<int N>
 class ActionReflectOrigin : public IFinitePointGroupAction<N>

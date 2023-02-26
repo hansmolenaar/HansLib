@@ -1,9 +1,9 @@
 #include <gtest/gtest.h>
 
 #include "Groups/GroupFromOrbit.h"
-#include "Geometry/PointTransformationIdentity.h"
-#include "Geometry/PointClose.h"
-#include "Geometry/Rotate2D.h"
+#include "PointTransformationIdentity.h"
+#include "PointClose.h"
+#include "Rotate2D.h"
 #include "Groups/CyclicGroup.h"
 #include "Groups/SameFiniteGroupPredicate.h"
 #include "Groups/ActionDihedral.h"

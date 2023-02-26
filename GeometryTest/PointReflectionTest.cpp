@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
-#include "Geometry/PointReflection.h"
-#include "Geometry/PointClose.h"
+#include "PointReflection.h"
+#include "PointClose.h"
 
 
 TEST(PointReflectionTest, Basic)

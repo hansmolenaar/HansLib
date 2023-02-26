@@ -1,7 +1,7 @@
 #pragma once
 
 #include "IPointCollection.h"
-#include "Geometry/IGeometryPredicate.h"
+#include "IGeometryPredicate.h"
 
 template<typename T, int N>
 class IUniquePointCollection : public IPointCollection<T,N>

@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
-#include "Geometry/SamePointPredicate.h"
-#include "Geometry/PointClose.h"
+#include "SamePointPredicate.h"
+#include "PointClose.h"
 
 #include <numbers>
 

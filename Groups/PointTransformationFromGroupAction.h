@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Geometry/IPointTransformation.h"
+#include "IPointTransformation.h"
 #include "Groups/IFinitePointGroupAction.h"
 
 template<int N>

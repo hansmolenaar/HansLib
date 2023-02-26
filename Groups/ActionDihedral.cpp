@@ -1,7 +1,7 @@
 #include "ActionDihedral.h"
-#include "Geometry/Rotate2D.h"
-#include "Geometry/UnitVector.h"
-#include "Geometry/Hyperplane.h"
+#include "Rotate2D.h"
+#include "UnitVector.h"
+#include "Hyperplane.h"
 
 #include <numbers>
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Geometry/IUniquePointCollection.h"
+#include "IUniquePointCollection.h"
 #include "Groups/IFinitePointGroupAction.h"
 #include "Groups/IFiniteGroupUtils.h"
 

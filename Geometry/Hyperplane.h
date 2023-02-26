@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Point.h"
-#include "Geometry/UnitVector.h"
-#include "Geometry/IPointTransformation.h"
+#include "UnitVector.h"
+#include "IPointTransformation.h"
 
 template<int N>
 class Hyperplane : public IPointTransformation<double, N>

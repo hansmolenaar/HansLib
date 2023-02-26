@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Point.h"
-#include "Geometry/IGeometryPredicate.h"
+#include "IGeometryPredicate.h"
 
 template<typename T, int N>
 class PointClose : public IGeometryPredicate<T, N>

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Geometry/IGeometryPredicate.h"
+#include "IGeometryPredicate.h"
 
 template<typename T, int N>
 struct SamePointPredicate
