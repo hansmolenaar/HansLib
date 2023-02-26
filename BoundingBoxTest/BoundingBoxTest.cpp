@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "BoundingBox/BoundingBox.h"
-#include "Point/Point.h" 
+#include "Point.h" 
 
 TEST(IntervalTest, Basic1)
 {

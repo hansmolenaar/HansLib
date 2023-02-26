@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Point/IPointCollection.h"
+#include "IPointCollection.h"
 #include "Geometry/IGeometryPredicate.h"
 
 template<typename T, int N>

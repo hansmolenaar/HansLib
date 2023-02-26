@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Defines.h"
-#include "Point/Point.h"
+#include "Point.h"
 
 #include <numeric>
 #include <limits>

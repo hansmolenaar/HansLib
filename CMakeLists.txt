@@ -24,4 +24,7 @@ include(GoogleTest)
 add_subdirectory(Utilities)
 add_subdirectory(UtilitiesTest)
 
+add_subdirectory(Point)
+add_subdirectory(PointTest)
+
 

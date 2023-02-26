@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Point/IPointCollection.h"
+#include "IPointCollection.h"
 
 class ITopologicalAdjacencies;
 

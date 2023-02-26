@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Point/Point.h"
+#include "Point.h"
 
 template<typename T, int N>
 class IPointCollection

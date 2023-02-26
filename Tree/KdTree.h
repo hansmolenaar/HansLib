@@ -2,7 +2,7 @@
 
 #include "Defines.h"
 #include "IKdTreeTraversor.h"
-#include "Point/Point.h"
+#include "Point.h"
 #include "BoundingBox/BoundingBox.h"
 #include "KdTreeTraversorPointsInRange.h"
 

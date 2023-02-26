@@ -3,7 +3,7 @@
 #include "Defines.h"
 #include "Interval/Interval.h"
 #include "MyAssert.h"
-#include "Point/Point.h"
+#include "Point.h"
 
 #include <span>
 
