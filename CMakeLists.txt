@@ -49,7 +49,10 @@ add_subdirectory(Permutation)
 add_subdirectory(PermutationTest)
 
 add_subdirectory(Functions)
-#add_subdirectory(FunctionsTest)
+add_subdirectory(FunctionsTest)
+
+add_subdirectory(MatrixVector)
+#add_subdirectory(MatrixVectorTest)
 
 add_subdirectory(KelvinRepr)
 #add_subdirectory(KelvinReprTest)
@@ -63,4 +66,4 @@ add_subdirectory(Interpolation)
 #add_subdirectory(InterpolationTest)
 
 add_subdirectory(Mesh)
-#add_subdirectory(MeshTest)
+add_subdirectory(MeshTest)
