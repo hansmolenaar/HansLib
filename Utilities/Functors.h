@@ -1,8 +1,12 @@
 #pragma once
 
+#include "MyException.h"
+
 #include <type_traits>
 #include <algorithm>
 #include <numeric>
+#include <vector>
+
 
 namespace Functors
 {
@@ -33,6 +37,24 @@ namespace Functors
          const double maxabs = std::max(std::abs(x), std::abs(y));
          if (maxabs < AbsTolerance) return true;
          return std::abs(x - y) <= maxabs * RelTolerance;
+      }
+   };
+
+   struct VectorDoubleLess
+   {
+      AreClose AreCloseValue;
+
+      bool operator()(const std::vector<double>& a, const std::vector<double>& b) const
+      {
+         if (a.size() != b.size()) throw MyException("VectorDoubleLess dimension mismatch");
+         for (size_t n = 0; n < a.size(); ++n)
+         {
+            if (AreCloseValue(a[n], b[n])) continue;
+            return   a[n] < b[n];
+         }
+
+         // Are equal
+         return false;
       }
    };
 }

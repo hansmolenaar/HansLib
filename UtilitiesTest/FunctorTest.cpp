@@ -10,7 +10,7 @@ TEST(FunctorTest, IsEqualTo)
    ASSERT_TRUE(isEqualTo42(42));
 }
 
-struct Base 
+struct Base
 {
    virtual ~Base() = default;
 };
@@ -33,18 +33,30 @@ TEST(FunctorTest, PointerIsOfType)
    const Base* b2 = &d2;
 
    const AnotherBase ab;
-  ASSERT_TRUE( Functors::IsOfDerivedType<Derived_1>()(b1));
-  ASSERT_FALSE(Functors::IsOfDerivedType<Derived_1>()(b2));
-  ASSERT_FALSE(Functors::IsOfDerivedType<Derived_1>()(&ab));
+   ASSERT_TRUE(Functors::IsOfDerivedType<Derived_1>()(b1));
+   ASSERT_FALSE(Functors::IsOfDerivedType<Derived_1>()(b2));
+   ASSERT_FALSE(Functors::IsOfDerivedType<Derived_1>()(&ab));
 }
 
 TEST(FunctorTest, AreClose)
 {
    constexpr Functors::AreClose areClose;
-   ASSERT_TRUE(areClose(0,0));
+   ASSERT_TRUE(areClose(0, 0));
    ASSERT_TRUE(areClose(0, std::numeric_limits<double>::min()));
    ASSERT_FALSE(areClose(0, 1.0));
    ASSERT_FALSE(areClose(-1.0, 1.0));
+}
+
+
+TEST(FunctorTest, AreCloseVectors)
+{
+   constexpr Functors::VectorDoubleLess less;
+   const std::vector<double> x{ 1.0, 2.0 };
+   const std::vector<double> y{ 1.0, 3.0 };
+   ASSERT_TRUE(less(x, y));
+   ASSERT_FALSE(less(y, x));
+   ASSERT_FALSE(less(x, x));
+
 }
 
 
