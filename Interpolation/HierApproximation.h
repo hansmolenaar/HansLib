@@ -33,7 +33,7 @@ public:
 
    using RefinementSpecification = std::pair<HierMultiIndex, size_t>;
 
-   static std::unique_ptr<HierApproximation> Create(const IMultiVariableRealValuedFunction& fie, IHierBasisFunction_Factory& factory, INodeRefinePredicateFactory& refinementFactory);
+   static std::unique_ptr<HierApproximation> Create(const IMultiVariableFunctionEvaluate& fie, IHierBasisFunction_Factory& factory, INodeRefinePredicateFactory& refinementFactory);
 
    double operator()(std::span<const double>) const;
 

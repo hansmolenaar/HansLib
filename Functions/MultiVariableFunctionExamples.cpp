@@ -112,7 +112,8 @@ MultiVariableFunctionExamples::Examplefunction MultiVariableFunctionExamples::Sk
 {
    const int dim = static_cast<int>(pos.size());
    Examplefunction result;
-   result.Function = std::make_unique<MultiVariableRealValuedFunctionNoDerivatives>(dim, std::make_unique<SkewedHatSquaredEval>(pos));
+   auto function = std::make_unique<MultiVariableRealValuedFunctionNoDerivatives>(dim, std::make_unique<SkewedHatSquaredEval>(pos));
+   result.Function = std::make_unique<MultiVariableRealValuedFunctionEvaluateCached>(std::move(function));
    result.Domain = std::vector<Interval<double>>(pos.size(), Interval<double>(0, 1));
    result.Maximum = std::make_unique<ExampleExtremumInfo>();
    result.Maximum->Extremum = 1.0;
@@ -135,7 +136,8 @@ MultiVariableFunctionExamples::Examplefunction MultiVariableFunctionExamples::Di
       functions.emplace_back(SingleVariableFunctionExamples::GetDiscontinuousHatFunction(xpeak.at(n), ypeakLeft.at(n), ypeakRight.at(n)));
    }
    Examplefunction result;
-   result.Function = std::make_unique<MultiVariableRealValuedFunctionNoDerivatives>(dim, std::make_unique<ProductEval>(functions));
+   auto function = std::make_unique<MultiVariableRealValuedFunctionNoDerivatives>(dim, std::make_unique<ProductEval>(functions));
+   result.Function = std::make_unique<MultiVariableRealValuedFunctionEvaluateCached>(std::move(function));
    result.Domain = std::vector<Interval<double>>(xpeak.size(), Interval<double>(0, 1));
    result.Maximum = std::make_unique<ExampleExtremumInfo>();
    result.Maximum->Extremum = 1.0;
@@ -144,6 +146,28 @@ MultiVariableFunctionExamples::Examplefunction MultiVariableFunctionExamples::Di
       result.Maximum->Extremum *= std::max(ypeakLeft.at(n), ypeakRight.at(n));
    }
    result.Maximum->Positions = std::vector<std::vector<double>>{ std::vector<double>(xpeak.begin(), xpeak.end()) };
+
+   return result;
+}
+
+MultiVariableFunctionExamples::Examplefunction MultiVariableFunctionExamples::SumOfSquares(int dim)
+{
+   Examplefunction result;
+
+   std::vector< std::pair<std::vector<int>, double>> powsAndCoefs;
+   for (int d = 0; d < dim; ++d)
+   {
+      std::vector<int> pows(dim, 0);
+      pows[d] = 2;
+      powsAndCoefs.emplace_back(pows, 1.0);
+   }
+   auto function = GetPolynomial(powsAndCoefs);
+   result.Function = std::make_unique<MultiVariableRealValuedFunctionEvaluateCached>(std::move(function));
+
+   result.Domain = std::vector<Interval<double>>(dim, Interval<double>(-1, 1));
+   result.Minimum = std::make_unique<ExampleExtremumInfo>();
+   result.Minimum->Extremum = 0.0;
+   result.Minimum->Positions.emplace_back(std::vector<double>(dim, 0.0));
 
    return result;
 }

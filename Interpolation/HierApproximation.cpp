@@ -29,7 +29,7 @@ namespace
    struct CreateHierNode
    {
       IHierBasisFunction_Factory& Factory;
-      const IMultiVariableRealValuedFunction& FunctionToApproximate;
+      const IMultiVariableFunctionEvaluate& FunctionToApproximate;
       const HierApproximation& Approximation;
 
       std::unique_ptr<HierTreeNode> operator()(const HierMultiIndex& hmi, int level) const
@@ -39,7 +39,7 @@ namespace
 
          // Calculate the surplus
          const auto& xyz = hmi.toDoubles();
-         node->Value = FunctionToApproximate.Evaluate(xyz);
+         node->Value = FunctionToApproximate(xyz);
          // Basis function may overlap
          const double approx = Approximation(xyz);
          node->Surplus = node->Value - approx;
@@ -108,7 +108,7 @@ double HierTreeNode::operator()(std::span<const double> x) const
    return result;
 }
 
-std::unique_ptr<HierApproximation> HierApproximation::Create(const IMultiVariableRealValuedFunction& fie, IHierBasisFunction_Factory& factory, INodeRefinePredicateFactory& refinementFactory)
+std::unique_ptr<HierApproximation> HierApproximation::Create(const IMultiVariableFunctionEvaluate& fie, IHierBasisFunction_Factory& factory, INodeRefinePredicateFactory& refinementFactory)
 {
    Logger logger;
    std::vector<std::string> loglines;

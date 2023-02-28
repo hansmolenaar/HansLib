@@ -1,6 +1,7 @@
 #pragma once
 
 #include "IMultiVariableRealValuedFunction.h"
+#include "MultiVariableRealValuedFunctionEvaluateCached.h"
 #include "Interval.h"
 #include <memory>
 #include <vector>
@@ -17,7 +18,7 @@ namespace MultiVariableFunctionExamples
 
    struct Examplefunction
    {
-      std::unique_ptr<IMultiVariableRealValuedFunction> Function;
+      std::unique_ptr<MultiVariableRealValuedFunctionEvaluateCached> Function;
       std::vector<Interval<double>> Domain;
       std::unique_ptr<ExampleExtremumInfo> Minimum;
       std::unique_ptr<ExampleExtremumInfo> Maximum;
@@ -32,5 +33,6 @@ namespace MultiVariableFunctionExamples
 
    Examplefunction SkewedHatSquared(const std::vector<double>& pos);
    Examplefunction DiscontinuousHatProduct(const std::vector<double>& xpeak, const std::vector<double>& ypeakLeft, const std::vector<double>& ypeakRight);
+   Examplefunction SumOfSquares(int dim);
 
 }
