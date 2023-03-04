@@ -8,7 +8,7 @@
 #include "MultiVariableRealValuedFunctionEvaluateCached.h"
 #include "IterativeMinimizationController.h"
 #include "IIterativeMinimizationConvergenceCrit.h"
-//#include "IterativeMinimizationConvergenceCrit.h"
+#include "IterativeMinimizationConvergenceCrit.h"
 
 class FakeConvergenceCrit : public IIterativeMinimizationConvergenceCrit
 {
@@ -74,7 +74,6 @@ TEST(IterativeMinimizationControllerTest, CheckLogic)
    }
 }
 
-#if false
 TEST(IterativeMinimizationControllerTest, MaxIterExceeded)
 {
    std::unique_ptr<IMultiVariableFunctionEvaluate> fiePtr = MultiVariableFunctionExamples::GetPolynomial(std::vector< std::pair<std::vector<int>, double>>{ {std::vector<int>{2}, 1.0}});
@@ -84,4 +83,17 @@ TEST(IterativeMinimizationControllerTest, MaxIterExceeded)
    const auto result = IterativeMinimizationController::Iterate(cs, crit);
    ASSERT_EQ(result.Status, MaxIterExceeded);
 }
-#endif
+
+
+TEST(IterativeMinimizationControllerTest, Succes)
+{
+   std::unique_ptr<IMultiVariableFunctionEvaluate> fiePtr = MultiVariableFunctionExamples::GetPolynomial(std::vector< std::pair<std::vector<int>, double>>{ {std::vector<int>{2}, 1.0}});
+   std::shared_ptr< IMultiVariableFunctionEvaluate> fie(fiePtr.release());
+   CompassSearch cs(fie, std::vector<double> {0.9}, 1.0);
+   constexpr double critEval = 1.0e-4;
+   IterativeMinimizationConvergenceCrit crit(100, critEval);
+   const auto result = IterativeMinimizationController::Iterate(cs, crit);
+   ASSERT_EQ(result.Status, Converged);
+   ASSERT_TRUE(result.EvalMinimum < critEval);
+   ASSERT_EQ(result.NumIterations, 3);
+}

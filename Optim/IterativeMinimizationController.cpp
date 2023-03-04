@@ -11,7 +11,7 @@ IterativeMinimizationResult IterativeMinimizationController::Iterate(IIterativeM
       // enum IIterativeMinimizationStepStatus { StepSucces, StepStuck, StepDivergence };
       const auto stepResult = iterator.iterate();
       steps.push_back(stepResult);
-      IterativeMinimizationResult result{ Fail, stepResult.ArgMinimum , stepResult.EvalMinimum };
+      IterativeMinimizationResult result{ Fail, stepResult.ArgMinimum , stepResult.EvalMinimum, static_cast<int>(steps.size())};
 
       if (stepResult.Status == StepDivergence)
       {

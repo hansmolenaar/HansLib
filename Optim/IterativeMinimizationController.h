@@ -11,6 +11,7 @@ struct IterativeMinimizationResult
    IterativeMinimizationConvergenceStatus Status = Fail;
    std::vector<double> ArgMinimum;
    double EvalMinimum = std::numeric_limits<double>::quiet_NaN();
+   int NumIterations = -1;
 };
 
 namespace IterativeMinimizationController
