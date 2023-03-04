@@ -8,6 +8,7 @@
 #include "MultiVariableRealValuedFunctionEvaluateCached.h"
 #include "IterativeMinimizationController.h"
 #include "IIterativeMinimizationConvergenceCrit.h"
+//#include "IterativeMinimizationConvergenceCrit.h"
 
 class FakeConvergenceCrit : public IIterativeMinimizationConvergenceCrit
 {
@@ -21,7 +22,7 @@ private:
 class FakeIterativeMinimizationStep : public  IIterativeMinimization
 {
 public:
- 
+
    FakeIterativeMinimizationStep(IterativeMinimizationStep status, const IMultiVariableFunctionEvaluate& fie) : m_stepResult(status), m_function(fie) {}
    IterativeMinimizationStep iterate() override { return m_stepResult; }
    const IMultiVariableFunctionEvaluate& getObjectiveFunctions() const { return m_function; }
@@ -33,9 +34,54 @@ private:
 TEST(IterativeMinimizationControllerTest, CheckLogic)
 {
    std::unique_ptr<IMultiVariableFunctionEvaluate> fie = MultiVariableFunctionExamples::GetPolynomial(std::vector< std::pair<std::vector<int>, double>>{ {std::vector<int>{2}, 1.0}});
-   IterativeMinimizationStep step{ StepDivergence };
-   FakeIterativeMinimizationStep iterator(step, *fie);
-   FakeConvergenceCrit crit(Fail);
-   auto retval = IterativeMinimizationController::Iterate(iterator, crit);
-   ASSERT_EQ(retval.Status, Fail);
+
+   FakeConvergenceCrit critConverged = FakeConvergenceCrit(Converged);
+   FakeConvergenceCrit  critNotConverged = FakeConvergenceCrit(NotConverged);
+   FakeConvergenceCrit critMaxIter = FakeConvergenceCrit(MaxIterExceeded);
+   FakeConvergenceCrit critFail = FakeConvergenceCrit(Fail);
+
+   // StepDivergence
+   {
+      IterativeMinimizationStep step{ StepDivergence };
+      FakeIterativeMinimizationStep iterator(step, *fie);
+
+      ASSERT_EQ(IterativeMinimizationController::Iterate(iterator, critConverged).Status, Fail);
+      ASSERT_EQ(IterativeMinimizationController::Iterate(iterator, critNotConverged).Status, Fail);
+      ASSERT_EQ(IterativeMinimizationController::Iterate(iterator, critMaxIter).Status, Fail);
+      ASSERT_EQ(IterativeMinimizationController::Iterate(iterator, critFail).Status, Fail);
+   }
+
+   // StepStuck
+   {
+      IterativeMinimizationStep step{ StepStuck };
+      FakeIterativeMinimizationStep iterator(step, *fie);
+
+      ASSERT_EQ(IterativeMinimizationController::Iterate(iterator, critConverged).Status, Converged);
+      ASSERT_EQ(IterativeMinimizationController::Iterate(iterator, critNotConverged).Status, MaxIterExceeded);
+      ASSERT_EQ(IterativeMinimizationController::Iterate(iterator, critMaxIter).Status, MaxIterExceeded);
+      ASSERT_EQ(IterativeMinimizationController::Iterate(iterator, critFail).Status, Fail);
+   }
+
+   // StepSucces
+   {
+      IterativeMinimizationStep step{ StepSucces };
+      FakeIterativeMinimizationStep iterator(step, *fie);
+
+      ASSERT_EQ(IterativeMinimizationController::Iterate(iterator, critConverged).Status, Converged);
+      // Does not terminate ASSERT_EQ(IterativeMinimizationController::Iterate(iterator, critNotConverged).Status, NotConverged);
+      ASSERT_EQ(IterativeMinimizationController::Iterate(iterator, critMaxIter).Status, MaxIterExceeded);
+      ASSERT_EQ(IterativeMinimizationController::Iterate(iterator, critFail).Status, Fail);
+   }
 }
+
+#if false
+TEST(IterativeMinimizationControllerTest, MaxIterExceeded)
+{
+   std::unique_ptr<IMultiVariableFunctionEvaluate> fiePtr = MultiVariableFunctionExamples::GetPolynomial(std::vector< std::pair<std::vector<int>, double>>{ {std::vector<int>{2}, 1.0}});
+   std::shared_ptr< IMultiVariableFunctionEvaluate> fie(fiePtr.release());
+   CompassSearch cs(fie, std::vector<double> {10}, 1.0);
+   IterativeMinimizationConvergenceCrit crit(2, 1.0e-10);
+   const auto result = IterativeMinimizationController::Iterate(cs, crit);
+   ASSERT_EQ(result.Status, MaxIterExceeded);
+}
+#endif
