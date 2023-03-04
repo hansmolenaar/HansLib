@@ -44,3 +44,13 @@ bool SingleVariablePolynomial::IsNonConstant() const
 	}
 	return false;
 }
+
+SingleVariablePolynomial SingleVariablePolynomial::Create(std::vector<std::tuple<double, int>> terms)
+{
+	SingleVariablePolynomial result;
+	for (const auto& term : terms)
+	{
+		result.Add(std::get<0>(term), std::get<1>(term));
+	}
+	return result;
+}

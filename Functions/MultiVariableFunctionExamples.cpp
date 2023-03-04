@@ -83,6 +83,46 @@ namespace
       }
       return result;
    }
+
+
+   class  SumOfSqauresEval : public IMultiVariableFunctionEvaluate
+   {
+   public:
+      SumOfSqauresEval(std::vector< std::unique_ptr<ISingleVariableRealValuedFunction>>& functions1D);
+
+      int getDimension() const override;
+      double operator()(std::span<const double> x) const;
+   private:
+      std::vector<std::unique_ptr<ISingleVariableRealValuedFunction>> m_functions;
+   };
+
+   SumOfSqauresEval::SumOfSqauresEval(std::vector< std::unique_ptr<ISingleVariableRealValuedFunction>>& functions1D)
+   {
+      for (size_t n = 0; n < functions1D.size(); ++n)
+      {
+         m_functions.emplace_back(std::move(functions1D.at(n)));
+      }
+   }
+
+   int SumOfSqauresEval::getDimension() const
+   {
+      return static_cast<int>(m_functions.size());
+   }
+
+   double SumOfSqauresEval::operator()(std::span<const double> x) const
+   {
+      if (x.size() != m_functions.size())
+      {
+         throw MyException("SumOfSqauresEval::operator dimension problem");
+      }
+      double result = 0;
+      for (size_t n = 0; n < x.size(); ++n)
+      {
+         const double eval = m_functions.at(n)->Evaluate(x[n]);
+         result += eval * eval;
+      }
+      return result;
+   }
 }
 
 std::unique_ptr<IMultiVariableRealValuedFunction> MultiVariableFunctionExamples::GetPolynomial(const std::vector< std::pair<std::vector<int>, double>>& terms)
@@ -118,6 +158,12 @@ MultiVariableFunctionExamples::Examplefunction MultiVariableFunctionExamples::Sk
    result.Maximum = std::make_unique<ExampleExtremumInfo>();
    result.Maximum->Extremum = 1.0;
    result.Maximum->Positions = std::vector<std::vector<double>>{ std::vector<double>(pos.begin(), pos.end()) };
+   return result;
+}
+
+std::unique_ptr<IMultiVariableFunctionEvaluate> MultiVariableFunctionExamples::SumOfSquares(std::vector<std::unique_ptr<ISingleVariableRealValuedFunction>>& functions)
+{
+   std::unique_ptr<IMultiVariableFunctionEvaluate> result = std::make_unique<SumOfSqauresEval>(functions);
    return result;
 }
 

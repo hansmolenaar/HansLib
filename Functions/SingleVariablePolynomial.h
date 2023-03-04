@@ -9,12 +9,12 @@
 class SingleVariablePolynomial : public ISingleVariableRealValuedFunction
 {
 public:
-	//static SingleVariablePolynomial	Create(std::span<std::tuple<double, SingleVariableMonomial > > polynomial);
-	void Add(double coef, SingleVariableMonomial monomial);
-	double Evaluate(double x)const override;
-	double Derivative(double x)const override;
-	bool IsNonConstant() const override;
-	bool HasDerivative() const override;
+   static SingleVariablePolynomial	Create(std::vector<std::tuple<double, int>> polynomial);
+   void Add(double coef, SingleVariableMonomial monomial);
+   double Evaluate(double x)const override;
+   double Derivative(double x)const override;
+   bool IsNonConstant() const override;
+   bool HasDerivative() const override;
 private:
-	std::vector< std::pair<double, SingleVariableMonomial> > m_polynomial;
+   std::vector< std::pair<double, SingleVariableMonomial> > m_polynomial;
 };

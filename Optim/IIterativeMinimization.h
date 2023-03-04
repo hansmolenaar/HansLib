@@ -1,13 +1,16 @@
 #pragma once
-#include "IMinimization.h"
+
+#include "IMultiVariableFunctionEvaluate.h"
+#include "IterativeMinimizationStep.h"
 #include <vector>
+#include <limits>
+#include <memory>
 
-enum IIterativeMinimizationStatus  { Converged, NotConverged, MaxIterExceeded };
 
-class IIterativeMinimization : public IMinimization
+
+class IIterativeMinimization 
 {
 public:
-    // Returns if a better approximation has been found
-	virtual bool iterate() = 0;
-	virtual int getNumIterations() const = 0;
+	virtual IterativeMinimizationStep iterate() = 0;
+	virtual const IMultiVariableFunctionEvaluate& getObjectiveFunctions() const = 0;
 };

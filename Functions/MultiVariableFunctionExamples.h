@@ -2,6 +2,8 @@
 
 #include "IMultiVariableRealValuedFunction.h"
 #include "MultiVariableRealValuedFunctionEvaluateCached.h"
+#include "IMultiVariableFunctionEvaluate.h"
+#include "ISingleVariableRealValuedFunction.h"
 #include "Interval.h"
 #include <memory>
 #include <vector>
@@ -27,9 +29,7 @@ namespace MultiVariableFunctionExamples
 
    std::unique_ptr<IMultiVariableRealValuedFunction> GetPolynomial(const std::vector< std::pair<std::vector<int>, double>>&);
    std::unique_ptr<IMultiVariableRealValuedFunction> SixHumpCamelFunction();
-   std::unique_ptr<IMultiVariableRealValuedFunction> ScaleInput(
-      std::unique_ptr<IMultiVariableRealValuedFunction>&&, 
-      std::unique_ptr<std::function<std::vector<double>(const std::vector<double>&)>>&&);
+   std::unique_ptr<IMultiVariableFunctionEvaluate> SumOfSquares(std::vector<std::unique_ptr<ISingleVariableRealValuedFunction>>& functions);
 
    Examplefunction SkewedHatSquared(const std::vector<double>& pos);
    Examplefunction DiscontinuousHatProduct(const std::vector<double>& xpeak, const std::vector<double>& ypeakLeft, const std::vector<double>& ypeakRight);
