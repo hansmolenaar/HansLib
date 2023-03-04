@@ -3,7 +3,7 @@
 #include "BoundsCheck.h"
 
 
-std::unique_ptr<ISingleVariableRealValuedFunction> SingleVariableFunctionExamples::GetRungeFunction()
+std::shared_ptr<ISingleVariableRealValuedFunction> SingleVariableFunctionExamples::GetRungeFunction()
 {
    return std::make_unique<SingleVariableRealValuedFunction>([](double x) {return 1.0 / (1.0 + 25.0 * x * x); });
 }
@@ -11,7 +11,7 @@ std::unique_ptr<ISingleVariableRealValuedFunction> SingleVariableFunctionExample
 // f(0) = 0
 // f(xpeak) = 1
 // f(1) = 0
-std::unique_ptr<ISingleVariableRealValuedFunction> SingleVariableFunctionExamples::GetSkewedtHatFunction(double xpeak)
+std::shared_ptr<ISingleVariableRealValuedFunction> SingleVariableFunctionExamples::GetSkewedtHatFunction(double xpeak)
 {
    BoundsCheck<double>::Create(0.0, 1.0).check(xpeak);
    return std::make_unique<SingleVariableRealValuedFunction>([xpeak](double x) {
@@ -22,7 +22,7 @@ std::unique_ptr<ISingleVariableRealValuedFunction> SingleVariableFunctionExample
       });
 }
 
-std::unique_ptr<ISingleVariableRealValuedFunction> SingleVariableFunctionExamples::GetStepFunction(double xstep)
+std::shared_ptr<ISingleVariableRealValuedFunction> SingleVariableFunctionExamples::GetStepFunction(double xstep)
 {
    BoundsCheck<double>::Create(0.0, 1.0).check(xstep);
    return std::make_unique<SingleVariableRealValuedFunction>([xstep](double x) {
@@ -31,7 +31,7 @@ std::unique_ptr<ISingleVariableRealValuedFunction> SingleVariableFunctionExample
       });
 }
 
-std::unique_ptr<ISingleVariableRealValuedFunction> SingleVariableFunctionExamples::GetDiscontinuousHatFunction(double xPeak, double yPeakLeft, double yPeakRight)
+std::shared_ptr<ISingleVariableRealValuedFunction> SingleVariableFunctionExamples::GetDiscontinuousHatFunction(double xPeak, double yPeakLeft, double yPeakRight)
 {
    BoundsCheck<double>::Create(0.0, 1.0).check(xPeak);
    return std::make_unique<SingleVariableRealValuedFunction>([xPeak, yPeakLeft, yPeakRight](double x) {

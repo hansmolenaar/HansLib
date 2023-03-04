@@ -1,7 +1,7 @@
 #include "MultiVariableFunctionEvaluateFlipped.h"
 
-MultiVariableFunctionEvaluateFlipped::MultiVariableFunctionEvaluateFlipped(std::unique_ptr<IMultiVariableFunctionEvaluate>&& fie) : 
-   m_orgFunction(std::move(fie))
+MultiVariableFunctionEvaluateFlipped::MultiVariableFunctionEvaluateFlipped(std::shared_ptr<IMultiVariableFunctionEvaluate> fie) : 
+   m_orgFunction(fie)
 {
 }
 

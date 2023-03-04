@@ -25,7 +25,7 @@ public:
 
    FakeIterativeMinimizationStep(IterativeMinimizationStep status, const IMultiVariableFunctionEvaluate& fie) : m_stepResult(status), m_function(fie) {}
    IterativeMinimizationStep iterate() override { return m_stepResult; }
-   const IMultiVariableFunctionEvaluate& getObjectiveFunctions() const { return m_function; }
+   const IMultiVariableFunctionEvaluate& getObjectiveFunction() const { return m_function; }
 private:
    IterativeMinimizationStep m_stepResult;
    const IMultiVariableFunctionEvaluate& m_function;
@@ -33,7 +33,7 @@ private:
 
 TEST(IterativeMinimizationControllerTest, CheckLogic)
 {
-   std::unique_ptr<IMultiVariableFunctionEvaluate> fie = MultiVariableFunctionExamples::GetPolynomial(std::vector< std::pair<std::vector<int>, double>>{ {std::vector<int>{2}, 1.0}});
+   std::shared_ptr<IMultiVariableFunctionEvaluate> fie = MultiVariableFunctionExamples::GetPolynomial(std::vector< std::pair<std::vector<int>, double>>{ {std::vector<int>{2}, 1.0}});
 
    FakeConvergenceCrit critConverged = FakeConvergenceCrit(Converged);
    FakeConvergenceCrit  critNotConverged = FakeConvergenceCrit(NotConverged);
@@ -76,8 +76,8 @@ TEST(IterativeMinimizationControllerTest, CheckLogic)
 
 TEST(IterativeMinimizationControllerTest, MaxIterExceeded)
 {
-   std::unique_ptr<IMultiVariableFunctionEvaluate> fiePtr = MultiVariableFunctionExamples::GetPolynomial(std::vector< std::pair<std::vector<int>, double>>{ {std::vector<int>{2}, 1.0}});
-   std::shared_ptr< IMultiVariableFunctionEvaluate> fie(fiePtr.release());
+   std::shared_ptr<IMultiVariableFunctionEvaluate> fiePtr = MultiVariableFunctionExamples::GetPolynomial(std::vector< std::pair<std::vector<int>, double>>{ {std::vector<int>{2}, 1.0}});
+   std::shared_ptr< IMultiVariableFunctionEvaluate> fie(fiePtr);
    CompassSearch cs(fie, std::vector<double> {10}, 1.0);
    IterativeMinimizationConvergenceCrit crit(2, 1.0e-10);
    const auto result = IterativeMinimizationController::Iterate(cs, crit);
@@ -87,8 +87,8 @@ TEST(IterativeMinimizationControllerTest, MaxIterExceeded)
 
 TEST(IterativeMinimizationControllerTest, Succes)
 {
-   std::unique_ptr<IMultiVariableFunctionEvaluate> fiePtr = MultiVariableFunctionExamples::GetPolynomial(std::vector< std::pair<std::vector<int>, double>>{ {std::vector<int>{2}, 1.0}});
-   std::shared_ptr< IMultiVariableFunctionEvaluate> fie(fiePtr.release());
+   std::shared_ptr<IMultiVariableFunctionEvaluate> fiePtr = MultiVariableFunctionExamples::GetPolynomial(std::vector< std::pair<std::vector<int>, double>>{ {std::vector<int>{2}, 1.0}});
+   std::shared_ptr< IMultiVariableFunctionEvaluate> fie(fiePtr);
    CompassSearch cs(fie, std::vector<double> {0.9}, 1.0);
    constexpr double critEval = 1.0e-4;
    IterativeMinimizationConvergenceCrit crit(100, critEval);

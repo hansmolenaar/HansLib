@@ -17,7 +17,7 @@ namespace
       int getDimension() const override;
       double operator()(std::span<const double> x) const;
    private:
-      std::vector<std::unique_ptr<ISingleVariableRealValuedFunction>> m_hats;
+      std::vector<std::shared_ptr<ISingleVariableRealValuedFunction>> m_hats;
    };
 
    SkewedHatSquaredEval::SkewedHatSquaredEval(const std::vector<double>& pos) : m_hats(pos.size())
@@ -48,15 +48,15 @@ namespace
    class  ProductEval : public IMultiVariableFunctionEvaluate
    {
    public:
-      ProductEval(std::vector< std::unique_ptr<ISingleVariableRealValuedFunction>>& functions1D);
+      ProductEval(std::vector< std::shared_ptr<ISingleVariableRealValuedFunction>>& functions1D);
 
       int getDimension() const override;
       double operator()(std::span<const double> x) const;
    private:
-      std::vector<std::unique_ptr<ISingleVariableRealValuedFunction>> m_functions;
+      std::vector<std::shared_ptr<ISingleVariableRealValuedFunction>> m_functions;
    };
 
-   ProductEval::ProductEval(std::vector< std::unique_ptr<ISingleVariableRealValuedFunction>>& functions1D)
+   ProductEval::ProductEval(std::vector< std::shared_ptr<ISingleVariableRealValuedFunction>>& functions1D)
    {
       for (size_t n = 0; n < functions1D.size(); ++n)
       {
@@ -88,15 +88,15 @@ namespace
    class  SumOfSqauresEval : public IMultiVariableFunctionEvaluate
    {
    public:
-      SumOfSqauresEval(std::vector< std::unique_ptr<ISingleVariableRealValuedFunction>>& functions1D);
+      SumOfSqauresEval(std::vector< std::shared_ptr<ISingleVariableRealValuedFunction>>& functions1D);
 
       int getDimension() const override;
       double operator()(std::span<const double> x) const;
    private:
-      std::vector<std::unique_ptr<ISingleVariableRealValuedFunction>> m_functions;
+      std::vector<std::shared_ptr<ISingleVariableRealValuedFunction>> m_functions;
    };
 
-   SumOfSqauresEval::SumOfSqauresEval(std::vector< std::unique_ptr<ISingleVariableRealValuedFunction>>& functions1D)
+   SumOfSqauresEval::SumOfSqauresEval(std::vector< std::shared_ptr<ISingleVariableRealValuedFunction>>& functions1D)
    {
       for (size_t n = 0; n < functions1D.size(); ++n)
       {
@@ -125,7 +125,7 @@ namespace
    }
 }
 
-std::unique_ptr<IMultiVariableRealValuedFunction> MultiVariableFunctionExamples::GetPolynomial(const std::vector< std::pair<std::vector<int>, double>>& terms)
+std::shared_ptr<IMultiVariableRealValuedFunction> MultiVariableFunctionExamples::GetPolynomial(const std::vector< std::pair<std::vector<int>, double>>& terms)
 {
    auto result = std::make_unique< MultiVariablePolynomial>(static_cast<int>(terms.front().first.size()));
    for (const auto& term : terms)
@@ -136,7 +136,7 @@ std::unique_ptr<IMultiVariableRealValuedFunction> MultiVariableFunctionExamples:
 }
 
 // Defined on [-3,3] x [-2,2]
-std::unique_ptr<IMultiVariableRealValuedFunction> MultiVariableFunctionExamples::SixHumpCamelFunction()
+std::shared_ptr<IMultiVariableRealValuedFunction> MultiVariableFunctionExamples::SixHumpCamelFunction()
 {
    std::vector< std::pair<std::vector<int>, double>> terms;
    terms.emplace_back(std::vector<int>{2, 0}, 4.0);
@@ -152,8 +152,8 @@ MultiVariableFunctionExamples::Examplefunction MultiVariableFunctionExamples::Sk
 {
    const int dim = static_cast<int>(pos.size());
    Examplefunction result;
-   auto function = std::make_unique<MultiVariableRealValuedFunctionNoDerivatives>(dim, std::make_unique<SkewedHatSquaredEval>(pos));
-   result.Function = std::make_unique<MultiVariableRealValuedFunctionEvaluateCached>(std::move(function));
+   auto function = std::make_shared<MultiVariableRealValuedFunctionNoDerivatives>(dim, std::make_shared<SkewedHatSquaredEval>(pos));
+   result.Function = std::make_shared<MultiVariableRealValuedFunctionEvaluateCached>(function);
    result.Domain = std::vector<Interval<double>>(pos.size(), Interval<double>(0, 1));
    result.Maximum = std::make_unique<ExampleExtremumInfo>();
    result.Maximum->Extremum = 1.0;
@@ -161,9 +161,9 @@ MultiVariableFunctionExamples::Examplefunction MultiVariableFunctionExamples::Sk
    return result;
 }
 
-std::unique_ptr<IMultiVariableFunctionEvaluate> MultiVariableFunctionExamples::SumOfSquares(std::vector<std::unique_ptr<ISingleVariableRealValuedFunction>>& functions)
+std::shared_ptr<IMultiVariableFunctionEvaluate> MultiVariableFunctionExamples::SumOfSquares(std::vector<std::shared_ptr<ISingleVariableRealValuedFunction>>& functions)
 {
-   std::unique_ptr<IMultiVariableFunctionEvaluate> result = std::make_unique<SumOfSqauresEval>(functions);
+   std::shared_ptr<IMultiVariableFunctionEvaluate> result = std::make_shared<SumOfSqauresEval>(functions);
    return result;
 }
 
@@ -176,14 +176,14 @@ MultiVariableFunctionExamples::Examplefunction MultiVariableFunctionExamples::Di
    BoundsCheck<double>::CreateIsPositive().check(*str::max_element(ypeakRight));
 
    const int dim = static_cast<int>(xpeak.size());
-   std::vector<std::unique_ptr<ISingleVariableRealValuedFunction>> functions;
+   std::vector<std::shared_ptr<ISingleVariableRealValuedFunction>> functions;
    for (size_t n = 0; n < xpeak.size(); ++n)
    {
       functions.emplace_back(SingleVariableFunctionExamples::GetDiscontinuousHatFunction(xpeak.at(n), ypeakLeft.at(n), ypeakRight.at(n)));
    }
    Examplefunction result;
-   auto function = std::make_unique<MultiVariableRealValuedFunctionNoDerivatives>(dim, std::make_unique<ProductEval>(functions));
-   result.Function = std::make_unique<MultiVariableRealValuedFunctionEvaluateCached>(std::move(function));
+   auto function = std::make_shared<MultiVariableRealValuedFunctionNoDerivatives>(dim, std::make_shared<ProductEval>(functions));
+   result.Function = std::make_shared<MultiVariableRealValuedFunctionEvaluateCached>(function);
    result.Domain = std::vector<Interval<double>>(xpeak.size(), Interval<double>(0, 1));
    result.Maximum = std::make_unique<ExampleExtremumInfo>();
    result.Maximum->Extremum = 1.0;
@@ -208,7 +208,7 @@ MultiVariableFunctionExamples::Examplefunction MultiVariableFunctionExamples::Su
       powsAndCoefs.emplace_back(pows, 1.0);
    }
    auto function = GetPolynomial(powsAndCoefs);
-   result.Function = std::make_unique<MultiVariableRealValuedFunctionEvaluateCached>(std::move(function));
+   result.Function = std::make_shared<MultiVariableRealValuedFunctionEvaluateCached>(std::move(function));
 
    result.Domain = std::vector<Interval<double>>(dim, Interval<double>(-1, 1));
    result.Minimum = std::make_unique<ExampleExtremumInfo>();

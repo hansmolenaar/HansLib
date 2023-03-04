@@ -6,6 +6,6 @@ double MultiVariableRealValuedFunctionNoDerivatives::Evaluate(std::span<const do
    return (*m_function)(x);
 }
 
-MultiVariableRealValuedFunctionNoDerivatives::MultiVariableRealValuedFunctionNoDerivatives(int dim, std::unique_ptr<IMultiVariableFunctionEvaluate>&& function) :
-   m_dim(dim), m_function(std::move(function))
+MultiVariableRealValuedFunctionNoDerivatives::MultiVariableRealValuedFunctionNoDerivatives(int dim, std::shared_ptr<IMultiVariableFunctionEvaluate> function) :
+   m_dim(dim), m_function(function)
 {}

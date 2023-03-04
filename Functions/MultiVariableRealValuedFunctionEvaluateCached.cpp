@@ -1,7 +1,7 @@
 #include "MultiVariableRealValuedFunctionEvaluateCached.h"
 
-MultiVariableRealValuedFunctionEvaluateCached::MultiVariableRealValuedFunctionEvaluateCached(std::unique_ptr<IMultiVariableFunctionEvaluate>&& fie) : 
-   m_function(std::move(fie))
+MultiVariableRealValuedFunctionEvaluateCached::MultiVariableRealValuedFunctionEvaluateCached(std::shared_ptr<IMultiVariableFunctionEvaluate> fie) :
+   m_function(fie)
 {
 }
 

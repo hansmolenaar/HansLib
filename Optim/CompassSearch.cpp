@@ -44,7 +44,7 @@ IterativeMinimizationStep CompassSearch::iterate()
 }
 
 
-const IMultiVariableFunctionEvaluate& CompassSearch::getObjectiveFunctions() const
+const IMultiVariableFunctionEvaluate& CompassSearch::getObjectiveFunction() const
 {
    return *m_objectiveFunction;
 }

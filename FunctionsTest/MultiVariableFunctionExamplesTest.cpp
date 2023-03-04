@@ -48,9 +48,9 @@ TEST(MultiVariableFunctionExamplesTest, SumOfSquares)
 
 TEST(MultiVariableFunctionExamplesTest, SumOfSquares2)
 {
-   std::vector<std::unique_ptr<ISingleVariableRealValuedFunction>> fies;
-   fies.emplace_back(std::make_unique<SingleVariableMonomial>(1));
-   fies.emplace_back(std::make_unique<SingleVariableMonomial>(1));
+   std::vector<std::shared_ptr<ISingleVariableRealValuedFunction>> fies;
+   fies.emplace_back(std::make_shared<SingleVariableMonomial>(1));
+   fies.emplace_back(std::make_shared<SingleVariableMonomial>(1));
    auto fie = MultiVariableFunctionExamples::SumOfSquares(fies);
    
    Functors::AreClose areClose;

@@ -20,16 +20,16 @@ namespace MultiVariableFunctionExamples
 
    struct Examplefunction
    {
-      std::unique_ptr<MultiVariableRealValuedFunctionEvaluateCached> Function;
+      std::shared_ptr<MultiVariableRealValuedFunctionEvaluateCached> Function;
       std::vector<Interval<double>> Domain;
       std::unique_ptr<ExampleExtremumInfo> Minimum;
       std::unique_ptr<ExampleExtremumInfo> Maximum;
    };
 
 
-   std::unique_ptr<IMultiVariableRealValuedFunction> GetPolynomial(const std::vector< std::pair<std::vector<int>, double>>&);
-   std::unique_ptr<IMultiVariableRealValuedFunction> SixHumpCamelFunction();
-   std::unique_ptr<IMultiVariableFunctionEvaluate> SumOfSquares(std::vector<std::unique_ptr<ISingleVariableRealValuedFunction>>& functions);
+   std::shared_ptr<IMultiVariableRealValuedFunction> GetPolynomial(const std::vector< std::pair<std::vector<int>, double>>&);
+   std::shared_ptr<IMultiVariableRealValuedFunction> SixHumpCamelFunction();
+   std::shared_ptr<IMultiVariableFunctionEvaluate> SumOfSquares(std::vector<std::shared_ptr<ISingleVariableRealValuedFunction>>& functions);
 
    Examplefunction SkewedHatSquared(const std::vector<double>& pos);
    Examplefunction DiscontinuousHatProduct(const std::vector<double>& xpeak, const std::vector<double>& ypeakLeft, const std::vector<double>& ypeakRight);

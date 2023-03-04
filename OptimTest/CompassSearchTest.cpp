@@ -9,7 +9,7 @@
 
 TEST(CompassSearchTest, SingleArgument)
 {
-   std::unique_ptr<IMultiVariableFunctionEvaluate> fie = MultiVariableFunctionExamples::GetPolynomial(std::vector< std::pair<std::vector<int>, double>>{ {std::vector<int>{2}, 1.0}});
+   std::shared_ptr<IMultiVariableFunctionEvaluate> fie = MultiVariableFunctionExamples::GetPolynomial(std::vector< std::pair<std::vector<int>, double>>{ {std::vector<int>{2}, 1.0}});
    CompassSearch cs(std::move(fie), std::vector<double>{0.9}, 1.0);
    auto retval = cs.iterate();
    ASSERT_EQ(retval.Status, StepSucces );
@@ -22,7 +22,7 @@ TEST(CompassSearchTest, CompassSearch_TwoArguments)
 {
    const std::vector<double> roots{ 0.6, 0.7 };
    const std::vector<double> init{ 0.5, 0.5 };
-   std::vector<std::unique_ptr<ISingleVariableRealValuedFunction>> fies;
+   std::vector<std::shared_ptr<ISingleVariableRealValuedFunction>> fies;
    for (double root : roots)
    {
       const std::vector<std::tuple<double, int>> terms{ std::make_tuple(root, 0), std::make_tuple(-1.0, 1) };
@@ -30,9 +30,9 @@ TEST(CompassSearchTest, CompassSearch_TwoArguments)
    }
 
    auto soq = MultiVariableFunctionExamples::SumOfSquares(fies);
-   auto fie = std::make_unique< MultiVariableRealValuedFunctionEvaluateCached>(std::move(soq));
+   auto fie = std::make_shared< MultiVariableRealValuedFunctionEvaluateCached>(soq);
    CompassSearch cs(std::move(fie), init, 0.3);
-   const auto& objectiveFunctions = dynamic_cast<const MultiVariableRealValuedFunctionEvaluateCached&>(cs.getObjectiveFunctions());
+   const auto& objectiveFunctions = dynamic_cast<const MultiVariableRealValuedFunctionEvaluateCached&>(cs.getObjectiveFunction());
 
    constexpr int maxLoop = 10;
    IterativeMinimizationStep interationResult;

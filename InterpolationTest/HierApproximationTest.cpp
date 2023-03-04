@@ -25,7 +25,7 @@ inline constexpr double Epsilon = 1.0e-10;
 
 namespace
 {
-   std::unique_ptr<IMultiVariableRealValuedFunction> GetSomePolynomial()
+   std::shared_ptr<IMultiVariableRealValuedFunction> GetSomePolynomial()
    {
       const std::vector< std::pair<std::vector<int>, double>> terms{
          std::make_pair(std::vector<int>{1,2} , 1.0),

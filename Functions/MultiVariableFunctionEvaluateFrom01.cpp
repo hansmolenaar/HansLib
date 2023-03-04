@@ -7,7 +7,7 @@ namespace
    const Interval<double> c_unit(0, 1);
 }
 
-MultiVariableFunctionEvaluateFrom01::MultiVariableFunctionEvaluateFrom01(std::unique_ptr<IMultiVariableFunctionEvaluate>&& fie, std::vector<Interval<double>>&& targetIntervals) :
+MultiVariableFunctionEvaluateFrom01::MultiVariableFunctionEvaluateFrom01(std::shared_ptr<IMultiVariableFunctionEvaluate> fie, std::vector<Interval<double>>&& targetIntervals) :
    m_function(std::move(fie)), m_targetIntervals(std::move(targetIntervals))
 
 {
