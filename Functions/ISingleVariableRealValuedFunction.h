@@ -22,6 +22,8 @@ public:
 	inline double Evaluate(std::span<const double>x)const override;
 	inline void Derivative(std::span<const double>x, std::span< double> dfdx)const override;
 	inline bool DerivativeAlwaysZero(int var) const override;
+
+	double operator()(double x) const { return Evaluate(x); }
 };
 
 
