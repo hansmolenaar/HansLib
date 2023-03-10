@@ -1,16 +1,16 @@
 #pragma once
 
-#include "IMultiVariableFunctionEvaluate.h"
+#include "MultiVariableFunctionEvaluateComposeWithSingle.h"
+#include "SingleVariablePolynomial.h"
 #include <memory>
 
-class MultiVariableFunctionEvaluateFlipped : public IMultiVariableFunctionEvaluate
+class MultiVariableFunctionEvaluateFlipped : public MultiVariableFunctionEvaluateComposeWithSingle
 {
 public:
-   MultiVariableFunctionEvaluateFlipped(std::shared_ptr<IMultiVariableFunctionEvaluate> fie);
+   MultiVariableFunctionEvaluateFlipped(std::shared_ptr<IMultiVariableFunctionEvaluate> fie) :
+      MultiVariableFunctionEvaluateComposeWithSingle(
+         std::shared_ptr<ISingleVariableRealValuedFunction>(std::make_shared<SingleVariablePolynomial>(std::vector<std::tuple<double, int>> {std::make_tuple( - 1.0, 1)})),
+         fie
+      ) {}
 
-   int getDimension() const override;
-   double operator()(std::span<const double> x) const override;
-
-private:
-   std::shared_ptr<IMultiVariableFunctionEvaluate> m_orgFunction;
 };
