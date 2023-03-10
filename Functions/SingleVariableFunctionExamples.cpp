@@ -1,7 +1,9 @@
 #include "SingleVariableFunctionExamples.h"
 #include "SingleVariableRealValuedFunction.h"
 #include "BoundsCheck.h"
-
+#include "Interval.h"
+#include "SingleVariablePolynomial.h"
+#include "SingleVariableFunctionOnIntervals.h"
 
 std::shared_ptr<ISingleVariableRealValuedFunction> SingleVariableFunctionExamples::GetRungeFunction()
 {
@@ -13,13 +15,7 @@ std::shared_ptr<ISingleVariableRealValuedFunction> SingleVariableFunctionExample
 // f(1) = 0
 std::shared_ptr<ISingleVariableRealValuedFunction> SingleVariableFunctionExamples::GetSkewedtHatFunction(double xpeak)
 {
-   BoundsCheck<double>::Create(0.0, 1.0).check(xpeak);
-   return std::make_unique<SingleVariableRealValuedFunction>([xpeak](double x) {
-      if (x < 0) return 0.0;
-      if (x > 1) return 0.0;
-      if (x < xpeak) return x / xpeak;
-      return (1 - x) / (1 - xpeak);
-      });
+   return  GetDiscontinuousHatFunction(xpeak, 1.0, 1.0);
 }
 
 std::shared_ptr<ISingleVariableRealValuedFunction> SingleVariableFunctionExamples::GetStepFunction(double xstep)
@@ -27,17 +23,18 @@ std::shared_ptr<ISingleVariableRealValuedFunction> SingleVariableFunctionExample
    BoundsCheck<double>::Create(0.0, 1.0).check(xstep);
    return std::make_unique<SingleVariableRealValuedFunction>([xstep](double x) {
       if (x < xstep) return 0.0;
-      return 1.0;
+   return 1.0;
       });
 }
 
 std::shared_ptr<ISingleVariableRealValuedFunction> SingleVariableFunctionExamples::GetDiscontinuousHatFunction(double xPeak, double yPeakLeft, double yPeakRight)
 {
    BoundsCheck<double>::Create(0.0, 1.0).check(xPeak);
-   return std::make_unique<SingleVariableRealValuedFunction>([xPeak, yPeakLeft, yPeakRight](double x) {
-      if (x < 0) return 0.0;
-      if (x > 1) return 0.0;
-      if (x < xPeak) return yPeakLeft * x / xPeak;
-      return (1 - x) / (1 - xPeak) * yPeakRight;
-      });
+
+   const Interval<double> intervalL(0.0, xPeak);
+   std::shared_ptr<SingleVariableFunctionOnInterval> funL = SingleVariableFunctionOnInterval::CreateLinearOnInterval(intervalL, 0, yPeakLeft);
+   const Interval<double> intervalR(xPeak, 1.0);
+   std::shared_ptr<SingleVariableFunctionOnInterval> funR = SingleVariableFunctionOnInterval::CreateLinearOnInterval(intervalR, yPeakRight, 0);
+
+   return std::make_shared<SingleVariableFunctionOnIntervals>(std::vector<std::shared_ptr<SingleVariableFunctionOnInterval>>{funL, funR}, 0.0);
 }

@@ -1,5 +1,12 @@
 #include "SingleVariablePolynomial.h"
 
+SingleVariablePolynomial::SingleVariablePolynomial(std::vector<std::tuple<double, int>> terms)
+{
+	for (const auto& term : terms)
+	{
+		Add(std::get<0>(term), std::get<1>(term));
+	}
+}
 
 void SingleVariablePolynomial::Add(double coef, SingleVariableMonomial monomial)
 {

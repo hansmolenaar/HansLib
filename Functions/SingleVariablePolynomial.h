@@ -9,6 +9,8 @@
 class SingleVariablePolynomial : public ISingleVariableRealValuedFunction
 {
 public:
+   SingleVariablePolynomial() = default;
+   SingleVariablePolynomial(std::vector<std::tuple<double, int>> polynomial);
    static SingleVariablePolynomial	Create(std::vector<std::tuple<double, int>> polynomial);
    void Add(double coef, SingleVariableMonomial monomial);
    double Evaluate(double x)const override;
