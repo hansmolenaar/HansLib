@@ -16,6 +16,8 @@ public:
 	IterativeMinimizationStep iterate() override;
 	const IMultiVariableFunctionEvaluate& getObjectiveFunction() const override;
 
+	const std::vector< IterativeMinimizationStep>& getAllSteps() const;
+
 private:
 	HierBasisFunction1D_ExtendedLevelOneBC_Factory m_basisFunction1DFactory;
 	HierBasisFunction_Factory m_basisFunctionFactory;

@@ -36,3 +36,13 @@ const IMultiVariableFunctionEvaluate& SparseGridOptimizer::getObjectiveFunction(
 {
    return *m_objectiveFunction;
 }
+
+const std::vector< IterativeMinimizationStep>& SparseGridOptimizer::getAllSteps() const
+{
+   return m_steps;
+}
+
+IterativeMinimizationStep SparseGridOptimizer::iterate()
+{
+   throw MyException("SparseGridOptimizer::iterate() not yet implemented");
+}
