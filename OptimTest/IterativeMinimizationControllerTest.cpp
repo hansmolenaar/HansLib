@@ -94,6 +94,6 @@ TEST(IterativeMinimizationControllerTest, Succes)
    IterativeMinimizationConvergenceCrit crit(100, critEval);
    const auto result = IterativeMinimizationController::Iterate(cs, crit);
    ASSERT_EQ(result.Status, Converged);
-   ASSERT_TRUE(result.EvalMinimum < critEval);
+   ASSERT_TRUE(result.BestEval < critEval);
    ASSERT_EQ(result.NumIterations, 3);
 }

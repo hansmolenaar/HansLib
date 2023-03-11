@@ -37,6 +37,8 @@ public:
 
    double operator()(std::span<const double>) const;
 
+   bool iterate(INodeRefinePredicateFactory& refinementFactory);
+
    std::vector<const HierTreeNode*> getLeafNodesRO() const;
    std::vector< HierTreeNode*> getLeafNodes() const;
    std::vector<const HierTreeNode*> getAllTreeNodesRO() const;
@@ -46,11 +48,12 @@ public:
    const IHierBasisFunction_Factory& getFactory() const;
 
 private:
-   explicit HierApproximation(IHierBasisFunction_Factory&);
+   HierApproximation(IHierBasisFunction_Factory&, const IMultiVariableFunctionEvaluate&);
 
 
    std::vector< HierTreeNode*> getAllTreeNodes() const;
 
+   const IMultiVariableFunctionEvaluate& m_function;
    std::map<HierMultiIndex, std::unique_ptr<HierTreeNode>> m_treeNodeMap;
    std::vector<HierTreeNode*> m_root;;
    IHierBasisFunction_Factory& m_factory;

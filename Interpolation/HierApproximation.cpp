@@ -90,7 +90,8 @@ namespace
 
 }
 
-HierApproximation::HierApproximation(IHierBasisFunction_Factory& factory) :
+HierApproximation::HierApproximation(IHierBasisFunction_Factory& factory,  const IMultiVariableFunctionEvaluate& function) :
+   m_function(function),
    m_factory(factory),
    m_indexer(MultiIndex<size_t>::Create(std::vector<size_t>{2, factory.getDimension()}))
 {
@@ -112,7 +113,7 @@ std::unique_ptr<HierApproximation> HierApproximation::Create(const IMultiVariabl
 {
    Logger logger;
    std::vector<std::string> loglines;
-   std::unique_ptr<HierApproximation> result(new HierApproximation(factory));
+   std::unique_ptr<HierApproximation> result(new HierApproximation(factory, fie));
 
    const CreateHierNode createHierNode(factory, fie, *result);
 
@@ -127,34 +128,14 @@ std::unique_ptr<HierApproximation> HierApproximation::Create(const IMultiVariabl
 
    auto toRefine = GetAllRefinements(*result, factory, refinementFactory);
 
-   while (!toRefine.empty())
+   while (result->iterate(refinementFactory))
    {
-#if false
-      loglines = std::vector<std::string>{ {"cells to refine:"} };
-      for (const auto& tr : toRefine) loglines.push_back(tr.first.toString() + " -> " + std::to_string(tr.second));
-      logger.LogLine(loglines);
-#endif
-
-      for (auto& parentDir : toRefine)
-      {
-         for (const auto& kid : parentDir.first.refine(parentDir.second))
-         {
-            auto* parent = Get(parentDir.first, result->m_treeNodeMap);
-            auto* kidPtr = CreateIfNew(kid, parent->RefinementLevel + 1, createHierNode, result->m_treeNodeMap);
-            if (kidPtr != nullptr) parent->Kids.emplace_back(kidPtr);
-         }
-      }
-
-#if false
       loglines = std::vector<std::string>{ {"after refinement:"} };
       for (const auto& tr : result->m_treeNodeMap) loglines.push_back(tr.first.toString());
       loglines.push_back("Total number of cells: " + std::to_string(result->getAllTreeNodesRO().size()));
       loglines = std::vector<std::string>{ {"leaf nodes:"} };
       for (const auto& leaf : result->getLeafNodesRO()) loglines.push_back(leaf->BasisFunction->getMultiIndex().toString());
       logger.LogLine(loglines);
-#endif
-
-      toRefine = GetAllRefinements(*result, factory, refinementFactory);
    }
 
 
@@ -165,6 +146,24 @@ std::unique_ptr<HierApproximation> HierApproximation::Create(const IMultiVariabl
    logger.LogLine(loglines);
 #endif
 
+   return result;
+}
+
+// Return value: any refinement performed
+bool HierApproximation::iterate(INodeRefinePredicateFactory& refinementFactory)
+{
+   const CreateHierNode createHierNode(m_factory, m_function, *this);
+   auto toRefine = GetAllRefinements(*this, m_factory, refinementFactory);
+   const bool result = !toRefine.empty();
+   for (auto& parentDir : toRefine)
+   {
+      for (const auto& kid : parentDir.first.refine(parentDir.second))
+      {
+         auto* parent = Get(parentDir.first, m_treeNodeMap);
+         auto* kidPtr = CreateIfNew(kid, parent->RefinementLevel + 1, createHierNode, m_treeNodeMap);
+         if (kidPtr != nullptr) parent->Kids.emplace_back(kidPtr);
+      }
+   }
    return result;
 }
 
