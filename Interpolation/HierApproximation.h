@@ -37,7 +37,7 @@ public:
 
    double operator()(std::span<const double>) const;
 
-   bool iterate(INodeRefinePredicateFactory& refinementFactory);
+   std::vector<const HierTreeNode*> iterate(INodeRefinePredicateFactory& refinementFactory);
 
    std::vector<const HierTreeNode*> getLeafNodesRO() const;
    std::vector< HierTreeNode*> getLeafNodes() const;
