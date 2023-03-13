@@ -88,6 +88,12 @@ namespace
    }
 
 
+   bool CompareLevel(const HierTreeNode* a, const HierTreeNode* b)
+   {
+      return a->getLevel() < b->getLevel();
+   }
+
+
 }
 
 HierApproximation::HierApproximation(IHierBasisFunction_Factory& factory,  const IMultiVariableFunctionEvaluate& function) :
@@ -226,4 +232,11 @@ std::vector<std::vector<double>> HierApproximation::getCollocationPoints() const
 const IHierBasisFunction_Factory& HierApproximation::getFactory() const
 {
    return m_factory;
+}
+
+
+int HierApproximation::getMaxLevel() const
+{
+   const auto treeNodes = getAllTreeNodesRO();
+   return (*str::max_element(treeNodes, CompareLevel))->RefinementLevel;
 }

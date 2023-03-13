@@ -77,7 +77,7 @@ namespace
 
 }
 
-TEST(HierBasisFunctionTest, GetSomePolynomial_1)
+TEST(HierApproximationTest, GetSomePolynomial_1)
 {
    const auto fie = GetSomePolynomial();
 
@@ -95,12 +95,13 @@ TEST(HierBasisFunctionTest, GetSomePolynomial_1)
    auto approximation = HierApproximation::Create(*fie, factory, refineOnLevel);
    ASSERT_EQ(approximation->getLeafNodesRO().size(), 1);
    ASSERT_NO_THROW(TestCollocationPoints(*fie, *approximation));
+   ASSERT_EQ(approximation->getMaxLevel(), 0);
 
    //Plotting::MdFunctionsOnUnityToFile("HierBasisFunctionTest_GetSomePolynomial_Approximation", 2, { [&approximation](std::vector<double> x) {return (*approximation)(x); } }, 20, std::vector<std::string>{"x", "y", "approx"});
 }
 
 
-TEST(HierBasisFunctionTest, GetSomePolynomial_2)
+TEST(HierApproximationTest, GetSomePolynomial_2)
 {
    const auto fie = GetSomePolynomial();
    HierBasisFunction1D_HomogenousBC_Factory factory1D;
@@ -115,7 +116,7 @@ TEST(HierBasisFunctionTest, GetSomePolynomial_2)
 }
 
 
-TEST(HierBasisFunctionTest, GetSomePolynomial_3)
+TEST(HierApproximationTest, GetSomePolynomial_3)
 {
    const auto fie = GetSomePolynomial();
    HierBasisFunction1D_HomogenousBC_Factory factory1D;
@@ -140,7 +141,7 @@ TEST(HierBasisFunctionTest, GetSomePolynomial_3)
 }
 
 
-TEST(HierBasisFunctionTest, Linear)
+TEST(HierApproximationTest, Linear)
 {
    const std::array< double, 2 > xin{ 0.52, 0.51 };
    // 2*x + 3*y
@@ -161,7 +162,7 @@ TEST(HierBasisFunctionTest, Linear)
    }
 }
 
-TEST(HierBasisFunctionTest, TestConvergence)
+TEST(HierApproximationTest, TestConvergence)
 {
    const std::array< double, 2 > xin{ 0.52, 0.53 };
    const auto fie = GetSomePolynomial();
@@ -186,7 +187,7 @@ TEST(HierBasisFunctionTest, TestConvergence)
 }
 
 
-TEST(HierBasisFunctionTest, CamelBack)
+TEST(HierApproximationTest, CamelBack)
 {
    auto camelHump = MultiVariableFunctionExamples::SixHumpCamelFunction();
    auto flipped = std::make_unique< MultiVariableFunctionEvaluateFlipped>(std::move(camelHump));
@@ -208,7 +209,7 @@ TEST(HierBasisFunctionTest, CamelBack)
 }
 
 
-TEST(HierBasisFunctionTest, SquaredHat)
+TEST(HierApproximationTest, SquaredHat)
 {
    const size_t dimension = 10;
    std::vector<double> pos(dimension);
@@ -230,7 +231,7 @@ TEST(HierBasisFunctionTest, SquaredHat)
    //Plotting::MdFunctionsOnUnityToFile("HierBasisFunctionTest_SquaredHat", 2, { [&squaredHat](std::vector<double> x) {return (*squaredHat.Function)(x); } }, 64, std::vector<std::string>{"x", "y", "approx"});
 }
 
-TEST(HierBasisFunctionTest, CheckSparseGridSize_Thesis_Bungartz)
+TEST(HierApproximationTest, CheckSparseGridSize_Thesis_Bungartz)
 {
    constexpr int level = 4;
    NodeRefinePredicateFactoryByLevel refineOnLevel(level);
@@ -251,7 +252,7 @@ TEST(HierBasisFunctionTest, CheckSparseGridSize_Thesis_Bungartz)
 }
 
 
-TEST(HierBasisFunctionTest, PlotCollocationPoints)
+TEST(HierApproximationTest, PlotCollocationPoints)
 {
    const size_t dimension = 3;
    const int level = 5;

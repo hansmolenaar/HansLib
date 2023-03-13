@@ -22,12 +22,12 @@ namespace
 
    bool Compare(const HierTreeNode* a, const HierTreeNode* b)
    {
-      return a->getLevel() < b->getLevel();
+      return a->RefinementLevel < b->RefinementLevel;
    }
 
-   size_t GetMaxLevel(std::vector<const HierTreeNode*> hierNodes)
+   int GetMaxLevel(std::vector<const HierTreeNode*> hierNodes)
    {
-      return (*str::max_element(hierNodes, Compare))->getLevel();
+      return (*str::max_element(hierNodes, Compare))->RefinementLevel;
    }
 }
 
@@ -63,4 +63,9 @@ IterativeMinimizationStep SparseGridOptimizer::iterate()
    auto result = GetMinimumOfNewNodes(*m_approximation, justRefined);
    result.Status = StepSucces;
    return result;
+}
+
+const HierApproximation& SparseGridOptimizer::getApproximation() const
+{
+   return *m_approximation;
 }

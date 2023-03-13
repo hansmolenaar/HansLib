@@ -3,7 +3,7 @@
 #include "IMultiVariableFunctionEvaluate.h"
 #include "IIterativeMinimization.h"
 #include "HierApproximation.h"
-#include "HierBasisFunction1D_ExtendedLevelOneBC.h"
+#include "HierBasisFunction1D_ExtraplolateBC.h"
 #include "HierBasisFunction.h"
 
 #include <memory>
@@ -17,9 +17,10 @@ public:
 	const IMultiVariableFunctionEvaluate& getObjectiveFunction() const override;
 
 	const std::vector< IterativeMinimizationStep>& getAllSteps() const;
+	const HierApproximation& getApproximation() const;
 
 private:
-	HierBasisFunction1D_ExtendedLevelOneBC_Factory m_basisFunction1DFactory;
+	HierBasisFunction1D_ExtraplolateBC_Factory m_basisFunction1DFactory;
 	HierBasisFunction_Factory m_basisFunctionFactory;
 	std::shared_ptr<IMultiVariableFunctionEvaluate> m_objectiveFunction;
 	INodeRefinePredicateFactory& m_predicateFactory;

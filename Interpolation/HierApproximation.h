@@ -44,6 +44,8 @@ public:
    std::vector< HierTreeNode*> getLeafNodes() const;
    std::vector<const HierTreeNode*> getAllTreeNodesRO() const;
 
+   int getMaxLevel() const;
+
    std::vector<std::vector<double>> getCollocationPoints() const;
    double getMaxSurplus() const;
    const IHierBasisFunction_Factory& getFactory() const;
@@ -56,7 +58,7 @@ private:
 
    const IMultiVariableFunctionEvaluate& m_function;
    std::map<HierMultiIndex, std::unique_ptr<HierTreeNode>> m_treeNodeMap;
-   std::vector<HierTreeNode*> m_root;;
+   std::vector<HierTreeNode*> m_root;
    IHierBasisFunction_Factory& m_factory;
    MultiIndex<size_t> m_indexer;
 };
