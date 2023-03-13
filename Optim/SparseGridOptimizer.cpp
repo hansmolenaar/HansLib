@@ -2,7 +2,6 @@
 #include "NodeRefinePredicateNever.h"
 #include "Defines.h"
 
-
 namespace
 {
    IterativeMinimizationStep GetMinimumOfNewNodes(const HierApproximation& approximation, std::vector<const HierTreeNode*> newNodes)

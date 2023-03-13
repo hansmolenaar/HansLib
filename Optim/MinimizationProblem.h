@@ -19,4 +19,5 @@ struct MinimizationProblem
 namespace MinimizationExamples
 {
    MinimizationProblem Square1D();
+   MinimizationProblem Square2D();
 }
