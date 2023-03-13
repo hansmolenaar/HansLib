@@ -1,5 +1,6 @@
 #include "SparseGridOptimizer.h"
 #include "NodeRefinePredicateNever.h"
+#include "Defines.h"
 
 
 namespace
@@ -18,14 +19,24 @@ namespace
       }
       return result;
    }
-  
+
+   bool Compare(const HierTreeNode* a, const HierTreeNode* b)
+   {
+      return a->getLevel() < b->getLevel();
+   }
+
+   size_t GetMaxLevel(std::vector<const HierTreeNode*> hierNodes)
+   {
+      return (*str::max_element(hierNodes, Compare))->getLevel();
+   }
 }
 
-SparseGridOptimizer::SparseGridOptimizer(std::shared_ptr<IMultiVariableFunctionEvaluate>function, int maxLevel) : 
+SparseGridOptimizer::SparseGridOptimizer(std::shared_ptr<IMultiVariableFunctionEvaluate>function, INodeRefinePredicateFactory& predicateFactory) :
    m_basisFunctionFactory(function->getDimension(), &m_basisFunction1DFactory),
-   m_objectiveFunction(function), 
-   m_maxLevel(maxLevel)
+   m_objectiveFunction(function),
+   m_predicateFactory(predicateFactory)
 {
+   // Always create lowest level
    NodeRefinePredicateFactoryNever predicate;
    m_approximation = HierApproximation::Create(*function, m_basisFunctionFactory, predicate);
    m_steps.emplace_back(GetMinimumOfNewNodes(*m_approximation, m_approximation->getAllTreeNodesRO()));
@@ -44,5 +55,12 @@ const std::vector< IterativeMinimizationStep>& SparseGridOptimizer::getAllSteps(
 
 IterativeMinimizationStep SparseGridOptimizer::iterate()
 {
-   throw MyException("SparseGridOptimizer::iterate() not yet implemented");
+   const auto justRefined = m_approximation->iterate(m_predicateFactory);
+   if (justRefined.empty())
+   {
+      return m_steps.back();
+   }
+   auto result = GetMinimumOfNewNodes(*m_approximation, justRefined);
+   result.Status = StepSucces;
+   return result;
 }

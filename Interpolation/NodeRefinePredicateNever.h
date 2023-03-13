@@ -11,9 +11,6 @@ public:
 };
 
 
-
-
-
 class NodeRefinePredicateFactoryNever : public INodeRefinePredicateFactory
 {
 public:

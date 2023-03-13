@@ -23,6 +23,7 @@ struct HierTreeNode
    double Value = std::numeric_limits<double>::quiet_NaN();
    std::vector<HierTreeNode*> Kids;
    const HierMultiIndex& getMultiIndex() const { return BasisFunction->getMultiIndex(); }
+   size_t getLevel() const { return getMultiIndex().getL1NormLevel(); }
 };
 
 
