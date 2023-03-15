@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "Interval.h"
-
+#include "Functors.h"
 
 TEST(IntervalTest, Basic1)
 {
@@ -87,4 +87,26 @@ TEST(IntervalTest, Measure)
 {
    const Interval<int> interval(-1, 3);
    ASSERT_EQ(interval.getMeasure(), 4);
+}
+
+
+TEST(IntervalTest, InterpolateOK)
+{
+   constexpr Functors::AreClose areClose;
+   const Interval<double> interval(-1, 3);
+   const double arg = 7;
+   const double factor = interval.inverseInterpolate(arg);
+   ASSERT_TRUE(areClose(factor, 2.0));
+   const double retval = interval.interpolate(factor);
+   ASSERT_TRUE(areClose(retval, arg));
+}
+
+
+TEST(IntervalTest, InterpolateFail)
+{
+   constexpr Functors::AreClose areClose;
+   Interval<double> interval(0, 0);
+   ASSERT_THROW(interval.inverseInterpolate(1.0), MyException);
+   interval = Interval<double>(0, std::numeric_limits<double>::epsilon());
+   ASSERT_THROW(interval.inverseInterpolate(std::numeric_limits<double>::max()), MyException);
 }

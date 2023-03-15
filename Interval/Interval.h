@@ -1,5 +1,9 @@
 #pragma once
 
+
+#include "MyException.h"
+#include <cmath>
+
 template<typename T>
 class Interval
 {
@@ -16,6 +20,10 @@ public:
    T getMeasure() const;
 
    static bool TryIntersect(const Interval<T>&, const Interval<T>&, T&, T&);
+
+   T interpolate(T factor) const;
+   T inverseInterpolate(T arg) const;
+
 private:
    T m_lower;
    T m_upper;
@@ -68,4 +76,22 @@ template<typename T>
 T Interval<T>::getMeasure() const
 {
    return getUpper() - getLower();
+}
+
+template<>
+inline double Interval<double>::interpolate(double factor) const
+{
+   return std::lerp(m_lower, m_upper, factor);
+}
+
+template<>
+inline double Interval<double>::inverseInterpolate(double arg) const
+{
+   const double shifted = arg - m_lower;
+   const double result = shifted / getMeasure();
+   if (!std::isfinite(result))
+   {
+      throw MyException("Interval<double>::inverseInterpolate degenerate interval");
+   }
+   return result;
 }

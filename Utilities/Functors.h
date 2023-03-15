@@ -21,8 +21,8 @@ namespace Functors
    struct IsOfDerivedType
    {
       template<typename TBase>
-      bool operator()(const TBase* base ) const
-      { 
+      bool operator()(const TBase* base) const
+      {
          return dynamic_cast<const TDerived*>(base) != nullptr;
       }
    private:
@@ -32,10 +32,12 @@ namespace Functors
    {
       double RelTolerance = 1.0e-12;
       double AbsTolerance = 1.0e-100;
+      mutable double  Fraction = std::numeric_limits<double>::quiet_NaN();
       bool operator()(double x, double y) const
       {
          const double maxabs = std::max(std::abs(x), std::abs(y));
          if (maxabs < AbsTolerance) return true;
+         Fraction = std::abs(x - y) / maxabs;
          return std::abs(x - y) <= maxabs * RelTolerance;
       }
    };

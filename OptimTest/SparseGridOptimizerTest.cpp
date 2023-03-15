@@ -126,31 +126,81 @@ TEST(SparseGridOptimizerTest, Square1D_Alpha1)
    IterativeMinimizationConvergenceCritMaxStep maxStep(maxLevel);
    const auto result = IterativeMinimizationController::Iterate(optimizer, maxStep);
    const auto& approx = optimizer.getApproximation();
-#if false
+#if true
    ASSERT_EQ(result.Status, MaxIterExceeded);
    ASSERT_EQ(result.NumIterations, maxLevel);
-  
+
    ASSERT_EQ(approx.getMaxLevel(), 5);
    const auto leafNodes = approx.getLeafNodesRO();
-   ASSERT_EQ(approx.getLeafNodesRO().size(), 10);
+   ASSERT_EQ(approx.getLeafNodesRO().size(), 32);
 
-   ASSERT_EQ(problem.Function->getNumEvaluations(), 19);
+   ASSERT_EQ(problem.Function->getNumEvaluations(), 63);
+   ASSERT_EQ(approx.getAllTreeNodesRO().size(), 63);
 #endif
 
    //CollocationPointsToFile("SparseGridOptimizerTest_Square1D_Alpha1", approx);
 }
 
+
+TEST(SparseGridOptimizerTest, Square2D_AlphaHalf)
+{
+   auto problem = MinimizationExamples::Square2D();
+
+   const double alpha = 0.50;
+   const double fraction = 1.0 / std::sqrt(101.0); // Avoid nice number: round of to integer in NodeRefineAdaptive
+   NodeRefinePredicateFactoryAdaptive predicate(alpha, fraction);
+   SparseGridOptimizer optimizer(problem.getFunctionOnUnit(), predicate);
+   constexpr int maxLevel = 10;
+   IterativeMinimizationConvergenceCritMaxStep maxStep(maxLevel);
+   const auto result = IterativeMinimizationController::Iterate(optimizer, maxStep);
+   const auto& approx = optimizer.getApproximation();
+
+   ASSERT_EQ(optimizer.getApproximation().getAllTreeNodesRO().size(), 118);
+   ASSERT_EQ(problem.getOriginalProblem().Function->getNumEvaluations(), 118);
+
+   constexpr Functors::AreClose areCloseEval(1.0e-2, 2.0e-3);
+   constexpr Functors::AreClose areCloseArg(2.0e-2);
+   ASSERT_TRUE(areCloseEval(result.BestEval, problem.getMinimumOnUnitInfo().Extremum));
+   ASSERT_TRUE(areCloseArg(result.ArgBestEval[0], problem.getMinimumOnUnitInfo().Positions.at(0).at(0)));
+   ASSERT_TRUE(areCloseArg(result.ArgBestEval[1], problem.getMinimumOnUnitInfo().Positions.at(0).at(1)));
+}
+
+TEST(SparseGridOptimizerTest, Camel)
+{
+   auto problem = MinimizationExamples::SixHumpCamelFunction();
+
+   const double alpha = 0.5;
+   const double fraction = 0.1;
+   NodeRefinePredicateFactoryAdaptive predicate(alpha, fraction);
+   SparseGridOptimizer optimizer(problem.getFunctionOnUnit(), predicate);
+   constexpr int maxLevel = 8;
+   IterativeMinimizationConvergenceCritMaxStep maxStep(maxLevel);
+   const auto result = IterativeMinimizationController::Iterate(optimizer, maxStep);
+   const auto& approx = optimizer.getApproximation();
+
+   CollocationPointsToFile("SparseGridOptimizerTest_Camel", approx);
+
+   ASSERT_EQ(optimizer.getApproximation().getAllTreeNodesRO().size(), 67);
+   ASSERT_EQ(problem.getOriginalProblem().Function->getNumEvaluations(), 67);
+
+   constexpr Functors::AreClose areCloseEval(5.0e-2);
+   ASSERT_TRUE(areCloseEval(result.BestEval, problem.getMinimumOnUnitInfo().Extremum));
+}
+
+#if true
 TEST(SparseGridOptimizerTest, PlayGround)
 {
-   const MinimizationProblem problem = MinimizationExamples::Square2D();
+   auto problem = MinimizationExamples::SixHumpCamelFunction();
+
    const double alpha = 0.5;
-   const double fraction = 0.10;
+   const double fraction = 0.1;
    NodeRefinePredicateFactoryAdaptive predicate(alpha, fraction);
-   SparseGridOptimizer optimizer(problem.Function, predicate);
-   constexpr int maxLevel = 10;
+   SparseGridOptimizer optimizer(problem.getFunctionOnUnit(), predicate);
+   constexpr int maxLevel = 8;
    IterativeMinimizationConvergenceCritMaxStep maxStep(maxLevel);
    const auto result = IterativeMinimizationController::Iterate(optimizer, maxStep);
    const auto& approx = optimizer.getApproximation();
 
    CollocationPointsToFile("SparseGridOptimizerTest_PlayGround", approx);
 }
+#endif

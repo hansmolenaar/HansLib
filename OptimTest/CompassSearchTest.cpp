@@ -44,6 +44,6 @@ TEST(CompassSearchTest, CompassSearch_TwoArguments)
 
    constexpr Functors::AreClose areClose;
    ASSERT_EQ(objectiveFunctions.getDimension(), 2);
-   ASSERT_EQ(objectiveFunctions.getNumEvaluations(), 45);
+   ASSERT_EQ(objectiveFunctions.getNumEvaluations(), 32);
    ASSERT_TRUE(areClose(4.8828125000001392e-05, interationResult.EvalMinimum));
 }

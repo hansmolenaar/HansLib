@@ -16,8 +16,24 @@ struct MinimizationProblem
    MinimumInfo Minimum;
 };
 
+class MinimizationProblemOnUnitDomain 
+{
+public:
+   explicit MinimizationProblemOnUnitDomain(MinimizationProblem problem);
+   const MinimizationProblem& getOriginalProblem() const;
+   const MinimumInfo& getMinimumOnUnitInfo() const;
+   std::shared_ptr<IMultiVariableFunctionEvaluate> getFunctionOnUnit() const;
+
+
+private:
+   MinimizationProblem m_originalProblem;
+   MinimumInfo m_minimumOnUnitDomain;
+   std::shared_ptr<IMultiVariableFunctionEvaluate> m_functionOnUnit;
+};
+
 namespace MinimizationExamples
 {
    MinimizationProblem Square1D();
-   MinimizationProblem Square2D();
+   MinimizationProblemOnUnitDomain Square2D();
+   MinimizationProblemOnUnitDomain SixHumpCamelFunction();
 }

@@ -12,8 +12,6 @@ int MultiVariableRealValuedFunctionEvaluateCached::getDimension() const
 
 double MultiVariableRealValuedFunctionEvaluateCached::operator()(std::span<const double> x) const
 {
-   ++m_numEvaluations;
-
    const std::vector<double> values(x.begin(), x.end());
    const auto found = m_cache.find(values);
    if (found != m_cache.end())
@@ -22,6 +20,7 @@ double MultiVariableRealValuedFunctionEvaluateCached::operator()(std::span<const
       return found->second;
    }
 
+   ++m_numEvaluations;
    const double eval = (*m_function)(x);
    m_cache[values] = eval;
    return eval;

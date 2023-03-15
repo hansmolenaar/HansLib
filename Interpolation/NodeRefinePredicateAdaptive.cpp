@@ -60,10 +60,16 @@ std::unique_ptr<INodeRefinePredicate> NodeRefinePredicateFactoryAdaptive::create
    str::transform(nodeToValue, priority.begin(), [](const auto& itr) {return std::make_pair(itr.first, itr.second); });
    str::sort(priority, Compare);
 
-   const auto numToSelect =std::min(siz, std::max(size_t(2), size_t(m_fraction * siz)));
+   const auto numToSelect =std::min(siz, std::max(size_t(2), size_t(std::round(m_fraction * siz))));
    std::set<const HierTreeNode*> toRefine;
    for (size_t n = 0; n < numToSelect; ++n)
    {
+      toRefine.insert(priority.at(n).first);
+   }
+   // Also add almost equal values to avoid instabilities
+   for (size_t n = numToSelect; n < priority.size(); ++n)
+   {
+      if (std::abs(priority.at(n).second - priority.at(n - 1).second) > 1.0e-10) break;
       toRefine.insert(priority.at(n).first);
    }
 

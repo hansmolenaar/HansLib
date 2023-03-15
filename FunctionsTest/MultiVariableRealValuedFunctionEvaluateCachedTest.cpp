@@ -23,14 +23,14 @@ TEST(MultiVariableRealValuedFunctionEvaluateCachedTest, TestCaching)
    ASSERT_EQ(fie.getNumCacheHits(), 0);
 
    ASSERT_TRUE(Functors::AreClose()(fie(xy1), 2.0));
+   ASSERT_EQ(fie.getNumEvaluations(), 1);
+   ASSERT_EQ(fie.getNumCacheHits(), 1);
+
+   ASSERT_TRUE(Functors::AreClose()(fie(xy2), 4.0));
    ASSERT_EQ(fie.getNumEvaluations(), 2);
    ASSERT_EQ(fie.getNumCacheHits(), 1);
 
    ASSERT_TRUE(Functors::AreClose()(fie(xy2), 4.0));
-   ASSERT_EQ(fie.getNumEvaluations(), 3);
-   ASSERT_EQ(fie.getNumCacheHits(), 1);
-
-   ASSERT_TRUE(Functors::AreClose()(fie(xy2), 4.0));
-   ASSERT_EQ(fie.getNumEvaluations(), 4);
+   ASSERT_EQ(fie.getNumEvaluations(), 2);
    ASSERT_EQ(fie.getNumCacheHits(), 2);
 }
