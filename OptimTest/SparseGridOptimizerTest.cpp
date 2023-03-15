@@ -190,17 +190,21 @@ TEST(SparseGridOptimizerTest, Camel)
 #if true
 TEST(SparseGridOptimizerTest, PlayGround)
 {
-   auto problem = MinimizationExamples::SixHumpCamelFunction();
+   auto problem = MinimizationExamples::Rosenbrock2();
+   constexpr Functors::AreClose areCloseEval(1.0e-2, 1.0e-8);
+   const double checkMinimum = (*problem.getFunctionOnUnit())(problem.getMinimumOnUnitInfo().Positions.front());
+   ASSERT_TRUE(Functors::AreClose(1.0e-2, 1.0e-12)(checkMinimum, 0.0));
 
-   const double alpha = 0.5;
-   const double fraction = 0.1;
+   const double alpha = 0.1;
+   const double fraction = 1.0;
    NodeRefinePredicateFactoryAdaptive predicate(alpha, fraction);
    SparseGridOptimizer optimizer(problem.getFunctionOnUnit(), predicate);
    constexpr int maxLevel = 8;
    IterativeMinimizationConvergenceCritMaxStep maxStep(maxLevel);
    const auto result = IterativeMinimizationController::Iterate(optimizer, maxStep);
    const auto& approx = optimizer.getApproximation();
+   const auto numEvaluations = problem.getOriginalProblem().Function->getNumEvaluations();
 
-   CollocationPointsToFile("SparseGridOptimizerTest_PlayGround", approx);
+   //CollocationPointsToFile("SparseGridOptimizerTest_PlayGround", approx);
 }
 #endif

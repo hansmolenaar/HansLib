@@ -91,3 +91,24 @@ MinimizationProblemOnUnitDomain MinimizationExamples::SixHumpCamelFunction()
 
    return MinimizationProblemOnUnitDomain(result);
 }
+
+MinimizationProblemOnUnitDomain MinimizationExamples::Rosenbrock2()
+{
+   MinimizationProblem result;
+   result.Domain.emplace_back(-2.0, 3.0);
+   result.Domain.emplace_back(-2.0, 9.0);
+   result.Minimum.Extremum = 0;
+   result.Minimum.Positions.emplace_back(std::vector<double>{ 1, 1});
+
+   auto fie = std::make_shared< MultiVariablePolynomial>(2);
+   fie->Add(100, { 0, 2 });
+   fie->Add(100, { 4, 0 });
+   fie->Add(-200, { 2, 1 });
+   fie->Add(1, { 2, 0 });
+   fie->Add(-2, { 1, 0 });
+   fie->Add(1, { 0, 0 });
+
+   result.Function = std::make_shared<MultiVariableRealValuedFunctionEvaluateCached>(fie);
+
+   return MinimizationProblemOnUnitDomain(result);
+}

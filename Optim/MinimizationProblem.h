@@ -36,4 +36,5 @@ namespace MinimizationExamples
    MinimizationProblem Square1D();
    MinimizationProblemOnUnitDomain Square2D();
    MinimizationProblemOnUnitDomain SixHumpCamelFunction();
+   MinimizationProblemOnUnitDomain Rosenbrock2();
 }
