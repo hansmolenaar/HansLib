@@ -76,3 +76,20 @@ FlyWeightKey Index1::getKey() const
 {
    return m_key;
 }
+
+// !!!!!!!!!!!!!!!!!!!!! Factory
+
+const Index1& Index1FlyWeightFactory::operator()(Index1Key key) const
+{
+   return  m_cache.at(key);
+}
+
+Index1Key Index1FlyWeightFactory::get(const Index1& index1)
+{
+   const FlyWeightKey key = index1.getKey();
+   if (!m_cache.contains(key))
+   {
+      m_cache.emplace(key, index1);
+   }
+   return key;
+}

@@ -56,3 +56,16 @@ TEST(IntervalTreeIndexTest, UnhappyPaths)
    ASSERT_ANY_THROW(Index1(Interval<Rational>(Rational(1, 4), Rational(3, 4))));
    ASSERT_ANY_THROW(Index1(Interval<Rational>(Rational(3, 5), Rational(4, 5))));
 }
+
+
+TEST(IntervalTreeIndexTest, Factory)
+{
+   Index1FlyWeightFactory factory;
+
+   const Index1 indx(Interval<Rational>(Rational(7, 8), Rational(8, 8)));
+   const auto key = factory.get(indx);
+   ASSERT_EQ(key, indx.getKey());
+   const auto& found = factory(key);
+   ASSERT_EQ(found.getLevel() , indx.getLevel());
+   ASSERT_EQ(found.getPositionInLevel(), indx.getPositionInLevel());
+}
