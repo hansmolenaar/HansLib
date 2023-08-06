@@ -56,7 +56,7 @@ Index1::Index1(const Interval<Rational>& interval) :
    {
       throw MyException("Index1::Index1 incorrect interval, lower");
    }
-   if (m_interval.getUpper() != Rational(getPositionInLevel()+1, denom))
+   if (m_interval.getUpper() != Rational(getPositionInLevel() + 1, denom))
    {
       throw MyException("Index1::Index1 incorrect interval, upper");
    }
@@ -77,14 +77,34 @@ FlyWeightKey Index1::getKey() const
    return m_key;
 }
 
-// !!!!!!!!!!!!!!!!!!!!! Factory
-
-const Index1& Index1FlyWeightFactory::operator()(Index1Key key) const
+const Interval<Rational>& Index1::getInterval() const
 {
-   return  m_cache.at(key);
+   return m_interval;
 }
 
-Index1Key Index1FlyWeightFactory::get(const Index1& index1)
+std::array<Index1, 2> Index1::refine() const
+{
+   const Level nxtLevel = getLevel() + 1;
+   const Rational del{ 1, 1 << nxtLevel };
+   const Rational start = m_interval.getLower();
+   const Interval<Rational> intv0(start, start + del);
+   const Interval<Rational> intv1(start + del, start + 2 * del);
+   return { Index1(intv0), Index1(intv1) };
+}
+
+// !!!!!!!!!!!!!!!!!!!!! Factory
+
+const Index1* Index1FlyWeightFactory::operator()(FlyWeightKey key) const
+{
+   return  &m_cache.at(key);
+}
+
+FlyWeightKey Index1FlyWeightFactory::add(const Interval<Rational>& interval)
+{
+   return add(Index1(interval));
+}
+
+FlyWeightKey Index1FlyWeightFactory::add(const Index1& index1)
 {
    const FlyWeightKey key = index1.getKey();
    if (!m_cache.contains(key))

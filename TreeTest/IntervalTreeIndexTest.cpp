@@ -49,6 +49,18 @@ TEST(IntervalTreeIndexTest, Level3)
    Check(Interval<Rational>(Rational(7, 8), Rational(8, 8)), 3, 7, 14);
 }
 
+TEST(IntervalTreeIndexTest, Index1Refine)
+{
+   const Interval<Rational> intv(Rational(2, 4), Rational(3, 4));
+   const Index1 indx(intv);
+   const auto refined = indx.refine();
+   ASSERT_EQ(refined[0].getInterval().getLower(), Rational(1, 2));
+   ASSERT_EQ(refined[0].getInterval().getUpper(), Rational(5, 8));
+   ASSERT_EQ(refined[1].getInterval().getLower(), Rational(5, 8));
+   ASSERT_EQ(refined[1].getInterval().getUpper(), Rational(3, 4));
+}
+
+
 
 TEST(IntervalTreeIndexTest, UnhappyPaths)
 {
@@ -58,14 +70,48 @@ TEST(IntervalTreeIndexTest, UnhappyPaths)
 }
 
 
-TEST(IntervalTreeIndexTest, Factory)
+TEST(IntervalTreeIndexTest, Factory1)
 {
    Index1FlyWeightFactory factory;
 
-   const Index1 indx(Interval<Rational>(Rational(7, 8), Rational(8, 8)));
-   const auto key = factory.get(indx);
+   const Interval<Rational> intv(Rational(7, 8), Rational(8, 8));
+   const Index1 indx(intv);
+   const auto key = factory.add(indx);
+   ASSERT_EQ(factory.add(intv), key);
    ASSERT_EQ(key, indx.getKey());
    const auto& found = factory(key);
-   ASSERT_EQ(found.getLevel() , indx.getLevel());
-   ASSERT_EQ(found.getPositionInLevel(), indx.getPositionInLevel());
+   ASSERT_EQ(found->getLevel(), indx.getLevel());
+   ASSERT_EQ(found->getPositionInLevel(), indx.getPositionInLevel());
+}
+
+
+TEST(IntervalTreeIndexTest, Index_basics)
+{
+   IndexFactory<2> factory;
+   const Interval<Rational> intv0(Rational(7, 8), Rational(8, 8));
+   const Interval<Rational> intv1(Rational(3, 4), Rational(8, 8));
+
+   const auto index = factory.get(std::array<Interval<Rational>, 2>{ intv0, intv1 });
+   ASSERT_EQ(index.getLevel(), 3);
+
+   const auto rv0 = index.getInterval(0);
+   ASSERT_EQ(rv0.getLower(), intv0.getLower());
+   ASSERT_EQ(rv0.getUpper(), intv0.getUpper());
+
+   const auto rv1 = index.getInterval(1);
+   ASSERT_EQ(rv1.getLower(), intv1.getLower());
+   ASSERT_EQ(rv1.getUpper(), intv1.getUpper());
+}
+
+TEST(IntervalTreeIndexTest, IndexFaactory)
+{
+   IndexFactory<1> factory;
+   const Interval<Rational> intv(Rational(3, 16), Rational(4, 16));
+
+   const auto index = factory.get({ intv });
+   ASSERT_EQ(index.getLevel(), 4);
+
+   const auto rv = index.getInterval(0);
+   ASSERT_EQ(rv.getLower(), intv.getLower());
+   ASSERT_EQ(rv.getUpper(), intv.getUpper());
 }
