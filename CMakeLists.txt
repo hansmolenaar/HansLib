@@ -4,13 +4,24 @@ set(CMAKE_COMPILE_WARNING_AS_ERROR ON)
 set(BUILD_SHARED_LIBS OFF)
 set (CMAKE_CXX_STANDARD 20)
 
+set(BOOST_ROOT "C:/Program Files/boost/boost_1_82_0")
+#find_package( Boost REQUIRED COMPONENTS program_options regex )
+#set(Boost_USE_STATIC_LIBS OFF) 
+#set(Boost_USE_MULTITHREADED ON)  
+#set(Boost_USE_STATIC_RUNTIME OFF) 
+#find_package(Boost REQUIRED COMPONENTS system) # header only libraries must not be added here
+message("BOOST_ROOT " ${BOOST_ROOT})
+find_package(Boost REQUIRED)
+message("Boost_INCLUDE_DIRS " ${Boost_INCLUDE_DIRS})
+
+
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
 set(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR}/bin)
 set(CMAKE_INCLUDE_DIR ${CMAKE_SOURCE_DIR})
 
-message("CMAKE_BINARY_DIR" ${CMAKE_BINARY_DIR})
-message("CMAKE_SOURCE_DIR" ${CMAKE_SOURCE_DIR})
-message("CMAKE_INCLUDE_DIR" ${CMAKE_INCLUDE_DIR})
+message("CMAKE_BINARY_DIR " ${CMAKE_BINARY_DIR})
+message("CMAKE_SOURCE_DIR " ${CMAKE_SOURCE_DIR})
+message("CMAKE_INCLUDE_DIR " ${CMAKE_INCLUDE_DIR})
 message("CMAKE_RUNTIME_OUTPUT_DIRECTORY " ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 
 project(HansLib)
