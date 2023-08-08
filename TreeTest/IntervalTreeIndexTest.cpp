@@ -124,9 +124,6 @@ TEST(IntervalTreeIndexTest, Index_refine)
    const auto* root = factory.getRoot();
    const auto kids = factory.refine(*root);
 
-   const auto tmp1 = kids[0];
-   const auto tmp2 = kids[0]->getInterval(0);
-
    ASSERT_EQ(kids[0]->getInterval(0), Interval<Rational>({ 0,1 }, { 1,2 }));
    ASSERT_EQ(kids[0]->getInterval(1), Interval<Rational>({ 0,1 }, { 1,2 }));
 
@@ -140,19 +137,7 @@ TEST(IntervalTreeIndexTest, Index_refine)
    ASSERT_EQ(kids[3]->getInterval(1), Interval<Rational>({ 1,2 }, { 1,1 }));
 }
 
-/* !!!!!!!!TODO
-TEST(IntervalTreeIndexTest, Factory1_refine)
-{
-   Index1FlyWeightFactory factory;
-
-   const auto* root = factory.getRoot();
-   const auto kids = factory.refine(*root);
-   ASSERT_EQ(kids[0]->getKey(), 1);
-   ASSERT_EQ(kids[1]->getKey(), 2);
-}
-!!!!!!!!!! TODO */
-
-TEST(IntervalTreeIndexTest, IndexFaactory)
+TEST(IntervalTreeIndexTest, IndexFactory)
 {
    IndexFactory<1> factory;
    const Interval<Rational> intv(Rational(3, 16), Rational(4, 16));
@@ -166,7 +151,7 @@ TEST(IntervalTreeIndexTest, IndexFaactory)
 }
 
 
-TEST(IntervalTreeIndexTest, IndexFaactoryRoot)
+TEST(IntervalTreeIndexTest, IndexFactoryRoot)
 {
    IndexFactory<2> factory;
    const auto* root = factory.getRoot();
