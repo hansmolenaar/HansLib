@@ -29,6 +29,11 @@ private:
    T m_upper;
 };
 
+template<typename T>
+bool operator==(typename const Interval<T>& lhs, typename const Interval<T>& rhs)
+{
+   return lhs.getLower() == rhs.getLower() && lhs.getUpper() == rhs.getUpper();
+}
 
 template<typename T>
 Interval<T>::Interval(const T& val)

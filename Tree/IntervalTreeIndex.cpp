@@ -37,9 +37,9 @@ namespace
       return interval.getUpper().numerator() - 1;
    }
 
-   FlyWeightKey GetKey(Level level, int positionInLevel)
+   Index1::Key GetKey(Level level, int positionInLevel)
    {
-      const FlyWeightKey pow2m1 = (1 << level) - 1;
+      const Index1::Key pow2m1 = (1 << level) - 1;
       return pow2m1 + positionInLevel;
    }
 }
@@ -72,7 +72,7 @@ int Index1::getPositionInLevel() const
    return m_positionInLevel;
 }
 
-FlyWeightKey Index1::getKey() const
+Index1::Key Index1::getKey() const
 {
    return m_key;
 }
@@ -93,20 +93,37 @@ std::array<Index1, 2> Index1::refine() const
 }
 
 // !!!!!!!!!!!!!!!!!!!!! Factory
+Index1FlyWeightFactory::Index1FlyWeightFactory()
+{
+   add(Interval<Rational>({ 0,1 }, { 1,1 }));
+}
 
-const Index1* Index1FlyWeightFactory::operator()(FlyWeightKey key) const
+const Index1* Index1FlyWeightFactory::getRoot() const
+{
+   return (*this)(0);
+}
+
+std::array<const Index1*, 2> Index1FlyWeightFactory::refine(const Index1& toRefine) 
+{
+   std::array<Index1, 2> kids = toRefine.refine();
+   add(kids[0]);
+   add(kids[1]);
+   return {(*this)(kids[0].getKey()), (*this)(kids[1].getKey()) };
+}
+
+const Index1* Index1FlyWeightFactory::operator()(Index1::Key key) const
 {
    return  &m_cache.at(key);
 }
 
-FlyWeightKey Index1FlyWeightFactory::add(const Interval<Rational>& interval)
+Index1::Key Index1FlyWeightFactory::add(const Interval<Rational>& interval)
 {
    return add(Index1(interval));
 }
 
-FlyWeightKey Index1FlyWeightFactory::add(const Index1& index1)
+Index1::Key Index1FlyWeightFactory::add(const Index1& index1)
 {
-   const FlyWeightKey key = index1.getKey();
+   const Index1::Key key = index1.getKey();
    if (!m_cache.contains(key))
    {
       m_cache.emplace(key, index1);

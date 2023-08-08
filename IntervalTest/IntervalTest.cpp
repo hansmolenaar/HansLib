@@ -110,3 +110,14 @@ TEST(IntervalTest, InterpolateFail)
    interval = Interval<double>(0, std::numeric_limits<double>::epsilon());
    ASSERT_THROW(interval.inverseInterpolate(std::numeric_limits<double>::max()), MyException);
 }
+
+
+TEST(IntervalTest, Equals)
+{
+   const Interval<int> interval1(0, 1);
+   const Interval<int> interval2(0, 2);
+   const Interval<int> interval3(1, 1);
+   ASSERT_EQ(interval1, interval1);
+   ASSERT_NE(interval1, interval2);
+   ASSERT_NE(interval1, interval3);
+}

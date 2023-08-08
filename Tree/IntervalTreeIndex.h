@@ -4,6 +4,7 @@
 #include "Interval.h"
 #include "IntervalTreeDefines.h"
 #include "Defines.h"
+#include "BoolContainer.h"
 
 #include <vector>
 #include <array>
@@ -11,33 +12,40 @@
 
 namespace IntervalTree
 {
-   using FlyWeightKey = int;
+
 
    class Index1
    {
    public:
+      using Key = int;
+
       Index1(const Interval<Rational>& interval);
       Level getLevel() const;
       int getPositionInLevel() const;
-      FlyWeightKey getKey() const;
+      Key getKey() const;
       const Interval<Rational>& getInterval() const;
-      std::array<Index1,2> refine() const;
+      std::array<Index1, 2> refine() const;
+
+
    private:
       Interval<Rational> m_interval;
       Level m_level;
       int m_positionInLevel;
-      FlyWeightKey m_key;
+      Key m_key;
    };
 
    class Index1FlyWeightFactory
    {
    public:
-      const Index1* operator()(FlyWeightKey key) const;
-      FlyWeightKey add(const Index1& index1);
-      FlyWeightKey add(const Interval<Rational>& interval);
+      Index1FlyWeightFactory();
+      const Index1* operator()(Index1::Key key) const;
+      Index1::Key add(const Index1& index1);
+      Index1::Key add(const Interval<Rational>& interval);
+      const Index1* getRoot() const;
+      std::array<const Index1*, 2> refine(const Index1& toRefine);
 
    private:
-      std::unordered_map<FlyWeightKey, Index1> m_cache;
+      std::unordered_map<Index1::Key, Index1> m_cache;
    };
 
 
@@ -45,12 +53,16 @@ namespace IntervalTree
    class Index
    {
    public:
-      Index(std::array<FlyWeightKey, N> keys, const Index1FlyWeightFactory& factory);
+      using Key = std::array<Index1::Key, N>;
+
+      Index(std::array<Index1::Key, N> keys, Index1FlyWeightFactory& factory);
       Level getLevel() const;
       const Interval<Rational>& getInterval(int n) const;
+      Key getKey() const;
+      std::array<Key, 1 << N> refine() const;
    private:
-      const Index1FlyWeightFactory& m_factory1;
-      std::array<FlyWeightKey, N> m_keys;
+      Index1FlyWeightFactory& m_factory1;
+      Key m_keys;
    };
 
    template<int N>
@@ -59,8 +71,13 @@ namespace IntervalTree
    public:
       Index<N> get(const std::array<Interval<Rational>, N>& keys);
       Index<N> get(std::initializer_list<Interval<Rational>> keys);
+      const Index<N>* addIfNew(typename const Index<N>::Key& key);
+      std::array<const Index<N>*, 1 << N> refine(const Index<N>& toRefine);
+      const Index<N>* getRoot();
+      const Index<N>* operator()(typename const Index<N>::Key& key) const;
    private:
       Index1FlyWeightFactory m_factory;
+      std::map<typename Index<N>::Key, Index<N>> m_cache;
    };
 
 
@@ -68,7 +85,7 @@ namespace IntervalTree
    // Implementation
 
    template<int N>
-   Index<N>::Index(std::array<FlyWeightKey, N> keys, const Index1FlyWeightFactory& factory) :
+   Index<N>::Index(std::array<Index1::Key, N> keys, Index1FlyWeightFactory& factory) :
       m_factory1(factory), m_keys(std::move(keys))
    {
    }
@@ -91,11 +108,56 @@ namespace IntervalTree
       return result;
    }
 
-   
+   template<int N>
+   Index<N>::Key Index<N>::getKey() const
+   {
+      return m_keys;
+   }
+
+   template<int N>
+   std::array<typename Index<N>::Key, 1 << N> Index<N>::refine() const
+   {
+      constexpr size_t TwoPowN = 1 << N;
+      std::array<typename Index<N>::Key, TwoPowN> result;
+      Index1::Key  ref[N][2];
+
+      // Refine each of the indices
+      for (int d = 0; d < N; ++d)
+      {
+         const Index1::Key key1 = m_keys[d];
+         const  Index1* indx1 = m_factory1(key1);
+         const auto kids = indx1->refine();
+
+         m_factory1.add(kids[0]);
+         m_factory1.add(kids[1]);
+        
+         ref[d][0] = kids[0].getKey();
+         ref[d][1] = kids[1].getKey();
+      }
+
+      for (int kid = 0; kid < TwoPowN; ++kid)
+      {
+         auto bools = BoolContainerUtils::FromNumber(kid);
+         str::reverse(bools);
+         while (bools.size() < N)
+         {
+            bools.push_back(false);
+         }
+         Index<N>::Key key;
+         for (size_t n = 0; n < N; ++n)
+         {
+            const bool b = bools.at(n);
+            key[n] = ref[n][b ? 1 : 0];
+         }
+         result[kid] = key;
+      }
+      return result;
+   }
+
    template<int N>
    Index<N> IndexFactory<N>::get(const std::array<Interval<Rational>, N>& intervals)
    {
-      std::array<FlyWeightKey, N> keys;
+      std::array<Index1::Key, N> keys;
       std::transform(intervals.begin(), intervals.end(), keys.begin(), [this](const Interval<Rational>& intv) {return m_factory.add(intv); });
       return Index<N>(keys, m_factory);
    }
@@ -105,10 +167,55 @@ namespace IntervalTree
    {
       if (intervals.size() != N)
       {
-         throw MyException("IndexFactory<N>::get(initalizer list) expected  size " + std::to_string(N) + ", actual: "  + std::to_string(intervals.size()));
+         throw MyException("IndexFactory<N>::get(initalizer list) expected  size " + std::to_string(N) + ", actual: " + std::to_string(intervals.size()));
       }
-      std::array<FlyWeightKey, N> keys;
+      std::array<Index1::Key, N> keys;
       std::transform(intervals.begin(), intervals.end(), keys.begin(), [this](const Interval<Rational>& intv) {return m_factory.add(intv); });
       return Index<N>(keys, m_factory);
    }
+
+   template<int N>
+   const Index<N>* IndexFactory<N>::operator()(typename const Index<N>::Key& key) const
+   {
+      return &m_cache.at(key);
+   }
+
+   template<int N>
+   const Index<N>* IndexFactory<N>::getRoot()
+   {
+      typename Index<N>::Key key;
+      str::fill(key, 0);
+      addIfNew(key);
+      return (*this)(key);
+   }
+
+   template<int N>
+   const Index<N>* IndexFactory<N>::addIfNew(typename const Index<N>::Key& key)
+   {
+      if (!m_cache.contains(key))
+      {
+         m_cache.emplace(std::make_pair(key, Index<N>{key, m_factory}));
+      }
+      return &m_cache.at(key);
+   }
+
+   template<int N>
+   std::array<const Index<N>*, 1 << N> IndexFactory<N>::refine(const Index<N>& toRefine)
+   {
+      if (!m_cache.contains(toRefine.getKey()))
+      {
+         throw MyException("IndexFactory<N>::refine unknown index specified");
+      }
+      const auto kids = toRefine.refine();
+      std::array<const Index<N>*, 1 << N> result;
+      size_t n = 0;
+      for (const auto& k : kids)
+      {
+         result[n] = addIfNew(k);
+         ++n;
+      }
+      return result;
+   }
+
+
 }

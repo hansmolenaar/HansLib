@@ -6,7 +6,7 @@ using namespace IntervalTree;
 
 namespace
 {
-   void Check(const Interval<Rational>& intv, Level expectLevel, int expectPositionInLevel, FlyWeightKey expectKey)
+   void Check(const Interval<Rational>& intv, Level expectLevel, int expectPositionInLevel, Index1::Key expectKey)
    {
       const Index1 indx(intv);
       ASSERT_EQ(indx.getLevel(), expectLevel);
@@ -82,6 +82,20 @@ TEST(IntervalTreeIndexTest, Factory1)
    const auto& found = factory(key);
    ASSERT_EQ(found->getLevel(), indx.getLevel());
    ASSERT_EQ(found->getPositionInLevel(), indx.getPositionInLevel());
+   ASSERT_EQ(factory.getRoot()->getLevel(), 0);
+   ASSERT_EQ(factory.getRoot()->getInterval().getLower(), Rational(0, 2));
+   ASSERT_EQ(factory.getRoot()->getInterval().getUpper(), Rational(2, 2));
+}
+
+
+TEST(IntervalTreeIndexTest, Factory1_refine)
+{
+   Index1FlyWeightFactory factory;
+
+   const auto* root = factory.getRoot();
+   const auto kids = factory.refine(*root);
+   ASSERT_EQ(kids[0]->getKey(), 1);
+   ASSERT_EQ(kids[1]->getKey(), 2);
 }
 
 
@@ -103,6 +117,41 @@ TEST(IntervalTreeIndexTest, Index_basics)
    ASSERT_EQ(rv1.getUpper(), intv1.getUpper());
 }
 
+
+TEST(IntervalTreeIndexTest, Index_refine)
+{
+   IndexFactory<2> factory;
+   const auto* root = factory.getRoot();
+   const auto kids = factory.refine(*root);
+
+   const auto tmp1 = kids[0];
+   const auto tmp2 = kids[0]->getInterval(0);
+
+   ASSERT_EQ(kids[0]->getInterval(0), Interval<Rational>({ 0,1 }, { 1,2 }));
+   ASSERT_EQ(kids[0]->getInterval(1), Interval<Rational>({ 0,1 }, { 1,2 }));
+
+   ASSERT_EQ(kids[1]->getInterval(0), Interval<Rational>({ 1,2 }, { 1,1 }));
+   ASSERT_EQ(kids[1]->getInterval(1), Interval<Rational>({ 0,1 }, { 1,2 }));
+
+   ASSERT_EQ(kids[2]->getInterval(0), Interval<Rational>({ 0,1 }, { 1,2 }));
+   ASSERT_EQ(kids[2]->getInterval(1), Interval<Rational>({ 1,2 }, { 1,1 }));
+
+   ASSERT_EQ(kids[3]->getInterval(0), Interval<Rational>({ 1,2 }, { 1,1 }));
+   ASSERT_EQ(kids[3]->getInterval(1), Interval<Rational>({ 1,2 }, { 1,1 }));
+}
+
+/* !!!!!!!!TODO
+TEST(IntervalTreeIndexTest, Factory1_refine)
+{
+   Index1FlyWeightFactory factory;
+
+   const auto* root = factory.getRoot();
+   const auto kids = factory.refine(*root);
+   ASSERT_EQ(kids[0]->getKey(), 1);
+   ASSERT_EQ(kids[1]->getKey(), 2);
+}
+!!!!!!!!!! TODO */
+
 TEST(IntervalTreeIndexTest, IndexFaactory)
 {
    IndexFactory<1> factory;
@@ -114,4 +163,12 @@ TEST(IntervalTreeIndexTest, IndexFaactory)
    const auto rv = index.getInterval(0);
    ASSERT_EQ(rv.getLower(), intv.getLower());
    ASSERT_EQ(rv.getUpper(), intv.getUpper());
+}
+
+
+TEST(IntervalTreeIndexTest, IndexFaactoryRoot)
+{
+   IndexFactory<2> factory;
+   const auto* root = factory.getRoot();
+   ASSERT_EQ(root->getLevel(), 0);
 }
