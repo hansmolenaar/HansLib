@@ -30,6 +30,7 @@ namespace IntervalTree
       const Interval<Rational>& getInterval() const;
       std::array<Index1, 2> refine() const;
       Rational getMeasure() const;
+      std::string toString() const;
 
    private:
       Interval<Rational> m_interval;
@@ -64,6 +65,7 @@ namespace IntervalTree
       Key getKey() const;
       std::array<Key, 1 << N> refine() const;
       Rational getMeasure() const;
+      std::string toString() const;
    private:
       Index1FlyWeightFactory& m_factory1;
       Key m_keys;
@@ -145,6 +147,18 @@ namespace IntervalTree
             return acc * m_factory1(key1)->getMeasure();
          }
       );
+   }
+
+   template<int N>
+   std::string Index<N>::toString() const
+   {
+      std::string result = "(" + m_factory1(m_keys[0])->toString();
+      for (int n = 1; n < N; ++n)
+      {
+         result += ", " + m_factory1(m_keys[n])->toString();
+      }
+      result += ")";
+      return result;
    }
 
    template<int N>

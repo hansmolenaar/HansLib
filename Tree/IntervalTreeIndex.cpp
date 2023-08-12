@@ -42,6 +42,18 @@ namespace
       const Index1::Key pow2m1 = (1 << level) - 1;
       return pow2m1 + positionInLevel;
    }
+
+   std::string ToString(const Rational& rat)
+   {
+      if (rat == Rational(0, 1)) return "0";
+      if (rat == Rational(1, 1)) return "1";
+      return std::to_string(rat.numerator()) + "/" + std::to_string(rat.denominator());
+   }
+
+   std::string ToString(const Interval<Rational>& intv)
+   {
+      return "(" + ToString(intv.getLower()) + ", " + ToString(intv.getUpper()) + ")";
+   }
 }
 
 Index1::Index1(const Interval<Rational>& interval) :
@@ -97,6 +109,11 @@ Rational Index1::getMeasure() const
    return m_interval.getMeasure();
 }
 
+std::string Index1::toString() const
+{
+   return ToString(getInterval());
+}
+
 // !!!!!!!!!!!!!!!!!!!!! Factory
 Index1FlyWeightFactory::Index1FlyWeightFactory()
 {
@@ -108,12 +125,12 @@ const Index1* Index1FlyWeightFactory::getRoot() const
    return (*this)(0);
 }
 
-std::array<const Index1*, 2> Index1FlyWeightFactory::refine(const Index1& toRefine) 
+std::array<const Index1*, 2> Index1FlyWeightFactory::refine(const Index1& toRefine)
 {
    std::array<Index1, 2> kids = toRefine.refine();
    add(kids[0]);
    add(kids[1]);
-   return {(*this)(kids[0].getKey()), (*this)(kids[1].getKey()) };
+   return { (*this)(kids[0].getKey()), (*this)(kids[1].getKey()) };
 }
 
 const Index1* Index1FlyWeightFactory::operator()(Index1::Key key) const

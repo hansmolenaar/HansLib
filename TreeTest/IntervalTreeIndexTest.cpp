@@ -49,6 +49,13 @@ TEST(IntervalTreeIndexTest, Level3)
    Check(Interval<Rational>(Rational(7, 8), Rational(8, 8)), 3, 7, 14);
 }
 
+
+TEST(IntervalTreeIndexTest, Index1ToString)
+{
+   const Index1 indx(Interval<Rational>(Rational(0, 2), Rational(1, 4)));
+   const auto str = indx.toString();
+   ASSERT_EQ(str, "(0, 1/4)");
+}
 TEST(IntervalTreeIndexTest, Index1Refine)
 {
    const Interval<Rational> intv(Rational(2, 4), Rational(3, 4));
@@ -115,6 +122,9 @@ TEST(IntervalTreeIndexTest, Index_basics)
    const auto rv1 = index.getInterval(1);
    ASSERT_EQ(rv1.getLower(), intv1.getLower());
    ASSERT_EQ(rv1.getUpper(), intv1.getUpper());
+
+   const std::string str = index.toString();
+   ASSERT_EQ(str, "((7/8, 1), (3/4, 1))");
 }
 
 
