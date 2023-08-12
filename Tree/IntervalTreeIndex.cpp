@@ -92,6 +92,11 @@ std::array<Index1, 2> Index1::refine() const
    return { Index1(intv0), Index1(intv1) };
 }
 
+Rational Index1::getMeasure() const
+{
+   return m_interval.getMeasure();
+}
+
 // !!!!!!!!!!!!!!!!!!!!! Factory
 Index1FlyWeightFactory::Index1FlyWeightFactory()
 {

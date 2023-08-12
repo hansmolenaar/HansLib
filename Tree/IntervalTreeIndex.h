@@ -25,7 +25,7 @@ namespace IntervalTree
       Key getKey() const;
       const Interval<Rational>& getInterval() const;
       std::array<Index1, 2> refine() const;
-
+      Rational getMeasure() const;
 
    private:
       Interval<Rational> m_interval;
@@ -48,6 +48,11 @@ namespace IntervalTree
       std::unordered_map<Index1::Key, Index1> m_cache;
    };
 
+   template<int N>
+   struct IndexNKey
+   {
+      std::array<Index1::Key, N> Keys1;
+   };
 
    template<int N>
    class Index
@@ -60,6 +65,7 @@ namespace IntervalTree
       const Interval<Rational>& getInterval(int n) const;
       Key getKey() const;
       std::array<Key, 1 << N> refine() const;
+      Rational getMeasure() const;
    private:
       Index1FlyWeightFactory& m_factory1;
       Key m_keys;
@@ -115,6 +121,16 @@ namespace IntervalTree
    }
 
    template<int N>
+   Rational Index<N>::getMeasure() const
+   {
+      return std::accumulate(m_keys.begin(), m_keys.end(), Rational(1, 1),
+         [this](const Rational& acc, Index1::Key key1 ) {
+            return acc * m_factory1(key1)->getMeasure();
+         }
+      );
+   }
+
+   template<int N>
    std::array<typename Index<N>::Key, 1 << N> Index<N>::refine() const
    {
       constexpr size_t TwoPowN = 1 << N;
@@ -130,7 +146,7 @@ namespace IntervalTree
 
          m_factory1.add(kids[0]);
          m_factory1.add(kids[1]);
-        
+
          ref[d][0] = kids[0].getKey();
          ref[d][1] = kids[1].getKey();
       }

@@ -150,10 +150,27 @@ TEST(IntervalTreeIndexTest, IndexFactory)
    ASSERT_EQ(rv.getUpper(), intv.getUpper());
 }
 
-
 TEST(IntervalTreeIndexTest, IndexFactoryRoot)
 {
    IndexFactory<2> factory;
    const auto* root = factory.getRoot();
    ASSERT_EQ(root->getLevel(), 0);
+   ASSERT_EQ(root->getMeasure(), Rational(1, 1));
+}
+
+
+TEST(IntervalTreeIndexTest, IndexFactorLevel2Ref)
+{
+   IndexFactory<3> factory;
+   const auto* root = factory.getRoot();
+   const auto level1 = factory.refine(*root);
+   Rational sum = 0;
+   for (const auto* l1 : level1)
+   {
+      for (const auto* l2 : factory.refine(*l1))
+      {
+         sum += l2->getMeasure();
+      }
+   }
+   ASSERT_EQ(sum, Rational(1, 1));
 }
