@@ -9,6 +9,8 @@
 #include <vector>
 #include <array>
 #include <unordered_map>
+#include <functional>
+
 
 namespace IntervalTree
 {
@@ -49,12 +51,6 @@ namespace IntervalTree
    };
 
    template<int N>
-   struct IndexNKey
-   {
-      std::array<Index1::Key, N> Keys1;
-   };
-
-   template<int N>
    class Index
    {
    public:
@@ -70,7 +66,18 @@ namespace IntervalTree
       Index1FlyWeightFactory& m_factory1;
       Key m_keys;
    };
+}
 
+namespace std
+{
+   template <int N>
+   struct hash< std::array<IntervalTree::Index1::Key, N> > {
+      size_t operator()(const std::array<IntervalTree::Index1::Key, N>& key) const noexcept { return 0; }
+   };
+}
+
+namespace IntervalTree
+{
    template<int N>
    class IndexFactory
    {
@@ -83,7 +90,7 @@ namespace IntervalTree
       const Index<N>* operator()(typename const Index<N>::Key& key) const;
    private:
       Index1FlyWeightFactory m_factory;
-      std::map<typename Index<N>::Key, Index<N>> m_cache;
+      std::unordered_map<typename Index<N>::Key, Index<N>> m_cache;
    };
 
 
