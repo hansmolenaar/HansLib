@@ -6,6 +6,8 @@
 #include "Defines.h"
 #include "BoolContainer.h"
 
+#include <boost/functional/hash.hpp>
+
 #include <vector>
 #include <array>
 #include <unordered_map>
@@ -72,7 +74,15 @@ namespace std
 {
    template <int N>
    struct hash< std::array<IntervalTree::Index1::Key, N> > {
-      size_t operator()(const std::array<IntervalTree::Index1::Key, N>& key) const noexcept { return 0; }
+      size_t operator()(const std::array<IntervalTree::Index1::Key, N>& key) const noexcept
+      {
+         size_t result = 0;
+         for (int n = 0; n < N; ++n)
+         {
+            boost::hash_combine(result, static_cast<size_t>(key[n]));
+         }
+         return result;
+      }
    };
 }
 
@@ -131,7 +141,7 @@ namespace IntervalTree
    Rational Index<N>::getMeasure() const
    {
       return std::accumulate(m_keys.begin(), m_keys.end(), Rational(1, 1),
-         [this](const Rational& acc, Index1::Key key1 ) {
+         [this](const Rational& acc, Index1::Key key1) {
             return acc * m_factory1(key1)->getMeasure();
          }
       );
