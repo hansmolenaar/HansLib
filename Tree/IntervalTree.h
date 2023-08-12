@@ -10,11 +10,8 @@ namespace IntervalTree
    {
    public:
       IndexTree();
-      const Index<N>* getRoot() const;
+      const Index<N>& getRoot() const;
       void refine(const Index<N>& toRefine);
-
-      template<typename F>
-      void foreachKid(F fun) const;
 
       template<typename F>
       void foreachLeaf(F fun) const;
@@ -30,9 +27,9 @@ namespace IntervalTree
    }
 
    template<int N>
-   const Index<N>* IndexTree<N>::getRoot() const
+   const Index<N>& IndexTree<N>::getRoot() const
    {
-      return m_root;
+      return *m_root;
    }
 
 }
