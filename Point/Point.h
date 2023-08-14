@@ -2,9 +2,10 @@
 
 #include "Defines.h"
 #include "MyAssert.h"
+#include "Rational.h"
 
 #include <algorithm>
-
+#include <functional>
 
 template<typename T, int N>
 class Point
@@ -38,8 +39,8 @@ public:
    std::span<const T> data() const { return m_values; }
 
 private:
-   std::array<T, N>::iterator begin()  { return m_values.begin(); }
-   std::array<T, N>::iterator end()  { return m_values.end(); }
+   std::array<T, N>::iterator begin() { return m_values.begin(); }
+   std::array<T, N>::iterator end() { return m_values.end(); }
 
    std::array<T, N> m_values;
 };
@@ -71,7 +72,7 @@ Point<T, N>& Point<T, N>::operator-=(const Point<T, N>& rhs)
 template<typename T, int N>
 Point<T, N> Point<T, N>::operator*(T factor) const
 {
-   Point<T,N> result;
+   Point<T, N> result;
    std::transform(m_values.begin(), m_values.end(), result.begin(), [factor](T val) {return factor * val; });
    return result;
 }
@@ -82,3 +83,46 @@ using Point3 = Point<double, 3>;
 using IntPoint1 = Point<int, 1>;
 using IntPoint2 = Point<int, 2>;
 using IntPoint3 = Point<int, 3>;
+using RatPoint1 = Point<Rational, 1>;
+using RatPoint2 = Point<Rational, 2>;
+using RatPoint3 = Point<Rational, 3>;
+
+namespace std
+{
+   template<>
+   struct hash< IntPoint1 >
+   {
+      size_t operator()(const IntPoint1& point) const noexcept;
+   };
+
+   template<>
+   struct hash< IntPoint2 >
+   {
+      size_t operator()(const IntPoint2& point) const noexcept;
+   };
+
+   template<>
+   struct hash< IntPoint3 >
+   {
+      size_t operator()(const IntPoint3& point) const noexcept;
+   };
+
+   template<>
+   struct hash< RatPoint1 >
+   {
+      size_t operator()(const RatPoint1& point) const noexcept;
+   };
+
+   template<>
+   struct hash< RatPoint2 >
+   {
+      size_t operator()(const RatPoint2& point) const noexcept;
+   };
+
+   template<>
+   struct hash< RatPoint3 >
+   {
+      size_t operator()(const RatPoint3& point) const noexcept;
+   };
+
+}

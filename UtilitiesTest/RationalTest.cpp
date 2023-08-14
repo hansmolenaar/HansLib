@@ -13,3 +13,12 @@ TEST(RationalTest, DoesThisCompile)
    const auto r23 = r2 + Rational(1,6);
    ASSERT_EQ(r23, Rational(2, 3));
 }
+
+TEST(RationalTest, Hash)
+{
+   const Rational p1{ 2, 3 };
+   const size_t hash1 = std::hash<Rational>{}(p1);
+   const Rational p2{ 3, 2 };
+   const size_t hash2 = std::hash<Rational>{}(p2);
+   ASSERT_NE(hash1, hash2);
+}

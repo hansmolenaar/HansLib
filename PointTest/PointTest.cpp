@@ -3,7 +3,6 @@
 #include "Point.h"
 
 #include <numeric>
-
 TEST(PointTest, PointArray)
 {
    const auto p = Point<int, 1>({ 42 });
@@ -84,3 +83,58 @@ TEST(PointTest, Bounds)
    ASSERT_ANY_THROW(p[2] = 0);
 }
 
+TEST(PointTest, HashIntPoint1)
+{
+   const IntPoint1 p1{ 42 };
+   const size_t hash1 = std::hash<IntPoint1>{}(p1);
+   const IntPoint1 p2{ 43 };
+   const size_t hash2 = std::hash<IntPoint1>{}(p2);
+   ASSERT_NE(hash1, hash2);
+}
+
+
+TEST(PointTest, HashIntPoint2)
+{
+   const IntPoint2 p1{ 42, 1 };
+   const size_t hash1 = std::hash<IntPoint2>{}(p1);
+   const IntPoint2 p2{ 1, 42 };
+   const size_t hash2 = std::hash<IntPoint2>{}(p2);
+   ASSERT_NE(hash1, hash2);
+}
+
+TEST(PointTest, HashIntPoint3)
+{
+   const IntPoint3 p1{ 1, 2, 3 };
+   const size_t hash1 = std::hash<IntPoint3>{}(p1);
+   const IntPoint3 p2{ 1, 3, 2 };
+   const size_t hash2 = std::hash<IntPoint3>{}(p2);
+   ASSERT_NE(hash1, hash2);
+}
+
+TEST(PointTest, HashRatPoint1)
+{
+   const RatPoint1 p1{ {1, 2} };
+   const size_t hash1 = std::hash<RatPoint1>{}(p1);
+   const RatPoint1 p2{ {2, 1} };
+   const size_t hash2 = std::hash<RatPoint1>{}(p2);
+   ASSERT_NE(hash1, hash2);
+}
+
+
+TEST(PointTest, HashRatPoint2)
+{
+   const RatPoint2 p1{ {1, 2}, {2,1} };
+   const size_t hash1 = std::hash<RatPoint2>{}(p1);
+   const RatPoint2 p2{ {2, 1}, {1,2} };
+   const size_t hash2 = std::hash<RatPoint2>{}(p2);
+   ASSERT_NE(hash1, hash2);
+}
+
+TEST(PointTest, HashRatPoint3)
+{
+   const RatPoint3 p1{ {1,1}, {1, 2}, {2,1} };
+   const size_t hash1 = std::hash<RatPoint3>{}(p1);
+   const RatPoint3 p2{ {1,1}, {2, 1}, {1,2} };
+   const size_t hash2 = std::hash<RatPoint3>{}(p2);
+   ASSERT_NE(hash1, hash2);
+}
