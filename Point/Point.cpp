@@ -44,7 +44,5 @@ size_t std::hash<RatPoint2>::operator()(const RatPoint2& point) const noexcept
 
 size_t std::hash<RatPoint3>::operator()(const RatPoint3& point) const noexcept
 {
-   Point1 p{1.0};
-   return Hash(p);
    return Hash(point);
 }

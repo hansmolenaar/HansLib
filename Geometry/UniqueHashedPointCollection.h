@@ -1,26 +1,67 @@
 #pragma once
 
-#include "IPointCollection.h"
+#include "IUniquePointCollection.h"
 #include "IGeometryPredicate.h"
+#include "PointExact.h" 
 
 #include <unordered_map>
 
-
-
-#if false
 template<typename T, int N>
 class UniqueHashedPointCollection : public IUniquePointCollection<T, N>
 {
 public:
-   // size_t H(const Point<T, N>&);
-   template<typename H>
-   explicit UniqueHashedPointCollection(H& hasher);
-   int add(const Point<T, N>&);
-   virtual std::tuple<bool, int>  tryGetClosePoint(const Point<T, N>&) const = 0;
-   virtual const IGeometryPredicate<T, N>& getGeometryPredicate() const = 0;
+
+   int addIfNew(const Point<T, N>&);
+   std::tuple<bool, int>  tryGetClosePoint(const Point<T, N>&) const override;
+   const IGeometryPredicate<T, N>& getGeometryPredicate() const override;
+   Point<T, N> getPoint(PointIndex) const override;
+   PointIndex getNumPoints() const override;
 private:
-   H& hasher m_hasher;
+   PointExact<T, N > m_predicate;
    std::unordered_map<Point<T, N>, int> m_toIndex;
-   std::vector< Point<T, N> m_points;
+   std::vector< Point<T, N>> m_points;
 };
-#endif
+
+template<typename T, int N>
+const IGeometryPredicate<T, N>& UniqueHashedPointCollection<T, N>::getGeometryPredicate() const
+{
+   return m_predicate;
+}
+
+template<typename T, int N>
+std::tuple<bool, int>  UniqueHashedPointCollection<T, N>::tryGetClosePoint(const Point<T, N>& point) const
+{
+   const auto found = m_toIndex.find(point);
+   if (found == m_toIndex.end())
+   {
+      return { false, std::numeric_limits<int>::max() };
+   }
+   return { true, found->second };
+}
+
+
+
+template<typename T, int N>
+int UniqueHashedPointCollection<T, N>::addIfNew(const Point<T, N>& point)
+{
+   auto found = m_toIndex.find(point);
+   if (found == m_toIndex.end())
+   {
+      m_toIndex.emplace(point, static_cast<int>(m_points.size()));
+      m_points.push_back(point);
+      found = m_toIndex.find(point);
+   }
+   return found->second;
+}
+
+template<typename T, int N>
+PointIndex UniqueHashedPointCollection<T, N>::getNumPoints() const
+{
+   return m_points.size();
+}
+
+template<typename T, int N>
+Point<T, N> UniqueHashedPointCollection<T, N>::getPoint(PointIndex pi) const
+{
+   return m_points.at(pi);
+}

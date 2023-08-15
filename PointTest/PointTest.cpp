@@ -132,9 +132,9 @@ TEST(PointTest, HashRatPoint2)
 
 TEST(PointTest, HashRatPoint3)
 {
-   const RatPoint3 p1{ {1,1}, {1, 2}, {2,1} };
+   const RatPoint3 p1{ {1,1}, {1, 3}, {2,1} };
    const size_t hash1 = std::hash<RatPoint3>{}(p1);
-   const RatPoint3 p2{ {1,1}, {2, 1}, {1,2} };
+   const RatPoint3 p2{ {1,1}, {2, 1}, {1,3} };
    const size_t hash2 = std::hash<RatPoint3>{}(p2);
    ASSERT_NE(hash1, hash2);
 }
