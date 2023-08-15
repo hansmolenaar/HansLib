@@ -19,11 +19,11 @@ TEST(ParaviewTest, WriteHeader)
 }
 
 
-TEST(ParaviewTest, WriteNodes)
+TEST(ParaviewTest, WritePoints)
 {
    std::ostringstream buffer;
    const std::vector<std::array<int, 2>> nodes{  { 2, 1 } };
-   Paraview::WriteNodes(buffer, nodes);
+   Paraview::WritePoints(buffer, nodes);
    const std::string str = buffer.str();
    ASSERT_NE(str.find("POINTS"), std::string::npos);
 }
@@ -31,7 +31,7 @@ TEST(ParaviewTest, WriteNodes)
 TEST(ParaviewTest, Write)
 {
    const std::vector<std::array<int, 2>> nodes{ {0, 0}, { 1,0 }, { 1,1 }, { 0,1 } };
-   std::multimap<int, std::vector<int>> cells;
-   cells.emplace(Paraview::VTK_QUAD, std::vector<int>{ 0,1, 2, 3 });
+   std::vector<Paraview::CellData> cells;
+   cells.emplace_back(Paraview::CellData{ Paraview::VTK_QUAD, std::vector<int>{ 0,1, 2, 3 }, {} });
    Paraview::Write<int, 2>("HelloWorld", nodes, cells);
 }

@@ -15,20 +15,20 @@ void Paraview::WriteHeader(std::ostream& stream)
    stream << "DATASET UNSTRUCTURED_GRID\n";
 }
 
-void Paraview::WriteCells(std::ostream& stream, const std::multimap<int, std::vector<int>>& cells)
+void Paraview::WriteCells(std::ostream& stream, const std::vector<CellData>& cells)
 {
    int numNodes = 0;
    for (const auto& itr : cells)
    {
-      numNodes = static_cast<int>(itr.second.size());
+      numNodes = static_cast<int>(itr.Nodes.size());
    }
    const auto numCells = cells.size();
    stream << "CELLS " << numCells << " " << numCells + numNodes << "\n";
 
    for (const auto& itr : cells)
    {
-      stream << itr.second.size();
-      for (int n : itr.second)
+      stream << itr.Nodes.size();
+      for (int n : itr.Nodes)
       {
          stream << " " << n;
       }
@@ -39,12 +39,12 @@ void Paraview::WriteCells(std::ostream& stream, const std::multimap<int, std::ve
    stream << "\n\nCELL_TYPES " << numCells << "\n";
    for (const auto& itr : cells)
    {
-      stream << itr.first << "\n";
+      stream << itr.CellType << "\n";
    }
    stream << "\n\n";
 }
 
-void Paraview::WriteCellData(std::ostream& stream, const std::multimap<int, std::vector<int>>& cells)
+void Paraview::WriteCellData(std::ostream& stream, const std::vector<CellData>& cells)
 {
    stream << "CELL_DATA " << cells.size() << "\n\n";
 }

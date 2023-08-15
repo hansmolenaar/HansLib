@@ -12,35 +12,42 @@ namespace Paraview
 {
    constexpr int VTK_QUAD = 9;
 
-   template<typename T, int N>
-   void Write(const std::string& baseName, const std::vector<std::array<T, N>>& points, const std::multimap<int, std::vector<int>>& cells);
+   struct CellData
+   {
+      int CellType;
+      std::vector<int> Nodes;
+      std::vector<double> Data;
+   };
 
    template<typename T, int N>
-   void WriteNodes(std::ostream& stream, const std::vector<std::array<T, N>>& points);
+   void Write(const std::string& baseName, const std::vector<std::array<T, N>>& points, const std::vector<CellData>& cells);
 
    template<typename T, int N>
-   void WriteNode(std::ostream& stream, const std::array<T, N>& point);
+   void WritePoints(std::ostream& stream, const std::vector<std::array<T, N>>& points);
+
+   template<typename T, int N>
+   void WritePoint(std::ostream& stream, const std::array<T, N>& point);
 
    template<typename T>
    void WriteCoordinate(std::ostream& stream, const T& cor);
 
    void WriteHeader(std::ostream& stream);
 
-   void WriteCellData(std::ostream& stream, const std::multimap<int, std::vector<int>>& cells);
+   void WriteCellData(std::ostream& stream, const std::vector<CellData>& cells);
 
-   void WriteCells(std::ostream& stream, const std::multimap<int, std::vector<int>>& cells);
+   void WriteCells(std::ostream& stream, const std::vector<CellData>& cells);
 
    std::filesystem::path GetFileName(const std::string& baseName);
 };
 
 template<typename T, int N>
-void Paraview::Write<T, N>(const std::string& baseName, const std::vector<std::array<T, N>>& points, const std::multimap<int, std::vector<int>>& cells)
+void Paraview::Write<T, N>(const std::string& baseName, const std::vector<std::array<T, N>>& points, const std::vector<CellData>& cells)
 {
    const auto path = GetFileName(baseName);
    std::ofstream stream(path.string().c_str(), std::ios::out);
 
    WriteHeader(stream);
-   WriteNodes(stream, points);
+   WritePoints(stream, points);
    WriteCells(stream, cells);
    WriteCellData(stream, cells);
 
@@ -49,19 +56,19 @@ void Paraview::Write<T, N>(const std::string& baseName, const std::vector<std::a
 
 
 template<typename T, int N>
-void Paraview::WriteNodes<T, N>(std::ostream& stream, const std::vector<std::array<T, N>>& points)
+void Paraview::WritePoints<T, N>(std::ostream& stream, const std::vector<std::array<T, N>>& points)
 {
    stream << "POINTS " << points.size() << " float\n";
 
    for (const auto& point : points)
    {
-      WriteNode<T, N>(stream, point);
+      WritePoint<T, N>(stream, point);
    }
    stream << "\n\n";
 }
 
 template<typename T, int N>
-void Paraview::WriteNode<T, N>(std::ostream& stream, const std::array<T, N>& point)
+void Paraview::WritePoint<T, N>(std::ostream& stream, const std::array<T, N>& point)
 {
    for (int d = 0; d < N; ++d)
    {
