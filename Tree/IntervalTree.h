@@ -16,6 +16,9 @@ namespace IntervalTree
       template<typename P>
       int refineLeaves(P& predicate);
 
+      template<typename P>
+      void refineUntilReady(P& predicate);
+
       template<typename A>
       void foreachLeaf(A& action) const;
    private:
@@ -46,4 +49,41 @@ namespace IntervalTree
          action(*leaf);
       }
    }
+
+   template<int N>
+   template<typename P>
+   int IndexTree<N>::refineLeaves(P& predicate)
+   {
+      std::vector<const Index<N>*> toRefine;
+      for (const auto* leaf : m_leaves)
+      {
+         if (predicate(*leaf))
+         {
+            toRefine.emplace_back(leaf);
+         }
+      }
+
+      for (const auto* leaf : toRefine)
+      {
+         const auto newLeaves = m_factory.refine(*leaf);
+         for (const auto* kid : newLeaves)
+         {
+            m_tree.emplace(leaf, kid);
+            m_leaves.insert(kid);
+         }
+         m_leaves.erase(leaf);
+      }
+
+      return static_cast<int>(toRefine.size());
+   }
+
+   template<int N>
+   template<typename P>
+   void IndexTree<N>::refineUntilReady(P& predicate)
+   {
+      while (refineLeaves(predicate) > 0)
+      {
+      }
+   }
+ 
 }
