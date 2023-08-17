@@ -1,17 +1,28 @@
 #pragma once
 
 #include "IntervalTreeIndex.h"
+#include "IntervalTreeAction.h"
+
 #include <map>
 #include <unordered_set>
 
 namespace IntervalTree
 {
+   struct Statistics
+   {
+      int Size;
+      std::vector<int> NumberOfLeavesPerLevel;
+
+      auto operator<=>(const Statistics&) const = default;
+   };
+
    template<int N>
    class IndexTree
    {
    public:
       IndexTree();
       const Index<N>& getRoot() const;
+      Statistics getStatistics() const;
 
       template<typename P>
       int refineLeaves(P& predicate);
@@ -85,5 +96,32 @@ namespace IntervalTree
       {
       }
    }
- 
+
+   template<int N>
+   Statistics IndexTree<N>::getStatistics() const
+   {
+      Statistics result;
+   
+      std::unordered_set<const Index<N>*> keys;
+      for (auto itr : m_tree)
+      {
+         keys.insert(itr.first);
+      }
+
+      std::map<int, int> count;
+      for (auto itr : m_leaves)
+      {
+         count[itr->getLevel()] += 1;
+      }
+      result.Size = static_cast<int>(keys.size() + m_leaves.size());
+
+      result.NumberOfLeavesPerLevel = std::vector<int>(count.rbegin()->first + 1, 0);
+      for (auto itr : count)
+      {
+         result.NumberOfLeavesPerLevel.at(itr.first) = itr.second;
+      }
+
+      return result;
+   }
+
 }

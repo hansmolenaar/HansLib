@@ -16,5 +16,4 @@ namespace IntervalTree
       int m_count = 0;
    };
 
-
 }
