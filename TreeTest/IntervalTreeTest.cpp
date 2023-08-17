@@ -97,3 +97,14 @@ TEST(IndexTreeTest, Level2ToVtk)
    //Paraview::Write("IndexTreeTest_Level2ToVtk", *data);
 }
 
+
+TEST(IndexTreeTest, CubeToVtk)
+{
+   IndexTree<3> tree;
+   const auto data = tree.getVtkData();
+   ASSERT_EQ(data->getNumNodes(), 8);
+   ASSERT_EQ(data->getNumCells(), 1);
+   ASSERT_EQ(data->getNumCellData(), 0);
+   Paraview::Write("IndexTreeTest_CubeToVtk", *data);
+}
+
