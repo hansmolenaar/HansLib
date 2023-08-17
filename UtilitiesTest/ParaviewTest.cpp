@@ -1,6 +1,9 @@
 #include <gtest/gtest.h>
 
 #include "Paraview.h"
+#include "VtkData.h"
+
+using namespace Vtk;
 
 TEST(ParaviewTest, GetFileName)
 {
@@ -21,17 +24,27 @@ TEST(ParaviewTest, WriteHeader)
 
 TEST(ParaviewTest, WritePoints)
 {
+   VtkData data(2, 0);
+   const std::vector<std::array<CoordinateType, 2>> nodes{ { 2, 1 } };
+   data.addNode(nodes.front());
+
    std::ostringstream buffer;
-   const std::vector<std::array<int, 2>> nodes{  { 2, 1 } };
-   Paraview::WritePoints(buffer, nodes);
+   Paraview::WritePoints(buffer, data);
    const std::string str = buffer.str();
    ASSERT_NE(str.find("POINTS"), std::string::npos);
 }
 
 TEST(ParaviewTest, Write)
 {
-   const std::vector<std::array<int, 2>> nodes{ {0, 0}, { 1,0 }, { 1,1 }, { 0,1 } };
-   std::vector<Paraview::CellData> cells;
-   cells.emplace_back(Paraview::CellData{ Paraview::VTK_QUAD, std::vector<int>{ 0,1, 2, 3 }, {} });
-   Paraview::Write<int, 2>("HelloWorld", nodes, cells);
+   const std::vector<std::array<CoordinateType, 2>> nodes{ {0, 0}, { 1,0 }, { 1,1 }, { 0,1 } };
+   VtkData data(2, 0);
+   for (const auto& node : nodes)
+   {
+      data.addNode(node);
+   }
+
+   const std::vector<NodeIndex> nodeIndices{ 0, 1, 2, 3 };
+   data.addCell(CellType::VTK_QUAD, nodeIndices, {});
+
+   Paraview::Write("HelloWorld", data);
 }

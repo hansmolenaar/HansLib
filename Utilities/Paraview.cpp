@@ -1,5 +1,5 @@
 #include "Paraview.h"
-
+#include "MyAssert.h"
 
 std::filesystem::path Paraview::GetFileName(const std::string& baseName)
 {
@@ -15,20 +15,59 @@ void Paraview::WriteHeader(std::ostream& stream)
    stream << "DATASET UNSTRUCTURED_GRID\n";
 }
 
-void Paraview::WriteCells(std::ostream& stream, const std::vector<CellData>& cells)
+void Paraview::Write(const std::string& baseName, const Vtk::VtkData& data)
 {
-   int numNodes = 0;
-   for (const auto& itr : cells)
+   const auto path = GetFileName(baseName);
+   std::ofstream stream(path.string().c_str(), std::ios::out);
+
+   WriteHeader(stream);
+   WritePoints(stream, data);
+   WriteCells(stream, data);
+   WriteCellData(stream, data);
+
+   stream.close();
+}
+
+void Paraview::WritePoints(std::ostream& stream, const Vtk::VtkData& data)
+{
+   stream << "POINTS " << data.getNumNodes() << " float\n";
+
+   for (Vtk::NodeIndex n = 0; n < data.getNumNodes(); ++n)
    {
-      numNodes = static_cast<int>(itr.Nodes.size());
+      const auto& point = data.getNode(n);
+      WritePoint(stream, point);
    }
-   const auto numCells = cells.size();
+   stream << "\n\n";
+}
+
+void Paraview::WritePoint(std::ostream& stream, std::span<const Vtk::CoordinateType> point)
+{
+   for (int d = 0; d < point.size(); ++d)
+   {
+      stream << point[d] << " ";
+   }
+   for (size_t d = point.size(); d < 3; ++d)
+   {
+      stream << 0.0 << " ";
+   }
+   stream << "\n";
+}
+
+void Paraview::WriteCells(std::ostream& stream, const Vtk::VtkData& data)
+{
+   size_t numNodes = 0;
+   for (Vtk::CellIndex c = 0; c < data.getNumCells(); ++c)
+   {
+      numNodes += Vtk::NumNodesForType(data.getCellType(c));
+   }
+   const auto numCells = data.getNumCells();
    stream << "CELLS " << numCells << " " << numCells + numNodes << "\n";
 
-   for (const auto& itr : cells)
+   for (Vtk::CellIndex c = 0; c < data.getNumCells(); ++c)
    {
-      stream << itr.Nodes.size();
-      for (int n : itr.Nodes)
+      std::span<const Vtk::NodeIndex> nodes = data.getNodeIndices(c);
+      stream << nodes.size();
+      for (int n : nodes)
       {
          stream << " " << n;
       }
@@ -37,14 +76,16 @@ void Paraview::WriteCells(std::ostream& stream, const std::vector<CellData>& cel
 
 
    stream << "\n\nCELL_TYPES " << numCells << "\n";
-   for (const auto& itr : cells)
+   for (Vtk::CellIndex c = 0; c < data.getNumCells(); ++c)
    {
-      stream << itr.CellType << "\n";
+      stream << static_cast<int>(data.getCellType(c)) << "\n";
    }
    stream << "\n\n";
 }
 
-void Paraview::WriteCellData(std::ostream& stream, const std::vector<CellData>& cells)
+void Paraview::WriteCellData(std::ostream& stream, const Vtk::VtkData& data)
 {
-   stream << "CELL_DATA " << cells.size() << "\n\n";
+   stream << "CELL_DATA " << data.getNumCells() << "\n\n";
+   // TODO not yet implemented
+   Utilities::MyAssert(data.getNumCellData() == 0);
 }
