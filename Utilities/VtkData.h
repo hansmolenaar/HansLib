@@ -16,7 +16,7 @@ namespace Vtk
    using NodeIndex = int;
    using CellIndex = int;
 
-   enum class CellType : int { VTK_LINE = 3, VTK_QUAD = 9 };
+   enum class CellType : int { VTK_LINE = 3, VTK_QUAD = 9, VTK_HEXAHEDRON = 12 };
    constexpr size_t NumNodesForType(CellType cellType);
 
    class VtkData

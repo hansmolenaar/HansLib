@@ -94,6 +94,6 @@ TEST(IndexTreeTest, Level2ToVtk)
    ASSERT_EQ(data->getNumNodes(), 5);
    ASSERT_EQ(data->getNumCells(), 4);
    ASSERT_EQ(data->getNumCellData(), 0);
-   Paraview::Write("IndexTreeTest_Level2ToVtk", *data);
+   //Paraview::Write("IndexTreeTest_Level2ToVtk", *data);
 }
 

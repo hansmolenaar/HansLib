@@ -127,9 +127,11 @@ namespace IntervalTree
    }
 
    template<>
+   std::unique_ptr< Vtk::VtkData> IndexTree<1>::getVtkData() const;
+
+   template<>
    std::unique_ptr< Vtk::VtkData> IndexTree<2>::getVtkData() const;
 
    template<>
-   std::unique_ptr< Vtk::VtkData> IndexTree<1>::getVtkData() const;
-
+   std::unique_ptr< Vtk::VtkData> IndexTree<3>::getVtkData() const;
 }

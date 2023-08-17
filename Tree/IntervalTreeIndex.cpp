@@ -152,3 +152,5 @@ Index1::Key Index1FlyWeightFactory::add(const Index1& index1)
    }
    return key;
 }
+
+// !!!!!!!!!!!!! Index<>
