@@ -212,25 +212,14 @@ namespace IntervalTree
    }
 
    template<>
-   inline std::array<std::array<Rational, 1>, 2> Index<1>::getVerticesInVtkOrder() const
-   {
-      const auto& intv1 = getInterval(0);
-      return { std::array<Rational, 1>{intv1.getLower()}, std::array<Rational, 1>{intv1.getUpper()} };
-   }
-
+   std::array<std::array<Rational, 1>, 2> Index<1>::getVerticesInVtkOrder() const;
 
    template<>
-   inline std::array<std::array<Rational, 2>, 4> Index<2>::getVerticesInVtkOrder() const
-   {
-      const auto& intv0 = getInterval(0);
-      const auto& intv1 = getInterval(1);
-      return { 
-         std::array<Rational, 2>{intv0.getLower(), intv1.getLower()},
-         std::array<Rational, 2>{intv0.getUpper(), intv1.getLower()},
-         std::array<Rational, 2>{intv0.getUpper(), intv1.getUpper()},
-         std::array<Rational, 2>{intv0.getLower(), intv1.getUpper()},
-      };
-   }
+   std::array<std::array<Rational, 2>, 4> Index<2>::getVerticesInVtkOrder() const;
+
+   template<>
+   std::array<std::array<Rational, 3>, 8> Index<3>::getVerticesInVtkOrder() const;
+
 
    template<int N>
    inline Index<N> IndexFactory<N>::get(const std::array<Interval<Rational>, N>& intervals)
