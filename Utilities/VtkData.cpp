@@ -9,6 +9,7 @@ constexpr size_t Vtk::NumNodesForType(CellType cellType)
 {
    switch (cellType)
    {
+   case CellType::VTK_LINE: return 2;
    case CellType::VTK_QUAD: return 4;
    default:
       throw MyException("NumNodesForType: unknown type");

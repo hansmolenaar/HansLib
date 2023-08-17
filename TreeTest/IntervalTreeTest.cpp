@@ -3,6 +3,7 @@
 #include "IntervalTree.h"
 #include "IntervalTreeRefinePredicate.h"
 #include "IntervalTreeAction.h"
+#include "Paraview.h"
 
 using namespace IntervalTree;
 
@@ -27,7 +28,7 @@ TEST(IndexTreeTest, RefineOneLevel)
    ActionCount<1> action;
    tree.foreachLeaf(action);
    ASSERT_EQ(action(), 1);
- 
+
    int numRefined = tree.refineLeaves(doRefine2);
    ASSERT_EQ(numRefined, 1);
    action.reset();
@@ -43,7 +44,7 @@ TEST(IndexTreeTest, RefineOneLevel)
    tree.foreachLeaf(action);
    ASSERT_EQ(action(), 4);
 
-    expect = { 7, { 0, 0, 4} };
+   expect = { 7, { 0, 0, 4} };
    ASSERT_EQ(tree.getStatistics(), expect);
 }
 
@@ -58,3 +59,41 @@ TEST(IndexTreeTest, refineUntilReady)
    tree.foreachLeaf(action);
    ASSERT_EQ(action(), 16);
 }
+
+TEST(IndexTreeTest, Level0ToVtk)
+{
+   const IndexTree<2> tree;
+   const auto data = tree.getVtkData();
+   ASSERT_EQ(data->getNumNodes(), 4);
+   ASSERT_EQ(data->getNumCells(), 1);
+   ASSERT_EQ(data->getNumCellData(), 0);
+   //Paraview::Write("IndexTreeTest_Level0ToVtk", *data);
+}
+
+
+TEST(IndexTreeTest, Level1ToVtk)
+{
+   IndexTree<2> tree;
+   RefineToMaxLevel<2> doRefine{ 1 };
+   tree.refineUntilReady(doRefine);
+   const auto data = tree.getVtkData();
+   ASSERT_EQ(data->getNumNodes(), 9);
+   ASSERT_EQ(data->getNumCells(), 4);
+   ASSERT_EQ(data->getNumCellData(), 0);
+   //Paraview::Write("IndexTreeTest_Level1ToVtk", *data);
+}
+
+
+
+TEST(IndexTreeTest, Level2ToVtk)
+{
+   IndexTree<1> tree;
+   RefineToMaxLevel<1> doRefine{ 2 };
+   tree.refineUntilReady(doRefine);
+   const auto data = tree.getVtkData();
+   ASSERT_EQ(data->getNumNodes(), 5);
+   ASSERT_EQ(data->getNumCells(), 4);
+   ASSERT_EQ(data->getNumCellData(), 0);
+   Paraview::Write("IndexTreeTest_Level2ToVtk", *data);
+}
+

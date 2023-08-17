@@ -2,6 +2,7 @@
 
 #include "IntervalTreeIndex.h"
 #include "IntervalTreeAction.h"
+#include "VtkData.h"
 
 #include <map>
 #include <unordered_set>
@@ -23,6 +24,7 @@ namespace IntervalTree
       IndexTree();
       const Index<N>& getRoot() const;
       Statistics getStatistics() const;
+      std::unique_ptr<Vtk::VtkData> getVtkData() const;
 
       template<typename P>
       int refineLeaves(P& predicate);
@@ -101,7 +103,7 @@ namespace IntervalTree
    Statistics IndexTree<N>::getStatistics() const
    {
       Statistics result;
-   
+
       std::unordered_set<const Index<N>*> keys;
       for (auto itr : m_tree)
       {
@@ -123,5 +125,11 @@ namespace IntervalTree
 
       return result;
    }
+
+   template<>
+   std::unique_ptr< Vtk::VtkData> IndexTree<2>::getVtkData() const;
+
+   template<>
+   std::unique_ptr< Vtk::VtkData> IndexTree<1>::getVtkData() const;
 
 }

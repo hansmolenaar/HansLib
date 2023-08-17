@@ -66,6 +66,9 @@ namespace IntervalTree
       std::array<Key, 1 << N> refine() const;
       Rational getMeasure() const;
       std::string toString() const;
+
+      std::array<std::array<Rational, N>, 1 << N> getVerticesInVtkOrder() const;
+
    private:
       Index1FlyWeightFactory& m_factory1;
       Key m_keys;
@@ -139,6 +142,7 @@ namespace IntervalTree
       return m_keys;
    }
 
+
    template<int N>
    Rational Index<N>::getMeasure() const
    {
@@ -202,7 +206,34 @@ namespace IntervalTree
    }
 
    template<int N>
-   Index<N> IndexFactory<N>::get(const std::array<Interval<Rational>, N>& intervals)
+   std::array<std::array<Rational, N>, 1<<N> Index<N>::getVerticesInVtkOrder() const
+   {
+      throw MyException("Index<N>::getVerticesInVtkOrder() not implemented");
+   }
+
+   template<>
+   inline std::array<std::array<Rational, 1>, 2> Index<1>::getVerticesInVtkOrder() const
+   {
+      const auto& intv1 = getInterval(0);
+      return { std::array<Rational, 1>{intv1.getLower()}, std::array<Rational, 1>{intv1.getUpper()} };
+   }
+
+
+   template<>
+   inline std::array<std::array<Rational, 2>, 4> Index<2>::getVerticesInVtkOrder() const
+   {
+      const auto& intv0 = getInterval(0);
+      const auto& intv1 = getInterval(1);
+      return { 
+         std::array<Rational, 2>{intv0.getLower(), intv1.getLower()},
+         std::array<Rational, 2>{intv0.getUpper(), intv1.getLower()},
+         std::array<Rational, 2>{intv0.getUpper(), intv1.getUpper()},
+         std::array<Rational, 2>{intv0.getLower(), intv1.getUpper()},
+      };
+   }
+
+   template<int N>
+   inline Index<N> IndexFactory<N>::get(const std::array<Interval<Rational>, N>& intervals)
    {
       std::array<Index1::Key, N> keys;
       std::transform(intervals.begin(), intervals.end(), keys.begin(), [this](const Interval<Rational>& intv) {return m_factory.add(intv); });
@@ -263,6 +294,6 @@ namespace IntervalTree
       }
       return result;
    }
-
+  
 
 }
