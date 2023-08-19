@@ -8,6 +8,7 @@
 #include <map>
 #include <numeric>
 #include <limits>
+#include <cmath>
 
 namespace str = std::ranges;
 namespace stv = std::views;
