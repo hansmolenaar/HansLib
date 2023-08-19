@@ -10,6 +10,8 @@
 #include <limits>
 #include <cmath>
 
+#include "MyException.h"
+
 namespace str = std::ranges;
 namespace stv = std::views;
 
