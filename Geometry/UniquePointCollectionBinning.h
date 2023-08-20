@@ -18,7 +18,7 @@ public:
 
 private:
    const IGeometryPredicate<double, N>& m_predicate;
-   std::multimap < std::array<size_t, N>, size_t> m_pointInBin;
+   std::multimap <std::array<size_t, N>, size_t> m_pointInBin;
    std::vector<Point<double, N>> m_points;
    std::vector<LocalizationBins> m_bins;
 };
@@ -48,9 +48,17 @@ PointIndex UniquePointCollectionBinning<N>::getNumPoints() const
 }
 
 template< int N>
-std::tuple<bool, int>  UniquePointCollectionBinning<N>::tryGetClosePoint(const Point<double, N>&) const
+std::tuple<bool, int>  UniquePointCollectionBinning<N>::tryGetClosePoint(const Point<double, N>& p) const
 {
-   throw MyException("Not yet implemented");
+   std::array<size_t, N> bins;
+   for (int n = 0; n < N; ++n)
+   {
+      bins[n] = m_bins.at(n).find(p.at(n));
+   }
+   const auto found = m_pointInBin.find(bins);
+
+   if (found == m_pointInBin.end()) return { false, -1 };
+   return { true,static_cast<int>(found->second) };
 }
 
 
