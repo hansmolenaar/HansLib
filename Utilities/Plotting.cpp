@@ -21,7 +21,7 @@ std::vector<std::vector<double>> Plotting::EvaluateFunctions(std::initializer_li
    Utilities::MyAssert(npoints > 1);
    Utilities::MyAssert(xmax > xmin);
 
-   const double delx = (xmax - xmin) / (npoints - 1);
+   const double delx = (xmax - xmin) / (npoints - 1.0);
    for (int n = 0; n < npoints; ++n)
    {
       std::vector<double> row;

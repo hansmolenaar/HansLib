@@ -11,9 +11,9 @@ namespace IntervalTree
 {
    struct Statistics
    {
-      int Size;
+      int Size= -1;
       std::vector<int> NumberOfLeavesPerLevel;
-
+      std::string toString() const;
       auto operator<=>(const Statistics&) const = default;
    };
 
@@ -36,7 +36,7 @@ namespace IntervalTree
       void foreachLeaf(A& action) const;
    private:
       IndexFactory<N> m_factory;
-      std::unordered_multimap <const Index<N>*, const Index<N>* > m_tree;
+      std::unordered_map < const Index<N>*, std::array< const Index<N>*, IntervalTree::NumKids<N>>> m_tree;
       std::unordered_set<const Index<N>*> m_leaves;
       const Index<N>* m_root;
    };
@@ -78,10 +78,10 @@ namespace IntervalTree
 
       for (const auto* leaf : toRefine)
       {
-         const auto newLeaves = m_factory.refine(*leaf);
-         for (const auto* kid : newLeaves)
+         const auto kids = m_factory.refine(*leaf);
+         m_tree.emplace(leaf, kids);
+         for (const auto* kid : kids)
          {
-            m_tree.emplace(leaf, kid);
             m_leaves.insert(kid);
          }
          m_leaves.erase(leaf);
@@ -105,7 +105,7 @@ namespace IntervalTree
       Statistics result;
 
       std::unordered_set<const Index<N>*> keys;
-      for (auto itr : m_tree)
+      for (const auto& itr : m_tree)
       {
          keys.insert(itr.first);
       }
@@ -118,7 +118,7 @@ namespace IntervalTree
       result.Size = static_cast<int>(keys.size() + m_leaves.size());
 
       result.NumberOfLeavesPerLevel = std::vector<int>(count.rbegin()->first + 1, 0);
-      for (auto itr : count)
+      for (const auto& itr : count)
       {
          result.NumberOfLeavesPerLevel.at(itr.first) = itr.second;
       }

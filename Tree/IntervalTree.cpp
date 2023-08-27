@@ -2,10 +2,30 @@
 #include "MyException.h"
 #include "VtkData.h"
 
+#include <sstream>
 #include <cmath>
 
 using namespace IntervalTree;
 
+
+std::string Statistics::toString() const
+{
+   std::ostringstream result;
+   result << Size;
+   result << ", {";
+   bool first = true;
+   for (auto n : NumberOfLeavesPerLevel)
+   {
+      if (!first)
+      {
+         result << ", ";
+      }
+      first = false;
+      result << n;
+   }
+   result << "}";
+   return result.str();
+}
 
 
 std::unique_ptr< Vtk::VtkData> IndexTree<1>::getVtkData() const
@@ -15,7 +35,7 @@ std::unique_ptr< Vtk::VtkData> IndexTree<1>::getVtkData() const
 
    for (const auto& itr : m_leaves)
    {
-      std::array<Vtk::NodeIndex, 2> cellNodes;
+      std::array<Vtk::NodeIndex, 2> cellNodes{ -1, -1 };
       size_t vertex = 0;
       for (const auto& v : itr->getVerticesInVtkOrder())
       {
@@ -44,7 +64,7 @@ std::unique_ptr< Vtk::VtkData> IndexTree<2>::getVtkData() const
 
    for (const auto& itr : m_leaves)
    {
-      std::array<Vtk::NodeIndex, 4> cellNodes;
+      std::array<Vtk::NodeIndex, 4> cellNodes{ -1, -1, -1, -1 };
       size_t vertex = 0;
       for (const auto& v : itr->getVerticesInVtkOrder())
       {
@@ -77,7 +97,7 @@ std::unique_ptr< Vtk::VtkData> IndexTree<3>::getVtkData() const
 
    for (const auto& itr : m_leaves)
    {
-      std::array<Vtk::NodeIndex, 8> cellNodes;
+      std::array<Vtk::NodeIndex, 8> cellNodes{ -1,-1,-1,-1,-1,-1,-1,-1 };
       size_t vertex = 0;
       for (const auto& v : itr->getVerticesInVtkOrder())
       {

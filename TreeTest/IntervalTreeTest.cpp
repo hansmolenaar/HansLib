@@ -4,6 +4,7 @@
 #include "IntervalTreeRefinePredicate.h"
 #include "IntervalTreeAction.h"
 #include "Paraview.h"
+#include "Point.h"
 
 using namespace IntervalTree;
 
@@ -105,6 +106,27 @@ TEST(IndexTreeTest, CubeToVtk)
    ASSERT_EQ(data->getNumNodes(), 8);
    ASSERT_EQ(data->getNumCells(), 1);
    ASSERT_EQ(data->getNumCellData(), 0);
-   Paraview::Write("IndexTreeTest_CubeToVtk", *data);
+   //Paraview::Write("IndexTreeTest_CubeToVtk", *data);
+   const auto str = tree.getRoot().toString();
+   ASSERT_EQ(str, "((0, 1), (0, 1), (0, 1))");
+}
+
+TEST(IndexTreeTest, RefineAroundPoint)
+{
+   constexpr int dim = 2;
+   const  std::array<Rational, dim> point{ Rational{49, 100}, Rational{51, 100} };
+   RefineIfContainsPoint<dim> refinePoint{ point };
+   RefineToMaxLevel<dim> refineToLevel{ 5 };
+   auto doRefine = [&refinePoint, &refineToLevel](const Index<dim>& indx) {return refinePoint(indx) && refineToLevel(indx); };
+
+   IndexTree<dim> tree;
+   tree.refineUntilReady(doRefine);
+
+   const auto data = tree.getVtkData();
+   Paraview::Write("IndexTreeTest_RefineAroundPoint", *data);
+   const auto& statistics = tree.getStatistics();
+   const auto tmp = statistics.toString();
+   const Statistics expect{ 21, {0, 3, 3, 3, 3, 4} };
+   ASSERT_EQ(tree.getStatistics(), expect);
 }
 

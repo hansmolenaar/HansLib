@@ -276,6 +276,7 @@ namespace IntervalTree
       }
       const auto kids = toRefine.refine();
       std::array<const Index<N>*, NumKids<N>> result;
+      str::fill(result, nullptr);
       size_t n = 0;
       for (const auto& k : kids)
       {
