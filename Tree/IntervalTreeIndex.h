@@ -17,6 +17,8 @@
 namespace IntervalTree
 {
 
+   template<int N>
+   constexpr int NumKids = 1 << N;
 
    class Index1
    {
@@ -63,11 +65,11 @@ namespace IntervalTree
       Level getLevel() const;
       const Interval<Rational>& getInterval(int n) const;
       Key getKey() const;
-      std::array<Key, 1 << N> refine() const;
+      std::array<Key, IntervalTree::NumKids<N> > refine() const;
       Rational getMeasure() const;
       std::string toString() const;
 
-      std::array<std::array<Rational, N>, 1 << N> getVerticesInVtkOrder() const;
+      std::array<std::array<Rational, N>, NumKids<N>> getVerticesInVtkOrder() const;
 
    private:
       Index1FlyWeightFactory& m_factory1;
@@ -100,7 +102,7 @@ namespace IntervalTree
       Index<N> get(const std::array<Interval<Rational>, N>& keys);
       Index<N> get(std::initializer_list<Interval<Rational>> keys);
       const Index<N>* addIfNew(typename const Index<N>::Key& key);
-      std::array<const Index<N>*, 1 << N> refine(const Index<N>& toRefine);
+      std::array<const Index<N>*, NumKids<N>> refine(const Index<N>& toRefine);
       const Index<N>* getRoot();
       const Index<N>* operator()(typename const Index<N>::Key& key) const;
    private:
@@ -166,10 +168,9 @@ namespace IntervalTree
    }
 
    template<int N>
-   std::array<typename Index<N>::Key, 1 << N> Index<N>::refine() const
+   std::array<typename Index<N>::Key, NumKids<N>> Index<N>::refine() const
    {
-      constexpr size_t TwoPowN = 1 << N;
-      std::array<typename Index<N>::Key, TwoPowN> result;
+      std::array<typename Index<N>::Key, NumKids<N>> result;
       Index1::Key  ref[N][2];
 
       // Refine each of the indices
@@ -186,7 +187,7 @@ namespace IntervalTree
          ref[d][1] = kids[1].getKey();
       }
 
-      for (int kid = 0; kid < TwoPowN; ++kid)
+      for (int kid = 0; kid < NumKids<N>; ++kid)
       {
          auto bools = BoolContainerUtils::FromNumber(kid);
          str::reverse(bools);
@@ -206,7 +207,7 @@ namespace IntervalTree
    }
 
    template<int N>
-   std::array<std::array<Rational, N>, 1<<N> Index<N>::getVerticesInVtkOrder() const
+   std::array<std::array<Rational, N>, NumKids<N>> Index<N>::getVerticesInVtkOrder() const
    {
       throw MyException("Index<N>::getVerticesInVtkOrder() not implemented");
    }
@@ -267,14 +268,14 @@ namespace IntervalTree
    }
 
    template<int N>
-   std::array<const Index<N>*, 1 << N> IndexFactory<N>::refine(const Index<N>& toRefine)
+   std::array<const Index<N>*, NumKids<N>> IndexFactory<N>::refine(const Index<N>& toRefine)
    {
       if (!m_cache.contains(toRefine.getKey()))
       {
          throw MyException("IndexFactory<N>::refine unknown index specified");
       }
       const auto kids = toRefine.refine();
-      std::array<const Index<N>*, 1 << N> result;
+      std::array<const Index<N>*, NumKids<N>> result;
       size_t n = 0;
       for (const auto& k : kids)
       {
