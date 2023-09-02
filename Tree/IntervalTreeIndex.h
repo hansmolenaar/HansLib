@@ -1,6 +1,6 @@
 #pragma once
 
-#include "IntervalTreeIndex1.h"
+#include "IntervalTreeIndex1Factory.h"
 #include "BoolContainer.h"
 
 #include <boost/functional/hash.hpp>
@@ -16,27 +16,13 @@ namespace IntervalTree
 
 
 
-   class Index1FlyWeightFactory
-   {
-   public:
-      Index1FlyWeightFactory();
-      const Index1* operator()(Index1::Key key) const;
-      Index1::Key add(const Index1& index1);
-      Index1::Key add(const Interval<Rational>& interval);
-      const Index1* getRoot() const;
-      std::array<const Index1*, 2> refine(const Index1& toRefine);
-
-   private:
-      std::unordered_map<Index1::Key, Index1> m_cache;
-   };
-
    template<int N>
    class Index
    {
    public:
       using Key = std::array<Index1::Key, N>;
 
-      Index(std::array<Index1::Key, N> keys, Index1FlyWeightFactory& factory);
+      Index(std::array<Index1::Key, N> keys, Index1Factory& factory);
       Level getLevel() const;
       const Interval<Rational>& getInterval(int n) const;
       Key getKey() const;
@@ -47,7 +33,7 @@ namespace IntervalTree
       std::array<std::array<Rational, N>, NumKids<N>> getVerticesInVtkOrder() const;
 
    private:
-      Index1FlyWeightFactory& m_factory1;
+      Index1Factory& m_factory1;
       Key m_keys;
    };
 }
@@ -81,7 +67,7 @@ namespace IntervalTree
       const Index<N>* getRoot();
       const Index<N>* operator()(typename const Index<N>::Key& key) const;
    private:
-      Index1FlyWeightFactory m_factory;
+      Index1Factory m_factory;
       std::unordered_map<typename Index<N>::Key, Index<N>> m_cache;
    };
 
@@ -90,7 +76,7 @@ namespace IntervalTree
    // Implementation
 
    template<int N>
-   Index<N>::Index(std::array<Index1::Key, N> keys, Index1FlyWeightFactory& factory) :
+   Index<N>::Index(std::array<Index1::Key, N> keys, Index1Factory& factory) :
       m_factory1(factory), m_keys(std::move(keys))
    {
    }
