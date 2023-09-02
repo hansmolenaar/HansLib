@@ -2,6 +2,7 @@
 
 #include "IntervalTreeIndex1Factory.h"
 #include "BoolContainer.h"
+#include "MyAssert.h"
 
 #include <boost/functional/hash.hpp>
 
@@ -27,6 +28,8 @@ namespace IntervalTree
       std::array<Key, IntervalTree::NumKids<N> > refine() const;
       Rational getMeasure() const;
       std::string toString() const;
+      bool isRoot() const;
+      Index<N> getParent() const;
 
       std::array<std::array<Rational, N>, NumKids<N>> getVerticesInVtkOrder() const;
 
@@ -62,6 +65,12 @@ namespace IntervalTree
    Index<N>::Index(std::array<Index1::Key, N> keys, Index1Factory& factory) :
       m_factory1(factory), m_keys(std::move(keys))
    {
+      // Check if all of same level
+      const Level level = getLevel();
+      if (!str::all_of(keys, [level, &factory](Index1::Key key) { return factory(key)->getLevel() == level; }))
+      {
+         throw MyException("Non-uniform refinement not yet implemented");
+      }
    }
 
 
@@ -148,6 +157,20 @@ namespace IntervalTree
          result[kid] = key;
       }
       return result;
+   }
+
+   template<int N>
+   bool Index<N>::isRoot() const
+   {
+      return getLevel() == 0;
+   }
+
+   template<int N>
+   Index<N> Index<N>::getParent() const
+   {
+      std::array<Index1::Key, N> parent;
+      str::transform(m_keys, parent.begin(), [this](Index1::Key key) {return m_factory1.getParent(key)->getKey(); });
+      return Index<N>(parent, m_factory1);
    }
 
    template<int N>

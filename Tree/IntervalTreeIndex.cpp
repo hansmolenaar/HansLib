@@ -5,11 +5,6 @@
 
 using namespace IntervalTree;
 
-
-
-// !!!!!!!!!!!!! Index<>
-
-
 template<>
 std::array<std::array<Rational, 1>, 2> Index<1>::getVerticesInVtkOrder() const
 {

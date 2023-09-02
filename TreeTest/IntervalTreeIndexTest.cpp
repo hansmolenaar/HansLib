@@ -45,3 +45,26 @@ TEST(IntervalTreeIndexTest, Index_refine)
    ASSERT_EQ(kids[3]->getInterval(0), Interval<Rational>({ 1,2 }, { 1,1 }));
    ASSERT_EQ(kids[3]->getInterval(1), Interval<Rational>({ 1,2 }, { 1,1 }));
 }
+
+TEST(IntervalTreeIndexTest, Index_unequalLevel)
+{
+   Index1Factory factory1;
+   const auto* root = factory1.getRoot();
+   const auto kids = factory1.refine(*root);
+
+   ASSERT_ANY_THROW(Index<3>(std::array<Index1::Key, 3>{root->getKey(), kids[0]->getKey(), kids[1]->getKey()}, factory1));
+}
+
+
+TEST(IntervalTreeIndexTest, GetParent)
+{
+   Index1Factory factory;
+   const auto* root = factory.getRoot();
+   ASSERT_TRUE(root->isRoot());
+
+   const auto kids = factory.refine(*root);
+   const Index<2> index(std::array<Index1::Key, 2>{kids[0]->getKey(), kids[1]->getKey()}, factory);
+   ASSERT_FALSE(index.isRoot());
+   const auto parent = index.getParent();
+   ASSERT_TRUE(parent.isRoot());
+}
