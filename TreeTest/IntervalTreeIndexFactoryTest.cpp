@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "IntervalTreeIndex.h"
+#include "IntervalTreeIndexFactory.h"
 
 using namespace IntervalTree;
 

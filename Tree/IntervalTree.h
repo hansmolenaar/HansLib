@@ -1,6 +1,6 @@
 #pragma once
 
-#include "IntervalTreeIndex.h"
+#include "IntervalTreeIndexFactory.h"
 #include "IntervalTreeAction.h"
 #include "VtkData.h"
 
