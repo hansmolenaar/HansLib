@@ -9,4 +9,5 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 	${CMAKE_INCLUDE_DIR}/MatrixVector
 	${CMAKE_INCLUDE_DIR}/Interval
 	${CMAKE_INCLUDE_DIR}/NonLinearSolver
+	${Boost_INCLUDE_DIRS}
 )

@@ -1,6 +1,7 @@
 #include "IntervalTreeIndex1.h"
 
 #include "MyException.h"
+#include "MyAssert.h"
 #include <cmath>
 
 using namespace IntervalTree;
@@ -112,4 +113,60 @@ Rational Index1::getMeasure() const
 std::string Index1::toString() const
 {
    return ToString(getInterval());
+}
+
+bool Index1::isRoot() const
+{
+   return m_level == 0;
+}
+
+Index1 Index1::CreateRoot()
+{
+   return Index1(Interval<Rational>{ {0, 1}, { 1,1 }});
+}
+
+Rational Index1::getCenter() const
+{
+   return m_interval.interpolate(Rational(1, 2));
+}
+
+Index1 Index1::getSibling() const
+{
+   Utilities::MyAssert(!isRoot());
+   if (m_positionInLevel % 2 == 0)
+   {
+      auto [succes, result] = getAdjacentInDir(true);
+      Utilities::MyAssert(succes);
+      return result;
+   }
+   else
+   {
+      auto [succes, result] = getAdjacentInDir(false);
+      Utilities::MyAssert(succes);
+      return result;
+   }
+}
+
+std::tuple<bool, Index1> Index1::getSiblingInDir(bool posDir) const
+{
+   const bool posKid = (m_positionInLevel % 2 != 0);
+   if (m_level == 0 || posKid == posDir) return { false, CreateRoot() };
+   return { true, getSibling() };
+}
+
+std::tuple<bool, Index1> Index1::getAdjacentInDir(bool posDir) const
+{
+   if (m_level == 0) return { false, CreateRoot() };
+   if (posDir)
+   {
+      if (m_positionInLevel + 1 >= (1 << m_level)) return { false, CreateRoot() };
+      const Rational upr = m_interval.getUpper();
+      return { true, Index1(Interval<Rational>(upr, upr + getMeasure())) };
+   }
+   else
+   {
+      if (m_positionInLevel == 0) return { false, CreateRoot() };
+      const Rational lwr = m_interval.getLower();
+      return { true, Index1(Interval<Rational>(lwr - getMeasure(), lwr)) };
+   }
 }

@@ -6,4 +6,5 @@ add_library(${PROJECT_NAME} ${SOURCES})
 target_include_directories(${PROJECT_NAME} PRIVATE	
 	${CMAKE_INCLUDE_DIR}/Interval
 	${CMAKE_INCLUDE_DIR}/Utilities
+	${Boost_INCLUDE_DIRS}
 )

@@ -2,6 +2,7 @@
 
 
 #include "MyException.h"
+#include "Rational.h"
 #include <cmath>
 
 template<typename T>
@@ -87,6 +88,13 @@ template<>
 inline double Interval<double>::interpolate(double factor) const
 {
    return std::lerp(m_lower, m_upper, factor);
+}
+
+
+template<>
+inline Rational Interval<Rational>::interpolate(Rational factor) const
+{
+   return m_lower + factor * (m_upper - m_lower);
 }
 
 template<>
