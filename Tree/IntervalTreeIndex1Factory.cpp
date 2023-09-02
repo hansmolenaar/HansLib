@@ -4,6 +4,7 @@ using namespace IntervalTree;
 
 Index1Factory::Index1Factory()
 {
+   const auto root = Index1::CreateRoot();
    add(Index1::CreateRoot());
 }
 
@@ -37,5 +38,31 @@ Index1::Key Index1Factory::add(const Index1& index1)
    {
       m_cache.emplace(key, index1);
    }
+   if (!m_toParent.contains(key))
+   {
+      if (index1.isRoot())
+      {
+         m_toParent[key] = Index1::KeyInvalid;
+      }
+      else
+      {
+         const auto parent = index1.getParent();
+         // Interesting recursion here
+         add(parent);
+         m_toParent[key] = parent.getKey();
+      }
+   }
    return key;
+}
+
+const Index1* Index1Factory::getParent(Index1::Key key) const
+{
+   const Index1::Key parentKey = m_toParent.at(key);
+   if (parentKey == Index1::KeyInvalid) return nullptr;
+   return (*this)(parentKey);
+}
+
+const Index1* Index1Factory::getParent(const Index1& indx1) const
+{
+   return getParent(indx1.getKey());
 }

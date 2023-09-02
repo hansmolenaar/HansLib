@@ -208,3 +208,28 @@ TEST(IntervalTreeIndex1Test, getAdjacentInDir)
    retval = kids1[1].getAdjacentInDir(true);
    ASSERT_FALSE(std::get<0>(retval));
 }
+
+
+TEST(IntervalTreeIndex1Test, getParent)
+{
+   const Index1 root = Index1::CreateRoot();
+   ASSERT_ANY_THROW(root.getParent());
+
+   const auto kids = root.refine();
+   for (const auto& k : kids)
+   {
+      ASSERT_TRUE(k.getParent().isRoot());
+   }
+
+   const auto kids0 = kids[0].refine();
+   const auto kids1 = kids[1].refine();
+
+   for (const auto& k : kids0)
+   {
+      ASSERT_EQ(k.getParent().getKey(), kids[0].getKey());
+   }
+   for (const auto& k : kids1)
+   {
+      ASSERT_EQ(k.getParent().getKey(), kids[1].getKey());
+   }
+}

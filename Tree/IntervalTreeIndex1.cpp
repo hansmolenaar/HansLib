@@ -170,3 +170,13 @@ std::tuple<bool, Index1> Index1::getAdjacentInDir(bool posDir) const
       return { true, Index1(Interval<Rational>(lwr - getMeasure(), lwr)) };
    }
 }
+
+Index1 Index1::getParent() const
+{
+   Utilities::MyAssert(!isRoot());
+   auto intv = getInterval();
+   const auto siblingIntv = getSibling().getInterval();
+   intv.add(siblingIntv.getLower());
+   intv.add(siblingIntv.getUpper());
+   return Index1(intv);
+}
