@@ -38,12 +38,6 @@ namespace
       return interval.getUpper().numerator() - 1;
    }
 
-   Index1::Key GetKey(Level level, int positionInLevel)
-   {
-      const Index1::Key pow2m1 = (1 << level) - 1;
-      return pow2m1 + positionInLevel;
-   }
-
    std::string ToString(const Rational& rat)
    {
       if (rat == Rational(0, 1)) return "0";
@@ -61,7 +55,7 @@ Index1::Index1(const Interval<Rational>& interval) :
    m_interval(interval),
    m_level(GetLevel(m_interval)),
    m_positionInLevel(GetPositionInLevel(m_interval, m_level)),
-   m_key(GetKey(m_level, m_positionInLevel))
+   m_key(composeKey(m_level, m_positionInLevel))
 {
    // Final checks
    const auto denom = 1 << getLevel();
@@ -83,6 +77,23 @@ Level Index1::getLevel() const
 int Index1::getPositionInLevel() const
 {
    return m_positionInLevel;
+}
+
+std::tuple<Level, int> Index1::decomposeKey(int key)
+{
+   int maxKey = 0;
+   for (Level level = 0; level < 256 ; ++level)
+   {
+      if (key < maxKey + (1 << level)) return std::make_tuple(level, key - maxKey);
+      maxKey += 1 << level;
+   }
+   throw MyException("Index1::decomposeKey should not come here");
+}
+
+Index1::Key Index1::composeKey(Level level, int positionInLevel)
+{
+   const Index1::Key pow2m1 = (1 << level) - 1;
+   return pow2m1 + positionInLevel;
 }
 
 Index1::Key Index1::getKey() const

@@ -130,3 +130,53 @@ TEST(IndexTreeTest, RefineAroundPoint)
    ASSERT_EQ(tree.getStatistics(), expect);
 }
 
+
+TEST(IndexTreeTest, Contains)
+{
+   IndexTree<2> tree;
+   const auto& root = tree.getRoot();
+
+   ASSERT_TRUE(tree.contains(root));
+   const auto kids = root.refine();
+
+   ASSERT_FALSE(tree.contains(kids[0]));
+
+   RefineToMaxLevel<2> refineToLevel{ 5 };
+   tree.refineLeaves(refineToLevel);
+   // Kid is a leaf
+   ASSERT_TRUE(tree.contains(kids[0]));
+
+   tree.refineLeaves(refineToLevel);
+   // Kid is no longer a leaf
+   ASSERT_TRUE(tree.contains(kids[0]));
+}
+
+
+
+
+TEST(IndexTreeTest, GetExistingSelfOrAncestor)
+{
+   RefineToMaxLevel<2> refineToLevel{ 5 };
+
+   IndexTree<2> tree;
+   IndexFactory<2>& factory = tree.getFactory();
+
+   const auto& root = tree.getRoot();
+
+   ASSERT_TRUE(tree.contains(root));
+   const auto kids = root.refine();
+   const auto kid = factory.addIfNew(kids[0]);
+   const auto grandChildren = kid->refine();
+   const Index<2> grandChild(grandChildren[0], factory.getFactory1());
+
+   const auto& found0 = tree.getExistingSelfOrAncestor(grandChild);
+   ASSERT_EQ(found0.getLevel(), 0);
+
+   tree.refineLeaves(refineToLevel);
+   const auto& found1 = tree.getExistingSelfOrAncestor(grandChild);
+   ASSERT_EQ(found1.getLevel(), 1);
+
+   tree.refineLeaves(refineToLevel);
+   const auto& found2 = tree.getExistingSelfOrAncestor(grandChild);
+   ASSERT_EQ(found2.getLevel(), 2);
+}

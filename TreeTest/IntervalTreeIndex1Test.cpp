@@ -233,3 +233,47 @@ TEST(IntervalTreeIndex1Test, getParent)
       ASSERT_EQ(k.getParent().getKey(), kids[1].getKey());
    }
 }
+
+
+TEST(IntervalTreeIndex1Test, DecomposeKey)
+{
+   auto retval = Index1::decomposeKey(0);
+   ASSERT_EQ(std::get<0>(retval), 0);
+   ASSERT_EQ(std::get<1>(retval), 0);
+
+   retval = Index1::decomposeKey(1);
+   ASSERT_EQ(std::get<0>(retval), 1);
+   ASSERT_EQ(std::get<1>(retval), 0);
+
+   retval = Index1::decomposeKey(2);
+   ASSERT_EQ(std::get<0>(retval), 1);
+   ASSERT_EQ(std::get<1>(retval), 1);
+
+   retval = Index1::decomposeKey(3);
+   ASSERT_EQ(std::get<0>(retval), 2);
+   ASSERT_EQ(std::get<1>(retval), 0);
+   retval = Index1::decomposeKey(4);
+   ASSERT_EQ(std::get<0>(retval), 2);
+   ASSERT_EQ(std::get<1>(retval), 1);
+   retval = Index1::decomposeKey(5);
+   ASSERT_EQ(std::get<0>(retval), 2);
+   ASSERT_EQ(std::get<1>(retval), 2);
+   retval = Index1::decomposeKey(6);
+   ASSERT_EQ(std::get<0>(retval), 2);
+   ASSERT_EQ(std::get<1>(retval), 3);
+
+
+   retval = Index1::decomposeKey(7);
+   ASSERT_EQ(std::get<0>(retval), 3);
+   ASSERT_EQ(std::get<1>(retval), 0);
+}
+
+
+TEST(IntervalTreeIndex1Test, DecomposeKey2)
+{
+   for (int key = 0; key < 1 << 10; ++key)
+   {
+      const auto [level, pos] = Index1::decomposeKey(key);
+      ASSERT_EQ(Index1::composeKey(level, pos), key);
+   }
+}

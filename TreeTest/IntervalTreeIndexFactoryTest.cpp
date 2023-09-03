@@ -43,3 +43,16 @@ TEST(IntervalTreeIndexFactoryTest, IndexFactorLevel2Ref)
    ASSERT_EQ(sum, Rational(1, 1));
 }
 
+TEST(IntervalTreeIndexFactoryTest, Get)
+{
+   IndexFactory<2> factory;
+   const auto* root = factory.getRoot();
+   const auto kids = root->refine();
+
+   const auto getRoot = factory.get(root->getKey());
+   ASSERT_TRUE(std::get<0>(getRoot));
+   ASSERT_TRUE(std::get<1>(getRoot)->isRoot());
+
+   const auto getKid = factory.get(kids[0]);
+   ASSERT_FALSE(std::get<0>(getKid));
+}

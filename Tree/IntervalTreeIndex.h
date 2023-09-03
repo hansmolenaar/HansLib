@@ -27,6 +27,7 @@ namespace IntervalTree
       using Key = std::array<Index1::Key, N>;
 
       Index(Key keys, Index1Factory& factory);
+
       Level getLevel() const;
       const Interval<Rational>& getInterval(int n) const;
       Key getKey() const;
@@ -63,7 +64,7 @@ namespace std
 
 namespace IntervalTree
 {
-  
+
 
    // Implementation
 
@@ -92,7 +93,8 @@ namespace IntervalTree
       Level result = 0;
       for (auto key : m_keys)
       {
-         result = std::max(result, m_factory1(key)->getLevel());
+         const auto [level, pos] = Index1::decomposeKey(key);
+         result = std::max(result, level);
       }
       return result;
    }
@@ -186,7 +188,7 @@ namespace IntervalTree
       const Index1::Key key1 = result.at(direction.Direction);
       const auto [succes, adj] = m_factory1(key1)->getAdjacentInDir(direction.UsePositiveDirection);
       result[direction.Direction] = adj.getKey();
-      return {succes, result};
+      return { succes, result };
    }
 
    template<int N>
@@ -205,6 +207,6 @@ namespace IntervalTree
    std::array<std::array<Rational, 3>, 8> Index<3>::getVerticesInVtkOrder() const;
 
 
-  
+
 
 }

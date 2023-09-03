@@ -7,7 +7,6 @@
 
 using namespace IntervalTree;
 
-
 std::string Statistics::toString() const
 {
    std::ostringstream result;

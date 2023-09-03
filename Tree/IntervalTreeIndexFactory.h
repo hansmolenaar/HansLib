@@ -18,10 +18,11 @@ namespace IntervalTree
       // throws if non-existing
       const Index<N>* operator()(typename const Index<N>::Key& key) const;
 
-      Index1Factory& getFactory1();
-      const Index1Factory& getFactory1() const;
+      std::tuple<bool, const Index<N>*> get(typename const Index<N>::Key& key) const;
+
+      Index1Factory& getFactory1() const;
    private:
-      Index1Factory m_factory;
+      mutable Index1Factory m_factory;
       std::unordered_map<typename Index<N>::Key, Index<N>> m_cache;
    };
 
@@ -91,14 +92,19 @@ namespace IntervalTree
    }
 
    template<int N>
-   Index1Factory& IndexFactory<N>::getFactory1()
+   Index1Factory& IndexFactory<N>::getFactory1() const
    {
       return m_factory;
    }
 
    template<int N>
-   const Index1Factory& IndexFactory<N>::getFactory1() const
+   std::tuple<bool, typename const Index<N>*> IndexFactory<N>::get(typename const Index<N>::Key& key) const
    {
-      return m_factory;
+      const auto found = m_cache.find(key);
+      if (found != m_cache.end())
+      {
+         return std::make_tuple(true, &found->second);
+      }
+      return std::make_tuple(false, nullptr);
    }
 }
