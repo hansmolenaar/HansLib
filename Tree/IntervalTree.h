@@ -32,6 +32,8 @@ namespace IntervalTree
       template<typename P>
       void refineUntilReady(P& predicate);
 
+      void balance();
+
       template<typename A>
       void foreachLeaf(A& action) const;
 
@@ -179,6 +181,9 @@ namespace IntervalTree
    {
       return m_factory;
    }
+
+   template<>
+   void IndexTree<1>::balance();
 
    template<>
    std::unique_ptr< Vtk::VtkData> IndexTree<1>::getVtkData() const;

@@ -7,6 +7,18 @@
 
 using namespace IntervalTree;
 
+namespace
+{
+   template<int N>
+   std::unordered_set<typename Index<N>::Key> RefineToBalance(const IndexTree<N>& tree)
+   {
+      std::unordered_set<typename Index<N>::Key> result;
+      auto action = [&result](const Index<N>& indx) {};
+      tree.foreachLeaf(action);
+      return result;
+   }
+}
+
 std::string Statistics::toString() const
 {
    std::ostringstream result;
@@ -119,4 +131,16 @@ std::unique_ptr< Vtk::VtkData> IndexTree<3>::getVtkData() const
    }
 
    return result;
+}
+
+template<>
+void IndexTree<1>::balance()
+{
+   auto toRefine = RefineToBalance<1>(*this);
+   while (!toRefine.empty())
+   {
+      auto predicate = [&toRefine](const Index<1>& indx) {return toRefine.contains(indx.getKey()); };
+      refineLeaves(predicate);
+      toRefine = RefineToBalance<1>(*this);
+   }
 }

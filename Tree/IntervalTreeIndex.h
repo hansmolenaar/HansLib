@@ -14,12 +14,7 @@
 
 namespace IntervalTree
 {
-   struct AdjacentDirection
-   {
-      int Direction;
-      bool UsePositiveDirection;
-   };
-
+  
    template<int N>
    class Index
    {

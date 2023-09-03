@@ -151,9 +151,6 @@ TEST(IndexTreeTest, Contains)
    ASSERT_TRUE(tree.contains(kids[0]));
 }
 
-
-
-
 TEST(IndexTreeTest, GetExistingSelfOrAncestor)
 {
    RefineToMaxLevel<2> refineToLevel{ 5 };
@@ -179,4 +176,12 @@ TEST(IndexTreeTest, GetExistingSelfOrAncestor)
    tree.refineLeaves(refineToLevel);
    const auto& found2 = tree.getExistingSelfOrAncestor(grandChild);
    ASSERT_EQ(found2.getLevel(), 2);
+}
+
+TEST(IndexTreeTest, BalanceRoot)
+{
+   IndexTree<1> tree;
+   tree.balance();
+   const Statistics expect{ 1, {1} };
+   ASSERT_EQ(tree.getStatistics(), expect);
 }
