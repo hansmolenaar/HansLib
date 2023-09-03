@@ -14,6 +14,11 @@
 
 namespace IntervalTree
 {
+   struct AdjacentDirection
+   {
+      int Direction;
+      bool UsePositiveDirection;
+   };
 
    template<int N>
    class Index
@@ -21,7 +26,7 @@ namespace IntervalTree
    public:
       using Key = std::array<Index1::Key, N>;
 
-      Index(std::array<Index1::Key, N> keys, Index1Factory& factory);
+      Index(Key keys, Index1Factory& factory);
       Level getLevel() const;
       const Interval<Rational>& getInterval(int n) const;
       Key getKey() const;
@@ -30,6 +35,7 @@ namespace IntervalTree
       std::string toString() const;
       bool isRoot() const;
       Index<N> getParent() const;
+      std::tuple<bool, Key> getAdjacentInDir(AdjacentDirection direction) const;
 
       std::array<std::array<Rational, N>, NumKids<N>> getVerticesInVtkOrder() const;
 
@@ -62,7 +68,7 @@ namespace IntervalTree
    // Implementation
 
    template<int N>
-   Index<N>::Index(std::array<Index1::Key, N> keys, Index1Factory& factory) :
+   Index<N>::Index(Key keys, Index1Factory& factory) :
       m_factory1(factory), m_keys(std::move(keys))
    {
       // Check if all of same level
@@ -171,6 +177,16 @@ namespace IntervalTree
       std::array<Index1::Key, N> parent;
       str::transform(m_keys, parent.begin(), [this](Index1::Key key) {return m_factory1.getParent(key)->getKey(); });
       return Index<N>(parent, m_factory1);
+   }
+
+   template<int N>
+   std::tuple<bool, typename Index<N>::Key> Index<N>::getAdjacentInDir(AdjacentDirection direction) const
+   {
+      Index<N>::Key result = getKey();
+      const Index1::Key key1 = result.at(direction.Direction);
+      const auto [succes, adj] = m_factory1(key1)->getAdjacentInDir(direction.UsePositiveDirection);
+      result[direction.Direction] = adj.getKey();
+      return {succes, result};
    }
 
    template<int N>
