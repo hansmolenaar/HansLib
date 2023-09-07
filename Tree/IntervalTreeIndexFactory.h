@@ -9,22 +9,21 @@ namespace IntervalTree
    class IndexFactory
    {
    public:
-
+      IndexFactory();
       std::tuple<bool, const Index<N>*> get(typename const Index<N>::Key& key) const;
 
       const Index<N>* addIfNew(typename const Index<N>::Key& key);
       std::array<const Index<N>*, NumKids<N>> refine(const Index<N>& toRefine);
-      const Index<N>* getRoot();
+      const Index<N>* getRoot() const;
 
       // throws if non-existing
       const Index<N>* operator()(typename const Index<N>::Key& key) const;
 
-
-
-      Index1Factory& getFactory1() const;
+      const Index1Factory& getFactory1() const;
+      Index1Factory& getFactory1();
    private:
 
-      mutable Index1Factory m_factory;
+      Index1Factory m_factory;
       std::unordered_map<typename Index<N>::Key, Index<N>> m_cache;
    };
 
@@ -35,11 +34,18 @@ namespace IntervalTree
    }
 
    template<int N>
-   const Index<N>* IndexFactory<N>::getRoot()
+   IndexFactory<N>::IndexFactory()
    {
       typename Index<N>::Key key;
       str::fill(key, 0);
       addIfNew(key);
+   }
+
+   template<int N>
+   const Index<N>* IndexFactory<N>::getRoot() const
+   {
+      typename Index<N>::Key key;
+      str::fill(key, 0);
       return (*this)(key);
    }
 
@@ -73,7 +79,13 @@ namespace IntervalTree
    }
 
    template<int N>
-   Index1Factory& IndexFactory<N>::getFactory1() const
+   const Index1Factory& IndexFactory<N>::getFactory1() const
+   {
+      return m_factory;
+   }
+
+   template<int N>
+   Index1Factory& IndexFactory<N>::getFactory1()
    {
       return m_factory;
    }

@@ -127,7 +127,7 @@ std::array<Index1::Key, 2> Index1::refine(Index1::Key key)
 std::array<Index1, 2> Index1::refine() const
 {
    const auto keys = refine(getKey());
-   return { CreateFromKey(keys[0]),CreateFromKey( keys[1])};
+   return { CreateFromKey(keys[0]),CreateFromKey(keys[1]) };
 }
 
 Rational Index1::getMeasure() const
@@ -196,6 +196,12 @@ std::tuple<bool, Index1> Index1::getAdjacentInDir(bool posDir) const
    }
 }
 
+Index1::Key Index1::getParentKey(Index1::Key key)
+{
+   Utilities::MyAssert(key != KeyRoot);
+   const auto [level, pos] = Index1::decomposeKey(key);
+   return composeKey(level - 1, pos / 2);
+}
 Index1 Index1::getParent() const
 {
    return CreateFromKey(getParentKey());
@@ -203,6 +209,5 @@ Index1 Index1::getParent() const
 
 Index1::Key Index1::getParentKey() const
 {
-   Utilities::MyAssert(!isRoot());
-   return composeKey(m_level - 1, m_positionInLevel / 2);
+   return getParentKey(getKey());
 }

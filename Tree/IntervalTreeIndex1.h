@@ -13,6 +13,7 @@ namespace IntervalTree
    public:
       using Key = int;
       static constexpr Key KeyInvalid = std::numeric_limits<int>::lowest();
+      static constexpr Key KeyRoot = 0;
 
       static Index1 Create(const Interval<Rational>& interval);
       static Index1 CreateFromKey(Key key);
@@ -28,7 +29,7 @@ namespace IntervalTree
       static int composeKey(Level level, int positionInLevel);
       const Interval<Rational>& getInterval() const;
 
-      
+
       static std::array<Index1::Key, 2> refine(Index1::Key key);
       std::array<Index1, 2> refine() const;
 
@@ -39,11 +40,13 @@ namespace IntervalTree
       Index1 getSibling() const;
       std::tuple<bool, Index1> getSiblingInDir(bool posDir) const;
       std::tuple<bool, Index1> getAdjacentInDir(bool posDir) const;
+
       Index1 getParent() const;
       Index1::Key getParentKey() const;
+      static Index1::Key getParentKey(Index1::Key);
 
    private:
-      
+
       Index1(const Interval<Rational>& interval);
 
       Interval<Rational> m_interval;
