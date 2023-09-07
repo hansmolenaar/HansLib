@@ -140,14 +140,11 @@ namespace IntervalTree
       {
          const Index1::Key key1 = m_keys[d];
          const  Index1* indx1 = m_factory1(key1);
-         const auto kids = indx1->refine();
-         const Index1::Key kid0Key = kids[0].getKey();
-         const Index1::Key kid1Key = kids[1].getKey();
-         m_factory1.addIfNew(kid0Key);
-         m_factory1.addIfNew(kid1Key);
-
-         ref[d][0] = kid0Key;
-         ref[d][1] = kid1Key;
+         const auto kids = Index1::refine(key1);
+         for (size_t n = 0; n < kids.size(); ++n)
+         {        
+            ref[d][n] = m_factory1.addIfNew(kids.at(n))->getKey();
+         }
       }
 
       for (int kid = 0; kid < NumKids<N>; ++kid)

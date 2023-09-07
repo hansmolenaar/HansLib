@@ -15,10 +15,9 @@ const Index1* Index1Factory::getRoot() const
 
 std::array<const Index1*, 2> Index1Factory::refine(const Index1& toRefine)
 {
-   std::array<Index1, 2> kids = toRefine.refine();
-   const auto kid0 = addIfNew(kids[0].getKey());
-   const auto kid1 = addIfNew(kids[1].getKey());
-   return { kid0, kid1 };
+   std::array<const Index1*, 2> result;
+   str::transform(Index1::refine(toRefine.getKey()), result.begin(), [this](Index1::Key key) {return addIfNew(key); });
+   return result;
 }
 
 const Index1* Index1Factory::operator()(Index1::Key key) const

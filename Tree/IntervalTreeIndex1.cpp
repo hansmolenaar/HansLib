@@ -118,14 +118,16 @@ const Interval<Rational>& Index1::getInterval() const
    return m_interval;
 }
 
+std::array<Index1::Key, 2> Index1::refine(Index1::Key key)
+{
+   const auto [level, pos] = decomposeKey(key);
+   return { composeKey(level + 1, 2 * pos), composeKey(level + 1, 2 * pos + 1) };
+}
+
 std::array<Index1, 2> Index1::refine() const
 {
-   const Level nxtLevel = getLevel() + 1;
-   const Rational del{ 1, 1 << nxtLevel };
-   const Rational start = m_interval.getLower();
-   const Interval<Rational> intv0(start, start + del);
-   const Interval<Rational> intv1(start + del, start + 2 * del);
-   return { Index1(intv0), Index1(intv1) };
+   const auto keys = refine(getKey());
+   return { CreateFromKey(keys[0]),CreateFromKey( keys[1])};
 }
 
 Rational Index1::getMeasure() const
