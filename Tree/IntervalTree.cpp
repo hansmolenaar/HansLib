@@ -10,10 +10,16 @@ using namespace IntervalTree;
 namespace
 {
    template<int N>
+   bool isUnbalancedLeaf(const IndexTree<N>& tree, const Index<N>& indx)
+   {
+      throw MyException("Not yet implemented");
+   }
+
+   template<int N>
    std::unordered_set<typename Index<N>::Key> RefineToBalance(const IndexTree<N>& tree)
    {
       std::unordered_set<typename Index<N>::Key> result;
-      auto action = [&result](const Index<N>& indx) {};
+      auto action = [&result, &tree](const Index<N>& indx) {return isUnbalancedLeaf(tree, indx); };
       tree.foreachLeaf(action);
       return result;
    }

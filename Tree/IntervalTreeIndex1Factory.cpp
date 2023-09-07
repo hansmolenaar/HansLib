@@ -16,9 +16,9 @@ const Index1* Index1Factory::getRoot() const
 std::array<const Index1*, 2> Index1Factory::refine(const Index1& toRefine)
 {
    std::array<Index1, 2> kids = toRefine.refine();
-   add(kids[0]);
-   add(kids[1]);
-   return { (*this)(kids[0].getKey()), (*this)(kids[1].getKey()) };
+   const auto kid0 = addIfNew(kids[0].getKey());
+   const auto kid1 = addIfNew(kids[1].getKey());
+   return { kid0, kid1 };
 }
 
 const Index1* Index1Factory::operator()(Index1::Key key) const
@@ -26,33 +26,38 @@ const Index1* Index1Factory::operator()(Index1::Key key) const
    return  &m_cache.at(key);
 }
 
-Index1::Key Index1Factory::add(const Interval<Rational>& interval)
+const Index1* Index1Factory::add(const Interval<Rational>& interval)
 {
-   return add(Index1(interval));
+   return addIfNew(Index1::Create(interval).getKey());
 }
 
 Index1::Key Index1Factory::add(const Index1& index1)
 {
-   const Index1::Key key = index1.getKey();
+   return addIfNew(index1.getKey())->getKey();
+}
+
+const Index1* Index1Factory::addIfNew(Index1::Key key)
+{
    if (!m_cache.contains(key))
    {
-      m_cache.emplace(key, index1);
+      m_cache.emplace(key, Index1::CreateFromKey(key));
    }
+   const Index1* result = &m_cache.at(key);
    if (!m_toParent.contains(key))
    {
-      if (index1.isRoot())
+      if (result->isRoot())
       {
          m_toParent[key] = Index1::KeyInvalid;
       }
       else
       {
-         const auto parent = index1.getParent();
+         const auto parentKey = result->getParentKey();
          // Interesting recursion here
-         add(parent);
-         m_toParent[key] = parent.getKey();
+         addIfNew(parentKey);
+         m_toParent[key] = parentKey;
       }
    }
-   return key;
+   return result;
 }
 
 const Index1* Index1Factory::getParent(Index1::Key key) const

@@ -14,8 +14,12 @@ namespace IntervalTree
       using Key = int;
       static constexpr Key KeyInvalid = std::numeric_limits<int>::lowest();
 
-      Index1(const Interval<Rational>& interval);
+      static Index1 Create(const Interval<Rational>& interval);
+      static Index1 CreateFromKey(Key key);
       static Index1 CreateRoot();
+
+      auto operator<=>(const Index1&) const = default;
+
       Level getLevel() const;
       int getPositionInLevel() const;
 
@@ -32,8 +36,11 @@ namespace IntervalTree
       std::tuple<bool, Index1> getSiblingInDir(bool posDir) const;
       std::tuple<bool, Index1> getAdjacentInDir(bool posDir) const;
       Index1 getParent() const;
+      Index1::Key getParentKey() const;
 
    private:
+      Index1(const Interval<Rational>& interval);
+
       Interval<Rational> m_interval;
       Level m_level;
       int m_positionInLevel;

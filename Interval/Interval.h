@@ -24,6 +24,7 @@ public:
 
    T interpolate(T factor) const;
    T inverseInterpolate(T arg) const;
+   auto operator<=>(const Interval<T>&) const = default;
 
 private:
    T m_lower;

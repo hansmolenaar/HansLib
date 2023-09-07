@@ -69,6 +69,18 @@ Index1::Index1(const Interval<Rational>& interval) :
    }
 }
 
+Index1 Index1::Create(const Interval<Rational>& interval)
+{
+   return { interval };
+}
+
+Index1 Index1::CreateFromKey(Key key)
+{
+   const auto [level, pos] = Index1::decomposeKey(key);
+   const auto pow2 = 1 << level;
+   return Create(Interval<Rational>({ pos, pow2 }, { pos + 1, pow2 }));
+}
+
 Level Index1::getLevel() const
 {
    return m_level;
@@ -82,7 +94,7 @@ int Index1::getPositionInLevel() const
 std::tuple<Level, int> Index1::decomposeKey(int key)
 {
    int maxKey = 0;
-   for (Level level = 0; level < 256 ; ++level)
+   for (Level level = 0; level < 256; ++level)
    {
       if (key < maxKey + (1 << level)) return std::make_tuple(level, key - maxKey);
       maxKey += 1 << level;
@@ -184,10 +196,11 @@ std::tuple<bool, Index1> Index1::getAdjacentInDir(bool posDir) const
 
 Index1 Index1::getParent() const
 {
+   return CreateFromKey(getParentKey());
+}
+
+Index1::Key Index1::getParentKey() const
+{
    Utilities::MyAssert(!isRoot());
-   auto intv = getInterval();
-   const auto siblingIntv = getSibling().getInterval();
-   intv.add(siblingIntv.getLower());
-   intv.add(siblingIntv.getUpper());
-   return Index1(intv);
+   return composeKey(m_level - 1, m_positionInLevel / 2);
 }

@@ -8,7 +8,7 @@ namespace
 {
    void Check(const Interval<Rational>& intv, Level expectLevel, int expectPositionInLevel, Index1::Key expectKey)
    {
-      const Index1 indx(intv);
+      const Index1 indx = Index1::Create(intv);
       ASSERT_EQ(indx.getLevel(), expectLevel);
       ASSERT_EQ(indx.getPositionInLevel(), expectPositionInLevel);
       ASSERT_EQ(indx.getKey(), expectKey);
@@ -54,14 +54,14 @@ TEST(IntervalTreeIndex1Test, Level3)
 
 TEST(IntervalTreeIndex1Test, Index1ToString)
 {
-   const Index1 indx(Interval<Rational>(Rational(0, 2), Rational(1, 4)));
+   const Index1 indx = Index1::Create(Interval<Rational>(Rational(0, 2), Rational(1, 4)));
    const auto str = indx.toString();
    ASSERT_EQ(str, "(0, 1/4)");
 }
 TEST(IntervalTreeIndex1Test, Index1Refine)
 {
    const Interval<Rational> intv(Rational(2, 4), Rational(3, 4));
-   const Index1 indx(intv);
+   const Index1 indx = Index1::Create(intv);
    const auto refined = indx.refine();
    ASSERT_EQ(refined[0].getInterval().getLower(), Rational(1, 2));
    ASSERT_EQ(refined[0].getInterval().getUpper(), Rational(5, 8));
@@ -73,9 +73,9 @@ TEST(IntervalTreeIndex1Test, Index1Refine)
 
 TEST(IntervalTreeIndex1Test, UnhappyPaths)
 {
-   ASSERT_ANY_THROW(Index1(Interval<Rational>(Rational(-1, 4), Rational(0, 2))));
-   ASSERT_ANY_THROW(Index1(Interval<Rational>(Rational(1, 4), Rational(3, 4))));
-   ASSERT_ANY_THROW(Index1(Interval<Rational>(Rational(3, 5), Rational(4, 5))));
+   ASSERT_ANY_THROW(Index1::Create(Interval<Rational>(Rational(-1, 4), Rational(0, 2))));
+   ASSERT_ANY_THROW(Index1::Create(Interval<Rational>(Rational(1, 4), Rational(3, 4))));
+   ASSERT_ANY_THROW(Index1::Create(Interval<Rational>(Rational(3, 5), Rational(4, 5))));
 }
 
 
@@ -219,6 +219,7 @@ TEST(IntervalTreeIndex1Test, getParent)
    for (const auto& k : kids)
    {
       ASSERT_TRUE(k.getParent().isRoot());
+      ASSERT_EQ(k.getParentKey(), root.getKey());
    }
 
    const auto kids0 = kids[0].refine();
@@ -227,10 +228,12 @@ TEST(IntervalTreeIndex1Test, getParent)
    for (const auto& k : kids0)
    {
       ASSERT_EQ(k.getParent().getKey(), kids[0].getKey());
+      ASSERT_EQ(k.getParentKey(), kids[0].getKey());
    }
    for (const auto& k : kids1)
    {
       ASSERT_EQ(k.getParent().getKey(), kids[1].getKey());
+      ASSERT_EQ(k.getParentKey(), kids[1].getKey());
    }
 }
 
@@ -268,12 +271,23 @@ TEST(IntervalTreeIndex1Test, DecomposeKey)
    ASSERT_EQ(std::get<1>(retval), 0);
 }
 
-
 TEST(IntervalTreeIndex1Test, DecomposeKey2)
 {
    for (int key = 0; key < 1 << 10; ++key)
    {
       const auto [level, pos] = Index1::decomposeKey(key);
       ASSERT_EQ(Index1::composeKey(level, pos), key);
+   }
+}
+
+
+TEST(IntervalTreeIndex1Test, CreateRoundTrip)
+{
+   for (int key = 0; key < 1 << 10; ++key)
+   {
+      const auto index1 = Index1::CreateFromKey(key);
+      const auto retval = Index1::Create(index1.getInterval());
+      ASSERT_EQ(retval.getKey(), key);
+      ASSERT_EQ(index1, retval);
    }
 }

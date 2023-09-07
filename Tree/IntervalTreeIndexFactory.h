@@ -31,7 +31,7 @@ namespace IntervalTree
    inline Index<N> IndexFactory<N>::get(const std::array<Interval<Rational>, N>& intervals)
    {
       std::array<Index1::Key, N> keys;
-      std::transform(intervals.begin(), intervals.end(), keys.begin(), [this](const Interval<Rational>& intv) {return m_factory.add(intv); });
+      std::transform(intervals.begin(), intervals.end(), keys.begin(), [this](const Interval<Rational>& intv) {return m_factory.add(intv)->getKey(); });
       return Index<N>(keys, m_factory);
    }
 
@@ -43,7 +43,7 @@ namespace IntervalTree
          throw MyException("IndexFactory<N>::get(initalizer list) expected  size " + std::to_string(N) + ", actual: " + std::to_string(intervals.size()));
       }
       std::array<Index1::Key, N> keys;
-      std::transform(intervals.begin(), intervals.end(), keys.begin(), [this](const Interval<Rational>& intv) {return m_factory.add(intv); });
+      std::transform(intervals.begin(), intervals.end(), keys.begin(), [this](const Interval<Rational>& intv) {return m_factory.add(intv)->getKey(); });
       return Index<N>(keys, m_factory);
    }
 
