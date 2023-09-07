@@ -10,7 +10,7 @@ TEST(IntervalTreeIndex1FactoryTest, Factory1)
 
    const Interval<Rational> intv(Rational(7, 8), Rational(8, 8));
    const Index1 indx(Index1::Create(intv));
-   const auto key = factory.add(indx);
+   const auto key = factory.addIfNew(indx.getKey())->getKey();
    ASSERT_EQ(factory.add(intv)->getKey(), key);
    ASSERT_EQ(key, indx.getKey());
    const auto& found = factory(key);
@@ -40,10 +40,9 @@ TEST(IntervalTreeIndex1FactoryTest, GetParent)
    ASSERT_EQ(factory.getParent(root->getKey()), nullptr);
 
    const Interval<Rational> intv(Rational(5, 8), Rational(6, 8));
-   const Index1 indx = Index1::Create(intv);
-   factory.add(indx);
+   const Index1* indx = factory.add(intv);
 
-   auto parent = factory.getParent(indx);
+   auto parent = factory.getParent(*indx);
    ASSERT_EQ(parent->getCenter(), Rational(5, 8));
 
    parent = factory.getParent(*parent);

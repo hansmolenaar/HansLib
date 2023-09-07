@@ -5,7 +5,7 @@ using namespace IntervalTree;
 Index1Factory::Index1Factory()
 {
    const auto root = Index1::CreateRoot();
-   add(Index1::CreateRoot());
+   addIfNew(Index1::CreateRoot().getKey());
 }
 
 const Index1* Index1Factory::getRoot() const
@@ -29,11 +29,6 @@ const Index1* Index1Factory::operator()(Index1::Key key) const
 const Index1* Index1Factory::add(const Interval<Rational>& interval)
 {
    return addIfNew(Index1::Create(interval).getKey());
-}
-
-Index1::Key Index1Factory::add(const Index1& index1)
-{
-   return addIfNew(index1.getKey())->getKey();
 }
 
 const Index1* Index1Factory::addIfNew(Index1::Key key)

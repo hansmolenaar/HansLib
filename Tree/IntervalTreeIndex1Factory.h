@@ -10,7 +10,7 @@ namespace IntervalTree
    public:
       Index1Factory();
       const Index1* operator()(Index1::Key key) const;
-      Index1::Key add(const Index1& index1);
+
       const Index1* addIfNew(Index1::Key key);
       const Index1* add(const Interval<Rational>& interval);
 

@@ -67,6 +67,12 @@ namespace IntervalTree
    Index<N>::Index(Key keys, Index1Factory& factory) :
       m_factory1(factory), m_keys(std::move(keys))
    {
+      // Make sure that m_factory1 contains all keys
+      for (auto key : m_keys)
+      {
+         m_factory1.addIfNew(key);
+      }
+
       // Check if all of same level
       const Level level = getLevel();
       if (!str::all_of(keys, [level, &factory](Index1::Key key) { return factory(key)->getLevel() == level; }))
@@ -135,12 +141,13 @@ namespace IntervalTree
          const Index1::Key key1 = m_keys[d];
          const  Index1* indx1 = m_factory1(key1);
          const auto kids = indx1->refine();
+         const Index1::Key kid0Key = kids[0].getKey();
+         const Index1::Key kid1Key = kids[1].getKey();
+         m_factory1.addIfNew(kid0Key);
+         m_factory1.addIfNew(kid1Key);
 
-         m_factory1.add(kids[0]);
-         m_factory1.add(kids[1]);
-
-         ref[d][0] = kids[0].getKey();
-         ref[d][1] = kids[1].getKey();
+         ref[d][0] = kid0Key;
+         ref[d][1] = kid1Key;
       }
 
       for (int kid = 0; kid < NumKids<N>; ++kid)

@@ -9,8 +9,9 @@ namespace IntervalTree
    class IndexFactory
    {
    public:
-      Index<N> get(const std::array<Interval<Rational>, N>& keys);
-      Index<N> get(std::initializer_list<Interval<Rational>> keys);
+
+      std::tuple<bool, const Index<N>*> get(typename const Index<N>::Key& key) const;
+
       const Index<N>* addIfNew(typename const Index<N>::Key& key);
       std::array<const Index<N>*, NumKids<N>> refine(const Index<N>& toRefine);
       const Index<N>* getRoot();
@@ -18,34 +19,14 @@ namespace IntervalTree
       // throws if non-existing
       const Index<N>* operator()(typename const Index<N>::Key& key) const;
 
-      std::tuple<bool, const Index<N>*> get(typename const Index<N>::Key& key) const;
+
 
       Index1Factory& getFactory1() const;
    private:
+
       mutable Index1Factory m_factory;
       std::unordered_map<typename Index<N>::Key, Index<N>> m_cache;
    };
-
-
-   template<int N>
-   inline Index<N> IndexFactory<N>::get(const std::array<Interval<Rational>, N>& intervals)
-   {
-      std::array<Index1::Key, N> keys;
-      std::transform(intervals.begin(), intervals.end(), keys.begin(), [this](const Interval<Rational>& intv) {return m_factory.add(intv)->getKey(); });
-      return Index<N>(keys, m_factory);
-   }
-
-   template<int N>
-   Index<N> IndexFactory<N>::get(std::initializer_list<Interval<Rational>> intervals)
-   {
-      if (intervals.size() != N)
-      {
-         throw MyException("IndexFactory<N>::get(initalizer list) expected  size " + std::to_string(N) + ", actual: " + std::to_string(intervals.size()));
-      }
-      std::array<Index1::Key, N> keys;
-      std::transform(intervals.begin(), intervals.end(), keys.begin(), [this](const Interval<Rational>& intv) {return m_factory.add(intv)->getKey(); });
-      return Index<N>(keys, m_factory);
-   }
 
    template<int N>
    const Index<N>* IndexFactory<N>::operator()(typename const Index<N>::Key& key) const

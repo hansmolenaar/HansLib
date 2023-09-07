@@ -10,19 +10,21 @@ TEST(IntervalTreeIndexTest, Index_basics)
    IndexFactory<2> factory;
    const Interval<Rational> intv0(Rational(7, 8), Rational(8, 8));
    const Interval<Rational> intv1(Rational(0, 1), Rational(1, 8));
+   const Index1::Key key0 = Index1::Create(intv0).getKey();
+   const Index1::Key key1 = Index1::Create(intv1).getKey();
 
-   const auto index = factory.get(std::array<Interval<Rational>, 2>{ intv0, intv1 });
-   ASSERT_EQ(index.getLevel(), 3);
+   const auto* index = factory.addIfNew({ key0, key1 });
+   ASSERT_EQ(index->getLevel(), 3);
 
-   const auto rv0 = index.getInterval(0);
+   const auto rv0 = index->getInterval(0);
    ASSERT_EQ(rv0.getLower(), intv0.getLower());
    ASSERT_EQ(rv0.getUpper(), intv0.getUpper());
 
-   const auto rv1 = index.getInterval(1);
+   const auto rv1 = index->getInterval(1);
    ASSERT_EQ(rv1.getLower(), intv1.getLower());
    ASSERT_EQ(rv1.getUpper(), intv1.getUpper());
 
-   const std::string str = index.toString();
+   const std::string str = index->toString();
    ASSERT_EQ(str, "((7/8, 1), (0, 1/8))");
 }
 

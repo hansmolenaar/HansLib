@@ -8,11 +8,12 @@ TEST(IntervalTreeIndexFactoryTest, IndexFactory)
 {
    IndexFactory<1> factory;
    const Interval<Rational> intv(Rational(3, 16), Rational(4, 16));
+   const Index1::Key key1= Index1::Create(intv).getKey();
 
-   const auto index = factory.get({ intv });
-   ASSERT_EQ(index.getLevel(), 4);
+   const auto* index = factory.addIfNew({ key1 });
+   ASSERT_EQ(index->getLevel(), 4);
 
-   const auto rv = index.getInterval(0);
+   const auto rv = index->getInterval(0);
    ASSERT_EQ(rv.getLower(), intv.getLower());
    ASSERT_EQ(rv.getUpper(), intv.getUpper());
 }
