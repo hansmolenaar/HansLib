@@ -21,6 +21,7 @@ namespace IntervalTree
 
       auto operator<=>(const Index1&) const = default;
 
+      static Level GetLevelFromKey(Key key);
       Level getLevel() const;
       int getPositionInLevel() const;
 

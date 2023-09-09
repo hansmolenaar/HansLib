@@ -85,6 +85,7 @@ TEST(IntervalTreeIndex1Test, CreateRoot)
    ASSERT_TRUE(root.isRoot());
    ASSERT_TRUE(Index1::IsRoot(root.getKey()));
    ASSERT_EQ(root.getLevel(), 0);
+   ASSERT_EQ(Index1::GetLevelFromKey(root.getKey()), root.getLevel());
    ASSERT_EQ(root.getPositionInLevel(), 0);
    ASSERT_EQ(root.getMeasure(), Rational(1, 1));
 }
@@ -278,6 +279,7 @@ TEST(IntervalTreeIndex1Test, DecomposeKey2)
    {
       const auto [level, pos] = Index1::decomposeKey(key);
       ASSERT_EQ(Index1::composeKey(level, pos), key);
+      ASSERT_EQ(Index1::GetLevelFromKey(key), level);
    }
 }
 

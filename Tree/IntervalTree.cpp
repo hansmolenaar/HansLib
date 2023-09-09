@@ -10,16 +10,31 @@ using namespace IntervalTree;
 namespace
 {
    template<int N>
-   bool isUnbalancedLeaf(const IndexTree<N>& tree, const Index<N>& indx)
+   void markUnbalancedLeaves(const IndexTree<N>& tree, const Index<N>& indx, std::unordered_set<typename Index<N>::Key>& toRefine)
    {
-      throw MyException("Not yet implemented");
+      for (int dir = 0; dir < N; ++dir)
+      {
+         for (bool isPos : {false, true})
+         {
+            const AdjacentDirection adjDir{ dir, isPos };
+            const auto [exist, ngbKey] = indx.getAdjacentInDir(adjDir);
+            if (exist)
+            {
+               const auto ngbExisting = tree.getExistingSelfOrAncestor(ngbKey);
+               if (indx.getLevel() - ngbExisting.getLevel() > 1)
+               {
+                  toRefine.insert(ngbExisting.getKey());
+               }
+            }
+         }
+      }
    }
 
    template<int N>
    std::unordered_set<typename Index<N>::Key> RefineToBalance(const IndexTree<N>& tree)
    {
       std::unordered_set<typename Index<N>::Key> result;
-      auto action = [&result, &tree](const Index<N>& indx) {return isUnbalancedLeaf(tree, indx); };
+      auto action = [&result, &tree](const Index<N>& indx) {markUnbalancedLeaves(tree, indx, result); };
       tree.foreachLeaf(action);
       return result;
    }

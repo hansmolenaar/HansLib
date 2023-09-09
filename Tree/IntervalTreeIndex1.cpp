@@ -81,6 +81,12 @@ Index1 Index1::CreateFromKey(Key key)
    return Create(Interval<Rational>({ pos, pow2 }, { pos + 1, pow2 }));
 }
 
+Level Index1::GetLevelFromKey(Key key)
+{
+   const auto [level, pos] = Index1::decomposeKey(key);
+   return level;
+}
+
 Level Index1::getLevel() const
 {
    return m_level;

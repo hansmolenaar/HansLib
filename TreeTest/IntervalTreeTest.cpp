@@ -205,3 +205,16 @@ TEST(IndexTreeTest, BalanceRoot)
    const Statistics expect{ 1, {1} };
    ASSERT_EQ(tree.getStatistics(), expect);
 }
+
+TEST(IndexTreeTest, BalanceTree1)
+{
+   IndexTree<1> tree;
+   RefineIfContainsPoint<1> refinePoint{ Rational{49, 100} };
+   tree.refineLeaves(refinePoint);
+   tree.refineLeaves(refinePoint);
+   tree.refineLeaves(refinePoint);
+
+   ASSERT_EQ(tree.getStatistics().toString(), "7, {0, 1, 1, 2}");
+   tree.balance();
+   ASSERT_EQ(tree.getStatistics().toString(), "9, {0, 0, 3, 2}");
+}
