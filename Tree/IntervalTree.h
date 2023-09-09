@@ -37,15 +37,13 @@ namespace IntervalTree
       template<typename A>
       void foreachLeaf(A& action) const;
 
-      bool contains(const Index<N>& index) const;
       bool contains(typename const Index<N>::Key& key) const;
 
-      const Index<N>& getExistingSelfOrAncestor(const Index<N>& index) const;
+      const Index<N>& getExistingSelfOrAncestor(typename  Index<N>::Key key) const;
+      std::tuple<bool, const Index<N>&> get(typename const Index<N>::Key& key) const;
 
       IndexFactory<N>& getFactory() const;
    private:
-      // Returns nullptr on failure
-      const  Index<N>* toStablePointer(typename const Index<N>::Key& key) const;
 
       mutable IndexFactory<N> m_factory;
       std::unordered_map < const Index<N>*, std::array< const Index<N>*, IntervalTree::NumKids<N>>> m_tree;
@@ -112,40 +110,30 @@ namespace IntervalTree
    }
 
    template<int N>
-   const Index<N>* IndexTree<N>::toStablePointer(typename const Index<N>::Key& key) const
+   std::tuple<bool, const Index<N>&> IndexTree<N>::get(typename const Index<N>::Key& key) const
    {
       const auto [succes, ptr] = m_factory.get(key);
-      if (!succes) return nullptr;
+      if (!succes) return { false, getRoot() };
 
-      if (m_leaves.contains(ptr)) return ptr;
-      if (m_tree.contains(ptr)) return ptr;
-      return nullptr;
+      if (m_leaves.contains(ptr)) return { true, *ptr };
+      if (m_tree.contains(ptr)) return { true, *ptr };
+      return { false, getRoot() };
    }
 
    template<int N>
    bool IndexTree<N>::contains(typename const Index<N>::Key& key) const
    {
-      return toStablePointer(key) != nullptr;
+      return std::get<0>(get(key));
    }
 
    template<int N>
-   bool  IndexTree<N>::contains(const Index<N>& index) const
+   const Index<N>& IndexTree<N>::getExistingSelfOrAncestor(typename  Index<N>::Key key) const
    {
-      return contains(index.getKey());
-   }
-
-   template<int N>
-   const Index<N>& IndexTree<N>::getExistingSelfOrAncestor(const Index<N>& index) const
-   {
-      Index1Factory& factory1 = m_factory.getFactory1();
-      auto key = index.getKey();
       while (true)
       {
-         const Index<N>* ptr = toStablePointer(key);
-         if (ptr != nullptr) return *ptr;
-         Index<N> myIndex(key, factory1);
-         Index<N> parent = myIndex.getParent();
-         key = parent.getKey();
+         const auto [found, index] = get(key);
+         if (found) return index;
+         key = Index<N>::GetParent(key);
       }
    }
 

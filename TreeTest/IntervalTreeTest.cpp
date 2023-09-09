@@ -136,7 +136,7 @@ TEST(IndexTreeTest, Contains)
    IndexTree<2> tree;
    const auto& root = tree.getRoot();
 
-   ASSERT_TRUE(tree.contains(root));
+   ASSERT_TRUE(tree.contains(root.getKey()));
    const auto kids = root.refine();
 
    ASSERT_FALSE(tree.contains(kids[0]));
@@ -151,6 +151,20 @@ TEST(IndexTreeTest, Contains)
    ASSERT_TRUE(tree.contains(kids[0]));
 }
 
+
+TEST(IndexTreeTest, Get)
+{
+   IndexTree<3> tree;
+   const auto& root = tree.getRoot();
+
+   const auto retval = tree.get(root.getKey());
+   ASSERT_TRUE(std::get<0>(retval));
+   ASSERT_TRUE(std::get<1>(retval).isRoot());
+
+   const Index<3>::Key key = {1, 2, 1};
+   ASSERT_FALSE(std::get<0>(tree.get(key)));
+}
+
 TEST(IndexTreeTest, GetExistingSelfOrAncestor)
 {
    RefineToMaxLevel<2> refineToLevel{ 5 };
@@ -160,22 +174,31 @@ TEST(IndexTreeTest, GetExistingSelfOrAncestor)
 
    const auto& root = tree.getRoot();
 
-   ASSERT_TRUE(tree.contains(root));
+   ASSERT_TRUE(tree.contains(root.getKey()));
    const auto kids = root.refine();
    const auto kid = factory.addIfNew(kids[0]);
    const auto grandChildren = kid->refine();
    const Index<2> grandChild(grandChildren[0], factory.getFactory1());
 
-   const auto& found0 = tree.getExistingSelfOrAncestor(grandChild);
+   const auto& found0 = tree.getExistingSelfOrAncestor(grandChild.getKey());
    ASSERT_EQ(found0.getLevel(), 0);
 
    tree.refineLeaves(refineToLevel);
-   const auto& found1 = tree.getExistingSelfOrAncestor(grandChild);
+   const auto& found1 = tree.getExistingSelfOrAncestor(grandChild.getKey());
    ASSERT_EQ(found1.getLevel(), 1);
 
    tree.refineLeaves(refineToLevel);
-   const auto& found2 = tree.getExistingSelfOrAncestor(grandChild);
+   const auto& found2 = tree.getExistingSelfOrAncestor(grandChild.getKey());
    ASSERT_EQ(found2.getLevel(), 2);
+}
+
+
+TEST(IndexTreeTest, GetExistingSelfOrAncestor2)
+{
+   IndexTree<3> tree;
+   Index<3>::Key key = {3,4,5};
+   const auto& root = tree.getExistingSelfOrAncestor(key);
+   ASSERT_TRUE(root.isRoot());
 }
 
 TEST(IndexTreeTest, BalanceRoot)
