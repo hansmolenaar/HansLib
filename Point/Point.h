@@ -4,7 +4,6 @@
 #include "MyAssert.h"
 #include "Rational.h"
 
-#include <algorithm>
 #include <functional>
 
 template<typename T, int N>
@@ -37,6 +36,7 @@ public:
    }
 
    std::span<const T> data() const { return m_values; }
+   std::span< T> data()  { return m_values; }
 
 private:
    std::array<T, N>::iterator begin() { return m_values.begin(); }
@@ -50,7 +50,7 @@ template<typename T, int N>
 Point<T, N>::Point(const std::initializer_list<T>& values)
 {
    Utilities::MyAssert(values.size() == N);
-   std::copy(values.begin(), values.end(), m_values.begin());
+   str::copy(values, m_values.begin());
 }
 
 
@@ -73,7 +73,7 @@ template<typename T, int N>
 Point<T, N> Point<T, N>::operator*(T factor) const
 {
    Point<T, N> result;
-   std::transform(m_values.begin(), m_values.end(), result.begin(), [factor](T val) {return factor * val; });
+   str::transform(m_values, result.m_values.begin(), [factor](T val) {return factor * val; });
    return result;
 }
 
