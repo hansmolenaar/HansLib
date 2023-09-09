@@ -6,6 +6,7 @@
 #include <numeric>
 #include <limits>
 #include <cmath>
+#include <span>
 
 template<int N>
 class UnitVector
@@ -14,6 +15,7 @@ public:
    static std::unique_ptr<UnitVector<N>> Create(std::span<const double>);
    static std::unique_ptr<UnitVector<N>> Create(const Point<double, N>&);
    double operator[](int) const;
+   std::span<const double> data() const { return m_vector.data(); }
 
    double innerProduct(const Point<double, N>&) const;
 private:
@@ -59,11 +61,8 @@ std::unique_ptr<UnitVector<N>>  UnitVector<N>::Create(std::span<const double> co
 template<int N>
 Point<double, N> operator*(const UnitVector< N>& uv, double factor)
 {
-   Point<double, N> result;
-   for (int n = 0; n < N; ++n)
-   {
-      result[n] = uv[n] * factor;
-   }
+   std::array<double, N> result;
+   str::transform(uv.data(), result.begin(), [factor](auto value) {return factor * value; });
    return result;
 }
 

@@ -58,12 +58,9 @@ TEST(PointTest, PlusAssign)
 
 TEST(PointTest, Subscript)
 {
-   IntPoint2 p{ 1,2 };
-   p[0] = 3;
-   p[1] = 4;
-   const IntPoint2& cp = p;
-   ASSERT_EQ(cp[0], 3);
-   ASSERT_EQ(cp[1], 4);
+   const IntPoint2 p{ 1,2 };
+   ASSERT_EQ(p[0], 1);
+   ASSERT_EQ(p[1], 2);
 }
 
 
@@ -80,7 +77,6 @@ TEST(PointTest, Bounds)
    IntPoint2 p{ 1,2 };
    int i;
    ASSERT_ANY_THROW(i = p[2]);
-   ASSERT_ANY_THROW(p[2] = 0);
 }
 
 TEST(PointTest, HashIntPoint1)

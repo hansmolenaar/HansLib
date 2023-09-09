@@ -9,13 +9,12 @@
 template <int N>
 Point<double, N> GetRandomPoint()
 {
-   Point<double, N> result;
-   if (N >= 1) result[0] = std::numbers::pi;
-   if (N >= 2) result[1] = std::numbers::e;
-   if (N >= 3) result[2] = std::numbers::ln10;
-   if (N >= 4) result[3] = std::numbers::sqrt2;
-   if (N >= 5) throw MyException("GetRandomPoint() not yet implemted: " + std::to_string(N));
-   return result;
+   static std::array<double, 4> values{ std::numbers::pi, std::numbers::e, std::numbers::ln10, std::numbers::sqrt2 };
+   std::array<double, N> data;
+   static_assert (N < values.size());
+   std::copy_n(values.begin(), N, data.begin());
+
+   return data;
 }
 
 template<int N>

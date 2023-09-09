@@ -28,6 +28,7 @@ public:
    Point<T, N> operator*(T) const;
    Point<T, N>& operator+=(const Point<T, N>&);
    Point<T, N>& operator-=(const Point<T, N>&);
+   Point<T, N> operator-() const;
 
    friend Point<T, N> operator+(Point<T, N> lhs, const Point<T, N>& rhs)
    {
@@ -36,12 +37,9 @@ public:
    }
 
    std::span<const T> data() const { return m_values; }
-   std::span< T> data()  { return m_values; }
+   std::span< T> data() { return m_values; }
 
 private:
-   std::array<T, N>::iterator begin() { return m_values.begin(); }
-   std::array<T, N>::iterator end() { return m_values.end(); }
-
    std::array<T, N> m_values;
 };
 
@@ -74,6 +72,14 @@ Point<T, N> Point<T, N>::operator*(T factor) const
 {
    Point<T, N> result;
    str::transform(m_values, result.m_values.begin(), [factor](T val) {return factor * val; });
+   return result;
+}
+
+template<typename T, int N>
+Point<T, N> Point<T, N>::operator-() const
+{
+   Point<T, N> result;
+   str::transform(m_values, result.m_values.begin(), [](T value) {return -value; });
    return result;
 }
 
