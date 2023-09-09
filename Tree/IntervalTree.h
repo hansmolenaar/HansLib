@@ -22,8 +22,6 @@ namespace IntervalTree
       template<typename P>
       void refineUntilReady(P& predicate);
 
-      void balance();
-
       template<typename A>
       void foreachLeaf(A& action) const;
 
@@ -133,9 +131,5 @@ namespace IntervalTree
          key = Index<N>::GetParent(key);
       }
    }
-
-
-   template<>
-   void IndexTree<1>::balance();
 
 }

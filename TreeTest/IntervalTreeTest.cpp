@@ -5,6 +5,7 @@
 #include "IntervalTreeStatistics.h"
 #include "IntervalTreeAction.h"
 #include "IntervalTreeVtk.h"
+#include "IntervalTreeBalance.h"
 #include "Paraview.h"
 #include "Point.h"
 
@@ -112,27 +113,6 @@ TEST(IndexTreeTest, CubeToVtk)
    const auto str = tree.getRoot().toString();
    ASSERT_EQ(str, "((0, 1), (0, 1), (0, 1))");
 }
-
-TEST(IndexTreeTest, RefineAroundPoint)
-{
-   constexpr int dim = 2;
-   const  std::array<Rational, dim> point{ Rational{49, 100}, Rational{51, 100} };
-   RefineIfContainsPoint<dim> refinePoint{ point };
-   RefineToMaxLevel<dim> refineToLevel{ 5 };
-   auto doRefine = [&refinePoint, &refineToLevel](const Index<dim>& indx) {return refinePoint(indx) && refineToLevel(indx); };
-
-   IndexTree<dim> tree;
-   tree.refineUntilReady(doRefine);
-
-   const auto data = GetVtkData(tree);
-   Paraview::Write("IndexTreeTest_RefineAroundPoint", *data);
-   const auto& statistics = GetStatistics(tree);
-   const auto tmp = statistics.toString();
-   const Statistics expect{ 21, {0, 3, 3, 3, 3, 4} };
-   ASSERT_EQ(GetStatistics(tree), expect);
-}
-
-
 TEST(IndexTreeTest, Contains)
 {
    IndexTree<2> tree;
@@ -198,25 +178,4 @@ TEST(IndexTreeTest, GetExistingSelfOrAncestor2)
    Index<3>::Key key = { 3,4,5 };
    const auto& root = tree.getExistingSelfOrAncestor(key);
    ASSERT_TRUE(root.isRoot());
-}
-
-TEST(IndexTreeTest, BalanceRoot)
-{
-   IndexTree<1> tree;
-   tree.balance();
-   const Statistics expect{ 1, {1} };
-   ASSERT_EQ(GetStatistics(tree), expect);
-}
-
-TEST(IndexTreeTest, BalanceTree1)
-{
-   IndexTree<1> tree;
-   RefineIfContainsPoint<1> refinePoint{ Rational{49, 100} };
-   tree.refineLeaves(refinePoint);
-   tree.refineLeaves(refinePoint);
-   tree.refineLeaves(refinePoint);
-
-   ASSERT_EQ(GetStatistics(tree).toString(), "7, {0, 1, 1, 2}");
-   tree.balance();
-   ASSERT_EQ(GetStatistics(tree).toString(), "9, {0, 0, 3, 2}");
 }

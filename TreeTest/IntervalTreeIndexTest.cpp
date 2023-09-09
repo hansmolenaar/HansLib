@@ -17,11 +17,11 @@ TEST(IntervalTreeIndexTest, Index_basics)
    ASSERT_EQ(index->getLevel(), 3);
    ASSERT_FALSE(Index<2>::IsRoot(index->getKey()));
 
-   const auto rv0 = index->getInterval(0);
+   const auto& rv0 = index->getInterval(0);
    ASSERT_EQ(rv0.getLower(), intv0.getLower());
    ASSERT_EQ(rv0.getUpper(), intv0.getUpper());
 
-   const auto rv1 = index->getInterval(1);
+   const auto& rv1 = index->getInterval(1);
    ASSERT_EQ(rv1.getLower(), intv1.getLower());
    ASSERT_EQ(rv1.getUpper(), intv1.getUpper());
 

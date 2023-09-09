@@ -11,9 +11,15 @@ namespace IntervalTree
    };
 
    template<int N>
-   const std::array<AdjacentDirection, 2*N>& GetAdjacentNeighbors();
+   const std::array<AdjacentDirection, 2 * N>& GetAdjacentNeighbors();
 
    template<>
    const std::array<AdjacentDirection, 2>& GetAdjacentNeighbors<1>();
+
+   template<>
+   const std::array<AdjacentDirection, 4>& GetAdjacentNeighbors<2>();
+
+   template<>
+   const std::array<AdjacentDirection, 6>& GetAdjacentNeighbors<3>();
 }
 
