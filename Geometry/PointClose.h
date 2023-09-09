@@ -10,7 +10,7 @@ class PointClose : public IGeometryPredicate<T, N>
 public:
    bool operator ()(const Point<T, N>&, const Point<T, N>&) const;
    bool SamePoints(Point<T, N> p0, Point<T, N> p1) const override;
-   double getSmallLengthInDirection(int n) const override;
+   T getSmallLengthInDirection(int n) const override;
 private:
    double eps = 1.0e-10;
 };
@@ -33,9 +33,9 @@ bool PointClose<T, N>::SamePoints(Point<T, N> p0, Point<T, N> p1) const
 }
 
 template<typename T, int N>
-double PointClose<T, N>::getSmallLengthInDirection(int n) const
+T PointClose<T, N>::getSmallLengthInDirection(int n) const
 {
    Utilities::MyAssert(n >= 0);
-   Utilities:: MyAssert(n < N);
-   return eps;
- }
+   Utilities::MyAssert(n < N);
+   return static_cast<T>(eps);
+}
