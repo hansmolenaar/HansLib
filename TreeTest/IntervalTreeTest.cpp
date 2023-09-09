@@ -4,6 +4,7 @@
 #include "IntervalTreeRefinePredicate.h"
 #include "IntervalTreeStatistics.h"
 #include "IntervalTreeAction.h"
+#include "IntervalTreeVtk.h"
 #include "Paraview.h"
 #include "Point.h"
 
@@ -65,7 +66,7 @@ TEST(IndexTreeTest, refineUntilReady)
 TEST(IndexTreeTest, Level0ToVtk)
 {
    const IndexTree<2> tree;
-   const auto data = tree.getVtkData();
+   const auto data = GetVtkData(tree);
    ASSERT_EQ(data->getNumNodes(), 4);
    ASSERT_EQ(data->getNumCells(), 1);
    ASSERT_EQ(data->getNumCellData(), 0);
@@ -78,7 +79,7 @@ TEST(IndexTreeTest, Level1ToVtk)
    IndexTree<2> tree;
    RefineToMaxLevel<2> doRefine{ 1 };
    tree.refineUntilReady(doRefine);
-   const auto data = tree.getVtkData();
+   const auto data = GetVtkData(tree);
    ASSERT_EQ(data->getNumNodes(), 9);
    ASSERT_EQ(data->getNumCells(), 4);
    ASSERT_EQ(data->getNumCellData(), 0);
@@ -92,7 +93,7 @@ TEST(IndexTreeTest, Level2ToVtk)
    IndexTree<1> tree;
    RefineToMaxLevel<1> doRefine{ 2 };
    tree.refineUntilReady(doRefine);
-   const auto data = tree.getVtkData();
+   const auto data = GetVtkData(tree);
    ASSERT_EQ(data->getNumNodes(), 5);
    ASSERT_EQ(data->getNumCells(), 4);
    ASSERT_EQ(data->getNumCellData(), 0);
@@ -103,7 +104,7 @@ TEST(IndexTreeTest, Level2ToVtk)
 TEST(IndexTreeTest, CubeToVtk)
 {
    IndexTree<3> tree;
-   const auto data = tree.getVtkData();
+   const auto data = GetVtkData(tree);
    ASSERT_EQ(data->getNumNodes(), 8);
    ASSERT_EQ(data->getNumCells(), 1);
    ASSERT_EQ(data->getNumCellData(), 0);
@@ -123,7 +124,7 @@ TEST(IndexTreeTest, RefineAroundPoint)
    IndexTree<dim> tree;
    tree.refineUntilReady(doRefine);
 
-   const auto data = tree.getVtkData();
+   const auto data = GetVtkData(tree);
    Paraview::Write("IndexTreeTest_RefineAroundPoint", *data);
    const auto& statistics = GetStatistics(tree);
    const auto tmp = statistics.toString();

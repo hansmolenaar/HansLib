@@ -24,4 +24,11 @@ namespace IntervalTree
       std::map<int, int> Count;
    };
 
+   template<int N>
+   struct ActionCollectLeaves
+   {
+      void operator()(const Index<N>& index) { Leaves.push_back(&index); };
+      std::vector<const Index<N>*> Leaves;
+   };
+
 }
