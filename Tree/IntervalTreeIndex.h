@@ -3,7 +3,7 @@
 #include "IntervalTreeIndex1Factory.h"
 #include "BoolContainer.h"
 #include "MyAssert.h"
-
+#include "IntervalTreeAdjacentDirection.h"
 #include <boost/functional/hash.hpp>
 
 #include <vector>

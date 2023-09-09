@@ -1,6 +1,7 @@
 #include "IntervalTree.h"
 #include "MyException.h"
 #include "VtkData.h"
+#include "IntervalTreeAdjacentDirection.h"
 
 #include <sstream>
 #include <cmath>
@@ -12,21 +13,17 @@ namespace
    template<int N>
    void markUnbalancedLeaves(const IndexTree<N>& tree, const Index<N>& indx, std::unordered_set<typename Index<N>::Key>& toRefine)
    {
-      for (int dir = 0; dir < N; ++dir)
+      for (const auto adjDir : GetAdjacentNeighbors(N))
       {
-         for (bool isPos : {false, true})
-         {
-            const AdjacentDirection adjDir{ dir, isPos };
-            const auto [exist, ngbKey] = indx.getAdjacentInDir(adjDir);
+         const auto [exist, ngbKey] = indx.getAdjacentInDir(adjDir);
             if (exist)
             {
                const auto ngbExisting = tree.getExistingSelfOrAncestor(ngbKey);
-               if (indx.getLevel() - ngbExisting.getLevel() > 1)
-               {
-                  toRefine.insert(ngbExisting.getKey());
-               }
+                  if (indx.getLevel() - ngbExisting.getLevel() > 1)
+                  {
+                     toRefine.insert(ngbExisting.getKey());
+                  }
             }
-         }
       }
    }
 
