@@ -30,7 +30,7 @@ TEST(IntervalTreeBalanceTest, BalanceTree1)
 }
 
 
-TEST(IntervalTreeBalanceTest, RefineAroundPoint)
+TEST(IntervalTreeBalanceTest, RefineAroundPoint2)
 {
    constexpr int dim = 2;
    const  std::array<Rational, dim> point{ Rational{49, 100}, Rational{51, 100} };
@@ -47,7 +47,27 @@ TEST(IntervalTreeBalanceTest, RefineAroundPoint)
 
    Balance(tree);
 
-   //Paraview::Write("IndexTreeTest_RefineAroundPoint", *GetVtkData(tree));
+   //Paraview::Write("IntervalTreeBalanceTest_RefineAroundPoint2", *GetVtkData(tree));
    ASSERT_EQ(GetStatistics(tree).toString(), "53, {0, 0, 12, 13, 11, 4}");
+}
+
+TEST(IntervalTreeBalanceTest, RefineAroundPoint3)
+{
+   constexpr int dim = 3;
+   const  std::array<Rational, dim> point{ Rational{49, 100}, Rational{51, 100}, Rational{49, 100} };
+   RefineIfContainsPoint<dim> refinePoint{ point };
+   RefineToMaxLevel<dim> refineToLevel{ 5 };
+   auto doRefine = [&refinePoint, &refineToLevel](const Index<dim>& indx) {return refinePoint(indx) && refineToLevel(indx); };
+
+   IndexTree<dim> tree;
+   tree.refineUntilReady(doRefine);
+
+   const auto& statistics = GetStatistics(tree);
+   ASSERT_EQ(GetStatistics(tree).toString(), "41, {0, 7, 7, 7, 7, 8}");
+
+   Balance(tree);
+
+   //Paraview::Write("IntervalTreeBalanceTest_RefineAroundPoint3", *GetVtkData(tree));
+   ASSERT_EQ(GetStatistics(tree).toString(), "169, {0, 0, 57, 52, 31, 8}");
 }
 
