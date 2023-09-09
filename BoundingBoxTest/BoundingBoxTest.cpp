@@ -67,7 +67,7 @@ TEST(BoundingBoxTest, CreateFromListTransformed)
 
 TEST(BoundingBoxTest, FromPoints)
 {
-   std::vector<IntPoint1> values{ {2},{1} };
+   std::vector<IntPoint1> values{ IntPoint1{2},IntPoint1{1} };
    const auto bb = BoundingBox<int, 1>::CreateFromList(values);
    ASSERT_EQ(bb.getInterval(0).getLower(), 1);
    ASSERT_EQ(bb.getInterval(0).getUpper(), 2);
@@ -75,7 +75,7 @@ TEST(BoundingBoxTest, FromPoints)
 
 TEST(BoundingBoxTest, LowerUpper)
 {
-   const auto bb = BoundingBox<int, 2>::CreateFromList(std::initializer_list<IntPoint2>{ {2, 4}, { 3,1 } });
+   const auto bb = BoundingBox<int, 2>::CreateFromList(std::initializer_list<IntPoint2>{ IntPoint2{2, 4}, IntPoint2{ 3,1 } });
    ASSERT_EQ(bb.getLower(), IntPoint2({ 2, 1 }));
    ASSERT_EQ(bb.getUpper(), IntPoint2({ 3, 4 }));
 }
@@ -83,7 +83,7 @@ TEST(BoundingBoxTest, LowerUpper)
 
 TEST(BoundingBoxTest, Contains)
 {
-   const auto bb = BoundingBox<int, 2>::CreateFromList(std::initializer_list<IntPoint2>{ {2, 4}, { 3,1 } });
+   const auto bb = BoundingBox<int, 2>::CreateFromList(std::initializer_list<IntPoint2>{ IntPoint2{2, 4}, IntPoint2{ 3,1 } });
    ASSERT_TRUE(bb.contains(IntPoint2({ 2,4 })));
    ASSERT_FALSE(bb.contains(IntPoint2({ 2,6 })));
    ASSERT_FALSE(bb.contains(IntPoint2({ 6,1 })));
@@ -91,7 +91,7 @@ TEST(BoundingBoxTest, Contains)
 
 TEST(BoundingBoxTest, LowerUpperDim)
 {
-   const auto bb = BoundingBox<int, 2>::CreateFromList(std::initializer_list<IntPoint2>{ {2, 4}, { 3,1 } });
+   const auto bb = BoundingBox<int, 2>::CreateFromList(std::initializer_list<IntPoint2>{ IntPoint2{2, 4}, IntPoint2{ 3,1 } });
    ASSERT_EQ(bb.getLower(0), 2);
    ASSERT_EQ(bb.getUpper(0), 3);
    ASSERT_EQ(bb.getLower(1), 1);

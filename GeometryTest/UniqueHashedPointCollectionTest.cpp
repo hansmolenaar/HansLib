@@ -32,7 +32,7 @@ TEST(UniqueHashedPointCollectionTest, Rat2)
 {
    UniqueHashedPointCollection<Rational, 2> collection;
    ASSERT_EQ(collection.getNumPoints(), 0);
-   for (const auto& point : std::vector<RatPoint2>{ {1,2}, {1,3}, {2,1}, {1,3} })
+   for (const auto& point :{ RatPoint2{1,2}, RatPoint2{1,3}, RatPoint2{2,1}, RatPoint2{1,3} })
    {
       collection.addIfNew(point);
    }

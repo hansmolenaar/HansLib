@@ -63,7 +63,7 @@ Point<double, N> operator*(const UnitVector< N>& uv, double factor)
 {
    std::array<double, N> result;
    str::transform(uv.data(), result.begin(), [factor](auto value) {return factor * value; });
-   return result;
+   return Point<double, N>{ result };
 }
 
 

@@ -52,7 +52,7 @@ TEST(KdTreeTest, Vertex)
 
 TEST(KdTreeTest, TestPreSorting)
 {
-   const std::vector<IntPoint2> points{ { 0, 1},{ 2, 0} };
+   const std::vector<IntPoint2> points{ IntPoint2{ 0, 1},IntPoint2{ 2, 0} };
    const PreSorting<int, 2> preSorting0(0, points);
    std::vector<KdTreePosition> order{ 0,1 };
    std::sort(order.begin(), order.end(), [&preSorting0](KdTreePosition p0, KdTreePosition p1) {return preSorting0.less(p0, p1); });
@@ -67,7 +67,7 @@ TEST(KdTreeTest, TestPreSorting)
 
 TEST(KdTreeTest, TestPreSorting2)
 {
-   const std::vector<IntPoint2> points{ { 0, 2},{ 0, 1} };
+   const std::vector<IntPoint2> points{ IntPoint2{ 0, 2},IntPoint2{ 0, 1} };
    const PreSorting<int, 2> preSorting0(0, points);
    std::vector<KdTreePosition> order{ 0,1 };
    std::sort(order.begin(), order.end(), [&preSorting0](KdTreePosition p0, KdTreePosition p1) {return preSorting0.less(p0, p1); });
@@ -77,7 +77,7 @@ TEST(KdTreeTest, TestPreSorting2)
 
 TEST(KdTreeTest, TestPreSorting3)
 {
-   const std::vector<IntPoint2> points{ { 2, 0},{ 0, 0} };
+   const std::vector<IntPoint2> points{ IntPoint2{ 2, 0},IntPoint2{ 0, 0} };
    const PreSorting<int, 2> preSorting0(1, points);
    std::vector<KdTreePosition> order{ 0,1 };
    std::sort(order.begin(), order.end(), [&preSorting0](KdTreePosition p0, KdTreePosition p1) {return preSorting0.less(p0, p1); });
@@ -107,7 +107,7 @@ TEST(KdTreeTest, SingleElement)
    //var searchRange = BoundingBox<int>.CreateFromSinglePoint(new int[] { 0 });
    auto searchRange = BoundingBox<int, 1>::Create(std::vector<int>{0});
    ASSERT_TRUE(tree->FindInRange(searchRange).empty());
-   searchRange = BoundingBox<int, 1>::CreateFromList(std::vector<IntPoint1>{ {0}, { 20 }});
+   searchRange = BoundingBox<int, 1>::CreateFromList(std::vector<IntPoint1>{ IntPoint1{0}, IntPoint1{ 20 }});
    auto found = tree->FindInRange(searchRange);
    ASSERT_EQ(found.size(), 1);
    ASSERT_EQ(found.front(), 0);
@@ -174,27 +174,27 @@ TEST(KdTreeTest, FindInRange2DFromExample)
 
    auto tree = KdTree<int, 2>::Create(points);
 
-   auto searchRange = BoundingBox<int, 2>::CreateFromList(std::vector<IntPoint2>{ { 0, 0 }, { 6, 5 } });
+   auto searchRange = BoundingBox<int, 2>::CreateFromList(std::vector<IntPoint2>{ IntPoint2{ 0, 0 }, IntPoint2{ 6, 5 } });
    auto found = tree->FindInRange(searchRange);
    str::sort(found);
    ASSERT_TRUE(str::equal(std::vector<KdTreePosition> { 0, 1 }, found));
 
-   searchRange = BoundingBox<int, 2>::CreateFromList(std::vector<IntPoint2>{ { 0, 5 }, { 10, 10 } });
+   searchRange = BoundingBox<int, 2>::CreateFromList(std::vector<IntPoint2>{ IntPoint2{ 0, 5 }, IntPoint2{ 10, 10 } });
    found = tree->FindInRange(searchRange);
    str::sort(found);
    ASSERT_TRUE(str::equal(std::vector<KdTreePosition> { 2, 3 }, found));
 
-   searchRange = BoundingBox<int, 2>::CreateFromList(std::vector<IntPoint2>{ { 6, 0 }, { 10, 4 } });
+   searchRange = BoundingBox<int, 2>::CreateFromList(std::vector<IntPoint2>{ IntPoint2{ 6, 0 }, IntPoint2{ 10, 4 } });
    found = tree->FindInRange(searchRange);
    str::sort(found);
    ASSERT_TRUE(str::equal(std::vector<KdTreePosition> { 4, 5 }, found));
 
-   searchRange = BoundingBox<int, 2>::CreateFromList(std::vector<IntPoint2>{ { 0, 0  }, { 10, 3 } });
+   searchRange = BoundingBox<int, 2>::CreateFromList(std::vector<IntPoint2>{ IntPoint2{ 0, 0  }, IntPoint2{ 10, 3 } });
    found = tree->FindInRange(searchRange);
    str::sort(found);
    ASSERT_TRUE(str::equal(std::vector<KdTreePosition> { 0, 4, 5 }, found));
 
-   searchRange = BoundingBox<int, 2>::CreateFromList(std::vector<IntPoint2>{ { 0, 0  }, { 10, 4 } });
+   searchRange = BoundingBox<int, 2>::CreateFromList(std::vector<IntPoint2>{ IntPoint2{ 0, 0  }, IntPoint2{ 10, 4 } });
    found = tree->FindInRange(searchRange);
    str::sort(found);
    ASSERT_TRUE(str::equal(std::vector<KdTreePosition> { 0, 1, 4, 5 }, found));

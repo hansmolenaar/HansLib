@@ -14,7 +14,7 @@ Point<double, N> GetRandomPoint()
    static_assert (N < values.size());
    std::copy_n(values.begin(), N, data.begin());
 
-   return data;
+   return Point<double, N>(data);
 }
 
 template<int N>
