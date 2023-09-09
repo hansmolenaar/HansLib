@@ -161,7 +161,7 @@ TEST(IndexTreeTest, Get)
    ASSERT_TRUE(std::get<0>(retval));
    ASSERT_TRUE(std::get<1>(retval).isRoot());
 
-   const Index<3>::Key key = {1, 2, 1};
+   const Index<3>::Key key = { 1, 2, 1 };
    ASSERT_FALSE(std::get<0>(tree.get(key)));
 }
 
@@ -170,33 +170,30 @@ TEST(IndexTreeTest, GetExistingSelfOrAncestor)
    RefineToMaxLevel<2> refineToLevel{ 5 };
 
    IndexTree<2> tree;
-   IndexFactory<2>& factory = tree.getFactory();
 
    const auto& root = tree.getRoot();
-
    ASSERT_TRUE(tree.contains(root.getKey()));
-   const auto kids = root.refine();
-   const auto kid = factory.addIfNew(kids[0]);
-   const auto grandChildren = kid->refine();
-   const Index<2> grandChild(grandChildren[0], factory.getFactory1());
 
-   const auto& found0 = tree.getExistingSelfOrAncestor(grandChild.getKey());
-   ASSERT_EQ(found0.getLevel(), 0);
+   const Index<2>::Key key{ 3, 6 };
+   const auto& indexAtLevel0 = tree.getExistingSelfOrAncestor(key);
+   Index<2>::Key expect{ 0, 0 };
+   ASSERT_EQ(indexAtLevel0.getKey(), expect);
 
    tree.refineLeaves(refineToLevel);
-   const auto& found1 = tree.getExistingSelfOrAncestor(grandChild.getKey());
-   ASSERT_EQ(found1.getLevel(), 1);
+   const auto& indexAtLevel1 = tree.getExistingSelfOrAncestor(key);
+   expect = { 1, 2 };
+   ASSERT_EQ(indexAtLevel1.getKey(), expect);
 
    tree.refineLeaves(refineToLevel);
-   const auto& found2 = tree.getExistingSelfOrAncestor(grandChild.getKey());
-   ASSERT_EQ(found2.getLevel(), 2);
+   const auto& indexAtLevel2 = tree.getExistingSelfOrAncestor(key);
+   ASSERT_EQ(indexAtLevel2.getKey(), key);
 }
 
 
 TEST(IndexTreeTest, GetExistingSelfOrAncestor2)
 {
    IndexTree<3> tree;
-   Index<3>::Key key = {3,4,5};
+   Index<3>::Key key = { 3,4,5 };
    const auto& root = tree.getExistingSelfOrAncestor(key);
    ASSERT_TRUE(root.isRoot());
 }

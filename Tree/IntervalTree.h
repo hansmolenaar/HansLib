@@ -42,10 +42,9 @@ namespace IntervalTree
       const Index<N>& getExistingSelfOrAncestor(typename  Index<N>::Key key) const;
       std::tuple<bool, const Index<N>&> get(typename const Index<N>::Key& key) const;
 
-      IndexFactory<N>& getFactory() const;
-   private:
 
-      mutable IndexFactory<N> m_factory;
+   private:
+      IndexFactory<N> m_factory;
       std::unordered_map < const Index<N>*, std::array< const Index<N>*, IntervalTree::NumKids<N>>> m_tree;
       std::unordered_set<const Index<N>*> m_leaves;
       const Index<N>* m_root;
@@ -162,12 +161,6 @@ namespace IntervalTree
       }
 
       return result;
-   }
-
-   template<int N>
-   IndexFactory<N>& IndexTree<N>::getFactory() const
-   {
-      return m_factory;
    }
 
    template<>
