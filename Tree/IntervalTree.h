@@ -3,27 +3,18 @@
 #include "IntervalTreeIndexFactory.h"
 #include "IntervalTreeAction.h"
 #include "VtkData.h"
-
-#include <map>
+#include <unordered_map>
 #include <unordered_set>
 
 namespace IntervalTree
 {
-   struct Statistics
-   {
-      int Size = -1;
-      std::vector<int> NumberOfLeavesPerLevel;
-      std::string toString() const;
-      auto operator<=>(const Statistics&) const = default;
-   };
-
+  
    template<int N>
    class IndexTree
    {
    public:
       IndexTree();
       const Index<N>& getRoot() const;
-      Statistics getStatistics() const;
       std::unique_ptr<Vtk::VtkData> getVtkData() const;
 
       template<typename P>
@@ -42,6 +33,7 @@ namespace IntervalTree
       const Index<N>& getExistingSelfOrAncestor(typename  Index<N>::Key key) const;
       std::tuple<bool, const Index<N>&> get(typename const Index<N>::Key& key) const;
 
+      size_t size() const;
 
    private:
       IndexFactory<N> m_factory;
@@ -56,10 +48,17 @@ namespace IntervalTree
       m_leaves.insert(m_root);
    }
 
+
    template<int N>
    const Index<N>& IndexTree<N>::getRoot() const
    {
       return *m_root;
+   }
+
+   template<int N>
+   size_t IndexTree<N>::size() const
+   {
+      return m_tree.size() + m_leaves.size();
    }
 
    template<int N>
@@ -136,32 +135,6 @@ namespace IntervalTree
       }
    }
 
-   template<int N>
-   Statistics IndexTree<N>::getStatistics() const
-   {
-      Statistics result;
-
-      std::unordered_set<const Index<N>*> keys;
-      for (const auto& itr : m_tree)
-      {
-         keys.insert(itr.first);
-      }
-
-      std::map<int, int> count;
-      for (auto itr : m_leaves)
-      {
-         count[itr->getLevel()] += 1;
-      }
-      result.Size = static_cast<int>(keys.size() + m_leaves.size());
-
-      result.NumberOfLeavesPerLevel = std::vector<int>(count.rbegin()->first + 1, 0);
-      for (const auto& itr : count)
-      {
-         result.NumberOfLeavesPerLevel.at(itr.first) = itr.second;
-      }
-
-      return result;
-   }
 
    template<>
    void IndexTree<1>::balance();

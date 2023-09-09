@@ -1,6 +1,5 @@
 #pragma once
-
-#include <span>
+#include <array>
 
 namespace IntervalTree
 {
@@ -8,8 +7,13 @@ namespace IntervalTree
    {
       int Direction;
       bool UsePositiveDirection;
+      auto operator<=>(const AdjacentDirection&) const = default;
    };
 
-   std::span<AdjacentDirection> GetAdjacentNeighbors(int N);
+   template<int N>
+   const std::array<AdjacentDirection, 2*N>& GetAdjacentNeighbors();
+
+   template<>
+   const std::array<AdjacentDirection, 2>& GetAdjacentNeighbors<1>();
 }
 

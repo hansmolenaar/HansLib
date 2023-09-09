@@ -2,6 +2,7 @@
 
 #include "Rational.h"
 #include "IntervalTree.h"
+#include <map>
 
 namespace IntervalTree
 {
@@ -14,6 +15,13 @@ namespace IntervalTree
       void reset() { m_count = 0; }
    private:
       int m_count = 0;
+   };
+
+   template<int N>
+   struct ActionCountPerLevel
+   {
+      void operator()(const Index<N>& index) { Count[index.getLevel()] += 1; };
+      std::map<int, int> Count;
    };
 
 }

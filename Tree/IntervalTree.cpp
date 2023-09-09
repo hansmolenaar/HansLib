@@ -13,7 +13,7 @@ namespace
    template<int N>
    void markUnbalancedLeaves(const IndexTree<N>& tree, const Index<N>& indx, std::unordered_set<typename Index<N>::Key>& toRefine)
    {
-      for (const auto adjDir : GetAdjacentNeighbors(N))
+      for (const auto adjDir : GetAdjacentNeighbors<N>())
       {
          const auto [exist, ngbKey] = indx.getAdjacentInDir(adjDir);
             if (exist)
@@ -37,24 +37,6 @@ namespace
    }
 }
 
-std::string Statistics::toString() const
-{
-   std::ostringstream result;
-   result << Size;
-   result << ", {";
-   bool first = true;
-   for (auto n : NumberOfLeavesPerLevel)
-   {
-      if (!first)
-      {
-         result << ", ";
-      }
-      first = false;
-      result << n;
-   }
-   result << "}";
-   return result.str();
-}
 
 
 std::unique_ptr< Vtk::VtkData> IndexTree<1>::getVtkData() const

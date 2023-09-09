@@ -2,6 +2,7 @@
 
 #include "IntervalTree.h"
 #include "IntervalTreeRefinePredicate.h"
+#include "IntervalTreeStatistics.h"
 #include "IntervalTreeAction.h"
 #include "Paraview.h"
 #include "Point.h"
@@ -15,7 +16,7 @@ TEST(IndexTreeTest, DefaultConsturctor)
    ASSERT_EQ(root.getLevel(), 0);
    ASSERT_EQ(root.toString(), "((0, 1), (0, 1))");
 
-   const auto& statistics = tree.getStatistics();
+   const auto& statistics = GetStatistics<2>(tree);
    const Statistics expect{ 1, {1} };
    ASSERT_EQ(statistics, expect);
 }
@@ -37,7 +38,7 @@ TEST(IndexTreeTest, RefineOneLevel)
    ASSERT_EQ(action(), 2);
 
    Statistics expect{ 3, { 0, 2} };
-   ASSERT_EQ(tree.getStatistics(), expect);
+   ASSERT_EQ(GetStatistics(tree), expect);
 
    numRefined = tree.refineLeaves(doRefine2);
    ASSERT_EQ(numRefined, 2);
@@ -46,7 +47,7 @@ TEST(IndexTreeTest, RefineOneLevel)
    ASSERT_EQ(action(), 4);
 
    expect = { 7, { 0, 0, 4} };
-   ASSERT_EQ(tree.getStatistics(), expect);
+   ASSERT_EQ(GetStatistics(tree), expect);
 }
 
 
@@ -124,10 +125,10 @@ TEST(IndexTreeTest, RefineAroundPoint)
 
    const auto data = tree.getVtkData();
    Paraview::Write("IndexTreeTest_RefineAroundPoint", *data);
-   const auto& statistics = tree.getStatistics();
+   const auto& statistics = GetStatistics(tree);
    const auto tmp = statistics.toString();
    const Statistics expect{ 21, {0, 3, 3, 3, 3, 4} };
-   ASSERT_EQ(tree.getStatistics(), expect);
+   ASSERT_EQ(GetStatistics(tree), expect);
 }
 
 
@@ -203,7 +204,7 @@ TEST(IndexTreeTest, BalanceRoot)
    IndexTree<1> tree;
    tree.balance();
    const Statistics expect{ 1, {1} };
-   ASSERT_EQ(tree.getStatistics(), expect);
+   ASSERT_EQ(GetStatistics(tree), expect);
 }
 
 TEST(IndexTreeTest, BalanceTree1)
@@ -214,7 +215,7 @@ TEST(IndexTreeTest, BalanceTree1)
    tree.refineLeaves(refinePoint);
    tree.refineLeaves(refinePoint);
 
-   ASSERT_EQ(tree.getStatistics().toString(), "7, {0, 1, 1, 2}");
+   ASSERT_EQ(GetStatistics(tree).toString(), "7, {0, 1, 1, 2}");
    tree.balance();
-   ASSERT_EQ(tree.getStatistics().toString(), "9, {0, 0, 3, 2}");
+   ASSERT_EQ(GetStatistics(tree).toString(), "9, {0, 0, 3, 2}");
 }
