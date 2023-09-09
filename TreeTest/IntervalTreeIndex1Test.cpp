@@ -83,6 +83,7 @@ TEST(IntervalTreeIndex1Test, CreateRoot)
 {
    const Index1 root = Index1::CreateRoot();
    ASSERT_TRUE(root.isRoot());
+   ASSERT_TRUE(Index1::IsRoot(root.getKey()));
    ASSERT_EQ(root.getLevel(), 0);
    ASSERT_EQ(root.getPositionInLevel(), 0);
    ASSERT_EQ(root.getMeasure(), Rational(1, 1));
@@ -273,7 +274,7 @@ TEST(IntervalTreeIndex1Test, DecomposeKey)
 
 TEST(IntervalTreeIndex1Test, DecomposeKey2)
 {
-   for (int key = 0; key < 1 << 10; ++key)
+   for (Index1::Key key = 0; key < 1 << 10; ++key)
    {
       const auto [level, pos] = Index1::decomposeKey(key);
       ASSERT_EQ(Index1::composeKey(level, pos), key);
@@ -283,11 +284,23 @@ TEST(IntervalTreeIndex1Test, DecomposeKey2)
 
 TEST(IntervalTreeIndex1Test, CreateRoundTrip)
 {
-   for (int key = 0; key < 1 << 10; ++key)
+   for (Index1::Key key = 0; key < 1 << 10; ++key)
    {
       const auto index1 = Index1::CreateFromKey(key);
       const auto retval = Index1::Create(index1.getInterval());
       ASSERT_EQ(retval.getKey(), key);
       ASSERT_EQ(index1, retval);
+   }
+}
+
+
+TEST(IntervalTreeIndex1Test, GetParentKey)
+{
+   for (Index1::Key key = 0; key <  10; ++key)
+   {
+      const auto parent = Index1::CreateFromKey(key);
+      const auto kids = parent.refine();
+      ASSERT_EQ(Index1::GetParentKey(kids[0].getKey()), key);
+      ASSERT_EQ(Index1::GetParentKey(kids[1].getKey()), key);
    }
 }

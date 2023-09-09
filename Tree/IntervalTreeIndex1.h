@@ -25,8 +25,8 @@ namespace IntervalTree
       int getPositionInLevel() const;
 
       Key getKey() const;
-      static std::tuple<Level, int> decomposeKey(int key);
-      static int composeKey(Level level, int positionInLevel);
+      static std::tuple<Level, int> decomposeKey(Key key);
+      static Key composeKey(Level level, int positionInLevel);
       const Interval<Rational>& getInterval() const;
 
 
@@ -35,6 +35,8 @@ namespace IntervalTree
 
       Rational getMeasure() const;
       std::string toString() const;
+
+      static bool IsRoot(Key key);
       bool isRoot() const;
       Rational getCenter() const;
       Index1 getSibling() const;
@@ -43,7 +45,7 @@ namespace IntervalTree
 
       Index1 getParent() const;
       Index1::Key getParentKey() const;
-      static Index1::Key getParentKey(Index1::Key);
+      static Index1::Key GetParentKey(Index1::Key);
 
    private:
 

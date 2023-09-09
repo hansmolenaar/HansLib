@@ -29,8 +29,13 @@ namespace IntervalTree
       std::array<Key, IntervalTree::NumKids<N> > refine() const;
       Rational getMeasure() const;
       std::string toString() const;
+
+      static bool IsRoot(const Key& key);
       bool isRoot() const;
+
+      static Key GetParent(const Key& key);
       Index<N> getParent() const;
+
       std::tuple<bool, Key> getAdjacentInDir(AdjacentDirection direction) const;
 
       std::array<std::array<Rational, N>, NumKids<N>> getVerticesInVtkOrder() const;
@@ -167,9 +172,24 @@ namespace IntervalTree
    }
 
    template<int N>
+    bool Index<N>::IsRoot(const Index<N>::Key& key)
+   {
+       return str::all_of(key, Index1::IsRoot);
+   }
+
+   template<int N>
    bool Index<N>::isRoot() const
    {
       return getLevel() == 0;
+   }
+
+   template<int N>
+   Index<N>::Key Index<N>::GetParent(const Index<N>::Key& key)
+   {
+      Utilities::MyAssert(!Index<N>::IsRoot(key));
+      Index<N>::Key result;
+      str::transform(key, result.begin(), Index1::GetParentKey);
+      return result;
    }
 
    template<int N>

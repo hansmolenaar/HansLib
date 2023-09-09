@@ -15,6 +15,7 @@ TEST(IntervalTreeIndexTest, Index_basics)
 
    const auto* index = factory.addIfNew({ key0, key1 });
    ASSERT_EQ(index->getLevel(), 3);
+   ASSERT_FALSE(Index<2>::IsRoot(index->getKey()));
 
    const auto rv0 = index->getInterval(0);
    ASSERT_EQ(rv0.getLower(), intv0.getLower());
@@ -33,7 +34,11 @@ TEST(IntervalTreeIndexTest, Index_refine)
 {
    IndexFactory<2> factory;
    const auto* root = factory.getRoot();
+   ASSERT_TRUE(Index<2>::IsRoot(root->getKey()));
    const auto kids = factory.refine(*root);
+
+   ASSERT_FALSE(Index<2>::IsRoot(kids[0]->getKey()));
+   ASSERT_FALSE(Index<2>::IsRoot(kids[1]->getKey()));
 
    ASSERT_EQ(kids[0]->getInterval(0), Interval<Rational>({ 0,1 }, { 1,2 }));
    ASSERT_EQ(kids[0]->getInterval(1), Interval<Rational>({ 0,1 }, { 1,2 }));
@@ -68,6 +73,7 @@ TEST(IntervalTreeIndexTest, GetParent)
    ASSERT_FALSE(index.isRoot());
    const auto parent = index.getParent();
    ASSERT_TRUE(parent.isRoot());
+   ASSERT_TRUE(Index<2>::IsRoot(Index<2>::GetParent(index.getKey())));
 }
 
 

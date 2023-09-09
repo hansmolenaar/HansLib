@@ -91,7 +91,7 @@ int Index1::getPositionInLevel() const
    return m_positionInLevel;
 }
 
-std::tuple<Level, int> Index1::decomposeKey(int key)
+std::tuple<Level, int> Index1::decomposeKey(Key key)
 {
    int maxKey = 0;
    for (Level level = 0; level < 256; ++level)
@@ -140,9 +140,14 @@ std::string Index1::toString() const
    return ToString(getInterval());
 }
 
+bool Index1::IsRoot(Key key)
+{
+   return key == Index1::KeyRoot;
+}
+
 bool Index1::isRoot() const
 {
-   return m_level == 0;
+   return IsRoot(m_key);
 }
 
 Index1 Index1::CreateRoot()
@@ -196,7 +201,7 @@ std::tuple<bool, Index1> Index1::getAdjacentInDir(bool posDir) const
    }
 }
 
-Index1::Key Index1::getParentKey(Index1::Key key)
+Index1::Key Index1::GetParentKey(Index1::Key key)
 {
    Utilities::MyAssert(key != KeyRoot);
    const auto [level, pos] = Index1::decomposeKey(key);
@@ -209,5 +214,5 @@ Index1 Index1::getParent() const
 
 Index1::Key Index1::getParentKey() const
 {
-   return getParentKey(getKey());
+   return GetParentKey(getKey());
 }
