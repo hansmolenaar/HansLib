@@ -10,7 +10,7 @@ namespace
       size_t result = 0;
       for (int n = 0; n < N; ++n)
       {
-         boost::hash_combine(result, std::hash<T>{}(point[n]));
+         boost::hash_combine(result, std::hash<T>{}(point.data()[n]));
       }
       return result;
    }

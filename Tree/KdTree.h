@@ -190,11 +190,11 @@ PreSorting<T, N>::PreSorting(int skipDim, std::span<const Point<T, N>> points) :
 template<typename T, int N>
 bool PreSorting<T, N>::less(KdTreePosition n0, KdTreePosition n1) const
 {
-   if (m_points[n0][m_currentDim] < m_points[n1][m_currentDim]) return true;
-   if (m_points[n0][m_currentDim] > m_points[n1][m_currentDim]) return false;
+   if (m_points[n0].data()[m_currentDim] < m_points[n1].data()[m_currentDim]) return true;
+   if (m_points[n0].data()[m_currentDim] > m_points[n1].data()[m_currentDim]) return false;
    for (int n = 0; n < N; ++n)
    {
-      if (m_points[n0][n] < m_points[n1][n]) return true;
+      if (m_points[n0].data()[n] < m_points[n1].data()[n]) return true;
    }
    return false;
 }
@@ -223,8 +223,8 @@ KdTree<T, N>::KdTree(std::span<const Point<T, N>> points) : m_points(points)
       for (int d = 0; d < N; ++d)
       {
          orders[d] = SortPerDimension(d, m_points);
-         lb[d] = points[*orders[d].begin()][d];
-         ub[d] = points[*orders[d].rbegin()][d];
+         lb[d] = points[*orders[d].begin()].data()[d];
+         ub[d] = points[*orders[d].rbegin()].data()[d];
       }
       m_bb = std::make_unique<BoundingBox<T, N>>(BoundingBox<T, N>::CreateFromList(std::array<Point<T, N>, 2 >{lb, ub }));
       std::vector< bool> goRight(m_points.size(), false);
@@ -262,8 +262,8 @@ KdTreeVertex<T, N>* KdTree<T, N>::BuildTree(std::array< std::span< KdTreePositio
       left[activeDim] = std::span< KdTreePosition>(order.begin(), order.begin() + numLeft);
       right[activeDim] = std::span< KdTreePosition>(order.begin() + numLeft, order.begin() + numLeft + numRight);
 
-      const T  median = points[order[numLeft - 1]][activeDim];
-      const T nxt = points[order[numLeft]][activeDim];
+      const T  median = points[order[numLeft - 1]].data()[activeDim];
+      const T nxt = points[order[numLeft]].data()[activeDim];
 
 
       for (auto p : left[activeDim])

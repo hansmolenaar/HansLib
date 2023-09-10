@@ -30,7 +30,7 @@ UniquePointCollectionBinning<N>::UniquePointCollectionBinning(const IGeometryPre
    for (int n = 0; n < N; ++n)
    {
       std::vector<double> values(points.size());
-      str::transform(points, values.begin(), [n](const Point<double, N >& p) {return p[n]; });
+      str::transform(points, values.begin(), [n](const Point<double, N >& p) {return p.data()[n]; });
       m_bins.emplace_back(LocalizationBins::CreateFromValues(values, false, m_predicate.getSmallLengthInDirection(n)));
    }
 }

@@ -16,11 +16,7 @@ public:
 template<typename T, int N>
 bool PointExact<T, N>::operator ()(const Point<T, N>& p0, const Point<T, N>& p1) const
 {
-   for (int n = 0; n < N; ++n)
-   {
-      if (p0[n] != p1[n]) return false;
-   }
-   return true;
+   return p0 == p1;
 }
 
 template<typename T, int N>

@@ -20,7 +20,7 @@ bool PointClose<T, N>::operator ()(const Point<T, N>& p0, const Point<T, N>& p1)
 {
    for (int n = 0; n < N; ++n)
    {
-      if (std::abs(p0[n] - p1[n]) > eps) return false;
+      if (std::abs(p0.data()[n] - p1.data()[n]) > eps) return false;
    }
    return true;
 }

@@ -32,7 +32,7 @@ UnitVector<N>::UnitVector(std::array<double, N>&& unitVector) :
 template<int N>
 double UnitVector<N>::operator[](int d) const
 {
-   return m_vector[d];
+   return m_vector.data().at(d);
 }
 
 template<int N>

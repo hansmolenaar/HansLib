@@ -12,8 +12,8 @@ Rotate2D::Rotate2D(double angle) : m_angle(angle), m_cos(std::cos(m_angle)), m_s
 Point2 Rotate2D::operator()(const Point2& point) const
 {
    return Point2{ 
-      m_cos * point[0] - m_sin * point[1],
-      m_sin * point[0] + m_cos * point[1] };
+      m_cos * point.data()[0] - m_sin * point.data()[1],
+      m_sin * point.data()[0] + m_cos * point.data()[1] };
 }
 
 std::unique_ptr< UnitVector<2>> Rotate2D::operator()(const UnitVector<2>& uv) const

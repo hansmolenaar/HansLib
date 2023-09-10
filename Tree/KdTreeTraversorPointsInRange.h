@@ -38,19 +38,19 @@ KdTreeOverlap KdTreeTraversorPointsInRange<T, N>::DeterminOverlap(const Point<T,
    auto result = KdTreeOverlap::Contains;
    for (int d = 0; d < N; ++d)
    {
-      if (m_bb.getLower(d) > uprBound[d])
+      if (m_bb.getLower(d) > uprBound.data()[d])
       {
          return KdTreeOverlap::NoOverlap;
       }
-      if (m_bb.getUpper(d) < lwrBound[d])
+      if (m_bb.getUpper(d) < lwrBound.data()[d])
       {
          return KdTreeOverlap::NoOverlap;
       }
-      if (m_bb.getLower(d) > lwrBound[d])
+      if (m_bb.getLower(d) > lwrBound.data()[d])
       {
          result = KdTreeOverlap::Overlap;
       }
-      if (m_bb.getUpper(d) < uprBound[d])
+      if (m_bb.getUpper(d) < uprBound.data()[d])
       {
          result = KdTreeOverlap::Overlap;
       }

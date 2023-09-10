@@ -32,8 +32,8 @@ TEST(UnitVectorTest, Bounds)
    const Point1 p{ {2} };
    const auto uv = UnitVector<1>::Create(p);
    ASSERT_NEAR((*uv)[0], 1.0, crit);
-
-   ASSERT_ANY_THROW((*uv)[1]);
+   double val;
+   ASSERT_ANY_THROW(val = (*uv)[1]);
 }
 
 TEST(UnitVectorTest, InnerProduct)

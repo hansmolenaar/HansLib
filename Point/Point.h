@@ -14,7 +14,8 @@ public:
    Point(const std::array< T, N>& values) { m_values = values; }
    explicit Point(const std::initializer_list<T>& values);
    const T& at(int n) const { return m_values.at(n); }
-   T operator [](int idx) const { return m_values.at(idx); }
+
+public:
 
    using PointIterator = std::array<T, N>::const_iterator;
 

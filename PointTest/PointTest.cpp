@@ -59,8 +59,8 @@ TEST(PointTest, PlusAssign)
 TEST(PointTest, Subscript)
 {
    const IntPoint2 p{ 1,2 };
-   ASSERT_EQ(p[0], 1);
-   ASSERT_EQ(p[1], 2);
+   ASSERT_EQ(p.data()[0], 1);
+   ASSERT_EQ(p.data()[1], 2);
 }
 
 
@@ -68,15 +68,15 @@ TEST(PointTest, Times)
 {
    IntPoint2 p{ 1,2 };
    const IntPoint2 p2 = p * 2;
-   ASSERT_EQ(p2[0], 2);
-   ASSERT_EQ(p2[1], 4);
+   ASSERT_EQ(p2.data()[0], 2);
+   ASSERT_EQ(p2.data()[1], 4);
 }
 
 TEST(PointTest, Bounds)
 {
    const IntPoint2 p{ 1,2 };
    int i;
-   ASSERT_ANY_THROW(i = p[2]);
+   ASSERT_ANY_THROW(i = p.data().at(2));
 }
 
 TEST(PointTest, HashIntPoint1)
