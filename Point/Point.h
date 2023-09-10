@@ -21,16 +21,9 @@ public:
 
    auto operator<=>(const Point<T, N>&) const = default;
 
-   Point<T, N> operator*(T) const;
    Point<T, N>& operator+=(const Point<T, N>&);
    Point<T, N>& operator-=(const Point<T, N>&);
-   Point<T, N> operator-() const;
 
-   friend std::array<T, N> operator+(Point<T, N> lhs, const Point<T, N>& rhs)
-   {
-      lhs += rhs;
-      return lhs.data();
-   }
 
    const std::array<T, N>& data() const { return m_values; }
 
@@ -61,22 +54,13 @@ Point<T, N>& Point<T, N>::operator-=(const Point<T, N>& rhs)
    return *this;
 }
 
-
 template<typename T, int N>
-Point<T, N> Point<T, N>::operator*(T factor) const
+std::array<T, N> operator+(std::array<T, N> lhs, const std::array<T, N>& rhs)
 {
-   Point<T, N> result;
-   str::transform(m_values, result.m_values.begin(), [factor](T val) {return factor * val; });
-   return result;
+   std::transform(lhs.begin(), lhs.end(), rhs.begin(), lhs.begin(), std::plus<T>());
+   return lhs;
 }
 
-template<typename T, int N>
-Point<T, N> Point<T, N>::operator-() const
-{
-   Point<T, N> result;
-   str::transform(m_values, result.m_values.begin(), [](T value) {return -value; });
-   return result;
-}
 
 using Point1 = Point<double, 1>;
 using Point2 = Point<double, 2>;
@@ -88,8 +72,24 @@ using RatPoint1 = Point<Rational, 1>;
 using RatPoint2 = Point<Rational, 2>;
 using RatPoint3 = Point<Rational, 3>;
 
+template<typename T, int N>
+std::array<T, N> operator*(std::array<T, N> result, T factor)
+{
+   str::transform(result, result.begin(), [factor](T value) {return factor * value; });
+   return result;
+}
+
+template<typename T, int N>
+std::array<T, N> operator-(std::array<T, N> result)
+{
+   str::transform(result, result.begin(), [](T value) {return -value; });
+   return result;
+}
+
 namespace std
 {
+
+
    template<>
    struct hash< IntPoint1 >
    {

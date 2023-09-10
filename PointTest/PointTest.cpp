@@ -34,7 +34,7 @@ TEST(PointTest, Plus)
 {
    const IntPoint3 p1{ 2, 3, 4 };
    const IntPoint3 p2{ 7, 5, 1 };
-   const auto& sum = p1 + p2;
+   const IntPoint3 sum = p1.data() + p2.data();
    ASSERT_EQ(sum, IntPoint3({ 9,8, 5 }));
 }
 
@@ -67,7 +67,7 @@ TEST(PointTest, Subscript)
 TEST(PointTest, Times)
 {
    IntPoint2 p{ 1,2 };
-   const IntPoint2 p2 = p * 2;
+   const IntPoint2 p2 = p.data() * 2;
    ASSERT_EQ(p2.data()[0], 2);
    ASSERT_EQ(p2.data()[1], 4);
 }
