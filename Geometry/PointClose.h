@@ -18,11 +18,8 @@ private:
 template<typename T, int N>
 bool PointClose<T, N>::operator ()(const Point<T, N>& p0, const Point<T, N>& p1) const
 {
-   for (int n = 0; n < N; ++n)
-   {
-      if (std::abs(p0.data()[n] - p1.data()[n]) > eps) return false;
-   }
-   return true;
+   const auto dif = p0 - p1;
+   return str::all_of(dif, [this](auto d) {return std::abs(d) < eps; });
 }
 
 

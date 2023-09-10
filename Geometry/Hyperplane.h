@@ -38,6 +38,5 @@ template<int N>
 Point<double, N> Hyperplane<N>::reflect(Point<double, N> point) const
 {
    const double dist = getSignedDistance(point);
-   const std::array<double, N>& diff = m_normal->data();
-   return point - diff * (2 * dist);
+   return point - m_normal->data() * (2 * dist);
 }

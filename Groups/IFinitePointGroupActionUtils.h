@@ -15,9 +15,7 @@ std::vector<Point<double, N>> IFinitePointGroupActionUtils::GetOrbit(const IFini
 {
    std::vector<Point<double, N>> result;
    result.reserve(groupAction.getGroup().getOrder());
-   for (const auto& elm : IFiniteGroupUtils::GetElements(groupAction.getGroup()))
-   {
-      result.emplace_back(groupAction(elm, point));
-   }
+   str::transform(IFiniteGroupUtils::GetElements(groupAction.getGroup()), std::back_inserter(result),
+      [&groupAction, &point](const auto& elm) { return groupAction(elm, point); });
    return result;
 }
