@@ -13,8 +13,8 @@ public:
    Point() = default;
    Point(const std::array< T, N>& values) { m_values = values; }
    explicit Point(const std::initializer_list<T>& values);
+private:
    const T& at(int n) const { return m_values.at(n); }
-
 public:
 
    using PointIterator = std::array<T, N>::const_iterator;
