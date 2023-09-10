@@ -13,9 +13,6 @@ public:
    Point() = default;
    Point(const std::array< T, N>& values) { m_values = values; }
    explicit Point(const std::initializer_list<T>& values);
-private:
-   const T& at(int n) const { return m_values.at(n); }
-public:
 
    using PointIterator = std::array<T, N>::const_iterator;
 
@@ -29,10 +26,10 @@ public:
    Point<T, N>& operator-=(const Point<T, N>&);
    Point<T, N> operator-() const;
 
-   friend Point<T, N> operator+(Point<T, N> lhs, const Point<T, N>& rhs)
+   friend std::array<T, N> operator+(Point<T, N> lhs, const Point<T, N>& rhs)
    {
       lhs += rhs;
-      return lhs;
+      return lhs.data();
    }
 
    const std::array<T, N>& data() const { return m_values; }
