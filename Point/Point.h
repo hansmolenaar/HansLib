@@ -49,16 +49,6 @@ std::array<T, N> operator-(std::array<T, N> lhs, const std::array<T, N>& rhs)
    return lhs;
 }
 
-using Point1 = Point<double, 1>;
-using Point2 = Point<double, 2>;
-using Point3 = Point<double, 3>;
-using IntPoint1 = Point<int, 1>;
-using IntPoint2 = Point<int, 2>;
-using IntPoint3 = Point<int, 3>;
-using RatPoint1 = Point<Rational, 1>;
-using RatPoint2 = Point<Rational, 2>;
-using RatPoint3 = Point<Rational, 3>;
-
 template<typename T, int N>
 std::array<T, N> operator*(std::array<T, N> result, T factor)
 {
@@ -72,6 +62,16 @@ std::array<T, N> operator-(std::array<T, N> result)
    str::transform(result, result.begin(), [](T value) {return -value; });
    return result;
 }
+
+using Point1 = Point<double, 1>;
+using Point2 = Point<double, 2>;
+using Point3 = Point<double, 3>;
+using IntPoint1 = Point<int, 1>;
+using IntPoint2 = Point<int, 2>;
+using IntPoint3 = Point<int, 3>;
+using RatPoint1 = Point<Rational, 1>;
+using RatPoint2 = Point<Rational, 2>;
+using RatPoint3 = Point<Rational, 3>;
 
 namespace std
 {
