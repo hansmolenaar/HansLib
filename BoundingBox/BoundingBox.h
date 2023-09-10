@@ -143,7 +143,7 @@ bool BoundingBox<T, N>::contains(const Point<T, N>& point) const
 {
    for ( int d = 0; d < N; ++d)
    {
-      if (!m_intervals.at(d).contains(point.data().at(d))) return false;
+      if (!m_intervals.at(d).contains(point.at(d))) return false;
    }
    return true;
 }

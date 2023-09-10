@@ -15,7 +15,7 @@ public:
    static std::unique_ptr<UnitVector<N>> Create(std::span<const double>);
    static std::unique_ptr<UnitVector<N>> Create(const Point<double, N>&);
    double operator[](int) const;
-   const std::array<double, N>& data() const { return m_vector.data(); }
+   const std::array<double, N>& data() const { return m_vector; }
 
    double innerProduct(const Point<double, N>&) const;
 private:
@@ -32,7 +32,7 @@ UnitVector<N>::UnitVector(std::array<double, N>&& unitVector) :
 template<int N>
 double UnitVector<N>::operator[](int d) const
 {
-   return m_vector.data().at(d);
+   return m_vector.at(d);
 }
 
 template<int N>

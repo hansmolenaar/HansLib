@@ -12,5 +12,5 @@ public:
 template<typename T, int N>
 Point<T, N> PointReflection<T, N>::operator()(const Point<T, N>& p) const
 {
-   return -p.data();
+   return -p;
 }

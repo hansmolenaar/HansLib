@@ -4,36 +4,8 @@
 #include "MyAssert.h"
 #include "Rational.h"
 
-#include <functional>
-
 template<typename T, int N>
-class Point
-{
-public:
-   Point() = default;
-   Point(const std::array< T, N>& values) { m_values = values; }
-   explicit Point(const std::initializer_list<T>& values);
-
-   using PointIterator = std::array<T, N>::const_iterator;
-
-   PointIterator begin() const { return m_values.begin(); }
-   PointIterator end() const { return m_values.end(); }
-
-   auto operator<=>(const Point<T, N>&) const = default;
-
-   const std::array<T, N>& data() const { return m_values; }
-
-private:
-   std::array<T, N> m_values;
-};
-
-
-template<typename T, int N>
-Point<T, N>::Point(const std::initializer_list<T>& values)
-{
-   Utilities::MyAssert(values.size() == N);
-   str::copy(values, m_values.begin());
-}
+using Point = std::array<T, N>;
 
 template<typename T, int N>
 std::array<T, N> operator+(std::array<T, N> lhs, const std::array<T, N>& rhs)

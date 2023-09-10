@@ -15,8 +15,8 @@ TEST(PointExactTest, Int)
 TEST(PointExactTest, Rational)
 {
    PointExact<Rational, 1> areClose;
-   const Point<Rational, 1> p0{ { 1, 42} };
-   const Point<Rational, 1> p1{ { 1, 43} };
+   const Point<Rational, 1> p0{ Rational{ 1, 42} };
+   const Point<Rational, 1> p1{ Rational{ 1, 43} };
    ASSERT_FALSE(areClose(p0, p1));
    ASSERT_TRUE(areClose.SamePoints(p0, p0));
 }

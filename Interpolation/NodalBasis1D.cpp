@@ -12,8 +12,8 @@ double NodalBasis1D::Evaluate(double x) const
    const auto cellId = m_grid->locatePointInCell(Point1{ x });
    if (cellId == CellIndexInvalid) throw MyException("NodalBasis1D::Evaluate() point outside grid specified");
    const auto& geometry = m_grid->getGeometry();
-   const auto x0 = geometry.getPoint(cellId).data().at(0);
-   const auto x1 = geometry.getPoint(cellId + 1).data().at(0);
+   const auto x0 = geometry.getPoint(cellId).at(0);
+   const auto x1 = geometry.getPoint(cellId + 1).at(0);
    const double pos = (x - x0) / (x1 - x0);
    const auto result = std::lerp(m_coefficients.at(cellId), m_coefficients.at(cellId + 1), pos);
    return result;

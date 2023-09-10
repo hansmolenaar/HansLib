@@ -53,7 +53,7 @@ std::tuple<bool, int>  UniquePointCollectionBinning<N>::tryGetClosePoint(const P
    std::array<size_t, N> bins;
    for (int n = 0; n < N; ++n)
    {
-      bins[n] = m_bins.at(n).find(p.data().at(n));
+      bins[n] = m_bins.at(n).find(p.at(n));
    }
    const auto found = m_pointInBin.find(bins);
 

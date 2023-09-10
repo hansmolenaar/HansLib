@@ -131,11 +131,7 @@ void KdTreeVertex<T, N>::HandleAllLeavesInSubTree(const KdTree<T, N>& tree, IKdT
 template<typename T, int N>
 void KdTreeVertex<T, N>::Traverse(const KdTree<T, N>& tree, IKdTreeTraversor<T, N>& traversor, int level, Point<T, N>& lbound, Point<T, N>& ubound) const
 {
-   std::array<T, N> lb = lbound.data();
-   std::array<T, N> ub = ubound.data();
-   TraverseRecur(tree, traversor, level, lb, ub);
-   lbound = lb;
-   ubound = ub;
+   TraverseRecur(tree, traversor, level, lbound, ubound);
 }
 
 template<typename T, int N>

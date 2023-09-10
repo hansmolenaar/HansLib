@@ -31,8 +31,7 @@ Hyperplane<N>::Hyperplane(const Point<double, N>& refPont, std::unique_ptr< Unit
 template<int N>
 double Hyperplane<N>::getSignedDistance(Point<double, N> point) const
 {
-   point = point.data() -  m_referencePoint.data();
-   return m_normal->innerProduct(point);
+   return m_normal->innerProduct(point - m_referencePoint);
 }
 
 template<int N>
@@ -40,5 +39,5 @@ Point<double, N> Hyperplane<N>::reflect(Point<double, N> point) const
 {
    const double dist = getSignedDistance(point);
    const std::array<double, N>& diff = m_normal->data();
-   return point.data() - diff * (2 * dist);
+   return point - diff * (2 * dist);
 }
