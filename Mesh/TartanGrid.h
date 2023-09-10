@@ -90,7 +90,7 @@ template<typename T, int N>
 Point<T, N> TartanGrid<T, N>::getPoint(PointIndex pointIndex) const
 {
    const auto mp = m_multiIndexPoint.toMultiplet(pointIndex);
-   Point<T, N> result;
+   std::array<T, N> result;
    for (int n = 0; n < N; ++n)
    {
       result[n] = m_coordinates.at(n).at(mp.at(n));

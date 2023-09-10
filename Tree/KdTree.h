@@ -56,6 +56,8 @@ public:
    KdTreePosition getPosition() const;
 
 private:
+   void TraverseRecur(const KdTree<T, N>&, IKdTreeTraversor<T, N>&, int level, std::array<T, N>& lbound, std::array<T, N>& ubound) const;
+
    KdTreeVertex<T, N>* m_left = nullptr;
    KdTreeVertex<T, N>* m_right = nullptr;
    T                  m_median;
@@ -66,7 +68,7 @@ private:
 template<typename T, int N>
 KdTreePosition  KdTreeVertex<T, N>::getPosition() const
 {
-   Utilities::MyAssert (isLeaf(), "KdTreeVertex<T, N>::getPosition() not a leaf");
+   Utilities::MyAssert(isLeaf(), "KdTreeVertex<T, N>::getPosition() not a leaf");
    Utilities::MyAssert(m_position != KdTreePositionInvalid, "KdTreeVertex<T, N>::getPosition() position not set");
    return m_position;
 }
@@ -125,8 +127,19 @@ void KdTreeVertex<T, N>::HandleAllLeavesInSubTree(const KdTree<T, N>& tree, IKdT
    }
 }
 
+
 template<typename T, int N>
 void KdTreeVertex<T, N>::Traverse(const KdTree<T, N>& tree, IKdTreeTraversor<T, N>& traversor, int level, Point<T, N>& lbound, Point<T, N>& ubound) const
+{
+   std::array<T, N> lb = lbound.data();
+   std::array<T, N> ub = ubound.data();
+   TraverseRecur(tree, traversor, level, lb, ub);
+   lbound = lb;
+   ubound = ub;
+}
+
+template<typename T, int N>
+void KdTreeVertex<T, N>::TraverseRecur(const KdTree<T, N>& tree, IKdTreeTraversor<T, N>& traversor, int level, std::array<T, N>& lbound, std::array<T, N>& ubound) const
 {
    if (isLeaf())
    {
@@ -141,7 +154,7 @@ void KdTreeVertex<T, N>::Traverse(const KdTree<T, N>& tree, IKdTreeTraversor<T, 
          ubound[dir] = m_median;
          if (traversor.DeterminOverlap(lbound, ubound) != KdTreeOverlap::NoOverlap)
          {
-            m_left->Traverse(tree, traversor, level + 1, lbound, ubound);
+            m_left->TraverseRecur(tree, traversor, level + 1, lbound, ubound);
          }
          ubound[dir] = storeVal;
       }
@@ -151,7 +164,7 @@ void KdTreeVertex<T, N>::Traverse(const KdTree<T, N>& tree, IKdTreeTraversor<T, 
          lbound[dir] = m_firstAfterMedian;
          if (traversor.DeterminOverlap(lbound, ubound) != KdTreeOverlap::NoOverlap)
          {
-            m_right->Traverse(tree, traversor, level + 1, lbound, ubound);
+            m_right->TraverseRecur(tree, traversor, level + 1, lbound, ubound);
          }
          lbound[dir] = storeVal;
       }
@@ -206,14 +219,14 @@ KdTree<T, N>::KdTree(std::span<const Point<T, N>> points) : m_points(points)
    if (!m_points.empty())
    {
       std::array<std::vector<KdTreePosition>, N>  orders;
-      Point<T, N> lb, ub;
+      std::array<T, N> lb, ub;
       for (int d = 0; d < N; ++d)
       {
          orders[d] = SortPerDimension(d, m_points);
          lb[d] = points[*orders[d].begin()][d];
          ub[d] = points[*orders[d].rbegin()][d];
       }
-      m_bb = std::make_unique<BoundingBox<T, N>>(BoundingBox<T, N>::CreateFromList(std::array<Point<T, N>, 2 >{ lb, ub }));
+      m_bb = std::make_unique<BoundingBox<T, N>>(BoundingBox<T, N>::CreateFromList(std::array<Point<T, N>, 2 >{lb, ub }));
       std::vector< bool> goRight(m_points.size(), false);
       std::array<  std::span<KdTreePosition>, N> ordersSpan;
       for (int n = 0; n < N; ++n)

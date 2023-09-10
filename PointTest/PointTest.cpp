@@ -7,7 +7,7 @@ TEST(PointTest, PointArray)
 {
    const auto p = Point<int, 1>({ 42 });
    ASSERT_EQ(p.at(0), 42);
-   const auto data = p.data();
+   const auto& data = p.data();
    ASSERT_EQ(data.size(), 1);
    ASSERT_EQ(data[0], 42);
 }
@@ -74,7 +74,7 @@ TEST(PointTest, Times)
 
 TEST(PointTest, Bounds)
 {
-   IntPoint2 p{ 1,2 };
+   const IntPoint2 p{ 1,2 };
    int i;
    ASSERT_ANY_THROW(i = p[2]);
 }

@@ -11,12 +11,9 @@ class Point
 {
 public:
    Point() = default;
-   explicit Point(const std::array< T, N>& values) { m_values = values; }
+   Point(const std::array< T, N>& values) { m_values = values; }
    explicit Point(const std::initializer_list<T>& values);
    const T& at(int n) const { return m_values.at(n); }
-
-   // TODO get rid of this guy
-   T& operator [](int idx) { return m_values.at(idx); }
    T operator [](int idx) const { return m_values.at(idx); }
 
    using PointIterator = std::array<T, N>::const_iterator;
@@ -37,7 +34,7 @@ public:
       return lhs;
    }
 
-   std::span<const T> data() const { return m_values; }
+   const std::array<T, N>& data() const { return m_values; }
 
 private:
    std::array<T, N> m_values;
