@@ -15,7 +15,7 @@ public:
    static std::unique_ptr<UnitVector<N>> Create(std::span<const double>);
    static std::unique_ptr<UnitVector<N>> Create(const Point<double, N>&);
    double operator[](int) const;
-   std::span<const double> data() const { return m_vector.data(); }
+   const std::array<double, N>& data() const { return m_vector.data(); }
 
    double innerProduct(const Point<double, N>&) const;
 private:

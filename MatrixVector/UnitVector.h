@@ -19,6 +19,8 @@ public:
    double operator() (int)  const override;
    double& operator() (int) override;
 
+   const std::array<double, Dimension>& data() const { return m_data; }
+
    virtual ~UnitVector();
 private:
    UnitVector(std::span<const double>);

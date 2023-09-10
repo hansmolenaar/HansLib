@@ -21,10 +21,6 @@ public:
 
    auto operator<=>(const Point<T, N>&) const = default;
 
-   Point<T, N>& operator+=(const Point<T, N>&);
-   Point<T, N>& operator-=(const Point<T, N>&);
-
-
    const std::array<T, N>& data() const { return m_values; }
 
 private:
@@ -39,21 +35,6 @@ Point<T, N>::Point(const std::initializer_list<T>& values)
    str::copy(values, m_values.begin());
 }
 
-
-template<typename T, int N>
-Point<T, N>& Point<T, N>::operator+=(const Point<T, N>& rhs)
-{
-   std::transform(m_values.begin(), m_values.end(), rhs.m_values.begin(), m_values.begin(), [](T v0, T v1) {return v0 + v1; });
-   return *this;
-}
-
-template<typename T, int N>
-Point<T, N>& Point<T, N>::operator-=(const Point<T, N>& rhs)
-{
-   std::transform(m_values.begin(), m_values.end(), rhs.m_values.begin(), m_values.begin(), [](T v0, T v1) {return v0 - v1; });
-   return *this;
-}
-
 template<typename T, int N>
 std::array<T, N> operator+(std::array<T, N> lhs, const std::array<T, N>& rhs)
 {
@@ -61,6 +42,12 @@ std::array<T, N> operator+(std::array<T, N> lhs, const std::array<T, N>& rhs)
    return lhs;
 }
 
+template<typename T, int N>
+std::array<T, N> operator-(std::array<T, N> lhs, const std::array<T, N>& rhs)
+{
+   std::transform(lhs.begin(), lhs.end(), rhs.begin(), lhs.begin(), std::minus<T>());
+   return lhs;
+}
 
 using Point1 = Point<double, 1>;
 using Point2 = Point<double, 2>;

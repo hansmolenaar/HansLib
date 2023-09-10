@@ -44,7 +44,7 @@ TEST(PointTest, MinusIs)
 {
    IntPoint3 p1{ 2, 3, 4 };
    const IntPoint3 p2{ 7, 5, 1 };
-   p1 -= p2;
+   p1 = p1.data() -  p2.data();
    ASSERT_EQ(p1, IntPoint3({ -5, -2, 3 }));
 }
 
@@ -52,7 +52,7 @@ TEST(PointTest, PlusAssign)
 {
    IntPoint3 p1{ 2, 3, 4 };
    const IntPoint3 p2{ 7, 5, 1 };
-   p1 += p2;
+   p1 = p1.data() + p2.data();
    ASSERT_EQ(p1, IntPoint3({ 9,8, 5 }));
 }
 
