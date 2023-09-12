@@ -84,3 +84,15 @@ namespace std
    };
 
 }
+
+namespace PointUtils
+{
+   template<typename T, int N>
+   T GetNormSquared(typename const Point<T, N>& point);
+
+   template<typename T, int N>
+   T GetNormSquared(typename const Point<T, N>& point)
+   {
+      return std::accumulate(point.begin(), point.end(), T(0), [](T sum, T cor) {return sum + cor * cor; });
+   }
+}

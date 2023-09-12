@@ -33,6 +33,8 @@ public:
 
    const Interval<T>& getInterval(int n) const { return m_intervals.at(n); }
 
+   static std::tuple<bool, BoundingBox<T, N>> TryGetOverlap(const BoundingBox<T, N>& bb1, const BoundingBox<T, N>& bb2);
+
    Point<T, N> getLower() const;
    Point<T, N> getUpper() const;
 
@@ -42,6 +44,8 @@ public:
    void Add(const std::span<const T>&);
 
    bool contains(const Point<T, N>&) const;
+
+   auto operator<=>(const BoundingBox<T,N>&) const = default;
 
 private:
    explicit BoundingBox(const std::span<const T>&);
@@ -141,9 +145,28 @@ T BoundingBox<T, N>::getUpper(int d) const
 template<typename T, int N >
 bool BoundingBox<T, N>::contains(const Point<T, N>& point) const
 {
-   for ( int d = 0; d < N; ++d)
+   for (int d = 0; d < N; ++d)
    {
       if (!m_intervals.at(d).contains(point.at(d))) return false;
    }
    return true;
+}
+
+template<typename T, int N >
+std::tuple<bool, BoundingBox<T, N>> BoundingBox<T, N>::TryGetOverlap(const BoundingBox<T, N>& bb1, const BoundingBox<T, N>& bb2)
+{
+   std::array<T, N> lwr;
+   std::array<T, N> upr;
+   bool succes = true;
+   for (int n = 0; n < N; ++n)
+   {
+      if (!Interval<T>::TryIntersect(bb1.getInterval(n), bb2.getInterval(n), lwr[n], upr[n]))
+      {
+         lwr.fill(1);
+         upr.fill(-1);
+         succes = false;
+         break;
+      }
+   }
+   return { succes, CreateFromList(std::array < std::array<T,N>,2> {lwr, upr}) };
 }

@@ -133,3 +133,10 @@ TEST(PointTest, HashRatPoint3)
    const size_t hash2 = std::hash<RatPoint3>{}(p2);
    ASSERT_NE(hash1, hash2);
 }
+
+
+TEST(PointTest, GetNormSquared)
+{
+   const IntPoint3 p{ 2, 3, -6 };
+   ASSERT_EQ(PointUtils::GetNormSquared(p), 49);
+}

@@ -75,7 +75,7 @@ TEST(BoundingBoxTest, FromPoints)
 
 TEST(BoundingBoxTest, LowerUpper)
 {
-   const auto bb = BoundingBox<int, 2>::CreateFromList(std::initializer_list<IntPoint2>{ IntPoint2{2, 4}, IntPoint2{ 3,1 } });
+   const auto bb = BoundingBox<int, 2>::CreateFromList(std::initializer_list<IntPoint2>{ IntPoint2{ 2, 4 }, IntPoint2{ 3,1 } });
    ASSERT_EQ(bb.getLower(), IntPoint2({ 2, 1 }));
    ASSERT_EQ(bb.getUpper(), IntPoint2({ 3, 4 }));
 }
@@ -83,7 +83,7 @@ TEST(BoundingBoxTest, LowerUpper)
 
 TEST(BoundingBoxTest, Contains)
 {
-   const auto bb = BoundingBox<int, 2>::CreateFromList(std::initializer_list<IntPoint2>{ IntPoint2{2, 4}, IntPoint2{ 3,1 } });
+   const auto bb = BoundingBox<int, 2>::CreateFromList(std::initializer_list<IntPoint2>{ IntPoint2{ 2, 4 }, IntPoint2{ 3,1 } });
    ASSERT_TRUE(bb.contains(IntPoint2({ 2,4 })));
    ASSERT_FALSE(bb.contains(IntPoint2({ 2,6 })));
    ASSERT_FALSE(bb.contains(IntPoint2({ 6,1 })));
@@ -91,9 +91,24 @@ TEST(BoundingBoxTest, Contains)
 
 TEST(BoundingBoxTest, LowerUpperDim)
 {
-   const auto bb = BoundingBox<int, 2>::CreateFromList(std::initializer_list<IntPoint2>{ IntPoint2{2, 4}, IntPoint2{ 3,1 } });
+   const auto bb = BoundingBox<int, 2>::CreateFromList(std::initializer_list<IntPoint2>{ IntPoint2{ 2, 4 }, IntPoint2{ 3,1 } });
    ASSERT_EQ(bb.getLower(0), 2);
    ASSERT_EQ(bb.getUpper(0), 3);
    ASSERT_EQ(bb.getLower(1), 1);
    ASSERT_EQ(bb.getUpper(1), 4);
+}
+
+
+TEST(BoundingBoxTest, Intersection)
+{
+   const auto bb1 = BoundingBox<int, 2>::CreateFromList(std::initializer_list<IntPoint2>{ IntPoint2{ 2, 4 }, IntPoint2{ 5,0 } });
+   const auto bb2 = BoundingBox<int, 2>::CreateFromList(std::initializer_list<IntPoint2>{ IntPoint2{ 3, 7 }, IntPoint2{ 0,2 } });
+   const auto bb3 = BoundingBox<int, 2>::CreateFromList(std::initializer_list<IntPoint2>{ IntPoint2{ 10, 11 }, IntPoint2{ 12,13 } });
+   const auto [succes12, bb12] = BoundingBox<int, 2>::TryGetOverlap(bb1, bb2);
+   ASSERT_TRUE(succes12);
+   const auto expect = BoundingBox<int, 2>::CreateFromList(std::initializer_list<IntPoint2>{ IntPoint2{ 2, 2 }, IntPoint2{ 3,4 } });
+   ASSERT_EQ(bb12, expect);
+
+   const auto [succes13, bb13] = BoundingBox<int, 2>::TryGetOverlap(bb1, bb3);
+   ASSERT_FALSE(succes13);
 }

@@ -11,6 +11,7 @@ public:
    bool operator ()(const Point<T, N>&, const Point<T, N>&) const;
    bool SamePoints(Point<T, N> p0, Point<T, N> p1) const override;
    T getSmallLengthInDirection(int n) const override;
+   T getSmallNormSquared() const override;
 };
 
 template<typename T, int N>
@@ -30,5 +31,11 @@ T PointExact<T, N>::getSmallLengthInDirection(int n) const
 {
    Utilities::MyAssert(n >= 0);
    Utilities::MyAssert(n < N);
+   return 0;
+}
+
+template<typename T, int N>
+T PointExact<T, N>::getSmallNormSquared() const
+{
    return 0;
 }

@@ -11,8 +11,10 @@ public:
    bool operator ()(const Point<T, N>&, const Point<T, N>&) const;
    bool SamePoints(Point<T, N> p0, Point<T, N> p1) const override;
    T getSmallLengthInDirection(int n) const override;
+   T getSmallNormSquared() const override;
 private:
-   double eps = 1.0e-10;
+   static constexpr double eps = 1.0e-7;
+   static constexpr T m_smallInDirection = static_cast<T>(eps);
 };
 
 template<typename T, int N>
@@ -34,5 +36,12 @@ T PointClose<T, N>::getSmallLengthInDirection(int n) const
 {
    Utilities::MyAssert(n >= 0);
    Utilities::MyAssert(n < N);
-   return static_cast<T>(eps);
+   return m_smallInDirection;
+}
+
+template<typename T, int N>
+T PointClose<T, N>::getSmallNormSquared() const
+{
+   constexpr T result = N * m_smallInDirection * m_smallInDirection;
+   return result;
 }
