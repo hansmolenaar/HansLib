@@ -39,3 +39,34 @@ TEST(SphereTest, Contains)
    }
 }
 
+TEST(SphereTest, CouldIntersectWith)
+{
+   constexpr int geomdim = 1;
+   const PointClose<double, geomdim> areClose;
+   const Sphere<double, geomdim> circle(Point1{ 0 }, 1.0);
+   auto bb = BoundingBox<double,geomdim>::CreateFromList(std::vector<Point1>{ {0.1}, { 1.1 }});
+   ASSERT_TRUE(circle.CouldIntersectWith(bb, areClose));
+}
+
+TEST(SphereTest, FirstIntersectionInIn)
+{
+   constexpr int geomdim = 2;
+   const PointClose<double, geomdim> areClose;
+   const Sphere<double, geomdim> circle(Point2{ 0,0 }, 1.0);
+   const auto edge = DirectedEdge<double, geomdim>::Create(Point2{0.1,0.2}, Point2{0.9, 0.3}, areClose);
+   const auto [succes, intersect] = circle.TryGetFirstIntersectionWithDirectedEdge(edge, areClose);
+   ASSERT_FALSE(succes);
+}
+
+TEST(SphereTest, FirstIntersectionInOn)
+{
+   constexpr int geomdim = 2;
+   const PointClose<double, geomdim> areClose;
+   const Sphere<double, geomdim> circle(Point2{ 0,0 }, 1.0);
+   const Point2 pointOn{ 0.6, 0.8 };
+   const auto edge = DirectedEdge<double, geomdim>::Create(Point2{ 0.1,0.2 }, pointOn, areClose);
+   const auto [succes, intersect] = circle.TryGetFirstIntersectionWithDirectedEdge(edge, areClose);
+   ASSERT_TRUE(succes);
+   ASSERT_TRUE(areClose.SamePoints(intersect, pointOn));
+}
+

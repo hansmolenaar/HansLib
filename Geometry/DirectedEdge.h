@@ -11,6 +11,10 @@ namespace Geometry
    {
    public:
       static DirectedEdge<T, N> Create(const Point<T, N>& from, const Point<T, N>& to, const IGeometryPredicate<T, N>& predicate);
+      const Point<T, N>& point0() const { return m_from; }
+      const Point<T, N>& point1() const { return m_to; }
+      T lengthSquared() const;
+     
    private:
       DirectedEdge(const Point<T, N>& from, const Point<T, N>& to, const IGeometryPredicate<T, N>& predicate);
       Point<T, N> m_from;
@@ -34,4 +38,11 @@ namespace Geometry
 
       return DirectedEdge<T, N>(from, to, predicate);
    }
+
+   template<typename T, int N>
+   T DirectedEdge<T, N>::lengthSquared() const
+   {
+      return PointUtils::GetNormSquared(m_to - m_from);
+   }
+
 }
