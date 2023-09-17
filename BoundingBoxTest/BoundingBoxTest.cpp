@@ -112,3 +112,12 @@ TEST(BoundingBoxTest, Intersection)
    const auto [succes13, bb13] = BoundingBox<int, 2>::TryGetOverlap(bb1, bb3);
    ASSERT_FALSE(succes13);
 }
+
+
+TEST(BoundingBoxTest, GetIntervals)
+{
+   const auto bb = BoundingBox<int, 1>::CreateFromList(std::initializer_list<IntPoint1>{ IntPoint1{ 2 }, IntPoint1{ 1 } });
+   ASSERT_EQ(bb.getIntervals().size(), 1);
+   ASSERT_EQ(bb.getIntervals()[0].getLower(), 1);
+   ASSERT_EQ(bb.getIntervals()[0].getUpper(), 2);
+}

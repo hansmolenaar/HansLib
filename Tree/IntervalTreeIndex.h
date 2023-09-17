@@ -29,6 +29,7 @@ namespace IntervalTree
       std::array<Key, IntervalTree::NumKids<N> > refine() const;
       Rational getMeasure() const;
       std::string toString() const;
+      std::array<Rational, N> getCenter() const;
 
       static bool IsRoot(const Key& key);
       bool isRoot() const;
@@ -208,6 +209,14 @@ namespace IntervalTree
       const auto [succes, adj] = m_factory1(key1)->getAdjacentInDir(direction.UsePositiveDirection);
       result[direction.Direction] = adj.getKey();
       return { succes, result };
+   }
+
+   template<int N>
+   std::array<Rational, N> Index<N>::getCenter() const
+   {
+      std::array<Rational, N> result;
+      str::transform(this->getKey(), result.begin(), [this](Index1::Key key) {return m_factory1(key)->getCenter(); });
+      return result;
    }
 
    template<int N>

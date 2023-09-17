@@ -32,6 +32,7 @@ public:
    static BoundingBox CreateFromListTransformed(const Container& container, F fun);
 
    const Interval<T>& getInterval(int n) const { return m_intervals.at(n); }
+   std::span< const Interval<T>> getIntervals() const { return m_intervals; }
 
    static std::tuple<bool, BoundingBox<T, N>> TryGetOverlap(const BoundingBox<T, N>& bb1, const BoundingBox<T, N>& bb2);
 
@@ -45,7 +46,7 @@ public:
 
    bool contains(const Point<T, N>&) const;
 
-   auto operator<=>(const BoundingBox<T,N>&) const = default;
+   auto operator<=>(const BoundingBox<T, N>&) const = default;
 
 private:
    explicit BoundingBox(const std::span<const T>&);
