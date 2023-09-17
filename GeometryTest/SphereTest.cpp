@@ -43,9 +43,25 @@ TEST(SphereTest, CouldIntersectWith)
 {
    constexpr int geomdim = 1;
    const PointClose<double, geomdim> areClose;
-   const Sphere<double, geomdim> circle(Point1{ 0 }, 1.0);
-   auto bb = BoundingBox<double, geomdim>::CreateFromList(std::vector<Point1>{ {0.1}, { 1.1 }});
+   const Sphere<double, geomdim> circle(Point1{ 0.5 }, 0.5);
+
+   auto bb = BoundingBox<double, geomdim>::CreateFromList(std::vector<Point1>{ {-0.9}, { -0.1 }});
+   ASSERT_FALSE(circle.CouldIntersectWith(bb, areClose));
+
+   bb = BoundingBox<double, geomdim>::CreateFromList(std::vector<Point1>{ {-0.9}, { 0.1 }});
    ASSERT_TRUE(circle.CouldIntersectWith(bb, areClose));
+
+   bb = BoundingBox<double, geomdim>::CreateFromList(std::vector<Point1>{ {-0.9}, { 1.1 }});
+   ASSERT_TRUE(circle.CouldIntersectWith(bb, areClose));
+
+   bb = BoundingBox<double, geomdim>::CreateFromList(std::vector<Point1>{ {0.1}, { 0.9 }});
+   ASSERT_FALSE(circle.CouldIntersectWith(bb, areClose));
+
+   bb = BoundingBox<double, geomdim>::CreateFromList(std::vector<Point1>{ {0.1}, { 1.1 }});
+   ASSERT_TRUE(circle.CouldIntersectWith(bb, areClose));
+
+   bb = BoundingBox<double, geomdim>::CreateFromList(std::vector<Point1>{ {1.1}, { 1.2 }});
+   ASSERT_FALSE(circle.CouldIntersectWith(bb, areClose));
 }
 
 

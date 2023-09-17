@@ -19,6 +19,8 @@ namespace Geometry
       // If the edge is contained in the region, then return the exit point or the end point of the edge
       // If only the first point of the edge is in the region return false
       std::tuple< bool, Point<T, N>> TryGetFirstIntersectionWithDirectedEdge(typename const Geometry::DirectedEdge<T, N>& edge) const override;
+ 
+      bool CouldIntersectWith(typename const BoundingBox<T, N>& bb, const IGeometryPredicate<T, N>& predicate) const override;
 
    private:
       Ball<T, N> m_ball;
@@ -81,4 +83,16 @@ namespace Geometry
       Utilities::MyAssert(pos1 == BallPosition::Outside);
       return { succes, ip };
    }
-}
+
+
+   template<typename T, int N>
+   bool Sphere<T, N>::CouldIntersectWith(typename const BoundingBox<T, N>& bb, const IGeometryPredicate<T, N>& predicate) const
+   {
+      if (!IGeometryRegion<T, N>::CouldIntersectWith(bb, predicate)) return false;
+      // If the whole bb is inside the sphere, there is no intersection
+      if (m_ball.getPosition(bb.getLower(), predicate) != BallPosition::Inside) return true;
+      if (m_ball.getPosition(bb.getUpper(), predicate) != BallPosition::Inside) return true;
+      return false;
+   }
+
+} // namespace Geometry
