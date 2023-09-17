@@ -1,15 +1,9 @@
 #pragma once
 
-#include "BoundingBox.h"
-#include "IGeometryPredicate.h"
-#include "IGeometryRegion.h"
-#include "DirectedEdge.h"
-#include "MyAssert.h"
-#include "MyException.h"
+#include "GeometryBall.h"
 
 namespace Geometry
 {
-   enum SpherePosition { Inside, On, Outside };
 
    template<typename T, int N>
    class Sphere : public IGeometryRegion<T, N>
@@ -26,44 +20,26 @@ namespace Geometry
       // If only the first point of the edge is in the region return false
       std::tuple< bool, Point<T, N>> TryGetFirstIntersectionWithDirectedEdge(typename const Geometry::DirectedEdge<T, N>& edge) const override;
 
-     
-      SpherePosition getPosition(const Point<T, N>& point, const IGeometryPredicate<T, N>& predicate) const;
    private:
-      Point<T, N> m_center;
-      T m_radius;
+      Ball<T, N> m_ball;
    };
 
    template<typename T, int N>
    Sphere<T, N>::Sphere(Point<T, N> center, T radius) :
-      m_center(std::move(center)), m_radius(radius)
+      m_ball(std::move(center), radius)
    {
-      Utilities::MyAssert(m_radius > 0);
-   }
-
-   template<typename T, int N>
-   SpherePosition Sphere<T, N>::getPosition(const Point<T, N>& point, const IGeometryPredicate<T, N>& predicate) const
-   {
-      if (Contains(point, predicate)) return On;
-      const T dist = PointUtils::GetNormSquared(point - m_center);
-      if (dist < m_radius * m_radius) return Inside;
-      return Outside;
    }
 
    template<typename T, int N>
    BoundingBox<T, N> Sphere<T, N>::getBoundingBox() const
    {
-      std::array<T, N> lwr;
-      std::array<T, N> upr;
-      str::transform(m_center, lwr.begin(), [this](T cor) {return cor - m_radius; });
-      str::transform(m_center, upr.begin(), [this](T cor) {return cor + m_radius; });
-      return BoundingBox<T, N>::CreateFromList(std::array<std::array<T, N>, 2> {lwr, upr});
+      return m_ball.getBoundingBox();
    }
 
    template<typename T, int N>
    bool Sphere<T, N>::Contains(const Point<T, N>& point, const IGeometryPredicate<T, N>& predicate) const
    {
-      const T distToCenter2 = PointUtils::GetNormSquared(point - m_center);
-      return std::abs(distToCenter2 - m_radius * m_radius) < predicate.getSmallNormSquared();
+      return m_ball.getPosition(point, predicate) == BallPosition::On;
    }
 
    template<typename T, int N>
@@ -72,39 +48,37 @@ namespace Geometry
       const auto& predicate = edge.getPredicate();
       const auto& point0 = edge.point0();
       const auto& point1 = edge.point1();
-      const auto position0 = getPosition(point0, predicate);
-      const auto position1 = getPosition(point1, predicate);
 
-      if (position0 == SpherePosition::Inside)
-      { 
-         if (position1 == SpherePosition::Inside) return { false, {} };
-         else if (position1 == SpherePosition::On) return { true, edge.point1()};
-      }
-#if false
-      const T a = edge.lengthSquared();
-      T b = 0;
-      for (int n = 0; n < N; ++n)
+      const auto [pos0, pos1] = m_ball.getPositions(edge);
+
+      if (pos1 == BallPosition::On) return  { true, point1 };
+      if (pos0 == BallPosition::Inside && pos1 == BallPosition::Inside) return { false, {} };
+      if (pos0 == BallPosition::Inside && pos1 == BallPosition::On) return { true, point1 };
+      if (pos0 == BallPosition::On && pos1 == BallPosition::Inside) return { false, {} };
+    
+      const auto [succes, ip] = m_ball.TryGetFirstIntersectionWithDirectedEdge(edge);
+  
+      if (pos0 == BallPosition::Inside)
       {
-         b += 2 * (edge.point0().at(n) - edge.point1().at(n)) * (edge.point1().at(n) - m_center.at(n));
+         Utilities::MyAssert(pos1 == BallPosition::Outside);
+         Utilities::MyAssert(succes);
+         return { true, ip };
       }
-      T c = PointUtils::GetNormSquared<T, N>(edge.point1() - m_center);
-      c -= m_radius * m_radius;
 
-      const T D = b * b - 4 * a * c;
-      if (D < 0) return { false, {} };
-
-      // The first root
-      const T lam0 = (-b - std::sqrt(D)) / (2 * a);
-      const auto getPosition = [this, &edge](T lambda)
+      if (pos0 == BallPosition::On)
       {
-         const Point<T, N> p = edge.point0() * lambda + edge.point1() * (1 - lambda);
-         if (Contains(p)) return 0;
-         const T dist = PointUtils::GetNormSquared(p - m_center);
-         if (dist < m_radius * m_radius) return -1;
-         return 1;
+         Utilities::MyAssert(pos1 == BallPosition::Outside);
+         return { succes, ip };
       }
-#endif
-      throw MyException("Not yet implemented");
 
+      Utilities::MyAssert(pos0 == BallPosition::Outside);
+      if (pos1 == BallPosition::Inside)
+      {
+         Utilities::MyAssert(succes);
+         return { true, ip };
+      }
+
+      Utilities::MyAssert(pos1 == BallPosition::Outside);
+      return { succes, ip };
    }
 }
