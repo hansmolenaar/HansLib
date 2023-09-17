@@ -54,7 +54,7 @@ TEST(SphereTest, FirstIntersectionInIn)
    const PointClose<double, geomdim> areClose;
    const Sphere<double, geomdim> circle(Point2{ 0,0 }, 1.0);
    const auto edge = DirectedEdge<double, geomdim>::Create(Point2{0.1,0.2}, Point2{0.9, 0.3}, areClose);
-   const auto [succes, intersect] = circle.TryGetFirstIntersectionWithDirectedEdge(edge, areClose);
+   const auto [succes, intersect] = circle.TryGetFirstIntersectionWithDirectedEdge(edge);
    ASSERT_FALSE(succes);
 }
 
@@ -65,7 +65,7 @@ TEST(SphereTest, FirstIntersectionInOn)
    const Sphere<double, geomdim> circle(Point2{ 0,0 }, 1.0);
    const Point2 pointOn{ 0.6, 0.8 };
    const auto edge = DirectedEdge<double, geomdim>::Create(Point2{ 0.1,0.2 }, pointOn, areClose);
-   const auto [succes, intersect] = circle.TryGetFirstIntersectionWithDirectedEdge(edge, areClose);
+   const auto [succes, intersect] = circle.TryGetFirstIntersectionWithDirectedEdge(edge);
    ASSERT_TRUE(succes);
    ASSERT_TRUE(areClose.SamePoints(intersect, pointOn));
 }

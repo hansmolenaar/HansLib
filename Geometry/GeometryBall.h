@@ -24,7 +24,7 @@ namespace Geometry
       // First **after** start point
       // If the edge is contained in the region, then return the exit point or the end point of the edge
       // If only the first point of the edge is in the region return false
-      std::tuple< bool, Point<T, N>> TryGetFirstIntersectionWithDirectedEdge(typename const Geometry::DirectedEdge<T, N>& edge, const IGeometryPredicate<T, N>& predicate) const override;
+      std::tuple< bool, Point<T, N>> TryGetFirstIntersectionWithDirectedEdge(typename const Geometry::DirectedEdge<T, N>& edge) const override;
 
 
       BallPosition getPosition(const Point<T, N>& point, const IGeometryPredicate<T, N>& predicate) const;
@@ -99,43 +99,61 @@ namespace Geometry
    }
 
    template<typename T, int N>
-   std::tuple< bool, Point<T, N>> Ball<T, N>::TryGetFirstIntersectionWithDirectedEdge(typename const Geometry::DirectedEdge<T, N>& edge, const IGeometryPredicate<T, N>& predicate) const
+   std::tuple< bool, Point<T, N>> Ball<T, N>::TryGetFirstIntersectionWithDirectedEdge(typename const Geometry::DirectedEdge<T, N>& edge) const
    {
+      const auto& predicate = edge.getPredicate();
+      const auto [pos0, pos1] = getPositions(edge);
+      if (std::max(pos0, pos1) <= BallPosition::On)
+      {
+         return { true, edge.point1() };
+      }
       const auto& point0 = edge.point0();
       const auto& point1 = edge.point1();
       const auto position0 = getPosition(point0, predicate);
       const auto position1 = getPosition(point1, predicate);
 
-      if (position0 == BallPosition::Inside)
-      {
-         if (position1 == BallPosition::Inside) return { false, {} };
-         else if (position1 == BallPosition::On) return { true, edge.point1() };
-      }
-#if false
       const T a = edge.lengthSquared();
       T b = 0;
       for (int n = 0; n < N; ++n)
       {
-         b += 2 * (edge.point0().at(n) - edge.point1().at(n)) * (edge.point1().at(n) - m_center.at(n));
+         b += 2 * (edge.point1().at(n) - edge.point0().at(n)) * (edge.point0().at(n) - m_center.at(n));
       }
-      T c = PointUtils::GetNormSquared<T, N>(edge.point1() - m_center);
+      T c = PointUtils::GetNormSquared<T, N>(edge.point0() - m_center);
       c -= m_radius * m_radius;
 
       const T D = b * b - 4 * a * c;
       if (D < 0) return { false, {} };
+      const T sqrtD = static_cast<T>(std::sqrt(D));
 
-      // The first root
-      const T lam0 = (-b - std::sqrt(D)) / (2 * a);
-      const auto getPosition = [this, &edge](T lambda)
+      const T lam0 = (-b - sqrtD) / (2 * a);
+      const auto ip0 = edge.interpolate(lam0);
+      Utilities::MyAssert(getPosition(ip0, predicate) == BallPosition::On);
+
+      const T lam1 = (-b + sqrtD) / (2 * a);
+      const auto ip1 = edge.interpolate(lam1);
+      Utilities::MyAssert(getPosition(ip1, predicate) == BallPosition::On);
+
+      if (pos0 == BallPosition::Inside)
       {
-         const Point<T, N> p = edge.point0() * lambda + edge.point1() * (1 - lambda);
-         if (Contains(p)) return 0;
-         const T dist = PointUtils::GetNormSquared(p - m_center);
-         if (dist < m_radius * m_radius) return -1;
-         return 1;
+         // Use the second root
+         Utilities::MyAssert(pos1 == BallPosition::Outside);
+         Utilities::MyAssert(!predicate.SamePoints(point0, ip1));
+         return { true, ip1 };
       }
-#endif
-      throw MyException("Not yet implemented");
 
+      if (pos0 == BallPosition::On)
+      {
+         Utilities::MyAssert(pos1 == BallPosition::Outside);
+
+         // TODO better test if point is on edge
+         return { lam1 <= 1 && !predicate.SamePoints(ip1, point0), ip1 };
+      }
+
+      Utilities::MyAssert(pos0 == BallPosition::Outside);
+      if (predicate.SamePoints(point1, ip0)) return { true, point1 };
+
+      // TODO better check if edge contains point
+      return { lam0 <= 1, ip0 };
    }
-}
+
+} // namespace Geometry

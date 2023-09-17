@@ -24,7 +24,7 @@ namespace Geometry
       // First **after** start point
       // If the edge is contained in the region, then return the exit point or the end point of the edge
       // If only the first point of the edge is in the region return false
-      std::tuple< bool, Point<T, N>> TryGetFirstIntersectionWithDirectedEdge(typename const Geometry::DirectedEdge<T, N>& edge, const IGeometryPredicate<T, N>& predicate) const override;
+      std::tuple< bool, Point<T, N>> TryGetFirstIntersectionWithDirectedEdge(typename const Geometry::DirectedEdge<T, N>& edge) const override;
 
      
       SpherePosition getPosition(const Point<T, N>& point, const IGeometryPredicate<T, N>& predicate) const;
@@ -67,8 +67,9 @@ namespace Geometry
    }
 
    template<typename T, int N>
-   std::tuple< bool, Point<T, N>> Sphere<T, N>::TryGetFirstIntersectionWithDirectedEdge(typename const Geometry::DirectedEdge<T, N>& edge, const IGeometryPredicate<T, N>& predicate) const
+   std::tuple< bool, Point<T, N>> Sphere<T, N>::TryGetFirstIntersectionWithDirectedEdge(typename const Geometry::DirectedEdge<T, N>& edge) const
    {
+      const auto& predicate = edge.getPredicate();
       const auto& point0 = edge.point0();
       const auto& point1 = edge.point1();
       const auto position0 = getPosition(point0, predicate);

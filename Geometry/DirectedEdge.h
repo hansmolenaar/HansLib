@@ -15,7 +15,9 @@ namespace Geometry
       const Point<T, N>& point1() const { return m_to; }
       T lengthSquared() const;
       const IGeometryPredicate<T, N>& getPredicate() const;
-     
+
+      Point<T, N> interpolate(T lambda) const;
+
    private:
       DirectedEdge(const Point<T, N>& from, const Point<T, N>& to, const IGeometryPredicate<T, N>& predicate);
       Point<T, N> m_from;
@@ -50,5 +52,13 @@ namespace Geometry
    const IGeometryPredicate<T, N>& DirectedEdge<T, N>::getPredicate() const
    {
       return m_predicate;
+   }
+
+   // 0 => point0
+   // 1 => point1
+   template<typename T, int N>
+   Point<T, N> DirectedEdge<T, N>::interpolate(T lambda) const
+   {
+      return point0() * (1 - lambda) + point1() * lambda;
    }
 }
