@@ -16,7 +16,9 @@ namespace Geometry
       T lengthSquared() const;
       const IGeometryPredicate<T, N>& getPredicate() const;
 
+      T project(const Point<T, N>& point) const;
       Point<T, N> interpolate(T lambda) const;
+      bool contains(const Point<T, N>& point) const;
 
    private:
       DirectedEdge(const Point<T, N>& from, const Point<T, N>& to, const IGeometryPredicate<T, N>& predicate);
@@ -61,4 +63,44 @@ namespace Geometry
    {
       return point0() * (1 - lambda) + point1() * lambda;
    }
-}
+
+   template<typename T, int N>
+   T DirectedEdge<T, N>::project(const Point<T, N>& point) const
+   {
+      T inprod = 0;
+      T norm2 = 0;
+      for (int d = 0; d < N; ++d)
+      {
+         const T dif = (point1().at(d) - point0().at(d));
+         inprod += dif * (point.at(d) - point0().at(d));
+         norm2 += dif * dif;
+      }
+
+      return inprod / norm2;
+   }
+
+   template<typename T, int N>
+   bool DirectedEdge<T, N>::contains(const Point<T, N>& point) const
+   {
+      // Project the point on the line
+      const T lambda = project(point);
+
+
+      // Projection within range of line?
+      if (lambda >= 0 && lambda <= 1)
+      {
+         const auto projected = interpolate(lambda);
+         return m_predicate.SamePoints(projected, point);
+      }
+      else if (lambda < 0)
+      {
+         return m_predicate.SamePoints(point0(), point);
+      }
+      else
+      {
+         return m_predicate.SamePoints(point1(), point);
+      }
+   }
+
+
+} // namespace Geometry
