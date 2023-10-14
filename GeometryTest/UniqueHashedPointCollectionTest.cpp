@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-
+#include "StdHash.h"
 #include "UniqueHashedPointCollection.h"
 #include "PointClose.h"
 

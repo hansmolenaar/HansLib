@@ -45,46 +45,6 @@ std::array<T, N> operator-(std::array<T, N> result)
    return result;
 }
 
-namespace std
-{
-   template<>
-   struct hash< IntPoint1 >
-   {
-      size_t operator()(const IntPoint1& point) const noexcept;
-   };
-
-   template<>
-   struct hash< IntPoint2 >
-   {
-      size_t operator()(const IntPoint2& point) const noexcept;
-   };
-
-   template<>
-   struct hash< IntPoint3 >
-   {
-      size_t operator()(const IntPoint3& point) const noexcept;
-   };
-
-   template<>
-   struct hash< RatPoint1 >
-   {
-      size_t operator()(const RatPoint1& point) const noexcept;
-   };
-
-   template<>
-   struct hash< RatPoint2 >
-   {
-      size_t operator()(const RatPoint2& point) const noexcept;
-   };
-
-   template<>
-   struct hash< RatPoint3 >
-   {
-      size_t operator()(const RatPoint3& point) const noexcept;
-   };
-
-}
-
 namespace PointUtils
 {
    template<typename T, int N>

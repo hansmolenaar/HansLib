@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 
+#include "StdHash.h"
 #include "Point.h"
 
 #include <numeric>

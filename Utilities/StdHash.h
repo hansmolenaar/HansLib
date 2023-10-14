@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Rational.h"
 #include <array>
 #include <boost/functional/hash.hpp>
 
@@ -12,9 +13,10 @@ namespace std
          size_t result = 0;
          for (int n = 0; n < N; ++n)
          {
-            boost::hash_combine(result, static_cast<size_t>(key[n]));
+            boost::hash_combine(result, std::hash<T>{}(key[n]));
          }
          return result;
       }
    };
+
 }
