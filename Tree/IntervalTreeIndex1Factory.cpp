@@ -1,4 +1,5 @@
 #include "IntervalTreeIndex1Factory.h"
+#include "StdHash.h"
 
 using namespace IntervalTree;
 

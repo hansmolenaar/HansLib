@@ -1,5 +1,6 @@
 #pragma once
 
+#include "StdHash.h"
 #include "IntervalTreeIndex.h"
 
 

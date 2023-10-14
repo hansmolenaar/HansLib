@@ -2,6 +2,7 @@
 
 #include "IntervalTreeIndexFactory.h"
 #include "IntervalTreeAction.h"
+#include "StdHash.h"
 
 #include <unordered_map>
 #include <unordered_set>
