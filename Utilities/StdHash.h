@@ -5,9 +5,9 @@
 
 namespace std
 {
-   template <int N>
-   struct hash< std::array<int, N> > {
-      size_t operator()(const std::array<int, N>& key) const noexcept
+   template <typename T, int N>
+   struct hash< std::array<T, N> > {
+      size_t operator()(const std::array<T, N>& key) const noexcept
       {
          size_t result = 0;
          for (int n = 0; n < N; ++n)

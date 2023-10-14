@@ -1,5 +1,4 @@
 #include "Point.h"
-#include <boost/functional/hash.hpp>
 
 namespace
 {
@@ -35,6 +34,7 @@ size_t std::hash<IntPoint3>::operator()(const IntPoint3& point) const noexcept
 size_t std::hash<RatPoint1>::operator()(const RatPoint1& point) const noexcept
 {
    return Hash(point);
+
 }
 
 size_t std::hash<RatPoint2>::operator()(const RatPoint2& point) const noexcept
