@@ -137,5 +137,7 @@ TEST(IntervalTreeIndexTest, getBbOfCell2)
    const auto* kid1 = factory.addIfNew(kids[1]);
    const auto bb = kid1->getBbOfCell();
    ASSERT_EQ(bb.getLower(0), Rational(1, 2));
-   ASSERT_EQ(bb.getUpper(0), Rational(1, 1));
+   ASSERT_EQ(bb.getLower(1), Rational(0, 2));
+   ASSERT_EQ(bb.getUpper(0), Rational(2, 2));
+   ASSERT_EQ(bb.getUpper(1), Rational(1, 2));
 }

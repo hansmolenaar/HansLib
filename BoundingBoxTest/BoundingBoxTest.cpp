@@ -46,6 +46,16 @@ TEST(BoundingBoxTest, CreateFromList1)
    ASSERT_EQ(bb.getInterval(0).getUpper(), 5);
 }
 
+
+TEST(BoundingBoxTest, CreateFrom2Points)
+{
+   const auto bb = BoundingBox<int, 2>::CreateFrom2Points(IntPoint2{ 3, 0 }, IntPoint2{ 1, 2 });
+   ASSERT_EQ(bb.getInterval(0).getLower(), 1);
+   ASSERT_EQ(bb.getInterval(0).getUpper(), 3);
+   ASSERT_EQ(bb.getInterval(1).getLower(), 0);
+   ASSERT_EQ(bb.getInterval(1).getUpper(), 2);
+}
+
 TEST(BoundingBoxTest, CreateFromList2)
 {
    std::vector< std::array<int, 2>> values{ {3,0},{1,2} };

@@ -58,9 +58,7 @@ BoundingBox<Rational, N>  Index<N>::getBbOfCell() const
       pointUpr[n] = intv.getUpper();
    }
 
-   auto result = BoundingBox<Rational, N>::Create(pointLwr);
-   result.Add(pointUpr);
-   return result;
+   return BoundingBox<Rational, N>::CreateFrom2Points(pointLwr, pointUpr);
 }
 
 template BoundingBox<Rational, 1>  IntervalTree::Index<1>::getBbOfCell() const;

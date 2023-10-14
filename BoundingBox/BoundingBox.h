@@ -28,6 +28,8 @@ public:
    template<typename Container>
    static BoundingBox CreateFromList(const Container& container);
 
+   static BoundingBox CreateFrom2Points(const Point<T, N>& point1, const Point<T, N>& point2);
+
    template<typename Container, typename F>
    static BoundingBox CreateFromListTransformed(const Container& container, F fun);
 
@@ -95,6 +97,14 @@ BoundingBox<T, N> BoundingBox<T, N>::CreateFromList(const Container& container)
    {
       result.Add(*itr);
    }
+   return result;
+}
+
+template<typename T, int N>
+BoundingBox<T, N> BoundingBox<T, N>::CreateFrom2Points(const Point<T, N>& point1, const Point<T, N>& point2)
+{
+   BoundingBox<T, N> result = BoundingBox<T, N>::Create(point1);
+   result.Add(point2);
    return result;
 }
 
