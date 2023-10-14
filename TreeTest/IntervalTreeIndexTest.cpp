@@ -115,3 +115,27 @@ TEST(IntervalTreeIndexTest, GetAdjacentInDir)
    retval = kid->getAdjacentInDir(AdjacentDirection{ 1, true });
    ASSERT_FALSE(std::get<0>(retval));
 }
+
+
+TEST(IntervalTreeIndexTest, getBbOfCell1)
+{
+   IndexFactory<1> factory;
+   const auto* root = factory.getRoot();
+   const auto kids = root->refine();
+   const auto* kid1 = factory.addIfNew(kids[1]);
+   const auto bb = kid1->getBbOfCell();
+   ASSERT_EQ(bb.getLower(0), Rational(1, 2));
+   ASSERT_EQ(bb.getUpper(0), Rational(1, 1));
+}
+
+
+TEST(IntervalTreeIndexTest, getBbOfCell2)
+{
+   IndexFactory<2> factory;
+   const auto* root = factory.getRoot();
+   const auto kids = root->refine();
+   const auto* kid1 = factory.addIfNew(kids[1]);
+   const auto bb = kid1->getBbOfCell();
+   ASSERT_EQ(bb.getLower(0), Rational(1, 2));
+   ASSERT_EQ(bb.getUpper(0), Rational(1, 1));
+}

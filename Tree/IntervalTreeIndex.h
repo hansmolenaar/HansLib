@@ -1,10 +1,10 @@
 #pragma once
 
+#include "StdHash.h"
 #include "IntervalTreeIndex1Factory.h"
 #include "BoolContainer.h"
 #include "MyAssert.h"
 #include "IntervalTreeAdjacentDirection.h"
-#include "StdHash.h"
 #include "BoundingBox.h"
 
 #include <vector>
@@ -15,7 +15,7 @@
 
 namespace IntervalTree
 {
-  
+
    template<int N>
    class Index
    {
@@ -26,6 +26,9 @@ namespace IntervalTree
 
       Level getLevel() const;
       const Interval<Rational>& getInterval(int n) const;
+      // Subset of [0,1]^N
+      BoundingBox<Rational, N> getBbOfCell() const;
+
       Key getKey() const;
       std::array<Key, IntervalTree::NumKids<N> > refine() const;
       Rational getMeasure() const;
@@ -134,7 +137,7 @@ namespace IntervalTree
          const  Index1* indx1 = m_factory1(key1);
          const auto kids = Index1::refine(key1);
          for (size_t n = 0; n < kids.size(); ++n)
-         {        
+         {
             ref[d][n] = m_factory1.addIfNew(kids.at(n))->getKey();
          }
       }
@@ -159,9 +162,9 @@ namespace IntervalTree
    }
 
    template<int N>
-    bool Index<N>::IsRoot(const Index<N>::Key& key)
+   bool Index<N>::IsRoot(const Index<N>::Key& key)
    {
-       return str::all_of(key, Index1::IsRoot);
+      return str::all_of(key, Index1::IsRoot);
    }
 
    template<int N>

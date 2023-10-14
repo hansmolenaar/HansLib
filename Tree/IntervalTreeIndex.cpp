@@ -44,3 +44,25 @@ std::array<std::array<Rational, 3>, 8> Index<3>::getVerticesInVtkOrder() const
       std::array<Rational, 3>{intvI.getLower(), intvJ.getUpper(), intvK.getUpper()},
    };
 }
+
+
+template<int N>
+BoundingBox<Rational, N>  Index<N>::getBbOfCell() const
+{
+   std::array<Rational, N> pointLwr;
+   std::array<Rational, N> pointUpr;
+   for (int n = 0; n < N; ++n)
+   {
+      const auto& intv = getInterval(n);
+      pointLwr[n] = intv.getLower();
+      pointUpr[n] = intv.getUpper();
+   }
+
+   auto result = BoundingBox<Rational, N>::Create(pointLwr);
+   result.Add(pointUpr);
+   return result;
+}
+
+template BoundingBox<Rational, 1>  IntervalTree::Index<1>::getBbOfCell() const;
+template BoundingBox<Rational, 2>  IntervalTree::Index<2>::getBbOfCell() const;
+template BoundingBox<Rational, 3>  IntervalTree::Index<3>::getBbOfCell() const;
