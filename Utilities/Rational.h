@@ -19,4 +19,10 @@ namespace std
          return result;
       }
    };
+
+   template<typename T>
+   T ToFloat(const Rational& rat)
+   {
+      return static_cast<T>(rat.numerator()) / rat.denominator();
+   }
 }

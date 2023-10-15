@@ -12,4 +12,3 @@ TEST(RefineToMaxLevel, RefineToMaxLevel)
    ASSERT_FALSE(doRefine0(tree.getRoot()));
    ASSERT_TRUE(doRefine1(tree.getRoot()));
 }
-

@@ -5,7 +5,6 @@
 #include "IntervalTreeIndex.h"
 #include "Defines.h"
 
-
 namespace IntervalTree
 {
 
@@ -16,8 +15,6 @@ namespace IntervalTree
       int MaxLevel;
    };
 
-
-
    template<int N>
    struct RefineIfContainsPoint
    {
@@ -27,5 +24,12 @@ namespace IntervalTree
       std::array<Rational, N> Point;
    };
 
+   template<int N>
+   struct RefineIfOverlaps
+   {
+      bool operator()(const Index<N>& indx) const;
+      BoundingBox<double, N> BbGiven;
+      BoundingBox<double, N> BbIntervalTree;
+   };
 
 }

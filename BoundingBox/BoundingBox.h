@@ -30,6 +30,11 @@ public:
 
    static BoundingBox CreateFrom2Points(const Point<T, N>& point1, const Point<T, N>& point2);
 
+   template<typename TScale>
+   BoundingBox<T, N> scale(const BoundingBox<TScale, N>& scale) const;
+
+   BoundingBox<T, N> scale(const BoundingBox<Rational, N>& scale) const;
+
    template<typename Container, typename F>
    static BoundingBox CreateFromListTransformed(const Container& container, F fun);
 
@@ -122,6 +127,48 @@ BoundingBox<T, N> BoundingBox<T, N>::CreateFromListTransformed(const Container& 
       result.Add(fun(*itr));
    }
    return result;
+}
+
+
+template<typename T, int N >
+template<typename TScale>
+BoundingBox<T, N> BoundingBox<T, N>::scale(const BoundingBox<TScale, N>& scale) const
+{
+   Point<T, N> pointLwr;
+   Point<T, N> pointUpr;
+   for (int n = 0; n < N; ++n)
+   {
+      const T lwr = m_intervals[n].getLower();
+      const T upr = m_intervals[n].getUpper();
+      const T scaleLwr = scale.getLower()[n];
+      const T scaleUpr = scale.getUpper()[n];
+      pointLwr[n] = lwr + scaleLwr * (upr - lwr);
+      pointUpr[n] = lwr + scaleUpr * (upr - lwr);
+   }
+   return CreateFrom2Points(pointLwr, pointUpr);
+}
+
+template<typename T, int N >
+BoundingBox<T, N> BoundingBox<T, N>::scale(const BoundingBox<Rational, N>& scale) const
+{
+   const auto scaleLwr = scale.getLower();
+   const auto scaleUpr = scale.getUpper();
+
+   Point<T, N> pointLwr;
+   Point<T, N> pointUpr;
+   for (int n = 0; n < N; ++n)
+   {
+      const T lwr = m_intervals[n].getLower();
+      const T upr = m_intervals[n].getUpper();
+
+      const T scaleLwrValue = std::ToFloat<T>(scaleLwr[n]);
+      const T scaleUprValue = std::ToFloat<T>(scaleUpr[n]);
+
+      pointLwr[n] = lwr + scaleLwrValue * (upr - lwr);
+      pointUpr[n] = lwr + scaleUprValue * (upr - lwr);
+   }
+   return CreateFrom2Points(pointLwr, pointUpr);
+
 }
 
 template<typename T, int N >
