@@ -64,3 +64,25 @@ Diagram Diagram::Create(const std::unordered_map<FieldIndex, Value>& input)
    Check(values);
    return Diagram(values);
 }
+
+Value Diagram::operator()(FieldIndex field) const
+{
+   return m_state.at(field);
+}
+
+std::ostream& operator<<(std::ostream& os, const Sudoku::Diagram& diagram)
+{
+   const std::array<FieldInfoStatic, NumFields>& infoAll = FieldInfoStatic::Instance();
+   for (RowColIndex row = 0; row < NumRowCol; ++row)
+   {
+      os << "|";
+      for (RowColIndex col = 0; col < NumRowCol; ++col)
+      {
+         const FieldIndex field = FieldInfoStatic::RowColToField(row, col);
+         const Value value = diagram(field);
+         os << " " << (value == ValueUndefined ? "-" : std::to_string(value)) + " ";
+      }
+      os << "|\n";
+   }
+   return os;
+}
