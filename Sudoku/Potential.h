@@ -13,12 +13,12 @@ namespace Sudoku
       static Potential Combine(const Potential& pot1, const Potential& pot2, const Potential& pot3);
       void SetAll();
       void SetNone();
-      void Set(RowColIndex index);
-      void Unset(RowColIndex index);
-      bool operator()(RowColIndex index) const;
+      void Set(Value value);
+      void Unset(Value value);
+      bool ContainsValue(Value value) const;
       RowColIndex Count() const;
    private:
-      std::array<bool, NumRowCol> m_active;
+      std::array<bool, NumValues> m_active;
    };
 
 }

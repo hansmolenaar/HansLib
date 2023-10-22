@@ -7,6 +7,7 @@
 #include "MyException.h"
 
 #include <algorithm>
+#include <sstream>
 
 using namespace Sudoku;
 
@@ -23,20 +24,20 @@ namespace
          const Value v = values.at(f);
          if (v != ValueUndefined)
          {
-            if (v < ValueUndefined || v >= NumValues)
+            if (v < ValueUndefined || v > NumValues)
             {
-               throw MyException("Diagram check, unexpected 1 << value << 9, actual: " + std::to_string(v));
+               throw MyException("Diagram check, unexpected 1 <= value <= 9, actual: " + std::to_string(v));
             }
             const FieldInfoStatic& info = infoAll.at(f);
-            if (rowContains.at(info.Row)(v))
+            if (rowContains.at(info.Row).ContainsValue(v))
             {
                throw MyException("Diagram check, row " + std::to_string(info.Row) + " already contains value " + std::to_string(v));
             }
-            if (colContains.at(info.Col)(v))
+            if (colContains.at(info.Col).ContainsValue(v))
             {
                throw MyException("Diagram check, column " + std::to_string(info.Col) + " already contains value " + std::to_string(v));
             }
-            if (subSquareContains.at(info.SubSquare)(v))
+            if (subSquareContains.at(info.SubSquare).ContainsValue(v))
             {
                throw MyException("Diagram check, SubSquare " + std::to_string(info.SubSquare) + " already contains value " + std::to_string(v));
             }
@@ -58,11 +59,28 @@ Diagram Diagram::Create(const std::unordered_map<FieldIndex, Value>& input)
    str::fill(values, ValueUndefined);
    for (auto iv : input)
    {
+      FieldInfoStatic::CheckValue(iv.second);
       values.at(iv.first) = iv.second;
    }
 
    Check(values);
    return Diagram(values);
+}
+
+Diagram Diagram::Create(const  std::array<Value, NumFields> values)
+{
+   std::unordered_map<FieldIndex, Value> map;
+   const std::array<FieldInfoStatic, NumFields>& infoAll = FieldInfoStatic::Instance();
+   FieldIndex field = 0;
+   for (Value value : values)
+   {
+      if (value != ValueUndefined)
+      {
+         map[field] = value;
+      }
+      ++field;
+   }
+   return Create(map);
 }
 
 Value Diagram::operator()(FieldIndex field) const
@@ -85,4 +103,55 @@ std::ostream& operator<<(std::ostream& os, const Sudoku::Diagram& diagram)
       os << "|\n";
    }
    return os;
+}
+
+std::array<Potential, NumFields> Diagram::getPotentials() const
+{
+   const std::array<FieldInfoStatic, NumFields>& infoAll = FieldInfoStatic::Instance();
+
+   std::array<Potential, NumRowCol> availableInRow;
+   std::array<Potential, NumRowCol> availableInCol;
+   std::array<Potential, NumSubSquares> availableInSubSquare;
+
+   for (auto index : RowColAll)
+   {
+      availableInRow.at(index).SetAll();
+      availableInCol.at(index).SetAll();
+   }
+   for (auto index : SubSquareAll)
+   {
+      availableInSubSquare.at(index).SetAll();
+   }
+
+   for (FieldIndex f = 0; f < NumFields; ++f)
+   {
+      const Value v = (*this)(f);
+      if (v != ValueUndefined)
+      {
+         const auto& info = infoAll.at(f);
+         availableInRow.at(info.Row).Unset(v);
+         availableInCol.at(info.Col).Unset(v);
+         availableInSubSquare.at(info.SubSquare).Unset(v);
+      }
+   }
+
+   std::array<Potential, NumFields> result;
+   for (FieldIndex f = 0; f < NumFields; ++f)
+   {
+      const Value v = (*this)(f);
+      if (v == ValueUndefined)
+      {
+         const auto& info = infoAll.at(f);
+         result.at(f) = Potential::Combine(availableInRow.at(info.Row), availableInCol.at(info.Col), availableInSubSquare.at(info.SubSquare));
+      }
+   }
+
+   return  result;
+}
+
+std::string Diagram::toString() const
+{
+   std::ostringstream stream;
+   stream << *this;
+   return stream.str();
 }

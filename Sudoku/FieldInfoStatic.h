@@ -10,8 +10,9 @@ namespace Sudoku
       SubSquareIndex SubSquare;
 
       static const std::array<FieldInfoStatic, NumFields>& Instance();
-      static FieldIndex RowColToField(RowColIndex row, RowColIndex col);
+      static constexpr FieldIndex RowColToField(RowColIndex row, RowColIndex col) { return row * NumRowCol + col; }
       static void CheckRowColIndex(RowColIndex index);
+      static void CheckValue(Value value);
    };
 
 }

@@ -1,6 +1,6 @@
 #include "Potential.h"
 #include "Defines.h"
-
+#include "FieldInfoStatic.h"
 using namespace Sudoku;
 
 Potential::Potential()
@@ -10,7 +10,7 @@ Potential::Potential()
 
 void Potential::SetAll()
 {
-   for (auto i : RowColAll)
+   for (auto i : ValueAll)
    {
       Set(i);
    }
@@ -18,25 +18,28 @@ void Potential::SetAll()
 
 void Potential::SetNone()
 {
-   for (auto i : RowColAll)
+   for (auto i : ValueAll)
    {
       Unset(i);
    }
 }
 
-void Potential::Set(RowColIndex index)
+void Potential::Set(Value value)
 {
-   m_active.at(index) = true;
+   FieldInfoStatic::CheckValue(value);
+   m_active.at(value-1) = true;
 }
 
-void Potential::Unset(RowColIndex index)
+void Potential::Unset(Value value)
 {
-   m_active.at(index) = false;
+   FieldInfoStatic::CheckValue(value);
+   m_active.at(value-1) = false;
 }
 
-bool Potential::operator()(RowColIndex index) const
+bool Potential::ContainsValue(Value value) const
 {
-   return m_active.at(index);
+   FieldInfoStatic::CheckValue(value);
+   return m_active.at(value-1);
 }
 
 RowColIndex Potential::Count() const
@@ -47,11 +50,11 @@ RowColIndex Potential::Count() const
 Potential Potential::Combine(const Potential& pot1, const Potential& pot2, const Potential& pot3)
 {
    Potential result;
-   for (auto index : RowColAll)
+   for (auto value : ValueAll)
    {
-      if (pot1(index) && pot2(index) && pot3(index))
+      if (pot1.ContainsValue(value) && pot2.ContainsValue(value) && pot3.ContainsValue(value))
       {
-         result.Set(index);
+         result.Set(value);
       }
    }
    return result;

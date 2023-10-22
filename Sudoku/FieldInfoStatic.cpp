@@ -14,11 +14,6 @@ namespace
    }
 }
 
-FieldIndex FieldInfoStatic::RowColToField(RowColIndex row, RowColIndex col)
-{
-   return row * NumRowCol + col;
-}
-
 const std::array<FieldInfoStatic, NumFields>& FieldInfoStatic::Instance()
 {
    static std::array<FieldInfoStatic, NumFields> s_instance;
@@ -46,8 +41,14 @@ const std::array<FieldInfoStatic, NumFields>& FieldInfoStatic::Instance()
    return s_instance;
 }
 
- void FieldInfoStatic::CheckRowColIndex(RowColIndex index)
+void FieldInfoStatic::CheckRowColIndex(RowColIndex index)
 {
-    if (index < 0) throw MyException("FieldInfoStatic::CheckRowColIndex index should be >= 0, actual " + std::to_string(index));
-    if (index >= NumRowCol) throw MyException("FieldInfoStatic::CheckRowColIndex index should be < 9, actual " + std::to_string(index));
+   if (index < 0) throw MyException("FieldInfoStatic::CheckRowColIndex index should be >= 0, actual " + std::to_string(index));
+   if (index >= NumRowCol) throw MyException("FieldInfoStatic::CheckRowColIndex index should be < 9, actual " + std::to_string(index));
+}
+
+void FieldInfoStatic::CheckValue(Value value)
+{
+   if (value < 1) throw MyException("FieldInfoStatic::CheckValue value should be >= 1, actual " + std::to_string(value));
+   if (value > NumValues) throw MyException("FieldInfoStatic::CheckValue value should be <= 9, actual " + std::to_string(value));
 }

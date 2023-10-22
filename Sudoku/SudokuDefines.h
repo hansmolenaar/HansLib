@@ -7,6 +7,7 @@ namespace Sudoku
    using Value = int; // 1..9
    constexpr Value ValueUndefined = 0;
    constexpr Value NumValues = 9;
+   constexpr std::array<Value, NumValues> ValueAll = { 1,2,3,4,5,6,7,8,9 };
 
    using RowColIndex = int; // 0..8
    constexpr RowColIndex NumRowCol = 9;
@@ -15,7 +16,7 @@ namespace Sudoku
    using SubSquareIndex = int; // 0..8
    using SubSquareRowColIndex = int; // 0..2
    constexpr int NumSubSquareRowCol = 3;
-   constexpr int NumSubSquares = NumSubSquareRowCol* NumSubSquareRowCol;
+   constexpr int NumSubSquares = NumSubSquareRowCol * NumSubSquareRowCol;
    constexpr std::array<SubSquareIndex, NumSubSquares> SubSquareAll = { 0,1,2,3,4,5,6,7,8 };
 
    using FieldIndex = int; // 0..80
