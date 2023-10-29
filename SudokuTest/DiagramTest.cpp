@@ -138,7 +138,7 @@ TEST(DiagramTest, GetPotentialsSubSquare)
 }
 
 
-TEST(DiagramTest, OneStar1)
+TEST(DiagramTest, Simple)
 {
    std::array<Value, NumFields> diagramValues =
    {
@@ -156,6 +156,7 @@ TEST(DiagramTest, OneStar1)
    };
 
    const Diagram diagram = Diagram::Create(diagramValues);
+   ASSERT_FALSE(diagram.isSolved());
    const std::string str = diagram.toString();
    ASSERT_FALSE(str.empty());
 
@@ -198,4 +199,13 @@ TEST(DiagramTest, OneStar1)
 
    const auto numSimple = str::count_if(potentials, [](const Potential& p) {return p.Count() == 1; });
    ASSERT_EQ(numSimple, 12);
+}
+
+TEST(DiagramTest, IsNotCorrectEmpty)
+{
+   const std::array<FieldInfoStatic, NumFields>& instance = FieldInfoStatic::Instance();
+   std::unordered_map<FieldIndex, Value> input;
+
+   const Diagram diagram = Diagram::Create(input);
+   ASSERT_FALSE(diagram.isSolved());
 }

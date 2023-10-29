@@ -21,4 +21,10 @@ namespace Sudoku
 
    using FieldIndex = int; // 0..80
    constexpr int NumFields = NumRowCol * NumRowCol;
+
+   struct FieldValue
+   {
+      FieldIndex Field;
+      Value  Value;
+   };
 }

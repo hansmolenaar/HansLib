@@ -8,6 +8,7 @@
 
 #include <algorithm>
 #include <sstream>
+#include <unordered_set>
 
 using namespace Sudoku;
 
@@ -154,4 +155,60 @@ std::string Diagram::toString() const
    std::ostringstream stream;
    stream << *this;
    return stream.str();
+}
+
+bool Diagram::isSolved() const
+{
+   const std::array<FieldInfoStatic, NumFields>& infoAll = FieldInfoStatic::Instance();
+
+   if (str::any_of(m_state, [](Value val) {return val == ValueUndefined; }))
+   {
+      return false;
+   }
+
+   for (auto row : RowColAll)
+   {
+      std::unordered_set<RowColIndex> isSet;
+      for (auto field : FieldInfoStatic::GetRow(row))
+      {
+         isSet.insert(m_state.at(field));
+      }
+      if (isSet.size() != NumRowCol)
+      {
+         return false;
+      }
+   }
+
+   for (auto col : RowColAll)
+   {
+      std::unordered_set<RowColIndex> isSet;
+      for (auto field : FieldInfoStatic::GetCol(col))
+      {
+         isSet.insert(m_state.at(field));
+      }
+      if (isSet.size() != NumRowCol)
+      {
+         return false;
+      }
+   }
+
+   for (auto ssq : SubSquareAll)
+   {
+      std::unordered_set<RowColIndex> isSet;
+      for (auto field : FieldInfoStatic::GetSubSquare(ssq))
+      {
+         isSet.insert(m_state.at(field));
+      }
+      if (isSet.size() != NumRowCol)
+      {
+         return false;
+      }
+   }
+
+   return true;
+}
+
+const std::array<Value, NumFields>& Diagram::getState() const
+{
+   return m_state;
 }

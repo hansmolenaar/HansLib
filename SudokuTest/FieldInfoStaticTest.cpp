@@ -2,7 +2,7 @@
 
 #include "FieldInfoStatic.h"
 #include "MyException.h"
-
+#include <unordered_set>
 using namespace Sudoku;
 
 TEST(FieldInfoStaticTest, InstanceTest)
@@ -57,3 +57,58 @@ TEST(FieldInfoStaticTest, CheckRowColIndex)
    ASSERT_THROW(FieldInfoStatic::CheckRowColIndex(-1), MyException);
    ASSERT_THROW(FieldInfoStatic::CheckRowColIndex(NumRowCol), MyException);
 }
+
+
+TEST(FieldInfoStaticTest, GetRow)
+{
+   std::unordered_set<FieldIndex> used;
+   const auto& info = FieldInfoStatic::Instance();
+
+   for (auto row : RowColAll)
+   {
+      const auto& cols = FieldInfoStatic::GetRow(row);
+      for (auto f : cols)
+      {
+         used.insert(f);
+         ASSERT_EQ(info.at(f).Row, row);
+      }
+   }
+   ASSERT_EQ(used.size(), NumFields);
+}
+
+
+TEST(FieldInfoStaticTest, GetCol)
+{
+   std::unordered_set<FieldIndex> used;
+   const auto& info = FieldInfoStatic::Instance();
+
+   for (auto col : RowColAll)
+   {
+      const auto& rows = FieldInfoStatic::GetCol(col);
+      for (auto f : rows)
+      {
+         used.insert(f);
+         ASSERT_EQ(info.at(f).Col, col);
+      }
+   }
+   ASSERT_EQ(used.size(), NumFields);
+}
+
+
+TEST(FieldInfoStaticTest, GetSubSquare)
+{
+   std::unordered_set<FieldIndex> used;
+   const auto& info = FieldInfoStatic::Instance();
+
+   for (auto ss : SubSquareAll)
+   {
+      const auto& fields = FieldInfoStatic::GetSubSquare(ss);
+      for (auto f : fields)
+      {
+         used.insert(f);
+         ASSERT_EQ(info.at(f).SubSquare, ss);
+      }
+   }
+   ASSERT_EQ(used.size(), NumFields);
+}
+

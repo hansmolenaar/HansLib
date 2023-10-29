@@ -16,6 +16,7 @@ namespace Sudoku
       void Set(Value value);
       void Unset(Value value);
       bool ContainsValue(Value value) const;
+      Value getSingleValue() const;
       RowColIndex Count() const;
    private:
       std::array<bool, NumValues> m_active;

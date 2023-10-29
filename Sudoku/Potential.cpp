@@ -59,3 +59,29 @@ Potential Potential::Combine(const Potential& pot1, const Potential& pot2, const
    }
    return result;
 }
+
+Value Potential::getSingleValue() const
+{
+   Value result = ValueUndefined;
+   for (auto val : ValueAll)
+   {
+      if (m_active.at(val - 1))
+      {
+         if (result == ValueUndefined)
+         {
+            result = val;
+         }
+         else
+         {
+            throw MyException("Potential::getSingleValue() contains " + std::to_string(result) + " and " + std::to_string(val));
+         }
+      }
+   }
+
+   if (result == ValueUndefined)
+   {
+      throw MyException("Potential::getSingleValue no value found");
+   }
+
+   return result;
+}

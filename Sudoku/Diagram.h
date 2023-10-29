@@ -14,6 +14,8 @@ namespace Sudoku
       Value operator()(FieldIndex field) const;
       std::array<Potential, NumFields> getPotentials() const;
       std::string toString() const;
+      bool isSolved() const;
+      const std::array<Value, NumFields>& getState() const;
    private:
       Diagram(std::array<Value, NumFields> values);
       std::array<Value, NumFields> m_state;
