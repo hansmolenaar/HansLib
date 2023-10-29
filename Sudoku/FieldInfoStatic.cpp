@@ -33,7 +33,7 @@ const std::array<FieldInfoStatic, NumFields>& FieldInfoStatic::Instance()
          {
             const SubSquareRowColIndex subSquareCol = ToSubSquareRowCol(col);
             const SubSquareIndex subSquare = subSquareRow * NumSubSquareRowCol + subSquareCol;
-            const int field = RowColToField(row, col);
+            const auto field = RowColToField(row, col);
             FieldInfoStatic& info = s_instance.at(field);
             info.Row = row;
             info.Col = col;
