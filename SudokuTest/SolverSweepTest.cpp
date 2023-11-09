@@ -24,7 +24,8 @@ TEST(SolverSweepRowTest, GetPotentialsCol)
 
    const Diagram diagram = Diagram::Create(input);
    auto potentials = diagram.getPotentialS();
-   const bool changed = SolverSweepRow()(potentials);
+   SolverSweepRow sweep;
+   const bool changed = sweep(potentials);
    ASSERT_TRUE(changed);
    ASSERT_EQ(potentials.GetSingleOrUndefined(FieldToUse), ValueActive);
 }

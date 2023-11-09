@@ -2,7 +2,7 @@
 #include "SudokuDefines.h"
 #include "FieldInfoStatic.h"
 
-#include <vector>
+#include<boost/container/static_vector.hpp>
 
 using namespace Sudoku;
 
@@ -11,7 +11,7 @@ bool SolverSweepRow::operator()(Potentials& potentials)
    bool anyChange = false;
    for (auto row : RowColAll)
    {
-      std::vector<Value> unsetMe; // TODO remove me
+      boost::container::static_vector<Value, NumRowCol> unsetMe;
       // Collect values that are unique
       for (auto field : FieldInfoStatic::GetRow(row))
       {

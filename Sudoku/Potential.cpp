@@ -10,18 +10,12 @@ Potential::Potential()
 
 void Potential::SetAll()
 {
-   for (auto i : ValueAll)
-   {
-      Set(i);
-   }
+   m_active.set();
 }
 
 void Potential::SetNone()
 {
-   for (auto i : ValueAll)
-   {
-      Unset(i);
-   }
+   m_active.reset();
 }
 
 void Potential::SetSingle(Value value)
@@ -33,26 +27,26 @@ void Potential::SetSingle(Value value)
 void Potential::Set(Value value)
 {
    FieldInfoStatic::CheckValue(value);
-   m_active.at(value-1) = true;
+   m_active.set(value - 1);
 }
 
 bool Potential::Unset(Value value)
 {
    FieldInfoStatic::CheckValue(value);
-   const bool changed = m_active.at(value - 1);
-   m_active.at(value-1) = false;
+   const bool changed = m_active.test(value - 1);
+   m_active.reset(value - 1);
    return changed;
 }
 
 bool Potential::ContainsValue(Value value) const
 {
    FieldInfoStatic::CheckValue(value);
-   return m_active.at(value-1);
+   return m_active.test(value - 1);
 }
 
 RowColIndex Potential::Count() const
 {
-   return static_cast<RowColIndex>(str::count_if(m_active, [](bool b) {return b; }));
+   return static_cast<RowColIndex>(m_active.count());
 }
 
 Potential Potential::Combine(const Potential& pot1, const Potential& pot2, const Potential& pot3)
@@ -73,7 +67,7 @@ Value Potential::getSingleValue() const
    Value result = ValueUndefined;
    for (auto val : ValueAll)
    {
-      if (m_active.at(val - 1))
+      if (m_active.test(val - 1))
       {
          if (result == ValueUndefined)
          {

@@ -1,8 +1,7 @@
 #pragma once
 #include "SudokuDefines.h"
 
-#include <array>
-#include <span>
+#include <bitset>
 
 namespace Sudoku
 {
@@ -22,7 +21,7 @@ namespace Sudoku
       RowColIndex Count() const;
       bool isSingle() const;
    private:
-      std::array<bool, NumValues> m_active;
+      std::bitset<NumValues> m_active;
    };
 
 }
