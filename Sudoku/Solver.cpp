@@ -59,11 +59,15 @@ Solver Solver::Create(const Diagram& diagramIn)
       if (updates.empty()) break;
      
       std::array<Value, NumFields> values = diagram.getState();
-      for (auto fv : updates)
+      Potentials potentials = diagram.getPotentialS();
+      for (const auto fv : updates)
       {
-         values.at(fv.Field) = fv.Value;
+         if (fv.Value != ValueUndefined)
+         {
+            potentials.SetSingle(fv.Field, fv.Value);
+         }
      }
-      diagram = Diagram::Create(values);
+      diagram = Diagram::Create(potentials);
    }
 
    return Solver(diagramIn,diagram);

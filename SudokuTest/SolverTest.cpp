@@ -40,8 +40,6 @@ TEST(SolverTest, OneStar1)
 
    const Diagram diagramIn = Diagram::Create(diagramValues);
    const Solver result = Solver::Create(diagramIn);
-   const auto str = result.getState().toString();
-   bool tmp = result.getState().isSolved();
    ASSERT_TRUE(result.isSolved());
 
 }

@@ -24,6 +24,12 @@ void Potential::SetNone()
    }
 }
 
+void Potential::SetSingle(Value value)
+{
+   SetNone();
+   Set(value);
+}
+
 void Potential::Set(Value value)
 {
    FieldInfoStatic::CheckValue(value);

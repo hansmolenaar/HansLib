@@ -68,6 +68,21 @@ Diagram Diagram::Create(const std::unordered_map<FieldIndex, Value>& input)
    return Diagram(values);
 }
 
+Diagram Diagram::Create(const Potentials& values)
+{
+   std::unordered_map<FieldIndex, Value> map;
+   const std::array<FieldInfoStatic, NumFields>& infoAll = FieldInfoStatic::Instance();
+   for (FieldIndex field = 0; field < NumFields; ++field)
+   {
+      const auto value = values.GetSingleOrUndefined(field);
+      if (value != ValueUndefined)
+      {
+         map[field] = value;
+      }
+   }
+   return Create(map);
+}
+
 Diagram Diagram::Create(const  std::array<Value, NumFields> values)
 {
    std::unordered_map<FieldIndex, Value> map;
@@ -148,6 +163,20 @@ std::array<Potential, NumFields> Diagram::getPotentials() const
    }
 
    return  result;
+}
+
+Sudoku::Potentials Diagram::getPotentialS() const
+{
+   Potentials result;
+   const std::array<Potential, NumFields> potentials = getPotentials();
+   for (FieldIndex field = 0; field < NumFields; ++field)
+   {
+      if (m_state.at(field) != ValueUndefined)
+      {
+         result.SetSingle(field, m_state.at(field));
+      }
+   }
+   return result;
 }
 
 std::string Diagram::toString() const

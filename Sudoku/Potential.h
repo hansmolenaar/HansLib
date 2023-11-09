@@ -13,6 +13,7 @@ namespace Sudoku
       static Potential Combine(const Potential& pot1, const Potential& pot2, const Potential& pot3);
       void SetAll();
       void SetNone();
+      void SetSingle(Value value);
       void Set(Value value);
       void Unset(Value value);
       bool ContainsValue(Value value) const;
