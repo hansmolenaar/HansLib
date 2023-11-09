@@ -30,3 +30,13 @@ void Potentials::Set(FieldIndex field, Potential potential)
 {
    m_potentials.at(field) = potential;
 }
+
+bool Potentials::isSingle(FieldIndex field) const
+{
+   return m_potentials.at(field).isSingle();
+}
+
+bool Potentials::unset(FieldIndex field, Value value) 
+{
+   return m_potentials.at(field).Unset(value);
+}

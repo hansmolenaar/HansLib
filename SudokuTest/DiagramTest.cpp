@@ -83,32 +83,9 @@ TEST(DiagramTest, GetPotentialsRow)
    }
 
    const Diagram diagram = Diagram::Create(input);
-   const auto potentials = diagram.getPotentials();
-   ASSERT_EQ(potentials.at(FieldToUse).Count(), 1);
-   ASSERT_TRUE(potentials.at(FieldToUse).ContainsValue(ValueActive));
+   const auto potentials = diagram.getPotentialS();
+   ASSERT_EQ(potentials.GetSingleOrUndefined(FieldToUse), ValueActive);
 }
-
-
-TEST(DiagramTest, GetPotentialsCol)
-{
-   constexpr RowColIndex ColToSkip = 8;
-   constexpr Value ValueActive = ColToSkip + 1;
-   constexpr RowColIndex RowToUse = 0;
-   constexpr FieldIndex FieldToUse = FieldInfoStatic::RowColToField(RowToUse, ColToSkip);
-
-   std::unordered_map<FieldIndex, Value> input;
-   for (auto col : RowColAll)
-   {
-      if (col == ColToSkip) continue;
-      input[FieldInfoStatic::RowColToField(RowToUse, col)] = col + 1;
-   }
-
-   const Diagram diagram = Diagram::Create(input);
-   const auto potentials = diagram.getPotentials();
-   ASSERT_EQ(potentials.at(FieldToUse).Count(), 1);
-   ASSERT_TRUE(potentials.at(FieldToUse).ContainsValue(ValueActive));
-}
-
 
 TEST(DiagramTest, GetPotentialsSubSquare)
 {

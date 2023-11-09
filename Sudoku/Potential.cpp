@@ -36,10 +36,12 @@ void Potential::Set(Value value)
    m_active.at(value-1) = true;
 }
 
-void Potential::Unset(Value value)
+bool Potential::Unset(Value value)
 {
    FieldInfoStatic::CheckValue(value);
+   const bool changed = m_active.at(value - 1);
    m_active.at(value-1) = false;
+   return changed;
 }
 
 bool Potential::ContainsValue(Value value) const
@@ -90,4 +92,9 @@ Value Potential::getSingleValue() const
    }
 
    return result;
+}
+
+bool Potential::isSingle() const
+{
+   return Count() == 1;
 }

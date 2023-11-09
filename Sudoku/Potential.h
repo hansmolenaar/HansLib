@@ -15,10 +15,12 @@ namespace Sudoku
       void SetNone();
       void SetSingle(Value value);
       void Set(Value value);
-      void Unset(Value value);
+      // Returns: value changed
+      bool Unset(Value value);
       bool ContainsValue(Value value) const;
       Value getSingleValue() const;
       RowColIndex Count() const;
+      bool isSingle() const;
    private:
       std::array<bool, NumValues> m_active;
    };

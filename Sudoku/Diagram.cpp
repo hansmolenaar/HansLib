@@ -168,7 +168,6 @@ std::array<Potential, NumFields> Diagram::getPotentials() const
 Sudoku::Potentials Diagram::getPotentialS() const
 {
    Potentials result;
-   const std::array<Potential, NumFields> potentials = getPotentials();
    for (FieldIndex field = 0; field < NumFields; ++field)
    {
       if (m_state.at(field) != ValueUndefined)

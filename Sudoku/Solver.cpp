@@ -5,13 +5,14 @@
 
 using namespace Sudoku;
 
-class ISolverSweep
+// TODO remove me
+class ISolverSweeP
 {
 public:
    virtual std::vector<FieldValue> Action(const std::array<Potential, NumFields> state) = 0;
 };
 
-class SolverSweepSingletons : public ISolverSweep
+class SolverSweepSingletons : public ISolverSweeP
 {
 public:
    std::vector<FieldValue> Action(const std::array<Potential, NumFields> state) override;
