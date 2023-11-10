@@ -5,32 +5,32 @@ using namespace Sudoku;
 
 Potential::Potential()
 {
-   SetNone();
+   setNone();
 }
 
-void Potential::SetAll()
+void Potential::setAll()
 {
    m_active.set();
 }
 
-void Potential::SetNone()
+void Potential::setNone()
 {
    m_active.reset();
 }
 
-void Potential::SetSingle(Value value)
+void Potential::setSingle(Value value)
 {
-   SetNone();
-   Set(value);
+   setNone();
+   set(value);
 }
 
-void Potential::Set(Value value)
+void Potential::set(Value value)
 {
    FieldInfoStatic::CheckValue(value);
    m_active.set(value - 1);
 }
 
-bool Potential::Unset(Value value)
+bool Potential::unset(Value value)
 {
    FieldInfoStatic::CheckValue(value);
    const bool changed = m_active.test(value - 1);
@@ -38,28 +38,15 @@ bool Potential::Unset(Value value)
    return changed;
 }
 
-bool Potential::ContainsValue(Value value) const
+bool Potential::containsValue(Value value) const
 {
    FieldInfoStatic::CheckValue(value);
    return m_active.test(value - 1);
 }
 
-RowColIndex Potential::Count() const
+RowColIndex Potential::count() const
 {
    return static_cast<RowColIndex>(m_active.count());
-}
-
-Potential Potential::Combine(const Potential& pot1, const Potential& pot2, const Potential& pot3)
-{
-   Potential result;
-   for (auto value : ValueAll)
-   {
-      if (pot1.ContainsValue(value) && pot2.ContainsValue(value) && pot3.ContainsValue(value))
-      {
-         result.Set(value);
-      }
-   }
-   return result;
 }
 
 Value Potential::getSingleValue() const
@@ -90,5 +77,5 @@ Value Potential::getSingleValue() const
 
 bool Potential::isSingle() const
 {
-   return Count() == 1;
+   return count() == 1;
 }

@@ -9,16 +9,16 @@ namespace Sudoku
    {
    public:
       Potential();
-      static Potential Combine(const Potential& pot1, const Potential& pot2, const Potential& pot3);
-      void SetAll();
-      void SetNone();
-      void SetSingle(Value value);
-      void Set(Value value);
+
+      void setAll();
+      void setNone();
+      void setSingle(Value value);
+      void set(Value value);
       // Returns: value changed
-      bool Unset(Value value);
-      bool ContainsValue(Value value) const;
+      bool unset(Value value);
+      bool containsValue(Value value) const;
       Value getSingleValue() const;
-      RowColIndex Count() const;
+      RowColIndex count() const;
       bool isSingle() const;
    private:
       std::bitset<NumValues> m_active;

@@ -10,9 +10,8 @@ namespace Sudoku
    {
    public:
       Potentials();
-      Value GetSingleOrUndefined(FieldIndex field) const;
-      void SetSingle(FieldIndex field, Value value);
-      void Set(FieldIndex field, Potential potential);
+      Value getSingleOrUndefined(FieldIndex field) const;
+      void setSingle(FieldIndex field, Value value);
       bool isSingle(FieldIndex field) const;
       // Returns: potential changed
       bool unset(FieldIndex field, Value value);

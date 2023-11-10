@@ -30,21 +30,21 @@ namespace
                throw MyException("Diagram check, unexpected 1 <= value <= 9, actual: " + std::to_string(v));
             }
             const FieldInfoStatic& info = infoAll.at(f);
-            if (rowContains.at(info.Row).ContainsValue(v))
+            if (rowContains.at(info.Row).containsValue(v))
             {
                throw MyException("Diagram check, row " + std::to_string(info.Row) + " already contains value " + std::to_string(v));
             }
-            if (colContains.at(info.Col).ContainsValue(v))
+            if (colContains.at(info.Col).containsValue(v))
             {
                throw MyException("Diagram check, column " + std::to_string(info.Col) + " already contains value " + std::to_string(v));
             }
-            if (subSquareContains.at(info.SubSquare).ContainsValue(v))
+            if (subSquareContains.at(info.SubSquare).containsValue(v))
             {
                throw MyException("Diagram check, SubSquare " + std::to_string(info.SubSquare) + " already contains value " + std::to_string(v));
             }
-            rowContains.at(info.Row).Set(v);
-            colContains.at(info.Col).Set(v);
-            subSquareContains.at(info.SubSquare).Set(v);
+            rowContains.at(info.Row).set(v);
+            colContains.at(info.Col).set(v);
+            subSquareContains.at(info.SubSquare).set(v);
          }
       }
    }
@@ -74,7 +74,7 @@ Diagram Diagram::Create(const Potentials& values)
    const std::array<FieldInfoStatic, NumFields>& infoAll = FieldInfoStatic::Instance();
    for (FieldIndex field = 0; field < NumFields; ++field)
    {
-      const auto value = values.GetSingleOrUndefined(field);
+      const auto value = values.getSingleOrUndefined(field);
       if (value != ValueUndefined)
       {
          map[field] = value;
@@ -128,7 +128,7 @@ Sudoku::Potentials Diagram::getPotentials() const
    {
       if (m_state.at(field) != ValueUndefined)
       {
-         result.SetSingle(field, m_state.at(field));
+         result.setSingle(field, m_state.at(field));
       }
    }
    return result;

@@ -17,7 +17,7 @@ bool SweepItems(GetFields getFields, Potentials& potentials)
       // Collect values that are unique
       for (auto field : getFields(item))
       {
-         const auto val = potentials.GetSingleOrUndefined(field);
+         const auto val = potentials.getSingleOrUndefined(field);
          if (val != ValueUndefined) unsetMe.push_back(val);
       }
 

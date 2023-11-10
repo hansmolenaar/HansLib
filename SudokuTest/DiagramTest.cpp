@@ -96,29 +96,29 @@ TEST(DiagramTest, Simple)
    SolverSweepTrivial sweep;
    sweep(potentials);
 
-   ASSERT_EQ(potentials.GetSingleOrUndefined(FieldInfoStatic::RowColToField(0, 3)), 3);
+   ASSERT_EQ(potentials.getSingleOrUndefined(FieldInfoStatic::RowColToField(0, 3)), 3);
 
-   ASSERT_EQ(potentials.GetSingleOrUndefined(FieldInfoStatic::RowColToField(0, 4)), 7);
+   ASSERT_EQ(potentials.getSingleOrUndefined(FieldInfoStatic::RowColToField(0, 4)), 7);
 
-   ASSERT_EQ(potentials.GetSingleOrUndefined(FieldInfoStatic::RowColToField(1, 8)), 6);
+   ASSERT_EQ(potentials.getSingleOrUndefined(FieldInfoStatic::RowColToField(1, 8)), 6);
 
-   ASSERT_EQ(potentials.GetSingleOrUndefined(FieldInfoStatic::RowColToField(2, 1)), 8);
+   ASSERT_EQ(potentials.getSingleOrUndefined(FieldInfoStatic::RowColToField(2, 1)), 8);
 
-   ASSERT_EQ(potentials.GetSingleOrUndefined(FieldInfoStatic::RowColToField(2, 2)), 5);
+   ASSERT_EQ(potentials.getSingleOrUndefined(FieldInfoStatic::RowColToField(2, 2)), 5);
 
-   ASSERT_EQ(potentials.GetSingleOrUndefined(FieldInfoStatic::RowColToField(3, 2)), 3);
+   ASSERT_EQ(potentials.getSingleOrUndefined(FieldInfoStatic::RowColToField(3, 2)), 3);
 
-   ASSERT_EQ(potentials.GetSingleOrUndefined(FieldInfoStatic::RowColToField(4, 3)), 8);
+   ASSERT_EQ(potentials.getSingleOrUndefined(FieldInfoStatic::RowColToField(4, 3)), 8);
 
-   ASSERT_EQ(potentials.GetSingleOrUndefined(FieldInfoStatic::RowColToField(4, 8)), 3);
+   ASSERT_EQ(potentials.getSingleOrUndefined(FieldInfoStatic::RowColToField(4, 8)), 3);
 
-   ASSERT_EQ(potentials.GetSingleOrUndefined(FieldInfoStatic::RowColToField(5, 0)), 8);
+   ASSERT_EQ(potentials.getSingleOrUndefined(FieldInfoStatic::RowColToField(5, 0)), 8);
 
-   ASSERT_EQ(potentials.GetSingleOrUndefined(FieldInfoStatic::RowColToField(5, 6)), 6);
+   ASSERT_EQ(potentials.getSingleOrUndefined(FieldInfoStatic::RowColToField(5, 6)), 6);
 
-   ASSERT_EQ(potentials.GetSingleOrUndefined(FieldInfoStatic::RowColToField(6, 1)), 6);
+   ASSERT_EQ(potentials.getSingleOrUndefined(FieldInfoStatic::RowColToField(6, 1)), 6);
 
-   ASSERT_EQ(potentials.GetSingleOrUndefined(FieldInfoStatic::RowColToField(6, 3)), 2);
+   ASSERT_EQ(potentials.getSingleOrUndefined(FieldInfoStatic::RowColToField(6, 3)), 2);
 
    int numSimple = 0;
    for (FieldIndex field = 0; field < NumFields; ++field)

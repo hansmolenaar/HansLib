@@ -27,7 +27,7 @@ TEST(SolverSweepRowTest, GetPotentialsCol)
    SolverSweepRow sweep;
    const bool changed = sweep(potentials);
    ASSERT_TRUE(changed);
-   ASSERT_EQ(potentials.GetSingleOrUndefined(FieldToUse), ValueActive);
+   ASSERT_EQ(potentials.getSingleOrUndefined(FieldToUse), ValueActive);
 }
 
 
@@ -50,7 +50,7 @@ TEST(SolverSweepRowTest, GetPotentialsRow)
    SolverSweepColumns sweep;
    const bool changed = sweep(potentials);
    ASSERT_TRUE(changed);
-   ASSERT_EQ(potentials.GetSingleOrUndefined(FieldToUse), ValueActive);
+   ASSERT_EQ(potentials.getSingleOrUndefined(FieldToUse), ValueActive);
 }
 
 
@@ -77,5 +77,5 @@ TEST(SolverSweepRowTest, GetPotentialsSubSquare)
    SolverSweepSubSquares sweep;
    const bool changed = sweep(potentials);
    ASSERT_TRUE(changed);
-   ASSERT_EQ(potentials.GetSingleOrUndefined(FieldToSkip), value);
+   ASSERT_EQ(potentials.getSingleOrUndefined(FieldToSkip), value);
 }
