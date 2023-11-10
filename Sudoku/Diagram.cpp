@@ -121,50 +121,6 @@ std::ostream& operator<<(std::ostream& os, const Sudoku::Diagram& diagram)
    return os;
 }
 
-std::array<Potential, NumFields> Diagram::getPotentials() const
-{
-   const std::array<FieldInfoStatic, NumFields>& infoAll = FieldInfoStatic::Instance();
-
-   std::array<Potential, NumRowCol> availableInRow;
-   std::array<Potential, NumRowCol> availableInCol;
-   std::array<Potential, NumSubSquares> availableInSubSquare;
-
-   for (auto index : RowColAll)
-   {
-      availableInRow.at(index).SetAll();
-      availableInCol.at(index).SetAll();
-   }
-   for (auto index : SubSquareAll)
-   {
-      availableInSubSquare.at(index).SetAll();
-   }
-
-   for (FieldIndex f = 0; f < NumFields; ++f)
-   {
-      const Value v = (*this)(f);
-      if (v != ValueUndefined)
-      {
-         const auto& info = infoAll.at(f);
-         availableInRow.at(info.Row).Unset(v);
-         availableInCol.at(info.Col).Unset(v);
-         availableInSubSquare.at(info.SubSquare).Unset(v);
-      }
-   }
-
-   std::array<Potential, NumFields> result;
-   for (FieldIndex f = 0; f < NumFields; ++f)
-   {
-      const Value v = (*this)(f);
-      if (v == ValueUndefined)
-      {
-         const auto& info = infoAll.at(f);
-         result.at(f) = Potential::Combine(availableInRow.at(info.Row), availableInCol.at(info.Col), availableInSubSquare.at(info.SubSquare));
-      }
-   }
-
-   return  result;
-}
-
 Sudoku::Potentials Diagram::getPotentialS() const
 {
    Potentials result;

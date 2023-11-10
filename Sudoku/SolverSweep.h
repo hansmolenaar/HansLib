@@ -17,4 +17,23 @@ namespace Sudoku
    public:
       bool operator()(Potentials& potentials) override;
    };
+
+   class SolverSweepColumns : public ISolverSweep
+   {
+   public:
+      bool operator()(Potentials& potentials) override;
+   };
+
+   class SolverSweepSubSquares : public ISolverSweep
+   {
+   public:
+      bool operator()(Potentials& potentials) override;
+   };
+
+   class SolverSweepTrivial : public ISolverSweep
+   {
+   public:
+      bool operator()(Potentials& potentials) override;
+   };
+
 }

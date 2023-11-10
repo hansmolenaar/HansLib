@@ -5,6 +5,7 @@
 #include "FieldInfoStatic.h"
 #include "MyException.h"
 #include "Defines.h"
+#include "Solver.h"
 
 using namespace Sudoku;
 
@@ -48,7 +49,7 @@ TEST(DiagramTest, ValuesWrong)
 TEST(DiagramTest, Operator)
 {
    std::unordered_map<FieldIndex, Value> input;
-   const FieldIndex field = FieldInfoStatic::RowColToField(2, 3);
+   constexpr FieldIndex field = FieldInfoStatic::RowColToField(2, 3);
    input[field] = 1;
    const Diagram diagram = Diagram::Create(input);
    ASSERT_EQ(diagram(field), 1);
@@ -67,53 +68,6 @@ TEST(DiagramTest, Stream)
    const std::string str = stream.str();
    ASSERT_FALSE(str.empty());
 }
-
-TEST(DiagramTest, GetPotentialsRow)
-{
-   constexpr RowColIndex RowToSkip = 6;
-   constexpr Value ValueActive = RowToSkip + 1;
-   constexpr RowColIndex ColToUse = 5;
-   constexpr FieldIndex FieldToUse = FieldInfoStatic::RowColToField(RowToSkip, ColToUse);
-
-   std::unordered_map<FieldIndex, Value> input;
-   for (auto row : RowColAll)
-   {
-      if (row == RowToSkip) continue;
-      input[FieldInfoStatic::RowColToField(row, ColToUse)] = row + 1;
-   }
-
-   const Diagram diagram = Diagram::Create(input);
-   const auto potentials = diagram.getPotentialS();
-   ASSERT_EQ(potentials.GetSingleOrUndefined(FieldToUse), ValueActive);
-}
-
-TEST(DiagramTest, GetPotentialsSubSquare)
-{
-   const std::array<FieldInfoStatic, NumFields>& instance = FieldInfoStatic::Instance();
-   constexpr RowColIndex FieldToSkip = 79;
-
-   std::unordered_map<FieldIndex, Value> input;
-   Value value = 1;
-   for (RowColIndex row = 6; row < NumRowCol; ++row)
-   {
-      for (RowColIndex col = 6; col < NumRowCol; ++col)
-      {
-         const FieldIndex field = FieldInfoStatic::RowColToField(row, col);
-         if (field == FieldToSkip) continue;
-         input[field] = value;
-         ++value;
-      }
-   }
-
-   const Diagram diagram = Diagram::Create(input);
-   const std::string str = diagram.toString();
-   ASSERT_FALSE(str.empty());
-
-   const auto potentials = diagram.getPotentials();
-   ASSERT_EQ(potentials.at(FieldToSkip).Count(), 1);
-   ASSERT_TRUE(potentials.at(FieldToSkip).ContainsValue(NumValues));
-}
-
 
 TEST(DiagramTest, Simple)
 {
@@ -137,45 +91,39 @@ TEST(DiagramTest, Simple)
    const std::string str = diagram.toString();
    ASSERT_FALSE(str.empty());
 
-   const auto potentials = diagram.getPotentials();
-   ASSERT_EQ(potentials.at(FieldInfoStatic::RowColToField(0, 3)).Count(), 1);
-   ASSERT_TRUE(potentials.at(FieldInfoStatic::RowColToField(0, 3)).ContainsValue(3));
+   const auto solved = Solver::Create(diagram);
+   const auto potentialS = solved.getState().getPotentialS();
 
-   ASSERT_EQ(potentials.at(FieldInfoStatic::RowColToField(0, 4)).Count(), 1);
-   ASSERT_TRUE(potentials.at(FieldInfoStatic::RowColToField(0, 4)).ContainsValue(7));
+   ASSERT_EQ(potentialS.GetSingleOrUndefined(FieldInfoStatic::RowColToField(0, 3)), 3);
 
-   ASSERT_EQ(potentials.at(FieldInfoStatic::RowColToField(1, 8)).Count(), 1);
-   ASSERT_TRUE(potentials.at(FieldInfoStatic::RowColToField(1, 8)).ContainsValue(6));
+   ASSERT_EQ(potentialS.GetSingleOrUndefined(FieldInfoStatic::RowColToField(0, 4)), 7);
 
-   ASSERT_EQ(potentials.at(FieldInfoStatic::RowColToField(2, 1)).Count(), 1);
-   ASSERT_TRUE(potentials.at(FieldInfoStatic::RowColToField(2, 1)).ContainsValue(8));
+   ASSERT_EQ(potentialS.GetSingleOrUndefined(FieldInfoStatic::RowColToField(1, 8)), 6);
 
-   ASSERT_EQ(potentials.at(FieldInfoStatic::RowColToField(2, 2)).Count(), 1);
-   ASSERT_TRUE(potentials.at(FieldInfoStatic::RowColToField(2, 2)).ContainsValue(5));
+   ASSERT_EQ(potentialS.GetSingleOrUndefined(FieldInfoStatic::RowColToField(2, 1)), 8);
 
-   ASSERT_EQ(potentials.at(FieldInfoStatic::RowColToField(3, 2)).Count(), 1);
-   ASSERT_TRUE(potentials.at(FieldInfoStatic::RowColToField(3, 2)).ContainsValue(3));
+   ASSERT_EQ(potentialS.GetSingleOrUndefined(FieldInfoStatic::RowColToField(2, 2)), 5);
 
-   ASSERT_EQ(potentials.at(FieldInfoStatic::RowColToField(4, 3)).Count(), 1);
-   ASSERT_TRUE(potentials.at(FieldInfoStatic::RowColToField(4, 3)).ContainsValue(8));
+   ASSERT_EQ(potentialS.GetSingleOrUndefined(FieldInfoStatic::RowColToField(3, 2)), 3);
 
-   ASSERT_EQ(potentials.at(FieldInfoStatic::RowColToField(4, 8)).Count(), 1);
-   ASSERT_TRUE(potentials.at(FieldInfoStatic::RowColToField(4, 8)).ContainsValue(3));
+   ASSERT_EQ(potentialS.GetSingleOrUndefined(FieldInfoStatic::RowColToField(4, 3)), 8);
 
-   ASSERT_EQ(potentials.at(FieldInfoStatic::RowColToField(5, 0)).Count(), 1);
-   ASSERT_TRUE(potentials.at(FieldInfoStatic::RowColToField(5, 0)).ContainsValue(8));
+   ASSERT_EQ(potentialS.GetSingleOrUndefined(FieldInfoStatic::RowColToField(4, 8)),3);
 
-   ASSERT_EQ(potentials.at(FieldInfoStatic::RowColToField(5, 6)).Count(), 1);
-   ASSERT_TRUE(potentials.at(FieldInfoStatic::RowColToField(5, 6)).ContainsValue(6));
+   ASSERT_EQ(potentialS.GetSingleOrUndefined(FieldInfoStatic::RowColToField(5, 0)),8);
 
-   ASSERT_EQ(potentials.at(FieldInfoStatic::RowColToField(6, 1)).Count(), 1);
-   ASSERT_TRUE(potentials.at(FieldInfoStatic::RowColToField(6, 1)).ContainsValue(6));
+   ASSERT_EQ(potentialS.GetSingleOrUndefined(FieldInfoStatic::RowColToField(5, 6)),6);
 
-   ASSERT_EQ(potentials.at(FieldInfoStatic::RowColToField(6, 3)).Count(), 1);
-   ASSERT_TRUE(potentials.at(FieldInfoStatic::RowColToField(6, 3)).ContainsValue(2));
+   ASSERT_EQ(potentialS.GetSingleOrUndefined(FieldInfoStatic::RowColToField(6, 1)),6);
 
-   const auto numSimple = str::count_if(potentials, [](const Potential& p) {return p.Count() == 1; });
-   ASSERT_EQ(numSimple, 12);
+   ASSERT_EQ(potentialS.GetSingleOrUndefined(FieldInfoStatic::RowColToField(6, 3)),2);
+
+   int numSimple = 0;
+   for (FieldIndex field = 0; field < NumFields; ++field)
+   {
+      if (potentialS.isSingle(field)) numSimple += 1;
+   }
+   ASSERT_EQ(numSimple, 81);
 }
 
 TEST(DiagramTest, IsNotCorrectEmpty)
