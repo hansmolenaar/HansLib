@@ -25,7 +25,7 @@ bool Solver::isSolved() const
 
 Solver Solver::Create(const Diagram& diagramIn)
 {
-   Potentials potentials = diagramIn.getPotentialS();
+   Potentials potentials = diagramIn.getPotentials();
    bool changed = false;
    do 
    {

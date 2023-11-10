@@ -121,7 +121,7 @@ std::ostream& operator<<(std::ostream& os, const Sudoku::Diagram& diagram)
    return os;
 }
 
-Sudoku::Potentials Diagram::getPotentialS() const
+Sudoku::Potentials Diagram::getPotentials() const
 {
    Potentials result;
    for (FieldIndex field = 0; field < NumFields; ++field)
@@ -190,9 +190,4 @@ bool Diagram::isSolved() const
    }
 
    return true;
-}
-
-const std::array<Value, NumFields>& Diagram::getState() const
-{
-   return m_state;
 }

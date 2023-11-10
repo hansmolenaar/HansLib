@@ -6,6 +6,7 @@
 #include "MyException.h"
 #include "Defines.h"
 #include "Solver.h"
+#include "SolverSweep.h"
 
 using namespace Sudoku;
 
@@ -82,7 +83,7 @@ TEST(DiagramTest, Simple)
       0, 5, 1,     0, 0, 3,    0, 0, 7,
 
       0, 0, 4,     0, 3, 9,    5, 1, 8,
-      0, 0, 9,     5, 1, 8,    7, 0, 0,
+      0, 0, 9,     5, 1, 8,    7, 0, 0, 
       0, 0, 8,     7, 0, 0,    2, 0, 0,
    };
 
@@ -91,39 +92,40 @@ TEST(DiagramTest, Simple)
    const std::string str = diagram.toString();
    ASSERT_FALSE(str.empty());
 
-   const auto solved = Solver::Create(diagram);
-   const auto potentialS = solved.getState().getPotentialS();
+   auto potentials = diagram.getPotentials();
+   SolverSweepTrivial sweep;
+   sweep(potentials);
 
-   ASSERT_EQ(potentialS.GetSingleOrUndefined(FieldInfoStatic::RowColToField(0, 3)), 3);
+   ASSERT_EQ(potentials.GetSingleOrUndefined(FieldInfoStatic::RowColToField(0, 3)), 3);
 
-   ASSERT_EQ(potentialS.GetSingleOrUndefined(FieldInfoStatic::RowColToField(0, 4)), 7);
+   ASSERT_EQ(potentials.GetSingleOrUndefined(FieldInfoStatic::RowColToField(0, 4)), 7);
 
-   ASSERT_EQ(potentialS.GetSingleOrUndefined(FieldInfoStatic::RowColToField(1, 8)), 6);
+   ASSERT_EQ(potentials.GetSingleOrUndefined(FieldInfoStatic::RowColToField(1, 8)), 6);
 
-   ASSERT_EQ(potentialS.GetSingleOrUndefined(FieldInfoStatic::RowColToField(2, 1)), 8);
+   ASSERT_EQ(potentials.GetSingleOrUndefined(FieldInfoStatic::RowColToField(2, 1)), 8);
 
-   ASSERT_EQ(potentialS.GetSingleOrUndefined(FieldInfoStatic::RowColToField(2, 2)), 5);
+   ASSERT_EQ(potentials.GetSingleOrUndefined(FieldInfoStatic::RowColToField(2, 2)), 5);
 
-   ASSERT_EQ(potentialS.GetSingleOrUndefined(FieldInfoStatic::RowColToField(3, 2)), 3);
+   ASSERT_EQ(potentials.GetSingleOrUndefined(FieldInfoStatic::RowColToField(3, 2)), 3);
 
-   ASSERT_EQ(potentialS.GetSingleOrUndefined(FieldInfoStatic::RowColToField(4, 3)), 8);
+   ASSERT_EQ(potentials.GetSingleOrUndefined(FieldInfoStatic::RowColToField(4, 3)), 8);
 
-   ASSERT_EQ(potentialS.GetSingleOrUndefined(FieldInfoStatic::RowColToField(4, 8)),3);
+   ASSERT_EQ(potentials.GetSingleOrUndefined(FieldInfoStatic::RowColToField(4, 8)), 3);
 
-   ASSERT_EQ(potentialS.GetSingleOrUndefined(FieldInfoStatic::RowColToField(5, 0)),8);
+   ASSERT_EQ(potentials.GetSingleOrUndefined(FieldInfoStatic::RowColToField(5, 0)), 8);
 
-   ASSERT_EQ(potentialS.GetSingleOrUndefined(FieldInfoStatic::RowColToField(5, 6)),6);
+   ASSERT_EQ(potentials.GetSingleOrUndefined(FieldInfoStatic::RowColToField(5, 6)), 6);
 
-   ASSERT_EQ(potentialS.GetSingleOrUndefined(FieldInfoStatic::RowColToField(6, 1)),6);
+   ASSERT_EQ(potentials.GetSingleOrUndefined(FieldInfoStatic::RowColToField(6, 1)), 6);
 
-   ASSERT_EQ(potentialS.GetSingleOrUndefined(FieldInfoStatic::RowColToField(6, 3)),2);
+   ASSERT_EQ(potentials.GetSingleOrUndefined(FieldInfoStatic::RowColToField(6, 3)), 2);
 
    int numSimple = 0;
    for (FieldIndex field = 0; field < NumFields; ++field)
    {
-      if (potentialS.isSingle(field)) numSimple += 1;
+      if (potentials.isSingle(field)) numSimple += 1;
    }
-   ASSERT_EQ(numSimple, 81);
+   ASSERT_EQ(numSimple, 65);
 }
 
 TEST(DiagramTest, IsNotCorrectEmpty)

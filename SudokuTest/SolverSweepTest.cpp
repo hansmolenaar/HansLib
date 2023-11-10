@@ -23,7 +23,7 @@ TEST(SolverSweepRowTest, GetPotentialsCol)
    }
 
    const Diagram diagram = Diagram::Create(input);
-   auto potentials = diagram.getPotentialS();
+   auto potentials = diagram.getPotentials();
    SolverSweepRow sweep;
    const bool changed = sweep(potentials);
    ASSERT_TRUE(changed);
@@ -46,7 +46,7 @@ TEST(SolverSweepRowTest, GetPotentialsRow)
    }
 
    const Diagram diagram = Diagram::Create(input);
-   auto potentials = diagram.getPotentialS();
+   auto potentials = diagram.getPotentials();
    SolverSweepColumns sweep;
    const bool changed = sweep(potentials);
    ASSERT_TRUE(changed);
@@ -73,7 +73,7 @@ TEST(SolverSweepRowTest, GetPotentialsSubSquare)
    }
 
    const Diagram diagram = Diagram::Create(input);
-   auto potentials = diagram.getPotentialS();
+   auto potentials = diagram.getPotentials();
    SolverSweepSubSquares sweep;
    const bool changed = sweep(potentials);
    ASSERT_TRUE(changed);
