@@ -3,6 +3,7 @@
 #include "SolverSweep.h"
 #include "FieldInfoStatic.h"
 #include "SubSetPotentialsSweep.h"
+#include "Defines.h"
 
 #include <unordered_map>
 
@@ -26,4 +27,60 @@ TEST(SubSetPotentialsSweepTest, SweepSingle)
          ASSERT_EQ(potentials.get(item).count(), 8);
       }
    }
+}
+
+TEST(SubSetPotentialsSweepTest, SweepDigons)
+{
+   SubSetPotentialsSweepPairs sweep;
+   std::array<Potential, SubSetSize> potentialsMem;
+
+   SubSetPotentials potentials;
+   str::transform(potentialsMem, potentials.begin(), [](auto& p) {return &p;  });
+
+   ASSERT_FALSE(sweep(potentials));
+
+   potentialsMem.at(0) = Potential::Create({ 1, 9 });
+   ASSERT_FALSE(sweep(potentials));
+
+   potentialsMem.at(2) = Potential::Create({ 1, 4 });
+   ASSERT_FALSE(sweep(potentials));
+
+   potentialsMem.at(8) = Potential::Create({ 9, 1 });
+   ASSERT_TRUE(sweep(potentials));
+
+   ASSERT_EQ(potentials.at(0)->count(), 2);
+   ASSERT_EQ(potentials.at(2)->count(), 1);
+   ASSERT_EQ(potentials.at(3)->count(), 7);
+   ASSERT_EQ(potentials.at(8)->count(), 2);
+}
+
+
+TEST(SubSetPotentialsSweepTest, Sweep223)
+{
+   SubSetPotentialsSweepPairs sweep;
+   std::array<Potential, SubSetSize> potentialsMem;
+
+   SubSetPotentials potentials;
+   str::transform(potentialsMem, potentials.begin(), [](auto& p) {return &p;  });
+
+   ASSERT_FALSE(sweep(potentials));
+
+   potentialsMem.at(0) = Potential::Create({ 1, 9 });
+   ASSERT_FALSE(sweep(potentials));
+
+   potentialsMem.at(2) = Potential::Create({ 1, 4 });
+   ASSERT_FALSE(sweep(potentials));
+
+   potentialsMem.at(8) = Potential::Create({ 4, 5 });
+   ASSERT_FALSE(sweep(potentials));
+
+   potentialsMem.at(6) = Potential::Create({ 9, 1, 4 });
+   ASSERT_TRUE(sweep(potentials));
+
+   ASSERT_EQ(potentials.at(0)->count(), 2);
+   ASSERT_EQ(potentials.at(2)->count(), 2);
+   ASSERT_EQ(potentials.at(3)->count(), 6);
+   ASSERT_EQ(potentials.at(6)->count(), 3);
+   ASSERT_EQ(potentials.at(7)->count(), 6);
+   ASSERT_EQ(potentials.at(8)->count(), 1);
 }

@@ -8,6 +8,17 @@ Potential::Potential()
    setAll();
 }
 
+Potential Potential::Create(std::initializer_list<Value> values)
+{
+   Potential result;
+   result.setNone();
+   for (auto val : values)
+   {
+      result.set(val);
+   }
+   return result;
+}
+
 void Potential::setAll()
 {
    m_active.set();
@@ -40,7 +51,7 @@ bool Potential::unset(Value value)
 
 bool Potential::containsValue(Value value) const
 {
-   FieldInfoStatic::CheckValue(value);
+   //FieldInfoStatic::CheckValue(value);
    return m_active.test(value - 1);
 }
 
@@ -88,6 +99,32 @@ PotentialValues Potential::getPotentialValues() const
       if (m_active.test(value - 1))
       {
          result.push_back(value);
+      }
+   }
+   return result;
+}
+
+PotentialValues Potential::getIntersection(const Potential& pot1, const Potential& pot2)
+{
+   PotentialValues result;
+   for (auto v : ValueAll)
+   {
+      if (pot1.containsValue(v) && pot2.containsValue(v))
+      {
+         result.push_back(v);
+      }
+   }
+   return result;
+}
+
+PotentialValues Potential::getUnion(const Potential& pot1, const Potential& pot2)
+{
+   PotentialValues result;
+   for (auto v : ValueAll)
+   {
+      if (pot1.containsValue(v) || pot2.containsValue(v))
+      {
+         result.push_back(v);
       }
    }
    return result;

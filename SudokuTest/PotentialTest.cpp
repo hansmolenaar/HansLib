@@ -64,3 +64,25 @@ TEST(PotentialTest, SetUnset)
    ASSERT_FALSE(pot.containsValue(4));
    ASSERT_FALSE(pot.containsValue(6));
 }
+
+
+
+TEST(PotentialTest, getCommon)
+{
+   Potential pot1;
+   Potential pot2;
+   pot1.setNone();
+   pot2.setNone();
+   PotentialValues common = Potential::getIntersection(pot1, pot2);
+   ASSERT_TRUE(common.empty());
+
+   pot1.set(2);
+   pot2.set(5);
+   common = Potential::getIntersection(pot1, pot2);
+   ASSERT_TRUE(common.empty());
+
+   pot1.set(5);
+   common = Potential::getIntersection(pot1, pot2);
+   ASSERT_EQ(common.size(), 1);
+   ASSERT_EQ(common.at(0), 5);
+}

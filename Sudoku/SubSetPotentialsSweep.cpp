@@ -10,6 +10,78 @@
 
 using namespace Sudoku;
 
+namespace
+{
+   bool Handle22(const std::vector<const Potential*> potentialPairs, SubSetPotentials& potentials)
+   {
+      bool changed = false;
+      if (potentialPairs.size() <= 1) return changed;
+      for (size_t n0 = 0; n0 < potentialPairs.size() - 1; ++n0)
+      {
+         const auto* pot0 = potentialPairs.at(n0);
+         for (size_t n1 = n0 + 1; n1 < potentialPairs.size(); ++n1)
+         {
+            const auto* pot1 = potentialPairs.at(n1);
+            const auto common = Potential::getIntersection(*pot0, *pot1);
+            if (common.size() == 2)
+            {
+               for (auto* pot : potentials)
+               {
+                  if (pot == pot0 || pot == pot1)  continue;
+                  if (pot->unset(common.front()))
+                  {
+                     changed = true;
+                  }
+                  if (pot->unset(common.back()))
+                  {
+                     changed = true;
+                  }
+               }
+            }
+         }
+      }
+      return changed;
+   }
+
+   bool Handle223(const std::vector<const Potential*> potentialPairs, const std::vector<const Potential*> potentialTriplets, SubSetPotentials& potentials)
+   {
+      bool changed = false;
+      if (potentialPairs.size() < 2) return changed;
+      if (potentialTriplets.empty()) return changed;
+      for (size_t n0 = 0; n0 < potentialPairs.size() - 1; ++n0)
+      {
+         const auto* pot2_0 = potentialPairs.at(n0);
+         for (size_t n1 = n0 + 1; n1 < potentialPairs.size(); ++n1)
+         {
+            const auto* pot2_1 = potentialPairs.at(n1);
+            const auto common2 = Potential::getUnion(*pot2_0, *pot2_1);
+            if (common2.size() == 3)
+            {
+               for (const auto* pot3 : potentialTriplets)
+               {
+                  const auto values3 = pot3->getPotentialValues();
+                  if (str::equal(common2, values3))
+                  {
+                     for (auto* pot : potentials)
+                     {
+                        if (pot == pot2_0 || pot == pot2_1 || pot == pot3)  continue;
+                        for (auto val : values3)
+                        {
+                           if (pot->unset(val))
+                           {
+                              changed = true;
+                           }
+                        }
+                     }
+                  }
+               }
+            }
+         }
+      }
+      return changed;
+   }
+}
+
 bool SubSetPotentialsSweepSingles::operator()(SubSetPotentials& potentials)
 {
    bool anyChange = false;
@@ -48,31 +120,22 @@ bool SubSetPotentialsSweepSingles::operator()(SubSetPotentials& potentials)
 
 bool SubSetPotentialsSweepPairs::operator()(SubSetPotentials& potentials)
 {
-   boost::container::static_vector<Potential*, SubSetSize> active;
-   for (auto pot : potentials)
+   std::map<int, std::vector<const Potential*>> bySize;
+   for (const auto* pot : potentials)
    {
-      if (pot->count() == 2)
-      {
-         active.push_back(pot);
-      }
+      const auto count = pot->count();
+      if (count == 1) continue;
+      bySize[count].push_back(pot);
    }
 
-   if (!active.empty())
+   if (Handle22(bySize[2], potentials))
    {
+      return true;
+   }
 
-      int hello = 1;
-      std::vector < std::pair<Value,Value> > values;
-      for (auto pot : active)
-      {
-         auto valuePair = pot->getPotentialValues();
-         str::sort(valuePair);
-         values.emplace_back(std::make_pair(valuePair.at(0), valuePair.at(1)));
-      }
-      if (values.size() > 1)
-      {
-         hello += 1;
-      }
-
+   if (Handle223(bySize[2], bySize[3], potentials))
+   {
+      return true;
    }
 
    return false;

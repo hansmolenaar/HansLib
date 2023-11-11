@@ -27,12 +27,17 @@ Solver Solver::Create(const Diagram& diagramIn)
 {
    Potentials potentials = diagramIn.getPotentials();
    bool changed = false;
-   do 
+   do
    {
-      changed =SolverSweepTrivial()(potentials);
-   } while (changed);
+      do
+      {
+         changed = SolverSweepTrivial()(potentials);
+      } while (changed);
 
-   // TODO
-   SolverSweepPairs()(potentials);
-   return Solver(diagramIn,Diagram::Create(potentials));
+      if (SolverSweepPairs()(potentials))
+      {
+         changed = true;
+      }
+   } while (changed);
+   return Solver(diagramIn, Diagram::Create(potentials));
 }
