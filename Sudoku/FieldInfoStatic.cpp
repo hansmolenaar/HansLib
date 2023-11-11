@@ -58,14 +58,14 @@ void FieldInfoStatic::CheckValue(Value value)
    if (value > NumValues) throw MyException("FieldInfoStatic::CheckValue value should be <= 9, actual " + std::to_string(value));
 }
 
-const std::array<FieldIndex, NumRowCol>& FieldInfoStatic::GetRow(RowColIndex row)
+const FieldSet& FieldInfoStatic::GetRow(SubSetIndex row)
 {
-   static std::vector<std::array<FieldIndex, NumRowCol>> s_instance;
+   static std::vector<FieldSet> s_instance;
    if (s_instance.empty())
    {
       for (auto r : RowColAll)
       {
-         s_instance.push_back(std::array<FieldIndex, NumRowCol>{});
+         s_instance.push_back(FieldSet{});
          for (auto c : RowColAll)
          {
             s_instance.at(r).at(c) = RowColToField(r, c);
@@ -76,14 +76,14 @@ const std::array<FieldIndex, NumRowCol>& FieldInfoStatic::GetRow(RowColIndex row
 }
 
 
-const std::array<FieldIndex, NumRowCol>& FieldInfoStatic::GetCol(RowColIndex col)
+const FieldSet& FieldInfoStatic::GetCol(SubSetIndex col)
 {
-   static std::vector<std::array<FieldIndex, NumRowCol>> s_instance;
+   static std::vector<FieldSet> s_instance;
    if (s_instance.empty())
    {
       for (auto c : RowColAll)
       {
-         s_instance.push_back(std::array<FieldIndex, NumRowCol>{});
+         s_instance.push_back(FieldSet{});
          for (auto r : RowColAll)
          {
             s_instance.at(c).at(r) = RowColToField(r, c);
@@ -93,9 +93,9 @@ const std::array<FieldIndex, NumRowCol>& FieldInfoStatic::GetCol(RowColIndex col
    return s_instance.at(col);
 }
 
-const std::array<FieldIndex, NumSubSquares>& FieldInfoStatic::GetSubSquare(SubSquareIndex subSquare)
+const FieldSet& FieldInfoStatic::GetSubSquare(SubSetIndex subSquare)
 {
-   static std::vector<std::array<FieldIndex, NumSubSquares>> s_instance;
+   static std::vector<FieldSet> s_instance;
    if (s_instance.empty())
    {
       std::multimap< SubSquareIndex, FieldIndex> s2f;
@@ -106,7 +106,7 @@ const std::array<FieldIndex, NumSubSquares>& FieldInfoStatic::GetSubSquare(SubSq
 
       for (SubSquareIndex ssi = 0; ssi < NumSubSquares; ++ssi)
       {
-         s_instance.push_back(std::array<FieldIndex, NumSubSquares>{});
+         s_instance.push_back(FieldSet{});
          const auto range = s2f.equal_range(ssi);
          size_t pos = 0;
          for (auto itr = range.first; itr != range.second; ++itr)
@@ -118,4 +118,12 @@ const std::array<FieldIndex, NumSubSquares>& FieldInfoStatic::GetSubSquare(SubSq
       }
    }
    return s_instance.at(subSquare);
+}
+
+const FieldSet& FieldInfoStatic::GetFieldSet(SubSetType type, SubSetIndex subSetIndex)
+{
+   if (type == SubSetType::Row) return GetRow(subSetIndex);
+   if (type == SubSetType::Column) return GetCol(subSetIndex);
+   if (type == SubSetType::SubSquare) return GetSubSquare(subSetIndex);
+   throw MyException("ieldInfoStatic::GetFieldSet should not come here");
 }

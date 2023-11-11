@@ -17,6 +17,14 @@ namespace Functors
       bool operator()(const T& actual) const { return actual == Expect; }
    };
 
+   template<typename T>
+   struct IsInIncludeBounds
+   {
+      T LowerBound;
+      T UpperBound;
+      bool operator()(const T& val) const { return  (val >= LowerBound) && (val <= UpperBound); }
+   };
+
    template< typename TDerived>
    struct IsOfDerivedType
    {

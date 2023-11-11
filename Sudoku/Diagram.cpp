@@ -5,7 +5,7 @@
 #include "Potential.h"
 #include "FieldInfoStatic.h"
 #include "MyException.h"
-
+#include "Functors.h"
 #include <algorithm>
 #include <sstream>
 #include <unordered_set>
@@ -14,45 +14,35 @@ using namespace Sudoku;
 
 namespace
 {
+   void CheckSubSet(const ValueSet& valueSet)
+   {
+      const Functors::IsInIncludeBounds<Value> inBounds{ ValueUndefined, ValueMax };
+      std::bitset< SubSetSize> inSet;
+      for (auto value : valueSet)
+      {
+         if (!inBounds(value))
+         {
+            throw MyException("Diagram check, unexpected 1 <= value <= 9, actual: " + std::to_string(value));
+         }
+         if (value == ValueUndefined) continue;
+         if (inSet.test(value - 1))
+         {
+            throw MyException("Diagram check, subset already contains value " + std::to_string(value));
+         }
+         inSet.set(value - 1);
+      }
+   }
+
    void Check(const std::array<Value, NumFields>& values)
    {
-      // TODO rewrite
-      const std::array<FieldInfoStatic, NumFields>& infoAll = FieldInfoStatic::Instance();
-      std::array<Potential, NumRowCol> rowContains;
-      std::array<Potential, NumRowCol> colContains;
-      std::array<Potential, NumSubSquares> subSquareContains;
-
-      for (int n = 0; n < 9; ++n)
+      for (auto sst : SubSetTypeAll)
       {
-         rowContains[n].setNone();
-         colContains[n].setNone();
-         subSquareContains[n].setNone();
-      }
-      for (FieldIndex f = 0; f < NumFields; ++f)
-      {
-         const Value v = values.at(f);
-         if (v != ValueUndefined)
+         for (auto subSetIndex : SubSetsAll)
          {
-            if (v < ValueUndefined || v > NumValues)
-            {
-               throw MyException("Diagram check, unexpected 1 <= value <= 9, actual: " + std::to_string(v));
-            }
-            const FieldInfoStatic& info = infoAll.at(f);
-            if (rowContains.at(info.Row).containsValue(v))
-            {
-               throw MyException("Diagram check, row " + std::to_string(info.Row) + " already contains value " + std::to_string(v));
-            }
-            if (colContains.at(info.Col).containsValue(v))
-            {
-               throw MyException("Diagram check, column " + std::to_string(info.Col) + " already contains value " + std::to_string(v));
-            }
-            if (subSquareContains.at(info.SubSquare).containsValue(v))
-            {
-               throw MyException("Diagram check, SubSquare " + std::to_string(info.SubSquare) + " already contains value " + std::to_string(v));
-            }
-            rowContains.at(info.Row).set(v);
-            colContains.at(info.Col).set(v);
-            subSquareContains.at(info.SubSquare).set(v);
+            const auto& fields = FieldInfoStatic::GetFieldSet(sst, subSetIndex);
+            ValueSet valueSet;
+            str::transform(fields, valueSet.begin(), [&values](FieldIndex field) {return values.at(field); });
+            CheckSubSet(valueSet);
          }
       }
    }
@@ -151,49 +141,25 @@ std::string Diagram::toString() const
 
 bool Diagram::isSolved() const
 {
-   const std::array<FieldInfoStatic, NumFields>& infoAll = FieldInfoStatic::Instance();
-
-   if (str::any_of(m_state, [](Value val) {return val == ValueUndefined; }))
+   const Functors::IsEqualTo<Value> isUndefined{ ValueUndefined };
+   if (str::any_of(m_state, isUndefined))
    {
       return false;
    }
 
-   for (auto row : RowColAll)
+   for (auto type : SubSetTypeAll)
    {
-      std::unordered_set<RowColIndex> isSet;
-      for (auto field : FieldInfoStatic::GetRow(row))
+      for (auto subSetIndex : SubSetsAll)
       {
-         isSet.insert(m_state.at(field));
-      }
-      if (isSet.size() != NumRowCol)
-      {
-         return false;
-      }
-   }
-
-   for (auto col : RowColAll)
-   {
-      std::unordered_set<RowColIndex> isSet;
-      for (auto field : FieldInfoStatic::GetCol(col))
-      {
-         isSet.insert(m_state.at(field));
-      }
-      if (isSet.size() != NumRowCol)
-      {
-         return false;
-      }
-   }
-
-   for (auto ssq : SubSquareAll)
-   {
-      std::unordered_set<RowColIndex> isSet;
-      for (auto field : FieldInfoStatic::GetSubSquare(ssq))
-      {
-         isSet.insert(m_state.at(field));
-      }
-      if (isSet.size() != NumRowCol)
-      {
-         return false;
+         const auto& fields = FieldInfoStatic::GetFieldSet(type, subSetIndex);
+         ValueSet valueSet;
+         str::transform(fields, valueSet.begin(), [this](FieldIndex field) {return m_state.at(field); });
+         std::bitset<SubSetSize> isSet;
+         for (Value value : valueSet)
+         {
+            isSet.set(value - 1);
+         }
+         if (!isSet.all()) return false;
       }
    }
 
