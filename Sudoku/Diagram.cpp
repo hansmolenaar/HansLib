@@ -16,10 +16,18 @@ namespace
 {
    void Check(const std::array<Value, NumFields>& values)
    {
+      // TODO rewrite
       const std::array<FieldInfoStatic, NumFields>& infoAll = FieldInfoStatic::Instance();
       std::array<Potential, NumRowCol> rowContains;
       std::array<Potential, NumRowCol> colContains;
       std::array<Potential, NumSubSquares> subSquareContains;
+
+      for (int n = 0; n < 9; ++n)
+      {
+         rowContains[n].setNone();
+         colContains[n].setNone();
+         subSquareContains[n].setNone();
+      }
       for (FieldIndex f = 0; f < NumFields; ++f)
       {
          const Value v = values.at(f);

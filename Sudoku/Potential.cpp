@@ -5,7 +5,7 @@ using namespace Sudoku;
 
 Potential::Potential()
 {
-   setNone();
+   setAll();
 }
 
 void Potential::setAll()

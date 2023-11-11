@@ -7,10 +7,10 @@ using namespace Sudoku;
 TEST(PotentialTest, Constructor)
 {
    const Potential pot;
-   ASSERT_EQ(pot.count(), 0);
+   ASSERT_EQ(pot.count(), 9);
    for (auto value : ValueAll)
    {
-      ASSERT_FALSE(pot.containsValue(value));
+      ASSERT_TRUE(pot.containsValue(value));
    }
 }
 
@@ -37,6 +37,7 @@ TEST(PotentialTest, SetAllNone)
 TEST(PotentialTest, SetUnset)
 {
    Potential pot;
+   pot.setNone();
 
    pot.set(4);
    ASSERT_EQ(pot.count(), 1);
