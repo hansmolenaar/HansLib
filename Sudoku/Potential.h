@@ -2,9 +2,12 @@
 #include "SudokuDefines.h"
 
 #include <bitset>
+#include<boost/container/static_vector.hpp>
 
 namespace Sudoku
 {
+   using PotentialValues = boost::container::static_vector<Value, SubSetSize>;
+
    class Potential
    {
    public:
@@ -20,6 +23,8 @@ namespace Sudoku
       Value getSingleValue() const;
       RowColIndex count() const;
       bool isSingle() const;
+
+      PotentialValues getPotentialValues() const;
    private:
       std::bitset<NumValues> m_active;
    };

@@ -79,3 +79,16 @@ bool Potential::isSingle() const
 {
    return count() == 1;
 }
+
+PotentialValues Potential::getPotentialValues() const
+{
+   PotentialValues result;
+   for (auto value : ValueAll)
+   {
+      if (m_active.test(value - 1))
+      {
+         result.push_back(value);
+      }
+   }
+   return result;
+}

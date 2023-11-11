@@ -18,4 +18,10 @@ namespace Sudoku
       bool operator()(Potentials& potentials) override;
    };
 
+   class SolverSweepPairs : public ISolverSweep
+   {
+   public:
+      bool operator()(Potentials& potentials) override;
+   };
+
 }

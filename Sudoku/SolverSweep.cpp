@@ -22,18 +22,31 @@ namespace
       }
       return anyChange;
    }
+
+
+   bool SweepAllTypes(Potentials& potentials, ISubSetPotentialsSweep& sweep)
+   {
+      bool anyChange = false;
+      for (auto type : SubSetTypeAll)
+      {
+         if (SweepItems(type, potentials, sweep))
+         {
+            anyChange = true;
+         }
+      }
+      return anyChange;
+   }
 }
 
 bool SolverSweepTrivial::operator()(Potentials& potentials)
 {
-   bool anyChange = false;
    SubSetPotentialsSweepSingles sweep;
-   for (auto type : SubSetTypeAll)
-   {
-      if (SweepItems(type, potentials, sweep))
-      {
-         anyChange = true;
-      }
-   }
-   return anyChange;
+   return SweepAllTypes(potentials, sweep);
+}
+
+
+bool SolverSweepPairs::operator()(Potentials& potentials)
+{
+   SubSetPotentialsSweepPairs sweep;
+   return SweepAllTypes(potentials, sweep);
 }

@@ -32,5 +32,7 @@ Solver Solver::Create(const Diagram& diagramIn)
       changed =SolverSweepTrivial()(potentials);
    } while (changed);
 
+   // TODO
+   SolverSweepPairs()(potentials);
    return Solver(diagramIn,Diagram::Create(potentials));
 }
