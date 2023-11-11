@@ -2,6 +2,7 @@
 #include "SudokuDefines.h"
 
 #include <bitset>
+#include <string>
 #include<boost/container/static_vector.hpp>
 
 namespace Sudoku
@@ -27,6 +28,7 @@ namespace Sudoku
       Value getSingleValue() const;
       RowColIndex count() const;
       bool isSingle() const;
+      std::string toString() const;
 
       PotentialValues getPotentialValues() const;
 

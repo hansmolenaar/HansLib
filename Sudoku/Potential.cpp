@@ -129,3 +129,23 @@ PotentialValues Potential::getUnion(const Potential& pot1, const Potential& pot2
    }
    return result;
 }
+
+std::string Potential::toString() const
+{
+   std::string result = "(";
+   bool first = true;
+   for (auto value : getPotentialValues())
+   {
+      if (first)
+      {
+         first = false;
+         result += std::to_string(value);
+      }
+      else
+      {
+         result += "," + std::to_string(value);
+      }
+   }
+   result += ")";
+   return result;
+}

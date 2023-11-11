@@ -84,3 +84,38 @@ TEST(SubSetPotentialsSweepTest, Sweep223)
    ASSERT_EQ(potentials.at(7)->count(), 6);
    ASSERT_EQ(potentials.at(8)->count(), 1);
 }
+
+
+TEST(SubSetPotentialsSweepTest, Sweep2234)
+{
+   SubSetPotentialsSweepPairs sweep;
+   std::array<Potential, SubSetSize> potentialsMem;
+
+   SubSetPotentials potentials;
+   str::transform(potentialsMem, potentials.begin(), [](auto& p) {return &p;  });
+
+   ASSERT_FALSE(sweep(potentials));
+
+   potentialsMem.at(0) = Potential::Create({ 1,2, 8, 9 });
+   ASSERT_FALSE(sweep(potentials));
+
+   potentialsMem.at(1) = Potential::Create({ 2, 4, 8, 9 });
+   ASSERT_FALSE(sweep(potentials));
+
+   potentialsMem.at(2) = Potential::Create({ 2, 4, 8 });
+   ASSERT_FALSE(sweep(potentials));
+
+   potentialsMem.at(3) = Potential::Create({ 4, 9 });
+   ASSERT_FALSE(sweep(potentials));
+
+   potentialsMem.at(5) = Potential::Create({ 2, 8 });
+   ASSERT_TRUE(sweep(potentials));
+
+   ASSERT_EQ(potentials.at(0)->count(), 1);
+   ASSERT_EQ(potentials.at(1)->count(), 4);
+   ASSERT_EQ(potentials.at(2)->count(), 3);
+   ASSERT_EQ(potentials.at(3)->count(), 2);
+   ASSERT_EQ(potentials.at(5)->count(), 2);
+   ASSERT_EQ(potentials.at(7)->count(), 5);
+   ASSERT_EQ(potentials.at(8)->count(), 5);
+}

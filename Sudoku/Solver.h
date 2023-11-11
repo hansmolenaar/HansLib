@@ -1,6 +1,6 @@
 #pragma once
 #include "SudokuDefines.h"
-#include "Potential.h"
+#include "Potentials.h"
 #include "Diagram.h"
 
 #include <array>
@@ -13,6 +13,7 @@ namespace Sudoku
    {
    public:
       static Solver Create(const Diagram& diagramIn);
+      static void Solve(Potentials& potentials);
       bool isSolved() const;
       const Diagram& getState() const;
 

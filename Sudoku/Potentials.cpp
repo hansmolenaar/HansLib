@@ -48,3 +48,49 @@ const Potential& Potentials::get(FieldIndex field) const
 {
    return m_potentials.at(field);
 }
+
+std::string Potentials::toString(const SubSetPotentials potentials)
+{
+   std::string result;
+   bool first = true;
+   for (const auto* pot : potentials)
+   {
+      if (first)
+      {
+         first = false;
+      }
+      else
+      {
+         result += " ";
+      }
+      result += pot->toString();
+   }
+   return result;
+}
+
+std::string Potentials::toString()
+{
+   std::string result;
+   for (auto type : SubSetTypeAll)
+   {
+      result += "\n\nType " + std::to_string(static_cast<int>(type)) + "\n\n";
+      for (auto index : SubSetsAll)
+      {
+         bool first = true;
+         for (const auto* pot : getSubSetPotentials(type, index))
+         {
+            if (first)
+            {
+               first = false;
+            }
+            else
+            {
+               result += " ";
+            }
+            result += pot->toString();
+         }
+         result += "\n";
+      }
+   }
+   return result;
+}

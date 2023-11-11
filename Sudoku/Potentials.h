@@ -6,7 +6,6 @@
 namespace Sudoku
 {
    using SubSetPotentials = std::array<Potential*, SubSetSize>;
-   //using SubSetPotentialsConst = std::array<const Potentials*, SubSetSize>;
 
    class Potentials
    {
@@ -20,6 +19,8 @@ namespace Sudoku
       const Potential& get(FieldIndex field) const;
 
       SubSetPotentials getSubSetPotentials(SubSetType type, SubSetIndex index);
+      static std::string toString(const SubSetPotentials potentials);
+      std::string toString(); // TODO const correctness
      
    private:
       std::array<Potential, NumFields> m_potentials;

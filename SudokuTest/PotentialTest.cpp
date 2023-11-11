@@ -86,3 +86,16 @@ TEST(PotentialTest, getCommon)
    ASSERT_EQ(common.size(), 1);
    ASSERT_EQ(common.at(0), 5);
 }
+
+TEST(PotentialTest, toString)
+{
+   Potential pot;
+   pot.setNone();
+   ASSERT_EQ(pot.toString(), "()");
+
+   pot.set(5);
+   ASSERT_EQ(pot.toString(), "(5)");
+
+   pot.set(1);
+   ASSERT_EQ(pot.toString(), "(1,5)");
+}

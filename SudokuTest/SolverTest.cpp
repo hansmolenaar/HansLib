@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "Solver.h"
+#include "SolverSweep.h"
 
 using namespace Sudoku;
 
@@ -135,5 +136,8 @@ TEST(SolverTest, FourStar1)
    const Diagram diagramIn = Diagram::Create(diagramValues);
    const Solver result = Solver::Create(diagramIn);
    const auto str = result.getState().toString();
+   auto potentials = result.getState().getPotentials();
+   Solver::Solve(potentials);
+   const auto allPots = potentials.toString();
    ASSERT_TRUE(result.isSolved());
 }

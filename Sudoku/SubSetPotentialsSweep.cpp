@@ -80,6 +80,54 @@ namespace
       }
       return changed;
    }
+
+
+   bool Handle2234(const std::vector<const Potential*> potentialPairs, const std::vector<const Potential*> potentialTriplets, const std::vector<const Potential*> potentialQuartets, SubSetPotentials& potentials)
+   {
+      bool changed = false;
+      if (potentialPairs.size() < 2) return changed;
+      if (potentialTriplets.empty()) return changed;
+      if (potentialQuartets.empty()) return changed;
+      for (size_t n0 = 0; n0 < potentialPairs.size() - 1; ++n0)
+      {
+         const auto* pot2_0 = potentialPairs.at(n0);
+         for (size_t n1 = n0 + 1; n1 < potentialPairs.size(); ++n1)
+         {
+            const auto* pot2_1 = potentialPairs.at(n1);
+            const auto common2 = Potential::getUnion(*pot2_0, *pot2_1);
+            if (common2.size() == 4)
+            {
+               for (const auto* pot4 : potentialQuartets)
+               {
+                  const auto values4 = pot4->getPotentialValues();
+                  if (str::equal(common2, values4))
+                  {
+                     for (auto* pot3 : potentialTriplets)
+                     {
+                        const auto values3 = pot3->getPotentialValues();
+                        const bool allContained = str::all_of(values3, [&values4](Value value) {return str::find(values4, value) != values4.end();  });
+                        if (allContained)
+                        {
+                           for (auto* pot : potentials)
+                           {
+                              if (pot == pot2_0 || pot == pot2_1 || pot == pot3 || pot == pot4)  continue;
+                              for (auto val : values4)
+                              {
+                                 if (pot->unset(val))
+                                 {
+                                    changed = true;
+                                 }
+                              }
+                           }
+                        }
+                     }
+                  }
+               }
+            }
+         }
+      }
+      return changed;
+   }
 }
 
 bool SubSetPotentialsSweepSingles::operator()(SubSetPotentials& potentials)
@@ -134,6 +182,11 @@ bool SubSetPotentialsSweepPairs::operator()(SubSetPotentials& potentials)
    }
 
    if (Handle223(bySize[2], bySize[3], potentials))
+   {
+      return true;
+   }
+
+   if (Handle2234(bySize[2], bySize[3], bySize[4], potentials))
    {
       return true;
    }
