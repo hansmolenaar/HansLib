@@ -6,47 +6,12 @@
 #include "FieldInfoStatic.h"
 #include "MyException.h"
 #include "Functors.h"
+#include "ValueSetUtils.h"
 #include <algorithm>
 #include <sstream>
 #include <unordered_set>
 
 using namespace Sudoku;
-
-namespace
-{
-   void CheckSubSet(const ValueSet& valueSet)
-   {
-      const Functors::IsInIncludeBounds<Value> inBounds{ ValueUndefined, ValueMax };
-      std::bitset< SubSetSize> inSet;
-      for (auto value : valueSet)
-      {
-         if (!inBounds(value))
-         {
-            throw MyException("Diagram check, unexpected 1 <= value <= 9, actual: " + std::to_string(value));
-         }
-         if (value == ValueUndefined) continue;
-         if (inSet.test(value - 1))
-         {
-            throw MyException("Diagram check, subset already contains value " + std::to_string(value));
-         }
-         inSet.set(value - 1);
-      }
-   }
-
-   void Check(const std::array<Value, NumFields>& values)
-   {
-      for (auto sst : SubSetTypeAll)
-      {
-         for (auto subSetIndex : SubSetsAll)
-         {
-            const auto& fields = FieldInfoStatic::GetFieldSet(sst, subSetIndex);
-            ValueSet valueSet;
-            str::transform(fields, valueSet.begin(), [&values](FieldIndex field) {return values.at(field); });
-            CheckSubSet(valueSet);
-         }
-      }
-   }
-}
 
 Diagram::Diagram(std::array<Value, NumFields> values) : m_state(std::move(values))
 {
@@ -62,8 +27,10 @@ Diagram Diagram::Create(const std::unordered_map<FieldIndex, Value>& input)
       values.at(iv.first) = iv.second;
    }
 
-   Check(values);
-   return Diagram(values);
+   Diagram result(values);
+   // Check correctness
+   result.isSolved();
+   return result;
 }
 
 Diagram Diagram::Create(const Potentials& values)
@@ -141,27 +108,27 @@ std::string Diagram::toString() const
 
 bool Diagram::isSolved() const
 {
-   const Functors::IsEqualTo<Value> isUndefined{ ValueUndefined };
-   if (str::any_of(m_state, isUndefined))
-   {
-      return false;
-   }
-
+   bool succes = true;
    for (auto type : SubSetTypeAll)
    {
       for (auto subSetIndex : SubSetsAll)
       {
-         const auto& fields = FieldInfoStatic::GetFieldSet(type, subSetIndex);
-         ValueSet valueSet;
-         str::transform(fields, valueSet.begin(), [this](FieldIndex field) {return m_state.at(field); });
-         std::bitset<SubSetSize> isSet;
-         for (Value value : valueSet)
+         const ValueSet values = getValues(type, subSetIndex);
+         if (!ValueSetUtils::IsSolved(values))
          {
-            isSet.set(value - 1);
+            // Do not break loop, also test for correctness
+            succes = false;
          }
-         if (!isSet.all()) return false;
       }
    }
 
-   return true;
+   return succes;
+}
+
+ValueSet Diagram::getValues(SubSetType type, SubSetIndex subSetIndex) const
+{
+   const auto& fields = FieldInfoStatic::GetFieldSet(type, subSetIndex);
+   ValueSet values;
+   str::transform(fields, values.begin(), [this](FieldIndex f) {return (*this) (f); });
+   return values;
 }
