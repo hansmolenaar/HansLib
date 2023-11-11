@@ -12,24 +12,6 @@ namespace Sudoku
       virtual bool operator()(Potentials& potentials) = 0;
    };
 
-   class SolverSweepRow : public ISolverSweep
-   {
-   public:
-      bool operator()(Potentials& potentials) override;
-   };
-
-   class SolverSweepColumns : public ISolverSweep
-   {
-   public:
-      bool operator()(Potentials& potentials) override;
-   };
-
-   class SolverSweepSubSquares : public ISolverSweep
-   {
-   public:
-      bool operator()(Potentials& potentials) override;
-   };
-
    class SolverSweepTrivial : public ISolverSweep
    {
    public:

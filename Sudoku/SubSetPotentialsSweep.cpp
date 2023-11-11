@@ -41,3 +41,8 @@ bool SubSetPotentialsSweepSingles::operator()(SubSetPotentials& potentials)
 
    return anyChange;
 }
+
+bool SubSetPotentialsSweepPairs::operator()(SubSetPotentials& potentials)
+{
+   return false;
+}

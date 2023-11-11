@@ -43,3 +43,8 @@ SubSetPotentials Potentials::getSubSetPotentials(SubSetType type, SubSetIndex in
    str::transform(fields, result.begin(), [this](FieldIndex f) { return &(m_potentials.at(f)); });
    return result;
 }
+
+const Potential& Potentials::get(FieldIndex field) const
+{
+   return m_potentials.at(field);
+}

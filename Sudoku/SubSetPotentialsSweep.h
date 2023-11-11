@@ -16,4 +16,10 @@ namespace Sudoku
    public:
       virtual bool operator()(SubSetPotentials& potentials) override;
    };
+
+   class SubSetPotentialsSweepPairs : public ISubSetPotentialsSweep
+   {
+   public:
+      virtual bool operator()(SubSetPotentials& potentials) override;
+   };
 }

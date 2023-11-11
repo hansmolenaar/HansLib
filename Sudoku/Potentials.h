@@ -17,6 +17,7 @@ namespace Sudoku
       bool isSingle(FieldIndex field) const;
       // Returns: potential changed
       bool unset(FieldIndex field, Value value);
+      const Potential& get(FieldIndex field) const;
 
       SubSetPotentials getSubSetPotentials(SubSetType type, SubSetIndex index);
      
