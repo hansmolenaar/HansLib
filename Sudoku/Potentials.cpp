@@ -31,7 +31,15 @@ bool Potentials::isSingle(FieldIndex field) const
    return m_potentials.at(field).isSingle();
 }
 
-bool Potentials::unset(FieldIndex field, Value value) 
+bool Potentials::unset(FieldIndex field, Value value)
 {
    return m_potentials.at(field).unset(value);
+}
+
+SubSetPotentials Potentials::getSubSetPotentials(SubSetType type, SubSetIndex index)
+{
+   const auto& fields = FieldInfoStatic::GetFieldSet(type, index);
+   SubSetPotentials result;
+   str::transform(fields, result.begin(), [this](FieldIndex f) { return &(m_potentials.at(f)); });
+   return result;
 }

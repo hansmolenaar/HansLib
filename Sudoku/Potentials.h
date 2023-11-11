@@ -2,10 +2,12 @@
 #include "SudokuDefines.h"
 #include "Potential.h"
 #include <array>
-#include <span>
 
 namespace Sudoku
 {
+   using SubSetPotentials = std::array<Potential*, SubSetSize>;
+   //using SubSetPotentialsConst = std::array<const Potentials*, SubSetSize>;
+
    class Potentials
    {
    public:
@@ -15,6 +17,8 @@ namespace Sudoku
       bool isSingle(FieldIndex field) const;
       // Returns: potential changed
       bool unset(FieldIndex field, Value value);
+
+      SubSetPotentials getSubSetPotentials(SubSetType type, SubSetIndex index);
      
    private:
       std::array<Potential, NumFields> m_potentials;

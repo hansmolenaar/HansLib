@@ -1,56 +1,43 @@
 #include "SolverSweep.h"
 #include "SudokuDefines.h"
 #include "FieldInfoStatic.h"
+#include "SubSetPotentialsSweep.h"
 
 #include<boost/container/static_vector.hpp>
 
 using namespace Sudoku;
 
-template<typename GetFields>
-bool SweepItems(GetFields getFields, Potentials& potentials)
+namespace
 {
-   bool anyChange = false;
-   for (int item = 0; item < 9; ++item)
+   bool SweepItems(SubSetType type, Potentials& potentials)
    {
-      boost::container::static_vector<Value, NumRowCol> unsetMe;
-
-      // Collect values that are unique
-      for (auto field : getFields(item))
+      bool anyChange = false;
+      SubSetPotentialsSweepSingles sweep;
+      for (auto index : SubSetsAll)
       {
-         const auto val = potentials.getSingleOrUndefined(field);
-         if (val != ValueUndefined) unsetMe.push_back(val);
-      }
-
-      if (unsetMe.empty()) continue;
-
-      for (auto field : getFields(item))
-      {
-         if (potentials.isSingle(field)) continue;
-         for (auto value : unsetMe)
+         auto subSetPotentials = potentials.getSubSetPotentials(type, index);
+         if (sweep(subSetPotentials))
          {
-            if (potentials.unset(field, value))
-            {
-               anyChange = true;
-            }
+            anyChange = true;
          }
       }
+      return anyChange;
    }
-   return anyChange;
 }
 
 bool SolverSweepRow::operator()(Potentials& potentials)
 {
-   return SweepItems(FieldInfoStatic::GetRow, potentials);
+   return SweepItems(SubSetType::Row, potentials);
 }
 
 bool SolverSweepColumns::operator()(Potentials& potentials)
 {
-   return SweepItems(FieldInfoStatic::GetCol, potentials);
+   return SweepItems(SubSetType::Column, potentials);
 }
 
 bool SolverSweepSubSquares::operator()(Potentials& potentials)
 {
-   return SweepItems(FieldInfoStatic::GetSubSquare, potentials);
+   return SweepItems(SubSetType::SubSquare, potentials);
 }
 
 bool SolverSweepTrivial::operator()(Potentials& potentials)

@@ -44,7 +44,6 @@ TEST(SolverTest, OneStar1)
 
 }
 
-
 TEST(SolverTest, OneStar2)
 {
    const std::array<Value, NumFields> diagramValues =
@@ -65,7 +64,76 @@ TEST(SolverTest, OneStar2)
    const Diagram diagramIn = Diagram::Create(diagramValues);
    const Solver result = Solver::Create(diagramIn);
    const auto str = result.getState().toString();
-   bool tmp = result.getState().isSolved();
    ASSERT_TRUE(result.isSolved());
+}
 
+
+TEST(SolverTest, TwoStar1)
+{
+   const std::array<Value, NumFields> diagramValues =
+   {
+   0, 3, 0,     0, 8, 7,    4, 6, 5,
+   9, 8, 0,     0, 6, 0,    0, 3, 1,
+   0, 6, 5,     0, 3, 0,    0, 8, 7,
+
+   0, 0, 0,     1, 7, 0,    6, 5, 4,
+   1, 7, 0,     6, 0, 0,    0, 0, 9,
+   6, 0, 0,     0, 0, 9,    1, 7, 8,
+
+   8, 1, 2,     7, 0, 0,    5, 0, 0,
+   0, 9, 3,     5, 4, 6,    0, 0, 2,
+   0, 4, 0,     0, 0, 0,    0, 0, 3,
+   };
+
+   const Diagram diagramIn = Diagram::Create(diagramValues);
+   const Solver result = Solver::Create(diagramIn);
+   const auto str = result.getState().toString();
+   ASSERT_TRUE(result.isSolved());
+}
+
+TEST(SolverTest, ThreeStar1)
+{
+   const std::array<Value, NumFields> diagramValues =
+   {
+   9, 0, 0,     0, 3, 8,    7, 0, 5,
+   6, 3, 0,     0, 1, 5,    0, 0, 0,
+   7, 1, 0,     9, 4, 0,    0, 3, 0,
+
+   0, 0, 0,     0, 0, 0,    1, 5, 0,
+   0, 8, 0,     1, 5, 7,    4, 0, 0,
+   0, 0, 0,     0, 0, 0,    0, 0, 3,
+
+   3, 2, 0,     0, 0, 4,    0, 0, 1,
+   0, 0, 0,     5, 0, 0,    0, 0, 0,
+   0, 0, 1,     3, 0, 9,    0, 6, 4,
+   };
+
+   const Diagram diagramIn = Diagram::Create(diagramValues);
+   const Solver result = Solver::Create(diagramIn);
+   const auto str = result.getState().toString();
+   ASSERT_TRUE(result.isSolved());
+}
+
+
+TEST(SolverTest, FourStar1)
+{
+   const std::array<Value, NumFields> diagramValues =
+   {
+   0, 5, 0,     6, 0, 0,    0, 0, 0,
+   0, 0, 3,     1, 0, 0,    0, 0, 2,
+   0, 0, 0,     0, 5, 0,    6, 7, 3,
+
+   0, 0, 0,     2, 3, 0,    0, 8, 0,
+   0, 0, 0,     0, 0, 0,    0, 9, 6,
+   4, 0, 1,     0, 0, 0,    0, 0, 0,
+
+   7, 0, 9,     0, 0, 0,    8, 1, 0,
+   0, 0, 0,     8, 0, 4,    0, 2, 0,
+   0, 1, 0,     0, 0, 9,    0, 0, 0,
+   };
+
+   const Diagram diagramIn = Diagram::Create(diagramValues);
+   const Solver result = Solver::Create(diagramIn);
+   const auto str = result.getState().toString();
+   ASSERT_TRUE(result.isSolved());
 }
