@@ -3,6 +3,7 @@
 #include "FieldInfoStatic.h"
 #include "Potential.h"
 #include "Defines.h"
+#include "Combinations.h"
 
 #include<boost/container/static_vector.hpp>
 #include <vector>
@@ -12,6 +13,23 @@ using namespace Sudoku;
 
 namespace
 {
+   bool FindCluster(int clusterSize, SubSetPotentials& potentials)
+   {
+      bool changed = false;
+      boost::container::static_vector<Potential*, SubSetSize> active;
+      for (auto* ptr : potentials)
+      {
+         if (ptr->count() <= clusterSize) active.push_back(ptr);
+      }
+      if (active.size() < clusterSize) return changed;
+
+      for (const auto& cmb : Combinations::Get(active.size(), clusterSize)
+      {
+
+      }
+   }
+
+
    bool Handle22(const std::vector<const Potential*> potentialPairs, SubSetPotentials& potentials)
    {
       bool changed = false;
