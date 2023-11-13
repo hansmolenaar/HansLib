@@ -8,57 +8,94 @@
 #include<boost/container/static_vector.hpp>
 #include <vector>
 #include <utility>
+#include <iterator>
 
 using namespace Sudoku;
 
 namespace
 {
+   using ActivePotentials = boost::container::static_vector<Potential*, SubSetSize>;
+
+   ActivePotentials getActiveFields(int clusterSize, SubSetPotentials& potentials)
+   {
+      ActivePotentials active;
+      for (auto* ptr : potentials)
+      {
+         const auto count = ptr->count();
+         if (count > 1 && count <= clusterSize) active.push_back(ptr);
+      }
+      if (active.size() < clusterSize) active.clear();
+      return active;
+   }
+
+   std::vector<ActivePotentials> getAllPermutations(int clusterSize, SubSetPotentials& potentials)
+   {
+      std::vector<ActivePotentials> result;
+      auto active = getActiveFields(clusterSize, potentials);
+      if (active.empty()) return result;
+
+      for (const auto& cmb : Combinations::Get(static_cast<int>(active.size()), clusterSize))
+      {
+         ActivePotentials perm;
+         for (size_t n = 0; n < active.size(); ++n)
+         {
+            if (cmb.at(n)) perm.push_back(active.at(n));
+         }
+         result.push_back(perm);
+      }
+      return result;
+   }
+
    bool FindCluster(int clusterSize, SubSetPotentials& potentials)
    {
       bool changed = false;
-      boost::container::static_vector<Potential*, SubSetSize> active;
-      for (auto* ptr : potentials)
-      {
-         if (ptr->count() <= clusterSize) active.push_back(ptr);
-      }
-      if (active.size() < clusterSize) return changed;
+      auto trials = getAllPermutations(clusterSize, potentials);
+      if (trials.empty()) return changed;
 
-      for (const auto& cmb : Combinations::Get(active.size(), clusterSize)
+      for (const auto& trial : trials)
       {
-
+         PotentialValues allValues;
+         for (const auto& pot : trial)
+         {
+            const auto potValues = pot->getPotentialValues();
+            PotentialValues unionValues;
+            std::set_union(allValues.begin(), allValues.end(), potValues.begin(), potValues.end(), std::back_inserter(unionValues));
+            allValues = unionValues;
+            if (allValues.size() > clusterSize) break;
+         }
+         if (allValues.size() < clusterSize) throw MyException("FindCluster should not happen");
+         if (allValues.size() == clusterSize)
+         {
+            for (auto* p : potentials)
+            {
+               if (str::find(trial, p) == trial.end())
+               {
+                  for (auto val : allValues)
+                  {
+                     if (p->unset(val)) changed = true;
+                  }
+               }
+            }
+            if (changed) return changed;
+         }
       }
+      return changed;
    }
 
 
    bool Handle22(const std::vector<const Potential*> potentialPairs, SubSetPotentials& potentials)
    {
-      bool changed = false;
-      if (potentialPairs.size() <= 1) return changed;
-      for (size_t n0 = 0; n0 < potentialPairs.size() - 1; ++n0)
+      bool anyChange = false;
+      bool changeInIteration = false;
+      do
       {
-         const auto* pot0 = potentialPairs.at(n0);
-         for (size_t n1 = n0 + 1; n1 < potentialPairs.size(); ++n1)
+          changeInIteration = FindCluster(2, potentials);
+         if (changeInIteration)
          {
-            const auto* pot1 = potentialPairs.at(n1);
-            const auto common = Potential::getIntersection(*pot0, *pot1);
-            if (common.size() == 2)
-            {
-               for (auto* pot : potentials)
-               {
-                  if (pot == pot0 || pot == pot1)  continue;
-                  if (pot->unset(common.front()))
-                  {
-                     changed = true;
-                  }
-                  if (pot->unset(common.back()))
-                  {
-                     changed = true;
-                  }
-               }
-            }
+            anyChange = true;
          }
-      }
-      return changed;
+      } while (changeInIteration);
+      return anyChange;
    }
 
    bool Handle223(const std::vector<const Potential*> potentialPairs, const std::vector<const Potential*> potentialTriplets, SubSetPotentials& potentials)
