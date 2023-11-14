@@ -116,6 +116,30 @@ TEST(SolverTest, ThreeStar1)
 }
 
 
+TEST(SolverTest, ThreeStar2)
+{
+   const std::array<Value, NumFields> diagramValues =
+   {
+   7, 0, 5,     0, 0, 0,    6, 0, 0,
+   0, 9, 0,     6, 3, 0,    0, 0, 5,
+   6, 0, 2,     7, 0, 5,    0, 9, 0,
+
+   0, 0, 0,     0, 1, 9,    0, 0, 0,
+   0, 0, 0,     3, 2, 0,    0, 7, 0,
+   0, 0, 6,     0, 0, 0,    5, 1, 0,
+
+   9, 0, 0,     1, 0, 4,    0, 0, 3,
+   0, 0, 4,     2, 6, 0,    9, 5, 7,
+   0, 6, 0,     0, 0, 0,    1, 0, 0,
+   };
+
+   const Diagram diagramIn = Diagram::Create(diagramValues);
+   const Solver result = Solver::Create(diagramIn);
+   const auto str = result.getState().toString();
+   ASSERT_TRUE(result.isSolved());
+}
+
+
 TEST(SolverTest, FourStar1)
 {
    const std::array<Value, NumFields> diagramValues =
@@ -137,7 +161,21 @@ TEST(SolverTest, FourStar1)
    const Solver result = Solver::Create(diagramIn);
    const auto str = result.getState().toString();
    auto potentials = result.getState().getPotentials();
+   const auto before = potentials.toString();
    Solver::Solve(potentials);
    const auto allPots = potentials.toString();
+
+   Potentials trial = potentials;
+   auto trialString = trial.toString();
+   trial.setSingle(80, 4);
+   Solver::Solve(trial);
+   ASSERT_FALSE(trial.isSolved());
+
+   trial = potentials;
+   trial.setSingle(80, 5);
+   Solver::Solve(trial);
+   ASSERT_TRUE(trial.isSolved());
+
+
    ASSERT_TRUE(result.isSolved());
 }

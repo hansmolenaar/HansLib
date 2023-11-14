@@ -21,6 +21,7 @@ namespace Sudoku
       SubSetPotentials getSubSetPotentials(SubSetType type, SubSetIndex index);
       static std::string toString(const SubSetPotentials potentials);
       std::string toString(); // TODO const correctness
+      bool isSolved() const;
      
    private:
       std::array<Potential, NumFields> m_potentials;

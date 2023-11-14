@@ -139,6 +139,12 @@ std::string Potentials::toString()
    }
 
    const auto fields = GetPotentialsPerField(*this);
-   result += FormatPotentialsPerField(fields);
+   const auto fullFieldPotentials = FormatPotentialsPerField(fields);
+   result += "\n\n" + fullFieldPotentials;
    return result;
+}
+
+bool Potentials::isSolved() const
+{
+   return str::all_of(m_potentials, [](const auto& pot) {return pot.isSingle(); });
 }
