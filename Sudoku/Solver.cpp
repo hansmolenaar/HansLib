@@ -23,7 +23,7 @@ bool Solver::isSolved() const
    return m_isSolved;
 }
 
-void Solver::Solve(Potentials& potentials)
+bool Solver::Solve(Potentials& potentials)
 {
    bool changed = false;
    do
@@ -38,6 +38,7 @@ void Solver::Solve(Potentials& potentials)
          changed = true;
       }
    } while (changed);
+   return potentials.isSolved();
 }
 
 Solver Solver::Create(const Diagram& diagramIn)

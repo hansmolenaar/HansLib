@@ -13,7 +13,7 @@ namespace Sudoku
    {
    public:
       static Solver Create(const Diagram& diagramIn);
-      static void Solve(Potentials& potentials);
+      static bool Solve(Potentials& potentials);
       bool isSolved() const;
       const Diagram& getState() const;
 

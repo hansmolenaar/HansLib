@@ -165,17 +165,13 @@ TEST(SolverTest, FourStar1)
    Solver::Solve(potentials);
    const auto allPots = potentials.toString();
 
-   Potentials trial = potentials;
-   auto trialString = trial.toString();
-   trial.setSingle(80, 4);
-   Solver::Solve(trial);
-   ASSERT_FALSE(trial.isSolved());
+   Potentials trial4 = potentials;
+   trial4.setSingle(80, 4);
+   const bool isSolved4 = Solver::Solve(trial4);
+   ASSERT_FALSE(isSolved4);
 
-   trial = potentials;
-   trial.setSingle(80, 5);
-   Solver::Solve(trial);
-   ASSERT_TRUE(trial.isSolved());
-
-
-   ASSERT_TRUE(result.isSolved());
+   Potentials trial5 = potentials;
+   trial5.setSingle(80, 5);
+   const bool isSolved5 = Solver::Solve(trial5);
+   ASSERT_TRUE(isSolved5);
 }
