@@ -4,6 +4,68 @@
 
 using namespace Sudoku;
 
+namespace
+{
+   std::string ToStringPerType(Potentials& potentials, SubSetType type)
+   {
+      std::string result = "\n\nType " + std::to_string(static_cast<int>(type)) + "\n\n";
+      for (auto index : SubSetsAll)
+      {
+         bool first = true;
+         for (const auto* pot : potentials.getSubSetPotentials(type, index))
+         {
+            if (first)
+            {
+               first = false;
+            }
+            else
+            {
+               result += " ";
+            }
+            result += pot->toString();
+         }
+         result += "\n";
+      }
+      return result;
+   }
+
+   std::array<std::string, NumFields> GetPotentialsPerField(Potentials& potentials)
+   {
+      std::array<std::string, NumFields> result;
+      for (FieldIndex field = 0; field < NumFields; ++field)
+      {
+         result.at(field) = potentials.get(field).toString();
+      }
+      return result;
+   }
+
+   std::string FormatPotentialsPerField(const std::array<std::string, NumFields>& perField)
+   {
+      std::string result;
+      std::array<size_t, NumFields> fieldSizes;
+      str::transform(perField, fieldSizes.begin(), [](const std::string& str) {return str.size(); });
+      const auto maxFieldSize = str::max(fieldSizes);
+
+      for (auto row : RowColAll)
+      {
+         std::string line;
+         for (auto field : FieldInfoStatic::GetRow(row))
+         {
+             auto fieldAsString = perField.at(field);
+             while (fieldAsString.size() < maxFieldSize + 1)
+             {
+                fieldAsString += " ";
+             }
+             line += fieldAsString;
+         }
+         result += line + "\n";
+      }
+      return result;
+   }
+
+}  // namespace {}
+
+
 Potentials::Potentials()
 {
    for (auto& p : m_potentials)
@@ -73,24 +135,10 @@ std::string Potentials::toString()
    std::string result;
    for (auto type : SubSetTypeAll)
    {
-      result += "\n\nType " + std::to_string(static_cast<int>(type)) + "\n\n";
-      for (auto index : SubSetsAll)
-      {
-         bool first = true;
-         for (const auto* pot : getSubSetPotentials(type, index))
-         {
-            if (first)
-            {
-               first = false;
-            }
-            else
-            {
-               result += " ";
-            }
-            result += pot->toString();
-         }
-         result += "\n";
-      }
+      result += ToStringPerType(*this, type);
    }
+
+   const auto fields = GetPotentialsPerField(*this);
+   result += FormatPotentialsPerField(fields);
    return result;
 }
