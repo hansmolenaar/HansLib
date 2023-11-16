@@ -23,30 +23,46 @@ namespace
       return anyChange;
    }
 
+   class SweepAllTypes : public ISolverSweep
+   {
+   public:
+      SweepAllTypes(ISubSetPotentialsSweep& sweep);
+      SolverSweepResult operator()(Potentials& potentials) override;
+   private:
+      ISubSetPotentialsSweep& m_sweep;
+   };
 
-   bool SweepAllTypes(Potentials& potentials, ISubSetPotentialsSweep& sweep)
+   SweepAllTypes::SweepAllTypes(ISubSetPotentialsSweep& sweep) : m_sweep(sweep)
+   {}
+
+
+   SolverSweepResult SweepAllTypes::operator()(Potentials& potentials)
    {
       bool anyChange = false;
       for (auto type : SubSetTypeAll)
       {
-         if (SweepItems(type, potentials, sweep))
+         if (SweepItems(type, potentials, m_sweep))
          {
             anyChange = true;
          }
       }
-      return anyChange;
+
+      if (potentials.isSolved()) return SolverSweepResult::Solved;
+      return anyChange ? SolverSweepResult::Change : SolverSweepResult::NoChange;
    }
 }
 
-bool SolverSweepTrivial::operator()(Potentials& potentials)
+SolverSweepResult SolverSweepTrivial::operator()(Potentials& potentials)
 {
-   SubSetPotentialsSweepSingles sweep;
-   return SweepAllTypes(potentials, sweep);
+   SubSetPotentialsSweepSingles sweepSingles;
+   SweepAllTypes sweep(sweepSingles);
+   return sweep(potentials);
 }
 
 
-bool SolverSweepPairs::operator()(Potentials& potentials)
+SolverSweepResult SweepAllClusters::operator()(Potentials& potentials)
 {
-   SubSetPotentialsSweepPairs sweep;
-   return SweepAllTypes(potentials, sweep);
+   SubSetPotentialsSweepPairs sweepClusters;
+   SweepAllTypes sweep(sweepClusters);
+   return sweep(potentials);
 }

@@ -25,19 +25,19 @@ bool Solver::isSolved() const
 
 bool Solver::Solve(Potentials& potentials)
 {
-   bool changed = false;
+   SolverSweepResult sweepResult = SolverSweepResult::NoChange;
    do
    {
       do
       {
-         changed = SolverSweepTrivial()(potentials);
-      } while (changed);
+         sweepResult = SolverSweepTrivial()(potentials);
+      } while (sweepResult == SolverSweepResult::Change);
 
-      if (SolverSweepPairs()(potentials))
+      if (SweepAllClusters()(potentials) == SolverSweepResult::Change)
       {
-         changed = true;
+         sweepResult = SolverSweepResult::Change;
       }
-   } while (changed);
+   } while (sweepResult == SolverSweepResult::Change);
    return potentials.isSolved();
 }
 

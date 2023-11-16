@@ -4,24 +4,25 @@
 
 namespace Sudoku
 {
+   enum class SolverSweepResult  {NoChange, Change, Solved};
+
    class ISolverSweep
    {
    public:
       ~ISolverSweep() noexcept = default;
-      // Result indicates any changes
-      virtual bool operator()(Potentials& potentials) = 0;
+      virtual SolverSweepResult operator()(Potentials& potentials) = 0;
    };
 
    class SolverSweepTrivial : public ISolverSweep
    {
    public:
-      bool operator()(Potentials& potentials) override;
+      SolverSweepResult operator()(Potentials& potentials) override;
    };
 
-   class SolverSweepPairs : public ISolverSweep
+   class SweepAllClusters : public ISolverSweep
    {
    public:
-      bool operator()(Potentials& potentials) override;
+      SolverSweepResult operator()(Potentials& potentials) override;
    };
 
 }
