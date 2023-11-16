@@ -135,7 +135,7 @@ bool SubSetPotentialsSweepSingles::operator()(SubSetPotentials& potentials)
    return anyChange;
 }
 
-bool SubSetPotentialsSweepPairs::operator()(SubSetPotentials& potentials)
+bool SubSetPotentialsSweepClusters::operator()(SubSetPotentials& potentials)
 {
    for (int clusterSize = 0; clusterSize < 9; ++clusterSize)
    {

@@ -60,9 +60,9 @@ SolverSweepResult SolverSweepTrivial::operator()(Potentials& potentials)
 }
 
 
-SolverSweepResult SweepAllClusters::operator()(Potentials& potentials)
+SolverSweepResult SweepClusters::operator()(Potentials& potentials)
 {
-   SubSetPotentialsSweepPairs sweepClusters;
+   SubSetPotentialsSweepClusters sweepClusters;
    SweepAllTypes sweep(sweepClusters);
    return sweep(potentials);
 }

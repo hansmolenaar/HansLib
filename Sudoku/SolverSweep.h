@@ -19,7 +19,7 @@ namespace Sudoku
       SolverSweepResult operator()(Potentials& potentials) override;
    };
 
-   class SweepAllClusters : public ISolverSweep
+   class SweepClusters : public ISolverSweep
    {
    public:
       SolverSweepResult operator()(Potentials& potentials) override;

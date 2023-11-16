@@ -31,7 +31,7 @@ TEST(SubSetPotentialsSweepTest, SweepSingle)
 
 TEST(SubSetPotentialsSweepTest, SweepDigons)
 {
-   SubSetPotentialsSweepPairs sweep;
+   SubSetPotentialsSweepClusters sweep;
    std::array<Potential, SubSetSize> potentialsMem;
 
    SubSetPotentials potentials;
@@ -57,7 +57,7 @@ TEST(SubSetPotentialsSweepTest, SweepDigons)
 
 TEST(SubSetPotentialsSweepTest, Sweep223)
 {
-   SubSetPotentialsSweepPairs sweep;
+   SubSetPotentialsSweepClusters sweep;
    std::array<Potential, SubSetSize> potentialsMem;
 
    SubSetPotentials potentials;
@@ -88,7 +88,7 @@ TEST(SubSetPotentialsSweepTest, Sweep223)
 
 TEST(SubSetPotentialsSweepTest, Sweep2234)
 {
-   SubSetPotentialsSweepPairs sweep;
+   SubSetPotentialsSweepClusters sweep;
    std::array<Potential, SubSetSize> potentialsMem;
 
    SubSetPotentials potentials;
