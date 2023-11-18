@@ -23,6 +23,8 @@ namespace Sudoku
       std::string toString(); // TODO const correctness
       bool isSolved() const;
       FieldIndex getNumSingles() const;
+
+      void setNone();
      
    private:
       std::array<Potential, NumFields> m_potentials;

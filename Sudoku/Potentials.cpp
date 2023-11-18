@@ -153,3 +153,11 @@ FieldIndex Potentials::getNumSingles() const
 {
    return static_cast<FieldIndex>(str::count_if(m_potentials, Potential::IsSingle));
 }
+
+void Potentials::setNone()
+{
+   for (auto& p : m_potentials)
+   {
+      p.setNone();
+   }
+}

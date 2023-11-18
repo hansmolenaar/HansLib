@@ -16,6 +16,7 @@ namespace Sudoku
       Diagram getThreeStar2();
       Diagram getFourStar1();
       Diagram getFourStar2();
+      Diagram getFourStar3();
 
    };
 

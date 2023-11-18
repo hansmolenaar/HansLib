@@ -13,7 +13,6 @@ TEST(SolverTest, OneStar1)
    const Diagram diagramIn = TestModels::getOneStar1();
    const auto result = Solver::Solve(diagramIn);
    ASSERT_TRUE(result.isSolved());
-
 }
 
 TEST(SolverTest, OneStar2)
@@ -50,6 +49,29 @@ TEST(SolverTest, ThreeStar2)
    ASSERT_TRUE(result.isSolved());
 }
 
+static Potentials SetPairGraph(const Potentials& potentials, Value value)
+{
+   Potentials result;
+   result.setNone();
+   for (FieldIndex f = 0; f < NumFields; ++f)
+   {
+      const auto& pot = potentials.get(f);
+      if (pot.count() == 2)
+      {
+         PotentialValues potentialValues = pot.getPotentialValues();
+         if (potentialValues.front() == value)
+         {
+            result.setSingle(f, potentialValues.back());
+         }
+         else if (potentialValues.back() == value)
+         {
+            result.setSingle(f, potentialValues.front());
+         }
+      }
+   }
+   return result;
+}
+
 TEST(SolverTest, FourStar1)
 {
    const Diagram diagramIn = TestModels::getFourStar1();
@@ -62,6 +84,12 @@ TEST(SolverTest, FourStar1)
 
    const auto allPots = potentials.toString();
    ASSERT_EQ(potentials.getNumSingles(), 43);
+
+   auto pairGraph2 = SetPairGraph(potentials, 2);
+   const auto pairGraph2String = pairGraph2.toString();
+
+   auto pairGraph5 = SetPairGraph(potentials, 5);
+   const auto pairGraph5String = pairGraph5.toString();
 
    Potentials trial4 = potentials;
    trial4.setSingle(80, 4);
@@ -90,4 +118,19 @@ TEST(SolverTest, FourStar2)
    potentials = result.getPotentials();
    const auto allPots = potentials.toString();
    ASSERT_EQ(potentials.getNumSingles(), NumFields);
+}
+
+
+TEST(SolverTest, FourStar3)
+{
+   const Diagram diagram = TestModels::getFourStar3();
+
+   auto potentials = diagram.getPotentials();
+   const auto before = potentials.toString();
+   ASSERT_EQ(potentials.getNumSingles(), 25);
+
+   Solver::Solve(potentials);
+
+   const auto after = potentials.toString();
+   ASSERT_EQ(potentials.getNumSingles(), 81);
 }
