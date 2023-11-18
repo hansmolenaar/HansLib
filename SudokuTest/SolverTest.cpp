@@ -53,21 +53,26 @@ TEST(SolverTest, ThreeStar2)
 TEST(SolverTest, FourStar1)
 {
    const Diagram diagramIn = TestModels::getFourStar1();
-   const auto result = Solver::Solve(diagramIn);
-   const auto str = result.toString();
-   auto potentials = result.getPotentials();
+
+   auto potentials = diagramIn.getPotentials();
    const auto before = potentials.toString();
+   ASSERT_EQ(potentials.getNumSingles(), 25);
+
    Solver::Solve(potentials);
+
    const auto allPots = potentials.toString();
+   ASSERT_EQ(potentials.getNumSingles(), 43);
 
    Potentials trial4 = potentials;
    trial4.setSingle(80, 4);
    const bool isSolved4 = Solver::Solve(trial4);
+   ASSERT_EQ(trial4.getNumSingles(), 74);
    ASSERT_FALSE(isSolved4);
 
    Potentials trial5 = potentials;
    trial5.setSingle(80, 5);
    const bool isSolved5 = Solver::Solve(trial5);
+   ASSERT_EQ(trial5.getNumSingles(), NumFields);
    ASSERT_TRUE(isSolved5);
 }
 
@@ -76,14 +81,13 @@ TEST(SolverTest, FourStar2)
 {
    const Diagram diagramIn = TestModels::getFourStar2();
 
+   auto potentials = diagramIn.getPotentials();
+   const auto before = potentials.toString();
+   ASSERT_EQ(potentials.getNumSingles(), 24);
+
    const auto result = Solver::Solve(diagramIn);
 
-   auto potentials = result.getPotentials();
-   const auto before = potentials.toString();
-   ASSERT_EQ(potentials.getNumSingles(), NumFields);
-
-   Solver::Solve(potentials);
-
+   potentials = result.getPotentials();
    const auto allPots = potentials.toString();
    ASSERT_EQ(potentials.getNumSingles(), NumFields);
 }

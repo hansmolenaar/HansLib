@@ -9,18 +9,10 @@
 namespace Sudoku
 {
 
-   class Solver
+   namespace Solver
    {
-   public:
-      static Solver Create(const Diagram& diagramIn);
-      static bool Solve(Potentials& potentials);
-      static Diagram Solve(const Diagram& diagram);
-
-   private:
-      Solver(Diagram diagramIn, Diagram state);
-      Diagram m_diagramIn;
-      Diagram m_diagramState;
-      bool m_isSolved;
-   };
+      bool Solve(Potentials& potentials);
+      Diagram Solve(const Diagram& diagram);
+   }
 
 }
