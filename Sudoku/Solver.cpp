@@ -25,16 +25,14 @@ bool Solver::isSolved() const
 
 bool Solver::Solve(Potentials& potentials)
 {
-   SweepClusters sweepClusters;
+   SolverSweepClusters sweepClusters;
    SolverSweepTrivial sweepTrivial;
 
    SolverSweepResult sweepResult = SolverSweepResult::NoChange;
    do
    {
-      do
-      {
-         sweepResult = sweepTrivial(potentials);
-      } while (sweepResult == SolverSweepResult::Change);
+      sweepResult = SolverSweepIterate(sweepTrivial)(potentials);
+
 
       if (sweepClusters(potentials) == SolverSweepResult::Change)
       {

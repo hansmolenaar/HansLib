@@ -1,10 +1,13 @@
 #pragma once
 #include "SudokuDefines.h"
 #include "Potentials.h"
+#include "SubSetPotentialsSweep.h"
+
+#include<vector>
 
 namespace Sudoku
 {
-   enum class SolverSweepResult  {NoChange, Change, Solved};
+   enum class SolverSweepResult { NoChange, Change, Solved };
 
    class ISolverSweep
    {
@@ -13,16 +16,63 @@ namespace Sudoku
       virtual SolverSweepResult operator()(Potentials& potentials) = 0;
    };
 
+   class SolverSweepIterate : public ISolverSweep
+   {
+   public:
+      explicit SolverSweepIterate(ISolverSweep& sweep);
+      SolverSweepResult operator()(Potentials& potentials) override;
+   private:
+      ISolverSweep& m_sweep;
+   };
+
+   class SolverSweepComposite : public ISolverSweep
+   {
+   public:
+      explicit SolverSweepComposite(std::initializer_list<ISolverSweep*> sweep);
+      SolverSweepResult operator()(Potentials& potentials) override;
+   private:
+      std::vector<ISolverSweep*> m_sweeps;
+   };
+
+   class SolverSweepSubSet : public ISolverSweep
+   {
+   public:
+      SolverSweepSubSet(SubSetType type, ISubSetPotentialsSweep& sweep);
+      SolverSweepResult operator()(Potentials& potentials) override;
+   private:
+      SubSetType m_type;
+      ISubSetPotentialsSweep& m_subSetSweep;
+   };
+
+
+   class SolverSweepSubSetTypeAll : public ISolverSweep
+   {
+   public:
+      SolverSweepSubSetTypeAll(ISubSetPotentialsSweep& sweep);
+      SolverSweepResult operator()(Potentials& potentials) override;
+   private:
+      SolverSweepSubSet m_row;
+      SolverSweepSubSet m_col;
+      SolverSweepSubSet m_subSquare;
+      SolverSweepComposite m_composite;
+   };
+
    class SolverSweepTrivial : public ISolverSweep
+   {
+   public:
+      SolverSweepTrivial();
+      SolverSweepResult operator()(Potentials& potentials) override;
+   private:
+      SubSetPotentialsSweepSingles m_sweepSingles;
+      SolverSweepSubSetTypeAll m_allTypes;
+   };
+
+   class SolverSweepClusters : public ISolverSweep
    {
    public:
       SolverSweepResult operator()(Potentials& potentials) override;
    };
 
-   class SweepClusters : public ISolverSweep
-   {
-   public:
-      SolverSweepResult operator()(Potentials& potentials) override;
-   };
+  
 
 }
