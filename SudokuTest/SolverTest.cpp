@@ -11,7 +11,7 @@ using namespace Sudoku;
 TEST(SolverTest, OneStar1)
 {
    const Diagram diagramIn = TestModels::getOneStar1();
-   const Solver result = Solver::Create(diagramIn);
+   const auto result = Solver::Solve(diagramIn);
    ASSERT_TRUE(result.isSolved());
 
 }

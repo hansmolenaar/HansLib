@@ -13,11 +13,6 @@ Solver::Solver(Diagram diagramIn, Diagram state) :
 {
 }
 
-bool Solver::isSolved() const
-{
-   return m_isSolved;
-}
-
 bool Solver::Solve(Potentials& potentials)
 {
    SolverSweep sweep;

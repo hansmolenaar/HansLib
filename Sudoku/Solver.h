@@ -15,7 +15,6 @@ namespace Sudoku
       static Solver Create(const Diagram& diagramIn);
       static bool Solve(Potentials& potentials);
       static Diagram Solve(const Diagram& diagram);
-      bool isSolved() const;
 
    private:
       Solver(Diagram diagramIn, Diagram state);
