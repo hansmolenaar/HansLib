@@ -65,12 +65,29 @@ namespace Sudoku
    private:
       SubSetPotentialsSweepSingles m_sweepSingles;
       SolverSweepSubSetTypeAll m_allTypes;
+      SolverSweepIterate m_iterate;
    };
 
    class SolverSweepClusters : public ISolverSweep
    {
    public:
+      SolverSweepClusters();
       SolverSweepResult operator()(Potentials& potentials) override;
+   private:
+      SubSetPotentialsSweepClusters m_sweepCluster;
+      SolverSweepSubSetTypeAll m_allTypes;
+   };
+
+   class SolverSweep : public ISolverSweep
+   {
+   public:
+      SolverSweep();
+      SolverSweepResult operator()(Potentials& potentials) override;
+   private:
+      SolverSweepTrivial m_sweepTrival;
+      SolverSweepClusters m_sweepCluster;
+      SolverSweepComposite m_composite;
+      SolverSweepIterate m_iterate;
    };
 
   

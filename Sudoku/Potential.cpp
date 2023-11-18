@@ -91,6 +91,11 @@ bool Potential::isSingle() const
    return count() == 1;
 }
 
+bool Potential::IsSingle(const Potential& pot)
+{
+   return pot.isSingle();
+}
+
 PotentialValues Potential::getPotentialValues() const
 {
    PotentialValues result;

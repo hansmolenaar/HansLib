@@ -22,6 +22,7 @@ namespace Sudoku
       static std::string toString(const SubSetPotentials potentials);
       std::string toString(); // TODO const correctness
       bool isSolved() const;
+      FieldIndex getNumSingles() const;
      
    private:
       std::array<Potential, NumFields> m_potentials;

@@ -7,50 +7,6 @@
 
 using namespace Sudoku;
 
-namespace
-{
-   bool SweepItems(SubSetType type, Potentials& potentials, ISubSetPotentialsSweep& sweep)
-   {
-      bool anyChange = false;
-      for (auto index : SubSetsAll)
-      {
-         auto subSetPotentials = potentials.getSubSetPotentials(type, index);
-         if (sweep(subSetPotentials))
-         {
-            anyChange = true;
-         }
-      }
-      return anyChange;
-   }
-
-   class SweepAllTypes : public ISolverSweep
-   {
-   public:
-      SweepAllTypes(ISubSetPotentialsSweep& sweep);
-      SolverSweepResult operator()(Potentials& potentials) override;
-   private:
-      ISubSetPotentialsSweep& m_sweep;
-   };
-
-   SweepAllTypes::SweepAllTypes(ISubSetPotentialsSweep& sweep) : m_sweep(sweep)
-   {}
-
-
-   SolverSweepResult SweepAllTypes::operator()(Potentials& potentials)
-   {
-      bool anyChange = false;
-      for (auto type : SubSetTypeAll)
-      {
-         if (SweepItems(type, potentials, m_sweep))
-         {
-            anyChange = true;
-         }
-      }
-
-      if (potentials.isSolved()) return SolverSweepResult::Solved;
-      return anyChange ? SolverSweepResult::Change : SolverSweepResult::NoChange;
-   }
-} // namespace {}
 
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
@@ -74,26 +30,18 @@ SolverSweepResult SolverSweepSubSet::operator()(Potentials& potentials)
    return SolverSweepResult::Change;
 }
 
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-SolverSweepTrivial::SolverSweepTrivial() : 
-   m_sweepSingles(),
-   m_allTypes(m_sweepSingles)
-{
-}
-
-SolverSweepResult SolverSweepTrivial::operator()(Potentials& potentials)
-{
-   return m_allTypes(potentials);
-}
 
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+SolverSweepClusters::SolverSweepClusters() :
+   m_sweepCluster(),
+   m_allTypes(m_sweepCluster)
+{
+}
 
 SolverSweepResult SolverSweepClusters::operator()(Potentials& potentials)
 {
-   SubSetPotentialsSweepClusters sweepClusters;
-   SweepAllTypes sweep(sweepClusters);
-   return sweep(potentials);
+   return m_allTypes(potentials);
 }
 
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -146,4 +94,33 @@ SolverSweepSubSetTypeAll::SolverSweepSubSetTypeAll(ISubSetPotentialsSweep& sweep
 SolverSweepResult SolverSweepSubSetTypeAll::operator()(Potentials& potentials)
 {
    return m_composite(potentials);
+}
+
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+SolverSweepTrivial::SolverSweepTrivial() :
+   m_sweepSingles(),
+   m_allTypes(m_sweepSingles),
+   m_iterate(m_allTypes)
+{
+}
+
+SolverSweepResult SolverSweepTrivial::operator()(Potentials& potentials)
+{
+   return m_iterate(potentials);
+}
+
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+SolverSweep::SolverSweep() :
+   m_sweepTrival(),
+   m_sweepCluster(),
+   m_composite({&m_sweepTrival, &m_sweepCluster}),
+   m_iterate(m_composite)
+{
+}
+
+SolverSweepResult SolverSweep::operator()(Potentials& potentials)
+{
+   return m_iterate(potentials);
 }

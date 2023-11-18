@@ -19,8 +19,8 @@ TEST(SolverTest, OneStar1)
 TEST(SolverTest, OneStar2)
 {
    const Diagram diagramIn = TestModels::getOneStar2();
-   const Solver result = Solver::Create(diagramIn);
-   const auto str = result.getState().toString();
+   const auto result = Solver::Solve(diagramIn);
+   const auto str = result.toString();
    ASSERT_TRUE(result.isSolved());
 }
 
@@ -28,16 +28,16 @@ TEST(SolverTest, OneStar2)
 TEST(SolverTest, TwoStar1)
 {
    const Diagram diagramIn = TestModels::getTwoStar1();
-   const Solver result = Solver::Create(diagramIn);
-   const auto str = result.getState().toString();
+   const auto result = Solver::Solve(diagramIn);
+   const auto str = result.toString();
    ASSERT_TRUE(result.isSolved());
 }
 
 TEST(SolverTest, ThreeStar1)
 {
    const Diagram diagramIn = TestModels::getThreeStar1();
-   const Solver result = Solver::Create(diagramIn);
-   const auto str = result.getState().toString();
+   const auto result = Solver::Solve(diagramIn);
+   const auto str = result.toString();
    ASSERT_TRUE(result.isSolved());
 }
 
@@ -45,17 +45,17 @@ TEST(SolverTest, ThreeStar1)
 TEST(SolverTest, ThreeStar2)
 {
    const Diagram diagramIn = TestModels::getThreeStar2();
-   const Solver result = Solver::Create(diagramIn);
-   const auto str = result.getState().toString();
+   const auto result = Solver::Solve(diagramIn);
+   const auto str = result.toString();
    ASSERT_TRUE(result.isSolved());
 }
 
 TEST(SolverTest, FourStar1)
 {
    const Diagram diagramIn = TestModels::getFourStar1();
-   const Solver result = Solver::Create(diagramIn);
-   const auto str = result.getState().toString();
-   auto potentials = result.getState().getPotentials();
+   const auto result = Solver::Solve(diagramIn);
+   const auto str = result.toString();
+   auto potentials = result.getPotentials();
    const auto before = potentials.toString();
    Solver::Solve(potentials);
    const auto allPots = potentials.toString();
@@ -69,4 +69,21 @@ TEST(SolverTest, FourStar1)
    trial5.setSingle(80, 5);
    const bool isSolved5 = Solver::Solve(trial5);
    ASSERT_TRUE(isSolved5);
+}
+
+
+TEST(SolverTest, FourStar2)
+{
+   const Diagram diagramIn = TestModels::getFourStar2();
+
+   const auto result = Solver::Solve(diagramIn);
+
+   auto potentials = result.getPotentials();
+   const auto before = potentials.toString();
+   ASSERT_EQ(potentials.getNumSingles(), NumFields);
+
+   Solver::Solve(potentials);
+
+   const auto allPots = potentials.toString();
+   ASSERT_EQ(potentials.getNumSingles(), NumFields);
 }

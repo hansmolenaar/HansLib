@@ -11,6 +11,7 @@ TEST(PotentialsTest, ToString)
    {
       potentials.setSingle(f, (f % 9) + 1);
    }
+   ASSERT_EQ(potentials.getNumSingles(), NumFields);
    const auto str = potentials.toString();
    ASSERT_FALSE(str.empty());
 }

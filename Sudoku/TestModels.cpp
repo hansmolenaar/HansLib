@@ -21,6 +21,21 @@ const std::array<Value, NumFields> diagramValues =
 };
 #endif
 
+Diagram TestModels::getEmpty()
+{
+   return Diagram::Create(std::unordered_map<FieldIndex, Value>{});
+}
+
+Diagram TestModels::getSolved()
+{
+   Potentials potentials;
+   for (auto f = 0; f < NumFields; ++f)
+   {
+      potentials.setSingle(f, (f % 9) + 1);
+   }
+   return Diagram::Create(potentials);
+}
+
 Diagram TestModels::getOneStar1()
 {
    const std::array<Value, NumFields> diagramValues =
@@ -137,6 +152,26 @@ Diagram TestModels::getFourStar1()
    7, 0, 9,     0, 0, 0,    8, 1, 0,
    0, 0, 0,     8, 0, 4,    0, 2, 0,
    0, 1, 0,     0, 0, 9,    0, 0, 0,
+   };
+   return Diagram::Create(diagramValues);
+}
+
+
+Diagram TestModels::getFourStar2()
+{
+   const std::array<Value, NumFields> diagramValues =
+   {
+   2, 0, 4,     0, 8, 0,    1, 0, 0,
+   0, 8, 0,     0, 7, 0,    2, 0, 0,
+   0, 0, 0,     0, 0, 0,    0, 0, 9,
+
+   0, 0, 0,     0, 0, 8,    0, 0, 0,
+   4, 9, 0,     0, 0, 0,    0, 2, 0,
+   7, 0, 1,     3, 0, 5,    0, 9, 0,
+
+   0, 0, 0,     9, 0, 0,    0, 0, 7,
+   0, 5, 3,     6, 0, 0,    0, 0, 0,
+   6, 0, 0,     0, 4, 0,    0, 0, 0,
    };
    return Diagram::Create(diagramValues);
 }

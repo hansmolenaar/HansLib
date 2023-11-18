@@ -13,11 +13,6 @@ Solver::Solver(Diagram diagramIn, Diagram state) :
 {
 }
 
-const Diagram& Solver::getState() const
-{
-   return m_diagramState;
-}
-
 bool Solver::isSolved() const
 {
    return m_isSolved;
@@ -25,21 +20,8 @@ bool Solver::isSolved() const
 
 bool Solver::Solve(Potentials& potentials)
 {
-   SolverSweepClusters sweepClusters;
-   SolverSweepTrivial sweepTrivial;
-
-   SolverSweepResult sweepResult = SolverSweepResult::NoChange;
-   do
-   {
-      sweepResult = SolverSweepIterate(sweepTrivial)(potentials);
-
-
-      if (sweepClusters(potentials) == SolverSweepResult::Change)
-      {
-         sweepResult = SolverSweepResult::Change;
-      }
-   } while (sweepResult == SolverSweepResult::Change);
-   return potentials.isSolved();
+   SolverSweep sweep;
+   return sweep(potentials) == SolverSweepResult::Solved;
 }
 
 Solver Solver::Create(const Diagram& diagramIn)
@@ -47,4 +29,12 @@ Solver Solver::Create(const Diagram& diagramIn)
    Potentials potentials = diagramIn.getPotentials();
    Solve(potentials);
    return Solver(diagramIn, Diagram::Create(potentials));
+}
+
+Diagram Solver::Solve(const Diagram& diagram)
+{
+   auto potentials = diagram.getPotentials();
+   SolverSweep sweep;
+   sweep(potentials);
+   return Diagram::Create(potentials);
 }

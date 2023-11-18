@@ -7,6 +7,7 @@
 #include "Defines.h"
 #include "Solver.h"
 #include "SolverSweep.h"
+#include "TestModels.h"
 
 using namespace Sudoku;
 
@@ -72,28 +73,14 @@ TEST(DiagramTest, Stream)
 
 TEST(DiagramTest, Simple)
 {
-   std::array<Value, NumFields> diagramValues =
-   {
-      4, 9, 6,     0, 0, 2,    1, 8, 5,
-      0, 7, 2,     1, 0, 0,    4, 9, 0,
-      1, 0, 0,     4, 9, 0,    3, 7, 2,
-
-      9, 4, 0,     6, 2, 7,    8, 5, 1,
-      6, 2, 7,     0, 5, 1,    9, 4, 0,
-      0, 5, 1,     0, 0, 3,    0, 0, 7,
-
-      0, 0, 4,     0, 3, 9,    5, 1, 8,
-      0, 0, 9,     5, 1, 8,    7, 0, 0, 
-      0, 0, 8,     7, 0, 0,    2, 0, 0,
-   };
-
-   const Diagram diagram = Diagram::Create(diagramValues);
+   const Diagram diagram = TestModels::getOneStar1();
    ASSERT_FALSE(diagram.isSolved());
    const std::string str = diagram.toString();
    ASSERT_FALSE(str.empty());
 
    auto potentials = diagram.getPotentials();
-   SolverSweepTrivial sweep;
+   SubSetPotentialsSweepSingles sweepSingles;
+   SolverSweepSubSetTypeAll sweep(sweepSingles);
    sweep(potentials);
 
    ASSERT_EQ(potentials.getSingleOrUndefined(FieldInfoStatic::RowColToField(0, 3)), 3);

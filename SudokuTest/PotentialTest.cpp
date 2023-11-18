@@ -8,6 +8,7 @@ TEST(PotentialTest, Constructor)
 {
    const Potential pot;
    ASSERT_EQ(pot.count(), 9);
+   ASSERT_FALSE(Potential::IsSingle(pot));
    for (auto value : ValueAll)
    {
       ASSERT_TRUE(pot.containsValue(value));
@@ -43,11 +44,13 @@ TEST(PotentialTest, SetUnset)
    ASSERT_EQ(pot.count(), 1);
    ASSERT_TRUE(pot.containsValue(4));
    ASSERT_FALSE(pot.containsValue(6));
+   ASSERT_TRUE(Potential::IsSingle(pot));
 
    pot.set(6);
    ASSERT_EQ(pot.count(), 2);
    ASSERT_TRUE(pot.containsValue(4));
    ASSERT_TRUE(pot.containsValue(6));
+   ASSERT_FALSE(Potential::IsSingle(pot));
 
    pot.unset(4);
    ASSERT_EQ(pot.count(), 1);

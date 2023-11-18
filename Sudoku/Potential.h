@@ -28,6 +28,7 @@ namespace Sudoku
       Value getSingleValue() const;
       RowColIndex count() const;
       bool isSingle() const;
+      static bool IsSingle(const Potential& pot);
       std::string toString() const;
 
       PotentialValues getPotentialValues() const;

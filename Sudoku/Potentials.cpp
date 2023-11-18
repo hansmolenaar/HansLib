@@ -148,3 +148,8 @@ bool Potentials::isSolved() const
 {
    return str::all_of(m_potentials, [](const auto& pot) {return pot.isSingle(); });
 }
+
+FieldIndex Potentials::getNumSingles() const
+{
+   return static_cast<FieldIndex>(str::count_if(m_potentials, Potential::IsSingle));
+}
