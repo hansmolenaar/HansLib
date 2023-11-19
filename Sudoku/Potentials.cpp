@@ -32,7 +32,7 @@ namespace
    std::array<std::string, NumFields> GetPotentialsPerField(Potentials& potentials)
    {
       std::array<std::string, NumFields> result;
-      for (FieldIndex field = 0; field < NumFields; ++field)
+      for (auto field : FieldInfoStatic::getAllFields())
       {
          result.at(field) = potentials.get(field).toString();
       }

@@ -108,7 +108,7 @@ TEST(DiagramTest, Simple)
    ASSERT_EQ(potentials.getSingleOrUndefined(FieldInfoStatic::RowColToField(6, 3)), 2);
 
    int numSimple = 0;
-   for (FieldIndex field = 0; field < NumFields; ++field)
+   for (auto field : FieldInfoStatic::getAllFields())
    {
       if (potentials.isSingle(field)) numSimple += 1;
    }

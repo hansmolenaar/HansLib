@@ -18,6 +18,7 @@ namespace Sudoku
       static const FieldSet& GetCol(RowColBoxIndex col);
       static const FieldSet& GetBox(RowColBoxIndex box);
       static const FieldSet& GetFieldSet(RowColBoxType type, RowColBoxIndex subSetIndex);
+      static const std::array<FieldIndex, NumFields>& getAllFields();
    };
 
 }

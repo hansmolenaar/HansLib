@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <vector>
 #include <map>
+#include <numeric>
 
 using namespace Sudoku;
 
@@ -129,4 +130,16 @@ const FieldSet& FieldInfoStatic::GetFieldSet(RowColBoxType type, RowColBoxIndex 
    if (type == RowColBoxType::Col) return GetCol(subSetIndex);
    if (type == RowColBoxType::Box) return GetBox(subSetIndex);
    throw MyException("ieldInfoStatic::GetFieldSet should not come here");
+}
+
+const std::array<FieldIndex, NumFields>& FieldInfoStatic::getAllFields()
+{
+   static std::array<FieldIndex, NumFields> s_instance;
+   static bool s_isinitialized = false;
+   if (!s_isinitialized)
+   {
+      s_isinitialized = true;
+      std::iota(s_instance.begin(), s_instance.end(), 0);
+   }
+   return s_instance;
 }

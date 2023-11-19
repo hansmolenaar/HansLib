@@ -37,7 +37,7 @@ Diagram Diagram::Create(const Potentials& values)
 {
    std::unordered_map<FieldIndex, Value> map;
    const std::array<FieldInfoStatic, NumFields>& infoAll = FieldInfoStatic::Instance();
-   for (FieldIndex field = 0; field < NumFields; ++field)
+   for (auto field : FieldInfoStatic::getAllFields())
    {
       const auto value = values.getSingleOrUndefined(field);
       if (value != ValueUndefined)
@@ -89,7 +89,7 @@ std::ostream& operator<<(std::ostream& os, const Sudoku::Diagram& diagram)
 Sudoku::Potentials Diagram::getPotentials() const
 {
    Potentials result;
-   for (FieldIndex field = 0; field < NumFields; ++field)
+   for (auto field : FieldInfoStatic::getAllFields())
    {
       if (m_state.at(field) != ValueUndefined)
       {

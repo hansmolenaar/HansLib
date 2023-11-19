@@ -1,13 +1,14 @@
 #include <gtest/gtest.h>
 
 #include "Potentials.h"
+#include "FieldInfoStatic.h"
 
 using namespace Sudoku;
 
 TEST(PotentialsTest, ToString)
 {
    Potentials potentials;
-   for (auto f = 0; f < NumFields; ++f)
+   for (auto f : FieldInfoStatic::getAllFields())
    {
       potentials.setSingle(f, (f % 9) + 1);
    }

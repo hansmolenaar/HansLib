@@ -3,7 +3,7 @@
 #include "Solver.h"
 #include "SolverSweep.h"
 #include "TestModels.h"
-
+#include "FieldInfoStatic.h"
 
 using namespace Sudoku;
 
@@ -53,7 +53,7 @@ static Potentials SetPairGraph(const Potentials& potentials, Value value)
 {
    Potentials result;
    result.setNone();
-   for (FieldIndex f = 0; f < NumFields; ++f)
+   for (FieldIndex f : FieldInfoStatic::getAllFields())
    {
       const auto& pot = potentials.get(f);
       if (pot.count() == 2)

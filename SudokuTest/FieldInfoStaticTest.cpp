@@ -44,7 +44,7 @@ TEST(FieldInfoStaticTest, InstanceTest)
 TEST(FieldInfoStaticTest, RowColField)
 {
    const std::array<FieldInfoStatic, NumFields>& instance = FieldInfoStatic::Instance();
-   for (FieldIndex f = 0; f < NumFields; ++f)
+   for (auto f : FieldInfoStatic::getAllFields())
    {
       const auto& info = instance.at(f);
       ASSERT_EQ(FieldInfoStatic::RowColToField(info.Row, info.Col), f);
