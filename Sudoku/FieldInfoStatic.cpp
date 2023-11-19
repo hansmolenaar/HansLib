@@ -3,52 +3,65 @@
 #include "FieldInfoStatic.h"
 #include "MyException.h"
 #include "Defines.h"
+#include "SudokuDefines.h"
 #include <algorithm>
 #include <vector>
 #include <map>
 #include <numeric>
 
 using namespace Sudoku;
+using namespace FieldInfoStatic;
+
+using SubSquareRowColIndex = int; // 0..2
+constexpr int NumBox_RowColPositons = 3;
 
 namespace
 {
-   using SubSquareRowColIndex = int; // 0..2
-   constexpr int NumBox_RowColPositons = 3;
+   struct FieldInfoStatiC
+   {
+      RowColBoxIndex    Row;
+      RowColBoxIndex    Col;
+      RowColBoxIndex    Box;
+      FieldIndex        Field;
+   };
 
    SubSquareRowColIndex ToSubSquareRowCol(RowColBoxIndex index)
    {
       FieldInfoStatic::CheckRowColIndex(index);
       return index / NumBox_RowColPositons;
    }
-}
 
-const std::array<FieldInfoStatic, NumFields>& FieldInfoStatic::Instance()
-{
-   static std::array<FieldInfoStatic, NumFields> s_instance;
-   static bool s_isinitialized = false;
-
-   if (!s_isinitialized)
+   const std::array<FieldInfoStatiC, NumFields>& Instance()
    {
-      s_isinitialized = true;
-      for (RowColBoxIndex row : RowColBoxAll)
+      static std::array<FieldInfoStatiC, NumFields> s_instance;
+      static bool s_isinitialized = false;
+
+      if (!s_isinitialized)
       {
-         const RowColBoxIndex subSquareRow = ToSubSquareRowCol(row);
-         for (RowColBoxIndex col : RowColBoxAll)
+         s_isinitialized = true;
+         for (RowColBoxIndex row : RowColBoxAll)
          {
-            const RowColBoxIndex subSquareCol = ToSubSquareRowCol(col);
-            const RowColBoxPosition box = subSquareRow * NumBox_RowColPositons + subSquareCol;
-            const auto field = RowColToField(row, col);
-            FieldInfoStatic& info = s_instance.at(field);
-            info.Row = row;
-            info.Col = col;
-            info.Field = field;
-            info.Box = box;
+            const RowColBoxIndex subSquareRow = ToSubSquareRowCol(row);
+            for (RowColBoxIndex col : RowColBoxAll)
+            {
+               const RowColBoxIndex subSquareCol = ToSubSquareRowCol(col);
+               const RowColBoxPosition box = subSquareRow * NumBox_RowColPositons + subSquareCol;
+               const auto field = RowColToField(row, col);
+               FieldInfoStatiC& info = s_instance.at(field);
+               info.Row = row;
+               info.Col = col;
+               info.Field = field;
+               info.Box = box;
+            }
          }
       }
+
+      return s_instance;
    }
 
-   return s_instance;
+
 }
+
 
 void FieldInfoStatic::CheckRowColIndex(RowColBoxIndex index)
 {
@@ -142,4 +155,21 @@ const std::array<FieldIndex, NumFields>& FieldInfoStatic::getAllFields()
       std::iota(s_instance.begin(), s_instance.end(), 0);
    }
    return s_instance;
+}
+
+RowColBoxIndex FieldInfoStatic::FieldToBox(FieldIndex field)
+{
+   return Instance().at(field).Box;
+}
+
+
+RowColBoxIndex FieldInfoStatic::FieldToRow(FieldIndex field)
+{
+   return Instance().at(field).Row;
+}
+
+
+RowColBoxIndex FieldInfoStatic::FieldToCol(FieldIndex field)
+{
+   return Instance().at(field).Col;
 }

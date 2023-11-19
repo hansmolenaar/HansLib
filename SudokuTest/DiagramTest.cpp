@@ -117,7 +117,6 @@ TEST(DiagramTest, Simple)
 
 TEST(DiagramTest, IsNotCorrectEmpty)
 {
-   const std::array<FieldInfoStatic, NumFields>& instance = FieldInfoStatic::Instance();
    std::unordered_map<FieldIndex, Value> input;
 
    const Diagram diagram = Diagram::Create(input);
