@@ -8,35 +8,35 @@ using namespace Sudoku;
 TEST(FieldInfoStaticTest, InstanceTest)
 {
    const std::array<FieldInfoStatic, NumFields>& instance = FieldInfoStatic::Instance();
-   std::map<RowColIndex, int> rowCount;
-   std::map<RowColIndex, int> colCount;
-   std::map<RowColIndex, int> subSquareCount;
+   std::map<RowColBoxIndex, int> rowCount;
+   std::map<RowColBoxIndex, int> colCount;
+   std::map<RowColBoxIndex, int> boxCount;
 
    for (const auto& info : instance)
    {
       ASSERT_GE(info.Row, 0);
-      ASSERT_LT(info.Row, NumRowCol);
+      ASSERT_LT(info.Row, NumRowColBox);
 
       ASSERT_GE(info.Col, 0);
-      ASSERT_LT(info.Col, NumRowCol);
+      ASSERT_LT(info.Col, NumRowColBox);
 
-      ASSERT_GE(info.SubSquare, 0);
-      ASSERT_LT(info.SubSquare, NumSubSquares);
+      ASSERT_GE(info.Box, 0);
+      ASSERT_LT(info.Box, NumRowColBox);
 
       rowCount[info.Row] += 1;
       colCount[info.Col] += 1;
-      subSquareCount[info.SubSquare] += 1;
+      boxCount[info.Box] += 1;
    }
 
    for (auto indx : RowColAll)
    {
-      ASSERT_EQ(rowCount.at(indx), NumRowCol);
-      ASSERT_EQ(colCount.at(indx), NumRowCol);
+      ASSERT_EQ(rowCount.at(indx), NumRowColBox);
+      ASSERT_EQ(colCount.at(indx), NumRowColBox);
    }
 
-   for (auto indx : SubSquareAll)
+   for (auto indx : BoxAll)
    {
-      ASSERT_EQ(subSquareCount.at(indx), NumSubSquares);
+      ASSERT_EQ(boxCount.at(indx), NumBox);
    }
 }
 
@@ -55,7 +55,7 @@ TEST(FieldInfoStaticTest, RowColField)
 TEST(FieldInfoStaticTest, CheckRowColIndex)
 {
    ASSERT_THROW(FieldInfoStatic::CheckRowColIndex(-1), MyException);
-   ASSERT_THROW(FieldInfoStatic::CheckRowColIndex(NumRowCol), MyException);
+   ASSERT_THROW(FieldInfoStatic::CheckRowColIndex(NumRowColBox), MyException);
 }
 
 
@@ -100,13 +100,13 @@ TEST(FieldInfoStaticTest, GetSubSquare)
    std::unordered_set<FieldIndex> used;
    const auto& info = FieldInfoStatic::Instance();
 
-   for (auto ss : SubSquareAll)
+   for (auto b : BoxAll)
    {
-      const auto& fields = FieldInfoStatic::GetSubSquare(ss);
+      const auto& fields = FieldInfoStatic::GetBox(b);
       for (auto f : fields)
       {
          used.insert(f);
-         ASSERT_EQ(info.at(f).SubSquare, ss);
+         ASSERT_EQ(info.at(f).Box, b);
       }
    }
    ASSERT_EQ(used.size(), NumFields);

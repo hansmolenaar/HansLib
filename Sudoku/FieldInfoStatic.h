@@ -5,19 +5,19 @@ namespace Sudoku
 {
    struct FieldInfoStatic
    {
-      RowColIndex    Row;
-      RowColIndex    Col;
-      SubSquareIndex SubSquare;
-      FieldIndex     Field;
+      RowColBoxIndex    Row;
+      RowColBoxIndex    Col;
+      RowColBoxIndex    Box;
+      FieldIndex        Field;
 
       static const std::array<FieldInfoStatic, NumFields>& Instance();
-      static constexpr FieldIndex RowColToField(RowColIndex row, RowColIndex col) { return row * NumRowCol + col; }
-      static void CheckRowColIndex(RowColIndex index);
+      static constexpr FieldIndex RowColToField(RowColBoxIndex row, RowColBoxIndex col) { return row * NumRowColBox + col; }
+      static void CheckRowColIndex(RowColBoxIndex index);
       static void CheckValue(Value value);
-      static const FieldSet& GetRow(SubSetIndex row);
-      static const FieldSet& GetCol(SubSetIndex col);
-      static const FieldSet& GetSubSquare(SubSetIndex subSquare);
-      static const FieldSet& GetFieldSet(SubSetType type, SubSetIndex subSetIndex);
+      static const FieldSet& GetRow(RowColBoxIndex row);
+      static const FieldSet& GetCol(RowColBoxIndex col);
+      static const FieldSet& GetBox(RowColBoxIndex box);
+      static const FieldSet& GetFieldSet(RowColBoxType type, RowColBoxIndex subSetIndex);
    };
 
 }

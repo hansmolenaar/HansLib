@@ -15,7 +15,7 @@ TEST(SubSetPotentialsSweepTest, SweepSingle)
    constexpr Value ValueActive = 6;
    Potentials potentials;
    potentials.setSingle(FieldToUse, ValueActive);
-   auto subset = potentials.getSubSetPotentials(SubSetType::Row, 0);
+   auto subset = potentials.getSubSetPotentials(RowColBoxType::Row, 0);
    SubSetPotentialsSweepSingles sweep;
    const bool changed = sweep(subset);
    ASSERT_TRUE(changed);
@@ -32,7 +32,7 @@ TEST(SubSetPotentialsSweepTest, SweepSingle)
 TEST(SubSetPotentialsSweepTest, SweepDigons)
 {
    SubSetPotentialsSweepClusters sweep;
-   std::array<Potential, SubSetSize> potentialsMem;
+   std::array<Potential, NumRowColBoxPositions> potentialsMem;
 
    SubSetPotentials potentials;
    str::transform(potentialsMem, potentials.begin(), [](auto& p) {return &p;  });
@@ -58,7 +58,7 @@ TEST(SubSetPotentialsSweepTest, SweepDigons)
 TEST(SubSetPotentialsSweepTest, Sweep223)
 {
    SubSetPotentialsSweepClusters sweep;
-   std::array<Potential, SubSetSize> potentialsMem;
+   std::array<Potential, NumRowColBoxPositions> potentialsMem;
 
    SubSetPotentials potentials;
    str::transform(potentialsMem, potentials.begin(), [](auto& p) {return &p;  });
@@ -89,7 +89,7 @@ TEST(SubSetPotentialsSweepTest, Sweep223)
 TEST(SubSetPotentialsSweepTest, Sweep2234)
 {
    SubSetPotentialsSweepClusters sweep;
-   std::array<Potential, SubSetSize> potentialsMem;
+   std::array<Potential, NumRowColBoxPositions> potentialsMem;
 
    SubSetPotentials potentials;
    str::transform(potentialsMem, potentials.begin(), [](auto& p) {return &p;  });

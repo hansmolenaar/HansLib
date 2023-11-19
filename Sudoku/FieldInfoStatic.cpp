@@ -11,7 +11,7 @@ using namespace Sudoku;
 
 namespace
 {
-   SubSquareRowColIndex ToSubSquareRowCol(RowColIndex index)
+   SubSquareRowColIndex ToSubSquareRowCol(RowColBoxIndex index)
    {
       FieldInfoStatic::CheckRowColIndex(index);
       return index / NumSubSquareRowCol;
@@ -26,19 +26,19 @@ const std::array<FieldInfoStatic, NumFields>& FieldInfoStatic::Instance()
    if (!s_isinitialized)
    {
       s_isinitialized = true;
-      for (RowColIndex row : RowColAll)
+      for (RowColBoxIndex row : RowColAll)
       {
-         const SubSquareRowColIndex subSquareRow = ToSubSquareRowCol(row);
-         for (RowColIndex col : RowColAll)
+         const RowColBoxIndex subSquareRow = ToSubSquareRowCol(row);
+         for (RowColBoxIndex col : RowColAll)
          {
-            const SubSquareRowColIndex subSquareCol = ToSubSquareRowCol(col);
-            const SubSquareIndex subSquare = subSquareRow * NumSubSquareRowCol + subSquareCol;
+            const RowColBoxIndex subSquareCol = ToSubSquareRowCol(col);
+            const BoxIndex box = subSquareRow * NumSubSquareRowCol + subSquareCol;
             const auto field = RowColToField(row, col);
             FieldInfoStatic& info = s_instance.at(field);
             info.Row = row;
             info.Col = col;
             info.Field = field;
-            info.SubSquare = subSquare;
+            info.Box = box;
          }
       }
    }
@@ -46,10 +46,10 @@ const std::array<FieldInfoStatic, NumFields>& FieldInfoStatic::Instance()
    return s_instance;
 }
 
-void FieldInfoStatic::CheckRowColIndex(RowColIndex index)
+void FieldInfoStatic::CheckRowColIndex(RowColBoxIndex index)
 {
    if (index < 0) throw MyException("FieldInfoStatic::CheckRowColIndex index should be >= 0, actual " + std::to_string(index));
-   if (index >= NumRowCol) throw MyException("FieldInfoStatic::CheckRowColIndex index should be < 9, actual " + std::to_string(index));
+   if (index >= NumRowColBox) throw MyException("FieldInfoStatic::CheckRowColIndex index should be < 9, actual " + std::to_string(index));
 }
 
 void FieldInfoStatic::CheckValue(Value value)
@@ -58,7 +58,7 @@ void FieldInfoStatic::CheckValue(Value value)
    if (value > NumValues) throw MyException("FieldInfoStatic::CheckValue value should be <= 9, actual " + std::to_string(value));
 }
 
-const FieldSet& FieldInfoStatic::GetRow(SubSetIndex row)
+const FieldSet& FieldInfoStatic::GetRow(RowColBoxIndex row)
 {
    static std::vector<FieldSet> s_instance;
    if (s_instance.empty())
@@ -76,7 +76,7 @@ const FieldSet& FieldInfoStatic::GetRow(SubSetIndex row)
 }
 
 
-const FieldSet& FieldInfoStatic::GetCol(SubSetIndex col)
+const FieldSet& FieldInfoStatic::GetCol(RowColBoxIndex col)
 {
    static std::vector<FieldSet> s_instance;
    if (s_instance.empty())
@@ -93,18 +93,18 @@ const FieldSet& FieldInfoStatic::GetCol(SubSetIndex col)
    return s_instance.at(col);
 }
 
-const FieldSet& FieldInfoStatic::GetSubSquare(SubSetIndex subSquare)
+const FieldSet& FieldInfoStatic::GetBox(RowColBoxIndex box)
 {
    static std::vector<FieldSet> s_instance;
    if (s_instance.empty())
    {
-      std::multimap< SubSquareIndex, FieldIndex> s2f;
+      std::multimap< BoxIndex, FieldIndex> s2f;
       for (const auto& info : Instance())
       {
-         s2f.emplace(info.SubSquare, info.Field);
+         s2f.emplace(info.Box, info.Field);
       }
 
-      for (SubSquareIndex ssi = 0; ssi < NumSubSquares; ++ssi)
+      for (auto ssi : BoxAll)
       {
          s_instance.push_back(FieldSet{});
          const auto range = s2f.equal_range(ssi);
@@ -117,13 +117,13 @@ const FieldSet& FieldInfoStatic::GetSubSquare(SubSetIndex subSquare)
          str::sort(s_instance.back());
       }
    }
-   return s_instance.at(subSquare);
+   return s_instance.at(box);
 }
 
-const FieldSet& FieldInfoStatic::GetFieldSet(SubSetType type, SubSetIndex subSetIndex)
+const FieldSet& FieldInfoStatic::GetFieldSet(RowColBoxType type, RowColBoxIndex subSetIndex)
 {
-   if (type == SubSetType::Row) return GetRow(subSetIndex);
-   if (type == SubSetType::Column) return GetCol(subSetIndex);
-   if (type == SubSetType::SubSquare) return GetSubSquare(subSetIndex);
+   if (type == RowColBoxType::Row) return GetRow(subSetIndex);
+   if (type == RowColBoxType::Col) return GetCol(subSetIndex);
+   if (type == RowColBoxType::Box) return GetBox(subSetIndex);
    throw MyException("ieldInfoStatic::GetFieldSet should not come here");
 }

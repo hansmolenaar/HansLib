@@ -55,9 +55,9 @@ bool Potential::containsValue(Value value) const
    return m_active.test(value - 1);
 }
 
-RowColIndex Potential::count() const
+RowColBoxIndex Potential::count() const
 {
-   return static_cast<RowColIndex>(m_active.count());
+   return static_cast<RowColBoxIndex>(m_active.count());
 }
 
 Value Potential::getSingleValue() const

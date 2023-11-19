@@ -14,7 +14,7 @@ using namespace Sudoku;
 
 namespace
 {
-   using ActivePotentials = boost::container::static_vector<Potential*, SubSetSize>;
+   using ActivePotentials = boost::container::static_vector<Potential*, NumRowColBoxPositions>;
 
    ActivePotentials getActiveFields(int clusterSize, SubSetPotentials& potentials)
    {
@@ -103,8 +103,8 @@ bool SubSetPotentialsSweepSingles::operator()(SubSetPotentials& potentials)
 {
    bool anyChange = false;
 
-   boost::container::static_vector<Value, SubSetSize> unsetMe;
-   boost::container::static_vector<Potential*, SubSetSize> active;
+   boost::container::static_vector<Value, NumRowColBoxPositions> unsetMe;
+   boost::container::static_vector<Potential*, NumRowColBoxPositions> active;
 
    // Collect values that are unique
    for (auto pot : potentials)

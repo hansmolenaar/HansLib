@@ -20,7 +20,7 @@ TEST(PotentialTest, SetAllNone)
    Potential pot;
 
    pot.setAll();
-   ASSERT_EQ(pot.count(), NumRowCol);
+   ASSERT_EQ(pot.count(), NumRowColBox);
    for (auto value : ValueAll)
    {
       ASSERT_TRUE(pot.containsValue(value));

@@ -6,7 +6,7 @@ using namespace Sudoku;
 
 namespace
 {
-   std::string ToStringPerType(Potentials& potentials, SubSetType type)
+   std::string ToStringPerType(Potentials& potentials, RowColBoxType type)
    {
       std::string result = "\n\nType " + std::to_string(static_cast<int>(type)) + "\n\n";
       for (auto index : SubSetsAll)
@@ -98,7 +98,7 @@ bool Potentials::unset(FieldIndex field, Value value)
    return m_potentials.at(field).unset(value);
 }
 
-SubSetPotentials Potentials::getSubSetPotentials(SubSetType type, SubSetIndex index)
+SubSetPotentials Potentials::getSubSetPotentials(RowColBoxType type, RowColBoxIndex index)
 {
    const auto& fields = FieldInfoStatic::GetFieldSet(type, index);
    SubSetPotentials result;
@@ -133,7 +133,7 @@ std::string Potentials::toString(const SubSetPotentials potentials)
 std::string Potentials::toString()
 {
    std::string result;
-   for (auto type : SubSetTypeAll)
+   for (auto type : RowColBoxTypeAll)
    {
       result += ToStringPerType(*this, type);
    }

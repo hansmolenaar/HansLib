@@ -5,7 +5,7 @@
 
 namespace Sudoku
 {
-   using SubSetPotentials = std::array<Potential*, SubSetSize>;
+   using SubSetPotentials = std::array<Potential*, NumRowColBoxPositions>;
 
    class Potentials
    {
@@ -18,7 +18,7 @@ namespace Sudoku
       bool unset(FieldIndex field, Value value);
       const Potential& get(FieldIndex field) const;
 
-      SubSetPotentials getSubSetPotentials(SubSetType type, SubSetIndex index);
+      SubSetPotentials getSubSetPotentials(RowColBoxType type, RowColBoxIndex index);
       static std::string toString(const SubSetPotentials potentials);
       std::string toString(); // TODO const correctness
       bool isSolved() const;

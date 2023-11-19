@@ -10,7 +10,7 @@ using namespace Sudoku;
 
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-SolverSweepSubSet::SolverSweepSubSet(SubSetType type, ISubSetPotentialsSweep& sweep) : m_type(type), m_subSetSweep(sweep)
+SolverSweepSubSet::SolverSweepSubSet(RowColBoxType type, ISubSetPotentialsSweep& sweep) : m_type(type), m_subSetSweep(sweep)
 {}
 
 SolverSweepResult SolverSweepSubSet::operator()(Potentials& potentials)
@@ -84,10 +84,10 @@ SolverSweepResult SolverSweepComposite::operator()(Potentials& potentials)
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 SolverSweepSubSetTypeAll::SolverSweepSubSetTypeAll(ISubSetPotentialsSweep& sweep) :
-   m_row(SubSetType::Row, sweep),
-   m_col(SubSetType::Column, sweep),
-   m_subSquare(SubSetType::SubSquare, sweep),
-   m_composite({ &m_row, &m_col, &m_subSquare })
+   m_row(RowColBoxType::Row, sweep),
+   m_col(RowColBoxType::Col, sweep),
+   m_box(RowColBoxType::Box, sweep),
+   m_composite({ &m_row, &m_col, &m_box })
 {}
 
 

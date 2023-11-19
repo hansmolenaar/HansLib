@@ -37,10 +37,10 @@ namespace Sudoku
    class SolverSweepSubSet : public ISolverSweep
    {
    public:
-      SolverSweepSubSet(SubSetType type, ISubSetPotentialsSweep& sweep);
+      SolverSweepSubSet(RowColBoxType type, ISubSetPotentialsSweep& sweep);
       SolverSweepResult operator()(Potentials& potentials) override;
    private:
-      SubSetType m_type;
+      RowColBoxType m_type;
       ISubSetPotentialsSweep& m_subSetSweep;
    };
 
@@ -53,7 +53,7 @@ namespace Sudoku
    private:
       SolverSweepSubSet m_row;
       SolverSweepSubSet m_col;
-      SolverSweepSubSet m_subSquare;
+      SolverSweepSubSet m_box;
       SolverSweepComposite m_composite;
    };
 
@@ -90,6 +90,6 @@ namespace Sudoku
       SolverSweepIterate m_iterate;
    };
 
-  
+
 
 }

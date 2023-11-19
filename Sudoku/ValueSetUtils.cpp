@@ -10,7 +10,7 @@ bool ValueSetUtils::IsSolved(const ValueSet& valueSet)
 {
    bool result = true;
    const Functors::IsInIncludeBounds inBounds{ValueAll.front(), ValueAll.back()};
-   std::bitset<SubSetSize> isSet;
+   std::bitset<NumRowColBoxPositions> isSet;
    for (auto value : valueSet)
    {
       if (value == ValueUndefined)

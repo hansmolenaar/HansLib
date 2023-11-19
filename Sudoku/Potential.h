@@ -7,7 +7,7 @@
 
 namespace Sudoku
 {
-   using PotentialValues = boost::container::static_vector<Value, SubSetSize>;
+   using PotentialValues = boost::container::static_vector<Value, NumRowColBoxPositions>;
 
    class Potential
    {
@@ -26,7 +26,7 @@ namespace Sudoku
       bool unset(Value value);
       bool containsValue(Value value) const;
       Value getSingleValue() const;
-      RowColIndex count() const;
+      RowColBoxIndex count() const;
       bool isSingle() const;
       static bool IsSingle(const Potential& pot);
       std::string toString() const;

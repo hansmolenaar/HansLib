@@ -72,10 +72,10 @@ Value Diagram::operator()(FieldIndex field) const
 std::ostream& operator<<(std::ostream& os, const Sudoku::Diagram& diagram)
 {
    const std::array<FieldInfoStatic, NumFields>& infoAll = FieldInfoStatic::Instance();
-   for (RowColIndex row = 0; row < NumRowCol; ++row)
+   for (RowColBoxIndex row = 0; row < NumRowColBox; ++row)
    {
       os << "|";
-      for (RowColIndex col = 0; col < NumRowCol; ++col)
+      for (RowColBoxIndex col = 0; col < NumRowColBox; ++col)
       {
          const FieldIndex field = FieldInfoStatic::RowColToField(row, col);
          const Value value = diagram(field);
@@ -109,7 +109,7 @@ std::string Diagram::toString() const
 bool Diagram::isSolved() const
 {
    bool succes = true;
-   for (auto type : SubSetTypeAll)
+   for (auto type : RowColBoxTypeAll)
    {
       for (auto subSetIndex : SubSetsAll)
       {
@@ -125,7 +125,7 @@ bool Diagram::isSolved() const
    return succes;
 }
 
-ValueSet Diagram::getValues(SubSetType type, SubSetIndex subSetIndex) const
+ValueSet Diagram::getValues(RowColBoxType type, RowColBoxIndex subSetIndex) const
 {
    const auto& fields = FieldInfoStatic::GetFieldSet(type, subSetIndex);
    ValueSet values;

@@ -14,7 +14,7 @@ namespace Sudoku
       static Diagram Create(const std::unordered_map<FieldIndex, Value>& input);
       static Diagram Create(const Potentials& values);
       Value operator()(FieldIndex field) const;
-      ValueSet getValues(SubSetType type, SubSetIndex subSetIndex) const;
+      ValueSet getValues(RowColBoxType type, RowColBoxIndex subSetIndex) const;
       Potentials getPotentials() const;
       std::string toString() const;
       bool isSolved() const;
