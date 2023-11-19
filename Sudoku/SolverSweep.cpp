@@ -16,7 +16,7 @@ SolverSweepSubSet::SolverSweepSubSet(RowColBoxType type, ISubSetPotentialsSweep&
 SolverSweepResult SolverSweepSubSet::operator()(Potentials& potentials)
 {
    bool anyChange = false;
-   for (auto index : SubSetsAll)
+   for (auto index : RowColBoxAll)
    {
       auto subSetPotentials = potentials.getSubSetPotentials(m_type, index);
       if (m_subSetSweep(subSetPotentials))

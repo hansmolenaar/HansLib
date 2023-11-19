@@ -28,15 +28,15 @@ TEST(FieldInfoStaticTest, InstanceTest)
       boxCount[info.Box] += 1;
    }
 
-   for (auto indx : RowColAll)
+   for (auto indx : RowColBoxAll)
    {
       ASSERT_EQ(rowCount.at(indx), NumRowColBox);
       ASSERT_EQ(colCount.at(indx), NumRowColBox);
    }
 
-   for (auto indx : BoxAll)
+   for (auto indx : RowColBoxAll)
    {
-      ASSERT_EQ(boxCount.at(indx), NumBox);
+      ASSERT_EQ(boxCount.at(indx), NumRowBoxCol);
    }
 }
 
@@ -64,7 +64,7 @@ TEST(FieldInfoStaticTest, GetRow)
    std::unordered_set<FieldIndex> used;
    const auto& info = FieldInfoStatic::Instance();
 
-   for (auto row : RowColAll)
+   for (auto row : RowColBoxAll)
    {
       const auto& cols = FieldInfoStatic::GetRow(row);
       for (auto f : cols)
@@ -82,7 +82,7 @@ TEST(FieldInfoStaticTest, GetCol)
    std::unordered_set<FieldIndex> used;
    const auto& info = FieldInfoStatic::Instance();
 
-   for (auto col : RowColAll)
+   for (auto col : RowColBoxAll)
    {
       const auto& rows = FieldInfoStatic::GetCol(col);
       for (auto f : rows)
@@ -95,12 +95,12 @@ TEST(FieldInfoStaticTest, GetCol)
 }
 
 
-TEST(FieldInfoStaticTest, GetSubSquare)
+TEST(FieldInfoStaticTest, GetBox)
 {
    std::unordered_set<FieldIndex> used;
    const auto& info = FieldInfoStatic::Instance();
 
-   for (auto b : BoxAll)
+   for (auto b : RowColBoxAll)
    {
       const auto& fields = FieldInfoStatic::GetBox(b);
       for (auto f : fields)

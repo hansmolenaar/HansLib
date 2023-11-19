@@ -11,10 +11,13 @@ using namespace Sudoku;
 
 namespace
 {
+   using SubSquareRowColIndex = int; // 0..2
+   constexpr int NumBox_RowColPositons = 3;
+
    SubSquareRowColIndex ToSubSquareRowCol(RowColBoxIndex index)
    {
       FieldInfoStatic::CheckRowColIndex(index);
-      return index / NumSubSquareRowCol;
+      return index / NumBox_RowColPositons;
    }
 }
 
@@ -26,13 +29,13 @@ const std::array<FieldInfoStatic, NumFields>& FieldInfoStatic::Instance()
    if (!s_isinitialized)
    {
       s_isinitialized = true;
-      for (RowColBoxIndex row : RowColAll)
+      for (RowColBoxIndex row : RowColBoxAll)
       {
          const RowColBoxIndex subSquareRow = ToSubSquareRowCol(row);
-         for (RowColBoxIndex col : RowColAll)
+         for (RowColBoxIndex col : RowColBoxAll)
          {
             const RowColBoxIndex subSquareCol = ToSubSquareRowCol(col);
-            const BoxIndex box = subSquareRow * NumSubSquareRowCol + subSquareCol;
+            const RowColBoxPosition box = subSquareRow * NumBox_RowColPositons + subSquareCol;
             const auto field = RowColToField(row, col);
             FieldInfoStatic& info = s_instance.at(field);
             info.Row = row;
@@ -63,10 +66,10 @@ const FieldSet& FieldInfoStatic::GetRow(RowColBoxIndex row)
    static std::vector<FieldSet> s_instance;
    if (s_instance.empty())
    {
-      for (auto r : RowColAll)
+      for (auto r : RowColBoxAll)
       {
          s_instance.push_back(FieldSet{});
-         for (auto c : RowColAll)
+         for (auto c : RowColBoxAll)
          {
             s_instance.at(r).at(c) = RowColToField(r, c);
          }
@@ -81,10 +84,10 @@ const FieldSet& FieldInfoStatic::GetCol(RowColBoxIndex col)
    static std::vector<FieldSet> s_instance;
    if (s_instance.empty())
    {
-      for (auto c : RowColAll)
+      for (auto c : RowColBoxAll)
       {
          s_instance.push_back(FieldSet{});
-         for (auto r : RowColAll)
+         for (auto r : RowColBoxAll)
          {
             s_instance.at(c).at(r) = RowColToField(r, c);
          }
@@ -98,13 +101,13 @@ const FieldSet& FieldInfoStatic::GetBox(RowColBoxIndex box)
    static std::vector<FieldSet> s_instance;
    if (s_instance.empty())
    {
-      std::multimap< BoxIndex, FieldIndex> s2f;
+      std::multimap< RowColBoxIndex, FieldIndex> s2f;
       for (const auto& info : Instance())
       {
          s2f.emplace(info.Box, info.Field);
       }
 
-      for (auto ssi : BoxAll)
+      for (auto ssi : RowColBoxAll)
       {
          s_instance.push_back(FieldSet{});
          const auto range = s2f.equal_range(ssi);

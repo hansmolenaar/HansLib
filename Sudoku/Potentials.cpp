@@ -9,7 +9,7 @@ namespace
    std::string ToStringPerType(Potentials& potentials, RowColBoxType type)
    {
       std::string result = "\n\nType " + std::to_string(static_cast<int>(type)) + "\n\n";
-      for (auto index : SubSetsAll)
+      for (auto index : RowColBoxAll)
       {
          bool first = true;
          for (const auto* pot : potentials.getSubSetPotentials(type, index))
@@ -46,7 +46,7 @@ namespace
       str::transform(perField, fieldSizes.begin(), [](const std::string& str) {return str.size(); });
       const auto maxFieldSize = str::max(fieldSizes);
 
-      for (auto row : RowColAll)
+      for (auto row : RowColBoxAll)
       {
          std::string line;
          for (auto field : FieldInfoStatic::GetRow(row))

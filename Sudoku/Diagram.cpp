@@ -111,9 +111,9 @@ bool Diagram::isSolved() const
    bool succes = true;
    for (auto type : RowColBoxTypeAll)
    {
-      for (auto subSetIndex : SubSetsAll)
+      for (auto rcbIndex : RowColBoxAll)
       {
-         const ValueSet values = getValues(type, subSetIndex);
+         const ValueSet values = getValues(type, rcbIndex);
          if (!ValueSetUtils::IsSolved(values))
          {
             // Do not break loop, also test for correctness

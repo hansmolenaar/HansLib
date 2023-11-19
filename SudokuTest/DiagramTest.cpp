@@ -29,7 +29,7 @@ TEST(DiagramTest, DuplicateCol)
    ASSERT_THROW(Diagram::Create(input), MyException);
 }
 
-TEST(DiagramTest, DuplicateSubSquare)
+TEST(DiagramTest, DuplicateBox)
 {
    std::unordered_map<FieldIndex, Value> input;
    input[FieldInfoStatic::RowColToField(4, 4)] = 1;

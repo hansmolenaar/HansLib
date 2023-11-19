@@ -20,7 +20,7 @@ TEST(SubSetPotentialsSweepTest, SweepSingle)
    const bool changed = sweep(subset);
    ASSERT_TRUE(changed);
    ASSERT_EQ(potentials.getSingleOrUndefined(FieldToUse), ValueActive);
-   for (auto item : SubSetItemsAll)
+   for (auto item : RowColBoxPositionsAll)
    {
       if (item != FieldToUse)
       {

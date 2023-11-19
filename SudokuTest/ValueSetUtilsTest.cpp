@@ -8,7 +8,7 @@ using namespace Sudoku;
 TEST(ValueSetUtils, IsSolvedSucces)
 {
    ValueSet values;
-   for (auto n : SubSetItemsAll)
+   for (auto n : RowColBoxPositionsAll)
    {
       values.at(n) = 9 - n;
    }
