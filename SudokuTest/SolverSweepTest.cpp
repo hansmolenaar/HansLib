@@ -3,6 +3,7 @@
 #include "SolverSweep.h"
 #include "FieldInfoStatic.h"
 #include "Diagram.h"
+#include "TestModels.h"
 
 #include <unordered_map>
 #include "boost/graph/adjacency_list.hpp"
@@ -63,6 +64,26 @@ TEST(SolverSweepTest, MyFirstBoostGraph)
    auto num_colors = sequential_vertex_coloring(g, color_map);
    ASSERT_EQ(num_colors, 2);
 
-   const std::vector<size_t> expectColors{0,1,0,1};
+   const std::vector<size_t> expectColors{ 0,1,0,1 };
    ASSERT_TRUE(color_vec == expectColors);
+}
+
+
+TEST(SolverSweepTest, SolverSweepAll)
+{
+   SolverSweep sweep;
+   Diagram diagramEmpty = TestModels::getEmpty();
+   auto potentials = diagramEmpty.getPotentials();
+   auto result = sweep(potentials);
+   ASSERT_EQ(result, SolverSweepResult::NoChange);
+}
+
+
+TEST(SolverSweepTest, SolverSweepSolved)
+{
+   SolverSweep sweep;
+   Diagram diagramSolved = TestModels::getSolved();
+   auto potentials = diagramSolved.getPotentials();
+   auto result = sweep(potentials);
+   ASSERT_EQ(result, SolverSweepResult::Solved);
 }
