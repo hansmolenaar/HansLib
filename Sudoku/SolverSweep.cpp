@@ -25,8 +25,8 @@ SolverSweepResult SolverSweepSubSet::operator()(Potentials& potentials)
       }
    }
 
-   if (!anyChange) return SolverSweepResult::NoChange;
    if (potentials.isSolved()) return SolverSweepResult::Solved;
+   if (!anyChange) return SolverSweepResult::NoChange;
    return SolverSweepResult::Change;
 }
 

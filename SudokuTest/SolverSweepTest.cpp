@@ -83,6 +83,7 @@ TEST(SolverSweepTest, SolverSweepSolved)
 {
    SolverSweep sweep;
    Diagram diagramSolved = TestModels::getSolved();
+   ASSERT_TRUE(diagramSolved.isSolved());
    auto potentials = diagramSolved.getPotentials();
    auto result = sweep(potentials);
    ASSERT_EQ(result, SolverSweepResult::Solved);

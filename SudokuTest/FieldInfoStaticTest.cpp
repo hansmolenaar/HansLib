@@ -2,6 +2,7 @@
 
 #include "FieldInfoStatic.h"
 #include "MyException.h"
+#include "Defines.h"
 #include <unordered_set>
 using namespace Sudoku;
 
@@ -35,7 +36,7 @@ TEST(FieldInfoStaticTest, InstanceTest)
    {
       ASSERT_EQ(rowCount.at(indx), NumRowColBox);
       ASSERT_EQ(colCount.at(indx), NumRowColBox);
-      ASSERT_EQ(boxCount.at(indx), NumRowBoxCol);
+      ASSERT_EQ(boxCount.at(indx), NumRowColBox);
    }
 }
 
@@ -106,3 +107,29 @@ TEST(FieldInfoStaticTest, GetBox)
    ASSERT_EQ(used.size(), NumFields);
 }
 
+TEST(FieldInfoStaticTest, GetConnectedFields)
+{
+   const auto& connections = FieldInfoStatic::GetSortedConnectedFields(42);
+   ASSERT_EQ(connections.size(), NumConnectedFields);
+   const auto found = str::find(connections, 42);
+   ASSERT_TRUE(found == connections.end());
+}
+
+TEST(FieldInfoStaticTest, AreConnected)
+{
+   constexpr int row = 0;
+   constexpr int col = 0;
+   constexpr int field = FieldInfoStatic::RowColToField(row, col);
+
+   auto other = FieldInfoStatic::RowColToField(1, 0);
+   ASSERT_TRUE(FieldInfoStatic::AreConnected(field, other));
+
+   other = FieldInfoStatic::RowColToField(0, 1);
+   ASSERT_TRUE(FieldInfoStatic::AreConnected(field, other));
+
+   other = FieldInfoStatic::RowColToField(2, 2);
+   ASSERT_TRUE(FieldInfoStatic::AreConnected(field, other));
+
+   other = FieldInfoStatic::RowColToField(3, 3);
+   ASSERT_FALSE(FieldInfoStatic::AreConnected(field, other));
+}

@@ -28,12 +28,21 @@ Diagram TestModels::getEmpty()
 
 Diagram TestModels::getSolved()
 {
-   Potentials potentials;
-   for (auto f = 0; f < NumFields; ++f)
+   const std::array<Value, NumFields> diagramValues =
    {
-      potentials.setSingle(f, (f % 9) + 1);
-   }
-   return Diagram::Create(potentials);
+   1, 2, 3,     4, 5, 6,    7, 8, 9,
+   4, 5, 6,     7, 8, 9,    1, 2, 3,
+   7, 8, 9,     1, 2, 3,    4, 5, 6,
+
+   2, 3, 4,     5, 6, 7,    8, 9, 1,
+   5, 6, 7,     8, 9, 1,    2, 3, 4,
+   8, 9, 1,     2, 3, 4,    5, 6, 7,
+
+   3, 4, 5,     6, 7, 8,    9, 1, 2,
+   6, 7, 8,     9, 1, 2,    3, 4, 5,
+   9, 1, 2,     3, 4, 5,    6, 7, 8 ,
+   };
+   return Diagram::Create(diagramValues);
 }
 
 Diagram TestModels::getOneStar1()

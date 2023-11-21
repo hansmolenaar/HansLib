@@ -13,10 +13,13 @@ namespace Sudoku
       const FieldSet& GetBox(RowColBoxIndex box);
       const FieldSet& GetFieldSet(RowColBoxType type, RowColBoxIndex subSetIndex);
       const std::array<FieldIndex, NumFields>& getAllFields();
+      const ConnectedFields& GetSortedConnectedFields(FieldIndex field);
+      bool AreConnected(FieldIndex field1, FieldIndex field2);
 
       RowColBoxIndex FieldToRow(FieldIndex field);
       RowColBoxIndex FieldToCol(FieldIndex field);
       RowColBoxIndex FieldToBox(FieldIndex field);
+      RowColBoxIndex FieldToRowColBox(RowColBoxType type, FieldIndex field);
    };
 
 }

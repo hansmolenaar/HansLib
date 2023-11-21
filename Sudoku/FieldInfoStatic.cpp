@@ -8,6 +8,7 @@
 #include <vector>
 #include <map>
 #include <numeric>
+#include <set>
 
 using namespace Sudoku;
 using namespace FieldInfoStatic;
@@ -58,8 +59,6 @@ namespace
 
       return s_instance;
    }
-
-
 }
 
 
@@ -157,6 +156,40 @@ const std::array<FieldIndex, NumFields>& FieldInfoStatic::getAllFields()
    return s_instance;
 }
 
+const ConnectedFields& FieldInfoStatic::GetSortedConnectedFields(FieldIndex field)
+{
+   static std::vector<ConnectedFields> s_instance;
+   if (s_instance.empty())
+   {
+      s_instance.resize(NumFields);
+      std::set<FieldIndex> sameRowColBox;
+      for (FieldIndex f : getAllFields())
+      {
+         sameRowColBox.clear();
+         const auto& info = Instance().at(f);
+         for (auto type : RowColBoxTypeAll)
+         {
+            const auto index = FieldToRowColBox(type, f);
+            const auto& rcbFields = GetFieldSet(type, index);
+            sameRowColBox.insert(rcbFields.begin(), rcbFields.end());
+         }
+         // Remove self
+         sameRowColBox.erase(f);
+         if (sameRowColBox.size() != NumConnectedFields) throw MyException("FieldInfoStatic::GetConnectedFields unexepcted number of connections: " + std::to_string(sameRowColBox.size()));
+         str::copy(sameRowColBox, s_instance.at(f).begin());
+      }
+   }
+   return s_instance.at(field);
+}
+
+bool FieldInfoStatic::AreConnected(FieldIndex field1, FieldIndex field2)
+{
+   if (field1 == field2) throw MyException("FieldInfoStatic::AreConnected self connection?");
+
+   const auto& connected1 = GetSortedConnectedFields(field1);
+   return str::find(connected1, field2) != connected1.end();
+}
+
 RowColBoxIndex FieldInfoStatic::FieldToBox(FieldIndex field)
 {
    return Instance().at(field).Box;
@@ -172,4 +205,12 @@ RowColBoxIndex FieldInfoStatic::FieldToRow(FieldIndex field)
 RowColBoxIndex FieldInfoStatic::FieldToCol(FieldIndex field)
 {
    return Instance().at(field).Col;
+}
+
+RowColBoxIndex FieldInfoStatic::FieldToRowColBox(RowColBoxType type, FieldIndex field)
+{
+   if (type == RowColBoxType::Row) return FieldToRow(field);
+   if (type == RowColBoxType::Col) return FieldToCol(field);
+   if (type == RowColBoxType::Box) return FieldToBox(field);
+   throw MyException("ieldInfoStatic::FieldToRowColBox should not come here");
 }

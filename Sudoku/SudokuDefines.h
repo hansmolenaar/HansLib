@@ -13,21 +13,22 @@ namespace Sudoku
    enum class RowColBoxType {Row, Col, Box};
    constexpr std::array<RowColBoxType, 3> RowColBoxTypeAll = { RowColBoxType::Row, RowColBoxType::Col, RowColBoxType::Box };
 
-   using RowColBoxPosition = int; // Position in row/col/box
    using RowColBoxIndex = int; // 0..8, numbering of row/col/box
-   constexpr RowColBoxIndex NumRowBoxCol = 9;
-   constexpr RowColBoxPosition NumRowColBoxPositions = 9; // Number of RowColBoxPosition in row/col/box
-
-   constexpr std::array<RowColBoxPosition, NumRowColBoxPositions> RowColBoxPositionsAll = { 0,1,2,3,4,5,6,7,8 };
-
    constexpr RowColBoxIndex NumRowColBox = 9;
    constexpr std::array<RowColBoxIndex, NumRowColBox> RowColBoxAll = { 0,1,2,3,4,5,6,7,8 };
+
+   using RowColBoxPosition = int; // Position in row/col/box
+   constexpr RowColBoxPosition NumRowColBoxPositions = 9; // Number of RowColBoxPosition in row/col/box
+   constexpr std::array<RowColBoxPosition, NumRowColBoxPositions> RowColBoxPositionsAll = { 0,1,2,3,4,5,6,7,8 };
 
    using FieldIndex = int; // 0..80
    constexpr int NumFields = NumRowColBox * NumRowColBox;
 
    using FieldSet = std::array<FieldIndex, NumRowColBoxPositions>;
    using ValueSet = std::array<Value, NumRowColBoxPositions>;
+
+   constexpr FieldIndex NumConnectedFields = 2 * (NumRowColBox - 1) + 4;
+   using ConnectedFields = std::array<FieldIndex, NumConnectedFields>;
 
    struct FieldValue
    {
