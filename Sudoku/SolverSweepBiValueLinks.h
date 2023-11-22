@@ -2,6 +2,8 @@
 
 #include "SolverSweep.h"
 
+#include <unordered_map>
+
 namespace Sudoku
 {
 
@@ -11,7 +13,9 @@ namespace Sudoku
    {
    public:
       SolverSweepResult operator()(Potentials& potentials) override;
-      static ActiveFields GetBiValueFields(const Potentials& potentials);
+      static ActiveFields GetBiValueFields(const Potentials& potentials, Value value);
+      static std::vector<std::pair<FieldIndex,FieldIndex>> GetBiValueAdjecencies(const Potentials& potentials, Value value);
+      static std::unordered_multimap<int, FieldIndex> GetColoredNodes(const Potentials& potentials, Value value);
    private:
    };
 

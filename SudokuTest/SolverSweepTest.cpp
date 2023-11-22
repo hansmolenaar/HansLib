@@ -68,6 +68,38 @@ TEST(SolverSweepTest, MyFirstBoostGraph)
    ASSERT_TRUE(color_vec == expectColors);
 }
 
+TEST(SolverSweepTest, ColoringAndMultipleComponents)
+{
+   struct Vertex { int vertexId;};
+   struct Edge { };
+   typedef boost::adjacency_list<boost::listS, boost::vecS, boost::undirectedS, Vertex, Edge > Graph;
+
+   constexpr int numVertices = 5;
+   Graph g;
+
+   for (int v = 0; v < numVertices; ++v)
+   {
+      adjacency_list<>::vertex_descriptor vd = add_vertex(g);
+      g[vd] = { v };
+   }
+
+   // Coloring of disconnected components
+   add_edge(1, 2, g);
+   add_edge(0, 3, g);
+
+   std::vector<size_t> color_vec(num_vertices(g));
+   auto index_map = get(boost::vertex_index, g);
+
+   auto color_map = make_safe_iterator_property_map(
+      color_vec.begin(), color_vec.size(), index_map);
+
+   auto num_colors = sequential_vertex_coloring(g, color_map);
+   ASSERT_EQ(num_colors, 2);
+
+   const std::vector<size_t> expectColors{ 0, 0, 1, 1, 0 };
+   ASSERT_TRUE(color_vec == expectColors);
+}
+
 
 TEST(SolverSweepTest, SolverSweepAll)
 {
