@@ -9,6 +9,7 @@ namespace Sudoku
    {
       Diagram getEmpty();
       Diagram getSolved();
+      
       Diagram getOneStar1();
       Diagram getOneStar2();
       Diagram getTwoStar1();
@@ -17,6 +18,8 @@ namespace Sudoku
       Diagram getFourStar1();
       Diagram getFourStar2();
       Diagram getFourStar3();
+
+      Diagram getBiValue1();
 
    };
 

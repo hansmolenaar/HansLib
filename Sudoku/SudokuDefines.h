@@ -1,6 +1,7 @@
 #pragma once
 
 #include <array>
+#include<boost/container/static_vector.hpp>
 
 namespace Sudoku
 {
@@ -29,6 +30,7 @@ namespace Sudoku
 
    constexpr FieldIndex NumConnectedFields = 2 * (NumRowColBox - 1) + 4;
    using ConnectedFields = std::array<FieldIndex, NumConnectedFields>;
+   using ActiveFields = boost::container::static_vector<FieldIndex, NumFields>;
 
    struct FieldValue
    {
