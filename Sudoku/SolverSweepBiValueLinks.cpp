@@ -13,6 +13,10 @@ using namespace Sudoku;
 
 SolverSweepResult SolverSweepBiValueLinks::operator()(Potentials& potentials)
 {
+   for (const FieldIndex field : FieldInfoStatic::getAllFields())
+   {
+
+   }
    return SolverSweepResult::NoChange;
 }
 
@@ -47,7 +51,7 @@ std::vector<std::pair<FieldIndex, FieldIndex>> SolverSweepBiValueLinks::GetBiVal
    return result;
 }
 
-std::unordered_multimap<int, FieldIndex> SolverSweepBiValueLinks::GetColoredNodes(const Potentials& potentials, Value value)
+ColorInAllComponents SolverSweepBiValueLinks::GetColoring(const Potentials& potentials, Value value)
 {
    const auto adjacencies = GetBiValueAdjecencies(potentials, value);
    if (adjacencies.empty()) return {};
@@ -64,15 +68,17 @@ std::unordered_multimap<int, FieldIndex> SolverSweepBiValueLinks::GetColoredNode
    struct Edge { };
    typedef boost::adjacency_list<boost::listS, boost::vecS, boost::undirectedS, Vertex, Edge > Graph;
 
-   Graph g;
 
-   std::unordered_map<FieldIndex, boost::adjacency_list<>::vertex_descriptor> field2vd;
+   using VertexDesc = boost::adjacency_list<>::vertex_descriptor;
+   Graph g;
+   std::unordered_map<FieldIndex, VertexDesc> field2vd;
    for (auto field : activeFields)
    {
-      boost::adjacency_list<>::vertex_descriptor vd = add_vertex(g);
+      const VertexDesc vd = add_vertex(g);
       g[vd] = { field };
       field2vd.emplace(field, vd);
    }
+   const auto numVertices = boost::num_vertices(g);
 
    // Set edges
    for (const auto a : adjacencies)
@@ -82,5 +88,24 @@ std::unordered_multimap<int, FieldIndex> SolverSweepBiValueLinks::GetColoredNode
       add_edge(v1, v2, g);
    }
 
-   return {};
+   // Components
+   std::vector<int> components(numVertices);
+   size_t num_components = boost::connected_components(g, &components[0]);
+
+   // Colors
+   std::vector<size_t> color_vec(numVertices);
+   auto index_map = get(boost::vertex_index, g);
+   auto color_map = make_safe_iterator_property_map(
+      color_vec.begin(), color_vec.size(), index_map);
+   auto num_colors = sequential_vertex_coloring(g, color_map);
+
+   ColorInAllComponents result(num_components);
+   for (VertexDesc v = 0; v < numVertices; ++v)
+   {
+      const auto component = components.at(v);
+      const auto color = static_cast<Color>(color_vec.at(v));
+      const auto field = g[v].Field;
+      result[component].push_back(FieldColor{field, color});
+   }
+   return result;
 }

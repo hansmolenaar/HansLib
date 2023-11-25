@@ -161,3 +161,13 @@ void Potentials::setNone()
       p.setNone();
    }
 }
+
+void Potentials::setForTesting(FieldIndex field, std::initializer_list<Value> values)
+{
+   auto& pot = m_potentials.at(field);
+   pot.setNone();
+   for (auto val : values)
+   {
+      pot.set(val);
+   }
+}

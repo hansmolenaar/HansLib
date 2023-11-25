@@ -14,6 +14,7 @@ namespace Sudoku
       Value getSingleOrUndefined(FieldIndex field) const;
       void setSingle(FieldIndex field, Value value);
       bool isSingle(FieldIndex field) const;
+      void setForTesting(FieldIndex field, std::initializer_list<Value> values);
       // Returns: potential changed
       bool unset(FieldIndex field, Value value);
       const Potential& get(FieldIndex field) const;
