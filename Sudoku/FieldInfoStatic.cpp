@@ -182,6 +182,17 @@ const ConnectedFields& FieldInfoStatic::GetSortedConnectedFields(FieldIndex fiel
    return s_instance.at(field);
 }
 
+ActiveFields FieldInfoStatic::GetCommonConnectedFields(FieldIndex field1, FieldIndex field2)
+{
+   const ConnectedFields& connected1 = GetSortedConnectedFields(field1);
+   const ConnectedFields& connected2 = GetSortedConnectedFields(field2);
+   ActiveFields common;
+   str::set_intersection(connected1, connected2, std::back_inserter(common));
+   ActiveFields result;
+   str::copy_if(common, std::back_inserter(result), [field1, field2](FieldIndex field) {return field != field1 && field != field2; });
+   return result;
+}
+
 bool FieldInfoStatic::AreConnected(FieldIndex field1, FieldIndex field2)
 {
    if (field1 == field2) throw MyException("FieldInfoStatic::AreConnected self connection?");

@@ -14,6 +14,7 @@ namespace Sudoku
       const FieldSet& GetFieldSet(RowColBoxType type, RowColBoxIndex subSetIndex);
       const std::array<FieldIndex, NumFields>& getAllFields();
       const ConnectedFields& GetSortedConnectedFields(FieldIndex field);
+      ActiveFields GetCommonConnectedFields(FieldIndex field1, FieldIndex field2);
       bool AreConnected(FieldIndex field1, FieldIndex field2);
 
       RowColBoxIndex FieldToRow(FieldIndex field);

@@ -18,15 +18,16 @@ namespace Sudoku
    using ColorInComponent = boost::container::static_vector<FieldColor, NumFields>;
    using ColorInAllComponents = boost::container::static_vector<ColorInComponent, NumFields>;
 
-   class SolverSweepBiValueLinksSingleField : public ISolverSweep
+   class SolverSweepBiValueLinksSingleValue : public ISolverSweep
    {
    public:
-      explicit SolverSweepBiValueLinksSingleField(Value value);
+      explicit SolverSweepBiValueLinksSingleValue(Value value);
       SolverSweepResult operator()(Potentials& potentials) override;
-      //static ActiveFields GetBiValueFields(const Potentials& potentials, Value value);
-      //static std::vector<std::pair<FieldIndex, FieldIndex>> GetBiValueAdjecencies(const Potentials& potentials, Value value);
-      //static ColorInAllComponents GetColoring(const Potentials& potentials, Value value);
+      static ActiveFields GetBiValueFields(const Potentials& potentials, Value value);
+      static std::vector<std::pair<FieldIndex, FieldIndex>> GetBiValueAdjecencies(const Potentials& potentials, Value value);
+      static ColorInAllComponents GetColoring(const Potentials& potentials, Value value);
    private:
+      Value getOtherValue(const Potentials& potentials, FieldIndex field) const;
       Value m_value;
    };
 
@@ -34,9 +35,7 @@ namespace Sudoku
    {
    public:
       SolverSweepResult operator()(Potentials& potentials) override;
-      static ActiveFields GetBiValueFields(const Potentials& potentials, Value value);
-      static std::vector<std::pair<FieldIndex,FieldIndex>> GetBiValueAdjecencies(const Potentials& potentials, Value value);
-      static ColorInAllComponents GetColoring(const Potentials& potentials, Value value);
+
    private:
    };
 

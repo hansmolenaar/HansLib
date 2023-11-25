@@ -24,6 +24,7 @@ namespace Sudoku
       std::string toString(); // TODO const correctness
       bool isSolved() const;
       FieldIndex getNumSingles() const;
+      int getTotalCount() const;
 
       void setNone();
      

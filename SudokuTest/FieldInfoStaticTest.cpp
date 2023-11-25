@@ -133,3 +133,17 @@ TEST(FieldInfoStaticTest, AreConnected)
    other = FieldInfoStatic::RowColToField(3, 3);
    ASSERT_FALSE(FieldInfoStatic::AreConnected(field, other));
 }
+
+
+
+TEST(FieldInfoStaticTest, GetCommonConnectedFields)
+{
+   constexpr int field1 = FieldInfoStatic::RowColToField(6, 6);
+   constexpr int field2 = FieldInfoStatic::RowColToField(8, 8);
+   const auto common = FieldInfoStatic::GetCommonConnectedFields(field1, field2);
+   ASSERT_EQ(common.size(), NumRowColBoxPositions - 2);
+   for (auto field : common)
+   {
+      ASSERT_EQ(FieldInfoStatic::FieldToBox(field), 8);
+   }
+}

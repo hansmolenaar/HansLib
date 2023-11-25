@@ -1,6 +1,7 @@
 #include "SolverSweepBiValueLinks.h"
 #include "FieldInfoStatic.h"
 #include "Defines.h"
+#include "MyAssert.h"
 
 #include <iterator>
 #include <unordered_set>
@@ -10,17 +11,13 @@
 
 using namespace Sudoku;
 
-
-SolverSweepResult SolverSweepBiValueLinks::operator()(Potentials& potentials)
+SolverSweepBiValueLinksSingleValue::SolverSweepBiValueLinksSingleValue(Value value) :
+   m_value(value)
 {
-   for (const FieldIndex field : FieldInfoStatic::getAllFields())
-   {
-
-   }
-   return SolverSweepResult::NoChange;
 }
 
-ActiveFields SolverSweepBiValueLinks::GetBiValueFields(const Potentials& potentials, Value value)
+
+ActiveFields SolverSweepBiValueLinksSingleValue::GetBiValueFields(const Potentials& potentials, Value value)
 {
    ActiveFields result;
    str::copy_if(FieldInfoStatic::getAllFields(), std::back_inserter(result),
@@ -28,7 +25,7 @@ ActiveFields SolverSweepBiValueLinks::GetBiValueFields(const Potentials& potenti
    return result;
 }
 
-std::vector<std::pair<FieldIndex, FieldIndex>> SolverSweepBiValueLinks::GetBiValueAdjecencies(const Potentials& potentials, Value value)
+std::vector<std::pair<FieldIndex, FieldIndex>> SolverSweepBiValueLinksSingleValue::GetBiValueAdjecencies(const Potentials& potentials, Value value)
 {
    ActiveFields active = GetBiValueFields(potentials, value);
    if (active.empty()) return {};
@@ -51,7 +48,7 @@ std::vector<std::pair<FieldIndex, FieldIndex>> SolverSweepBiValueLinks::GetBiVal
    return result;
 }
 
-ColorInAllComponents SolverSweepBiValueLinks::GetColoring(const Potentials& potentials, Value value)
+ColorInAllComponents SolverSweepBiValueLinksSingleValue::GetColoring(const Potentials& potentials, Value value)
 {
    const auto adjacencies = GetBiValueAdjecencies(potentials, value);
    if (adjacencies.empty()) return {};
@@ -105,7 +102,49 @@ ColorInAllComponents SolverSweepBiValueLinks::GetColoring(const Potentials& pote
       const auto component = components.at(v);
       const auto color = static_cast<Color>(color_vec.at(v));
       const auto field = g[v].Field;
-      result[component].push_back(FieldColor{field, color});
+      result[component].push_back(FieldColor{ field, color });
    }
+   return result;
+}
+
+Value SolverSweepBiValueLinksSingleValue::getOtherValue(const Potentials& potentials, FieldIndex field) const
+{
+   const PotentialValues potentialPair = potentials.get(field).getPotentialValues();
+   Utilities::MyAssert(potentialPair.size() == 2);
+   if (potentialPair.front() == m_value) return potentialPair.back();
+   if (potentialPair.back() == m_value) return potentialPair.front();
+   throw MyException("SolverSweepBiValueLinksSingleValue::getOtherValue() should not come here");
+}
+
+SolverSweepResult SolverSweepBiValueLinksSingleValue::operator()(Potentials& potentials)
+{
+   SolverSweepResult result = SolverSweepResult::NoChange;
+   const ColorInAllComponents coloring = GetColoring(potentials, m_value);
+   for (const auto& coloredComponent : coloring)
+   {
+      for (size_t n1 = 0; n1 < coloredComponent.size(); ++n1)
+      {
+         for (size_t n2 = n1 + 1; n2 < coloredComponent.size(); ++n2)
+         {
+            const bool sameColor = coloredComponent.at(n1).Color == coloredComponent.at(n2).Color;
+            if (!sameColor) continue;
+            const FieldIndex field1 = coloredComponent.at(n1).Field;
+            const FieldIndex field2 = coloredComponent.at(n2).Field;
+            if (FieldInfoStatic::AreConnected(field1, field2))
+            {
+               if (potentials.unset(field1, m_value))
+               {
+                  result = std::max(result, SolverSweepResult::Change);
+               }
+               if (potentials.unset(field2, m_value))
+               {
+                  result = std::max(result, SolverSweepResult::Change);
+               }
+            }
+         }
+      }
+   }
+
+   if (potentials.isSolved()) return SolverSweepResult::Solved;
    return result;
 }

@@ -171,3 +171,15 @@ void Potentials::setForTesting(FieldIndex field, std::initializer_list<Value> va
       pot.set(val);
    }
 }
+
+
+int Potentials::getTotalCount() const
+{
+   int result = 0;
+   // TODO use std::accumulate
+   for (const auto& pot : m_potentials)
+   {
+      result += pot.count();
+   }
+   return result;
+}
