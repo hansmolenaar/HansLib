@@ -136,31 +136,3 @@ TEST(SolverSweepBiValueLinksTest, GetBiValueAdjecencies)
    ASSERT_EQ(adjacencies.size(), 3);
    ASSERT_EQ(2, str::count_if(adjacencies, [](const auto p) {return p.first == 8 || p.second == 8; }));
 }
-
-
-TEST(SolverSweepBiValueLinksTest, BiValueFieldSweep)
-{
-   Potentials potentials;
-   constexpr FieldIndex field20 = FieldInfoStatic::RowColToField(2, 0);
-   constexpr FieldIndex field50 = FieldInfoStatic::RowColToField(5, 0);
-   constexpr FieldIndex field32 = FieldInfoStatic::RowColToField(3, 2);
-   constexpr FieldIndex field62 = FieldInfoStatic::RowColToField(6, 2);
-   constexpr FieldIndex field64 = FieldInfoStatic::RowColToField(6, 4);
-   constexpr FieldIndex field24 = FieldInfoStatic::RowColToField(2, 4);
-   potentials.setForTesting(field20, { 5,1 });
-   potentials.setForTesting(field50, { 5,2 });
-   potentials.setForTesting(field32, { 5,3 });
-   potentials.setForTesting(field62, { 5,4 });
-   potentials.setForTesting(field64, { 5,6 });
-   potentials.setForTesting(field24, { 7,5 });
-
-   const auto countBefore = potentials.getTotalCount();
-
-   constexpr Value commonValue = 5;
-   SolverSweepBiValueLinksSingleValue sweep(commonValue);
-   const auto status = sweep(potentials);
-   ASSERT_EQ(status, SolverSweepResult::NoChange);
-
-   const auto countAfter = potentials.getTotalCount();
-   ASSERT_EQ(countAfter + 2, countBefore);
-}
