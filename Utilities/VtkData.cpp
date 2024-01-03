@@ -10,7 +10,9 @@ constexpr size_t Vtk::NumNodesForType(CellType cellType)
    switch (cellType)
    {
    case CellType::VTK_LINE: return 2;
+   case CellType::VTK_TRIANGLE: return 3;
    case CellType::VTK_QUAD: return 4;
+   case CellType::VTK_TETRA: return 4;
    case CellType::VTK_HEXAHEDRON: return 8;
       
    default:
