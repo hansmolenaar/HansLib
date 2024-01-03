@@ -5,6 +5,7 @@
 #include "IntervalTreeStatistics.h"
 #include "IntervalTreeVtk.h"
 #include "Paraview.h"
+#include "IntervalTreeBalance.h"
 
 using namespace IntervalTree;
 

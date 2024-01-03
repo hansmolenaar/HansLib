@@ -179,3 +179,15 @@ TEST(IndexTreeTest, GetExistingSelfOrAncestor2)
    const auto& root = tree.getExistingSelfOrAncestor(key);
    ASSERT_TRUE(root.isRoot());
 }
+
+
+TEST(IndexTreeTest, IsRefined1)
+{
+   IndexTree<1> tree;
+   ASSERT_TRUE(tree.isLeaf(tree.getRoot()));
+
+   RefineToMaxLevel<1> doRefine1{ 1 };
+    tree.refineLeaves(doRefine1);
+
+   ASSERT_FALSE(tree.isLeaf(tree.getRoot()));
+}

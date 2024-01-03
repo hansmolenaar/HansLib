@@ -1,6 +1,7 @@
 #include "IndexTreeToSimplices2.h"
 #include "IntervalTreeIndex.h"
 #include "UniqueHashedPointCollection.h"
+#include "IntervalTreeAdjacentDirection.h"
 
 namespace
 {
@@ -8,11 +9,30 @@ namespace
    struct ActionSplit
    {
       void operator()(const IntervalTree::Index<2>& index);
+
+      const IntervalTree::IndexTree<2>& Tree;
       std::vector<std::array<RatPoint2, ReferenceShapePolygon::TriangleNumCorners>> Triangles;
    };
 
    void ActionSplit::operator()(const IntervalTree::Index<2>& index)
    {
+      const auto& neighbors = IntervalTree::GetAdjacentNeighbors2();
+      std::array<bool, 4> moreRefined{false, false, false, false};
+      size_t pos = 0;
+      for (const auto& dir : neighbors)
+      {
+         const auto ngb = index.getAdjacentInDir(dir);
+         if (std::get<0>(ngb))
+         {
+            const auto found = Tree.get(std::get<1>(ngb));
+            if (std::get<0>(found))
+            {
+               moreRefined[pos] = !Tree.isLeaf(std::get<1>(found));
+            }
+         }
+         ++pos;
+      }
+
       const BoundingBox<Rational, 2> bb = index.getBbOfCell();
       const auto lwr = bb.getLower();
       const auto upr = bb.getUpper();
@@ -20,14 +40,18 @@ namespace
       const RatPoint2 ul(upr[0], lwr[1]);
       const RatPoint2 uu(upr[0], upr[1]);
       const RatPoint2 lu(lwr[0], upr[1]);
-      Triangles.emplace_back(std::array<RatPoint2, ReferenceShapePolygon::TriangleNumCorners >{ ll, ul, uu });
-      Triangles.emplace_back(std::array<RatPoint2, ReferenceShapePolygon::TriangleNumCorners >{ ll, uu, lu });
+
+      if (str::none_of(moreRefined, [](bool b) {return b;}))
+      {
+         Triangles.emplace_back(std::array<RatPoint2, ReferenceShapePolygon::TriangleNumCorners >{ ll, ul, uu });
+         Triangles.emplace_back(std::array<RatPoint2, ReferenceShapePolygon::TriangleNumCorners >{ ll, uu, lu });
+      }
    }
 }
 
 std::vector<std::array<RatPoint2, ReferenceShapePolygon::TriangleNumCorners>> IndexTreeToSimplices2::Create(const IntervalTree::IndexTree<2>& tree)
 {
-   ActionSplit action;
+   ActionSplit action{tree};
    tree.foreachLeaf(action);
    return action.Triangles;
 }

@@ -9,7 +9,7 @@
 
 namespace IntervalTree
 {
-  
+
    template<int N>
    class IndexTree
    {
@@ -30,6 +30,7 @@ namespace IntervalTree
 
       const Index<N>& getExistingSelfOrAncestor(typename  Index<N>::Key key) const;
       std::tuple<bool, const Index<N>&> get(typename const Index<N>::Key& key) const;
+      bool isLeaf(typename const Index<N>& index) const;
 
       size_t size() const;
 
@@ -120,6 +121,16 @@ namespace IntervalTree
    bool IndexTree<N>::contains(typename const Index<N>::Key& key) const
    {
       return std::get<0>(get(key));
+   }
+
+   template<int N>
+   bool IndexTree<N>::isLeaf(typename const Index<N>& index) const
+   {
+      if (!contains(index.getKey()))
+      {
+         throw MyException("IndexTree<N>::isLeaf() unknown key specified: " + index.toString());
+      }
+      return m_leaves.contains(&index);
    }
 
    template<int N>
