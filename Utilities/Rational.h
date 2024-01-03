@@ -25,4 +25,10 @@ namespace std
    {
       return static_cast<T>(rat.numerator()) / rat.denominator();
    }
+
+   inline Rational abs(const Rational& rat)
+   {
+      if (rat > 0) return rat;
+      return -rat;
+   }
 }

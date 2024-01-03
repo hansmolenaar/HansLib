@@ -5,6 +5,7 @@
 #include "Paraview.h"
 #include "IntervalTreeBalance.h"
 #include "IntervalTreeVtk.h"
+#include "UniqueHashedPointCollection.h"
 
 using namespace IntervalTree;
 
@@ -54,6 +55,8 @@ TEST(IndexTreeToSimplices2Test, RefinedToVtk_1)
    //Paraview::Write("IndexTreeToSimplices2Test_RefinedToVtk_1_base", *IntervalTree::GetVtkData(tree));
    const auto triangles = IndexTreeToSimplices2::Create(tree);
    std::set<std::pair<RatPoint2, RatPoint2>> directedEdges;
+   UniqueHashedPointCollection<Rational, IndexTreeToSimplices2::GeometryDimension>  toNodeIndex;
+   std::map<std::pair<int, int>, int> sortedEdgeCount;
    for (const auto& triangle : triangles)
    {
       const auto edge0 = std::make_pair(triangle.at(0), triangle.at(1));
@@ -64,12 +67,43 @@ TEST(IndexTreeToSimplices2Test, RefinedToVtk_1)
       {
          ASSERT_FALSE(directedEdges.contains(e));
          directedEdges.insert(e);
+
+         const auto c1 = toNodeIndex.addIfNew(e.first);
+         const auto c2 = toNodeIndex.addIfNew(e.second);
+         const auto sortedEdge = std::make_pair(std::min(c1, c2), std::max(c1, c2));
+         sortedEdgeCount[sortedEdge] += 1;
       }
    }
 
    const auto vtkData = IndexTreeToSimplices2::ToVtkData(triangles);
    ASSERT_EQ(90, vtkData->getNumCells());
    ASSERT_EQ(54, vtkData->getNumNodes());
+
+   Rational length(0, 1);
+   for (const auto& itr : sortedEdgeCount)
+   {
+      if (itr.second == 1)
+      {
+         const auto c1 = toNodeIndex.getPoint(itr.first.first);
+         const auto c2 = toNodeIndex.getPoint(itr.first.second);
+         Rational dif;
+         if (c1.at(0) == c2.at(0))
+         {
+            dif = c1.at(1) - c2.at(1);
+         }
+         else
+         {
+            ASSERT_EQ(c1.at(1), c2.at(1));
+            dif = c1.at(0) - c2.at(0);
+         }
+         length += std::abs(dif);
+      }
+      else
+      {
+         ASSERT_EQ(2, itr.second);
+      }
+   }
+   ASSERT_EQ(4, length);
    //Paraview::Write("IndexTreeToSimplices2Test_RefinedToVtk_1", *vtkData);
 }
 

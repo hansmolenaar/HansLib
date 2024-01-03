@@ -30,3 +30,13 @@ TEST(RationalTest, ToFloat)
    const double result = std::ToFloat<double>(frc);
    ASSERT_EQ(result, 0.75);
 }
+
+
+TEST(RationalTest, Abs)
+{
+   ASSERT_EQ(Rational( 1,2 ), std::abs(Rational( 1,2 )));
+   ASSERT_EQ(Rational(1, 2), std::abs(Rational(-1, 2)));
+   ASSERT_EQ(Rational(1, 2), std::abs(Rational(1, -2)));
+   ASSERT_EQ(Rational(0, 2), std::abs(Rational(0, -3)));
+   ASSERT_EQ(Rational(0, 2), std::abs(Rational(0, 3)));
+}
