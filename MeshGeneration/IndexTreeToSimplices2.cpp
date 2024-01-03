@@ -1,5 +1,6 @@
 #include "IndexTreeToSimplices2.h"
 #include "IntervalTreeIndex.h"
+#include "UniqueHashedPointCollection.h"
 
 namespace
 {
@@ -34,27 +35,26 @@ std::vector<std::array<RatPoint2, ReferenceShapePolygon::TriangleNumCorners>> In
 std::unique_ptr<Vtk::VtkData> IndexTreeToSimplices2::ToVtkData(const std::vector<std::array<RatPoint2, ReferenceShapePolygon::TriangleNumCorners>>& cells)
 {
    std::unique_ptr< Vtk::VtkData> result = std::make_unique< Vtk::VtkData>(GeometryDimension, 0);
-   std::map<RatPoint2, Vtk::NodeIndex> toNodeIndex;
+   UniqueHashedPointCollection<Rational, GeometryDimension>  toNodeIndex;
    for (const auto& cell : cells)
    {
       std::array<Vtk::NodeIndex, ReferenceShapePolygon::TriangleNumCorners> cellNodes{ -1, -1, -1 };
       size_t vertex = 0;
       for (const auto& v : cell)
       {
-         if (!toNodeIndex.contains(v))
-         {
-            toNodeIndex[v] = static_cast<Vtk::NodeIndex>(toNodeIndex.size());
-
-            std::array<float, GeometryDimension> coordinates;
-            coordinates.at(0) = static_cast<float>(v[0].numerator()) / v[0].denominator();
-            coordinates.at(1) = static_cast<float>(v[1].numerator()) / v[1].denominator();
-            result->addNode(coordinates);
-         }
-
-         cellNodes.at(vertex) = toNodeIndex.at(v);
+         const auto nodeId = toNodeIndex.addIfNew(v);
+         cellNodes.at(vertex) = nodeId;
          ++vertex;
       }
       result->addCell(Vtk::CellType::VTK_TRIANGLE, cellNodes, {});
+   }
+   for (auto n = 0; n < toNodeIndex.getNumPoints(); ++n)
+   {
+      const auto v = toNodeIndex.getPoint(n);
+      std::array<Vtk::CoordinateType, GeometryDimension> coordinates;
+      coordinates.at(0) = static_cast<Vtk::CoordinateType>(v[0].numerator()) / v[0].denominator();
+      coordinates.at(1) = static_cast<Vtk::CoordinateType>(v[1].numerator()) / v[1].denominator();
+      result->addNode(coordinates);
    }
    return result;
 }
