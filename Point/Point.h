@@ -48,11 +48,22 @@ std::array<T, N> operator-(std::array<T, N> result)
 namespace PointUtils
 {
    template<typename T, int N>
-   T GetNormSquared(typename const Point<T, N>& point);
-
-   template<typename T, int N>
    T GetNormSquared(typename const Point<T, N>& point)
    {
-      return std::accumulate(point.begin(), point.end(), T(0), [](T sum, T cor) {return sum + cor * cor; });
+      return std::inner_product(point.begin(), point.end(), point.begin(), T(0));
+   }
+
+   template<typename T, int N>
+   T Angle(const Point<T, N>& p0, const Point<T, N>& p1, const Point<T, N>& p2)
+   {
+      const auto d0 = p1 - p0;
+      const auto d2 = p1 - p2;
+      const T inprod = std::inner_product(d0.begin(), d0.end(), d2.begin(), T(0));
+      const T norm0_squared = GetNormSquared(d0);
+      const T norm2_squared = GetNormSquared(d2);
+      const T norm02 = std::sqrt(norm0_squared * norm2_squared);
+      constexpr double eps = 1.0e-12;
+      if (norm02 < eps) throw MyException("Point::Angle degenerated");
+      return std::acos(inprod / norm02);
    }
 }

@@ -4,6 +4,7 @@
 #include "Point.h"
 
 #include <numeric>
+#include <numbers>
 TEST(PointTest, PointArray)
 {
    const auto p = Point<int, 1>({ 42 });
@@ -135,9 +136,20 @@ TEST(PointTest, HashRatPoint3)
    ASSERT_NE(hash1, hash2);
 }
 
-
 TEST(PointTest, GetNormSquared)
 {
    const IntPoint3 p{ 2, 3, -6 };
    ASSERT_EQ(PointUtils::GetNormSquared(p), 49);
+}
+
+TEST(PointTest, Angle)
+{
+   const Point2 p0{ 1.0, 1.0 };
+   const Point2 p1{ 2.0, 1.0 };
+   const Point2 p2{ 1.0, 1.0 + std::sqrt(3.0) };
+
+   ASSERT_NEAR(PointUtils::Angle(p1, p0, p2), std::numbers::pi / 2, 1.0e-12);
+   ASSERT_NEAR(PointUtils::Angle(p0, p1, p2), std::numbers::pi / 3, 1.0e-12);
+   ASSERT_NEAR(PointUtils::Angle(p0, p2, p1), std::numbers::pi / 6, 1.0e-12);
+   ASSERT_NEAR(PointUtils::Angle(p0, p2, p0), 0.0, 1.0e-12);
 }
