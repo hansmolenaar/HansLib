@@ -19,6 +19,10 @@ TEST(ReferenceShapePolygon, Triangle)
    ASSERT_TRUE(str::equal(e2c.second->getConnectedLowers(0), std::array<int, 2>{0, 1}));
    ASSERT_TRUE(str::equal(e2c.second->getConnectedLowers(1), std::array<int, 2>{1, 2}));
    ASSERT_TRUE(str::equal(e2c.second->getConnectedLowers(2), std::array<int, 2>{2, 0}));
+
+   ASSERT_TRUE(str::equal(e2c.second->getConnectedHighers(0), std::array<int, 2>{0, 2}));
+   ASSERT_TRUE(str::equal(e2c.second->getConnectedHighers(1), std::array<int, 2>{0, 1}));
+   ASSERT_TRUE(str::equal(e2c.second->getConnectedHighers(2), std::array<int, 2>{1, 2}));
 }
 
 TEST(ReferenceShapePolygon, Square)

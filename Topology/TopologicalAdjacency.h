@@ -14,8 +14,8 @@ public:
 
    TopologyDimension getDimensionLow() const override;
    TopologyDimension getDimensionHigh() const override;
-   const std::vector<int> getConnectedLowers(int) const override;
-   const std::vector<int> getConnectedHighers(int) const override;
+   const std::vector<int>& getConnectedLowers(int) const override;
+   const std::vector<int>& getConnectedHighers(int) const override;
 
 private:
    TopologicalAdjacency(TopologyDimension, std::map<int, std::vector<int>>&&, TopologyDimension, const std::map<int, std::vector<int>>&&);

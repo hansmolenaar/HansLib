@@ -40,13 +40,13 @@ TopologyDimension TopologicalAdjacency::getDimensionHigh() const
    return m_dimHigh;
 }
 
-const std::vector<int> TopologicalAdjacency::getConnectedLowers(int posHi) const
+const std::vector<int>& TopologicalAdjacency::getConnectedLowers(int posHi) const
 {
    Utilities::MyAssert(m_high_2_low.contains(posHi));
    return m_high_2_low.at(posHi);
 }
 
-const std::vector<int> TopologicalAdjacency::getConnectedHighers(int posLo) const
+const std::vector<int>& TopologicalAdjacency::getConnectedHighers(int posLo) const
 {
    Utilities::MyAssert(m_low_2_high.contains(posLo));
    return m_low_2_high.at(posLo);
