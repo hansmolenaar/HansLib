@@ -31,9 +31,9 @@ public:
    static BoundingBox CreateFrom2Points(const Point<T, N>& point1, const Point<T, N>& point2);
 
    template<typename TScale>
-   BoundingBox<T, N> scale(const BoundingBox<TScale, N>& scale) const;
+   BoundingBox<T, N> scaleFrom01(const BoundingBox<TScale, N>& scale) const;
 
-   BoundingBox<T, N> scale(const BoundingBox<Rational, N>& scale) const;
+   BoundingBox<T, N> scaleFrom01(const BoundingBox<Rational, N>& scale) const;
 
    template<typename Container, typename F>
    static BoundingBox CreateFromListTransformed(const Container& container, F fun);
@@ -132,7 +132,7 @@ BoundingBox<T, N> BoundingBox<T, N>::CreateFromListTransformed(const Container& 
 
 template<typename T, int N >
 template<typename TScale>
-BoundingBox<T, N> BoundingBox<T, N>::scale(const BoundingBox<TScale, N>& scale) const
+BoundingBox<T, N> BoundingBox<T, N>::scaleFrom01(const BoundingBox<TScale, N>& scale) const
 {
    Point<T, N> pointLwr;
    Point<T, N> pointUpr;
@@ -149,7 +149,7 @@ BoundingBox<T, N> BoundingBox<T, N>::scale(const BoundingBox<TScale, N>& scale) 
 }
 
 template<typename T, int N >
-BoundingBox<T, N> BoundingBox<T, N>::scale(const BoundingBox<Rational, N>& scale) const
+BoundingBox<T, N> BoundingBox<T, N>::scaleFrom01(const BoundingBox<Rational, N>& scale) const
 {
    const auto scaleLwr = scale.getLower();
    const auto scaleUpr = scale.getUpper();
