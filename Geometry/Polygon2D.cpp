@@ -28,9 +28,3 @@ T Polygon2D::AreaSigned(std::span<const Point<T, 2>> polygon)
 
 template double  Polygon2D::AreaSigned<double>(std::span<const Point<double, 2>> polygon);
 template Rational Polygon2D::AreaSigned<Rational>(std::span<const Point<Rational, 2>> polygon);
-
-double Polygon2D::TriangleAreaSigned(const Point2& p0, const Point2& p1, const Point2& p2)
-{
-   const std::array<Point2, 3> points{p0, p1, p2};
-   return AreaSigned<double>(points);
-}

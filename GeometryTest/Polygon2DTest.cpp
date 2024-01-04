@@ -16,16 +16,3 @@ TEST(Polygon2DTest, SignedArea2D)
    area = Polygon2D::AreaSigned<Rational>(triangleNeg);
    ASSERT_EQ(Rational(-1, 1), area);
 }
-
-
-TEST(Polygon2DTest, SignedArea2D_double)
-{
-   const Point2 p0{ 1.0, 2.0 };
-   const Point2 p1{ 3.0, 2.0 };
-   const Point2 p2{ 2.0, 3.0 };
-   auto area = Polygon2D::TriangleAreaSigned(p0, p1, p2);
-   ASSERT_NEAR(1.0, area, 1.0e-12);
-
-   area = Polygon2D::TriangleAreaSigned(p1, p0, p2);
-   ASSERT_NEAR(-1.0, area, 1.0e-12);
-}
