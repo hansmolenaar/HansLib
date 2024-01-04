@@ -34,7 +34,7 @@ TEST(RationalTest, ToFloat)
 
 TEST(RationalTest, Abs)
 {
-   ASSERT_EQ(Rational( 1,2 ), std::abs(Rational( 1,2 )));
+   ASSERT_EQ(Rational(1, 2), std::abs(Rational(1, 2)));
    ASSERT_EQ(Rational(1, 2), std::abs(Rational(-1, 2)));
    ASSERT_EQ(Rational(1, 2), std::abs(Rational(1, -2)));
    ASSERT_EQ(Rational(0, 2), std::abs(Rational(0, -3)));
