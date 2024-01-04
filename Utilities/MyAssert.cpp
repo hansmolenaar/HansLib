@@ -2,7 +2,7 @@
 
 void  Utilities::MyAssert(bool assertion)
 {
-   MyAssert(assertion, "Assertion failuer");
+   MyAssert(assertion, "Assertion failure");
 }
 
 void  Utilities::MyAssert(bool assertion, std::string msg)
