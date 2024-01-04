@@ -13,7 +13,7 @@ TEST(RefinementPredicatesTest, RefineRegionToMaxLevel_2)
 {
    const Sphere<double, 2> sphere(Point2{ 5.0, 2.0 }, 1.0);
    IndexFactory<2> factory;
-   const RefineRegionToMaxLevel<2> predicate{ 1, sphere };
+   const RefineRegionToMaxLevel<2> predicate(1, sphere);
    const auto* indexRoot = factory.getRoot();
 
    ASSERT_TRUE(predicate(*indexRoot));

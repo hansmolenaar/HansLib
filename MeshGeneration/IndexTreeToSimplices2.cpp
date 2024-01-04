@@ -11,7 +11,7 @@ namespace
       void operator()(const IntervalTree::Index<2>& index);
 
       const IntervalTree::IndexTree<2>& Tree;
-      std::vector<std::array<RatPoint2, ReferenceShapePolygon::TriangleNumCorners>> Triangles;
+      IndexTreeToSimplices2::Triangles Triangles;
    };
 
    std::pair<RatPoint2, RatPoint2> GetOrientedEdge(const IntervalTree::AdjacentDirection& dir, const std::array<RatPoint2, 4> corners)
@@ -92,14 +92,14 @@ namespace
    }
 }
 
-std::vector<std::array<RatPoint2, ReferenceShapePolygon::TriangleNumCorners>> IndexTreeToSimplices2::Create(const IntervalTree::IndexTree<2>& tree)
+IndexTreeToSimplices2::Triangles IndexTreeToSimplices2::Create(const IntervalTree::IndexTree<2>& tree)
 {
    ActionSplit action{ tree };
    tree.foreachLeaf(action);
    return action.Triangles;
 }
 
-std::unique_ptr<Vtk::VtkData> IndexTreeToSimplices2::ToVtkData(const std::vector<std::array<RatPoint2, ReferenceShapePolygon::TriangleNumCorners>>& cells)
+std::unique_ptr<Vtk::VtkData> IndexTreeToSimplices2::ToVtkData(const Triangles& cells)
 {
    std::unique_ptr< Vtk::VtkData> result = std::make_unique< Vtk::VtkData>(GeometryDimension, 0);
    UniqueHashedPointCollection<Rational, GeometryDimension>  toNodeIndex;

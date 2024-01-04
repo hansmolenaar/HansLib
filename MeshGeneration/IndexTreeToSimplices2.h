@@ -9,7 +9,9 @@
 
 namespace IndexTreeToSimplices2
 {
+	using Triangles = std::vector<std::array<RatPoint2, ReferenceShapePolygon::TriangleNumCorners>>;
+
 	constexpr int GeometryDimension = 2;
-	std::vector<std::array<RatPoint2, ReferenceShapePolygon::TriangleNumCorners>> Create(const IntervalTree::IndexTree<2>& tree);
-	std::unique_ptr<Vtk::VtkData> ToVtkData(const std::vector<std::array<RatPoint2, ReferenceShapePolygon::TriangleNumCorners>>& cells);
+	Triangles Create(const IntervalTree::IndexTree<2>& tree);
+	std::unique_ptr<Vtk::VtkData> ToVtkData(const Triangles& cells);
 };
