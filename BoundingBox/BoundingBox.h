@@ -52,6 +52,9 @@ public:
    void Add(const std::span<const T>&);
 
    bool contains(const Point<T, N>&) const;
+    
+   Point<T, N> getCenter() const;
+   T getLengthDiagonalSquared() const;
 
    auto operator<=>(const BoundingBox<T, N>&) const = default;
 
@@ -227,4 +230,19 @@ std::tuple<bool, BoundingBox<T, N>> BoundingBox<T, N>::TryGetOverlap(const Bound
       }
    }
    return { succes, CreateFromList(std::array < std::array<T,N>,2> {lwr, upr}) };
+}
+
+template<typename T, int N >
+Point<T, N> BoundingBox<T, N>::getCenter() const
+{
+   Point<T, N> result;
+   str::transform(getIntervals(), result.begin(), [](const Interval<T>& intv) {return (intv.getLower() + intv.getUpper()) / 2; });
+   return result;
+}
+
+template<typename T, int N >
+T BoundingBox<T, N>::getLengthDiagonalSquared() const
+{
+   const auto dif =getUpper() - getLower();
+   return  PointUtils::GetNormSquared(dif);
 }

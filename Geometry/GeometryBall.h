@@ -21,6 +21,8 @@ namespace Geometry
 
       bool Contains(const Point<T, N>& point, const IGeometryPredicate<T, N>& predicate) const override;
 
+      bool CouldIntersectWith(typename const BoundingBox<T, N>& bb, const IGeometryPredicate<T, N>& predicate) const override;
+
       // First **after** start point
       // If the edge is contained in the region, then return the exit point or the end point of the edge
       // If only the first point of the edge is in the region return false
@@ -150,6 +152,17 @@ namespace Geometry
       Utilities::MyAssert(pos0 == BallPosition::Outside);
       if (predicate.SamePoints(point1, ip0)) return { true, point1 };
       return { edge.contains(ip0), ip0 };
+   }
+
+   template<typename T, int N>
+   bool Ball<T, N>::CouldIntersectWith(typename const BoundingBox<T, N>& bb, const IGeometryPredicate<T, N>& predicate) const
+   {
+      if (!IGeometryRegion<T, N>::CouldIntersectWith(bb, predicate)) return false;
+      const auto centerBB = bb.getCenter();
+      const T diagLength2 = bb.getLengthDiagonalSquared();
+      const auto dif = centerBB - getCenter();
+      const auto dist2 = PointUtils::GetNormSquared(dif);
+      return std::sqrt(dist2) < getRadius() + std::sqrt(diagLength2) + std::sqrt(predicate.getSmallNormSquared());
    }
 
 } // namespace Geometry

@@ -168,3 +168,20 @@ TEST(BoundingBoxTest, Scale1Double)
    ASSERT_EQ(result.getIntervals()[0].getUpper(), 11.5);
 }
 
+
+TEST(BoundingBoxTest, GetCenter2)
+{
+   const auto bb = BoundingBox<Rational, 2>::CreateFrom2Points(RatPoint2{ Rational{1,1}, Rational{1,1} }, RatPoint2{ Rational{ 2,1 }, Rational{ 5,1 } });
+   const auto center = bb.getCenter();
+   ASSERT_EQ(center[0], Rational(3, 2));
+   ASSERT_EQ(center[1], Rational(3, 1));
+}
+
+
+
+TEST(BoundingBoxTest, DiagonalLength)
+{
+   const auto bb = BoundingBox<double, 2>::CreateFrom2Points(Point2{ 1,1 }, Point2{ 4,5 });
+   const auto diagLength = bb.getLengthDiagonalSquared();
+   ASSERT_NEAR(diagLength, 25.0, 1.0e-12);
+}

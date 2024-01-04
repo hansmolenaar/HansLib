@@ -2,6 +2,7 @@
 #include "IGeometryRegion.h"
 #include "IntervalTreeIndex.h"
 #include "IRefinementPredicate.h"
+#include "IInitialBoundingboxGenerator.h"
 
 namespace MeshGeneration
 {
@@ -9,12 +10,15 @@ namespace MeshGeneration
    class RefineRegionToMaxLevel : public IRefinementPredicate<N>
    {
    public:
-      RefineRegionToMaxLevel(int maxLevel, const Geometry::IGeometryRegion<double, N>& region);
+      RefineRegionToMaxLevel(int maxLevel, const Geometry::IGeometryRegion<double, N>& region, const IGeometryPredicate<double,N>& predicate, 
+         const IInitialBoundingboxGenerator<N>& generator);
       bool operator()(const IntervalTree::Index<N>& indx) const override;
 
    private:
       int m_maxLevel;
       const Geometry::IGeometryRegion<double, N>& m_region;
+      BoundingBox<double, N> m_initialBb;
+      const IGeometryPredicate<double, N>& m_geometryPredicate;
    };
 
 
