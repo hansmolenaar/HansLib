@@ -14,6 +14,7 @@ namespace MeshGeneration
    public:
       IndexTreeScaled(std::unique_ptr< IntervalTree::IndexTree<N>> tree, BoundingBox<T, N> bb);
       Point<T, N> scaleCenter(typename const IntervalTree::Index<N>& key) const;
+      Point<T, N> scalePoint(const std::array<Rational,N>& point) const;
       const IntervalTree::IndexTree<N>& getTree() const { return *m_tree; }
 
    private:
@@ -27,13 +28,19 @@ namespace MeshGeneration
    {}
 
    template<typename T, int N>
-   Point<T, N> IndexTreeScaled<T, N>::scaleCenter(typename const IntervalTree::Index<N>& index) const
+   Point<T, N>  IndexTreeScaled<T, N>::scalePoint(const std::array<Rational, N>& point) const
    {
       Point<T, N> result;
-      const auto center = index.getCenter();
-      std::transform(center.begin(), center.end(), m_bb.getIntervals().begin(), result.begin(),
+      std::transform(point.begin(), point.end(), m_bb.getIntervals().begin(), result.begin(),
          [](const Rational& c, const Interval<T>& intv) {return intv.interpolate(static_cast<T>(c.numerator()) / c.denominator()); });
       return result;
+   }
+
+   template<typename T, int N>
+   Point<T, N> IndexTreeScaled<T, N>::scaleCenter(typename const IntervalTree::Index<N>& index) const
+   {
+      const auto center = index.getCenter();
+      return scalePoint(center);
    }
 
 } // namespace MeshGeneration

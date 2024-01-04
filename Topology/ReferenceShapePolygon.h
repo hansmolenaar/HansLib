@@ -9,4 +9,5 @@ public:
    static const IReferenceShape& GetTriangle();
 
    static constexpr int TriangleNumCorners = 3;
+   static constexpr int TriangleNumEdges = 3;
 };

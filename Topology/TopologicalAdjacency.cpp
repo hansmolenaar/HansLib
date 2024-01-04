@@ -10,14 +10,14 @@ namespace
    {
       for (auto& itr : from_to)
       {
-         std::vector<int>& toValues = itr.second;
+         std::vector<int> toValues = itr.second;
          std::sort(toValues.begin(), toValues.end());
          if (std::unique(toValues.begin(), toValues.end()) != toValues.end()) throw MyException("TopologicalAdjacency::Cleanup duplicate indices");
       }
       const int lwrBound = from_to.begin()->first;
       if (lwrBound < 0) throw MyException("TopologicalAdjacency::Cleanup lower bound " + std::to_string(lwrBound));
       const int uprBound = from_to.rbegin()->first;
-      if (uprBound >= sizeFrom) throw MyException("TopologicalAdjacency::Cleanup lower bound " + std::to_string(uprBound));
+      if (uprBound >= sizeFrom) throw MyException("TopologicalAdjacency::Cleanup upper bound " + std::to_string(uprBound));
    }
 
 }

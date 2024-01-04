@@ -10,7 +10,7 @@ TEST(TopologicalAdjacencyTest, edge)
    ASSERT_EQ(adjacency->getDimensionHigh(), TopologyDimensionDef::Edge);
 
    auto retval = adjacency->getConnectedLowers(0);
-   ASSERT_TRUE(std::ranges::equal(retval, std::vector<int>{ 0, 1 }));
+   ASSERT_TRUE(std::ranges::equal(retval, std::vector<int>{ 1, 0 }));
    retval = adjacency->getConnectedHighers(0);
    ASSERT_TRUE(std::ranges::equal(retval, std::vector<int>{ 0 }));
    retval = adjacency->getConnectedHighers(1);
