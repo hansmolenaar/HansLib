@@ -11,7 +11,7 @@ public:
    FinitePointGroupOrbit(const IFinitePointGroupAction<N>&, const Point<double, N>&, const IGeometryPredicate<double, N>&);
    Point<double, N> getPoint(PointIndex) const override;
    PointIndex getNumPoints() const override;
-   std::tuple<bool, int>  tryGetClosePoint(const Point<double, N>&) const override;
+   std::tuple<bool, PointIndex>  tryGetClosePoint(const Point<double, N>&) const override;
    const IGeometryPredicate<double, N>& getGeometryPredicate() const override;
 private:
    const IGeometryPredicate<double, N>& m_predicate;
@@ -54,13 +54,13 @@ PointIndex FinitePointGroupOrbit<N>::getNumPoints() const
 }
 
 template<int N>
-std::tuple<bool, int>  FinitePointGroupOrbit<N>::tryGetClosePoint(const Point<double, N>& p) const
+std::tuple<bool, PointIndex>  FinitePointGroupOrbit<N>::tryGetClosePoint(const Point<double, N>& p) const
 {
-   int result = -1;
+   PointIndex result = PointIndexInvalid;
    for (const auto& up : m_uniquePoints)
    {
-      ++result;
+      result = result == PointIndexInvalid ? 0 : result + 1;;
       if (m_predicate.SamePoints(up, p)) return { true,result };
    }
-   return { false, -1 };
+   return { false, PointIndexInvalid };
 }

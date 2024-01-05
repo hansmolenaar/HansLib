@@ -12,7 +12,7 @@ class UniqueHashedPointCollection : public IUniquePointCollection<T, N>
 public:
 
    int addIfNew(const Point<T, N>&);
-   std::tuple<bool, int>  tryGetClosePoint(const Point<T, N>&) const override;
+   std::tuple<bool, PointIndex>  tryGetClosePoint(const Point<T, N>&) const override;
    const IGeometryPredicate<T, N>& getGeometryPredicate() const override;
    Point<T, N> getPoint(PointIndex) const override;
    PointIndex getNumPoints() const override;
@@ -29,7 +29,7 @@ const IGeometryPredicate<T, N>& UniqueHashedPointCollection<T, N>::getGeometryPr
 }
 
 template<typename T, int N>
-std::tuple<bool, int>  UniqueHashedPointCollection<T, N>::tryGetClosePoint(const Point<T, N>& point) const
+std::tuple<bool, PointIndex>  UniqueHashedPointCollection<T, N>::tryGetClosePoint(const Point<T, N>& point) const
 {
    const auto found = m_toIndex.find(point);
    if (found == m_toIndex.end())

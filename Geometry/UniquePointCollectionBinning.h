@@ -11,7 +11,7 @@ class UniquePointCollectionBinning : IUniquePointCollection<double, N>
 public:
    UniquePointCollectionBinning(const IGeometryPredicate<double, N>& m_predicate, const std::vector<Point<double, N>>& points);
 
-   std::tuple<bool, int>  tryGetClosePoint(const Point<double, N>&) const override;
+   std::tuple<bool, PointIndex>  tryGetClosePoint(const Point<double, N>&) const override;
    const IGeometryPredicate<double, N>& getGeometryPredicate() const override;
    Point<double, N> getPoint(PointIndex) const override;
    PointIndex getNumPoints() const override;
@@ -48,7 +48,7 @@ PointIndex UniquePointCollectionBinning<N>::getNumPoints() const
 }
 
 template< int N>
-std::tuple<bool, int>  UniquePointCollectionBinning<N>::tryGetClosePoint(const Point<double, N>& p) const
+std::tuple<bool, PointIndex>  UniquePointCollectionBinning<N>::tryGetClosePoint(const Point<double, N>& p) const
 {
    std::array<size_t, N> bins;
    for (int n = 0; n < N; ++n)
