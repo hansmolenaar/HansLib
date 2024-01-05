@@ -25,7 +25,6 @@ TEST(MeshGeneration2Test, Ball)
 
    const auto vtkData = IndexTreeToSimplices2::ToVtkData(triangles);
    ASSERT_EQ(1016, vtkData->getNumCells());
-   Paraview::Write("MeshGeneration2Test_Ball", *vtkData);
-
+   //Paraview::Write("MeshGeneration2Test_Ball", *vtkData);
 }
 
