@@ -25,6 +25,10 @@ namespace MeshGeneration
       std::pair<bool, TriangleId> tryGetTriangle(NodeId n0, NodeId n1, NodeId n2) const;
       bool triangleContainsNode(TriangleId triangleId, NodeId nodeId) const;
 
+      std::array<TriangleNodes::NodeId, TriangleNodes::NumNodesOnTriangle> getTriangleNodes(TriangleId triangle) const;
+
+      bool isKnownNode(NodeId node) const;
+      bool isKnownTriangle(TriangleId triangle) const;
    private:
       std::pair<bool, TriangleNodes::TriangleId> tryGetTriangleFromSortedNodes(const std::array<NodeId, NumNodesOnTriangle>& nodes) const;
       void checkNodeId(NodeId nodeId) const;

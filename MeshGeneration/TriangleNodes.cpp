@@ -46,7 +46,6 @@ std::pair<bool, TriangleNodes::TriangleId> TriangleNodes::tryGetTriangleFromSort
 {
    std::pair<bool, TriangleNodes::TriangleId> result{ false,std::numeric_limits<TriangleNodes::TriangleId>::max() };
    const auto triangles = m_toTriangles.equal_range(nodes.at(0));
-   if (triangles.second == m_toTriangles.end()) return result;
    for (auto itr = triangles.first; itr != triangles.second; ++itr)
    {
       const TriangleId candidate = itr->second;
@@ -96,6 +95,7 @@ void TriangleNodes::deleteTriangle(TriangleId triangleId)
          throw MyException(msg);
       }
    }
+   m_toNodes.erase(triangleId);
 }
 
 boost::container::static_vector<TriangleNodes::TriangleId, 2> TriangleNodes::getEdgeConnectedTriangles(TriangleNodes::NodeId n0, TriangleNodes::NodeId n1) const
@@ -117,6 +117,8 @@ boost::container::static_vector<TriangleNodes::TriangleId, 2> TriangleNodes::get
 
 bool TriangleNodes::triangleContainsNode(TriangleId triangleId, NodeId nodeId) const
 {
+   checkTriangleId(triangleId);
+   checkNodeId(nodeId);
    const auto& nodes = m_toNodes.at(triangleId);
    return str::find(nodes, nodeId) != nodes.end();
 }
@@ -157,18 +159,34 @@ std::vector<TriangleNodes::NodeId> TriangleNodes::getEdgeConnectedNodes(NodeId n
 
 void TriangleNodes::checkNodeId(NodeId node) const
 {
-   if (m_toTriangles.find(node) == m_toTriangles.end())
+   if (!isKnownNode(node))
    {
-      const std::string msg = "TriangleNodes::checkNodeId() unknown NodeId " +  std::to_string(node);
+      const std::string msg = "TriangleNodes::checkNodeId() unknown NodeId " + std::to_string(node);
       throw MyException(msg);
    }
 }
 
 void TriangleNodes::checkTriangleId(TriangleId triangle) const
 {
-   if (m_toNodes.find(triangle) == m_toNodes.end())
+   if (!isKnownTriangle(triangle))
    {
       const std::string msg = "TriangleNodes::checkTriangleId() unknown TriangleId " + std::to_string(triangle);
       throw MyException(msg);
    }
+}
+
+std::array<TriangleNodes::NodeId, TriangleNodes::NumNodesOnTriangle> TriangleNodes::getTriangleNodes(TriangleId triangle) const
+{
+   checkTriangleId(triangle);
+   return m_toNodes.at(triangle);
+}
+
+bool TriangleNodes::isKnownNode(NodeId node) const
+{
+   return m_toTriangles.find(node) != m_toTriangles.end();
+}
+
+bool TriangleNodes::isKnownTriangle(TriangleId triangle) const
+{
+   return m_toNodes.find(triangle) != m_toNodes.end();
 }
