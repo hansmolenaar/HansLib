@@ -78,7 +78,7 @@ TEST(UniquePointCollectionBinningTest, TryGetClosePoint2)
 TEST(UniquePointCollectionBinningTest, TryGetClosePoint3)
 {
    const PointClose<double, 1> predicate;
-   UniquePointCollectionBinning< 1> collection(predicate, std::vector<Point<double, 1>>{ Point1{ 0.0 }, Point1{ 1.0 }});
+   const UniquePointCollectionBinning< 1> collection(predicate, std::vector<Point<double, 1>>{ Point1{ 0.0 }, Point1{ 1.0 }});
 
    // 2 close points in neighboring bins
    const auto& bins = collection.getBins(0);
@@ -86,8 +86,15 @@ TEST(UniquePointCollectionBinningTest, TryGetClosePoint3)
    const Point1 pointP{ bound + 0.1 * predicate.getSmallLengthInDirection(0) };
    const Point1 pointN{ bound - 0.1 * predicate.getSmallLengthInDirection(0) };
 
-   const auto expect = collection.addIfNew(pointP);
-   const auto [found, id] = collection.tryGetClosePoint(pointN);
-   ASSERT_TRUE(found);
-   ASSERT_EQ(id, expect);
+   UniquePointCollectionBinning<1> collectionP = collection;
+   auto expect = collectionP.addIfNew(pointP);
+   auto found = collectionP.tryGetClosePoint(pointN);
+   ASSERT_TRUE(std::get<0>(found));
+   ASSERT_EQ(expect, std::get<1>(found));
+
+   UniquePointCollectionBinning<1> collectionN = collection;
+   expect = collectionN.addIfNew(pointN);
+   found = collectionN.tryGetClosePoint(pointP);
+   ASSERT_TRUE(std::get<0>(found));
+   ASSERT_EQ(expect, std::get<1>(found));
 }

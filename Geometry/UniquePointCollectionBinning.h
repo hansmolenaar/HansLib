@@ -24,12 +24,14 @@ public:
 
    const LocalizationBins& getBins(int direction) const;
 
+   using BinSpecifier = std::array<size_t, N>;
 private:
-   std::array<size_t, N> locate(const Point<double, N>& point) const;
-   std::tuple<bool, PointIndex> tryGetClosePointInBin(const Point<double, N>& p, const std::array<size_t, N>& bin) const;
+
+   BinSpecifier locate(const Point<double, N>& point) const;
+   std::tuple<bool, PointIndex> tryGetClosePointInBin(const Point<double, N>& p, const BinSpecifier& bin) const;
 
    const IGeometryPredicate<double, N>& m_predicate;
-   std::multimap <std::array<size_t, N>, PointIndex> m_pointsInBin;
+   std::multimap <BinSpecifier, PointIndex> m_pointsInBin;
    std::unordered_map<PointIndex, Point<double, N>> m_points;
    std::vector<LocalizationBins> m_bins;
    PointIndex m_nextPointIndex = 0;
