@@ -9,7 +9,7 @@ template RefineRegionToMaxLevel<3>;
 template<int N>
 RefineRegionToMaxLevel<N>::RefineRegionToMaxLevel(int maxLevel, const Geometry::IGeometryRegion<double, N>& region, const IGeometryPredicate<double, N>& predicate,
    const IInitialBoundingboxGenerator<N>& generator) :
-   m_maxLevel(maxLevel), m_region(region), m_initialBb(generator.generate(m_region.getBoundingBox())), m_geometryPredicate(predicate)
+   m_maxLevel(maxLevel), m_region(region), m_initialBb(generator.generate(m_region)), m_geometryPredicate(predicate)
 {}
 
 template<int N>

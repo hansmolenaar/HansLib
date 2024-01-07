@@ -12,7 +12,7 @@ public:
    InitialBoundingboxGenerator& operator=(InitialBoundingboxGenerator&& other) = default;
 
    static std::unique_ptr<IInitialBoundingboxGenerator<N>> Create(double factor);
-   BoundingBox<double, N> generate(typename const BoundingBox<double, N>& bb) const override;
+   BoundingBox<double, N> generate(const Geometry::IGeometryRegion<double, N>& region) const override;
 
 private:
    InitialBoundingboxGenerator(double factor);

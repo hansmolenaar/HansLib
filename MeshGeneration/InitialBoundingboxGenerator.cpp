@@ -21,8 +21,9 @@ InitialBoundingboxGenerator<N>::InitialBoundingboxGenerator(double factor) : m_f
 
 
 template<int N>
-BoundingBox<double, N> InitialBoundingboxGenerator<N>::generate(const BoundingBox<double, N>& bb) const
+BoundingBox<double, N> InitialBoundingboxGenerator<N>::generate(const Geometry::IGeometryRegion<double, N>& region) const
 {
+   const auto bb = region.getBoundingBox();
    const auto& intervals = bb.getIntervals();
    std::array<double, N> center;
    str::transform(intervals, center.begin(), [](const Interval<double>& intv) {return intv.interpolate(0.5); });
