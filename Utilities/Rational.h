@@ -20,15 +20,20 @@ namespace std
       }
    };
 
-   template<typename T>
-   T ConvertTo(const Rational& rat)
-   {
-      return static_cast<T>(rat.numerator()) / rat.denominator();
-   }
-
    inline Rational abs(const Rational& rat)
    {
       if (rat > 0) return rat;
       return -rat;
    }
+}
+
+inline double operator*(double d, Rational r)
+{
+   return d * r.numerator() / r.denominator();
+}
+
+
+inline double operator*(Rational r, double d)
+{
+   return d * r.numerator() / r.denominator();
 }

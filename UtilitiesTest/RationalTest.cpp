@@ -23,17 +23,6 @@ TEST(RationalTest, Hash)
    ASSERT_NE(hash1, hash2);
 }
 
-
-TEST(RationalTest, ConvertTo)
-{
-   const Rational frc{ 3, 4 };
-
-   ASSERT_NEAR(std::ConvertTo<double>(frc), 0.75, 1.0e-12);
-   ASSERT_EQ(std::ConvertTo<Rational>(frc), frc);
-   ASSERT_EQ(std::ConvertTo<int>(frc), 0);
-}
-
-
 TEST(RationalTest, Abs)
 {
    ASSERT_EQ(Rational(1, 2), std::abs(Rational(1, 2)));
@@ -41,4 +30,11 @@ TEST(RationalTest, Abs)
    ASSERT_EQ(Rational(1, 2), std::abs(Rational(1, -2)));
    ASSERT_EQ(Rational(0, 2), std::abs(Rational(0, -3)));
    ASSERT_EQ(Rational(0, 2), std::abs(Rational(0, 3)));
+}
+
+
+TEST(RationalTest, TimesDouble)
+{
+   ASSERT_NEAR(Rational(1, 2) * 4.0, 2.0, 1.0e-12);
+   ASSERT_NEAR(4.0 * Rational(1, 2), 2.0, 1.0e-12);
 }
