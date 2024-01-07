@@ -47,8 +47,8 @@ TEST(TriangleNodesTest, SingleTriangle)
    ASSERT_TRUE(str::equal(triangleNodes, std::array<TriangleNodes::NodeId, 3>{0, 42, 999}));
 
    tnodes.deleteTriangle(triangleId);
-   ASSERT_FALSE(tnodes.isKnownNode(42));
-   ASSERT_FALSE(tnodes.isKnownNode(999));
+   ASSERT_FALSE(tnodes.isKnownNodeId(42));
+   ASSERT_FALSE(tnodes.isKnownNodeId(999));
 }
 
 TEST(TriangleNodesTest, Delete)
@@ -56,24 +56,24 @@ TEST(TriangleNodesTest, Delete)
    TriangleNodes tnodes;
    const auto triangleId = tnodes.addTriangle(42, 999, 0);
    tnodes.deleteTriangle(triangleId);
-   ASSERT_FALSE(tnodes.isKnownNode(0));
-   ASSERT_FALSE(tnodes.isKnownNode(42));
-   ASSERT_FALSE(tnodes.isKnownNode(999));
-   ASSERT_FALSE(tnodes.isKnownTriangle(triangleId));
+   ASSERT_FALSE(tnodes.isKnownNodeId(0));
+   ASSERT_FALSE(tnodes.isKnownNodeId(42));
+   ASSERT_FALSE(tnodes.isKnownNodeId(999));
+   ASSERT_FALSE(tnodes.isKnownTriangleId(triangleId));
 }
 
 TEST(TriangleNodesTest, IsKnown)
 {
    TriangleNodes tnodes;
-   ASSERT_FALSE(tnodes.isKnownNode(0));
-   ASSERT_FALSE(tnodes.isKnownTriangle(0));
+   ASSERT_FALSE(tnodes.isKnownNodeId(0));
+   ASSERT_FALSE(tnodes.isKnownTriangleId(0));
 
    const auto triangleId = tnodes.addTriangle(42, 999, 6);
 
-   ASSERT_TRUE(tnodes.isKnownNode(999));
-   ASSERT_TRUE(tnodes.isKnownTriangle(triangleId));
-   ASSERT_FALSE(tnodes.isKnownNode(0));
-   ASSERT_FALSE(tnodes.isKnownTriangle(triangleId + 1));
+   ASSERT_TRUE(tnodes.isKnownNodeId(999));
+   ASSERT_TRUE(tnodes.isKnownTriangleId(triangleId));
+   ASSERT_FALSE(tnodes.isKnownNodeId(0));
+   ASSERT_FALSE(tnodes.isKnownTriangleId(triangleId + 1));
 }
 
 
@@ -152,4 +152,45 @@ TEST(TriangleNodesTest, TriangleContainsNode)
 
    ASSERT_TRUE(tnodes.triangleContainsNode(triangle1, 1));
    ASSERT_FALSE(tnodes.triangleContainsNode(triangle1, 0));
+}
+
+
+TEST(TriangleNodesTest, GetAllTriangles)
+{
+   TriangleNodes tnodes;
+   auto allTriangles = tnodes.getAllTriangles();
+   ASSERT_TRUE(allTriangles.empty());
+
+   const auto triangle0 = tnodes.addTriangle(42, 999, 0);
+   allTriangles = tnodes.getAllTriangles();
+   ASSERT_TRUE(str::equal(allTriangles, std::vector<TriangleNodes::TriangleId>{triangle0}));
+
+   const auto triangle1 = tnodes.addTriangle(999, 42, 1);
+   allTriangles = tnodes.getAllTriangles();
+   ASSERT_TRUE(str::equal(allTriangles, std::vector<TriangleNodes::TriangleId>{triangle0, triangle1}));
+
+   tnodes.deleteTriangle(triangle0);
+   allTriangles = tnodes.getAllTriangles();
+   ASSERT_TRUE(str::equal(allTriangles, std::vector<TriangleNodes::TriangleId>{triangle1}));
+
+   tnodes.deleteTriangle(triangle1);
+   allTriangles = tnodes.getAllTriangles();
+   ASSERT_TRUE(allTriangles.empty());
+}
+
+
+TEST(TriangleNodesTest, GetAllEdges)
+{
+   using Edge = TriangleNodes::SortedEdge;
+   TriangleNodes tnodes;
+   auto allEdges = tnodes.getAllSortedEdges();
+   ASSERT_TRUE(allEdges.empty());
+
+   const auto triangle0 = tnodes.addTriangle(42, 999, 0);
+   allEdges = tnodes.getAllSortedEdges();
+   ASSERT_TRUE(str::equal(allEdges, std::vector<Edge>{Edge{ 0, 42 }, Edge{ 0,999 }, Edge{ 42,999 }}));
+
+   const auto triangle1 = tnodes.addTriangle(42, 0, 2);
+   allEdges = tnodes.getAllSortedEdges();
+   ASSERT_TRUE(str::equal(allEdges, std::vector<Edge>{Edge{ 0, 2 }, Edge{ 0,42 }, Edge{ 0,999 }, Edge{ 2, 42 }, Edge{ 42, 999 }}));
 }

@@ -20,6 +20,12 @@ namespace
       }
       return nodes;
    }
+
+   TriangleNodes::SortedEdge CreateSortedEdge(TriangleNodes::NodeId n0, TriangleNodes::NodeId n1)
+   {
+      if (n1 > n0) return { n0, n1 };
+      return { n1, n0 };
+   }
 }
 
 TriangleNodes::TriangleId TriangleNodes::addTriangle(NodeId n0, NodeId n1, NodeId n2)
@@ -159,7 +165,7 @@ std::vector<TriangleNodes::NodeId> TriangleNodes::getEdgeConnectedNodes(NodeId n
 
 void TriangleNodes::checkNodeId(NodeId node) const
 {
-   if (!isKnownNode(node))
+   if (!isKnownNodeId(node))
    {
       const std::string msg = "TriangleNodes::checkNodeId() unknown NodeId " + std::to_string(node);
       throw MyException(msg);
@@ -168,7 +174,7 @@ void TriangleNodes::checkNodeId(NodeId node) const
 
 void TriangleNodes::checkTriangleId(TriangleId triangle) const
 {
-   if (!isKnownTriangle(triangle))
+   if (!isKnownTriangleId(triangle))
    {
       const std::string msg = "TriangleNodes::checkTriangleId() unknown TriangleId " + std::to_string(triangle);
       throw MyException(msg);
@@ -181,12 +187,41 @@ std::array<TriangleNodes::NodeId, TriangleNodes::NumNodesOnTriangle> TriangleNod
    return m_toNodes.at(triangle);
 }
 
-bool TriangleNodes::isKnownNode(NodeId node) const
+bool TriangleNodes::isKnownNodeId(NodeId node) const
 {
    return m_toTriangles.find(node) != m_toTriangles.end();
 }
 
-bool TriangleNodes::isKnownTriangle(TriangleId triangle) const
+bool TriangleNodes::isKnownTriangleId(TriangleId triangle) const
 {
    return m_toNodes.find(triangle) != m_toNodes.end();
+}
+
+std::vector<TriangleNodes::TriangleId> TriangleNodes::getAllTriangles() const
+{
+   std::vector<TriangleId> result;
+   result.reserve(m_toNodes.size());
+   for (auto& itr : m_toNodes)
+   {
+      result.push_back(itr.first);
+   }
+   str::sort(result);
+   return result;
+}
+
+std::vector<TriangleNodes::SortedEdge> TriangleNodes::getAllSortedEdges() const
+{
+   std::vector<TriangleNodes::SortedEdge> result;
+   result.reserve(3*m_toNodes.size());
+   for (auto& itr : m_toNodes)
+   {
+      const auto& triangleNodes = itr.second;
+      result.emplace_back(CreateSortedEdge(triangleNodes.at(0), triangleNodes.at(1)));
+      result.emplace_back(CreateSortedEdge(triangleNodes.at(0), triangleNodes.at(2)));
+      result.emplace_back(CreateSortedEdge(triangleNodes.at(1), triangleNodes.at(2)));
+   }
+   str::sort(result);
+   const auto [first, last] = str::unique(result);
+   result.erase(first, last);
+   return result;
 }

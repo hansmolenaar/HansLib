@@ -10,11 +10,12 @@ namespace MeshGeneration
    class TriangleNodes
    {
    public:
-      using NodeId = int;
-      using TriangleId = int;
-
       static constexpr size_t NumNodesOnEdge = 2;
       static constexpr size_t NumNodesOnTriangle = 3;
+
+      using NodeId = int;
+      using TriangleId = int;
+      using SortedEdge = std::array<TriangleNodes::NodeId, NumNodesOnEdge>;
 
       // No ordering of the nodes assumed
       TriangleId addTriangle(NodeId n0, NodeId n1, NodeId n2);
@@ -27,8 +28,11 @@ namespace MeshGeneration
 
       std::array<TriangleNodes::NodeId, TriangleNodes::NumNodesOnTriangle> getTriangleNodes(TriangleId triangle) const;
 
-      bool isKnownNode(NodeId node) const;
-      bool isKnownTriangle(TriangleId triangle) const;
+      bool isKnownNodeId(NodeId node) const;
+      bool isKnownTriangleId(TriangleId triangle) const;
+
+      std::vector<TriangleNodes::TriangleId> getAllTriangles() const;
+      std::vector<TriangleNodes::SortedEdge> getAllSortedEdges() const;
    private:
       std::pair<bool, TriangleNodes::TriangleId> tryGetTriangleFromSortedNodes(const std::array<NodeId, NumNodesOnTriangle>& nodes) const;
       void checkNodeId(NodeId nodeId) const;
