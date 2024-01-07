@@ -168,7 +168,6 @@ TEST(BoundingBoxTest, Scale1Double)
    ASSERT_EQ(result.getIntervals()[0].getUpper(), 11.5);
 }
 
-
 TEST(BoundingBoxTest, GetCenter2)
 {
    const auto bb = BoundingBox<Rational, 2>::CreateFrom2Points(RatPoint2{ Rational{1,1}, Rational{1,1} }, RatPoint2{ Rational{ 2,1 }, Rational{ 5,1 } });
@@ -177,11 +176,40 @@ TEST(BoundingBoxTest, GetCenter2)
    ASSERT_EQ(center[1], Rational(3, 1));
 }
 
-
-
 TEST(BoundingBoxTest, DiagonalLength)
 {
    const auto bb = BoundingBox<double, 2>::CreateFrom2Points(Point2{ 1,1 }, Point2{ 4,5 });
    const auto diagLength = bb.getLengthDiagonalSquared();
    ASSERT_NEAR(diagLength, 25.0, 1.0e-12);
+}
+
+TEST(BoundingBoxTest, ScalePoint1)
+{
+   const auto bb = BoundingBox<int, 1>::CreateFromList(std::initializer_list<IntPoint1>{ IntPoint1{ 2 }, IntPoint1{ 1 } });
+   const IntPoint1 scale{5};
+   const auto result = bb.scaleFromPoint01(scale);
+   ASSERT_EQ(result[0], 6);
+}
+
+TEST(BoundingBoxTest, ScalePoint2)
+{
+   const auto bb = BoundingBox<Rational, 2>::CreateFromList(std::initializer_list<RatPoint2>{ RatPoint2{ Rational{0}, Rational{2} }, RatPoint2{ Rational{ 1 }, Rational{ 4 } } });
+   const auto scale = BoundingBox<Rational, 2>::CreateFrom2Points(RatPoint2{ Rational{1,5}, Rational{2,5} }, RatPoint2{ Rational{ 3,5 }, Rational{ 4,5 } });
+   const auto result = bb.scaleFrom01(scale);
+   ASSERT_EQ(bb.getIntervals().size(), 2);
+   const auto lwr = result.getLower();
+   const auto upr = result.getUpper();
+   ASSERT_EQ(lwr[0], Rational(1, 5));
+   ASSERT_EQ(upr[0], Rational(3, 5));
+   ASSERT_EQ(lwr[1], Rational(14, 5));
+   ASSERT_EQ(upr[1], Rational(18, 5));
+}
+
+
+TEST(BoundingBoxTest, ScalePoint1WithRational)
+{
+   const auto bb = BoundingBox<double, 1>::CreateFromList(std::initializer_list<Point1>{ Point1{ 2 }, Point1{ 1 } });
+   const RatPoint1 scale{ Rational{5, 2} };
+   const auto result = bb.scaleFromPoint01(scale);
+   ASSERT_NEAR(result[0], 3.5, 1.0e-12);
 }

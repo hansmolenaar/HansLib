@@ -35,6 +35,11 @@ public:
 
    BoundingBox<T, N> scaleFrom01(const BoundingBox<Rational, N>& scale) const;
 
+   template<typename TScale>
+   Point<T, N> scaleFromPoint01(const Point<TScale, N>& scale) const;
+
+   Point<T, N> scaleFromPoint01(typename const Point<Rational, N>& scale) const;
+
    template<typename Container, typename F>
    static BoundingBox CreateFromListTransformed(const Container& container, F fun);
 
@@ -52,7 +57,7 @@ public:
    void Add(const std::span<const T>&);
 
    bool contains(const Point<T, N>&) const;
-    
+
    Point<T, N> getCenter() const;
    T getLengthDiagonalSquared() const;
 
@@ -137,41 +142,47 @@ template<typename T, int N >
 template<typename TScale>
 BoundingBox<T, N> BoundingBox<T, N>::scaleFrom01(const BoundingBox<TScale, N>& scale) const
 {
-   Point<T, N> pointLwr;
-   Point<T, N> pointUpr;
-   for (int n = 0; n < N; ++n)
-   {
-      const T lwr = m_intervals[n].getLower();
-      const T upr = m_intervals[n].getUpper();
-      const T scaleLwr = scale.getLower()[n];
-      const T scaleUpr = scale.getUpper()[n];
-      pointLwr[n] = lwr + scaleLwr * (upr - lwr);
-      pointUpr[n] = lwr + scaleUpr * (upr - lwr);
-   }
+   const Point<T, N> pointLwr = scaleFromPoint01(scale.getLower());
+   const Point<T, N> pointUpr = scaleFromPoint01(scale.getUpper());
    return CreateFrom2Points(pointLwr, pointUpr);
 }
 
 template<typename T, int N >
 BoundingBox<T, N> BoundingBox<T, N>::scaleFrom01(const BoundingBox<Rational, N>& scale) const
 {
-   const auto scaleLwr = scale.getLower();
-   const auto scaleUpr = scale.getUpper();
+   const Point<Rational,N> scaleLwr = scale.getLower();
+   const Point<Rational, N> scaleUpr = scale.getUpper();
 
-   Point<T, N> pointLwr;
-   Point<T, N> pointUpr;
+   const Point<T, N> pointLwr = scaleFromPoint01(scaleLwr);
+   const Point<T, N> pointUpr = scaleFromPoint01(scaleUpr);
+   return CreateFrom2Points(pointLwr, pointUpr);
+}
+
+template<typename T, int N >
+template<typename TScale>
+Point<T, N> BoundingBox<T, N>::scaleFromPoint01(const Point<TScale, N>& scale) const
+{
+   Point<T, N> point;
    for (int n = 0; n < N; ++n)
    {
       const T lwr = m_intervals[n].getLower();
       const T upr = m_intervals[n].getUpper();
-
-      const T scaleLwrValue = std::ToFloat<T>(scaleLwr[n]);
-      const T scaleUprValue = std::ToFloat<T>(scaleUpr[n]);
-
-      pointLwr[n] = lwr + scaleLwrValue * (upr - lwr);
-      pointUpr[n] = lwr + scaleUprValue * (upr - lwr);
+      point[n] = lwr + scale[n] * (upr - lwr);
    }
-   return CreateFrom2Points(pointLwr, pointUpr);
+   return point;
+}
 
+template<typename T, int N >
+Point<T, N> BoundingBox<T, N>::scaleFromPoint01(const Point<Rational, N>& scale) const
+{
+   Point<T, N> point;
+   for (int n = 0; n < N; ++n)
+   {
+      const T lwr = m_intervals[n].getLower();
+      const T upr = m_intervals[n].getUpper();
+      point[n] = lwr + (scale[n].numerator() * (upr - lwr)) / scale[n].denominator();
+   }
+   return point;
 }
 
 template<typename T, int N >
@@ -243,6 +254,6 @@ Point<T, N> BoundingBox<T, N>::getCenter() const
 template<typename T, int N >
 T BoundingBox<T, N>::getLengthDiagonalSquared() const
 {
-   const auto dif =getUpper() - getLower();
+   const auto dif = getUpper() - getLower();
    return  PointUtils::GetNormSquared(dif);
 }

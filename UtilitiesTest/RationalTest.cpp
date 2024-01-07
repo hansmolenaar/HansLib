@@ -24,11 +24,13 @@ TEST(RationalTest, Hash)
 }
 
 
-TEST(RationalTest, ToFloat)
+TEST(RationalTest, ConvertTo)
 {
    const Rational frc{ 3, 4 };
-   const double result = std::ToFloat<double>(frc);
-   ASSERT_EQ(result, 0.75);
+
+   ASSERT_NEAR(std::ConvertTo<double>(frc), 0.75, 1.0e-12);
+   ASSERT_EQ(std::ConvertTo<Rational>(frc), frc);
+   ASSERT_EQ(std::ConvertTo<int>(frc), 0);
 }
 
 

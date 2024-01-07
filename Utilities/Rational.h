@@ -21,7 +21,7 @@ namespace std
    };
 
    template<typename T>
-   T ToFloat(const Rational& rat)
+   T ConvertTo(const Rational& rat)
    {
       return static_cast<T>(rat.numerator()) / rat.denominator();
    }
