@@ -1,12 +1,15 @@
 #pragma once
 
-#include "IUniquePointCollection.h"
+#include "IDynamicUniquePointCollection.h"
 #include "IGeometryPredicate.h"
 #include "LocalizationBins.h"
 #include "Defines.h"
 
+#include <unordered_map>
+#include <span>
+
 template< int N>
-class UniquePointCollectionBinning : IUniquePointCollection<double, N>
+class UniquePointCollectionBinning : public IDynamicUniquePointCollection<double, N>
 {
 public:
    UniquePointCollectionBinning(const IGeometryPredicate<double, N>& m_predicate, const std::vector<Point<double, N>>& points);
@@ -16,63 +19,18 @@ public:
    Point<double, N> getPoint(PointIndex) const override;
    PointIndex getNumPoints() const override;
 
+   void deletePoint(PointIndex pointId) override;
+   PointIndex addIfNew(const Point<double, N>& point) override;
+
+   const LocalizationBins& getBins(int direction) const;
+
 private:
+   std::array<size_t, N> locate(const Point<double, N>& point) const;
+   std::tuple<bool, PointIndex> tryGetClosePointInBin(const Point<double, N>& p, const std::array<size_t, N>& bin) const;
+
    const IGeometryPredicate<double, N>& m_predicate;
    std::multimap <std::array<size_t, N>, PointIndex> m_pointsInBin;
-   std::vector<Point<double, N>> m_points;
+   std::unordered_map<PointIndex, Point<double, N>> m_points;
    std::vector<LocalizationBins> m_bins;
+   PointIndex m_nextPointIndex = 0;
 };
-
-template< int N>
-UniquePointCollectionBinning<N>::UniquePointCollectionBinning(const IGeometryPredicate<double, N>& predicate, const std::vector<Point<double, N>>& points) :
-   m_predicate(predicate)
-{
-   for (int n = 0; n < N; ++n)
-   {
-      std::vector<double> values(points.size());
-      str::transform(points, values.begin(), [n](const Point<double, N >& p) {return p.data()[n]; });
-      m_bins.emplace_back(LocalizationBins::CreateFromVaules(values, false, m_predicate.getSmallLengthInDirection(n)));
-   }
-}
-
-template< int N>
-Point<double, N> UniquePointCollectionBinning<N>::getPoint(PointIndex n) const
-{
-   return m_points.at(n);
-}
-
-template< int N>
-PointIndex UniquePointCollectionBinning<N>::getNumPoints() const
-{
-   return m_points.size();
-}
-
-template< int N>
-std::tuple<bool, PointIndex>  UniquePointCollectionBinning<N>::tryGetClosePoint(const Point<double, N>& p) const
-{
-   std::tuple<bool, PointIndex> result{ false, PointIndexInvalid };
-   std::array<size_t, N> bins;
-   for (int n = 0; n < N; ++n)
-   {
-      bins[n] = m_bins.at(n).find(p.at(n));
-   }
-
-   const auto [first, last] = m_pointsInBin.equal_range(bins);
-   for (auto itr = first; itr != last; ++itr)
-   {
-      const auto pointId = itr->second;
-      if (m_predicate.SamePoints(p, getPoint(pointId)))
-      {
-         return { true,static_cast<PointIndex>(pointId) };
-      }
-   }
-
-   return result;
-}
-
-
-template< int N>
-const IGeometryPredicate<double, N>& UniquePointCollectionBinning<N>::getGeometryPredicate() const
-{
-   return m_predicate;
-}
