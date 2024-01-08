@@ -33,7 +33,7 @@ TriangleNodes::TriangleId TriangleNodes::addTriangle(NodeId n0, NodeId n1, NodeI
    const auto nodes = SortAndCheckNodes(n0, n1, n2);
 
    // Check for duplicates
-   if (tryGetTriangleFromSortedNodes(nodes).first)
+   if (tryGetTriangleFromSortedNodes(nodes))
    {
       const std::string msg = "TriangleNodes::addTriangle() triangle already exists: " + std::to_string(n0) + " " + std::to_string(n1) + " " + std::to_string(n2);
       throw MyException(msg);
@@ -48,9 +48,8 @@ TriangleNodes::TriangleId TriangleNodes::addTriangle(NodeId n0, NodeId n1, NodeI
    return result;
 }
 
-std::pair<bool, TriangleNodes::TriangleId> TriangleNodes::tryGetTriangleFromSortedNodes(const std::array<TriangleNodes::NodeId, TriangleNodes::NumNodesOnTriangle>& nodes) const
+std::optional<TriangleNodes::TriangleId> TriangleNodes::tryGetTriangleFromSortedNodes(const std::array<TriangleNodes::NodeId, TriangleNodes::NumNodesOnTriangle>& nodes) const
 {
-   std::pair<bool, TriangleNodes::TriangleId> result{ false,std::numeric_limits<TriangleNodes::TriangleId>::max() };
    const auto triangles = m_toTriangles.equal_range(nodes.at(0));
    for (auto itr = triangles.first; itr != triangles.second; ++itr)
    {
@@ -59,13 +58,13 @@ std::pair<bool, TriangleNodes::TriangleId> TriangleNodes::tryGetTriangleFromSort
       if (str::equal(nodes, candidateNodes))
       {
          // Duplicates are not possible, already checked in addTriangle
-         return { true, candidate };
+         return candidate;
       }
    }
-   return result;
+   return {};
 }
 
-std::pair<bool, TriangleNodes::TriangleId> TriangleNodes::tryGetTriangle(NodeId n0, NodeId n1, NodeId n2) const
+std::optional<TriangleNodes::TriangleId> TriangleNodes::tryGetTriangle(NodeId n0, NodeId n1, NodeId n2) const
 {
    checkNodeId(n0);
    checkNodeId(n1);
@@ -212,7 +211,7 @@ std::vector<TriangleNodes::TriangleId> TriangleNodes::getAllTriangles() const
 std::vector<TriangleNodes::SortedEdge> TriangleNodes::getAllSortedEdges() const
 {
    std::vector<TriangleNodes::SortedEdge> result;
-   result.reserve(3*m_toNodes.size());
+   result.reserve(3 * m_toNodes.size());
    for (auto& itr : m_toNodes)
    {
       const auto& triangleNodes = itr.second;

@@ -33,35 +33,6 @@ namespace
       return result;
    }
 
-   template< int N>
-   boost::container::static_vector<UniquePointCollectionBinning::BinSpecifier, MaxNumNeighbors> GetNeighborsWithinDistance(const Point<double, N>& point, typename const UniquePointCollectionBinning<N>::BinSpecifier& bin, const std::vector<LocalizationBins>& allBins, const IGeometryPredicate<double, N>& predicate);
-
-   template<>
-   boost::container::static_vector<UniquePointCollectionBinning<1>::BinSpecifier, MaxNumNeighbors> GetNeighborsWithinDistance(const Point<double, 1>& point, const UniquePointCollectionBinning<1>::BinSpecifier& bin, const std::vector<LocalizationBins>& allBins, const IGeometryPredicate<double, 1>& predicate)
-   {
-      const double eps = predicate.getSmallLengthInDirection(0);
-      boost::container::static_vector<UniquePointCollectionBinning<1>::BinSpecifier, MaxNumNeighbors> result;
-      if (bin.at(0) > 0)
-      {
-         const size_t nxtBinId = bin.at(0) - 1;
-         const double lwrBound = allBins.at(0).getBinUpper(nxtBinId);
-         if (point.at(0) - lwrBound < eps) result.emplace_back(UniquePointCollectionBinning<1>::BinSpecifier{ nxtBinId });
-      }
-      if (bin.at(0) + 1 < allBins.at(0).getNumBins())
-      {
-         const size_t nxtBinId = bin.at(0) + 1;
-         const double uprBound = allBins.at(0).getBinLower(nxtBinId);
-         if (uprBound - point.at(0) < eps) result.emplace_back(UniquePointCollectionBinning<1>::BinSpecifier{ nxtBinId });
-      }
-      return result;
-   }
-
-   template<>
-   boost::container::static_vector<UniquePointCollectionBinning<2>::BinSpecifier, MaxNumNeighbors> GetNeighborsWithinDistance(const Point<double, 2>& point, const UniquePointCollectionBinning<2>::BinSpecifier& bin, const std::vector<LocalizationBins>& allBins, const IGeometryPredicate<double, 2>& predicate)
-   {
-      throw MyException("Not yet implemented");
-   }
-
 }
 
 template< int N>

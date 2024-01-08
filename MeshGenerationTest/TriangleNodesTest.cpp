@@ -37,8 +37,7 @@ TEST(TriangleNodesTest, SingleTriangle)
    ASSERT_EQ(999, edgeConnectedNodes.at(1));
 
    const auto foundTriangle = tnodes.tryGetTriangle(0, 42, 999);
-   ASSERT_TRUE(foundTriangle.first);
-   ASSERT_EQ(triangleId, foundTriangle.second);
+   ASSERT_EQ(triangleId, *foundTriangle);
 
    ASSERT_TRUE(tnodes.triangleContainsNode(triangleId, 999));
    ASSERT_THROW(tnodes.triangleContainsNode(triangleId, 1), MyException);
@@ -135,11 +134,10 @@ TEST(TriangleNodesTest, TryGetTriangle)
    const auto triangle1 = tnodes.addTriangle(999, 42, 1);
 
    const auto found_1_42_999 = tnodes.tryGetTriangle(1, 42, 999);
-   ASSERT_TRUE(found_1_42_999.first);
-   ASSERT_EQ(triangle1, found_1_42_999.second);
+   ASSERT_EQ(triangle1, *found_1_42_999);
 
    const auto found_0_1_42 = tnodes.tryGetTriangle(1, 42, 0);
-   ASSERT_FALSE(found_0_1_42.first);
+   ASSERT_FALSE(found_0_1_42);
 }
 
 

@@ -4,6 +4,7 @@
 #include <vector>
 #include <unordered_map>
 #include <array>
+#include <optional>
 
 namespace MeshGeneration
 {
@@ -23,7 +24,7 @@ namespace MeshGeneration
       boost::container::static_vector<TriangleId, 2> getEdgeConnectedTriangles(NodeId n0, NodeId n1) const;
       std::vector<TriangleId> getNodeConnectedTriangles(NodeId node) const;
       std::vector<NodeId> getEdgeConnectedNodes(NodeId node) const;
-      std::pair<bool, TriangleId> tryGetTriangle(NodeId n0, NodeId n1, NodeId n2) const;
+      std::optional<TriangleId> tryGetTriangle(NodeId n0, NodeId n1, NodeId n2) const;
       bool triangleContainsNode(TriangleId triangleId, NodeId nodeId) const;
 
       std::array<TriangleNodes::NodeId, TriangleNodes::NumNodesOnTriangle> getTriangleNodes(TriangleId triangle) const;
@@ -34,7 +35,7 @@ namespace MeshGeneration
       std::vector<TriangleNodes::TriangleId> getAllTriangles() const;
       std::vector<TriangleNodes::SortedEdge> getAllSortedEdges() const;
    private:
-      std::pair<bool, TriangleNodes::TriangleId> tryGetTriangleFromSortedNodes(const std::array<NodeId, NumNodesOnTriangle>& nodes) const;
+      std::optional<TriangleNodes::TriangleId> tryGetTriangleFromSortedNodes(const std::array<NodeId, NumNodesOnTriangle>& nodes) const;
       void checkNodeId(NodeId nodeId) const;
       void checkTriangleId(TriangleId triangleId) const;
 
