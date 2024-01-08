@@ -26,7 +26,7 @@ namespace Geometry
       // First **after** start point
       // If the edge is contained in the region, then return the exit point or the end point of the edge
       // If only the first point of the edge is in the region return false
-      std::tuple< bool, Point<T, N>> TryGetFirstIntersectionWithDirectedEdge(typename const Geometry::DirectedEdge<T, N>& edge) const override;
+      std::optional<Point<T, N>> TryGetFirstIntersectionWithDirectedEdge(typename const Geometry::DirectedEdge<T, N>& edge) const override;
 
 
       BallPosition getPosition(const Point<T, N>& point, const IGeometryPredicate<T, N>& predicate) const;
@@ -101,13 +101,13 @@ namespace Geometry
    }
 
    template<typename T, int N>
-   std::tuple< bool, Point<T, N>> Ball<T, N>::TryGetFirstIntersectionWithDirectedEdge(typename const Geometry::DirectedEdge<T, N>& edge) const
+   std::optional<Point<T, N>> Ball<T, N>::TryGetFirstIntersectionWithDirectedEdge(typename const Geometry::DirectedEdge<T, N>& edge) const
    {
       const auto& predicate = edge.getPredicate();
       const auto [pos0, pos1] = getPositions(edge);
       if (std::max(pos0, pos1) <= BallPosition::On)
       {
-         return { true, edge.point1() };
+         return  edge.point1();
       }
       const auto& point0 = edge.point0();
       const auto& point1 = edge.point1();
@@ -124,7 +124,7 @@ namespace Geometry
       c -= m_radius * m_radius;
 
       const T D = b * b - 4 * a * c;
-      if (D < 0) return { false, {} };
+      if (D < 0) return  {};
       const T sqrtD = static_cast<T>(std::sqrt(D));
 
       const T lam0 = (-b - sqrtD) / (2 * a);
@@ -140,18 +140,20 @@ namespace Geometry
          // Use the second root
          Utilities::MyAssert(pos1 == BallPosition::Outside);
          Utilities::MyAssert(!predicate.SamePoints(point0, ip1));
-         return { true, ip1 };
+         return ip1;
       }
 
       if (pos0 == BallPosition::On)
       {
          Utilities::MyAssert(pos1 == BallPosition::Outside);
-         return { edge.contains(ip1) && !predicate.SamePoints(ip1, point0), ip1 };
+         if ( edge.contains(ip1) && !predicate.SamePoints(ip1, point0)) return ip1;
+         return {};
       }
 
       Utilities::MyAssert(pos0 == BallPosition::Outside);
-      if (predicate.SamePoints(point1, ip0)) return { true, point1 };
-      return { edge.contains(ip0), ip0 };
+      if (predicate.SamePoints(point1, ip0)) return  point1;
+      if (edge.contains(ip0)) return ip0;
+      return {};
    }
 
    template<typename T, int N>

@@ -18,8 +18,8 @@ namespace Geometry
       // First **after** start point
       // If the edge is contained in the region, then return the exit point or the end point of the edge
       // If only the first point of the edge is in the region return false
-      std::tuple< bool, Point<T, N>> TryGetFirstIntersectionWithDirectedEdge(typename const Geometry::DirectedEdge<T, N>& edge) const override;
- 
+      std::optional<Point<T, N>> TryGetFirstIntersectionWithDirectedEdge(typename const Geometry::DirectedEdge<T, N>& edge) const override;
+
       bool CouldIntersectWith(typename const BoundingBox<T, N>& bb, const IGeometryPredicate<T, N>& predicate) const override;
 
    private:
@@ -45,7 +45,7 @@ namespace Geometry
    }
 
    template<typename T, int N>
-   std::tuple< bool, Point<T, N>> Sphere<T, N>::TryGetFirstIntersectionWithDirectedEdge(typename const Geometry::DirectedEdge<T, N>& edge) const
+   std::optional<Point<T, N>> Sphere<T, N>::TryGetFirstIntersectionWithDirectedEdge(typename const Geometry::DirectedEdge<T, N>& edge) const
    {
       const auto& predicate = edge.getPredicate();
       const auto& point0 = edge.point0();
@@ -53,35 +53,33 @@ namespace Geometry
 
       const auto [pos0, pos1] = m_ball.getPositions(edge);
 
-      if (pos1 == BallPosition::On) return  { true, point1 };
-      if (pos0 == BallPosition::Inside && pos1 == BallPosition::Inside) return { false, {} };
-      if (pos0 == BallPosition::Inside && pos1 == BallPosition::On) return { true, point1 };
-      if (pos0 == BallPosition::On && pos1 == BallPosition::Inside) return { false, {} };
-    
-      const auto [succes, ip] = m_ball.TryGetFirstIntersectionWithDirectedEdge(edge);
-  
+      if (pos1 == BallPosition::On) return  point1;
+      if (pos0 == BallPosition::Inside && pos1 == BallPosition::Inside) return {};
+      if (pos0 == BallPosition::Inside && pos1 == BallPosition::On) return  point1;
+      if (pos0 == BallPosition::On && pos1 == BallPosition::Inside) return  {};
+
+      const auto ip = m_ball.TryGetFirstIntersectionWithDirectedEdge(edge);
+
       if (pos0 == BallPosition::Inside)
       {
          Utilities::MyAssert(pos1 == BallPosition::Outside);
-         Utilities::MyAssert(succes);
-         return { true, ip };
+         return *ip;
       }
 
       if (pos0 == BallPosition::On)
       {
          Utilities::MyAssert(pos1 == BallPosition::Outside);
-         return { succes, ip };
+         return ip;
       }
 
       Utilities::MyAssert(pos0 == BallPosition::Outside);
       if (pos1 == BallPosition::Inside)
       {
-         Utilities::MyAssert(succes);
-         return { true, ip };
+         return *ip;
       }
 
       Utilities::MyAssert(pos1 == BallPosition::Outside);
-      return { succes, ip };
+      return  ip;
    }
 
 
