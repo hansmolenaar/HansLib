@@ -195,9 +195,10 @@ namespace IntervalTree
    {
       Index<N>::Key result = getKey();
       const Index1::Key key1 = result.at(direction.Direction);
-      const auto [succes, adj] = m_factory1(key1)->getAdjacentInDir(direction.UsePositiveDirection);
-      result[direction.Direction] = adj.getKey();
-      return { succes, result };
+      const auto adj = m_factory1(key1)->getAdjacentInDir(direction.UsePositiveDirection);
+      if (!adj) return { false, {} };
+      result[direction.Direction] = adj->getKey();
+      return { true, result };
    }
 
    template<int N>

@@ -171,15 +171,13 @@ Index1 Index1::getSibling() const
    Utilities::MyAssert(!isRoot());
    if (m_positionInLevel % 2 == 0)
    {
-      auto [succes, result] = getAdjacentInDir(true);
-      Utilities::MyAssert(succes);
-      return result;
+      auto  result = getAdjacentInDir(true);
+      return *result;
    }
    else
    {
-      auto [succes, result] = getAdjacentInDir(false);
-      Utilities::MyAssert(succes);
-      return result;
+      auto result = getAdjacentInDir(false);
+      return *result;
    }
 }
 
@@ -190,20 +188,20 @@ std::tuple<bool, Index1> Index1::getSiblingInDir(bool posDir) const
    return { true, getSibling() };
 }
 
-std::tuple<bool, Index1> Index1::getAdjacentInDir(bool posDir) const
+std::optional<Index1> Index1::getAdjacentInDir(bool posDir) const
 {
-   if (m_level == 0) return { false, CreateRoot() };
+   if (m_level == 0) return {};
    if (posDir)
    {
-      if (m_positionInLevel + 1 >= (1 << m_level)) return { false, CreateRoot() };
+      if (m_positionInLevel + 1 >= (1 << m_level)) return {};
       const Rational upr = m_interval.getUpper();
-      return { true, Index1(Interval<Rational>(upr, upr + getMeasure())) };
+      return  Index1(Interval<Rational>(upr, upr + getMeasure()));
    }
    else
    {
-      if (m_positionInLevel == 0) return { false, CreateRoot() };
+      if (m_positionInLevel == 0) return {};
       const Rational lwr = m_interval.getLower();
-      return { true, Index1(Interval<Rational>(lwr - getMeasure(), lwr)) };
+      return Index1(Interval<Rational>(lwr - getMeasure(), lwr));
    }
 }
 

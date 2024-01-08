@@ -161,54 +161,46 @@ TEST(IntervalTreeIndex1Test, getAdjacentInDir)
    const Index1 root = Index1::CreateRoot();
    for (bool dir : {false, true})
    {
-      auto [succes, indx] = root.getAdjacentInDir(dir);
-      ASSERT_FALSE(succes);
+      auto indx = root.getAdjacentInDir(dir);
+      ASSERT_FALSE(indx);
    }
 
    const auto kids = root.refine();
 
    auto retval = kids[0].getAdjacentInDir(false);
-   ASSERT_FALSE(std::get<0>(retval));
+   ASSERT_FALSE(retval);
 
    retval = kids[0].getAdjacentInDir(true);
-   ASSERT_TRUE(std::get<0>(retval));
-   ASSERT_EQ(std::get<1>(retval).getCenter(), Rational(3, 4));
+   ASSERT_EQ(retval->getCenter(), Rational(3, 4));
 
    retval = kids[1].getAdjacentInDir(true);
-   ASSERT_FALSE(std::get<0>(retval));
+   ASSERT_FALSE(retval);
 
    retval = kids[1].getAdjacentInDir(false);
-   ASSERT_TRUE(std::get<0>(retval));
-   ASSERT_EQ(std::get<1>(retval).getCenter(), Rational(1, 4));
+   ASSERT_EQ(retval->getCenter(), Rational(1, 4));
 
    const auto kids0 = kids[0].refine();
    const auto kids1 = kids[1].refine();
 
    retval = kids0[0].getAdjacentInDir(false);
-   ASSERT_FALSE(std::get<0>(retval));
+   ASSERT_FALSE(retval);
    retval = kids0[0].getAdjacentInDir(true);
-   ASSERT_TRUE(std::get<0>(retval));
-   ASSERT_EQ(std::get<1>(retval).getCenter(), Rational(3, 8));
+   ASSERT_EQ(retval->getCenter(), Rational(3, 8));
 
    retval = kids0[1].getAdjacentInDir(false);
-   ASSERT_TRUE(std::get<0>(retval));
-   ASSERT_EQ(std::get<1>(retval).getCenter(), Rational(1, 8));
+   ASSERT_EQ(retval->getCenter(), Rational(1, 8));
    retval = kids0[1].getAdjacentInDir(true);
-   ASSERT_TRUE(std::get<0>(retval));
-   ASSERT_EQ(std::get<1>(retval).getCenter(), Rational(5, 8));
+   ASSERT_EQ(retval->getCenter(), Rational(5, 8));
 
    retval = kids1[0].getAdjacentInDir(false);
-   ASSERT_TRUE(std::get<0>(retval));
-   ASSERT_EQ(std::get<1>(retval).getCenter(), Rational(3, 8));
+   ASSERT_EQ(retval->getCenter(), Rational(3, 8));
    retval = kids1[0].getAdjacentInDir(true);
-   ASSERT_TRUE(std::get<0>(retval));
-   ASSERT_EQ(std::get<1>(retval).getCenter(), Rational(7, 8));
+   ASSERT_EQ(retval->getCenter(), Rational(7, 8));
 
    retval = kids1[1].getAdjacentInDir(false);
-   ASSERT_TRUE(std::get<0>(retval));
-   ASSERT_EQ(std::get<1>(retval).getCenter(), Rational(5, 8));
+   ASSERT_EQ(retval->getCenter(), Rational(5, 8));
    retval = kids1[1].getAdjacentInDir(true);
-   ASSERT_FALSE(std::get<0>(retval));
+   ASSERT_FALSE(retval);
 }
 
 

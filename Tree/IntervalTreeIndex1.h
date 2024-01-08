@@ -5,6 +5,8 @@
 #include "IntervalTreeDefines.h"
 #include "Defines.h"
 
+#include <optional>
+
 namespace IntervalTree
 {
 
@@ -42,7 +44,7 @@ namespace IntervalTree
       Rational getCenter() const;
       Index1 getSibling() const;
       std::tuple<bool, Index1> getSiblingInDir(bool posDir) const;
-      std::tuple<bool, Index1> getAdjacentInDir(bool posDir) const;
+      std::optional<Index1> getAdjacentInDir(bool posDir) const;
 
       Index1 getParent() const;
       Index1::Key getParentKey() const;
