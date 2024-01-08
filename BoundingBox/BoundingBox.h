@@ -6,6 +6,7 @@
 #include "Point.h"
 
 #include <span>
+#include <optional>
 
 template <typename T, size_t... Is, typename... Args>
 std::array<T, sizeof...(Is)> MakeArrayHelper(
@@ -42,7 +43,7 @@ public:
    const Interval<T>& getInterval(int n) const { return m_intervals.at(n); }
    std::span< const Interval<T>> getIntervals() const { return m_intervals; }
 
-   static std::tuple<bool, BoundingBox<T, N>> TryGetOverlap(const BoundingBox<T, N>& bb1, const BoundingBox<T, N>& bb2);
+   static std::optional<BoundingBox<T, N>> TryGetOverlap(const BoundingBox<T, N>& bb1, const BoundingBox<T, N>& bb2);
 
    Point<T, N> getLower() const;
    Point<T, N> getUpper() const;
@@ -198,22 +199,18 @@ bool BoundingBox<T, N>::contains(const Point<T, N>& point) const
 }
 
 template<typename T, int N >
-std::tuple<bool, BoundingBox<T, N>> BoundingBox<T, N>::TryGetOverlap(const BoundingBox<T, N>& bb1, const BoundingBox<T, N>& bb2)
+std::optional<BoundingBox<T, N>> BoundingBox<T, N>::TryGetOverlap(const BoundingBox<T, N>& bb1, const BoundingBox<T, N>& bb2)
 {
    std::array<T, N> lwr;
    std::array<T, N> upr;
-   bool succes = true;
    for (int n = 0; n < N; ++n)
    {
       if (!Interval<T>::TryIntersect(bb1.getInterval(n), bb2.getInterval(n), lwr[n], upr[n]))
       {
-         lwr.fill(1);
-         upr.fill(-1);
-         succes = false;
-         break;
+         return {};
       }
    }
-   return { succes, CreateFromList(std::array < std::array<T,N>,2> {lwr, upr}) };
+   return CreateFromList(std::array < std::array<T, N>, 2> {lwr, upr});
 }
 
 template<typename T, int N >

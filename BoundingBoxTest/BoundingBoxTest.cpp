@@ -114,13 +114,12 @@ TEST(BoundingBoxTest, Intersection)
    const auto bb1 = BoundingBox<int, 2>::CreateFromList(std::initializer_list<IntPoint2>{ IntPoint2{ 2, 4 }, IntPoint2{ 5,0 } });
    const auto bb2 = BoundingBox<int, 2>::CreateFromList(std::initializer_list<IntPoint2>{ IntPoint2{ 3, 7 }, IntPoint2{ 0,2 } });
    const auto bb3 = BoundingBox<int, 2>::CreateFromList(std::initializer_list<IntPoint2>{ IntPoint2{ 10, 11 }, IntPoint2{ 12,13 } });
-   const auto [succes12, bb12] = BoundingBox<int, 2>::TryGetOverlap(bb1, bb2);
-   ASSERT_TRUE(succes12);
+   const auto bb12 = BoundingBox<int, 2>::TryGetOverlap(bb1, bb2);
    const auto expect = BoundingBox<int, 2>::CreateFromList(std::initializer_list<IntPoint2>{ IntPoint2{ 2, 2 }, IntPoint2{ 3,4 } });
-   ASSERT_EQ(bb12, expect);
+   ASSERT_EQ(*bb12, expect);
 
-   const auto [succes13, bb13] = BoundingBox<int, 2>::TryGetOverlap(bb1, bb3);
-   ASSERT_FALSE(succes13);
+   const auto bb13 = BoundingBox<int, 2>::TryGetOverlap(bb1, bb3);
+   ASSERT_FALSE(bb13);
 }
 
 

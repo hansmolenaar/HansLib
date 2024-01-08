@@ -12,7 +12,7 @@ bool RefineIfOverlaps<N>::operator()(const Index<N>& indx) const
    const BoundingBox<Rational, N> cellBbScaled = indx.getBbOfCell();
    const BoundingBox<double, N> cellBb = BbIntervalTree.scaleFrom01(cellBbScaled);
    const auto overlap = BoundingBox<double, N>::TryGetOverlap(cellBb, BbGiven);
-   return std::get<0>(overlap);
+   return overlap.has_value();
 }
 
 template RefineIfOverlaps<1>;

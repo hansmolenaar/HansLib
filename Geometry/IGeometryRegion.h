@@ -30,7 +30,7 @@ namespace Geometry
    bool IGeometryRegion<T,N>::CouldIntersectWith(typename const BoundingBox<T, N>& bb, const IGeometryPredicate<T, N>& predicate) const
    {
       const BoundingBox<T,N> bbSelf = this->getBoundingBox();
-      const auto [succes, overlap] = BoundingBox<T, N>::TryGetOverlap(bbSelf, bb);
-      return succes;
+      const auto overlap = BoundingBox<T, N>::TryGetOverlap(bbSelf, bb);
+      return overlap.has_value();
    }
 }
