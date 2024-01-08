@@ -181,11 +181,11 @@ Index1 Index1::getSibling() const
    }
 }
 
-std::tuple<bool, Index1> Index1::getSiblingInDir(bool posDir) const
+std::optional<Index1> Index1::getSiblingInDir(bool posDir) const
 {
    const bool posKid = (m_positionInLevel % 2 != 0);
-   if (m_level == 0 || posKid == posDir) return { false, CreateRoot() };
-   return { true, getSibling() };
+   if (m_level == 0 || posKid == posDir) return {};
+   return getSibling();
 }
 
 std::optional<Index1> Index1::getAdjacentInDir(bool posDir) const

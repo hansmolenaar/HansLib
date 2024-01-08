@@ -44,9 +44,9 @@ namespace
       for (const auto& dir : neighbors)
       {
          const auto ngb = index.getAdjacentInDir(dir);
-         if (std::get<0>(ngb))
+         if (ngb)
          {
-            const auto found = Tree.get(std::get<1>(ngb));
+            const auto found = Tree.get(*ngb);
             if (found)
             {
                moreRefined[pos] = !Tree.isLeaf(*found.value());

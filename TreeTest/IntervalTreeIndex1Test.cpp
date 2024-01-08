@@ -135,24 +135,22 @@ TEST(IntervalTreeIndex1Test, getSiblingInDir)
    const Index1 root = Index1::CreateRoot();
    for (bool dir : {false, true})
    {
-      auto [succes, indx] = root.getSiblingInDir(dir);
-      ASSERT_FALSE(succes);
+      auto indx = root.getSiblingInDir(dir);
+      ASSERT_FALSE(indx);
    }
 
    const auto kids = root.refine();
 
    auto retval = kids[0].getSiblingInDir(false);
-   ASSERT_FALSE(std::get<0>(retval));
+   ASSERT_FALSE(retval);
    retval = kids[1].getSiblingInDir(true);
-   ASSERT_FALSE(std::get<0>(retval));
+   ASSERT_FALSE(retval);
 
    retval = kids[0].getSiblingInDir(true);
-   ASSERT_TRUE(std::get<0>(retval));
-   ASSERT_EQ(std::get<1>(retval).getCenter(), Rational(3, 4));
+   ASSERT_EQ(retval->getCenter(), Rational(3, 4));
 
    retval = kids[1].getSiblingInDir(false);
-   ASSERT_TRUE(std::get<0>(retval));
-   ASSERT_EQ(std::get<1>(retval).getCenter(), Rational(1, 4));
+   ASSERT_EQ(retval->getCenter(), Rational(1, 4));
 }
 
 

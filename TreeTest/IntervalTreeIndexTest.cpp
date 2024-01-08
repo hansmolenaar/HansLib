@@ -85,8 +85,8 @@ TEST(IntervalTreeIndexTest, GetAdjacentInDirRoot)
    {
       for (bool usePos : {false, true})
       {
-         const auto [succes, indx] = root->getAdjacentInDir(AdjacentDirection{ dir, usePos });
-         ASSERT_FALSE(succes);
+         const auto indx = root->getAdjacentInDir(AdjacentDirection{ dir, usePos });
+         ASSERT_FALSE(indx);
       }
    }
 }
@@ -102,18 +102,16 @@ TEST(IntervalTreeIndexTest, GetAdjacentInDir)
    ASSERT_EQ(kid->toString(), "((0, 1/2), (1/2, 1))");
 
    auto retval = kid->getAdjacentInDir(AdjacentDirection{ 0, false });
-   ASSERT_FALSE(std::get<0>(retval));
+   ASSERT_FALSE(retval);
 
    retval = kid->getAdjacentInDir(AdjacentDirection{ 0, true });
-   ASSERT_TRUE(std::get<0>(retval));
-   ASSERT_EQ(Index<2>(std::get<1>(retval), factory1).toString(), "((1/2, 1), (1/2, 1))");
+   ASSERT_EQ(Index<2>(*retval, factory1).toString(), "((1/2, 1), (1/2, 1))");
 
    retval = kid->getAdjacentInDir(AdjacentDirection{ 1, false });
-   ASSERT_TRUE(std::get<0>(retval));
-   ASSERT_EQ(Index<2>(std::get<1>(retval), factory1).toString(), "((0, 1/2), (0, 1/2))");
+   ASSERT_EQ(Index<2>(*retval, factory1).toString(), "((0, 1/2), (0, 1/2))");
 
    retval = kid->getAdjacentInDir(AdjacentDirection{ 1, true });
-   ASSERT_FALSE(std::get<0>(retval));
+   ASSERT_FALSE(retval);
 }
 
 

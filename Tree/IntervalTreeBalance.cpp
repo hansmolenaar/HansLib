@@ -12,10 +12,10 @@ namespace
    {
       for (const auto adjDir : GetAdjacentNeighbors<N>())
       {
-         const auto [exist, ngbKey] = indx.getAdjacentInDir(adjDir);
-         if (exist)
+         const auto  ngbKey = indx.getAdjacentInDir(adjDir);
+         if (ngbKey)
          {
-            const auto ngbExisting = tree.getExistingSelfOrAncestor(ngbKey);
+            const auto ngbExisting = tree.getExistingSelfOrAncestor(*ngbKey);
             if (indx.getLevel() - ngbExisting.getLevel() > 1)
             {
                toRefine.insert(ngbExisting.getKey());

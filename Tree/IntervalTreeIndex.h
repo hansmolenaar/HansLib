@@ -41,7 +41,7 @@ namespace IntervalTree
       static Key GetParent(const Key& key);
       Index<N> getParent() const;
 
-      std::tuple<bool, Key> getAdjacentInDir(AdjacentDirection direction) const;
+      std::optional<Key> getAdjacentInDir(AdjacentDirection direction) const;
 
       std::array<std::array<Rational, N>, NumKids<N>> getVerticesInVtkOrder() const;
 
@@ -191,14 +191,14 @@ namespace IntervalTree
    }
 
    template<int N>
-   std::tuple<bool, typename Index<N>::Key> Index<N>::getAdjacentInDir(AdjacentDirection direction) const
+   std::optional<typename Index<N>::Key> Index<N>::getAdjacentInDir(AdjacentDirection direction) const
    {
       Index<N>::Key result = getKey();
       const Index1::Key key1 = result.at(direction.Direction);
       const auto adj = m_factory1(key1)->getAdjacentInDir(direction.UsePositiveDirection);
-      if (!adj) return { false, {} };
+      if (!adj) return {};
       result[direction.Direction] = adj->getKey();
-      return { true, result };
+      return result;
    }
 
    template<int N>
