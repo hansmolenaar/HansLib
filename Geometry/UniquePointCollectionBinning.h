@@ -6,7 +6,6 @@
 #include "Defines.h"
 
 #include <unordered_map>
-#include <span>
 
 template< int N>
 class UniquePointCollectionBinning : public IDynamicUniquePointCollection<double, N>
@@ -14,7 +13,7 @@ class UniquePointCollectionBinning : public IDynamicUniquePointCollection<double
 public:
    UniquePointCollectionBinning(const IGeometryPredicate<double, N>& m_predicate, const std::vector<Point<double, N>>& points);
 
-   std::tuple<bool, PointIndex>  tryGetClosePoint(const Point<double, N>&) const override;
+   std::optional<PointIndex>  tryGetClosePoint(const Point<double, N>&) const override;
    const IGeometryPredicate<double, N>& getGeometryPredicate() const override;
    Point<double, N> getPoint(PointIndex) const override;
    PointIndex getNumPoints() const override;
@@ -28,7 +27,7 @@ public:
 private:
 
    BinSpecifier locate(const Point<double, N>& point) const;
-   std::tuple<bool, PointIndex> tryGetClosePointInBin(const Point<double, N>& p, const BinSpecifier& bin) const;
+   std::optional<PointIndex> tryGetClosePointInBin(const Point<double, N>& p, const BinSpecifier& bin) const;
 
    const IGeometryPredicate<double, N>& m_predicate;
    std::multimap <BinSpecifier, PointIndex> m_pointsInBin;

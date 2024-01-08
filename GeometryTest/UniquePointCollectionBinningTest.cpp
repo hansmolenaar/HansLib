@@ -11,7 +11,7 @@ TEST(UniquePointCollectionBinningTest, Empty)
    const UniquePointCollectionBinning< 1> collection(predicate, std::vector<Point<double, 1>>{ Point1{ 1.0 }, Point1{ 2.0 }});
    ASSERT_EQ(collection.getNumPoints(), 2);
    const auto found = collection.tryGetClosePoint(Point<double, 1>{1.5});
-   ASSERT_FALSE(std::get<0>(found));
+   ASSERT_FALSE(found);
 }
 
 
@@ -55,10 +55,9 @@ TEST(UniquePointCollectionBinningTest, TryGetClosePoint1)
    ASSERT_EQ(collection.getNumPoints(), 2);
 
    const Point1 nearPoint{ 0.1 * predicate.getSmallLengthInDirection(0) };
-   const PointIndex expect = std::get<1>(collection.tryGetClosePoint(Point1{ 0 }));
-   const auto [found, id] = collection.tryGetClosePoint(nearPoint);
-   ASSERT_TRUE(found);
-   ASSERT_EQ(id, expect);
+   const PointIndex expect = *collection.tryGetClosePoint(Point1{ 0 });
+   const auto found = collection.tryGetClosePoint(nearPoint);
+   ASSERT_EQ(*found, expect);
 }
 
 
@@ -69,9 +68,8 @@ TEST(UniquePointCollectionBinningTest, TryGetClosePoint2)
    const Point1 newPoint{ 0.1234 };
    const PointIndex expect = collection.addIfNew(newPoint);
    const Point1 nearPoint{ newPoint.at(0) + 0.1 * predicate.getSmallLengthInDirection(0) };
-   const auto [found, id] = collection.tryGetClosePoint(nearPoint);
-   ASSERT_TRUE(found);
-   ASSERT_EQ(id, expect);
+   const auto found = collection.tryGetClosePoint(nearPoint);
+   ASSERT_EQ(*found, expect);
 }
 
 TEST(UniquePointCollectionBinningTest, TryGetClosePoint3)
@@ -84,18 +82,17 @@ TEST(UniquePointCollectionBinningTest, TryGetClosePoint3)
    const double bound = bins.getBinUpper(1);
    const Point1 pointP{ bound + 0.1 * predicate.getSmallLengthInDirection(0) };
    const Point1 pointN{ bound - 0.1 * predicate.getSmallLengthInDirection(0) };
-   const std::vector<Point1> points{pointP, pointN};
+   const std::vector<Point1> points{ pointP, pointN };
 
    for (size_t n0 = 0; n0 < points.size(); ++n0)
    {
-      UniquePointCollectionBinning<1> collectionTest= collection;
+      UniquePointCollectionBinning<1> collectionTest = collection;
       auto expect = collectionTest.addIfNew(points.at(n0));
       for (size_t n1 = 0; n1 < points.size(); ++n1)
       {
          auto found = collectionTest.tryGetClosePoint(points.at(n1));
-         ASSERT_TRUE(std::get<0>(found));
-         ASSERT_EQ(expect, std::get<1>(found));
-      }    
+         ASSERT_EQ(expect, *found);
+      }
    }
 }
 
@@ -103,7 +100,7 @@ TEST(UniquePointCollectionBinningTest, TryGetClosePoint3)
 TEST(UniquePointCollectionBinningTest, TryGetClosePoint4)
 {
    const PointClose<double, 2> predicate;
-   const UniquePointCollectionBinning<2> collection(predicate, std::vector<Point<double, 2>>{ Point2{ 0,2 }, Point2{ 1, 3 }, Point2{ 1,2 }, Point2{ 0,3 }, Point2{0.2, 1.4}});
+   const UniquePointCollectionBinning<2> collection(predicate, std::vector<Point<double, 2>>{ Point2{ 0,2 }, Point2{ 1, 3 }, Point2{ 1,2 }, Point2{ 0,3 }, Point2{ 0.2, 1.4 }});
 
    // 2 close points in neighboring bins
    const auto& bins = collection.getBins(0);
@@ -123,8 +120,7 @@ TEST(UniquePointCollectionBinningTest, TryGetClosePoint4)
       for (size_t n1 = 0; n1 < points.size(); ++n1)
       {
          auto found = collectionTest.tryGetClosePoint(points.at(n1));
-         ASSERT_TRUE(std::get<0>(found));
-         ASSERT_EQ(expect, std::get<1>(found));
+         ASSERT_EQ(expect, *found);
       }
    }
 }

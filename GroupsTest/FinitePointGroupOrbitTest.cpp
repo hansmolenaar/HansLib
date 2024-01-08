@@ -18,11 +18,10 @@ TEST(FinitePointGroupOrbitTest, Basic1)
    ASSERT_TRUE(areClose.SamePoints(orbit.getPoint(1), pr));
 
    auto found = orbit.tryGetClosePoint(pr);
-   ASSERT_TRUE(std::get<0>(found));
-   ASSERT_EQ(std::get<1>(found), 1);
+   ASSERT_EQ(*found, 1);
 
    found = orbit.tryGetClosePoint(Point1{ 1 });
-   ASSERT_FALSE(std::get<0>(found));
+   ASSERT_FALSE(found);
 }
 
 TEST(FinitePointGroupOrbitTest, Di3)

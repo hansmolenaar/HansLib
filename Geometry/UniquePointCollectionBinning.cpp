@@ -94,7 +94,7 @@ PointIndex UniquePointCollectionBinning<N>::getNumPoints() const
 }
 
 template< int N>
-std::tuple<bool, PointIndex>  UniquePointCollectionBinning<N>::tryGetClosePoint(const Point<double, N>& p) const
+std::optional<PointIndex>  UniquePointCollectionBinning<N>::tryGetClosePoint(const Point<double, N>& p) const
 {
    std::array<TrialBinsInDir, N> candidatesInDir;
    for (int n = 0; n < N; ++n)
@@ -115,9 +115,9 @@ std::tuple<bool, PointIndex>  UniquePointCollectionBinning<N>::tryGetClosePoint(
          singleBin[n] = candidatesInDir[n].at(candidate.at(n));
       }
       const auto found = tryGetClosePointInBin(p, singleBin);
-      if (std::get<0>(found)) return found;
+      if (found) return found;
    }
-   return { false, PointIndexInvalid };
+   return {};
 }
 
 
@@ -162,8 +162,8 @@ UniquePointCollectionBinning<N>::BinSpecifier UniquePointCollectionBinning<N>::l
 template< int N>
 PointIndex UniquePointCollectionBinning<N>::addIfNew(const Point<double, N>& point)
 {
-   const auto [found, id] = tryGetClosePoint(point);
-   if (found) return id;
+   const auto found = tryGetClosePoint(point);
+   if (found) return *found;
 
    const PointIndex result = m_nextPointIndex;
    ++m_nextPointIndex;
@@ -181,18 +181,17 @@ const LocalizationBins& UniquePointCollectionBinning<N>::getBins(int direction) 
 }
 
 template< int N>
-std::tuple<bool, PointIndex> UniquePointCollectionBinning<N>::tryGetClosePointInBin(const Point<double, N>& p, const BinSpecifier& bins) const
+std::optional<PointIndex> UniquePointCollectionBinning<N>::tryGetClosePointInBin(const Point<double, N>& p, const BinSpecifier& bins) const
 {
-   std::tuple<bool, PointIndex> result{ false, PointIndexInvalid };
    const auto [first, last] = m_pointsInBin.equal_range(bins);
    for (auto itr = first; itr != last; ++itr)
    {
       const auto pointId = itr->second;
       if (m_predicate.SamePoints(p, getPoint(pointId)))
       {
-         return { true,static_cast<PointIndex>(pointId) };
+         return static_cast<PointIndex>(pointId);
       }
    }
 
-   return result;
+   return {};
 }
