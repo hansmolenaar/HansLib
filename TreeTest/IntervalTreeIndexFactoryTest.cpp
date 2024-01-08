@@ -51,9 +51,8 @@ TEST(IntervalTreeIndexFactoryTest, Get)
    const auto kids = root->refine();
 
    const auto getRoot = factory.get(root->getKey());
-   ASSERT_TRUE(std::get<0>(getRoot));
-   ASSERT_TRUE(std::get<1>(getRoot)->isRoot());
+   ASSERT_TRUE((*getRoot)->isRoot());
 
    const auto getKid = factory.get(kids[0]);
-   ASSERT_FALSE(std::get<0>(getKid));
+   ASSERT_FALSE(getKid);
 }

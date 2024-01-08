@@ -11,7 +11,7 @@ namespace IntervalTree
    {
    public:
       IndexFactory();
-      std::tuple<bool, const Index<N>*> get(typename const Index<N>::Key& key) const;
+      std::optional<const Index<N>*> get(typename const Index<N>::Key& key) const;
 
       const Index<N>* addIfNew(typename const Index<N>::Key& key);
       std::array<const Index<N>*, NumKids<N>> refine(const Index<N>& toRefine);
@@ -92,13 +92,13 @@ namespace IntervalTree
    }
 
    template<int N>
-   std::tuple<bool, typename const Index<N>*> IndexFactory<N>::get(typename const Index<N>::Key& key) const
+   std::optional<typename const Index<N>*> IndexFactory<N>::get(typename const Index<N>::Key& key) const
    {
       const auto found = m_cache.find(key);
       if (found != m_cache.end())
       {
-         return std::make_tuple(true, &found->second);
+         return  &found->second;
       }
-      return std::make_tuple(false, nullptr);
+      return {};
    }
 }

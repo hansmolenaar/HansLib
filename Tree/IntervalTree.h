@@ -110,11 +110,11 @@ namespace IntervalTree
    template<int N>
    std::optional<const Index<N>*> IndexTree<N>::get(typename const Index<N>::Key& key) const
    {
-      const auto [succes, ptr] = m_factory.get(key);
-      if (!succes) return {};
+      const auto  ptr = m_factory.get(key);
+      if (!ptr) return {};
 
-      if (m_leaves.contains(ptr)) return  ptr;
-      if (m_tree.contains(ptr)) return ptr;
+      if (m_leaves.contains(*ptr)) return  ptr;
+      if (m_tree.contains(*ptr)) return ptr;
       return {};
    }
 
