@@ -47,9 +47,9 @@ namespace
          if (std::get<0>(ngb))
          {
             const auto found = Tree.get(std::get<1>(ngb));
-            if (std::get<0>(found))
+            if (found)
             {
-               moreRefined[pos] = !Tree.isLeaf(std::get<1>(found));
+               moreRefined[pos] = !Tree.isLeaf(*found.value());
             }
          }
          ++pos;

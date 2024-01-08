@@ -6,6 +6,7 @@
 
 #include <unordered_map>
 #include <unordered_set>
+#include <optional>
 
 namespace IntervalTree
 {
@@ -29,7 +30,7 @@ namespace IntervalTree
       bool contains(typename const Index<N>::Key& key) const;
 
       const Index<N>& getExistingSelfOrAncestor(typename  Index<N>::Key key) const;
-      std::tuple<bool, const Index<N>&> get(typename const Index<N>::Key& key) const;
+      std::optional<const Index<N>*> get(typename const Index<N>::Key& key) const;
       bool isLeaf(typename const Index<N>& index) const;
 
       size_t size() const;
@@ -107,20 +108,20 @@ namespace IntervalTree
    }
 
    template<int N>
-   std::tuple<bool, const Index<N>&> IndexTree<N>::get(typename const Index<N>::Key& key) const
+   std::optional<const Index<N>*> IndexTree<N>::get(typename const Index<N>::Key& key) const
    {
       const auto [succes, ptr] = m_factory.get(key);
-      if (!succes) return { false, getRoot() };
+      if (!succes) return {};
 
-      if (m_leaves.contains(ptr)) return { true, *ptr };
-      if (m_tree.contains(ptr)) return { true, *ptr };
-      return { false, getRoot() };
+      if (m_leaves.contains(ptr)) return  ptr;
+      if (m_tree.contains(ptr)) return ptr;
+      return {};
    }
 
    template<int N>
    bool IndexTree<N>::contains(typename const Index<N>::Key& key) const
    {
-      return std::get<0>(get(key));
+      return get(key).has_value();
    }
 
    template<int N>
@@ -138,8 +139,8 @@ namespace IntervalTree
    {
       while (true)
       {
-         const auto [found, index] = get(key);
-         if (found) return index;
+         const auto index = get(key);
+         if (index) return *(index.value());
          key = Index<N>::GetParent(key);
       }
    }

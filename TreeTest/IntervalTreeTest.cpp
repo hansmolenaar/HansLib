@@ -140,11 +140,10 @@ TEST(IndexTreeTest, Get)
    const auto& root = tree.getRoot();
 
    const auto retval = tree.get(root.getKey());
-   ASSERT_TRUE(std::get<0>(retval));
-   ASSERT_TRUE(std::get<1>(retval).isRoot());
+   ASSERT_TRUE((*retval)->isRoot());
 
    const Index<3>::Key key = { 1, 2, 1 };
-   ASSERT_FALSE(std::get<0>(tree.get(key)));
+   ASSERT_FALSE(tree.get(key));
 }
 
 TEST(IndexTreeTest, GetExistingSelfOrAncestor)
