@@ -1,4 +1,5 @@
 #include "UniquePointCollectionBinning.h"
+#include "MultiIndex.h"
 
 #include<boost/container/static_vector.hpp>
 
@@ -7,8 +8,31 @@ template UniquePointCollectionBinning<2>;
 
 static constexpr size_t MaxNumNeighbors = 8;   // 2D
 
+using TrialBinsInDir = boost::container::static_vector<size_t, 3>;
+
 namespace
 {
+   TrialBinsInDir GetCandidateBinsInDirection(double point, const LocalizationBins& binsInDir, double eps)
+   {
+      TrialBinsInDir result;
+      const auto pointInBin = binsInDir.find(point);
+      result.push_back(pointInBin);
+
+      if (pointInBin > 0)
+      {
+         const size_t nxtBinId = pointInBin - 1;
+         const double lwrBound = binsInDir.getBinUpper(nxtBinId);
+         if (point - lwrBound < eps) result.emplace_back(nxtBinId);
+      }
+      if (pointInBin + 1 < binsInDir.getNumBins())
+      {
+         const size_t nxtBinId = pointInBin + 1;
+         const double uprBound = binsInDir.getBinLower(nxtBinId);
+         if (uprBound - point < eps) result.emplace_back(nxtBinId);
+      }
+      return result;
+   }
+
    template< int N>
    boost::container::static_vector<UniquePointCollectionBinning::BinSpecifier, MaxNumNeighbors> GetNeighborsWithinDistance(const Point<double, N>& point, typename const UniquePointCollectionBinning<N>::BinSpecifier& bin, const std::vector<LocalizationBins>& allBins, const IGeometryPredicate<double, N>& predicate);
 
@@ -21,7 +45,7 @@ namespace
       {
          const size_t nxtBinId = bin.at(0) - 1;
          const double lwrBound = allBins.at(0).getBinUpper(nxtBinId);
-         if (point.at(0) - lwrBound < eps) result.emplace_back(UniquePointCollectionBinning<1>::BinSpecifier{nxtBinId});
+         if (point.at(0) - lwrBound < eps) result.emplace_back(UniquePointCollectionBinning<1>::BinSpecifier{ nxtBinId });
       }
       if (bin.at(0) + 1 < allBins.at(0).getNumBins())
       {
@@ -72,19 +96,28 @@ PointIndex UniquePointCollectionBinning<N>::getNumPoints() const
 template< int N>
 std::tuple<bool, PointIndex>  UniquePointCollectionBinning<N>::tryGetClosePoint(const Point<double, N>& p) const
 {
-   std::tuple<bool, PointIndex> result{ false, PointIndexInvalid };
-   const auto bins = locate(p);
-   auto found = tryGetClosePointInBin(p, bins);
-   if (std::get<0>(found)) return found;
-
-   // Edge case: point close to bin boundary
-   const auto relevantNeighbors = GetNeighborsWithinDistance(p, bins, m_bins, m_predicate);
-   for (auto& ngb : relevantNeighbors)
+   std::array<TrialBinsInDir, N> candidatesInDir;
+   for (int n = 0; n < N; ++n)
    {
-      found = tryGetClosePointInBin(p, ngb);
+      candidatesInDir[n] = GetCandidateBinsInDirection(p.at(n), m_bins.at(n), m_predicate.getSmallLengthInDirection(n));
+   }
+
+   std::vector<size_t> dimensions(N);
+   for (int n = 0; n < N; ++n) dimensions.at(n) = candidatesInDir[n].size();
+   const auto multiIndex = MultiIndex<size_t>::Create(std::move(dimensions));
+   const auto numCandidateBins = multiIndex.getFlatSize();
+   for (size_t c = 0; c < numCandidateBins; ++c)
+   {
+      const auto candidate = multiIndex.toMultiplet(c);
+      std::array<size_t, N> singleBin;
+      for (int n = 0; n < N; ++n)
+      {
+         singleBin[n] = candidatesInDir[n].at(candidate.at(n));
+      }
+      const auto found = tryGetClosePointInBin(p, singleBin);
       if (std::get<0>(found)) return found;
    }
-   return found;
+   return { false, PointIndexInvalid };
 }
 
 
