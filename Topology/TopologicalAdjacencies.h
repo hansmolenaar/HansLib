@@ -15,8 +15,8 @@ public:
    static std::unique_ptr<TopologicalAdjacencies> CreateWithPartialCounts(TopologyDimension, std::map<TopologyDimension, int>&&, std::vector<std::unique_ptr<ITopologicalAdjacency>>&&);
 
    TopologyDimension getMaxTopologyDimension() const override;
-   std::pair<bool, int> getCount(TopologyDimension dim) const override;
-   std::pair<bool, const ITopologicalAdjacency*> getAdjacency(TopologyDimension hi, TopologyDimension lo) const override;
+   std::optional<int> getCount(TopologyDimension dim) const override;
+   std::optional<const ITopologicalAdjacency*> getAdjacency(TopologyDimension hi, TopologyDimension lo) const override;
 
 private:
    using AdjacencyMap = std::map <std::pair<TopologyDimension, TopologyDimension>, std::unique_ptr<ITopologicalAdjacency>>;

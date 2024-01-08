@@ -25,7 +25,7 @@ TEST(TopologicalAdjacenciesTest, Claw)
    ASSERT_EQ(adjacencies->getCountSafe(TopologyDimensionDef::Corner), 4);
    ASSERT_EQ(adjacencies->getCountSafe(TopologyDimensionDef::Edge), 3);
    const auto retval = adjacencies->getAdjacency(TopologyDimensionDef::Edge, TopologyDimensionDef::Corner);
-   ASSERT_TRUE(retval.first);
+   ASSERT_TRUE(retval);
    TopologyTest::TestITopologicalAdjacencies(*adjacencies);
 }
 

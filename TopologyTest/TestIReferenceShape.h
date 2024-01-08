@@ -14,7 +14,7 @@ namespace TopologyTest
       ASSERT_EQ(adjacencies.getCountSafe(maxdim), 1);
       if (maxdim > TopologyDimensionDef::Corner)
       {
-         ASSERT_TRUE(adjacencies.getAdjacency(maxdim, TopologyDimensionDef::Corner).first);
+         ASSERT_TRUE(adjacencies.getAdjacency(maxdim, TopologyDimensionDef::Corner));
       }
       TopologyTest::TestITopologicalAdjacencies(adjacencies);
    }

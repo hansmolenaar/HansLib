@@ -15,11 +15,11 @@ namespace TopologyTest
          for (auto dimL = TopologyDimensionDef::Corner; dimL < dimH; ++dimL)
          {
             const auto found = adjacencies.getAdjacency(dimH, dimL);
-            if (found.first)
+            if (found)
             {
-               ASSERT_EQ(found.second->getDimensionLow(), dimL);
-               ASSERT_EQ(found.second->getDimensionHigh(), dimH);
-               TestITopologicalAdjacency(*found.second, adjacencies.getCountSafe(dimL), adjacencies.getCountSafe(dimH));
+               ASSERT_EQ(found.value()->getDimensionLow(), dimL);
+               ASSERT_EQ(found.value()->getDimensionHigh(), dimH);
+               TestITopologicalAdjacency(**found, adjacencies.getCountSafe(dimL), adjacencies.getCountSafe(dimH));
             }
             const auto reverse = adjacencies.getAdjacency(dimL, dimH);
             ASSERT_EQ(found, reverse);

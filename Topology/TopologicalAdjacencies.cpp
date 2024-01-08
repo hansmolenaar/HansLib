@@ -91,21 +91,20 @@ TopologyDimension TopologicalAdjacencies::getMaxTopologyDimension() const
    return m_count.rbegin()->first;
 }
 
-std::pair<bool, int> TopologicalAdjacencies::getCount(TopologyDimension dim) const
+std::optional<int> TopologicalAdjacencies::getCount(TopologyDimension dim) const
 {
-   if (!m_count.contains(dim)) return { false, -1 };
-   return { true, m_count.at(dim) };
+   if (!m_count.contains(dim)) return {};
+   return m_count.at(dim);
 }
 
-std::pair<bool, const ITopologicalAdjacency*> TopologicalAdjacencies::getAdjacency(TopologyDimension dim1, TopologyDimension dim2) const
+std::optional<const ITopologicalAdjacency*> TopologicalAdjacencies::getAdjacency(TopologyDimension dim1, TopologyDimension dim2) const
 {
    Utilities::MyAssert(dim1 != dim2);
    m_checkDimension.check(std::max(dim1, dim2));
    const auto pair = std::make_pair(std::min(dim1, dim2), std::max(dim1, dim2));
-   std::pair<bool, const ITopologicalAdjacency*> result = std::make_pair(m_adjecencies.contains(pair), nullptr);
-   if (result.first)
+   if (m_adjecencies.contains(pair))
    {
-      result.second = m_adjecencies.at(pair).get();
+      return m_adjecencies.at(pair).get();
    }
-   return result;
+   return {};
 }
