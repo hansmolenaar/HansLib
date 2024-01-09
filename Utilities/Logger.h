@@ -2,12 +2,14 @@
 
 #include <string>
 #include <vector>
-
+#include <span>
 class Logger
 {
 public:
-   void LogLine(const std::string&);
-   void LogLine(const std::vector<std::string>&);
+   void logLine(const std::string&);
+   void logLines(const std::vector<std::string>&);
+   void logStatictics(const std::string& header, std::span<const double> values);
+   const std::vector<std::string>& get() const;
 private:
    std::vector<std::string> m_lines;
 };

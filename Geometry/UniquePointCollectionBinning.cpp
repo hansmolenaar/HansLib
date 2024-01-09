@@ -5,8 +5,7 @@
 
 template UniquePointCollectionBinning<1>;
 template UniquePointCollectionBinning<2>;
-
-static constexpr size_t MaxNumNeighbors = 8;   // 2D
+template UniquePointCollectionBinning<3>;
 
 using TrialBinsInDir = boost::container::static_vector<size_t, 3>;
 
@@ -73,9 +72,9 @@ std::optional<PointIndex>  UniquePointCollectionBinning<N>::tryGetClosePoint(con
       candidatesInDir[n] = GetCandidateBinsInDirection(p.at(n), m_bins.at(n), m_predicate.getSmallLengthInDirection(n));
    }
 
-   std::vector<size_t> dimensions(N);
+   std::array<size_t,N> dimensions;
    for (int n = 0; n < N; ++n) dimensions.at(n) = candidatesInDir[n].size();
-   const auto multiIndex = MultiIndex<size_t>::Create(std::move(dimensions));
+   const auto multiIndex = MultiIndex<size_t>::Create(dimensions);
    const auto numCandidateBins = multiIndex.getFlatSize();
    for (size_t c = 0; c < numCandidateBins; ++c)
    {

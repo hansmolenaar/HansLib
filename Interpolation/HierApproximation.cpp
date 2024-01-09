@@ -130,7 +130,7 @@ std::unique_ptr<HierApproximation> HierApproximation::Create(const IMultiVariabl
    }
 
    for (const auto& tr : result->m_treeNodeMap) loglines.push_back(tr.first.toString());
-   logger.LogLine(loglines);
+   logger.logLines(loglines);
 
    while (!result->iterate(refinementFactory).empty())
    {
@@ -139,7 +139,7 @@ std::unique_ptr<HierApproximation> HierApproximation::Create(const IMultiVariabl
       loglines.push_back("Total number of cells: " + std::to_string(result->getAllTreeNodesRO().size()));
       loglines = std::vector<std::string>{ {"leaf nodes:"} };
       for (const auto& leaf : result->getLeafNodesRO()) loglines.push_back(leaf->BasisFunction->getMultiIndex().toString());
-      logger.LogLine(loglines);
+      logger.logLines(loglines);
    }
 
 
@@ -147,7 +147,7 @@ std::unique_ptr<HierApproximation> HierApproximation::Create(const IMultiVariabl
    loglines = std::vector<std::string>{ {"READY"} };
    loglines.push_back("Number of cells: " + std::to_string(result->getAllTreeNodesRO().size()));
    loglines.push_back("Number of leaf cells: " + std::to_string(result->getLeafNodesRO().size()));
-   logger.LogLine(loglines);
+   logger.logLines(loglines);
 #endif
 
    return result;
