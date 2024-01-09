@@ -8,4 +8,5 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 	${CMAKE_INCLUDE_DIR}/BoundingBox
 	${CMAKE_INCLUDE_DIR}/Point
 	${CMAKE_INCLUDE_DIR}/Utilities
+	${Boost_INCLUDE_DIRS}
 )

@@ -4,7 +4,7 @@ template MultiIndex<int>;
 template MultiIndex<size_t>;
 
 template <typename T>
-MultiIndex<T>::MultiIndex(std::vector<T> dimensions) :
+MultiIndex<T>::MultiIndex(boost::container::small_vector<T, MULTI_INDEX_MAX_SMALL_VECTOR> dimensions) :
    m_dimensions(std::move(dimensions))
 
 {
@@ -22,9 +22,15 @@ MultiIndex<T>::MultiIndex(std::vector<T> dimensions) :
 }
 
 template <typename T>
-MultiIndex<T>  MultiIndex<T>::Create(std::vector<T>&& dimensions)
+MultiIndex<T>  MultiIndex<T>::Create(std::span<const T> dimensions)
 {
-   return MultiIndex<T>(std::move(dimensions));
+   boost::container::small_vector<T, MULTI_INDEX_MAX_SMALL_VECTOR> myDimensions;
+   myDimensions.reserve(dimensions.size());
+   for (auto d : dimensions)
+   {
+      myDimensions.push_back(d);
+   }
+   return MultiIndex<T>(myDimensions);
 }
 
 template <typename T>

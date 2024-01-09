@@ -3,14 +3,19 @@
 #include "Assert.h"
 #include "BoundsCheck.h"
 #include "Defines.h"
+
 #include <span>
+#include <boost/container/small_vector.hpp>
+
+
+static constexpr size_t MULTI_INDEX_MAX_SMALL_VECTOR = 6;
 
 template <typename T>
 class MultiIndex
 {
 public:
 
-   static MultiIndex<T> Create(std::vector<T>&& dimensions);
+   static MultiIndex<T> Create(std::span<const T> dimensions);
 
    size_t getNumDimensions() const;
    size_t getFlatSize() const;
@@ -19,10 +24,11 @@ public:
    size_t toFlat(std::span<const T>) const;
 
 private:
-   explicit  MultiIndex(std::vector<T> dimensions);
-   std::vector<T> m_dimensions;
+
+   explicit  MultiIndex(boost::container::small_vector<T, MULTI_INDEX_MAX_SMALL_VECTOR> dimensions);
+   boost::container::small_vector<T, MULTI_INDEX_MAX_SMALL_VECTOR> m_dimensions;
    size_t m_flatLength;
-   std::vector<T> m_factors;
+   boost::container::small_vector<T, MULTI_INDEX_MAX_SMALL_VECTOR> m_factors;
    BoundsCheck<T> m_checkFlat;
-   std::vector<BoundsCheck<T>> m_checkIndex;
+   boost::container::small_vector<BoundsCheck<T>, MULTI_INDEX_MAX_SMALL_VECTOR> m_checkIndex;
 };
