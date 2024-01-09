@@ -26,7 +26,7 @@ public:
 
 private:
 
-   explicit  MultiIndex(boost::container::small_vector<T, MULTI_INDEX_MAX_SMALL_VECTOR> dimensions);
+   explicit  MultiIndex(boost::container::small_vector<T, MULTI_INDEX_MAX_SMALL_VECTOR>&& dimensions);
    boost::container::small_vector<T, MULTI_INDEX_MAX_SMALL_VECTOR> m_dimensions;
    size_t m_flatLength;
    boost::container::small_vector<T, MULTI_INDEX_MAX_SMALL_VECTOR> m_factors;

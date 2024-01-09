@@ -4,7 +4,7 @@ template MultiIndex<int>;
 template MultiIndex<size_t>;
 
 template <typename T>
-MultiIndex<T>::MultiIndex(boost::container::small_vector<T, MULTI_INDEX_MAX_SMALL_VECTOR> dimensions) :
+MultiIndex<T>::MultiIndex(boost::container::small_vector<T, MULTI_INDEX_MAX_SMALL_VECTOR>&& dimensions) :
    m_dimensions(std::move(dimensions))
 
 {
@@ -24,13 +24,9 @@ MultiIndex<T>::MultiIndex(boost::container::small_vector<T, MULTI_INDEX_MAX_SMAL
 template <typename T>
 MultiIndex<T>  MultiIndex<T>::Create(std::span<const T> dimensions)
 {
-   boost::container::small_vector<T, MULTI_INDEX_MAX_SMALL_VECTOR> myDimensions;
-   myDimensions.reserve(dimensions.size());
-   for (auto d : dimensions)
-   {
-      myDimensions.push_back(d);
-   }
-   return MultiIndex<T>(myDimensions);
+   boost::container::small_vector<T, MULTI_INDEX_MAX_SMALL_VECTOR> myDimensions(dimensions.size());
+   str::copy(dimensions, myDimensions.begin());
+   return MultiIndex<T>(std::move(myDimensions));
 }
 
 template <typename T>
@@ -55,14 +51,14 @@ template <typename T>
 void MultiIndex<T>::toMultiplet(size_t flat, std::span<T> multiplet) const
 {
    m_checkFlat.check(static_cast<T>(flat));
-   if (multiplet.size() != m_dimensions.size()) 
+   if (multiplet.size() != getNumDimensions())
    {
       std::string msg = "MultiIndex<T>::toMultiplet incorrect input dimension ";
       msg += std::to_string(multiplet.size());
-      msg += " expeced " + std::to_string(m_dimensions.size());
+      msg += " expeced " + std::to_string(getNumDimensions());
       throw MyException(msg);
    }
-   auto* first = multiplet.data();
+
    auto* data = multiplet.data();
 
    // Loop backwards!
@@ -74,7 +70,7 @@ void MultiIndex<T>::toMultiplet(size_t flat, std::span<T> multiplet) const
       flat -= index * m_factors[d];
       if (d == 0) break; // break: d is unsigned
    }
-   std::reverse(first, data);
+   std::reverse(multiplet.begin(), multiplet.end());
 }
 
 
