@@ -20,8 +20,10 @@ public:
    size_t getNumDimensions() const;
    size_t getFlatSize() const;
    T at(size_t) const;
+
    std::vector<T> toMultiplet(size_t) const;
-   void toMultiplet(size_t, T*) const;
+
+   void toMultiplet(size_t, std::span<T>) const;
    size_t toFlat(std::span<const T>) const;
 
 private:

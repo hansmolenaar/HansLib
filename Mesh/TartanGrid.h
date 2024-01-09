@@ -89,7 +89,8 @@ const IPointCollection<T, N>& TartanGrid<T, N>::getGeometry() const
 template<typename T, int N>
 Point<T, N> TartanGrid<T, N>::getPoint(PointIndex pointIndex) const
 {
-   const auto mp = m_multiIndexPoint.toMultiplet(pointIndex);
+   std::array<PointIndex, N> mp;
+   m_multiIndexPoint.toMultiplet(pointIndex, mp);
    std::array<T, N> result;
    for (int n = 0; n < N; ++n)
    {

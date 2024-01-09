@@ -126,7 +126,7 @@ std::vector<std::vector<double>> Plotting::EvaluateFunctionsOnUnit(size_t dim, s
    std::vector<size_t> indices(dim);
    for (size_t n = 0; n < mi.getFlatSize(); ++n)
    {
-      mi.toMultiplet(n, indices.data());
+      mi.toMultiplet(n, indices);
       str::transform(indices, row.begin(), [&delx](size_t i) {return i * delx; });
       str::transform(functions, row.begin() + dim, [&row, dim](const auto& ff) {return ff(std::vector<double>(row.begin(), row.begin() + dim)); });
       result.push_back(row);

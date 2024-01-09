@@ -71,10 +71,11 @@ std::vector<T> MultiIndex<T>::toMultiplet(size_t flat) const
 }
 
 template <typename T>
-void MultiIndex<T>::toMultiplet(size_t flat, T* data) const
+void MultiIndex<T>::toMultiplet(size_t flat, std::span<T> multiplet) const
 {
    m_checkFlat.check(static_cast<T>(flat));
-   auto* first = data;
+   auto* first = multiplet.data();
+   auto* data = multiplet.data();
 
    // Loop backwards!
    for (auto d = getNumDimensions() - 1; d >= 0; --d)

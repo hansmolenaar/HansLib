@@ -72,9 +72,10 @@ std::vector<HierMultiIndex> HierBasisFunction_Factory::getLowestLevel() const
    const auto indexer = MultiIndex<size_t>::Create(std::vector<size_t>(m_dimension, lowest1D.size()));
    std::vector<HierMultiIndex> result;
    result.reserve(indexer.getFlatSize());
+   std::vector<size_t> multiplet(m_dimension);
    for (size_t n = 0; n < indexer.getFlatSize(); ++n)
    {
-      const auto multiplet = indexer.toMultiplet(n);
+      indexer.toMultiplet(n, multiplet);
       std::vector<HierLevelIndex> levelsIndices;
       str::transform(multiplet, std::back_inserter(levelsIndices), [&lowest1D](size_t n) {return lowest1D.at(n); });
       result.emplace_back(std::move(levelsIndices));
