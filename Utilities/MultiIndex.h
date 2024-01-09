@@ -21,6 +21,7 @@ public:
    size_t getFlatSize() const;
    T at(size_t) const;
    std::vector<T> toMultiplet(size_t) const;
+   void toMultiplet(size_t, T*) const;
    size_t toFlat(std::span<const T>) const;
 
 private:

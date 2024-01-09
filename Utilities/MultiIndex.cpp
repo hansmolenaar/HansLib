@@ -70,6 +70,24 @@ std::vector<T> MultiIndex<T>::toMultiplet(size_t flat) const
    return result;
 }
 
+template <typename T>
+void MultiIndex<T>::toMultiplet(size_t flat, T* data) const
+{
+   m_checkFlat.check(static_cast<T>(flat));
+   auto* first = data;
+
+   // Loop backwards!
+   for (auto d = getNumDimensions() - 1; d >= 0; --d)
+   {
+      T index = static_cast<T>(flat) / m_factors[d];
+      *data = index;
+      ++data;
+      flat -= index * m_factors[d];
+      if (d == 0) break; // break: d is unsigned
+   }
+   std::reverse(first, data);
+}
+
 
 template <typename T>
 size_t MultiIndex<T>::toFlat(std::span<const T> multiplet) const
