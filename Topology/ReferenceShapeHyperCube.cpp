@@ -32,7 +32,7 @@ namespace
          {
             // flip d-th bit
             indx.at(d) = (indx.at(d) ? 0 : 1);
-            const auto flat = mi.toFlat(indx);
+            const auto flat = static_cast<int>(mi.toFlat(indx));
             edges.emplace(std::min(crnr, flat), std::max(crnr, flat));
             //flip back
             indx.at(d) = (indx.at(d) ? 0 : 1);

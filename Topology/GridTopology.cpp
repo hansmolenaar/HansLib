@@ -30,7 +30,7 @@ GridTopology::GridTopology(const std::vector<int>& cellDimensions) :
       {
          const auto crnrMultiplet = cornerInCellIndexer.toMultiplet(crnr);
          str::transform(cellMultiplet, crnrMultiplet, cellMultiplet.begin(), std::plus());
-         const auto crnrId = cornerIndexer.toFlat(cellMultiplet);
+         const auto crnrId = static_cast<int>(cornerIndexer.toFlat(cellMultiplet));
          // Restore
          str::transform(cellMultiplet, crnrMultiplet, cellMultiplet.begin(), std::minus());
          cellToCorner.at(cellId).push_back(crnrId);
@@ -38,10 +38,10 @@ GridTopology::GridTopology(const std::vector<int>& cellDimensions) :
    }
 
    std::map<TopologyDimension, int> counts{
-      {TopologyDimensionDef::Corner, cornerIndexer.getFlatSize()},
-      { m_shape.getAdjacencies().getMaxTopologyDimension(),numCells} };
+      {TopologyDimensionDef::Corner, static_cast<int>(cornerIndexer.getFlatSize())},
+      { m_shape.getAdjacencies().getMaxTopologyDimension(),static_cast<int>(numCells)} };
    std::vector<std::unique_ptr<ITopologicalAdjacency>> adjacenciesList;
-   adjacenciesList.emplace_back(TopologicalAdjacency::Create(maxdim, numCells, TopologyDimensionDef::Corner, numCorners, cellToCorner));
+   adjacenciesList.emplace_back(TopologicalAdjacency::Create(maxdim, static_cast<int>(numCells), TopologyDimensionDef::Corner, static_cast<int>(numCorners), cellToCorner));
    m_adjacencies = TopologicalAdjacencies::CreateWithPartialCounts(maxdim, std::move(counts), std::move(adjacenciesList));
 }
 
