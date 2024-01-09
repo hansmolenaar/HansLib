@@ -25,9 +25,10 @@ namespace
       Utilities::MyAssert(dim > TopologyDimensionDef::Edge);
       const auto mi = MultiIndex<int>::Create(std::vector<int>(dim, 2));
       std::set<std::pair<int, int>> edges;
+      std::vector<int> indx(dim);
       for (auto crnr = 0; crnr < mi.getFlatSize(); ++crnr)
       {
-         auto indx = mi.toMultiplet(crnr);
+         mi.toMultiplet(crnr, indx);
          for (TopologyDimension d = 0; d < dim; ++d)
          {
             // flip d-th bit
@@ -81,13 +82,14 @@ namespace
       const int countLo = 1 << dim;
       const auto mi = MultiIndex<int>::Create(std::vector<int>(dim, 2));
       std::map<int, std::vector<int>> faces;
+      std::vector<int> multiplet(dim);
       for (TopologyDimension d = 0; d < dim; ++d)
       {
          std::vector<int> faceL;
          std::vector<int> faceH;
          for (auto crnr = 0; crnr < countLo; ++crnr)
          {
-            const auto multiplet = mi.toMultiplet(crnr);
+            mi.toMultiplet(crnr, multiplet);
             if (multiplet.at(d) == 0)
             {
                faceL.push_back(crnr);

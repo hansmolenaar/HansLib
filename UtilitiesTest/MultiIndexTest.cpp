@@ -72,6 +72,8 @@ TEST(MultiIndexTest, UnhappyPath_ToMultiplet)
    ASSERT_ANY_THROW(mi.toMultiplet(-1, multiplet));
    ASSERT_ANY_THROW(mi.toMultiplet(6, multiplet));
    ASSERT_ANY_THROW(mi.toMultiplet(7, multiplet));
+   std::vector<int> multiplet2(2);
+   ASSERT_ANY_THROW(mi.toMultiplet(0, multiplet2));
 }
 
 

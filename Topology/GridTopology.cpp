@@ -22,13 +22,15 @@ GridTopology::GridTopology(const std::vector<int>& cellDimensions) :
    std::map<int, std::vector<int>> cellToCorner;
    const auto numCornersInCell = m_shape.getAdjacencies().getCountSafe(TopologyDimensionDef::Corner);
    const auto cornerInCellIndexer = MultiIndex<int>::Create(std::vector<int>(maxdim, 2));
+   std::vector<int> cellMultiplet(cellDimensions.size());
+   std::vector<int> crnrMultiplet(maxdim);
    for (int cellId = 0; cellId < numCells; ++cellId)
    {
-      auto cellMultiplet = cellIndexer.toMultiplet(cellId);
+      cellIndexer.toMultiplet(cellId, cellMultiplet);
       cellToCorner.emplace(cellId, std::vector<int>{});
       for (int crnr = 0; crnr < numCornersInCell; ++crnr)
       {
-         const auto crnrMultiplet = cornerInCellIndexer.toMultiplet(crnr);
+         cornerInCellIndexer.toMultiplet(crnr, crnrMultiplet);
          str::transform(cellMultiplet, crnrMultiplet, cellMultiplet.begin(), std::plus());
          const auto crnrId = static_cast<int>(cornerIndexer.toFlat(cellMultiplet));
          // Restore

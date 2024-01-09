@@ -79,7 +79,8 @@ std::optional<PointIndex>  UniquePointCollectionBinning<N>::tryGetClosePoint(con
    const auto numCandidateBins = multiIndex.getFlatSize();
    for (size_t c = 0; c < numCandidateBins; ++c)
    {
-      const auto candidate = multiIndex.toMultiplet(c);
+      std::array<size_t, N> candidate;
+      multiIndex.toMultiplet(c, candidate);
       std::array<size_t, N> singleBin;
       for (int n = 0; n < N; ++n)
       {

@@ -52,28 +52,16 @@ T MultiIndex<T>::at(size_t n) const
 }
 
 template <typename T>
-std::vector<T> MultiIndex<T>::toMultiplet(size_t flat) const
-{
-   m_checkFlat.check(static_cast<T>(flat));
-   std::vector<T> result;
-   result.reserve(getNumDimensions());
-
-   // Loop backwards!
-   for (auto d = getNumDimensions() - 1; d >= 0; --d)
-   {
-      T index = static_cast<T>(flat) / m_factors[d];
-      result.push_back(index);
-      flat -= index * m_factors[d];
-      if (d == 0) break; // break: d is unsigned
-   }
-   std::reverse(result.begin(), result.end());
-   return result;
-}
-
-template <typename T>
 void MultiIndex<T>::toMultiplet(size_t flat, std::span<T> multiplet) const
 {
    m_checkFlat.check(static_cast<T>(flat));
+   if (multiplet.size() != m_dimensions.size()) 
+   {
+      std::string msg = "MultiIndex<T>::toMultiplet incorrect input dimension ";
+      msg += std::to_string(multiplet.size());
+      msg += " expeced " + std::to_string(m_dimensions.size());
+      throw MyException(msg);
+   }
    auto* first = multiplet.data();
    auto* data = multiplet.data();
 
