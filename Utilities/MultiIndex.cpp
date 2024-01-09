@@ -62,13 +62,12 @@ void MultiIndex<T>::toMultiplet(size_t flat, std::span<T> multiplet) const
    auto* data = multiplet.data();
 
    // Loop backwards!
-   for (auto d = getNumDimensions() - 1; d >= 0; --d)
+   for (int d = static_cast<int>(getNumDimensions() - 1); d >= 0; --d)
    {
       T index = static_cast<T>(flat) / m_factors[d];
       *data = index;
       ++data;
       flat -= index * m_factors[d];
-      if (d == 0) break; // break: d is unsigned
    }
    std::reverse(multiplet.begin(), multiplet.end());
 }
