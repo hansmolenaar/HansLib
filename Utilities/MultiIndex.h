@@ -15,8 +15,8 @@ public:
    size_t getNumDimensions() const;
    size_t getFlatSize() const;
    T at(size_t) const;
-   std::vector<T> toMultiplet(T) const;
-   T toFlat(std::span<const T>) const;
+   std::vector<T> toMultiplet(size_t) const;
+   size_t toFlat(std::span<const T>) const;
 
 private:
    explicit  MultiIndex(std::vector<T> dimensions);

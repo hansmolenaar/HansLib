@@ -46,16 +46,16 @@ T MultiIndex<T>::at(size_t n) const
 }
 
 template <typename T>
-std::vector<T> MultiIndex<T>::toMultiplet(T flat) const
+std::vector<T> MultiIndex<T>::toMultiplet(size_t flat) const
 {
-   m_checkFlat.check(flat);
+   m_checkFlat.check(static_cast<T>(flat));
    std::vector<T> result;
    result.reserve(getNumDimensions());
 
    // Loop backwards!
    for (auto d = getNumDimensions() - 1; d >= 0; --d)
    {
-      T index = flat / m_factors[d];
+      T index = static_cast<T>(flat) / m_factors[d];
       result.push_back(index);
       flat -= index * m_factors[d];
       if (d == 0) break; // break: d is unsigned
@@ -66,10 +66,10 @@ std::vector<T> MultiIndex<T>::toMultiplet(T flat) const
 
 
 template <typename T>
-T MultiIndex<T>::toFlat(std::span<const T> multiplet) const
+size_t MultiIndex<T>::toFlat(std::span<const T> multiplet) const
 {
    Utilities::MyAssert(multiplet.size() == getNumDimensions());
-   T result = 0;
+   size_t result = 0;
    size_t count = 0;
    for (auto indx : multiplet)
    {
