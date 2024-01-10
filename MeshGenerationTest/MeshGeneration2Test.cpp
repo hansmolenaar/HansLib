@@ -28,3 +28,27 @@ TEST(MeshGeneration2Test, Ball)
    //Paraview::Write("MeshGeneration2Test_Ball", *vtkData);
 }
 
+
+TEST(MeshGeneration2Test, SingleTriangleToWorld)
+{
+   IndexTreeToSimplices2::Triangles baseTriangles;
+   const RatPoint2 rp0(Rational(0, 1), Rational(0, 1));
+   const RatPoint2 rp1(Rational(1, 1), Rational(0, 1));
+   const RatPoint2 rp2(Rational(0, 1), Rational(1, 1));
+   baseTriangles.push_back({rp0, rp1, rp2});
+   const auto bb = BoundingBox<double, 2>::CreateFrom2Points(Point2{ 1,1 }, Point2{ 2,3 });
+   const PointClose<double, 2> areClose;
+
+   std::unique_ptr<IDynamicUniquePointCollection<double, 2>> pointGeometry;
+   std::unique_ptr<MeshGeneration::TriangleNodes> triangleNodes;
+
+   MeshGeneration2::BaseTriangulationToWorld(baseTriangles, areClose, bb, pointGeometry, triangleNodes);
+
+   ASSERT_EQ(pointGeometry->getNumPoints(), 3);
+   ASSERT_TRUE(areClose(pointGeometry->getPoint(0), Point2{1,1}));
+   ASSERT_TRUE(areClose(pointGeometry->getPoint(1), Point2{ 2,1 }));
+   ASSERT_TRUE(areClose(pointGeometry->getPoint(2), Point2{ 1,3 }));
+
+   ASSERT_EQ(triangleNodes->getAllTriangles().size(), 1);
+}
+
