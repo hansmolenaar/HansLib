@@ -1,6 +1,8 @@
 #include "LocalizationBins.h"
 #include "MyException.h"
+#include "ArrayStatistics.h"
 #include "Defines.h"
+#include <iostream>
 
 namespace
 {
@@ -103,4 +105,20 @@ size_t LocalizationBins::find(double x) const
    if (x > m_vertices.back()) throw MyException("LocalizationBins::find value above upper bound");
    // x == m_vertices.back()
    return m_vertices.size() - 2;
+}
+
+std::string LocalizationBins::toString() const
+{
+   const std::string sep = "  ";
+   const size_t numBins = getNumBins();
+   std::vector<double> binSizes;
+   binSizes.reserve(numBins);
+   for (size_t n = 0; n < numBins; ++n) binSizes.push_back(m_vertices.at(n + 1) - m_vertices.at(n));
+   const ArrayStatistics<double> stats(binSizes);
+
+   std::ostringstream oss;
+   oss <<       "LWR=" << m_vertices.front()
+      << sep << "UPR=" << m_vertices.back()
+      << sep << stats.toString();
+   return oss.str();
 }

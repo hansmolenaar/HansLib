@@ -7,8 +7,7 @@ class Logger
 {
 public:
    void logLine(const std::string&);
-   void logLines(const std::vector<std::string>&);
-   void logStatictics(const std::string& header, std::span<const double> values);
+   void logLines (const std::vector<std::string>&);
    const std::vector<std::string>& get() const;
 private:
    std::vector<std::string> m_lines;

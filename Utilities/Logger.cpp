@@ -1,4 +1,6 @@
 #include "Logger.h"
+#include "ArrayStatistics.h"
+#include "Rational.h"
 
 #include <numeric>
 #include <chrono>
@@ -36,11 +38,6 @@ void Logger::logLines(const std::vector<std::string>& lines)
       oss << line << '\n';
    }
    m_lines.push_back(oss.str());
-}
-
-void Logger::logStatictics(const std::string& header, std::span<const double> values)
-{
-
 }
 
 const std::vector<std::string>& Logger::get() const

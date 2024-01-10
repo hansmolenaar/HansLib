@@ -17,6 +17,8 @@ public:
    double getBinLower(size_t n) const;
    double getBinUpper(size_t n) const;
 
+   std::string toString() const;
+
 private:
    explicit LocalizationBins(std::vector<double> vertices);
 

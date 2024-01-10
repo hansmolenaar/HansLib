@@ -88,3 +88,12 @@ TEST(LocalizationBinsTest, FromValuesUnHappyPath)
    ASSERT_THROW(LocalizationBins::CreateFromValues(std::vector<double>{ 1.0 }, false, -1.0), MyException);
    ASSERT_THROW(LocalizationBins::CreateFromValues(std::vector<double>{ 1.0, 1.1 }, false, 1.0), MyException);
 }
+
+
+TEST(LocalizationBinsTest, ToString)
+{
+   const Interval<double> intv(2.0, 3.0);
+   const LocalizationBins bins = LocalizationBins::CreateUniform(intv, 2);
+   const auto str = bins.toString();
+   ASSERT_TRUE(str.contains("LWR=2  UPR=3  NUM=2  MIN=0.5  MAX=0.5  AVG=0.5"));
+}
