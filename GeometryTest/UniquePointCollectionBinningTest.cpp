@@ -162,3 +162,19 @@ TEST(UniquePointCollectionBinningTest, TryGetClosePoint5)
    TestTryGetClosePoints(points, collection);
 }
 
+
+TEST(UniquePointCollectionBinningTest, ToString)
+{
+   const PointClose<double, 3> predicate;
+   const UniquePointCollectionBinning<3> collection(predicate, std::vector<Point3>{
+      Point3{ 0,0,0 }, Point3{ 1,0,0 }, Point3{ 0,1,0 }, Point3{ 1,1,0 },
+         Point3{ 0,0,1 }, Point3{ 1,0,1 }, Point3{ 0,1,1 }, Point3{ 1,1,1 },
+         Point3{ 0.1, 0.2, 0.3 },
+         Point3{ 0.6, 0.7, 0.8 },
+         Point3{ 0.3, 0.6, 0.2 },
+   });
+   const auto str = collection.toString();
+   ASSERT_TRUE(str.contains("UniquePointCollectionBinning  NDIR=3  NPOINTS=11"));
+   ASSERT_TRUE(str.contains("DIR=0  ->  (-INF)  LWR=0  UPR=1  (+INF)  NUM=5  MIN=0.05  MAX=0.35  AVG=0.2"));
+}
+

@@ -78,7 +78,7 @@ LocalizationBins LocalizationBins::CreateFromValues(std::vector<double> values, 
    return  LocalizationBins{ RemoveTooSmallBins(vertices, minBinSize) };
 }
 
-double LocalizationBins::getBinLower(size_t n) const 
+double LocalizationBins::getBinLower(size_t n) const
 {
    return m_vertices.at(n);
 }
@@ -109,16 +109,24 @@ size_t LocalizationBins::find(double x) const
 
 std::string LocalizationBins::toString() const
 {
+   const bool skipLower = m_vertices.front() == std::numeric_limits<double>::lowest();
+   const bool skipUpper = m_vertices.back() == std::numeric_limits<double>::max();
+
    const std::string sep = "  ";
    const size_t numBins = getNumBins();
    std::vector<double> binSizes;
    binSizes.reserve(numBins);
-   for (size_t n = 0; n < numBins; ++n) binSizes.push_back(m_vertices.at(n + 1) - m_vertices.at(n));
+   const size_t first = skipLower ? 1 : 0;
+   const size_t last = m_vertices.size() - (skipUpper ? 1 : 0) -1;
+   for (size_t n = first; n < last; ++n) binSizes.push_back(m_vertices.at(n + 1) - m_vertices.at(n));
    const ArrayStatistics<double> stats(binSizes);
 
    std::ostringstream oss;
-   oss <<       "LWR=" << m_vertices.front()
-      << sep << "UPR=" << m_vertices.back()
+   oss
+      << (skipLower ? "(-INF)" + sep : "")
+      << "LWR=" << m_vertices.at(first)
+      << sep << "UPR=" << m_vertices.at(last)
+      << (skipUpper ? sep +  "(+INF)" : "")
       << sep << stats.toString();
    return oss.str();
 }

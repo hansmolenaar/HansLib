@@ -23,6 +23,8 @@ public:
 
    const LocalizationBins& getBins(int direction) const;
 
+   std::string toString() const;
+
    using BinSpecifier = std::array<size_t, N>;
 private:
 

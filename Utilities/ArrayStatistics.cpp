@@ -49,6 +49,8 @@ double ArrayStatistics<T>::getAverage() const
 template<typename T>
 std::string ArrayStatistics<T>::toString() const
 {
+   if (m_size == 0) return "EMPTY";
+
    const std::string sep = "  ";
    std::ostringstream oss;
    oss        << "NUM=" << getSize()

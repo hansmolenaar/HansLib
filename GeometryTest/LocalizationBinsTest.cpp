@@ -97,3 +97,11 @@ TEST(LocalizationBinsTest, ToString)
    const auto str = bins.toString();
    ASSERT_TRUE(str.contains("LWR=2  UPR=3  NUM=2  MIN=0.5  MAX=0.5  AVG=0.5"));
 }
+
+
+TEST(LocalizationBinsTest, ToStringNonStrict)
+{
+   const LocalizationBins bins = LocalizationBins::CreateFromValues(std::vector<double> { 2.0, 1.0 }, false);
+   const auto str = bins.toString();
+   ASSERT_TRUE(str.contains("(-INF)  LWR=1  UPR=2  (+INF)  NUM=2  MIN=0.5  MAX=0.5  AVG=0.5"));
+}

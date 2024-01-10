@@ -40,3 +40,12 @@ TEST(ArrayStatistics, ToString)
 	const auto str = stats.toString();
 	ASSERT_TRUE(str.contains("NUM=4  MIN=1  MAX=4  AVG=2.5"));
 }
+
+
+TEST(ArrayStatistics, EmptyToString)
+{
+	const std::vector<Rational> numbers{};
+	const ArrayStatistics<Rational>  stats(numbers);
+	const auto str = stats.toString();
+	ASSERT_EQ(str, "EMPTY");
+}

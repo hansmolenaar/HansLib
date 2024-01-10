@@ -72,7 +72,7 @@ std::optional<PointIndex>  UniquePointCollectionBinning<N>::tryGetClosePoint(con
       candidatesInDir[n] = GetCandidateBinsInDirection(p.at(n), m_bins.at(n), m_predicate.getSmallLengthInDirection(n));
    }
 
-   std::array<size_t,N> dimensions;
+   std::array<size_t, N> dimensions;
    for (int n = 0; n < N; ++n) dimensions.at(n) = candidatesInDir[n].size();
    const auto multiIndex = MultiIndex<size_t>::Create(dimensions);
    const auto numCandidateBins = multiIndex.getFlatSize();
@@ -165,4 +165,18 @@ std::optional<PointIndex> UniquePointCollectionBinning<N>::tryGetClosePointInBin
    }
 
    return {};
+}
+
+template< int N>
+std::string UniquePointCollectionBinning<N>::toString() const
+{
+   const std::string sep = "  ";
+   std::ostringstream oss;
+   oss << "UniquePointCollectionBinning  NDIR=" << N
+      << sep << "NPOINTS=" << getNumPoints() << '\n';
+   for (int n = 0; n < N; ++n)
+   {
+      oss << "DIR=" << n << sep << "->" << sep << m_bins.at(n).toString() << '\n';
+   }
+   return oss.str();
 }
