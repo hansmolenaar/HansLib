@@ -9,10 +9,15 @@ using namespace Geometry;
 using namespace IntervalTree;
 using namespace MeshGeneration;
 
-IndexTreeToSimplices2::Triangles MeshGeneration2::GenerateBaseTriangulation(const IGeometryRegion<double, 2>& region, MeshingStrategy2& strategy)
+IndexTreeToSimplices2::Triangles MeshGeneration2::GenerateBaseTriangulation(const IGeometryRegion<double, 2>& region, MeshingStrategy2& strategy, Logger& logger)
 {
+   std::string msg = "MeshGeneration2::GenerateBaseTriangulation() region Bb " + region.getBoundingBox().toString();
+   logger.logLine(msg);
+
    IndexTree<2> tree;
    tree.refineUntilReady(strategy.getRefinementPredicate());
+   msg = "MeshGeneration2::GenerateBaseTriangulation() after refinement: " + tree.toString();
+
    IntervalTree::Balance(tree);
    return IndexTreeToSimplices2::Create(tree);
 }
@@ -22,7 +27,8 @@ void MeshGeneration2::BaseTriangulationToWorld(
    const IGeometryPredicate<double, 2>& predicate,
    const BoundingBox<double, 2>& worldBB,
    std::unique_ptr<IDynamicUniquePointCollection<double, 2>>& pointGeometry,
-   std::unique_ptr<MeshGeneration::TriangleNodes>& triangleNodes)
+   std::unique_ptr<MeshGeneration::TriangleNodes>& triangleNodes,
+   Logger& logger)
 {
    // Clear output
    pointGeometry = nullptr;

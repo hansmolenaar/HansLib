@@ -212,3 +212,11 @@ TEST(BoundingBoxTest, ScalePoint1WithRational)
    const auto result = bb.scaleFromPoint01(scale);
    ASSERT_NEAR(result[0], 3.5, 1.0e-12);
 }
+
+
+TEST(BoundingBoxTest, ToStringInt)
+{
+   const auto bb = BoundingBox<int, 2>::CreateFrom2Points(IntPoint2{ 3, 0 }, IntPoint2{ 1, 2 });
+   const auto str = bb.toString();
+   ASSERT_EQ(str, " (1, 3) (0, 2)");
+}

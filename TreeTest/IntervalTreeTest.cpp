@@ -190,3 +190,13 @@ TEST(IndexTreeTest, IsRefined1)
 
    ASSERT_FALSE(tree.isLeaf(tree.getRoot()));
 }
+
+
+TEST(IndexTreeTest, ToString)
+{
+   IndexTree<1> tree;
+   RefineToMaxLevel<1> doRefine1{ 2 };
+   tree.refineUntilReady(doRefine1);
+   const auto msg = tree.toString();
+   ASSERT_EQ(msg, "IndexTree N=1  SIZE=7  NUMLEAVES=4  MAXLEVEL=2");
+}

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Rational.h"
-#include "IntervalTree.h"
+#include "IntervalTreeIndex.h"
 #include <map>
 
 namespace IntervalTree
@@ -29,6 +29,13 @@ namespace IntervalTree
    {
       void operator()(const Index<N>& index) { Leaves.push_back(&index); };
       std::vector<const Index<N>*> Leaves;
+   };
+
+   template<int N>
+   struct ActionMaxLevel
+   {
+      void operator()(const Index<N>& index) { MaxLevel = std::max(MaxLevel, index.getLevel()); };
+      int MaxLevel = -1;
    };
 
 }

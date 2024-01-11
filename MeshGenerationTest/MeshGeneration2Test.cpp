@@ -16,12 +16,13 @@ using namespace Geometry;
 
 TEST(MeshGeneration2Test, Ball)
 {
+   Logger logger;
    const Ball<double, 2> ball(Point2{ 0.5, 0.5 }, 0.5);
    const PointClose<double, 2> areClose;
    const auto initialBbGenerator = InitialBoundingboxGenerator<2>::Create(2.0);
    const RefineRegionToMaxLevel<2> predicate(5, ball, areClose, *initialBbGenerator);
    MeshingStrategy2 strategy(*initialBbGenerator, predicate);
-   const auto triangles = MeshGeneration2::GenerateBaseTriangulation(ball, strategy);
+   const auto triangles = MeshGeneration2::GenerateBaseTriangulation(ball, strategy, logger);
 
    const auto vtkData = IndexTreeToSimplices2::ToVtkData(triangles);
    ASSERT_EQ(1016, vtkData->getNumCells());
@@ -31,6 +32,7 @@ TEST(MeshGeneration2Test, Ball)
 
 TEST(MeshGeneration2Test, SingleTriangleToWorld)
 {
+   Logger logger;
    IndexTreeToSimplices2::Triangles baseTriangles;
    const RatPoint2 rp0(Rational(0, 1), Rational(0, 1));
    const RatPoint2 rp1(Rational(1, 1), Rational(0, 1));
@@ -42,7 +44,7 @@ TEST(MeshGeneration2Test, SingleTriangleToWorld)
    std::unique_ptr<IDynamicUniquePointCollection<double, 2>> pointGeometry;
    std::unique_ptr<MeshGeneration::TriangleNodes> triangleNodes;
 
-   MeshGeneration2::BaseTriangulationToWorld(baseTriangles, areClose, bb, pointGeometry, triangleNodes);
+   MeshGeneration2::BaseTriangulationToWorld(baseTriangles, areClose, bb, pointGeometry, triangleNodes, logger);
 
    ASSERT_EQ(pointGeometry->getNumPoints(), 3);
    ASSERT_TRUE(areClose(pointGeometry->getPoint(0), Point2{1,1}));

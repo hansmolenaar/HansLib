@@ -34,6 +34,7 @@ namespace IntervalTree
       bool isLeaf(typename const Index<N>& index) const;
 
       size_t size() const;
+      std::string toString() const;
 
    private:
       IndexFactory<N> m_factory;
@@ -143,6 +144,20 @@ namespace IntervalTree
          if (index) return *(index.value());
          key = Index<N>::GetParent(key);
       }
+   }
+
+   template<int N>
+   std::string IndexTree<N>::toString() const
+   {
+      static const std::string sep = "  ";
+      std::string result = "IndexTree N=" + std::to_string(N);
+      result += sep + "SIZE=" + std::to_string(size());
+      result += sep + "NUMLEAVES=" + std::to_string(m_leaves.size());
+
+      ActionMaxLevel<N> actionMaxLevel;
+      foreachLeaf(actionMaxLevel);
+      result += sep + "MAXLEVEL=" + std::to_string(actionMaxLevel.MaxLevel);
+      return result;
    }
 
 }
