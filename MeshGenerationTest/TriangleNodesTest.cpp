@@ -192,3 +192,18 @@ TEST(TriangleNodesTest, GetAllEdges)
    allEdges = tnodes.getAllSortedEdges();
    ASSERT_TRUE(str::equal(allEdges, std::vector<Edge>{Edge{ 0, 2 }, Edge{ 0,42 }, Edge{ 0,999 }, Edge{ 2, 42 }, Edge{ 42, 999 }}));
 }
+
+TEST(TriangleNodesTest, ToString)
+{
+   TriangleNodes tnodes;
+   std::string msg = tnodes.toString();
+   ASSERT_EQ(msg, "TriangleNodes NUMNODES=0 NUMTRIANGLES=0");
+
+   const auto triangle0 = tnodes.addTriangle(42, 999, 0);
+   msg = tnodes.toString();
+   ASSERT_EQ(msg, "TriangleNodes NUMNODES=3 NUMTRIANGLES=1");
+
+   const auto triangle1 = tnodes.addTriangle(999, 42, 1);
+   msg = tnodes.toString();
+   ASSERT_EQ(msg, "TriangleNodes NUMNODES=4 NUMTRIANGLES=2");
+}

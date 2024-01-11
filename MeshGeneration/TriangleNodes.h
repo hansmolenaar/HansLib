@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include <array>
 #include <optional>
+#include <string>
 
 namespace MeshGeneration
 {
@@ -33,7 +34,11 @@ namespace MeshGeneration
       bool isKnownTriangleId(TriangleId triangle) const;
 
       std::vector<TriangleNodes::TriangleId> getAllTriangles() const;
+      std::vector<TriangleNodes::NodeId> getAllNodes() const;
       std::vector<TriangleNodes::SortedEdge> getAllSortedEdges() const;
+
+      std::string toString() const;
+
    private:
       std::optional<TriangleNodes::TriangleId> tryGetTriangleFromSortedNodes(const std::array<NodeId, NumNodesOnTriangle>& nodes) const;
       void checkNodeId(NodeId nodeId) const;

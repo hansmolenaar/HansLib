@@ -52,5 +52,29 @@ TEST(MeshGeneration2Test, SingleTriangleToWorld)
    ASSERT_TRUE(areClose(pointGeometry->getPoint(2), Point2{ 1,3 }));
 
    ASSERT_EQ(triangleNodes->getAllTriangles().size(), 1);
+
+   //const auto vtkData = MeshGeneration2::ToVtkData(*triangleNodes, *pointGeometry);
+   //Paraview::Write("MeshGeneration2Test_SingleTriangleToWorld", *vtkData);
+}
+
+
+TEST(MeshGeneration2Test, Ball2)
+{
+   Logger logger;
+   const Ball<double, 2> ball(Point2{ 1.5, 2.5 }, 3);
+   const PointClose<double,2> areClose;
+   const auto initialBbGenerator = InitialBoundingboxGenerator<2>::Create(1.25);
+   const auto bbInitial = initialBbGenerator->generate(ball);
+   const RefineRegionToMaxLevel<2> predicate(4, ball, areClose, *initialBbGenerator);
+   MeshingStrategy2 strategy(*initialBbGenerator, predicate);
+   const auto triangles = MeshGeneration2::GenerateBaseTriangulation(ball, strategy, logger);
+
+   std::unique_ptr<IDynamicUniquePointCollection<double, 2>> pointGeometry;
+   std::unique_ptr<MeshGeneration::TriangleNodes> triangleNodes;
+   MeshGeneration2::BaseTriangulationToWorld(triangles, areClose, bbInitial, pointGeometry, triangleNodes, logger);
+
+   const auto vtkData = MeshGeneration2::ToVtkData(*triangleNodes, *pointGeometry);
+   ASSERT_EQ(504, vtkData->getNumCells());
+   //Paraview::Write("MeshGeneration2Test_Ball2", *vtkData);
 }
 

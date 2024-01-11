@@ -224,3 +224,25 @@ std::vector<TriangleNodes::SortedEdge> TriangleNodes::getAllSortedEdges() const
    result.erase(first, last);
    return result;
 }
+
+std::vector<TriangleNodes::NodeId> TriangleNodes::getAllNodes() const
+{
+   std::vector<TriangleNodes::NodeId> result;
+   for (auto iter = m_toTriangles.begin();
+      iter != m_toTriangles.end();
+      iter = m_toTriangles.equal_range(iter->first).second)
+   {
+      result.push_back(iter->first);
+   }
+   str::sort(result);
+   return result;
+}
+
+std::string TriangleNodes::toString() const
+{
+   const std::string sep = " ";
+   std::string result = "TriangleNodes";
+   result += sep + "NUMNODES=" + std::to_string(getAllNodes().size());
+   result += sep + "NUMTRIANGLES=" + std::to_string(m_toNodes.size());
+   return result;
+}

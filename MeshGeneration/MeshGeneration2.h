@@ -6,6 +6,7 @@
 #include "IDynamicUniquePointCollection.h"
 #include "TriangleNodes.h"
 #include "Logger.h"
+#include "VtkData.h"
 
 namespace MeshGeneration2
 {
@@ -18,4 +19,6 @@ namespace MeshGeneration2
       std::unique_ptr<IDynamicUniquePointCollection<double,2>>& pointGeometry, 
       std::unique_ptr<MeshGeneration::TriangleNodes>& triangleNodes,
       Logger& logger);
+
+   std::unique_ptr<Vtk::VtkData> ToVtkData(const MeshGeneration::TriangleNodes& triangleNodes, const IPointCollection<double,2>& points);
 }

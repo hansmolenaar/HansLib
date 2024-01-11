@@ -17,9 +17,17 @@ IndexTreeToSimplices2::Triangles MeshGeneration2::GenerateBaseTriangulation(cons
    IndexTree<2> tree;
    tree.refineUntilReady(strategy.getRefinementPredicate());
    msg = "MeshGeneration2::GenerateBaseTriangulation() after refinement: " + tree.toString();
+   logger.logLine(msg);
 
    IntervalTree::Balance(tree);
-   return IndexTreeToSimplices2::Create(tree);
+   msg = "MeshGeneration2::GenerateBaseTriangulation() after balancing (max 1 level difference): " + tree.toString();
+   logger.logLine(msg);
+
+   const auto result = IndexTreeToSimplices2::Create(tree);
+   msg = "MeshGeneration2::GenerateBaseTriangulation(): number of triangles " + std::to_string(result.size());
+   logger.logLine(msg);
+
+   return result;
 }
 
 void MeshGeneration2::BaseTriangulationToWorld(
@@ -35,33 +43,42 @@ void MeshGeneration2::BaseTriangulationToWorld(
    triangleNodes = nullptr;
 
    // Collect unique points
-   UniqueHashedPointCollection<Rational, 2> collectionRational;
+   std::unordered_map<RatPoint2, Point2> uniquePoints;
+   std::vector<Point2> uniqueWorldPoints;
    for (auto& triangle : baseTriangles)
    {
       for (auto& p : triangle)
       {
-         collectionRational.addIfNew(p);
+         if (!uniquePoints.contains(p))
+         {
+            const Point2 worldPoint = worldBB.scaleFromPoint01(p);
+            uniquePoints[p] = worldPoint;
+            uniqueWorldPoints.push_back(worldPoint);
+         }
       }
    }
 
-   const PointIndex numUniquePoints = collectionRational.getNumPoints();
-   std::vector<Point2> uniqueWorldPoints;
-   uniqueWorldPoints.reserve(numUniquePoints);
-   for (PointIndex n = 0; n < numUniquePoints; ++n)
-   {
-      const RatPoint2 rpoint = collectionRational.getPoint(n);
-      uniqueWorldPoints.emplace_back(worldBB.scaleFromPoint01(rpoint));
-   }
+   logger.logLine("MeshGeneration2::BaseTriangulationToWorld number of unique points: " + std::to_string(uniquePoints.size()));
 
-   pointGeometry = std::make_unique<UniquePointCollectionBinning<2>>(predicate, uniqueWorldPoints);
+   // Build the point collection from the points
+
+   auto binnedCollection = std::make_unique<UniquePointCollectionBinning<2>>(predicate, uniqueWorldPoints);
+   logger.logLine("MeshGeneration2::BaseTriangulationToWorld binning collecion: " + binnedCollection->toString());
+
+   pointGeometry.reset(binnedCollection.release());
+
    std::unordered_map<RatPoint2, PointIndex> toWorld;
 
-   for (PointIndex n = 0; n < numUniquePoints; ++n)
+   // Get IDs for the points
+   for (auto& up : uniquePoints)
    {
-      const PointIndex worldId = *pointGeometry->tryGetClosePoint(uniqueWorldPoints[n]);
-      toWorld.emplace(collectionRational.getPoint(n), worldId);
+      const PointIndex worldId = *pointGeometry->tryGetClosePoint(up.second);
+      toWorld.emplace(up.first, worldId);
    }
 
+
+
+   // Create the triangles
    triangleNodes = std::make_unique<MeshGeneration::TriangleNodes>();
    for (auto& triangle : baseTriangles)
    {
@@ -70,4 +87,32 @@ void MeshGeneration2::BaseTriangulationToWorld(
       const auto n2 = static_cast<TriangleNodes::NodeId>(toWorld.at(triangle.at(2)));
       triangleNodes->addTriangle(n0, n1, n2);
    }
+
+   logger.logLine("MeshGeneration2::BaseTriangulationToWorld topology\n" + triangleNodes->toString());
+}
+
+std::unique_ptr<Vtk::VtkData> MeshGeneration2::ToVtkData(const MeshGeneration::TriangleNodes& triangleNodes, const IPointCollection<double, 2>& points)
+{
+   constexpr int GeometryDimension = 2;
+   std::unique_ptr< Vtk::VtkData> result = std::make_unique<Vtk::VtkData>(GeometryDimension, 0);
+
+   std::unordered_map<TriangleNodes::NodeId, Vtk::NodeIndex> nodeToVtk;
+   Vtk::NodeIndex nodeIndex = 0;
+   for (auto& node : triangleNodes.getAllNodes())
+   {
+      const auto v = points.getPoint(node);
+      std::array<Vtk::CoordinateType, GeometryDimension> coordinates{ static_cast<Vtk::CoordinateType>(v[0]),static_cast<Vtk::CoordinateType>(v[1]) };
+      result->addNode(coordinates);
+      nodeToVtk[node] = nodeIndex;
+      ++nodeIndex;
+   }
+
+   for (const auto& cell : triangleNodes.getAllTriangles())
+   {
+      const auto tnodes = triangleNodes.getTriangleNodes(cell);
+      const std::array<Vtk::NodeIndex, 3> vtkNodes{ nodeToVtk.at(tnodes.at(0)), nodeToVtk.at(tnodes.at(1)), nodeToVtk.at(tnodes.at(2)) };
+      result->addCell(Vtk::CellType::VTK_TRIANGLE, vtkNodes, {});
+   }
+
+   return result;
 }
