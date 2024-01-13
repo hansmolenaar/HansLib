@@ -67,7 +67,7 @@ static void TestTryGetClosePoints(const std::vector<Point<double, N>> closePoint
    UniquePointCollectionBinning<N> collectionTest = collection;
    std::optional<PointIndex> expectAllSame;
    for (size_t n = 0; n < closePoints.size(); ++n)
-   {    
+   {
       if (!expectAllSame)
       {
          expectAllSame = collectionTest.addIfNew(closePoints.at(n));
@@ -176,5 +176,21 @@ TEST(UniquePointCollectionBinningTest, ToString)
    const auto str = collection.toString();
    ASSERT_TRUE(str.contains("UniquePointCollectionBinning  NDIR=3  NPOINTS=11"));
    ASSERT_TRUE(str.contains("DIR=0  ->  (-INF)  LWR=0  UPR=1  (+INF)  NUM=5  MIN=0.05  MAX=0.35  AVG=0.2"));
+}
+
+
+TEST(UniquePointCollectionBinningTest, Move)
+{
+   const PointClose<double, 1> predicate;
+   UniquePointCollectionBinning<1> collection(predicate, std::vector<Point1>{Point1{ 2 }, Point1{ 1 }});
+
+   const Point1 oldPosition{ 1.4 };
+   const auto pointId = collection.addIfNew(oldPosition);
+   const Point1 newPosition{ 1.6 };
+   collection.movePoint(pointId, newPosition);
+
+   ASSERT_EQ(collection.getNumPoints(), 3);
+   ASSERT_EQ(*collection.tryGetClosePoint(newPosition), pointId);
+   ASSERT_TRUE(!collection.tryGetClosePoint(oldPosition));
 }
 

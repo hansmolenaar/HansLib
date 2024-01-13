@@ -82,9 +82,9 @@ void MeshGeneration2::BaseTriangulationToWorld(
    triangleNodes = std::make_unique<MeshGeneration::TriangleNodes>();
    for (auto& triangle : baseTriangles)
    {
-      const auto n0 = static_cast<TriangleNodes::NodeId>(toWorld.at(triangle.at(0)));
-      const auto n1 = static_cast<TriangleNodes::NodeId>(toWorld.at(triangle.at(1)));
-      const auto n2 = static_cast<TriangleNodes::NodeId>(toWorld.at(triangle.at(2)));
+      const auto n0 = static_cast<PointIndex>(toWorld.at(triangle.at(0)));
+      const auto n1 = static_cast<PointIndex>(toWorld.at(triangle.at(1)));
+      const auto n2 = static_cast<PointIndex>(toWorld.at(triangle.at(2)));
       triangleNodes->addTriangle(n0, n1, n2);
    }
 
@@ -96,7 +96,7 @@ std::unique_ptr<Vtk::VtkData> MeshGeneration2::ToVtkData(const MeshGeneration::T
    constexpr int GeometryDimension = 2;
    std::unique_ptr< Vtk::VtkData> result = std::make_unique<Vtk::VtkData>(GeometryDimension, 0);
 
-   std::unordered_map<TriangleNodes::NodeId, Vtk::NodeIndex> nodeToVtk;
+   std::unordered_map<PointIndex, Vtk::NodeIndex> nodeToVtk;
    Vtk::NodeIndex nodeIndex = 0;
    for (auto& node : triangleNodes.getAllNodes())
    {

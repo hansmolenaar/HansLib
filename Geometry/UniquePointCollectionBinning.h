@@ -14,6 +14,7 @@ public:
    UniquePointCollectionBinning(const IGeometryPredicate<double, N>& m_predicate, const std::vector<Point<double, N>>& points);
 
    std::optional<PointIndex>  tryGetClosePoint(const Point<double, N>&) const override;
+   void movePoint(PointIndex pointId, const Point<double, N>& newLocation) override;
    const IGeometryPredicate<double, N>& getGeometryPredicate() const override;
    Point<double, N> getPoint(PointIndex) const override;
    PointIndex getNumPoints() const override;

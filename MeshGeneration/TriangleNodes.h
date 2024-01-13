@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Defines.h"
 #include <boost/container/static_vector.hpp>
 #include <vector>
 #include <unordered_map>
@@ -15,36 +16,34 @@ namespace MeshGeneration
       static constexpr size_t NumNodesOnEdge = 2;
       static constexpr size_t NumNodesOnTriangle = 3;
 
-      using NodeId = int;
-      using TriangleId = int;
-      using SortedEdge = std::array<TriangleNodes::NodeId, NumNodesOnEdge>;
+      using SortedEdge = std::array<PointIndex, NumNodesOnEdge>;
 
       // No ordering of the nodes assumed
-      TriangleId addTriangle(NodeId n0, NodeId n1, NodeId n2);
-      void deleteTriangle(TriangleId triangleId);
-      boost::container::static_vector<TriangleId, 2> getEdgeConnectedTriangles(NodeId n0, NodeId n1) const;
-      std::vector<TriangleId> getNodeConnectedTriangles(NodeId node) const;
-      std::vector<NodeId> getEdgeConnectedNodes(NodeId node) const;
-      std::optional<TriangleId> tryGetTriangle(NodeId n0, NodeId n1, NodeId n2) const;
-      bool triangleContainsNode(TriangleId triangleId, NodeId nodeId) const;
+      CellIndex addTriangle(PointIndex n0, PointIndex n1, PointIndex n2);
+      void deleteTriangle(CellIndex triangleId);
+      boost::container::static_vector<CellIndex, 2> getEdgeConnectedTriangles(PointIndex n0, PointIndex n1) const;
+      std::vector<CellIndex> getNodeConnectedTriangles(PointIndex node) const;
+      std::vector<PointIndex> getEdgeConnectedNodes(PointIndex node) const;
+      std::optional<CellIndex> tryGetTriangle(PointIndex n0, PointIndex n1, PointIndex n2) const;
+      bool triangleContainsNode(CellIndex CellIndex, PointIndex nodeId) const;
 
-      std::array<TriangleNodes::NodeId, TriangleNodes::NumNodesOnTriangle> getTriangleNodes(TriangleId triangle) const;
+      std::array<PointIndex, TriangleNodes::NumNodesOnTriangle> getTriangleNodes(CellIndex triangle) const;
 
-      bool isKnownNodeId(NodeId node) const;
-      bool isKnownTriangleId(TriangleId triangle) const;
+      bool isKnownNodeId(PointIndex node) const;
+      bool isKnownTriangleId(CellIndex triangle) const;
 
-      std::vector<TriangleNodes::TriangleId> getAllTriangles() const;
-      std::vector<TriangleNodes::NodeId> getAllNodes() const;
+      std::vector<CellIndex> getAllTriangles() const;
+      std::vector<PointIndex> getAllNodes() const;
       std::vector<TriangleNodes::SortedEdge> getAllSortedEdges() const;
 
       std::string toString() const;
 
    private:
-      std::optional<TriangleNodes::TriangleId> tryGetTriangleFromSortedNodes(const std::array<NodeId, NumNodesOnTriangle>& nodes) const;
-      void checkNodeId(NodeId nodeId) const;
-      void checkTriangleId(TriangleId triangleId) const;
+      std::optional<CellIndex> tryGetTriangleFromSortedNodes(const std::array<PointIndex, NumNodesOnTriangle>& nodes) const;
+      void checkNodeId(PointIndex nodeId) const;
+      void checkTriangleId(CellIndex triangleId) const;
 
-      std::unordered_map<TriangleId, std::array<TriangleNodes::NodeId, NumNodesOnTriangle>> m_toNodes;
-      std::unordered_multimap<NodeId, TriangleNodes::TriangleId> m_toTriangles;
+      std::unordered_map<CellIndex, std::array<PointIndex, NumNodesOnTriangle>> m_toNodes;
+      std::unordered_multimap<PointIndex, CellIndex> m_toTriangles;
    };
 }

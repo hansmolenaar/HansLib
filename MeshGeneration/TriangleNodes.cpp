@@ -8,9 +8,9 @@ using namespace MeshGeneration;
 namespace
 {
    // Check for duplicates, etc
-   std::array<TriangleNodes::NodeId, TriangleNodes::NumNodesOnTriangle> SortAndCheckNodes(TriangleNodes::NodeId n0, TriangleNodes::NodeId n1, TriangleNodes::NodeId n2)
+   std::array<PointIndex, TriangleNodes::NumNodesOnTriangle> SortAndCheckNodes(PointIndex n0, PointIndex n1, PointIndex n2)
    {
-      std::array<TriangleNodes::NodeId, TriangleNodes::NumNodesOnTriangle> nodes = { n0, n1, n2 };
+      std::array<PointIndex, TriangleNodes::NumNodesOnTriangle> nodes = { n0, n1, n2 };
       str::sort(nodes);
       const auto last = std::unique(nodes.begin(), nodes.end());
       if (last != nodes.end())
@@ -21,14 +21,14 @@ namespace
       return nodes;
    }
 
-   TriangleNodes::SortedEdge CreateSortedEdge(TriangleNodes::NodeId n0, TriangleNodes::NodeId n1)
+   TriangleNodes::SortedEdge CreateSortedEdge(PointIndex n0, PointIndex n1)
    {
       if (n1 > n0) return { n0, n1 };
       return { n1, n0 };
    }
 }
 
-TriangleNodes::TriangleId TriangleNodes::addTriangle(NodeId n0, NodeId n1, NodeId n2)
+CellIndex TriangleNodes::addTriangle(PointIndex n0, PointIndex n1, PointIndex n2)
 {
    const auto nodes = SortAndCheckNodes(n0, n1, n2);
 
@@ -39,7 +39,7 @@ TriangleNodes::TriangleId TriangleNodes::addTriangle(NodeId n0, NodeId n1, NodeI
       throw MyException(msg);
    }
 
-   const TriangleId result = static_cast<TriangleId>(m_toNodes.size());
+   const CellIndex result = static_cast<CellIndex>(m_toNodes.size());
    m_toNodes.emplace(result, nodes);
    for (auto n : nodes)
    {
@@ -48,12 +48,12 @@ TriangleNodes::TriangleId TriangleNodes::addTriangle(NodeId n0, NodeId n1, NodeI
    return result;
 }
 
-std::optional<TriangleNodes::TriangleId> TriangleNodes::tryGetTriangleFromSortedNodes(const std::array<TriangleNodes::NodeId, TriangleNodes::NumNodesOnTriangle>& nodes) const
+std::optional<CellIndex> TriangleNodes::tryGetTriangleFromSortedNodes(const std::array<PointIndex, TriangleNodes::NumNodesOnTriangle>& nodes) const
 {
    const auto triangles = m_toTriangles.equal_range(nodes.at(0));
    for (auto itr = triangles.first; itr != triangles.second; ++itr)
    {
-      const TriangleId candidate = itr->second;
+      const CellIndex candidate = itr->second;
       const auto& candidateNodes = m_toNodes.at(candidate);
       if (str::equal(nodes, candidateNodes))
       {
@@ -64,7 +64,7 @@ std::optional<TriangleNodes::TriangleId> TriangleNodes::tryGetTriangleFromSorted
    return {};
 }
 
-std::optional<TriangleNodes::TriangleId> TriangleNodes::tryGetTriangle(NodeId n0, NodeId n1, NodeId n2) const
+std::optional<CellIndex> TriangleNodes::tryGetTriangle(PointIndex n0, PointIndex n1, PointIndex n2) const
 {
    checkNodeId(n0);
    checkNodeId(n1);
@@ -73,7 +73,7 @@ std::optional<TriangleNodes::TriangleId> TriangleNodes::tryGetTriangle(NodeId n0
    return tryGetTriangleFromSortedNodes(nodes);
 }
 
-void TriangleNodes::deleteTriangle(TriangleId triangleId)
+void TriangleNodes::deleteTriangle(CellIndex triangleId)
 {
    if (m_toNodes.find(triangleId) == m_toNodes.end())
    {
@@ -103,9 +103,9 @@ void TriangleNodes::deleteTriangle(TriangleId triangleId)
    m_toNodes.erase(triangleId);
 }
 
-boost::container::static_vector<TriangleNodes::TriangleId, 2> TriangleNodes::getEdgeConnectedTriangles(TriangleNodes::NodeId n0, TriangleNodes::NodeId n1) const
+boost::container::static_vector<CellIndex, 2> TriangleNodes::getEdgeConnectedTriangles(PointIndex n0, PointIndex n1) const
 {
-   boost::container::static_vector<TriangleNodes::TriangleId, 2> result;
+   boost::container::static_vector<CellIndex, 2> result;
    checkNodeId(n0);
    checkNodeId(n1);
    const auto [first, last] = m_toTriangles.equal_range(n0);
@@ -120,7 +120,7 @@ boost::container::static_vector<TriangleNodes::TriangleId, 2> TriangleNodes::get
    return result;
 }
 
-bool TriangleNodes::triangleContainsNode(TriangleId triangleId, NodeId nodeId) const
+bool TriangleNodes::triangleContainsNode(CellIndex triangleId, PointIndex nodeId) const
 {
    checkTriangleId(triangleId);
    checkNodeId(nodeId);
@@ -128,9 +128,9 @@ bool TriangleNodes::triangleContainsNode(TriangleId triangleId, NodeId nodeId) c
    return str::find(nodes, nodeId) != nodes.end();
 }
 
-std::vector<TriangleNodes::TriangleId> TriangleNodes::getNodeConnectedTriangles(NodeId node) const
+std::vector<CellIndex> TriangleNodes::getNodeConnectedTriangles(PointIndex node) const
 {
-   std::vector<TriangleNodes::TriangleId> result;
+   std::vector<CellIndex> result;
    checkNodeId(node);
    const auto [first, last] = m_toTriangles.equal_range(node);
    for (auto itr = first; itr != last; ++itr)
@@ -141,9 +141,9 @@ std::vector<TriangleNodes::TriangleId> TriangleNodes::getNodeConnectedTriangles(
    return result;
 }
 
-std::vector<TriangleNodes::NodeId> TriangleNodes::getEdgeConnectedNodes(NodeId node) const
+std::vector<PointIndex> TriangleNodes::getEdgeConnectedNodes(PointIndex node) const
 {
-   std::vector<TriangleNodes::NodeId> result;
+   std::vector<PointIndex> result;
    checkNodeId(node);
    const auto [first, last] = m_toTriangles.equal_range(node);
    for (auto itr = first; itr != last; ++itr)
@@ -162,7 +162,7 @@ std::vector<TriangleNodes::NodeId> TriangleNodes::getEdgeConnectedNodes(NodeId n
    return result;
 }
 
-void TriangleNodes::checkNodeId(NodeId node) const
+void TriangleNodes::checkNodeId(PointIndex node) const
 {
    if (!isKnownNodeId(node))
    {
@@ -171,7 +171,7 @@ void TriangleNodes::checkNodeId(NodeId node) const
    }
 }
 
-void TriangleNodes::checkTriangleId(TriangleId triangle) const
+void TriangleNodes::checkTriangleId(CellIndex triangle) const
 {
    if (!isKnownTriangleId(triangle))
    {
@@ -180,25 +180,25 @@ void TriangleNodes::checkTriangleId(TriangleId triangle) const
    }
 }
 
-std::array<TriangleNodes::NodeId, TriangleNodes::NumNodesOnTriangle> TriangleNodes::getTriangleNodes(TriangleId triangle) const
+std::array<PointIndex, TriangleNodes::NumNodesOnTriangle> TriangleNodes::getTriangleNodes(CellIndex triangle) const
 {
    checkTriangleId(triangle);
    return m_toNodes.at(triangle);
 }
 
-bool TriangleNodes::isKnownNodeId(NodeId node) const
+bool TriangleNodes::isKnownNodeId(PointIndex node) const
 {
    return m_toTriangles.find(node) != m_toTriangles.end();
 }
 
-bool TriangleNodes::isKnownTriangleId(TriangleId triangle) const
+bool TriangleNodes::isKnownTriangleId(CellIndex triangle) const
 {
    return m_toNodes.find(triangle) != m_toNodes.end();
 }
 
-std::vector<TriangleNodes::TriangleId> TriangleNodes::getAllTriangles() const
+std::vector<CellIndex> TriangleNodes::getAllTriangles() const
 {
-   std::vector<TriangleId> result;
+   std::vector<CellIndex> result;
    result.reserve(m_toNodes.size());
    for (auto& itr : m_toNodes)
    {
@@ -225,9 +225,9 @@ std::vector<TriangleNodes::SortedEdge> TriangleNodes::getAllSortedEdges() const
    return result;
 }
 
-std::vector<TriangleNodes::NodeId> TriangleNodes::getAllNodes() const
+std::vector<PointIndex> TriangleNodes::getAllNodes() const
 {
-   std::vector<TriangleNodes::NodeId> result;
+   std::vector<PointIndex> result;
    for (auto iter = m_toTriangles.begin();
       iter != m_toTriangles.end();
       iter = m_toTriangles.equal_range(iter->first).second)

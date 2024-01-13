@@ -180,3 +180,37 @@ std::string UniquePointCollectionBinning<N>::toString() const
    }
    return oss.str();
 }
+
+template< int N>
+void UniquePointCollectionBinning<N>::movePoint(PointIndex pointId, const Point<double, N>& newCoordinates)
+{
+   if (!m_points.contains(pointId))
+   {
+      throw MyException("UniquePointCollectionBinning<N>::movePoint unknown point " + std::to_string(pointId) );
+   }
+
+   const BinSpecifier location = locate(m_points.at(pointId));
+   const auto [first, last] = m_pointsInBin.equal_range(location);
+   bool removed = false;
+   for (auto itr = first; itr != last; ++itr)
+   {
+      if (itr->second == pointId)
+      {
+         m_pointsInBin.erase(itr);
+         removed = true;
+         break;
+      }
+   }
+   if (!removed)
+   {
+      throw MyException("UniquePointCollectionBinning<N>::movePoint unable to find pointId in bin");
+   }
+
+   const BinSpecifier newLocation = locate(newCoordinates);
+   if (tryGetClosePointInBin(newCoordinates, newLocation))
+   {
+      throw MyException("UniquePointCollectionBinning<N>::movePoint point already exists");
+   }
+   m_pointsInBin.emplace(newLocation, pointId);
+   m_points[pointId] = newCoordinates;
+}
