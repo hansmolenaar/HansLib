@@ -10,7 +10,7 @@ public:
    explicit Rotate2D(double);
    static std::unique_ptr<IPointTransformation<double, 2>> Create(double);
    Point2 operator()(const Point2&) const override;
-   std::unique_ptr< UnitVector<2>> operator()(const UnitVector<2>&) const;
+   std::unique_ptr< UnitVector<double, 2>> operator()(const UnitVector<double, 2>&) const;
 private:
    double m_angle;
    double m_cos;

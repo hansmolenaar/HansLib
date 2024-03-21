@@ -8,73 +8,73 @@
 #include <cmath>
 #include <span>
 
-template<int N>
+template<typename T, int N>
 class UnitVector
 {
 public:
-   static std::unique_ptr<UnitVector<N>> Create(std::span<const double>);
-   static std::unique_ptr<UnitVector<N>> Create(const Point<double, N>&);
-   double operator[](int) const;
-   const std::array<double, N>& data() const { return m_vector; }
+   static std::unique_ptr<UnitVector<T, N>> Create(std::span<const T>);
+   static std::unique_ptr<UnitVector<T, N>> Create(const Point<T, N>&);
+   T operator[](int) const;
+   const std::array<T, N>& data() const { return m_vector; }
 
-   double innerProduct(const Point<double, N>&) const;
+   T innerProduct(const Point<T, N>&) const;
 private:
-   UnitVector(std::array<double, N>&&);
-   Point<double, N> m_vector;
+   UnitVector(std::array<T, N>&&);
+   Point<T, N> m_vector;
 };
 
-template<int N>
-UnitVector<N>::UnitVector(std::array<double, N>&& unitVector) :
+template<typename T, int N>
+UnitVector<T, N>::UnitVector(std::array<T, N>&& unitVector) :
    m_vector(unitVector)
 {
 }
 
-template<int N>
-double UnitVector<N>::operator[](int d) const
+template<typename T, int N>
+T UnitVector<T, N>::operator[](int d) const
 {
    return m_vector.at(d);
 }
 
-template<int N>
-std::unique_ptr<UnitVector<N>>  UnitVector<N>::Create(const Point<double, N>& point)
+template<typename T, int N>
+std::unique_ptr<UnitVector<T, N>>  UnitVector<T, N>::Create(const Point<T, N>& point)
 {
-   return Create(std::span<const double>(point.begin(), point.end()));
+   return Create(std::span<const T>(point.begin(), point.end()));
 }
 
-template<int N>
-std::unique_ptr<UnitVector<N>>  UnitVector<N>::Create(std::span<const double> cors)
+template<typename T, int N>
+std::unique_ptr<UnitVector<T, N>>  UnitVector<T, N>::Create(std::span<const T> cors)
 {
-   Utilities::MyAssert (cors.size() == N, "UnitVector<N>::Create span dimension incorrect");
-   std::unique_ptr<UnitVector<N>> result;
-   const double norm2 = std::accumulate(cors.begin(), cors.end(), 0.0, [](double v0, double v1) { return v0 + v1 * v1; });
-   if (norm2 < std::numeric_limits<double>::min()) return result;
-   const double norm = std::sqrt(norm2);
-   std::array<double, N> values;
+   Utilities::MyAssert(cors.size() == N, "UnitVector<N>::Create span dimension incorrect");
+   std::unique_ptr<UnitVector<T,N>> result;
+   const T norm2 = std::accumulate(cors.begin(), cors.end(), 0.0, [](T v0, T v1) { return v0 + v1 * v1; });
+   if (norm2 < std::numeric_limits<T>::min()) return result;
+   const T norm = std::sqrt(norm2);
+   std::array<T, N> values;
    for (int n = 0; n < N; ++n)
    {
       values[n] = cors[n] / norm;
    }
-   result.reset(new UnitVector<N>(std::move(values)));
+   result.reset(new UnitVector<T,N>(std::move(values)));
    return result;
 }
 
-template<int N>
-Point<double, N> operator*(const UnitVector< N>& uv, double factor)
+template<typename T, int N>
+Point<T, N> operator*(const UnitVector<T, N>& uv, T factor)
 {
-   std::array<double, N> result;
+   std::array<T, N> result;
    str::transform(uv.data(), result.begin(), [factor](auto value) {return factor * value; });
-   return Point<double, N>{ result };
+   return Point<T, N>{ result };
 }
 
 
-template<int N>
-Point<double, N> operator*(double factor, const UnitVector< N>& uv)
+template<typename T, int N>
+Point<T, N> operator*(T factor, const UnitVector<T, N>& uv)
 {
    return uv * factor;
 }
 
-template<int N>
-double UnitVector<N>::innerProduct(const Point<double, N>& p) const
+template<typename T, int N>
+T UnitVector<T, N>::innerProduct(const Point<T, N>& p) const
 {
    return std::inner_product(m_vector.begin(), m_vector.end(), p.begin(), 0.0);
 }
