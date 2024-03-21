@@ -25,7 +25,7 @@ ActionDihedral::ActionDihedral(int numVertices, const Point2& point) :
    {
       const double angle = n * std::numbers::pi / numVertices;
       auto rotated = Rotate2D(angle)(*uv);
-      std::unique_ptr<IPointTransformation<double, 2>> plane = std::make_unique<Hyperplane<2>>(Point2{}, std::move(rotated));
+      std::unique_ptr<IPointTransformation<double, 2>> plane = std::make_unique<Hyperplane<double,2>>(Point2{}, std::move(rotated));
       m_transformations.push_back(std::move(plane));
    }
 }

@@ -4,39 +4,39 @@
 #include "UnitVector.h"
 #include "IPointTransformation.h"
 
-template<int N>
-class Hyperplane : public IPointTransformation<double, N>
+template<typename T, int N>
+class Hyperplane : public IPointTransformation<T, N>
 {
 public:
-   Hyperplane(const Point<double, N>&, std::unique_ptr< UnitVector<N>>&&);
+   Hyperplane(const Point<T, N>&, std::unique_ptr< UnitVector<N>>&&);
    const UnitVector<N>& getNormal() const { return *m_normal; }
-   const Point<double, N>& getReferencePoint() const { return m_referencePoint; }
-   double getSignedDistance(Point<double, N>) const;
-   Point<double, N> reflect(Point<double, N>) const;
+   const Point<T, N>& getReferencePoint() const { return m_referencePoint; }
+   T getSignedDistance(Point<T, N>) const;
+   Point<T, N> reflect(Point<T, N>) const;
 
-   Point<double, N> operator()(const Point<double, N>& p) const override { return reflect(p); }
+   Point<T, N> operator()(const Point<T, N>& p) const override { return reflect(p); }
 
 private:
-   Point<double, N> m_referencePoint;
+   Point<T, N> m_referencePoint;
    std::unique_ptr<UnitVector<N>> m_normal;
 };
 
-template<int N>
-Hyperplane<N>::Hyperplane(const Point<double, N>& refPont, std::unique_ptr< UnitVector<N>>&& normal) :
+template<typename T, int N>
+Hyperplane<T, N>::Hyperplane(const Point<T, N>& refPont, std::unique_ptr< UnitVector<N>>&& normal) :
    m_referencePoint(refPont), m_normal(std::move(normal))
 {
    if (!m_normal) throw MyException("Hyperplane<N>::Hyperplane normal not set");
 }
 
-template<int N>
-double Hyperplane<N>::getSignedDistance(Point<double, N> point) const
+template<typename T, int N>
+T Hyperplane<T, N>::getSignedDistance(Point<T, N> point) const
 {
    return m_normal->innerProduct(point - m_referencePoint);
 }
 
-template<int N>
-Point<double, N> Hyperplane<N>::reflect(Point<double, N> point) const
+template<typename T, int N>
+Point<T, N> Hyperplane<T, N>::reflect(Point<T, N> point) const
 {
-   const double dist = getSignedDistance(point);
+   const T dist = getSignedDistance(point);
    return point - m_normal->data() * (2 * dist);
 }
