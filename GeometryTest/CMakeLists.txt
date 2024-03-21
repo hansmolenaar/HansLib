@@ -9,6 +9,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 	${CMAKE_INCLUDE_DIR}/Geometry
 	${CMAKE_INCLUDE_DIR}/Interval
 	${CMAKE_INCLUDE_DIR}/Utilities
+	${CMAKE_INCLUDE_DIR}/Topology
 	${Boost_INCLUDE_DIRS}
 )
 

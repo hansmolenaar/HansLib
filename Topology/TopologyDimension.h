@@ -6,8 +6,6 @@ using TopologyDimension = unsigned int;
 
 namespace TopologyDimensionDef
 { 
-   using TopologyDimension = unsigned int;
-
    constexpr TopologyDimension Corner = 0;
    constexpr TopologyDimension Edge = 1;
    constexpr TopologyDimension Face = 2;
