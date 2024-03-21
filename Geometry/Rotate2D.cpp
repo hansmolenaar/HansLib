@@ -16,9 +16,9 @@ Point2 Rotate2D::operator()(const Point2& point) const
       m_sin * point.data()[0] + m_cos * point.data()[1] };
 }
 
-std::unique_ptr< UnitVector<double, 2>> Rotate2D::operator()(const UnitVector<double, 2>& uv) const
+UnitVector<double, 2> Rotate2D::operator()(const UnitVector<double, 2>& uv) const
 {
    const Point2 point{ uv[0], uv[1] };
    const Point2 rotated = (*this)(point);
-   return UnitVector<double, 2>::Create(rotated);
+   return UnitVector<double, 2>::Create(rotated).value();
 }

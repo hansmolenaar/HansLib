@@ -56,6 +56,6 @@ TEST(UnitVectorTest, TimesFactor)
 
 TEST(UnitVectorTest, CreateUnhappyPath)
 {
-   std::unique_ptr<UnitVector<double, 1>> uv;
-   ASSERT_THROW((uv = UnitVector<double, 1>::Create(std::vector<double>{ 1.0, 2.0 })), MyException);
+   auto uv = UnitVector<double, 1>::Create(Point1{ 3 }).value();
+   ASSERT_THROW((uv = UnitVector<double, 1>::Create(std::vector<double>{ 1.0, 2.0 }).value()), MyException);
 }

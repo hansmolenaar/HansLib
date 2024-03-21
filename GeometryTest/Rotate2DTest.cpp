@@ -23,6 +23,6 @@ TEST(Rotate2DTest, UnitVector)
    const auto uv = UnitVector<double, 2>::Create(Point2{ 1,0 });
    const Rotate2D rotate(std::numbers::pi / 2);
    const auto rotated = rotate(*uv);
-   ASSERT_NEAR((*rotated)[0], 0.0, 1.0e-10);
-   ASSERT_NEAR((*rotated)[1], 1.0, 1.0e-10);
+   ASSERT_NEAR((rotated)[0], 0.0, 1.0e-10);
+   ASSERT_NEAR((rotated)[1], 1.0, 1.0e-10);
 }
