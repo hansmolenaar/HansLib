@@ -2,17 +2,23 @@
 #include "IManifold.h"
 #include "DirectedEdge.h"
 #include "Point.h"
+#inlcude "Simplex.h"
+#include "IntersectionDirectedEdges.h"
 
+#include  <boost/container/small_vector.hpp>
 
 namespace Geometry
 {
-   template<int N>
-   class IManifold1 : public IManifold<N>
+
+   template<typename T, int N>
+   class IManifold1 : public IManifold<T, N>
    {
    public:
-       virtual DirectedEdge<double, N> GetEuclideanSubspaceAt(const Point<double, N>& point) const = 0;
+      virtual DirectedEdge<T, N> GetEuclideanSubspaceAt(const Point<T, N>& point) const = 0;
 
-       TopologyDimension GetTopologyDimension() const override { return TopologyDimensionDef::Edge; };
+      IntersectionDirectedEdges<T, N> GetIntersectionsWithSimplex(const Simplex<T, N>& simplex) const = 0;
+
+      TopologyDimension GetTopologyDimension() const override { return TopologyDimensionDef::Edge; };
    };
 
 };
