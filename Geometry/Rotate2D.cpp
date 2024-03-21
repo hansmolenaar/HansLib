@@ -4,11 +4,6 @@
 Rotate2D::Rotate2D(double angle) : m_angle(angle), m_cos(std::cos(m_angle)), m_sin(std::sin(m_angle))
 {}
 
- std::unique_ptr<IPointTransformation<double, 2>> Rotate2D::Create(double angle)
-{
-    return std::make_unique<Rotate2D>(angle);
-}
-
 Point2 Rotate2D::operator()(const Point2& point) const
 {
    return Point2{ 

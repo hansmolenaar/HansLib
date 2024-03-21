@@ -33,8 +33,8 @@ TEST(SphereTest, Contains)
 
    for (int n = 0; n < 100; ++n)
    {
-      const auto rotator = Rotate2D::Create(n);
-      const auto pointRotated = (*rotator)(point);
+      const Rotate2D rotator(n);
+      const auto pointRotated = rotator(point);
       ASSERT_TRUE(circle.Contains(pointRotated, areClose));
    }
 }

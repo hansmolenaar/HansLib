@@ -17,7 +17,7 @@ ActionDihedral::ActionDihedral(int numVertices, const Point2& point) :
    for (int n = 0; n < numVertices; ++n)
    {
       const double angle = n * 2 * std::numbers::pi / numVertices;
-      m_transformations.push_back(Rotate2D::Create(angle));
+      m_transformations.emplace_back(std::unique_ptr<IPointTransformation<double, 2>>(new Rotate2D(angle)));
    }
    const auto uv = UnitVector<double,2>::Create(Point2{ point.data()[1], -point.data()[0] });
    if (!uv) throw MyException("ActionDihedral::ActionDihedral 0 is not a valid reference point");
