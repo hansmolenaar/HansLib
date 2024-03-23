@@ -12,7 +12,7 @@ namespace Geometry
    class IManifold1 : public IManifold<T, N>
    {
    public:
-      virtual Line<T, N> GetEuclideanSubspaceAt(const Point<T, N>& point) const = 0;
+      virtual Line<T, N> GetEuclideanSubspaceAt(const Point<T, N>& point, const IGeometryPredicate<T, N>& predicate) const = 0;
 
       virtual IntersectionDirectedEdges<T, N> GetIntersectionsWithSimplex(const Simplex<T, N>& simplex) const = 0;
 

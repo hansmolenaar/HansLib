@@ -18,7 +18,7 @@ namespace Geometry
 
       bool contains(const Point<T, 2>& point, const IGeometryPredicate<T, 2>& predicate) const override;
 
-      Line<T, 2> GetEuclideanSubspaceAt(const Point<T, 2>& point) const override;
+      Line<T, 2> GetEuclideanSubspaceAt(const Point<T, 2>& point, const IGeometryPredicate<T, 2>& predicate) const override;
 
       IntersectionDirectedEdges<T, 2> GetIntersectionsWithSimplex(const Simplex<T, 2>& simplex) const override;
 

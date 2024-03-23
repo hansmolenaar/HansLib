@@ -18,9 +18,15 @@ bool Sphere2AsManifold1<T>::contains(const Point<T, 2>& point, const IGeometryPr
 
 
 template<typename T>
-Line<T, 2> Sphere2AsManifold1<T>::GetEuclideanSubspaceAt(const Point<T, 2>& point) const
+Line<T, 2> Sphere2AsManifold1<T>::GetEuclideanSubspaceAt(const Point<T, 2>& point, const IGeometryPredicate<T, 2>& predicate) const
 {
-   throw MyException("Not implemented");
+   if (!contains(point, predicate))
+   {
+      throw MyException("Sphere2AsManifold1<T>::GetEuclideanSubspaceAt, point not on manifold");
+   }
+   const auto radial = point - m_sphere.getCenter();
+   const auto uv = UnitVector<T, 2>::Create({ -radial[1], radial[0] }).value();
+   return { point, uv };
 }
 
 template<typename T>

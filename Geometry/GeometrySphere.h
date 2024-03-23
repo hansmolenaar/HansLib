@@ -22,6 +22,7 @@ namespace Geometry
 
       bool CouldIntersectWith(typename const BoundingBox<T, N>& bb, const IGeometryPredicate<T, N>& predicate) const override;
 
+      Point<T, N> getCenter() const;
    private:
       Ball<T, N> m_ball;
    };
@@ -90,6 +91,12 @@ namespace Geometry
       if (m_ball.getPosition(bb.getLower(), predicate) != BallPosition::Inside) return true;
       if (m_ball.getPosition(bb.getUpper(), predicate) != BallPosition::Inside) return true;
       return false;
+   }
+
+   template<typename T, int N>
+   Point<T, N> Sphere<T, N>::getCenter() const
+   {
+      return m_ball.getCenter();
    }
 
 } // namespace Geometry
