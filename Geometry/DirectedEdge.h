@@ -16,19 +16,18 @@ namespace Geometry
       T lengthSquared() const;
       T project(const Point<T, N>& point) const;
       Point<T, N> interpolate(T lambda) const;
-      bool contains(const Point<T, N>& point) const;
+      bool contains(const Point<T, N>& point, const IGeometryPredicate<T, N>& predicate) const;
       bool isDegenerate(const IGeometryPredicate<T, N>& predicate) const;
 
    private:
-      DirectedEdge(const Point<T, N>& from, const Point<T, N>& to, const IGeometryPredicate<T, N>& predicate);
+      DirectedEdge(const Point<T, N>& from, const Point<T, N>& to);
       Point<T, N> m_from;
       Point<T, N> m_to;
-      const IGeometryPredicate<T, N>& m_predicate;
    };
 
    template<typename T, int N>
-   DirectedEdge<T, N>::DirectedEdge(const Point<T, N>& from, const Point<T, N>& to, const IGeometryPredicate<T, N>& predicate) :
-      m_from(from), m_to(to), m_predicate(predicate)
+   DirectedEdge<T, N>::DirectedEdge(const Point<T, N>& from, const Point<T, N>& to) :
+      m_from(from), m_to(to)
    {
    }
 
@@ -40,7 +39,7 @@ namespace Geometry
          throw MyException("DirectedEdge<T, N>::DirectedEdge same points");
       }
 
-      return DirectedEdge<T, N>(from, to, predicate);
+      return DirectedEdge<T, N>(from, to);
    }
 
    template<typename T, int N>
@@ -79,7 +78,7 @@ namespace Geometry
    }
 
    template<typename T, int N>
-   bool DirectedEdge<T, N>::contains(const Point<T, N>& point) const
+   bool DirectedEdge<T, N>::contains(const Point<T, N>& point, const IGeometryPredicate<T, N>& predicate) const
    {
       // Project the point on the line
       const T lambda = project(point);
@@ -89,15 +88,15 @@ namespace Geometry
       if (lambda >= 0 && lambda <= 1)
       {
          const auto projected = interpolate(lambda);
-         return m_predicate.SamePoints(projected, point);
+         return predicate.SamePoints(projected, point);
       }
       else if (lambda < 0)
       {
-         return m_predicate.SamePoints(point0(), point);
+         return predicate.SamePoints(point0(), point);
       }
       else
       {
-         return m_predicate.SamePoints(point1(), point);
+         return predicate.SamePoints(point1(), point);
       }
    }
 

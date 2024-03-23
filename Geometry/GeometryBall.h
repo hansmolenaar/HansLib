@@ -144,13 +144,13 @@ namespace Geometry
       if (pos0 == BallPosition::On)
       {
          Utilities::MyAssert(pos1 == BallPosition::Outside);
-         if ( edge.contains(ip1) && !predicate.SamePoints(ip1, point0)) return ip1;
+         if ( edge.contains(ip1, predicate) && !predicate.SamePoints(ip1, point0)) return ip1;
          return {};
       }
 
       Utilities::MyAssert(pos0 == BallPosition::Outside);
       if (predicate.SamePoints(point1, ip0)) return  point1;
-      if (edge.contains(ip0)) return ip0;
+      if (edge.contains(ip0, predicate)) return ip0;
       return {};
    }
 
