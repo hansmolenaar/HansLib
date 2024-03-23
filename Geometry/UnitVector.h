@@ -15,6 +15,8 @@ class UnitVector
 public:
    static std::optional<UnitVector<T, N>> Create(std::span<const T>);
    static std::optional<UnitVector<T, N>> Create(const Point<T, N>&);
+   static std::optional<UnitVector<T, N>> Create(const Point<T, N>& from, const Point<T, N>& to);
+
    T operator[](int) const;
    const std::array<T, N>& data() const { return m_vector; }
 
@@ -37,6 +39,12 @@ T UnitVector<T, N>::operator[](int d) const
 }
 
 template<typename T, int N>
+std::optional<UnitVector<T, N>> UnitVector<T, N>::Create(const Point<T, N>& from, const Point<T, N>& to)
+{
+   return Create(to - from);
+}
+
+template<typename T, int N>
 std::optional<UnitVector<T, N>>  UnitVector<T, N>::Create(const Point<T, N>& point)
 {
    return Create(std::span<const T>(point.begin(), point.end()));
@@ -46,7 +54,8 @@ template<typename T, int N>
 std::optional<UnitVector<T, N>>  UnitVector<T, N>::Create(std::span<const T> cors)
 {
    Utilities::MyAssert(cors.size() == N, "UnitVector<N>::Create span dimension incorrect");
-   const T norm2 = std::accumulate(cors.begin(), cors.end(), 0.0, [](T v0, T v1) { return v0 + v1 * v1; });
+   T norm2 = 0;
+   norm2 = std::accumulate(cors.begin(), cors.end(), norm2, [](T v0, T v1) { return v0 + v1 * v1; });
    if (norm2 < std::numeric_limits<T>::min()) return std::nullopt;
    const T norm = std::sqrt(norm2);
    std::array<T, N> values;

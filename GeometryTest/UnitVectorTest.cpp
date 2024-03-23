@@ -59,3 +59,15 @@ TEST(UnitVectorTest, CreateUnhappyPath)
    auto uv = UnitVector<double, 1>::Create(Point1{ 3 }).value();
    ASSERT_THROW((uv = UnitVector<double, 1>::Create(std::vector<double>{ 1.0, 2.0 }).value()), MyException);
 }
+
+
+TEST(UnitVectorTest, CreateFromDirectedPair)
+{
+   const Point2 from{ 1, -2 };
+   const Point2 to{ 4, -6
+   };
+
+   auto uv = UnitVector<double, 2>::Create(from, to).value();
+   ASSERT_NEAR(uv[0], 0.6, crit);
+   ASSERT_EQ(uv[1], -0.8);
+}

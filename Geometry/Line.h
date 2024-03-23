@@ -7,16 +7,15 @@
 namespace Geometry
 {
    template<typename T, int N>
-   class DirectedEdge
+   class Line
    {
+#if false
    public:
       static DirectedEdge<T, N> Create(const Point<T, N>& from, const Point<T, N>& to, const IGeometryPredicate<T, N>& predicate);
       const Point<T, N>& point0() const { return m_from; }
       const Point<T, N>& point1() const { return m_to; }
       T lengthSquared() const;
-   public:
       const IGeometryPredicate<T, N>& getPredicate() const;
-   public:
 
       T project(const Point<T, N>& point) const;
       Point<T, N> interpolate(T lambda) const;
@@ -102,6 +101,7 @@ namespace Geometry
       {
          return m_predicate.SamePoints(point1(), point);
       }
+#endif
    }
 
 
