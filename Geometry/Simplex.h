@@ -6,5 +6,5 @@
 namespace Geometry
 {
    template<typename T, int N>
-   using Simplex = std::array<N + 1, Point<T, N>>;
+   using Simplex = std::array<Point<T, N>, N + 1>;
 }
