@@ -12,7 +12,7 @@ namespace
 
 TEST(Sphere2AsManifold1, Constructor)
 {
-   constexpr int geomdim = Sphere2AsManifold1<double>::GeometryDimension;
+   constexpr int geomdim = Sphere2AsManifold1<double>::GeomDim;
    const PointClose<double, geomdim> areClose;
    const Point2 p{ {2,-3} };
    const Sphere<double, geomdim> circle(p, 7.0);
@@ -32,7 +32,7 @@ TEST(Sphere2AsManifold1, Constructor)
 
 TEST(Sphere2AsManifold1, GetEuclideanSubspaceAt)
 {
-   constexpr int geomdim = Sphere2AsManifold1<double>::GeometryDimension;
+   constexpr int geomdim = Sphere2AsManifold1<double>::GeomDim;
    const PointClose<double, geomdim> areClose;
    const Point2 p{ 1,2 };
    const Sphere<double, geomdim> circle(p, 2.0);

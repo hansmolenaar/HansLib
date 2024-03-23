@@ -17,6 +17,7 @@ namespace Geometry
       T project(const Point<T, N>& point) const;
       Point<T, N> interpolate(T lambda) const;
       bool contains(const Point<T, N>& point) const;
+      bool isDegenerate(const IGeometryPredicate<T, N>& predicate) const;
 
    private:
       DirectedEdge(const Point<T, N>& from, const Point<T, N>& to, const IGeometryPredicate<T, N>& predicate);
@@ -69,6 +70,12 @@ namespace Geometry
       }
 
       return inprod / norm2;
+   }
+
+   template<typename T, int N>
+   bool DirectedEdge<T, N>::isDegenerate(const IGeometryPredicate<T, N>& predicate) const
+   {
+      return predicate.SamePoints(point0(), point1());
    }
 
    template<typename T, int N>

@@ -13,17 +13,17 @@ namespace Geometry
    {
 
    public:
-      static constexpr int GeometryDimension = 2;
-      explicit  Sphere2AsManifold1(Sphere<T, GeometryDimension> sphere);
+      static constexpr int GeomDim = 2;
+      explicit  Sphere2AsManifold1(Sphere<T, GeomDim> sphere);
 
-      bool contains(const Point<T, 2>& point, const IGeometryPredicate<T, 2>& predicate) const override;
+      bool contains(const Point<T, GeomDim>& point, const IGeometryPredicate<T, GeomDim>& predicate) const override;
 
-      Line<T, 2> GetEuclideanSubspaceAt(const Point<T, 2>& point, const IGeometryPredicate<T, 2>& predicate) const override;
+      Line<T, Sphere2AsManifold1<T>::GeomDim> GetEuclideanSubspaceAt(const Point<T, GeomDim>& point, const IGeometryPredicate<T, GeomDim>& predicate) const override;
 
-      IntersectionDirectedEdges<T, 2> GetIntersectionsWithSimplex(const Simplex<T, 2>& simplex) const override;
+      DirectedEdgeIntersections<T, 2> GetIntersections(const DirectedEdge<T, GeomDim>& edge, const IGeometryPredicate<T, GeomDim>& predicate) const override;
 
    private:
-      Sphere<T, GeometryDimension> m_sphere;
+      Sphere<T, GeomDim> m_sphere;
    };
 
 } // namespace Geometry

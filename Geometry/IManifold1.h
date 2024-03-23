@@ -3,7 +3,7 @@
 #include "Line.h"
 #include "Point.h"
 #include "Simplex.h"
-#include "IntersectionDirectedEdges.h"
+#include "DirectedEdgeIntersections.h"
 
 namespace Geometry
 {
@@ -14,7 +14,7 @@ namespace Geometry
    public:
       virtual Line<T, N> GetEuclideanSubspaceAt(const Point<T, N>& point, const IGeometryPredicate<T, N>& predicate) const = 0;
 
-      virtual IntersectionDirectedEdges<T, N> GetIntersectionsWithSimplex(const Simplex<T, N>& simplex) const = 0;
+      virtual DirectedEdgeIntersections<T, N> GetIntersections(const DirectedEdge<T, N>& edge, const IGeometryPredicate<T, N>& predicate) const = 0;
 
       TopologyDimension GetTopologyDimension() const override { return TopologyDimensionDef::Edge; };
    };
