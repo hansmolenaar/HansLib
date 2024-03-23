@@ -10,7 +10,7 @@ namespace Geometry
    class DirectedEdge
    {
    public:
-      static DirectedEdge<T, N> Create(const Point<T, N>& from, const Point<T, N>& to, const IGeometryPredicate<T, N>& predicate);
+      static DirectedEdge<T, N> Create(const Point<T, N>& from, const Point<T, N>& to);
       const Point<T, N>& point0() const { return m_from; }
       const Point<T, N>& point1() const { return m_to; }
       T lengthSquared() const;
@@ -32,13 +32,8 @@ namespace Geometry
    }
 
    template<typename T, int N>
-   DirectedEdge<T, N> DirectedEdge<T, N>::Create(const Point<T, N>& from, const Point<T, N>& to, const IGeometryPredicate<T, N>& predicate)
+   DirectedEdge<T, N> DirectedEdge<T, N>::Create(const Point<T, N>& from, const Point<T, N>& to)
    {
-      if (predicate.SamePoints(from, to))
-      {
-         throw MyException("DirectedEdge<T, N>::DirectedEdge same points");
-      }
-
       return DirectedEdge<T, N>(from, to);
    }
 

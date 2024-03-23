@@ -46,7 +46,7 @@ DirectedEdgeIntersections<T, 2> Sphere2AsManifold1<T>::GetIntersections(const Di
    else if (firstIntersection)
    {
       result.emplace_back(firstIntersection.value());
-      const DirectedEdge<T, GeomDim> next  = DirectedEdge<T, GeomDim>::Create(firstIntersection.value(), edge.point1(), predicate);
+      const DirectedEdge<T, GeomDim> next  = DirectedEdge<T, GeomDim>::Create(firstIntersection.value(), edge.point1());
       if (!next.isDegenerate(predicate))
       {
          const auto secondIntersection = m_sphere.TryGetFirstIntersectionWithDirectedEdge(next, predicate);

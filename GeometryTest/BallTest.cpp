@@ -43,7 +43,7 @@ TEST(BallTest, GetPositions)
    constexpr int geomdim = 1;
    const PointExact<int, geomdim> areClose;
    const Ball<int, geomdim> ball(IntPoint1{ -2 }, 7);
-   const auto edge = DirectedEdge<int, geomdim>::Create({ 5 }, { 6 }, areClose);
+   const auto edge = DirectedEdge<int, geomdim>::Create({ 5 }, { 6 });
    const auto [pos0, pos1] = ball.getPositions(edge, areClose);
    ASSERT_EQ(pos0, BallPosition::On);
    ASSERT_EQ(pos1, BallPosition::Outside);
@@ -81,21 +81,21 @@ TEST(BallTest, FirstIntersectionFirstInside)
 
    // Second Inside
    {
-      const auto edge = DirectedEdge<double, geomdim>::Create(Point2{ 0.1,0.2 }, Point2{ 0.9, 0.3 }, areClose);
+      const auto edge = DirectedEdge<double, geomdim>::Create(Point2{ 0.1,0.2 }, Point2{ 0.9, 0.3 });
       const auto ip = circle.TryGetFirstIntersectionWithDirectedEdge(edge, areClose);
       ASSERT_TRUE(areClose.SamePoints(*ip, edge.point1()));
    }
 
    // Second On
    {
-      const auto edge = DirectedEdge<double, geomdim>::Create(Point2{ 0.1,0.2 }, Point2{ -0.6, 0.8 }, areClose);
+      const auto edge = DirectedEdge<double, geomdim>::Create(Point2{ 0.1,0.2 }, Point2{ -0.6, 0.8 });
       const auto ip = circle.TryGetFirstIntersectionWithDirectedEdge(edge, areClose);
       ASSERT_TRUE(areClose.SamePoints(*ip, edge.point1()));
    }
 
    // Second Outside
    {
-      const auto edge = DirectedEdge<double, geomdim>::Create(Point2{ 0.1, 0.2 }, Point2{ 1.1, 1.4 }, areClose);
+      const auto edge = DirectedEdge<double, geomdim>::Create(Point2{ 0.1, 0.2 }, Point2{ 1.1, 1.4 });
       const auto ip = circle.TryGetFirstIntersectionWithDirectedEdge(edge, areClose);
       ASSERT_TRUE(areClose.SamePoints(*ip, { 0.6, 0.8 }));
    }
@@ -111,35 +111,35 @@ TEST(BallTest, FirstIntersectionFirstOn)
 
    // Second Inside
    {
-      const auto edge = DirectedEdge<double, geomdim>::Create(point0, Point2{ 0.9, 0.3 }, areClose);
+      const auto edge = DirectedEdge<double, geomdim>::Create(point0, Point2{ 0.9, 0.3 });
       const auto ip = circle.TryGetFirstIntersectionWithDirectedEdge(edge, areClose);
       ASSERT_TRUE(areClose.SamePoints(*ip, edge.point1()));
    }
 
    // Second On
    {
-      const auto edge = DirectedEdge<double, geomdim>::Create(point0, Point2{ 1, 0 }, areClose);
+      const auto edge = DirectedEdge<double, geomdim>::Create(point0, Point2{ 1, 0 });
       const auto ip = circle.TryGetFirstIntersectionWithDirectedEdge(edge, areClose);
       ASSERT_TRUE(areClose.SamePoints(*ip, edge.point1()));
    }
 
    // Second Outside, no intersection
    {
-      const auto edge = DirectedEdge<double, geomdim>::Create(point0, Point2{ 0, 2 }, areClose);
+      const auto edge = DirectedEdge<double, geomdim>::Create(point0, Point2{ 0, 2 });
       const auto ip = circle.TryGetFirstIntersectionWithDirectedEdge(edge, areClose);
       ASSERT_FALSE(ip);
    }
 
    // Second Outside, edge case
    {
-      const auto edge = DirectedEdge<double, geomdim>::Create(point0, Point2{ 1, 1 }, areClose);
+      const auto edge = DirectedEdge<double, geomdim>::Create(point0, Point2{ 1, 1 });
       const auto ip = circle.TryGetFirstIntersectionWithDirectedEdge(edge, areClose);
       ASSERT_FALSE(ip);
    }
 
    // Second Outside, intersection
    {
-      const auto edge = DirectedEdge<double, geomdim>::Create(point0, Point2{ 0, -2 }, areClose);
+      const auto edge = DirectedEdge<double, geomdim>::Create(point0, Point2{ 0, -2 });
       const auto ip = circle.TryGetFirstIntersectionWithDirectedEdge(edge, areClose);
       ASSERT_TRUE(areClose.SamePoints(*ip, Point2{ 0, -1 }));
    }
@@ -155,35 +155,35 @@ TEST(BallTest, FirstIntersectionFirstOutside)
 
    // Second Inside
    {
-      const auto edge = DirectedEdge<double, geomdim>::Create(point0, Point2{ 0, 0 }, areClose);
+      const auto edge = DirectedEdge<double, geomdim>::Create(point0, Point2{ 0, 0 });
       const auto ip = circle.TryGetFirstIntersectionWithDirectedEdge(edge, areClose);
       ASSERT_TRUE(areClose.SamePoints(*ip, Point2{ sqrtHalf, sqrtHalf }));
    }
 
    // Second On
    {
-      const auto edge = DirectedEdge<double, geomdim>::Create(point0, Point2{ 1, 0 }, areClose);
+      const auto edge = DirectedEdge<double, geomdim>::Create(point0, Point2{ 1, 0 });
       const auto ip = circle.TryGetFirstIntersectionWithDirectedEdge(edge, areClose);
       ASSERT_TRUE(areClose.SamePoints(*ip, edge.point1()));
    }
 
    // Second Outside, no intersection
    {
-      const auto edge = DirectedEdge<double, geomdim>::Create(point0, Point2{ 0, 2 }, areClose);
+      const auto edge = DirectedEdge<double, geomdim>::Create(point0, Point2{ 0, 2 });
       const auto ip = circle.TryGetFirstIntersectionWithDirectedEdge(edge, areClose);
       ASSERT_FALSE(ip);
    }
 
    // Second Outside, edge case
    {
-      const auto edge = DirectedEdge<double, geomdim>::Create(point0, Point2{ -1, 1 }, areClose);
+      const auto edge = DirectedEdge<double, geomdim>::Create(point0, Point2{ -1, 1 });
       const auto  ip = circle.TryGetFirstIntersectionWithDirectedEdge(edge, areClose);
-      ASSERT_TRUE(areClose.SamePoints(*ip, Point2{0,1}));
+      ASSERT_TRUE(areClose.SamePoints(*ip, Point2{ 0,1 }));
    }
 
    // Second Outside, intersection
    {
-      const auto edge = DirectedEdge<double, geomdim>::Create(point0, Point2{ -2, -2 }, areClose);
+      const auto edge = DirectedEdge<double, geomdim>::Create(point0, Point2{ -2, -2 });
       const auto ip = circle.TryGetFirstIntersectionWithDirectedEdge(edge, areClose);
       ASSERT_TRUE(areClose.SamePoints(*ip, Point2{ sqrtHalf, sqrtHalf }));
    }
