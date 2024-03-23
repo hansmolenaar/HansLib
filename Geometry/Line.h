@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Defines.h"
-#include "Point.h"
+#include "UnitVector.h"
 #include "IGeometryPredicate.h"
 
 namespace Geometry
@@ -9,99 +9,39 @@ namespace Geometry
    template<typename T, int N>
    class Line
    {
-#if false
-   public:
-      static DirectedEdge<T, N> Create(const Point<T, N>& from, const Point<T, N>& to, const IGeometryPredicate<T, N>& predicate);
-      const Point<T, N>& point0() const { return m_from; }
-      const Point<T, N>& point1() const { return m_to; }
-      T lengthSquared() const;
-      const IGeometryPredicate<T, N>& getPredicate() const;
 
-      T project(const Point<T, N>& point) const;
-      Point<T, N> interpolate(T lambda) const;
-      bool contains(const Point<T, N>& point) const;
+   public:
+      Line(Point<T, N> refPoint, UnitVector<T, N> direction);
+
+      Point<T, N> project(const Point<T, N>& point) const;
+      bool contains(const Point<T, N>& point, const IGeometryPredicate<T, N>& predicate) const;
 
    private:
-      DirectedEdge(const Point<T, N>& from, const Point<T, N>& to, const IGeometryPredicate<T, N>& predicate);
-      Point<T, N> m_from;
-      Point<T, N> m_to;
-      const IGeometryPredicate<T, N>& m_predicate;
+
+      Point<T, N> m_referencePoint;
+      UnitVector<T, N> m_direction;
    };
 
    template<typename T, int N>
-   DirectedEdge<T, N>::DirectedEdge(const Point<T, N>& from, const Point<T, N>& to, const IGeometryPredicate<T, N>& predicate) :
-      m_from(from), m_to(to), m_predicate(predicate)
+   Line<T, N>::Line(Point<T, N> refPoint, UnitVector<T, N> direction) :
+      m_referencePoint(std::move(refPoint)), m_direction(std::move(direction))
    {
    }
 
    template<typename T, int N>
-   DirectedEdge<T, N> DirectedEdge<T, N>::Create(const Point<T, N>& from, const Point<T, N>& to, const IGeometryPredicate<T, N>& predicate)
+   Point<T, N> Line<T, N>::project(const Point<T, N>& point) const
    {
-      if (predicate.SamePoints(from, to))
-      {
-         throw MyException("DirectedEdge<T, N>::DirectedEdge same points");
-      }
-
-      return DirectedEdge<T, N>(from, to, predicate);
+      const auto dif = point - m_referencePoint;
+      const T inprod = m_direction.innerProduct(dif);
+      return  m_referencePoint + inprod * m_direction;
    }
 
    template<typename T, int N>
-   T DirectedEdge<T, N>::lengthSquared() const
-   {
-      return PointUtils::GetNormSquared(m_to - m_from);
-   }
-
-   template<typename T, int N>
-   const IGeometryPredicate<T, N>& DirectedEdge<T, N>::getPredicate() const
-   {
-      return m_predicate;
-   }
-
-   // 0 => point0
-   // 1 => point1
-   template<typename T, int N>
-   Point<T, N> DirectedEdge<T, N>::interpolate(T lambda) const
-   {
-      return point0() * (1 - lambda) + point1() * lambda;
-   }
-
-   template<typename T, int N>
-   T DirectedEdge<T, N>::project(const Point<T, N>& point) const
-   {
-      T inprod = 0;
-      T norm2 = 0;
-      for (int d = 0; d < N; ++d)
-      {
-         const T dif = (point1().at(d) - point0().at(d));
-         inprod += dif * (point.at(d) - point0().at(d));
-         norm2 += dif * dif;
-      }
-
-      return inprod / norm2;
-   }
-
-   template<typename T, int N>
-   bool DirectedEdge<T, N>::contains(const Point<T, N>& point) const
+   bool Line<T, N>::contains(const Point<T, N>& point, const IGeometryPredicate<T, N>& predicate) const
    {
       // Project the point on the line
-      const T lambda = project(point);
-
-
-      // Projection within range of line?
-      if (lambda >= 0 && lambda <= 1)
-      {
-         const auto projected = interpolate(lambda);
-         return m_predicate.SamePoints(projected, point);
-      }
-      else if (lambda < 0)
-      {
-         return m_predicate.SamePoints(point0(), point);
-      }
-      else
-      {
-         return m_predicate.SamePoints(point1(), point);
-      }
-#endif
+      const auto projected = project(point);
+      return predicate.SamePoints(projected, point);
    }
 
 

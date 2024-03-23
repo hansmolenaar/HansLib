@@ -30,7 +30,7 @@ namespace Geometry
 
 
       BallPosition getPosition(const Point<T, N>& point, const IGeometryPredicate<T, N>& predicate) const;
-      std::pair<BallPosition, BallPosition> getPositions(const DirectedEdge<T, N>& edge) const;
+      std::pair<BallPosition, BallPosition> getPositions(const DirectedEdge<T, N>& edge, const IGeometryPredicate<T, N>& predicate) const;
 
       Point<T, N> getCenter() const;
       T getRadius() const;
@@ -78,9 +78,8 @@ namespace Geometry
    }
 
    template<typename T, int N>
-   std::pair<BallPosition, BallPosition> Ball<T, N>::getPositions(const DirectedEdge<T, N>& edge) const
+   std::pair<BallPosition, BallPosition> Ball<T, N>::getPositions(const DirectedEdge<T, N>& edge, const IGeometryPredicate<T, N>& predicate) const
    {
-      const auto& predicate = edge.getPredicate();
       return { getPosition(edge.point0(), predicate), getPosition(edge.point1(), predicate) };
    }
 
@@ -103,7 +102,7 @@ namespace Geometry
    template<typename T, int N>
    std::optional<Point<T, N>> Ball<T, N>::TryGetFirstIntersectionWithDirectedEdge(typename const Geometry::DirectedEdge<T, N>& edge, const IGeometryPredicate<T, N>& predicate) const
    {
-      const auto [pos0, pos1] = getPositions(edge);
+      const auto [pos0, pos1] = getPositions(edge, predicate);
       if (std::max(pos0, pos1) <= BallPosition::On)
       {
          return  edge.point1();

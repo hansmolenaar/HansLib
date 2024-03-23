@@ -44,7 +44,7 @@ TEST(BallTest, GetPositions)
    const PointExact<int, geomdim> areClose;
    const Ball<int, geomdim> ball(IntPoint1{ -2 }, 7);
    const auto edge = DirectedEdge<int, geomdim>::Create({ 5 }, { 6 }, areClose);
-   const auto [pos0, pos1] = ball.getPositions(edge);
+   const auto [pos0, pos1] = ball.getPositions(edge, areClose);
    ASSERT_EQ(pos0, BallPosition::On);
    ASSERT_EQ(pos1, BallPosition::Outside);
 }

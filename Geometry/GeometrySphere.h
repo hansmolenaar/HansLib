@@ -50,7 +50,7 @@ namespace Geometry
       const auto& point0 = edge.point0();
       const auto& point1 = edge.point1();
 
-      const auto [pos0, pos1] = m_ball.getPositions(edge);
+      const auto [pos0, pos1] = m_ball.getPositions(edge, predicate);
 
       if (pos1 == BallPosition::On) return  point1;
       if (pos0 == BallPosition::Inside && pos1 == BallPosition::Inside) return {};
