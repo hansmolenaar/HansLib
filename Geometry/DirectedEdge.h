@@ -10,7 +10,7 @@ namespace Geometry
    class DirectedEdge
    {
    public:
-      static DirectedEdge<T, N> Create(const Point<T, N>& from, const Point<T, N>& to);
+      DirectedEdge(const Point<T, N>& from, const Point<T, N>& to);
       const Point<T, N>& point0() const { return m_from; }
       const Point<T, N>& point1() const { return m_to; }
       T lengthSquared() const;
@@ -20,7 +20,6 @@ namespace Geometry
       bool isDegenerate(const IGeometryPredicate<T, N>& predicate) const;
 
    private:
-      DirectedEdge(const Point<T, N>& from, const Point<T, N>& to);
       Point<T, N> m_from;
       Point<T, N> m_to;
    };
@@ -29,12 +28,6 @@ namespace Geometry
    DirectedEdge<T, N>::DirectedEdge(const Point<T, N>& from, const Point<T, N>& to) :
       m_from(from), m_to(to)
    {
-   }
-
-   template<typename T, int N>
-   DirectedEdge<T, N> DirectedEdge<T, N>::Create(const Point<T, N>& from, const Point<T, N>& to)
-   {
-      return DirectedEdge<T, N>(from, to);
    }
 
    template<typename T, int N>
@@ -61,6 +54,11 @@ namespace Geometry
          const T dif = (point1().at(d) - point0().at(d));
          inprod += dif * (point.at(d) - point0().at(d));
          norm2 += dif * dif;
+      }
+      const double norm2inv = 1.0 / norm2;
+      if (!std::isfinite<double>(norm2inv))
+      {
+         throw MyException("DirectedEdge<T, N>::project edge is degenerated");
       }
 
       return inprod / norm2;
