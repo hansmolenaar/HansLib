@@ -7,8 +7,10 @@
 #include "MeshGeneration2.h"
 #include "MeshingStrategy.h"
 #include "InitialBoundingboxGenerator.h"
+#include "Ball2AsRegion.h"
 #include "Paraview.h"
 #include "PointClose.h"
+#include "Ball2AsRegion.h"
 
 using namespace MeshGeneration;
 using namespace IntervalTree;
@@ -18,11 +20,12 @@ TEST(MeshGeneration2Test, Ball)
 {
    Logger logger;
    const Ball<double, 2> ball(Point2{ 0.5, 0.5 }, 0.5);
+   const Ball2AsRegion<double> ballAsRegion(ball);
    const PointClose<double, 2> areClose;
    const auto initialBbGenerator = InitialBoundingboxGenerator<2>::Create(2.0);
-   const RefineRegionToMaxLevel<2> predicate(5, ball, areClose, *initialBbGenerator);
+   const RefineRegionToMaxLevel<2> predicate(5, ballAsRegion, areClose, *initialBbGenerator);
    MeshingStrategy2 strategy(*initialBbGenerator, predicate);
-   const auto triangles = MeshGeneration2::GenerateBaseTriangulation(ball, strategy, logger);
+   const auto triangles = MeshGeneration2::GenerateBaseTriangulation(ballAsRegion, strategy, logger);
 
    const auto vtkData = IndexTreeToSimplices2::ToVtkData(triangles);
    ASSERT_EQ(1016, vtkData->getNumCells());
@@ -62,12 +65,13 @@ TEST(MeshGeneration2Test, Ball2)
 {
    Logger logger;
    const Ball<double, 2> ball(Point2{ 1.5, 2.5 }, 3);
+   const Ball2AsRegion<double> ballAsRegion(ball);
    const PointClose<double,2> areClose;
    const auto initialBbGenerator = InitialBoundingboxGenerator<2>::Create(1.25);
-   const auto bbInitial = initialBbGenerator->generate(ball);
-   const RefineRegionToMaxLevel<2> predicate(4, ball, areClose, *initialBbGenerator);
+   const auto bbInitial = initialBbGenerator->generate(ballAsRegion);
+   const RefineRegionToMaxLevel<2> predicate(4, ballAsRegion, areClose, *initialBbGenerator);
    MeshingStrategy2 strategy(*initialBbGenerator, predicate);
-   const auto triangles = MeshGeneration2::GenerateBaseTriangulation(ball, strategy, logger);
+   const auto triangles = MeshGeneration2::GenerateBaseTriangulation(ballAsRegion, strategy, logger);
 
    std::unique_ptr<IDynamicUniquePointCollection<double, 2>> pointGeometry;
    std::unique_ptr<MeshGeneration::TriangleNodes> triangleNodes;

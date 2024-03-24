@@ -2,7 +2,7 @@
 
 #include "BoundingBox.h"
 #include "IGeometryPredicate.h"
-#include "IGeometryRegion.h"
+#include "IGeometryObject.h"
 #include "DirectedEdge.h"
 #include "MyAssert.h"
 #include "MyException.h"
@@ -12,18 +12,16 @@ namespace Geometry
    enum BallPosition { Inside, On, Outside };
 
    template<typename T, int N>
-   class Ball : public IGeometryRegion<T, N>
+   class Ball : public IGeometryObject<T, N>
    {
    public:
       Ball(Point<T, N> center, T radius);
 
       BoundingBox<T, N> getBoundingBox() const override;
 
-      bool Contains(const Point<T, N>& point, const IGeometryPredicate<T, N>& predicate) const override;
+      bool Contains(const Point<T, N>& point, const IGeometryPredicate<T, N>& predicate) const;
 
-      bool CouldIntersectWith(typename const BoundingBox<T, N>& bb, const IGeometryPredicate<T, N>& predicate) const override;
-
-      const IRegionManifolds<T, N>& getManifolds() const override;
+      bool CouldIntersectWith(typename const BoundingBox<T, N>& bb, const IGeometryPredicate<T, N>& predicate) const;
 
       // First **after** start point
       // If the edge is contained in the region, then return the exit point or the end point of the edge
@@ -159,7 +157,8 @@ namespace Geometry
    template<typename T, int N>
    bool Ball<T, N>::CouldIntersectWith(typename const BoundingBox<T, N>& bb, const IGeometryPredicate<T, N>& predicate) const
    {
-      if (!IGeometryRegion<T, N>::CouldIntersectWith(bb, predicate)) return false;
+      if (!BoundingBox<T, N>::TryGetOverlap(getBoundingBox(), bb)) return false;
+
       const auto centerBB = bb.getCenter();
       const T diagLength2 = bb.getLengthDiagonalSquared();
       const auto dif = centerBB - getCenter();

@@ -6,23 +6,21 @@ namespace Geometry
 {
 
    template<typename T, int N>
-   class Sphere : public IGeometryRegion<T, N>
+   class Sphere : public IGeometryObject<T, N>
    {
    public:
       Sphere(Point<T, N> center, T radius);
 
       BoundingBox<T, N> getBoundingBox() const override;
 
-      bool Contains(const Point<T, N>& point, const IGeometryPredicate<T, N>& predicate) const override;
-
-      const IRegionManifolds<T, N>& getManifolds() const override;
+      bool Contains(const Point<T, N>& point, const IGeometryPredicate<T, N>& predicate) const;
 
       // First **after** start point
       // If the edge is contained in the region, then return the exit point or the end point of the edge
       // If only the first point of the edge is in the region return false
       std::optional<Point<T, N>> TryGetFirstIntersectionWithDirectedEdge(typename const Geometry::DirectedEdge<T, N>& edge, const IGeometryPredicate<T, N>& predicate) const;
 
-      bool CouldIntersectWith(typename const BoundingBox<T, N>& bb, const IGeometryPredicate<T, N>& predicate) const override;
+      bool CouldIntersectWith(typename const BoundingBox<T, N>& bb, const IGeometryPredicate<T, N>& predicate) const;
 
       Point<T, N> getCenter() const;
    private:
@@ -82,7 +80,8 @@ namespace Geometry
    template<typename T, int N>
    bool Sphere<T, N>::CouldIntersectWith(typename const BoundingBox<T, N>& bb, const IGeometryPredicate<T, N>& predicate) const
    {
-      if (!IGeometryRegion<T, N>::CouldIntersectWith(bb, predicate)) return false;
+      if (!BoundingBox<T, N>::TryGetOverlap(getBoundingBox(), bb)) return false;
+
       // If the whole bb is inside the sphere, there is no intersection
       if (m_ball.getPosition(bb.getLower(), predicate) != BallPosition::Inside) return true;
       if (m_ball.getPosition(bb.getUpper(), predicate) != BallPosition::Inside) return true;
