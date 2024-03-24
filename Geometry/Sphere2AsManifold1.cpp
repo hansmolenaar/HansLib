@@ -30,6 +30,12 @@ Line<T, Sphere2AsManifold1<T>::GeomDim> Sphere2AsManifold1<T>::GetEuclideanSubsp
 }
 
 template<typename T>
+BoundingBox<T, Sphere2AsManifold1<T>::GeomDim> Sphere2AsManifold1<T>::getBoundingBox() const
+{
+   return m_sphere.getBoundingBox();
+}
+
+template<typename T>
 DirectedEdgeIntersections<T, 2> Sphere2AsManifold1<T>::GetIntersections(const DirectedEdge<T, GeomDim>& edge, const IGeometryPredicate<T, GeomDim>& predicate) const
 {
    if (edge.isDegenerate(predicate))

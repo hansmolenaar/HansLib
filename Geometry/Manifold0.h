@@ -13,6 +13,8 @@ namespace Geometry
       Point<T, N> GetPoint() const override;
       bool contains(const Point<T, N>& point, const IGeometryPredicate<T, N>& predicate) const override;
 
+      BoundingBox<T, N> getBoundingBox() const override;
+
       TopologyDimension GetTopologyDimension() const override { return TopologyDimensionDef::Corner; };
    private:
       Point<T, N> m_point;
@@ -32,5 +34,11 @@ namespace Geometry
    bool Manifold0<T, N>::contains(const Point<T, N>& point, const IGeometryPredicate<T, N>& predicate) const
    {
       return predicate.SamePoints(point, m_point);
+   }
+
+   template<typename T, int N>
+   BoundingBox<T, N> Manifold0<T, N>::getBoundingBox() const
+   {
+      return BoundingBox<T, N>::Create(m_point);
    }
 }

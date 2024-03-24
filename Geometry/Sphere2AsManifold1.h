@@ -20,6 +20,8 @@ namespace Geometry
 
       DirectedEdgeIntersections<T, 2> GetIntersections(const DirectedEdge<T, GeomDim>& edge, const IGeometryPredicate<T, GeomDim>& predicate) const override;
 
+      BoundingBox<T, Sphere2AsManifold1<T>::GeomDim> getBoundingBox() const override;
+
    private:
       Sphere<T, GeomDim> m_sphere;
    };
