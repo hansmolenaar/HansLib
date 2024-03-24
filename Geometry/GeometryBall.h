@@ -23,10 +23,12 @@ namespace Geometry
 
       bool CouldIntersectWith(typename const BoundingBox<T, N>& bb, const IGeometryPredicate<T, N>& predicate) const override;
 
+      const IRegionManifolds<T, N>& getManifolds() const override;
+
       // First **after** start point
       // If the edge is contained in the region, then return the exit point or the end point of the edge
       // If only the first point of the edge is in the region return false
-      std::optional<Point<T, N>> TryGetFirstIntersectionWithDirectedEdge(typename const Geometry::DirectedEdge<T, N>& edge, const IGeometryPredicate<T, N>& predicate) const override;
+      std::optional<Point<T, N>> TryGetFirstIntersectionWithDirectedEdge(typename const Geometry::DirectedEdge<T, N>& edge, const IGeometryPredicate<T, N>& predicate) const;
 
 
       BallPosition getPosition(const Point<T, N>& point, const IGeometryPredicate<T, N>& predicate) const;
