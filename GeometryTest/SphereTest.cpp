@@ -182,5 +182,78 @@ TEST(SphereTest, FirstIntersectionFirstOutside)
       const auto  ip = circle.TryGetFirstIntersectionWithDirectedEdge(edge, areClose);
       ASSERT_TRUE(areClose.SamePoints(*ip, Point2{ sqrtHalf, sqrtHalf }));
    }
+}
 
+TEST(SphereTest, TryGetFirstIntersectionWithDirectedEdgeAll)
+{
+   constexpr int geomdim = 2;
+   const PointClose<double, geomdim> areClose;
+   const Sphere<double, geomdim> circle(Point2{ 0,0 }, 1.0);
+   Point2 point0{ 0, 0 };
+   DirectedEdge<double, geomdim> edge(point0, point0);
+   std::optional<Point2> ip;
+
+   {
+      point0 = { -3,0 };
+      edge = { point0, {-2,0} };
+      ip = circle.TryGetFirstIntersectionWithDirectedEdge(edge, areClose);
+      ASSERT_FALSE(ip);
+
+      edge = { point0, {-1,0} };
+      ip = circle.TryGetFirstIntersectionWithDirectedEdge(edge, areClose);
+      ASSERT_TRUE(areClose.SamePoints(ip.value(), { -1,0 }));
+
+      edge = { point0, {0,0} };
+      ip = circle.TryGetFirstIntersectionWithDirectedEdge(edge, areClose);
+      ASSERT_TRUE(areClose.SamePoints(ip.value(), { -1,0 }));
+
+      edge = { point0, {1,0} };
+      ip = circle.TryGetFirstIntersectionWithDirectedEdge(edge, areClose);
+      ASSERT_TRUE(areClose.SamePoints(ip.value(), { -1,0 }));
+
+      edge = { point0, {2,0} };
+      ip = circle.TryGetFirstIntersectionWithDirectedEdge(edge, areClose);
+      ASSERT_TRUE(areClose.SamePoints(ip.value(), { -1,0 }));
+   }
+
+   {
+      point0 = { -1,0 };
+      edge = { point0, {-1,-1} };
+      ip = circle.TryGetFirstIntersectionWithDirectedEdge(edge, areClose);
+      ASSERT_FALSE(ip);
+
+      edge = { point0, {0,0} };
+      ip = circle.TryGetFirstIntersectionWithDirectedEdge(edge, areClose);
+      ASSERT_FALSE(ip);
+
+      edge = { point0, {1,0} };
+      ip = circle.TryGetFirstIntersectionWithDirectedEdge(edge, areClose);
+      ASSERT_TRUE(areClose.SamePoints(ip.value(), { 1,0 }));
+
+      edge = { point0, {2,0} };
+      ip = circle.TryGetFirstIntersectionWithDirectedEdge(edge, areClose);
+      ASSERT_TRUE(areClose.SamePoints(ip.value(), { 1,0 }));
+   }
+
+   {
+      point0 = { 0,0 };
+      edge = { point0, {0.1,0.1} };
+      ip = circle.TryGetFirstIntersectionWithDirectedEdge(edge, areClose);
+      ASSERT_FALSE(ip);
+
+      edge = { point0, {1,0} };
+      ip = circle.TryGetFirstIntersectionWithDirectedEdge(edge, areClose);
+      ASSERT_TRUE(areClose.SamePoints(ip.value(), { 1,0 }));
+
+      edge = { point0, {2,0} };
+      ip = circle.TryGetFirstIntersectionWithDirectedEdge(edge, areClose);
+      ASSERT_TRUE(areClose.SamePoints(ip.value(), { 1,0 }));
+   }
+
+   {
+      point0 = { 1,0 };
+      edge = { point0, {2,0} };
+      ip = circle.TryGetFirstIntersectionWithDirectedEdge(edge, areClose);
+      ASSERT_FALSE(ip);
+   }
 }

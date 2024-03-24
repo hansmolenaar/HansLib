@@ -2,6 +2,7 @@
 
 #include "PointClose.h"
 #include "Sphere2AsManifold1.h"
+#include "IManifold1D2Test.h"
 
 using namespace Geometry;
 
@@ -17,17 +18,12 @@ TEST(Sphere2AsManifold1, Constructor)
    const Point2 p{ {2,-3} };
    const Sphere<double, geomdim> circle(p, 7.0);
    const Sphere2AsManifold1<double> sphereManifold(circle);
-   ASSERT_EQ(sphereManifold.GetTopologyDimension(), TopologyDimensionDef::Edge);
+   
+   IManifold1D2TestInterface(sphereManifold, areClose);
 
    ASSERT_FALSE(sphereManifold.contains(p, areClose));
    const Point2 pointOnSphere{ 2,4 };
    ASSERT_TRUE(sphereManifold.contains(pointOnSphere, areClose));
-
-   // TODO
-   const  Line<double, 2> line = sphereManifold.GetEuclideanSubspaceAt(pointOnSphere, areClose);
-
-   // TODO
-   //IntersectionDirectedEdges<T, 2> Sphere2AsManifold1<T>::GetIntersectionsWithSimplex(const Simplex<T, 2>&simplex) const
 }
 
 TEST(Sphere2AsManifold1, GetEuclideanSubspaceAt)
@@ -42,4 +38,94 @@ TEST(Sphere2AsManifold1, GetEuclideanSubspaceAt)
    ASSERT_TRUE(line.contains(Point2{ 3,0 }, areClose));
 
    ASSERT_THROW(sphereManifold.GetEuclideanSubspaceAt(Point2{ 3,3 }, areClose), MyException);
+}
+
+TEST(Sphere2AsManifold1, GetIntersections)
+{
+   constexpr int geomdim = Sphere2AsManifold1<double>::GeomDim;
+   const PointClose<double, geomdim> areClose;
+   const Sphere<double, geomdim> circle({ 0,0 }, 2.0);
+   const Sphere2AsManifold1<double> sphereManifold(circle);
+   DirectedEdgeIntersections<double, geomdim> intersections;
+   DirectedEdge<double, geomdim> edge({ 0,0 }, { 0,0 });
+
+   // First point outside
+   {
+      const Point2 first{ 0,4 };
+      edge = { first, { 0,3 } };
+      intersections = sphereManifold.GetIntersections(edge, areClose);
+      ASSERT_EQ(intersections.size(), 0);
+
+      edge = { first, { 0,2 } };
+      intersections = sphereManifold.GetIntersections(edge, areClose);
+      ASSERT_EQ(intersections.size(), 1);
+      ASSERT_TRUE(areClose.SamePoints(std::get<Point2>(intersections[0]), { 0,2 }));
+
+      edge = { first, { 0,0 } };
+      intersections = sphereManifold.GetIntersections(edge, areClose);
+      ASSERT_EQ(intersections.size(), 1);
+      ASSERT_TRUE(areClose.SamePoints(std::get<Point2>(intersections[0]), { 0,2 }));
+
+      edge = { first, { 0,-2 } };
+      intersections = sphereManifold.GetIntersections(edge, areClose);
+      ASSERT_EQ(intersections.size(), 2);
+      ASSERT_TRUE(areClose.SamePoints(std::get<Point2>(intersections[0]), { 0,2 }));
+      ASSERT_TRUE(areClose.SamePoints(std::get<Point2>(intersections[1]), { 0,-2 }));
+
+      edge = { first, { 0,-3 } };
+      intersections = sphereManifold.GetIntersections(edge, areClose);
+      ASSERT_EQ(intersections.size(), 2);
+      ASSERT_TRUE(areClose.SamePoints(std::get<Point2>(intersections[0]), { 0,2 }));
+      ASSERT_TRUE(areClose.SamePoints(std::get<Point2>(intersections[1]), { 0,-2 }));
+   }
+
+
+   // First point on sphere
+   {
+      const Point2 first{ 0,2 };
+
+      edge = { first, { 0,0 } };
+      intersections = sphereManifold.GetIntersections(edge, areClose);
+      ASSERT_EQ(intersections.size(), 1);
+      ASSERT_TRUE(areClose.SamePoints(std::get<Point2>(intersections[0]), { 0,2 }));
+
+      edge = { first, { 0,-2 } };
+      intersections = sphereManifold.GetIntersections(edge, areClose);
+      ASSERT_EQ(intersections.size(), 2);
+      ASSERT_TRUE(areClose.SamePoints(std::get<Point2>(intersections[0]), { 0,2 }));
+      ASSERT_TRUE(areClose.SamePoints(std::get<Point2>(intersections[1]), { 0,-2 }));
+
+      edge = { first, { 0,-3 } };
+      intersections = sphereManifold.GetIntersections(edge, areClose);
+      ASSERT_EQ(intersections.size(), 2);
+      ASSERT_TRUE(areClose.SamePoints(std::get<Point2>(intersections[0]), { 0,2 }));
+      ASSERT_TRUE(areClose.SamePoints(std::get<Point2>(intersections[1]), { 0,-2 }));
+   }
+
+
+   // First point in sphere
+   {
+      const Point2 first{ 0,0 };
+
+      edge = { first, { 0,-2 } };
+      intersections = sphereManifold.GetIntersections(edge, areClose);
+      ASSERT_EQ(intersections.size(), 1);
+      ASSERT_TRUE(areClose.SamePoints(std::get<Point2>(intersections[0]), { 0,-2 }));
+
+      edge = { first, { 0,-3 } };
+      intersections = sphereManifold.GetIntersections(edge, areClose);
+      ASSERT_EQ(intersections.size(), 1);
+      ASSERT_TRUE(areClose.SamePoints(std::get<Point2>(intersections[0]), { 0,-2 }));
+   }
+
+
+   // First point on sphere
+   {
+      const Point2 first{ 0,-2 };
+
+      edge = { first, { 0,-3 } };
+      intersections = sphereManifold.GetIntersections(edge, areClose);
+      ASSERT_EQ(intersections.size(), 1);
+      ASSERT_TRUE(areClose.SamePoints(std::get<Point2>(intersections[0]), { 0,-2 }));
+   }
 }

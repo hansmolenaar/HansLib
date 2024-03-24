@@ -2,14 +2,12 @@
 
 #include "Defines.h"
 #include "GeometrySphere.h"
-#include "IGeometryPredicate.h"
-#include "IManifold1.h"
-
+#include "IManifold1D2.h"
 
 namespace Geometry
 {
    template<typename T>
-   class Sphere2AsManifold1 : public IManifold1<T, 2>
+   class Sphere2AsManifold1 : public IManifold1D2<T>
    {
 
    public:

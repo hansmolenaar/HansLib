@@ -1,3 +1,4 @@
+#pragma once
 
 #include "IManifold.h"
 #include "Line.h"

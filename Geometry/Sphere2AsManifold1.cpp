@@ -32,6 +32,10 @@ Line<T, Sphere2AsManifold1<T>::GeomDim> Sphere2AsManifold1<T>::GetEuclideanSubsp
 template<typename T>
 DirectedEdgeIntersections<T, 2> Sphere2AsManifold1<T>::GetIntersections(const DirectedEdge<T, GeomDim>& edge, const IGeometryPredicate<T, GeomDim>& predicate) const
 {
+   if (edge.isDegenerate(predicate))
+   {
+      throw MyException("Sphere2AsManifold1<T>::GetIntersections degenerate edge");
+   }
    const bool firstPointInside = m_sphere.Contains(edge.point0(), predicate);
    const auto firstIntersection = m_sphere.TryGetFirstIntersectionWithDirectedEdge(edge, predicate);
    DirectedEdgeIntersections<T, GeomDim> result;
@@ -43,14 +47,20 @@ DirectedEdgeIntersections<T, 2> Sphere2AsManifold1<T>::GetIntersections(const Di
          result.emplace_back(firstIntersection.value());
       }
    }
-   else if (firstIntersection)
+   else if (firstIntersection.has_value())
    {
       result.emplace_back(firstIntersection.value());
       const DirectedEdge<T, GeomDim> next(firstIntersection.value(), edge.point1());
       if (!next.isDegenerate(predicate))
       {
          const auto secondIntersection = m_sphere.TryGetFirstIntersectionWithDirectedEdge(next, predicate);
-         result.emplace_back(secondIntersection.value());
+         if (secondIntersection.has_value())
+         {
+            if (!predicate.SamePoints(firstIntersection.value(), secondIntersection.value()))
+            {
+               result.emplace_back(secondIntersection.value());
+            }
+         }
       }
    }
    return result;

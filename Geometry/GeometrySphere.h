@@ -53,10 +53,10 @@ namespace Geometry
 
       const auto [pos0, pos1] = m_ball.getPositions(edge, predicate);
 
-      if (pos1 == BallPosition::On) return  point1;
       if (pos0 == BallPosition::Inside && pos1 == BallPosition::Inside) return {};
       if (pos0 == BallPosition::Inside && pos1 == BallPosition::On) return  point1;
       if (pos0 == BallPosition::On && pos1 == BallPosition::Inside) return  {};
+      if (pos0 == BallPosition::On && pos1 == BallPosition::On) return  point1;
 
       const auto ip = m_ball.TryGetFirstIntersectionWithDirectedEdge(edge, predicate);
 
@@ -73,12 +73,6 @@ namespace Geometry
       }
 
       Utilities::MyAssert(pos0 == BallPosition::Outside);
-      if (pos1 == BallPosition::Inside)
-      {
-         return *ip;
-      }
-
-      Utilities::MyAssert(pos1 == BallPosition::Outside);
       return  ip;
    }
 
