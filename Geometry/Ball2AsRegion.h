@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Ball.h"
-#include "IGeometryPredicate.h"
 #include "IGeometryRegion.h"
+#include "Sphere2AsManifold1.h"
 
 namespace Geometry
 {
@@ -13,7 +13,7 @@ namespace Geometry
    public:
       static constexpr int GeomDim = 2;
 
-      Ball2AsRegion(Ball<T, 2> ball);
+      explicit Ball2AsRegion(Ball<T, 2> ball);
 
       BoundingBox<T, 2> getBoundingBox() const override;
 
@@ -25,6 +25,7 @@ namespace Geometry
 
    private:
       Ball<T, GeomDim> m_ball;
+      std::unique_ptr<IRegionManifolds<T, 2>> m_sphereManifolds;
    };
 
 } // namespace Geometry

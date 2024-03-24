@@ -17,8 +17,8 @@ namespace Geometry
       virtual  std::vector<const IManifold<T, N>*> GetBoundaryHyperManifolds() const = 0;
 
       // Adjacencies
-      virtual std::vector<const IManifold<T, N>*> GetConnectedLowers(const IManifold<T, N>& manifold) = 0;
-      virtual std::vector<const IManifold<T, N>*> GetConnectedHighers(const IManifold<T, N>& manifold) = 0;
+      virtual std::vector<const IManifold<T, N>*> GetConnectedLowers(const IManifold<T, N>& manifold) const = 0;
+      virtual std::vector<const IManifold<T, N>*> GetConnectedHighers(const IManifold<T, N>& manifold) const = 0;
    };
 
 }

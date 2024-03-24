@@ -52,6 +52,8 @@ public:
    T getLower(int) const;
    T getUpper(int) const;
 
+   T getMeasure() const;
+
    void Add(const std::span<const T>&);
 
    bool contains(const Point<T, N>&) const;
@@ -239,6 +241,17 @@ std::string BoundingBox<T, N>::toString() const
    for (int n = 0; n < N; ++n)
    {
       result += sep + "(" + ToString(getLower(n)) + ", " + ToString(getUpper(n)) + ")";
+   }
+   return result;
+}
+
+template<typename T, int N >
+T BoundingBox<T, N>::getMeasure() const
+{
+   T result = 1;
+   for (int n = 0; n < N; ++n)
+   {
+      result *= (getUpper(n) - getLower(n));
    }
    return result;
 }
