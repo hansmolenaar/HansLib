@@ -3,6 +3,7 @@
 #include "Ball.h"
 #include "PointClose.h"
 #include "Ball2AsRegion.h"
+#include "IGeometryRegionTest.h"
 
 using namespace Geometry;
 
@@ -17,6 +18,8 @@ TEST(Ball2AsRegion, Constructor)
    const PointClose<double, geomdim> areClose;
    const Ball<double, geomdim> ball({ 0,0 }, 1);
    const  Ball2AsRegion<double> region(ball);
+
+   IGeometryRegionTestInterface(region, areClose);
 
    const auto bb = region.getBoundingBox();
    ASSERT_NEAR(bb.getMeasure(), 4.0, crit);
