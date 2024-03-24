@@ -2,7 +2,7 @@
 
 #include "IndexTreeScaled.h"
 #include "RefinementPredicates.h"
-#include "GeometrySphere.h"
+#include "Sphere.h"
 #include "IntervalTreeIndexFactory.h"
 #include "PointClose.h"
 #include "InitialBoundingboxGenerator.h"

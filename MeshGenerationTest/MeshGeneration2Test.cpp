@@ -2,7 +2,7 @@
 
 #include "IndexTreeScaled.h"
 #include "RefinementPredicates.h"
-#include "GeometryBall.h"
+#include "Ball.h"
 #include "IntervalTreeIndexFactory.h"
 #include "MeshGeneration2.h"
 #include "MeshingStrategy.h"

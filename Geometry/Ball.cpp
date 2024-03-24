@@ -1,4 +1,4 @@
-#include "GeometryBall.h"
+#include "Ball.h"
 
 using namespace Geometry;
 

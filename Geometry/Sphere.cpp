@@ -1,4 +1,4 @@
-#include "GeometrySphere.h"
+#include "Sphere.h"
 
 using namespace Geometry;
 

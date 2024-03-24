@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "InitialBoundingboxGenerator.h"
-#include "GeometrySphere.h"
+#include "Sphere.h"
 #include <array>
 
 TEST(InitialboundingboxGeneratorTest, Scale1D)

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Defines.h"
-#include "GeometrySphere.h"
+#include "Sphere.h"
 #include "IManifold1D2.h"
 
 namespace Geometry

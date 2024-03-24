@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "GeometryBall.h"
+#include "Ball.h"
 #include "PointClose.h"
 #include "PointExact.h"
 #include "Rotate2D.h"

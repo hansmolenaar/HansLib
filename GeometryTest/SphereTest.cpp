@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "GeometrySphere.h"
+#include "Sphere.h"
 #include "PointClose.h"
 #include "Rotate2D.h"
 
