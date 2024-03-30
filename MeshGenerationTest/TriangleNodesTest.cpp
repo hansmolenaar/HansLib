@@ -179,18 +179,17 @@ TEST(TriangleNodesTest, GetAllTriangles)
 
 TEST(TriangleNodesTest, GetAllEdges)
 {
-   using Edge = TrianglesNodes::SortedEdge;
    TrianglesNodes tnodes;
    auto allEdges = tnodes.getAllSortedEdges();
    ASSERT_TRUE(allEdges.empty());
 
    const auto triangle0 = tnodes.addTriangle(42, 999, 0);
    allEdges = tnodes.getAllSortedEdges();
-   ASSERT_TRUE(str::equal(allEdges, std::vector<Edge>{Edge{ 0, 42 }, Edge{ 0,999 }, Edge{ 42,999 }}));
+   ASSERT_TRUE(str::equal(allEdges, std::vector<SortedEdge>{SortedEdge{ 0, 42 }, SortedEdge{ 0,999 }, SortedEdge{ 42,999 }}));
 
    const auto triangle1 = tnodes.addTriangle(42, 0, 2);
    allEdges = tnodes.getAllSortedEdges();
-   ASSERT_TRUE(str::equal(allEdges, std::vector<Edge>{Edge{ 0, 2 }, Edge{ 0,42 }, Edge{ 0,999 }, Edge{ 2, 42 }, Edge{ 42, 999 }}));
+   ASSERT_TRUE(str::equal(allEdges, std::vector<SortedEdge>{{ 0, 2 }, { 0,42 }, { 0,999 }, { 2, 42 }, { 42, 999 }}));
 }
 
 TEST(TriangleNodesTest, ToString)

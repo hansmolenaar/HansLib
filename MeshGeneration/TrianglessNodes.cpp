@@ -8,9 +8,9 @@ using namespace MeshGeneration;
 namespace
 {
    // Check for duplicates, etc
-   std::array<PointIndex, TrianglesNodes::NumNodesOnTriangle> SortAndCheckNodes(PointIndex n0, PointIndex n1, PointIndex n2)
+   TriangleNodes SortAndCheckNodes(PointIndex n0, PointIndex n1, PointIndex n2)
    {
-      std::array<PointIndex, TrianglesNodes::NumNodesOnTriangle> nodes = { n0, n1, n2 };
+      TriangleNodes nodes = { n0, n1, n2 };
       str::sort(nodes);
       const auto last = std::unique(nodes.begin(), nodes.end());
       if (last != nodes.end())
@@ -21,7 +21,7 @@ namespace
       return nodes;
    }
 
-   TrianglesNodes::SortedEdge CreateSortedEdge(PointIndex n0, PointIndex n1)
+   SortedEdge CreateSortedEdge(PointIndex n0, PointIndex n1)
    {
       if (n1 > n0) return { n0, n1 };
       return { n1, n0 };
@@ -48,7 +48,7 @@ CellIndex TrianglesNodes::addTriangle(PointIndex n0, PointIndex n1, PointIndex n
    return result;
 }
 
-std::optional<CellIndex> TrianglesNodes::tryGetTriangleFromSortedNodes(const std::array<PointIndex, TrianglesNodes::NumNodesOnTriangle>& nodes) const
+std::optional<CellIndex> TrianglesNodes::tryGetTriangleFromSortedNodes(const TriangleNodes& nodes) const
 {
    const auto triangles = m_toTriangles.equal_range(nodes.at(0));
    for (auto itr = triangles.first; itr != triangles.second; ++itr)
@@ -180,7 +180,7 @@ void TrianglesNodes::checkTriangleId(CellIndex triangle) const
    }
 }
 
-std::array<PointIndex, TrianglesNodes::NumNodesOnTriangle> TrianglesNodes::getTriangleNodes(CellIndex triangle) const
+TriangleNodes TrianglesNodes::getTriangleNodes(CellIndex triangle) const
 {
    checkTriangleId(triangle);
    return m_toNodes.at(triangle);
@@ -208,9 +208,9 @@ std::vector<CellIndex> TrianglesNodes::getAllTriangles() const
    return result;
 }
 
-std::vector<TrianglesNodes::SortedEdge> TrianglesNodes::getAllSortedEdges() const
+std::vector<SortedEdge> TrianglesNodes::getAllSortedEdges() const
 {
-   std::vector<TrianglesNodes::SortedEdge> result;
+   std::vector<SortedEdge> result;
    result.reserve(3 * m_toNodes.size());
    for (auto& itr : m_toNodes)
    {
