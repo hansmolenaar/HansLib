@@ -21,7 +21,7 @@ namespace MeshGeneration2
       std::unique_ptr<MeshGeneration::TrianglesNodes>& trianglesNodes,
       Logger& logger);
 
-   void InsertLineManifoldInTriangleByMovingPoints(const Geometry::IManifold1D2<double>& manifold, const MeshGeneration::TriangleNodes& triangleNodes, IDynamicUniquePointCollection<double, MeshGeneration::GeomDim2>& pointCollection);
+   void InsertLineManifoldInTriangleByMovingPoints(const Geometry::IManifold1D2<double>& manifold, const MeshGeneration::TriangleNodes& triangleNodes, IDynamicUniquePointCollection<double, GeomDim2>& pointCollection);
 
    std::unique_ptr<Vtk::VtkData> ToVtkData(const MeshGeneration::TrianglesNodes& trianglesNodes, const IPointCollection<double,2>& points);
 }

@@ -14,9 +14,8 @@ namespace
 
 TEST(Ball2AsRegion, Constructor)
 {
-   constexpr int geomdim = 2;
-   const PointClose<double, geomdim> areClose;
-   const Ball<double, geomdim> ball({ 0,0 }, 1);
+   const PointClose<double, GeomDim2> areClose;
+   const Ball<double, GeomDim2> ball({ 0,0 }, 1);
    const  Ball2AsRegion<double> region(ball);
 
    IGeometryRegionTestInterface(region, areClose);

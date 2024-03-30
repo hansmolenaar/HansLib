@@ -85,7 +85,7 @@ TEST(MeshGeneration2Test, Ball2)
 }
 
 
-TEST(MeshGeneration2Test, Ball2AndTriangle_1)
+TEST(MeshGeneration2Test, Sphere2AndTriangle_1)
 {
    Logger logger;
    const Sphere<double, GeomDim2> sphere(Point2{ 0, 0 }, 1);;

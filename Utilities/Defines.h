@@ -19,3 +19,7 @@ using PointIndex = size_t;
 inline constexpr PointIndex PointIndexInvalid = std::numeric_limits<size_t>::max();
 using CellIndex = size_t;
 inline constexpr CellIndex CellIndexInvalid = std::numeric_limits<size_t>::max();
+
+inline constexpr int GeomDim1 = 1;
+inline constexpr int GeomDim2 = 2;
+inline constexpr int GeomDim3 = 3;

@@ -7,15 +7,15 @@
 template<typename T, int N>
 using Point = std::array<T, N>;
 
-using Point1 = Point<double, 1>;
-using Point2 = Point<double, 2>;
-using Point3 = Point<double, 3>;
-using IntPoint1 = Point<int, 1>;
-using IntPoint2 = Point<int, 2>;
-using IntPoint3 = Point<int, 3>;
-using RatPoint1 = Point<Rational, 1>;
-using RatPoint2 = Point<Rational, 2>;
-using RatPoint3 = Point<Rational, 3>;
+using Point1 = Point<double, GeomDim1>;
+using Point2 = Point<double, GeomDim2>;
+using Point3 = Point<double, GeomDim3>;
+using IntPoint1 = Point<int, GeomDim1>;
+using IntPoint2 = Point<int, GeomDim2>;
+using IntPoint3 = Point<int, GeomDim3>;
+using RatPoint1 = Point<Rational, GeomDim1>;
+using RatPoint2 = Point<Rational, GeomDim2>;
+using RatPoint3 = Point<Rational, GeomDim3>;
 
 template<typename T, int N>
 std::array<T, N> operator+(std::array<T, N> lhs, const std::array<T, N>& rhs)

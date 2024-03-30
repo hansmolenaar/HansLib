@@ -7,7 +7,7 @@
 
 TEST(UniqueHashedPointCollectionTest, Basic)
 {
-   UniqueHashedPointCollection<int, 1> collection;
+   UniqueHashedPointCollection<int, GeomDim1> collection;
    ASSERT_EQ(collection.getNumPoints(), 0);
    IntPoint1 ipoint{ 42 };
 
@@ -29,7 +29,7 @@ TEST(UniqueHashedPointCollectionTest, Basic)
 
 TEST(UniqueHashedPointCollectionTest, Rat2)
 {
-   UniqueHashedPointCollection<Rational, 2> collection;
+   UniqueHashedPointCollection<Rational, GeomDim2> collection;
    ASSERT_EQ(collection.getNumPoints(), 0);
    for (const auto& point :{ RatPoint2{1,2}, RatPoint2{1,3}, RatPoint2{2,1}, RatPoint2{1,3} })
    {

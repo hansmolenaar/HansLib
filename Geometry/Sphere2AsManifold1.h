@@ -11,19 +11,18 @@ namespace Geometry
    {
 
    public:
-      static constexpr int GeomDim = 2;
-      explicit  Sphere2AsManifold1(Sphere<T, GeomDim> sphere);
+      explicit  Sphere2AsManifold1(Sphere<T, GeomDim2> sphere);
 
-      bool contains(const Point<T, GeomDim>& point, const IGeometryPredicate<T, GeomDim>& predicate) const override;
+      bool contains(const Point<T, GeomDim2>& point, const IGeometryPredicate<T, GeomDim2>& predicate) const override;
 
-      Line<T, Sphere2AsManifold1<T>::GeomDim> GetEuclideanSubspaceAt(const Point<T, GeomDim>& point, const IGeometryPredicate<T, GeomDim>& predicate) const override;
+      Line<T, GeomDim2> GetEuclideanSubspaceAt(const Point<T, GeomDim2>& point, const IGeometryPredicate<T, GeomDim2>& predicate) const override;
 
-      DirectedEdgeIntersections<T, 2> GetIntersections(const DirectedEdge<T, GeomDim>& edge, const IGeometryPredicate<T, GeomDim>& predicate) const override;
+      DirectedEdgeIntersections<T, GeomDim2> GetIntersections(const DirectedEdge<T, GeomDim2>& edge, const IGeometryPredicate<T, GeomDim2>& predicate) const override;
 
-      BoundingBox<T, Sphere2AsManifold1<T>::GeomDim> getBoundingBox() const override;
+      BoundingBox<T, GeomDim2> getBoundingBox() const override;
 
    private:
-      Sphere<T, GeomDim> m_sphere;
+      Sphere<T, GeomDim2> m_sphere;
    };
 
 } // namespace Geometry

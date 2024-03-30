@@ -15,10 +15,9 @@ namespace
 
 TEST(BallTest, Constructor)
 {
-   constexpr int geomdim = 3;
-   const PointExact<int, geomdim> areClose;
+   const PointExact<int, GeomDim3> areClose;
    const IntPoint3 p{ {2,-3,-6} };
-   const Ball<int, geomdim> ball(p, 7);
+   const Ball<int, GeomDim3> ball(p, 7);
    ASSERT_EQ(ball.getRadius(), 7);
    ASSERT_EQ(ball.getRadiusSquared(), 49);
    ASSERT_EQ(ball.getCenter().at(0), 2);

@@ -7,13 +7,12 @@
 using namespace Geometry;
 
 template<typename T>
-void IManifold1D2TestInterface(const IManifold1D2<T>& manifold, const IGeometryPredicate<T, IManifold1D2<T>::GeomDim>& predicate)
+void IManifold1D2TestInterface(const IManifold1D2<T>& manifold, const IGeometryPredicate<T, GeomDim2>& predicate)
 {
-   constexpr int geomdim = IManifold1D2<T>::GeomDim;
-   IManifold1TestInterface<T, geomdim>(manifold, predicate);
+   IManifold1TestInterface<T, GeomDim2>(manifold, predicate);
 
-   const Point<T, geomdim> point{ 0,0 };
-   const DirectedEdge<T, geomdim> edge(point, point);
+   const Point<T, GeomDim2> point{ 0,0 };
+   const DirectedEdge<T, GeomDim2> edge(point, point);
    ASSERT_TRUE(edge.isDegenerate(predicate));
    ASSERT_THROW(manifold.GetIntersections(edge, predicate), MyException);
 }

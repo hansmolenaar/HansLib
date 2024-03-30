@@ -8,24 +8,23 @@ namespace Geometry
 {
 
    template<typename T>
-   class Ball2AsRegion : public IGeometryRegion<T, 2>
+   class Ball2AsRegion : public IGeometryRegion<T, GeomDim2>
    {
    public:
-      static constexpr int GeomDim = 2;
 
-      explicit Ball2AsRegion(Ball<T, 2> ball);
+      explicit Ball2AsRegion(Ball<T, GeomDim2> ball);
 
-      BoundingBox<T, 2> getBoundingBox() const override;
+      BoundingBox<T, GeomDim2> getBoundingBox() const override;
 
-      bool Contains(const Point<T, GeomDim>& point, const IGeometryPredicate<T, GeomDim>& predicate) const override;
+      bool Contains(const Point<T, GeomDim2>& point, const IGeometryPredicate<T, GeomDim2>& predicate) const override;
 
-      bool CouldIntersectWith(typename const BoundingBox<T, GeomDim>& bb, const IGeometryPredicate<T, GeomDim>& predicate) const override;
+      bool CouldIntersectWith(typename const BoundingBox<T, GeomDim2>& bb, const IGeometryPredicate<T, GeomDim2>& predicate) const override;
 
-      const IRegionManifolds<T, 2>& getManifolds() const override;
+      const IRegionManifolds<T, GeomDim2>& getManifolds() const override;
 
    private:
-      Ball<T, GeomDim> m_ball;
-      std::unique_ptr<IRegionManifolds<T, 2>> m_sphereManifolds;
+      Ball<T, GeomDim2> m_ball;
+      std::unique_ptr<IRegionManifolds<T, GeomDim2>> m_sphereManifolds;
    };
 
 } // namespace Geometry

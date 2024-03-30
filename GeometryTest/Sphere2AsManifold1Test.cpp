@@ -13,10 +13,9 @@ namespace
 
 TEST(Sphere2AsManifold1, Constructor)
 {
-   constexpr int geomdim = Sphere2AsManifold1<double>::GeomDim;
-   const PointClose<double, geomdim> areClose;
+   const PointClose<double, GeomDim2> areClose;
    const Point2 p{ {2,-3} };
-   const Sphere<double, geomdim> circle(p, 7.0);
+   const Sphere<double, GeomDim2> circle(p, 7.0);
    const Sphere2AsManifold1<double> sphereManifold(circle);
    
    IManifold1D2TestInterface(sphereManifold, areClose);
@@ -28,10 +27,9 @@ TEST(Sphere2AsManifold1, Constructor)
 
 TEST(Sphere2AsManifold1, GetEuclideanSubspaceAt)
 {
-   constexpr int geomdim = Sphere2AsManifold1<double>::GeomDim;
-   const PointClose<double, geomdim> areClose;
+   const PointClose<double, GeomDim2> areClose;
    const Point2 p{ 1,2 };
-   const Sphere<double, geomdim> circle(p, 2.0);
+   const Sphere<double, GeomDim2> circle(p, 2.0);
    const Sphere2AsManifold1<double> sphereManifold(circle);
 
    const  Line<double, 2> line = sphereManifold.GetEuclideanSubspaceAt(Point2{ 3,2 }, areClose);
@@ -42,12 +40,11 @@ TEST(Sphere2AsManifold1, GetEuclideanSubspaceAt)
 
 TEST(Sphere2AsManifold1, GetIntersections)
 {
-   constexpr int geomdim = Sphere2AsManifold1<double>::GeomDim;
-   const PointClose<double, geomdim> areClose;
-   const Sphere<double, geomdim> circle({ 0,0 }, 2.0);
+   const PointClose<double, GeomDim2> areClose;
+   const Sphere<double, GeomDim2> circle({ 0,0 }, 2.0);
    const Sphere2AsManifold1<double> sphereManifold(circle);
-   DirectedEdgeIntersections<double, geomdim> intersections;
-   DirectedEdge<double, geomdim> edge({ 0,0 }, { 0,0 });
+   DirectedEdgeIntersections<double, GeomDim2> intersections;
+   DirectedEdge<double, GeomDim2> edge({ 0,0 }, { 0,0 });
 
    // First point outside
    {

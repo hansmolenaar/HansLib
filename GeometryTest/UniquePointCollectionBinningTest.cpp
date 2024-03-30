@@ -7,18 +7,18 @@
 
 TEST(UniquePointCollectionBinningTest, Empty)
 {
-   const PointClose<double, 1> predicate;
-   const UniquePointCollectionBinning< 1> collection(predicate, std::vector<Point<double, 1>>{ Point1{ 1.0 }, Point1{ 2.0 }});
+   const PointClose<double, GeomDim1> predicate;
+   const UniquePointCollectionBinning< GeomDim1> collection(predicate, std::vector<Point1>{ Point1{ 1.0 }, Point1{ 2.0 }});
    ASSERT_EQ(collection.getNumPoints(), 2);
-   const auto found = collection.tryGetClosePoint(Point<double, 1>{1.5});
+   const auto found = collection.tryGetClosePoint(Point1{1.5});
    ASSERT_FALSE(found);
 }
 
 
 TEST(UniquePointCollectionBinningTest, AddIfNew)
 {
-   const PointClose<double, 1> predicate;
-   UniquePointCollectionBinning< 1> collection(predicate, std::vector<Point<double, 1>>{ Point1{ 1.0 }, Point1{ 2.0 }});
+   const PointClose<double, GeomDim1> predicate;
+   UniquePointCollectionBinning<GeomDim1> collection(predicate, std::vector<Point1>{ Point1{ 1.0 }, Point1{ 2.0 }});
    ASSERT_EQ(collection.getNumPoints(), 2);
 
    const auto point0 = collection.getPoint(0);
@@ -34,8 +34,8 @@ TEST(UniquePointCollectionBinningTest, AddIfNew)
 
 TEST(UniquePointCollectionBinningTest, Delete)
 {
-   const PointClose<double, 1> predicate;
-   UniquePointCollectionBinning< 1> collection(predicate, std::vector<Point<double, 1>>{ Point1{ 1.0 }, Point1{ 2.0 }});
+   const PointClose<double, GeomDim1> predicate;
+   UniquePointCollectionBinning< 1> collection(predicate, std::vector<Point1>{ Point1{ 1.0 }, Point1{ 2.0 }});
    ASSERT_EQ(collection.getNumPoints(), 2);
 
    const auto point0 = collection.getPoint(0);
@@ -78,8 +78,8 @@ static void TestTryGetClosePoints(const std::vector<Point<double, N>> closePoint
 }
 TEST(UniquePointCollectionBinningTest, TryGetClosePoint1)
 {
-   const PointClose<double, 1> predicate;
-   const UniquePointCollectionBinning< 1> collection(predicate, std::vector<Point<double, 1>>{ Point1{ 0.0 }, Point1{ 1.0 }});
+   const PointClose<double, GeomDim1> predicate;
+   const UniquePointCollectionBinning<GeomDim1> collection(predicate, std::vector<Point1>{ Point1{ 0.0 }, Point1{ 1.0 }});
    ASSERT_EQ(collection.getNumPoints(), 2);
 
    const Point1 nearPoint{ 0.1 * predicate.getSmallLengthInDirection(0) };
@@ -90,8 +90,8 @@ TEST(UniquePointCollectionBinningTest, TryGetClosePoint1)
 
 TEST(UniquePointCollectionBinningTest, TryGetClosePoint2)
 {
-   const PointClose<double, 1> predicate;
-   UniquePointCollectionBinning< 1> collection(predicate, std::vector<Point<double, 1>>{ Point1{ 0.0 }, Point1{ 1.0 }});
+   const PointClose<double, GeomDim1> predicate;
+   UniquePointCollectionBinning< 1> collection(predicate, std::vector<Point1>{ Point1{ 0.0 }, Point1{ 1.0 }});
    const Point1 newPoint{ 0.1234 };
    const Point1 nearPoint{ newPoint.at(0) + 0.1 * predicate.getSmallLengthInDirection(0) };
    const std::vector<Point1> points{ newPoint , nearPoint };
@@ -100,8 +100,8 @@ TEST(UniquePointCollectionBinningTest, TryGetClosePoint2)
 
 TEST(UniquePointCollectionBinningTest, TryGetClosePoint3)
 {
-   const PointClose<double, 1> predicate;
-   const UniquePointCollectionBinning< 1> collection(predicate, std::vector<Point<double, 1>>{ Point1{ 0.0 }, Point1{ 1.0 }});
+   const PointClose<double, GeomDim1> predicate;
+   const UniquePointCollectionBinning< 1> collection(predicate, std::vector<Point1>{ Point1{ 0.0 }, Point1{ 1.0 }});
 
    // 2 close points in neighboring bins
    const auto& bins = collection.getBins(0);
@@ -115,8 +115,8 @@ TEST(UniquePointCollectionBinningTest, TryGetClosePoint3)
 
 TEST(UniquePointCollectionBinningTest, TryGetClosePoint4)
 {
-   const PointClose<double, 2> predicate;
-   const UniquePointCollectionBinning<2> collection(predicate, std::vector<Point<double, 2>>{ Point2{ 0,2 }, Point2{ 1, 3 }, Point2{ 1,2 }, Point2{ 0,3 }, Point2{ 0.2, 1.4 }});
+   const PointClose<double, GeomDim2> predicate;
+   const UniquePointCollectionBinning<GeomDim2> collection(predicate, std::vector<Point2>{ Point2{ 0,2 }, Point2{ 1, 3 }, Point2{ 1,2 }, Point2{ 0,3 }, Point2{ 0.2, 1.4 }});
 
    // 2 close points in neighboring bins
    const double bound0 = collection.getBins(0).getBinUpper(1);
@@ -133,8 +133,8 @@ TEST(UniquePointCollectionBinningTest, TryGetClosePoint4)
 
 TEST(UniquePointCollectionBinningTest, TryGetClosePoint5)
 {
-   const PointClose<double, 3> predicate;
-   const UniquePointCollectionBinning<3> collection(predicate, std::vector<Point3>{
+   const PointClose<double, GeomDim3> predicate;
+   const UniquePointCollectionBinning<GeomDim3> collection(predicate, std::vector<Point3>{
       Point3{ 0,0,0 }, Point3{ 1,0,0 }, Point3{ 0,1,0 }, Point3{ 1,1,0 },
          Point3{ 0,0,1 }, Point3{ 1,0,1 }, Point3{ 0,1,1 }, Point3{ 1,1,1 },
          Point3{ 0.1, 0.2, 0.3 },
@@ -165,8 +165,8 @@ TEST(UniquePointCollectionBinningTest, TryGetClosePoint5)
 
 TEST(UniquePointCollectionBinningTest, ToString)
 {
-   const PointClose<double, 3> predicate;
-   const UniquePointCollectionBinning<3> collection(predicate, std::vector<Point3>{
+   const PointClose<double, GeomDim3> predicate;
+   const UniquePointCollectionBinning<GeomDim3> collection(predicate, std::vector<Point3>{
       Point3{ 0,0,0 }, Point3{ 1,0,0 }, Point3{ 0,1,0 }, Point3{ 1,1,0 },
          Point3{ 0,0,1 }, Point3{ 1,0,1 }, Point3{ 0,1,1 }, Point3{ 1,1,1 },
          Point3{ 0.1, 0.2, 0.3 },
@@ -181,8 +181,8 @@ TEST(UniquePointCollectionBinningTest, ToString)
 
 TEST(UniquePointCollectionBinningTest, Move)
 {
-   const PointClose<double, 1> predicate;
-   UniquePointCollectionBinning<1> collection(predicate, std::vector<Point1>{Point1{ 2 }, Point1{ 1 }});
+   const PointClose<double, GeomDim1> predicate;
+   UniquePointCollectionBinning<GeomDim1> collection(predicate, std::vector<Point1>{Point1{ 2 }, Point1{ 1 }});
 
    const Point1 oldPosition{ 1.4 };
    const auto pointId = collection.addIfNew(oldPosition);

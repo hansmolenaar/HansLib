@@ -13,10 +13,9 @@ namespace
 
 TEST(SphereTest, Constructor)
 {
-   constexpr int geomdim = 3;
-   const PointClose<double, geomdim> areClose;
+   const PointClose<double, GeomDim3> areClose;
    const Point3 p{ {2,-3,-6} };
-   const Sphere<double, geomdim> circle(p, 7.0);
+   const Sphere<double, GeomDim3> circle(p, 7.0);
 
    ASSERT_FALSE(circle.Contains(p, areClose));
    ASSERT_TRUE(circle.Contains({ 2, -3, 1 }, areClose));
@@ -25,9 +24,8 @@ TEST(SphereTest, Constructor)
 
 TEST(SphereTest, Contains)
 {
-   constexpr int geomdim = 2;
-   const PointClose<double, geomdim> areClose;
-   const Sphere<double, geomdim> circle(Point2{ 0, 0 }, 5.0);
+   const PointClose<double, GeomDim2> areClose;
+   const Sphere<double, GeomDim2> circle(Point2{ 0, 0 }, 5.0);
    const Point2 point{ 3,4 };
    ASSERT_TRUE(circle.Contains(point, areClose));
 
@@ -41,54 +39,52 @@ TEST(SphereTest, Contains)
 
 TEST(SphereTest, CouldIntersectWith)
 {
-   constexpr int geomdim = 1;
-   const PointClose<double, geomdim> areClose;
-   const Sphere<double, geomdim> circle(Point1{ 0.5 }, 0.5);
+   const PointClose<double, GeomDim1> areClose;
+   const Sphere<double, GeomDim1> circle(Point1{ 0.5 }, 0.5);
 
-   auto bb = BoundingBox<double, geomdim>::CreateFromList(std::vector<Point1>{ {-0.9}, { -0.1 }});
+   auto bb = BoundingBox<double, GeomDim1>::CreateFromList(std::vector<Point1>{ {-0.9}, { -0.1 }});
    ASSERT_FALSE(circle.CouldIntersectWith(bb, areClose));
 
-   bb = BoundingBox<double, geomdim>::CreateFromList(std::vector<Point1>{ {-0.9}, { 0.1 }});
+   bb = BoundingBox<double, GeomDim1>::CreateFromList(std::vector<Point1>{ {-0.9}, { 0.1 }});
    ASSERT_TRUE(circle.CouldIntersectWith(bb, areClose));
 
-   bb = BoundingBox<double, geomdim>::CreateFromList(std::vector<Point1>{ {-0.9}, { 1.1 }});
+   bb = BoundingBox<double, GeomDim1>::CreateFromList(std::vector<Point1>{ {-0.9}, { 1.1 }});
    ASSERT_TRUE(circle.CouldIntersectWith(bb, areClose));
 
-   bb = BoundingBox<double, geomdim>::CreateFromList(std::vector<Point1>{ {0.1}, { 0.9 }});
+   bb = BoundingBox<double, GeomDim1>::CreateFromList(std::vector<Point1>{ {0.1}, { 0.9 }});
    ASSERT_FALSE(circle.CouldIntersectWith(bb, areClose));
 
-   bb = BoundingBox<double, geomdim>::CreateFromList(std::vector<Point1>{ {0.1}, { 1.1 }});
+   bb = BoundingBox<double, GeomDim1>::CreateFromList(std::vector<Point1>{ {0.1}, { 1.1 }});
    ASSERT_TRUE(circle.CouldIntersectWith(bb, areClose));
 
-   bb = BoundingBox<double, geomdim>::CreateFromList(std::vector<Point1>{ {1.1}, { 1.2 }});
+   bb = BoundingBox<double, GeomDim1>::CreateFromList(std::vector<Point1>{ {1.1}, { 1.2 }});
    ASSERT_FALSE(circle.CouldIntersectWith(bb, areClose));
 }
 
 
 TEST(SphereTest, FirstIntersectionFirstInside)
 {
-   constexpr int geomdim = 2;
-   const PointClose<double, geomdim> areClose;
-   const Sphere<double, geomdim> circle(Point2{ 0,0 }, 1.0);
+   const PointClose<double, GeomDim2> areClose;
+   const Sphere<double, GeomDim2> circle(Point2{ 0,0 }, 1.0);
    const Point2 point0{ 0.1,0.2 };
 
    // Second Inside
    {
-      const DirectedEdge<double, geomdim> edge(point0, Point2{ 0.9, 0.3 });
+      const DirectedEdge<double, GeomDim2> edge(point0, Point2{ 0.9, 0.3 });
       const auto ip = circle.TryGetFirstIntersectionWithDirectedEdge(edge, areClose);
       ASSERT_FALSE(ip);
    }
 
    // Second On
    {
-      const DirectedEdge<double, geomdim> edge(point0, Point2{ -0.6, 0.8 });
+      const DirectedEdge<double, GeomDim2> edge(point0, Point2{ -0.6, 0.8 });
       const auto ip = circle.TryGetFirstIntersectionWithDirectedEdge(edge, areClose);
       ASSERT_TRUE(areClose.SamePoints(*ip, edge.point1()));
    }
 
    // Second Outside
    {
-      const DirectedEdge<double, geomdim> edge(point0, Point2{ 1.1, 1.4 });
+      const DirectedEdge<double, GeomDim2> edge(point0, Point2{ 1.1, 1.4 });
       const auto ip = circle.TryGetFirstIntersectionWithDirectedEdge(edge, areClose);
       ASSERT_TRUE(areClose.SamePoints(*ip, { 0.6, 0.8 }));
    }
@@ -98,42 +94,41 @@ TEST(SphereTest, FirstIntersectionFirstInside)
 
 TEST(SphereTest, FirstIntersectionFirstOn)
 {
-   constexpr int geomdim = 2;
-   const PointClose<double, geomdim> areClose;
-   const Sphere<double, geomdim> circle(Point2{ 0,0 }, 1.0);
+   const PointClose<double, GeomDim2> areClose;
+   const Sphere<double, GeomDim2> circle(Point2{ 0,0 }, 1.0);
    const Point2 point0{ 0, 1 };
 
    // Second Inside
    {
-      const DirectedEdge<double, geomdim> edge(point0, Point2{ 0.9, 0.3 });
+      const DirectedEdge<double, GeomDim2> edge(point0, Point2{ 0.9, 0.3 });
       const auto  ip = circle.TryGetFirstIntersectionWithDirectedEdge(edge, areClose);
       ASSERT_FALSE(ip);
    }
 
    // Second On
    {
-      const DirectedEdge<double, geomdim> edge(point0, Point2{ 1, 0 });
+      const DirectedEdge<double, GeomDim2> edge(point0, Point2{ 1, 0 });
       const auto ip = circle.TryGetFirstIntersectionWithDirectedEdge(edge, areClose);
       ASSERT_TRUE(areClose.SamePoints(*ip, edge.point1()));
    }
 
    // Second Outside, no intersection
    {
-      const DirectedEdge<double, geomdim> edge(point0, Point2{ 0, 2 });
+      const DirectedEdge<double, GeomDim2> edge(point0, Point2{ 0, 2 });
       const auto  ip = circle.TryGetFirstIntersectionWithDirectedEdge(edge, areClose);
       ASSERT_FALSE(ip);
    }
 
    // Second Outside, edge case
    {
-      const DirectedEdge<double, geomdim> edge(point0, Point2{ 1, 1 });
+      const DirectedEdge<double, GeomDim2> edge(point0, Point2{ 1, 1 });
       const auto  ip = circle.TryGetFirstIntersectionWithDirectedEdge(edge, areClose);
       ASSERT_FALSE(ip);
    }
 
    // Second Outside, intersection
    {
-      const  DirectedEdge<double, geomdim> edge(point0, Point2{ 0, -2 });
+      const  DirectedEdge<double, GeomDim2> edge(point0, Point2{ 0, -2 });
       const auto  ip = circle.TryGetFirstIntersectionWithDirectedEdge(edge, areClose);
       ASSERT_TRUE(areClose.SamePoints(*ip, Point2{ 0, -1 }));
    }
@@ -142,43 +137,42 @@ TEST(SphereTest, FirstIntersectionFirstOn)
 
 TEST(SphereTest, FirstIntersectionFirstOutside)
 {
-   constexpr int geomdim = 2;
-   const PointClose<double, geomdim> areClose;
-   const Sphere<double, geomdim> circle(Point2{ 0,0 }, 1.0);
+   const PointClose<double, GeomDim2> areClose;
+   const Sphere<double, GeomDim2> circle(Point2{ 0,0 }, 1.0);
    const Point2 point0{ 1, 1 };
    const double sqrtHalf = std::sqrt(0.5);
 
    // Second Inside
    {
-      const DirectedEdge<double, geomdim> edge(point0, Point2{ 0, 0 });
+      const DirectedEdge<double, GeomDim2> edge(point0, Point2{ 0, 0 });
       const auto ip = circle.TryGetFirstIntersectionWithDirectedEdge(edge, areClose);
       ASSERT_TRUE(areClose.SamePoints(*ip, Point2{ sqrtHalf, sqrtHalf }));
    }
 
    // Second On
    {
-      const DirectedEdge<double, geomdim> edge(point0, Point2{ 1, 0 });
+      const DirectedEdge<double, GeomDim2> edge(point0, Point2{ 1, 0 });
       const auto ip = circle.TryGetFirstIntersectionWithDirectedEdge(edge, areClose);
       ASSERT_TRUE(areClose.SamePoints(*ip, edge.point1()));
    }
 
    // Second Outside, no intersection
    {
-      const DirectedEdge<double, geomdim> edge(point0, Point2{ 0, 2 });
+      const DirectedEdge<double, GeomDim2> edge(point0, Point2{ 0, 2 });
       const auto  ip = circle.TryGetFirstIntersectionWithDirectedEdge(edge, areClose);
       ASSERT_FALSE(ip);
    }
 
    // Second Outside, edge case
    {
-      const DirectedEdge<double, geomdim> edge(point0, Point2{ -1, 1 });
+      const DirectedEdge<double, GeomDim2> edge(point0, Point2{ -1, 1 });
       const auto  ip = circle.TryGetFirstIntersectionWithDirectedEdge(edge, areClose);
       ASSERT_TRUE(areClose.SamePoints(*ip, Point2{ 0,1 }));
    }
 
    // Second Outside, intersection
    {
-      const DirectedEdge<double, geomdim> edge(point0, Point2{ -2, -2 });
+      const DirectedEdge<double, GeomDim2> edge(point0, Point2{ -2, -2 });
       const auto  ip = circle.TryGetFirstIntersectionWithDirectedEdge(edge, areClose);
       ASSERT_TRUE(areClose.SamePoints(*ip, Point2{ sqrtHalf, sqrtHalf }));
    }
@@ -186,11 +180,10 @@ TEST(SphereTest, FirstIntersectionFirstOutside)
 
 TEST(SphereTest, TryGetFirstIntersectionWithDirectedEdgeAll)
 {
-   constexpr int geomdim = 2;
-   const PointClose<double, geomdim> areClose;
-   const Sphere<double, geomdim> circle(Point2{ 0,0 }, 1.0);
+   const PointClose<double, GeomDim2> areClose;
+   const Sphere<double, GeomDim2> circle(Point2{ 0,0 }, 1.0);
    Point2 point0{ 0, 0 };
-   DirectedEdge<double, geomdim> edge(point0, point0);
+   DirectedEdge<double, GeomDim2> edge(point0, point0);
    std::optional<Point2> ip;
 
    {
