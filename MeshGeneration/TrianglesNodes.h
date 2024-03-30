@@ -10,7 +10,7 @@
 
 namespace MeshGeneration
 {
-   class TriangleNodes
+   class TrianglesNodes
    {
    public:
       static constexpr size_t NumNodesOnEdge = 2;
@@ -27,14 +27,14 @@ namespace MeshGeneration
       std::optional<CellIndex> tryGetTriangle(PointIndex n0, PointIndex n1, PointIndex n2) const;
       bool triangleContainsNode(CellIndex CellIndex, PointIndex nodeId) const;
 
-      std::array<PointIndex, TriangleNodes::NumNodesOnTriangle> getTriangleNodes(CellIndex triangle) const;
+      std::array<PointIndex, TrianglesNodes::NumNodesOnTriangle> getTriangleNodes(CellIndex triangle) const;
 
       bool isKnownNodeId(PointIndex node) const;
       bool isKnownTriangleId(CellIndex triangle) const;
 
       std::vector<CellIndex> getAllTriangles() const;
       std::vector<PointIndex> getAllNodes() const;
-      std::vector<TriangleNodes::SortedEdge> getAllSortedEdges() const;
+      std::vector<TrianglesNodes::SortedEdge> getAllSortedEdges() const;
 
       std::string toString() const;
 

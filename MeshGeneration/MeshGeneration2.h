@@ -4,7 +4,8 @@
 #include "MeshingStrategy.h"
 #include "IGeometryRegion.h"
 #include "IDynamicUniquePointCollection.h"
-#include "TriangleNodes.h"
+#include "TrianglesNodes.h"
+#include "IManifold1D2.h"
 #include "Logger.h"
 #include "VtkData.h"
 
@@ -17,8 +18,10 @@ namespace MeshGeneration2
       const IGeometryPredicate<double, 2>& predicate, 
       const BoundingBox<double,2>& worldBB, 
       std::unique_ptr<IDynamicUniquePointCollection<double,2>>& pointGeometry, 
-      std::unique_ptr<MeshGeneration::TriangleNodes>& triangleNodes,
+      std::unique_ptr<MeshGeneration::TrianglesNodes>& trianglesNodes,
       Logger& logger);
 
-   std::unique_ptr<Vtk::VtkData> ToVtkData(const MeshGeneration::TriangleNodes& triangleNodes, const IPointCollection<double,2>& points);
+   void InsertLineManifoldInTriangleByMovingPoints(const Geometry::IManifold1D2<double>& manifold );
+
+   std::unique_ptr<Vtk::VtkData> ToVtkData(const MeshGeneration::TrianglesNodes& trianglesNodes, const IPointCollection<double,2>& points);
 }

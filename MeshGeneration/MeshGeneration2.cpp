@@ -35,12 +35,12 @@ void MeshGeneration2::BaseTriangulationToWorld(
    const IGeometryPredicate<double, 2>& predicate,
    const BoundingBox<double, 2>& worldBB,
    std::unique_ptr<IDynamicUniquePointCollection<double, 2>>& pointGeometry,
-   std::unique_ptr<MeshGeneration::TriangleNodes>& triangleNodes,
+   std::unique_ptr<MeshGeneration::TrianglesNodes>& triangleNodes,
    Logger& logger)
 {
    // Clear output
-   pointGeometry = nullptr;
-   triangleNodes = nullptr;
+   pointGeometry.reset();
+   triangleNodes.reset();
 
    // Collect unique points
    std::unordered_map<RatPoint2, Point2> uniquePoints;
@@ -79,7 +79,7 @@ void MeshGeneration2::BaseTriangulationToWorld(
 
 
    // Create the triangles
-   triangleNodes = std::make_unique<MeshGeneration::TriangleNodes>();
+   triangleNodes = std::make_unique<MeshGeneration::TrianglesNodes>();
    for (auto& triangle : baseTriangles)
    {
       const auto n0 = static_cast<PointIndex>(toWorld.at(triangle.at(0)));
@@ -91,7 +91,7 @@ void MeshGeneration2::BaseTriangulationToWorld(
    logger.logLine("MeshGeneration2::BaseTriangulationToWorld topology\n" + triangleNodes->toString());
 }
 
-std::unique_ptr<Vtk::VtkData> MeshGeneration2::ToVtkData(const MeshGeneration::TriangleNodes& triangleNodes, const IPointCollection<double, 2>& points)
+std::unique_ptr<Vtk::VtkData> MeshGeneration2::ToVtkData(const MeshGeneration::TrianglesNodes& triangleNodes, const IPointCollection<double, 2>& points)
 {
    constexpr int GeometryDimension = 2;
    std::unique_ptr< Vtk::VtkData> result = std::make_unique<Vtk::VtkData>(GeometryDimension, 0);

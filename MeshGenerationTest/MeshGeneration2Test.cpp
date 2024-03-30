@@ -45,16 +45,16 @@ TEST(MeshGeneration2Test, SingleTriangleToWorld)
    const PointClose<double, 2> areClose;
 
    std::unique_ptr<IDynamicUniquePointCollection<double, 2>> pointGeometry;
-   std::unique_ptr<MeshGeneration::TriangleNodes> triangleNodes;
+   std::unique_ptr<MeshGeneration::TrianglesNodes> trianglesNodes;
 
-   MeshGeneration2::BaseTriangulationToWorld(baseTriangles, areClose, bb, pointGeometry, triangleNodes, logger);
+   MeshGeneration2::BaseTriangulationToWorld(baseTriangles, areClose, bb, pointGeometry, trianglesNodes, logger);
 
    ASSERT_EQ(pointGeometry->getNumPoints(), 3);
    ASSERT_TRUE(areClose(pointGeometry->getPoint(0), Point2{1,1}));
    ASSERT_TRUE(areClose(pointGeometry->getPoint(1), Point2{ 2,1 }));
    ASSERT_TRUE(areClose(pointGeometry->getPoint(2), Point2{ 1,3 }));
 
-   ASSERT_EQ(triangleNodes->getAllTriangles().size(), 1);
+   ASSERT_EQ(trianglesNodes->getAllTriangles().size(), 1);
 
    //const auto vtkData = MeshGeneration2::ToVtkData(*triangleNodes, *pointGeometry);
    //Paraview::Write("MeshGeneration2Test_SingleTriangleToWorld", *vtkData);
@@ -74,11 +74,11 @@ TEST(MeshGeneration2Test, Ball2)
    const auto triangles = MeshGeneration2::GenerateBaseTriangulation(ballAsRegion, strategy, logger);
 
    std::unique_ptr<IDynamicUniquePointCollection<double, 2>> pointGeometry;
-   std::unique_ptr<MeshGeneration::TriangleNodes> triangleNodes;
-   MeshGeneration2::BaseTriangulationToWorld(triangles, areClose, bbInitial, pointGeometry, triangleNodes, logger);
+   std::unique_ptr<MeshGeneration::TrianglesNodes> trianglesNodes;
+   MeshGeneration2::BaseTriangulationToWorld(triangles, areClose, bbInitial, pointGeometry, trianglesNodes, logger);
 
-   const auto vtkData = MeshGeneration2::ToVtkData(*triangleNodes, *pointGeometry);
+   const auto vtkData = MeshGeneration2::ToVtkData(*trianglesNodes, *pointGeometry);
    ASSERT_EQ(504, vtkData->getNumCells());
-   //Paraview::Write("MeshGeneration2Test_Ball2", *vtkData);
+   Paraview::Write("MeshGeneration2Test_Ball2", *vtkData);
 }
 

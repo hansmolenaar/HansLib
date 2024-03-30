@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "TriangleNodes.h"
+#include "TrianglesNodes.h"
 #include "MyException.h"
 #include "Defines.h"
 
@@ -8,7 +8,7 @@ using namespace MeshGeneration;
 
 TEST(TriangleNodesTest, Empty)
 {
-   TriangleNodes tnodes;
+   TrianglesNodes tnodes;
    ASSERT_THROW(tnodes.deleteTriangle(0), MyException);
    ASSERT_THROW(tnodes.getEdgeConnectedTriangles(0, 1), MyException);
    ASSERT_THROW(tnodes.getNodeConnectedTriangles(0), MyException);
@@ -20,7 +20,7 @@ TEST(TriangleNodesTest, Empty)
 
 TEST(TriangleNodesTest, SingleTriangle)
 {
-   TriangleNodes tnodes;
+   TrianglesNodes tnodes;
    const auto triangleId = tnodes.addTriangle(42, 999, 0);
 
    const auto connectedTriangles = tnodes.getEdgeConnectedTriangles(0, 42);
@@ -52,7 +52,7 @@ TEST(TriangleNodesTest, SingleTriangle)
 
 TEST(TriangleNodesTest, Delete)
 {
-   TriangleNodes tnodes;
+   TrianglesNodes tnodes;
    const auto triangleId = tnodes.addTriangle(42, 999, 0);
    tnodes.deleteTriangle(triangleId);
    ASSERT_FALSE(tnodes.isKnownNodeId(0));
@@ -63,7 +63,7 @@ TEST(TriangleNodesTest, Delete)
 
 TEST(TriangleNodesTest, IsKnown)
 {
-   TriangleNodes tnodes;
+   TrianglesNodes tnodes;
    ASSERT_FALSE(tnodes.isKnownNodeId(0));
    ASSERT_FALSE(tnodes.isKnownTriangleId(0));
 
@@ -78,7 +78,7 @@ TEST(TriangleNodesTest, IsKnown)
 
 TEST(TriangleNodesTest, GetNodeConnectedTriangles)
 {
-   TriangleNodes tnodes;
+   TrianglesNodes tnodes;
    ASSERT_ANY_THROW(tnodes.getNodeConnectedTriangles(0));
    const auto triangle0 = tnodes.addTriangle(42, 999, 0);
    const auto triangle1 = tnodes.addTriangle(43, 999, 1);
@@ -93,7 +93,7 @@ TEST(TriangleNodesTest, GetNodeConnectedTriangles)
 
 TEST(TriangleNodesTest, GetEdgeConnectedNodes)
 {
-   TriangleNodes tnodes;
+   TrianglesNodes tnodes;
 
    const auto triangle0 = tnodes.addTriangle(42, 999, 0);
    const auto triangle1 = tnodes.addTriangle(999, 42, 1);
@@ -107,7 +107,7 @@ TEST(TriangleNodesTest, GetEdgeConnectedNodes)
 
 TEST(TriangleNodesTest, GetEdgeConnectedTriangles)
 {
-   TriangleNodes tnodes;
+   TrianglesNodes tnodes;
 
    const auto triangle0 = tnodes.addTriangle(42, 999, 0);
    const auto triangle1 = tnodes.addTriangle(999, 42, 1);
@@ -128,7 +128,7 @@ TEST(TriangleNodesTest, GetEdgeConnectedTriangles)
 
 TEST(TriangleNodesTest, TryGetTriangle)
 {
-   TriangleNodes tnodes;
+   TrianglesNodes tnodes;
 
    const auto triangle0 = tnodes.addTriangle(42, 999, 0);
    const auto triangle1 = tnodes.addTriangle(999, 42, 1);
@@ -143,7 +143,7 @@ TEST(TriangleNodesTest, TryGetTriangle)
 
 TEST(TriangleNodesTest, TriangleContainsNode)
 {
-   TriangleNodes tnodes;
+   TrianglesNodes tnodes;
 
    const auto triangle0 = tnodes.addTriangle(42, 999, 0);
    const auto triangle1 = tnodes.addTriangle(999, 42, 1);
@@ -155,7 +155,7 @@ TEST(TriangleNodesTest, TriangleContainsNode)
 
 TEST(TriangleNodesTest, GetAllTriangles)
 {
-   TriangleNodes tnodes;
+   TrianglesNodes tnodes;
    auto allTriangles = tnodes.getAllTriangles();
    ASSERT_TRUE(allTriangles.empty());
 
@@ -179,8 +179,8 @@ TEST(TriangleNodesTest, GetAllTriangles)
 
 TEST(TriangleNodesTest, GetAllEdges)
 {
-   using Edge = TriangleNodes::SortedEdge;
-   TriangleNodes tnodes;
+   using Edge = TrianglesNodes::SortedEdge;
+   TrianglesNodes tnodes;
    auto allEdges = tnodes.getAllSortedEdges();
    ASSERT_TRUE(allEdges.empty());
 
@@ -195,7 +195,7 @@ TEST(TriangleNodesTest, GetAllEdges)
 
 TEST(TriangleNodesTest, ToString)
 {
-   TriangleNodes tnodes;
+   TrianglesNodes tnodes;
    std::string msg = tnodes.toString();
    ASSERT_EQ(msg, "TriangleNodes NUMNODES=0 NUMTRIANGLES=0");
 
