@@ -116,3 +116,11 @@ std::unique_ptr<Vtk::VtkData> MeshGeneration2::ToVtkData(const MeshGeneration::T
 
    return result;
 }
+
+void MeshGeneration2::InsertLineManifoldInTriangleByMovingPoints(
+   const IManifold1D2<double>& manifold,
+   const TriangleNodes& trianglesNodes,
+   IDynamicUniquePointCollection<double, GeomDim2>& pointCollection)
+{
+   throw MyException("Not yet implemented");
+}

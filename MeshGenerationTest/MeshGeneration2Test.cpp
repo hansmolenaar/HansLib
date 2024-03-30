@@ -11,8 +11,10 @@
 #include "Paraview.h"
 #include "PointClose.h"
 #include "Ball2AsRegion.h"
+#include "UniquePointCollectionBinning.h"
 
 using namespace MeshGeneration;
+using namespace MeshGeneration2;
 using namespace IntervalTree;
 using namespace Geometry;
 
@@ -40,7 +42,7 @@ TEST(MeshGeneration2Test, SingleTriangleToWorld)
    const RatPoint2 rp0(Rational(0, 1), Rational(0, 1));
    const RatPoint2 rp1(Rational(1, 1), Rational(0, 1));
    const RatPoint2 rp2(Rational(0, 1), Rational(1, 1));
-   baseTriangles.push_back({rp0, rp1, rp2});
+   baseTriangles.push_back({ rp0, rp1, rp2 });
    const auto bb = BoundingBox<double, 2>::CreateFrom2Points(Point2{ 1,1 }, Point2{ 2,3 });
    const PointClose<double, 2> areClose;
 
@@ -50,7 +52,7 @@ TEST(MeshGeneration2Test, SingleTriangleToWorld)
    MeshGeneration2::BaseTriangulationToWorld(baseTriangles, areClose, bb, pointGeometry, trianglesNodes, logger);
 
    ASSERT_EQ(pointGeometry->getNumPoints(), 3);
-   ASSERT_TRUE(areClose(pointGeometry->getPoint(0), Point2{1,1}));
+   ASSERT_TRUE(areClose(pointGeometry->getPoint(0), Point2{ 1,1 }));
    ASSERT_TRUE(areClose(pointGeometry->getPoint(1), Point2{ 2,1 }));
    ASSERT_TRUE(areClose(pointGeometry->getPoint(2), Point2{ 1,3 }));
 
@@ -66,7 +68,7 @@ TEST(MeshGeneration2Test, Ball2)
    Logger logger;
    const Ball<double, 2> ball(Point2{ 1.5, 2.5 }, 3);
    const Ball2AsRegion<double> ballAsRegion(ball);
-   const PointClose<double,2> areClose;
+   const PointClose<double, 2> areClose;
    const auto initialBbGenerator = InitialBoundingboxGenerator<2>::Create(1.25);
    const auto bbInitial = initialBbGenerator->generate(ballAsRegion);
    const RefineRegionToMaxLevel<2> predicate(4, ballAsRegion, areClose, *initialBbGenerator);
@@ -80,5 +82,21 @@ TEST(MeshGeneration2Test, Ball2)
    const auto vtkData = MeshGeneration2::ToVtkData(*trianglesNodes, *pointGeometry);
    ASSERT_EQ(504, vtkData->getNumCells());
    Paraview::Write("MeshGeneration2Test_Ball2", *vtkData);
+}
+
+
+TEST(MeshGeneration2Test, Ball2AndTriangle_1)
+{
+   Logger logger;
+   const Sphere<double, GeomDim2> sphere(Point2{ 0, 0 }, 1);;
+   const Sphere2AsManifold1<double> manifold(sphere);
+   const PointClose<double, 2> areClose;
+   TriangleNodes tnodes;
+   UniquePointCollectionBinning<GeomDim2> points(areClose, {});
+   tnodes[0] = points.addIfNew(Point2{ -1, -2 });
+   tnodes[1] = points.addIfNew(Point2{ 1, -2 });
+   tnodes[2] = points.addIfNew(Point2{ 0, -0.9 });
+
+   InsertLineManifoldInTriangleByMovingPoints(manifold, tnodes, points);
 }
 
