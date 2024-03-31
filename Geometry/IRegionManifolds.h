@@ -1,6 +1,5 @@
 #pragma once
 
-#include "TopologyDimension.h"
 #include "IManifold.h"
 
 namespace Geometry

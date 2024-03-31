@@ -2,13 +2,9 @@
 #include "ReferenceShapeHyperCube.h"
 #include "MyAssert.h"
 #include "BoundsCheck.h"
-#include "Defines.h"
 #include "MultiIndex.h"
 #include "TopologicalAdjacencies.h"
 #include "TopologicalAdjacency.h"
-#include "TopologyDefines.h"
-#include "TopologyDimension.h"
-
 
 using namespace Topology;
 

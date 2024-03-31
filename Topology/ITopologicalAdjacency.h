@@ -1,6 +1,6 @@
 #pragma once
 
-#include "TopologyDimension.h"
+#include "TopologyDefines.h"
 #include <vector>
 
 class ITopologicalAdjacency
