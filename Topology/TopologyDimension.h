@@ -2,10 +2,11 @@
 
 #include "MyException.h"
 
-using TopologyDimension = unsigned int;
 
-namespace TopologyDimensionDef
+
+namespace Topology
 { 
+   using TopologyDimension = unsigned int;
    constexpr TopologyDimension Corner = 0;
    constexpr TopologyDimension Edge = 1;
    constexpr TopologyDimension Face = 2;

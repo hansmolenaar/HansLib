@@ -4,6 +4,8 @@
 
 #include <algorithm>
 
+using namespace Topology;
+
 namespace
 {
    void Cleanup(std::map<int, std::vector<int>>& from_to, int sizeFrom)

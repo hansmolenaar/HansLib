@@ -12,18 +12,18 @@ class TopologicalAdjacencies : public ITopologicalAdjacencies
 {
 public:
    static std::unique_ptr<TopologicalAdjacencies> Create(const std::vector<int>&, std::vector<std::unique_ptr<ITopologicalAdjacency>>&&);
-   static std::unique_ptr<TopologicalAdjacencies> CreateWithPartialCounts(TopologyDimension, std::map<TopologyDimension, int>&&, std::vector<std::unique_ptr<ITopologicalAdjacency>>&&);
+   static std::unique_ptr<TopologicalAdjacencies> CreateWithPartialCounts(Topology::TopologyDimension, std::map<Topology::TopologyDimension, int>&&, std::vector<std::unique_ptr<ITopologicalAdjacency>>&&);
 
-   TopologyDimension getMaxTopologyDimension() const override;
-   std::optional<int> getCount(TopologyDimension dim) const override;
-   std::optional<const ITopologicalAdjacency*> getAdjacency(TopologyDimension hi, TopologyDimension lo) const override;
+   Topology::TopologyDimension getMaxTopologyDimension() const override;
+   std::optional<int> getCount(Topology::TopologyDimension dim) const override;
+   std::optional<const ITopologicalAdjacency*> getAdjacency(Topology::TopologyDimension hi, Topology::TopologyDimension lo) const override;
 
 private:
-   using AdjacencyMap = std::map <std::pair<TopologyDimension, TopologyDimension>, std::unique_ptr<ITopologicalAdjacency>>;
+   using AdjacencyMap = std::map <std::pair<Topology::TopologyDimension, Topology::TopologyDimension>, std::unique_ptr<ITopologicalAdjacency>>;
    TopologicalAdjacencies(const std::array<int, 2>& ,std::unique_ptr<ITopologicalAdjacency>&&);
-   TopologicalAdjacencies(std::map<TopologyDimension, int>&& count, AdjacencyMap&& adjacencies);
+   TopologicalAdjacencies(std::map<Topology::TopologyDimension, int>&& count, AdjacencyMap&& adjacencies);
 
    AdjacencyMap m_adjecencies;
-   std::map<TopologyDimension, int> m_count;
-   BoundsCheck<TopologyDimension> m_checkDimension;
+   std::map<Topology::TopologyDimension, int> m_count;
+   BoundsCheck<Topology::TopologyDimension> m_checkDimension;
 };

@@ -1,6 +1,8 @@
 #include "ITopologicalAdjacencies.h"
 #include "MyAssert.h"
 
+using namespace Topology;
+
 int ITopologicalAdjacencies::getCountSafe(TopologyDimension dim) const
 {
    const auto result = getCount(dim);
@@ -10,14 +12,14 @@ int ITopologicalAdjacencies::getCountSafe(TopologyDimension dim) const
 
 bool ITopologicalAdjacencies::isComplete() const
 {
-   for (TopologyDimension dim = TopologyDimensionDef::Corner; dim <= getMaxTopologyDimension(); ++dim)
+   for (TopologyDimension dim = Topology::Corner; dim <= getMaxTopologyDimension(); ++dim)
    {
       if (!getCount(dim)) return false;
    }
 
-   for (TopologyDimension dimH = TopologyDimensionDef::Edge; dimH <= getMaxTopologyDimension(); ++dimH)
+   for (TopologyDimension dimH = Topology::Edge; dimH <= getMaxTopologyDimension(); ++dimH)
    {
-      for (TopologyDimension dimL = TopologyDimensionDef::Corner; dimL < dimH; ++dimL)
+      for (TopologyDimension dimL = Topology::Corner; dimL < dimH; ++dimL)
       {
          if (!getAdjacency(dimL, dimH)) return false;
       }

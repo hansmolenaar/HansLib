@@ -41,7 +41,7 @@ namespace
 template<typename T, int N>
 void IManifold1TestInterface(const IManifold1<T, N>& manifold, const IGeometryPredicate<T, N>& predicate)
 {
-   ASSERT_EQ(manifold.GetTopologyDimension(), TopologyDimensionDef::Edge);
+   ASSERT_EQ(manifold.GetTopologyDimension(), Topology::Edge);
    const auto somePoints = GenerateSomePoints<T, N>(100);
    for (const auto& point : somePoints)
    {

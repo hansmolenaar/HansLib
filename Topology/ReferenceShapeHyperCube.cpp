@@ -9,6 +9,8 @@
 
 #include <set>
 
+using namespace Topology;
+
 namespace
 {
    class ReferenceShapeHyperCubeImpl : public IReferenceShapeHyperCube
@@ -22,7 +24,7 @@ namespace
 
    std::unique_ptr<ITopologicalAdjacency> CreateEdge2Corner(TopologyDimension dim)
    {
-      Utilities::MyAssert(dim > TopologyDimensionDef::Edge);
+      Utilities::MyAssert(dim > Topology::Edge);
       const auto mi = MultiIndex<int>::Create(std::vector<int>(dim, 2));
       std::set<std::pair<int, int>> edges;
       std::vector<int> indx(dim);
@@ -47,15 +49,15 @@ namespace
          edgeMap.emplace(edgeId, std::vector<int>{edge.first, edge.second });
          ++edgeId;
       }
-      return TopologicalAdjacency::Create(TopologyDimensionDef::Edge, edgeId, TopologyDimensionDef::Corner, 1 << dim, edgeMap);
+      return TopologicalAdjacency::Create(Topology::Edge, edgeId, Topology::Corner, 1 << dim, edgeMap);
    }
 
    std::unique_ptr<ITopologicalAdjacency> CreateToEdge(const ITopologicalAdjacency& toCorner, const ITopologicalAdjacency& edgeToCorner, const std::vector<int>& counts)
    {
-      Utilities::MyAssert(toCorner.getDimensionLow() == TopologyDimensionDef::Corner);
-      Utilities::MyAssert(toCorner.getDimensionHigh() > TopologyDimensionDef::Edge);
-      Utilities::MyAssert(edgeToCorner.getDimensionLow() == TopologyDimensionDef::Corner);
-      Utilities::MyAssert(edgeToCorner.getDimensionHigh() == TopologyDimensionDef::Edge);
+      Utilities::MyAssert(toCorner.getDimensionLow() == Topology::Corner);
+      Utilities::MyAssert(toCorner.getDimensionHigh() > Topology::Edge);
+      Utilities::MyAssert(edgeToCorner.getDimensionLow() == Topology::Corner);
+      Utilities::MyAssert(edgeToCorner.getDimensionHigh() == Topology::Edge);
       std::map<int, std::vector<int>> toEdge;
       for (auto id = 0; id < counts.at(toCorner.getDimensionHigh()); ++id)
       {
@@ -63,7 +65,7 @@ namespace
          const auto& cornersInHigh = toCorner.getConnectedLowers(id);
          std::set<int> corners;
          corners.insert(cornersInHigh.begin(), cornersInHigh.end());
-         for (auto edgeId = 0; edgeId < counts.at(TopologyDimensionDef::Edge); ++edgeId)
+         for (auto edgeId = 0; edgeId < counts.at(Topology::Edge); ++edgeId)
          {
             const auto& edge2corner = edgeToCorner.getConnectedLowers(edgeId);
             if (corners.contains(edge2corner.at(0)) && corners.contains(edge2corner.at(1)))
@@ -72,12 +74,12 @@ namespace
             }
          }
       }
-      return TopologicalAdjacency::Create(toCorner.getDimensionHigh(), counts.at(toCorner.getDimensionHigh()), TopologyDimensionDef::Edge, counts.at(TopologyDimensionDef::Edge), toEdge);
+      return TopologicalAdjacency::Create(toCorner.getDimensionHigh(), counts.at(toCorner.getDimensionHigh()), Topology::Edge, counts.at(Topology::Edge), toEdge);
    }
 
    std::unique_ptr<ITopologicalAdjacency> CreateHyperFace2Corner(TopologyDimension dim)
    {
-      Utilities::MyAssert(dim > TopologyDimensionDef::Edge);
+      Utilities::MyAssert(dim > Topology::Edge);
       const int countHi = 2 * dim;
       const int countLo = 1 << dim;
       const auto mi = MultiIndex<int>::Create(std::vector<int>(dim, 2));
@@ -105,7 +107,7 @@ namespace
          faces.emplace(static_cast<int>(faces.size()), faceH);
       }
 
-      return TopologicalAdjacency::Create(dim - 1, countHi, TopologyDimensionDef::Corner, countLo, faces);
+      return TopologicalAdjacency::Create(dim - 1, countHi, Topology::Corner, countLo, faces);
    }
 
    std::vector<std::unique_ptr<ITopologicalAdjacency>> CreateAdjecencyList(TopologyDimension dim, const std::vector<int>& counts)
@@ -117,12 +119,12 @@ namespace
       }
 
 
-      if (dim <= TopologyDimensionDef::Edge) return adjacencyList;
-      if (dim <= TopologyDimensionDef::Volume)
+      if (dim <= Topology::Edge) return adjacencyList;
+      if (dim <= Topology::Volume)
       {
          adjacencyList.emplace_back(CreateHyperFace2Corner(dim));
          const auto hf2c = adjacencyList.size() - 1;
-         if (dim == TopologyDimensionDef::Face) return adjacencyList;
+         if (dim == Topology::Face) return adjacencyList;
          adjacencyList.emplace_back(CreateEdge2Corner(dim));
          const auto e2c = adjacencyList.size() - 1;
          adjacencyList.emplace_back(CreateToEdge(*adjacencyList.at(hf2c), *adjacencyList.at(e2c), counts));

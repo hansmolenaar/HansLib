@@ -6,6 +6,6 @@
 
 namespace MeshGeneration
 {
-   using TriangleNodes = std::array<PointIndex, TopologyDefines::NumNodesOnTriangle>;
-   using SortedEdge = std::array<PointIndex, TopologyDefines::NumNodesOnEdge>;
+   using TriangleNodes = std::array<PointIndex, Topology::NumNodesOnTriangle>;
+   using SortedEdge = std::array<PointIndex, Topology::NumNodesOnEdge>;
 }

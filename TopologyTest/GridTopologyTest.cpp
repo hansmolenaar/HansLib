@@ -6,12 +6,12 @@
 TEST(GridTopologyTest, OneD2cells)
 {
    const GridTopology grid(std::vector<int>{2});
-   ASSERT_EQ(grid.getShape().getAdjacencies().getMaxTopologyDimension(), TopologyDimensionDef::Edge);
+   ASSERT_EQ(grid.getShape().getAdjacencies().getMaxTopologyDimension(), Topology::Edge);
    TopologyTest::TestITopologicalAdjacencies(grid.getAdjacencies());
    const auto& adjacencies = grid.getAdjacencies();
-   ASSERT_EQ(adjacencies.getCountSafe(TopologyDimensionDef::Corner), 3);
-   ASSERT_EQ(adjacencies.getCountSafe(TopologyDimensionDef::Edge), 2);
-   const auto found = adjacencies.getAdjacency(TopologyDimensionDef::Edge, TopologyDimensionDef::Corner);
+   ASSERT_EQ(adjacencies.getCountSafe(Topology::Corner), 3);
+   ASSERT_EQ(adjacencies.getCountSafe(Topology::Edge), 2);
+   const auto found = adjacencies.getAdjacency(Topology::Edge, Topology::Corner);
    const auto& adjacency = **found;
    auto corners = adjacency.getConnectedLowers(0);
    ASSERT_TRUE(std::ranges::equal(corners, std::vector<int>{0, 1}));
@@ -22,12 +22,12 @@ TEST(GridTopologyTest, OneD2cells)
 TEST(GridTopologyTest, TwoD6cells)
 {
    const GridTopology grid(std::vector<int>{2, 3});
-   ASSERT_EQ(grid.getShape().getAdjacencies().getMaxTopologyDimension(), TopologyDimensionDef::Face);
+   ASSERT_EQ(grid.getShape().getAdjacencies().getMaxTopologyDimension(), Topology::Face);
    TopologyTest::TestITopologicalAdjacencies(grid.getAdjacencies());
    const auto& adjacencies = grid.getAdjacencies();
-   ASSERT_EQ(adjacencies.getCountSafe(TopologyDimensionDef::Corner), 12);
-   ASSERT_EQ(adjacencies.getCountSafe(TopologyDimensionDef::Face), 6);
-   const auto found = adjacencies.getAdjacency(TopologyDimensionDef::Face, TopologyDimensionDef::Corner);
+   ASSERT_EQ(adjacencies.getCountSafe(Topology::Corner), 12);
+   ASSERT_EQ(adjacencies.getCountSafe(Topology::Face), 6);
+   const auto found = adjacencies.getAdjacency(Topology::Face, Topology::Corner);
    const auto& adjacency = **found;
    auto corners = adjacency.getConnectedLowers(0);
    ASSERT_TRUE(std::ranges::equal(corners, std::vector<int>{0, 1, 3, 4}));
@@ -39,12 +39,12 @@ TEST(GridTopologyTest, TwoD6cells)
 TEST(GridTopologyTest, ThreeD2cells)
 {
    const GridTopology grid(std::vector<int>{1, 1, 2});
-   ASSERT_EQ(grid.getShape().getAdjacencies().getMaxTopologyDimension(), TopologyDimensionDef::Volume);
+   ASSERT_EQ(grid.getShape().getAdjacencies().getMaxTopologyDimension(), Topology::Volume);
    TopologyTest::TestITopologicalAdjacencies(grid.getAdjacencies());
    const auto& adjacencies = grid.getAdjacencies();
-   ASSERT_EQ(adjacencies.getCountSafe(TopologyDimensionDef::Corner), 12);
-   ASSERT_EQ(adjacencies.getCountSafe(TopologyDimensionDef::Volume), 2);
-   const auto found = adjacencies.getAdjacency(TopologyDimensionDef::Volume, TopologyDimensionDef::Corner);
+   ASSERT_EQ(adjacencies.getCountSafe(Topology::Corner), 12);
+   ASSERT_EQ(adjacencies.getCountSafe(Topology::Volume), 2);
+   const auto found = adjacencies.getAdjacency(Topology::Volume, Topology::Corner);
    const auto& adjacency = **found;
    auto corners = adjacency.getConnectedLowers(0);
    ASSERT_TRUE(std::ranges::equal(corners, std::vector<int>{0, 1, 2, 3, 4, 5, 6, 7}));

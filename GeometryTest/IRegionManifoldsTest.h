@@ -5,6 +5,7 @@
 #include "Defines.h"
 
 using namespace Geometry;
+using namespace Topology;
 
 template<typename T, int N>
 void IRegionManifoldsTestInterface(const IRegionManifolds<T, N>& manifolds, const IGeometryPredicate<T, N>& predicate)

@@ -7,8 +7,8 @@ TEST(ReferenceShapeNodeTest, ReferenceShapeNode)
 {
    const ReferenceShapeNode rs;
    const auto& adjacencies = rs.getAdjacencies();
-   ASSERT_EQ(adjacencies.getMaxTopologyDimension(), TopologyDimensionDef::Corner);
-   ASSERT_EQ(adjacencies.getCountSafe(TopologyDimensionDef::Corner), 1);
+   ASSERT_EQ(adjacencies.getMaxTopologyDimension(), Topology::Corner);
+   ASSERT_EQ(adjacencies.getCountSafe(Topology::Corner), 1);
 }
 
 

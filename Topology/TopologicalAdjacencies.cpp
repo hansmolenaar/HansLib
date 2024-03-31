@@ -6,14 +6,16 @@
 #include <algorithm>
 #include <set>
 
+using namespace Topology;
+
 namespace
 {
    static const auto IsPositive = BoundsCheck<int>::CreateIsPositive();
 
    void CheckEdge2Corner(const ITopologicalAdjacency& e2c)
    {
-      if (e2c.getDimensionLow() != TopologyDimensionDef::Corner) throw MyException("CheckEdge2Corner low dime");
-      if (e2c.getDimensionHigh() != TopologyDimensionDef::Edge) throw MyException("CheckEdge2Corner high dime");
+      if (e2c.getDimensionLow() != Topology::Corner) throw MyException("CheckEdge2Corner low dime");
+      if (e2c.getDimensionHigh() != Topology::Edge) throw MyException("CheckEdge2Corner high dime");
    }
 
    void CheckInputAdjacency(TopologyDimension maxDim, const std::map<TopologyDimension, int>& count, const ITopologicalAdjacency& adjacency)
@@ -50,7 +52,7 @@ std::unique_ptr<TopologicalAdjacencies> TopologicalAdjacencies::Create(const std
    Utilities::MyAssert(!count.empty());
    std::map<TopologyDimension, int> countMap;
 
-   TopologyDimension tdim = TopologyDimensionDef::Corner;
+   TopologyDimension tdim = Topology::Corner;
    for (auto c : count)
    {
       IsPositive(c);
@@ -68,7 +70,7 @@ std::unique_ptr<TopologicalAdjacencies> TopologicalAdjacencies::CreateWithPartia
 {
    // Want to know something
    Utilities::MyAssert(!countMap.empty());
-   Utilities::MyAssert(countMap.begin()->first == TopologyDimensionDef::Corner);
+   Utilities::MyAssert(countMap.begin()->first == Topology::Corner);
    Utilities::MyAssert(countMap.rbegin()->first == maxDim);
    for (auto& itr : countMap)
    {

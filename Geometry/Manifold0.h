@@ -15,7 +15,7 @@ namespace Geometry
 
       BoundingBox<T, N> getBoundingBox() const override;
 
-      TopologyDimension GetTopologyDimension() const override { return TopologyDimensionDef::Corner; };
+      Topology::TopologyDimension GetTopologyDimension() const override { return Topology::Corner; };
    private:
       Point<T, N> m_point;
    };

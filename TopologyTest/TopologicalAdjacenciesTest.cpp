@@ -11,7 +11,7 @@ namespace
       //         |
       //         2
       const std::map<int, std::vector<int>> hi2lo{ {0, std::vector<int>{0,3}, },  {1, std::vector<int>{1,3}, },  {2, std::vector<int>{2,3}, } };
-      auto adjacency = TopologicalAdjacency::Create(TopologyDimensionDef::Edge, 3, TopologyDimensionDef::Corner, 4, hi2lo);
+      auto adjacency = TopologicalAdjacency::Create(Topology::Edge, 3, Topology::Corner, 4, hi2lo);
       std::vector<std::unique_ptr<ITopologicalAdjacency>> adjacencyList;
       adjacencyList.emplace_back(std::move(adjacency));
       return adjacencyList;
@@ -21,10 +21,10 @@ TEST(TopologicalAdjacenciesTest, Claw)
 {
    const std::vector<int> counts{ 4,3 };
    const auto adjacencies = TopologicalAdjacencies::Create(counts, CreateClawAdjacencyList());
-   ASSERT_EQ(adjacencies->getMaxTopologyDimension(), TopologyDimensionDef::Edge);
-   ASSERT_EQ(adjacencies->getCountSafe(TopologyDimensionDef::Corner), 4);
-   ASSERT_EQ(adjacencies->getCountSafe(TopologyDimensionDef::Edge), 3);
-   const auto retval = adjacencies->getAdjacency(TopologyDimensionDef::Edge, TopologyDimensionDef::Corner);
+   ASSERT_EQ(adjacencies->getMaxTopologyDimension(), Topology::Edge);
+   ASSERT_EQ(adjacencies->getCountSafe(Topology::Corner), 4);
+   ASSERT_EQ(adjacencies->getCountSafe(Topology::Edge), 3);
+   const auto retval = adjacencies->getAdjacency(Topology::Edge, Topology::Corner);
    ASSERT_TRUE(retval);
    TopologyTest::TestITopologicalAdjacencies(*adjacencies);
 }
@@ -45,15 +45,15 @@ TEST(TopologicalAdjacenciesTest, ErrorCreate2)
 
 TEST(TopologicalAdjacenciesTest, ErrorCreateWithPartialCounts1)
 {
-   ASSERT_ANY_THROW(TopologicalAdjacencies::CreateWithPartialCounts(TopologyDimensionDef::Volume, std::map<TopologyDimension, int>{}, std::vector<std::unique_ptr<ITopologicalAdjacency>>{}));
+   ASSERT_ANY_THROW(TopologicalAdjacencies::CreateWithPartialCounts(Topology::Volume, std::map<TopologyDimension, int>{}, std::vector<std::unique_ptr<ITopologicalAdjacency>>{}));
 }
 
 TEST(TopologicalAdjacenciesTest, ErrorCreateWithPartialCounts2)
 {
-   std::map<TopologyDimension, int > counts{ {TopologyDimensionDef::Volume, 1} };
-   ASSERT_ANY_THROW(TopologicalAdjacencies::CreateWithPartialCounts(TopologyDimensionDef::Edge, std::map<TopologyDimension, int >{ {TopologyDimensionDef::Volume, 1} }, CreateClawAdjacencyList()));
-   ASSERT_ANY_THROW(TopologicalAdjacencies::CreateWithPartialCounts(TopologyDimensionDef::Edge, std::map<TopologyDimension, int >{ {TopologyDimensionDef::Edge, 1} }, CreateClawAdjacencyList()));
-   ASSERT_ANY_THROW(TopologicalAdjacencies::CreateWithPartialCounts(TopologyDimensionDef::Edge, std::map<TopologyDimension, int >{ {TopologyDimensionDef::Edge, 1}, { TopologyDimensionDef::Corner, 1 } }, CreateClawAdjacencyList()));
-   ASSERT_ANY_THROW(TopologicalAdjacencies::CreateWithPartialCounts(TopologyDimensionDef::Edge, std::map<TopologyDimension, int >{ {TopologyDimensionDef::Edge, 1}, { TopologyDimensionDef::Corner, 0 } }, CreateClawAdjacencyList()));
-   ASSERT_ANY_THROW(TopologicalAdjacencies::CreateWithPartialCounts(TopologyDimensionDef::Edge, std::map<TopologyDimension, int >{ {TopologyDimensionDef::Edge, 3}, { TopologyDimensionDef::Corner, -4 } }, CreateClawAdjacencyList()));
+   std::map<TopologyDimension, int > counts{ {Topology::Volume, 1} };
+   ASSERT_ANY_THROW(TopologicalAdjacencies::CreateWithPartialCounts(Topology::Edge, std::map<TopologyDimension, int >{ {Topology::Volume, 1} }, CreateClawAdjacencyList()));
+   ASSERT_ANY_THROW(TopologicalAdjacencies::CreateWithPartialCounts(Topology::Edge, std::map<TopologyDimension, int >{ {Topology::Edge, 1} }, CreateClawAdjacencyList()));
+   ASSERT_ANY_THROW(TopologicalAdjacencies::CreateWithPartialCounts(Topology::Edge, std::map<TopologyDimension, int >{ {Topology::Edge, 1}, { Topology::Corner, 1 } }, CreateClawAdjacencyList()));
+   ASSERT_ANY_THROW(TopologicalAdjacencies::CreateWithPartialCounts(Topology::Edge, std::map<TopologyDimension, int >{ {Topology::Edge, 1}, { Topology::Corner, 0 } }, CreateClawAdjacencyList()));
+   ASSERT_ANY_THROW(TopologicalAdjacencies::CreateWithPartialCounts(Topology::Edge, std::map<TopologyDimension, int >{ {Topology::Edge, 3}, { Topology::Corner, -4 } }, CreateClawAdjacencyList()));
 }

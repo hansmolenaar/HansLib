@@ -6,36 +6,37 @@
 #include "ReferenceShapeHyperCube.h"
 #include "IReferenceShape.h"
 
+using namespace Topology;
 TEST(ITopologicalAdjacenciesTest, CountSafe)
 {
    const ReferenceShapeNode rs;
-   ASSERT_EQ(rs.getAdjacencies().getCountSafe(TopologyDimensionDef::Corner), 1);
-   ASSERT_ANY_THROW(rs.getAdjacencies().getCountSafe(TopologyDimensionDef::Volume));
+   ASSERT_EQ(rs.getAdjacencies().getCountSafe(Topology::Corner), 1);
+   ASSERT_ANY_THROW(rs.getAdjacencies().getCountSafe(Topology::Volume));
 }
 
 TEST(ITopologicalAdjacenciesTest, CountSafeError)
 {
-   auto adjacency = TopologicalAdjacency::CreateTrivial(TopologyDimensionDef::Face, TopologyDimensionDef::Corner, 3);
+   auto adjacency = TopologicalAdjacency::CreateTrivial(Topology::Face, Topology::Corner, 3);
    std::vector<std::unique_ptr<ITopologicalAdjacency>> adjacencyList;
    adjacencyList.emplace_back(std::move(adjacency));
-   std::map<TopologyDimension, int> counts{ {TopologyDimensionDef::Corner, 3}, {TopologyDimensionDef::Face, 1 } };
-   const auto triangle = TopologicalAdjacencies::CreateWithPartialCounts(TopologyDimensionDef::Face, std::move(counts), std::move(adjacencyList));
-   ASSERT_ANY_THROW(triangle->getCountSafe(TopologyDimensionDef::Edge));
+   std::map<TopologyDimension, int> counts{ {Topology::Corner, 3}, {Topology::Face, 1 } };
+   const auto triangle = TopologicalAdjacencies::CreateWithPartialCounts(Topology::Face, std::move(counts), std::move(adjacencyList));
+   ASSERT_ANY_THROW(triangle->getCountSafe(Topology::Edge));
 }
 
 TEST(ITopologicalAdjacenciesTest, NotComplete)
 {
-   auto adjacency = TopologicalAdjacency::CreateTrivial(TopologyDimensionDef::Face, TopologyDimensionDef::Corner, 3);
+   auto adjacency = TopologicalAdjacency::CreateTrivial(Topology::Face, Topology::Corner, 3);
    std::vector<std::unique_ptr<ITopologicalAdjacency>> adjacencyList;
    adjacencyList.emplace_back(std::move(adjacency));
-   std::map<TopologyDimension, int> counts{ {TopologyDimensionDef::Corner, 3}, {TopologyDimensionDef::Face, 1 } };
-   const auto triangle = TopologicalAdjacencies::CreateWithPartialCounts(TopologyDimensionDef::Face, std::move(counts), std::move(adjacencyList));
+   std::map<TopologyDimension, int> counts{ {Topology::Corner, 3}, {Topology::Face, 1 } };
+   const auto triangle = TopologicalAdjacencies::CreateWithPartialCounts(Topology::Face, std::move(counts), std::move(adjacencyList));
    ASSERT_FALSE(triangle->isComplete());
 }
 
 TEST(ITopologicalAdjacenciesTest, Complete)
 {
-   const auto& edge = ReferenceShapeHyperCube::Get(TopologyDimensionDef::Edge);
+   const auto& edge = ReferenceShapeHyperCube::Get(Topology::Edge);
    ASSERT_TRUE(edge.getAdjacencies().isComplete());
 }
 

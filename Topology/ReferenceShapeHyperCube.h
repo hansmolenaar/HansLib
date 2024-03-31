@@ -4,5 +4,5 @@
 
 namespace ReferenceShapeHyperCube
 {
-   const IReferenceShapeHyperCube& Get(TopologyDimension dim);
+   const IReferenceShapeHyperCube& Get(Topology::TopologyDimension dim);
 }

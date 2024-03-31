@@ -5,6 +5,7 @@
 #include "IManifold1D2Test.h"
 
 using namespace Geometry;
+using namespace Topology;
 
 namespace
 {

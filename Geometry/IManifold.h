@@ -11,7 +11,7 @@ namespace Geometry
    {
    public:
       virtual bool contains(const Point<T, N>& point, const IGeometryPredicate<T, N>& predicate) const = 0;
-      virtual TopologyDimension GetTopologyDimension() const = 0;
+      virtual Topology::TopologyDimension GetTopologyDimension() const = 0;
    };
 
 }
