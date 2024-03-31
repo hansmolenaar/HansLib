@@ -3,9 +3,9 @@
 
 #include<boost/container/static_vector.hpp>
 
-template UniquePointCollectionBinning<1>;
-template UniquePointCollectionBinning<2>;
-template UniquePointCollectionBinning<3>;
+template UniquePointCollectionBinning<GeomDim1>;
+template UniquePointCollectionBinning<GeomDim2>;
+template UniquePointCollectionBinning<GeomDim3>;
 
 using TrialBinsInDir = boost::container::static_vector<size_t, 3>;
 

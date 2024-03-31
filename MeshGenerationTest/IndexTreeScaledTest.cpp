@@ -8,9 +8,8 @@ using namespace IntervalTree;
 
 TEST(IndexTreeScaledTest, ScaleCenter)
 {
-   constexpr int geomdim = 1;
-   const BoundingBox<double, geomdim> bb = BoundingBox<double, geomdim>::CreateFromList(std::vector<Point1>{ Point1{ 1.0 }, Point1{ 2.0 }});
-   const IndexTreeScaled<double, geomdim> tree(std::make_unique<IndexTree<geomdim>>(), bb);
+   const BoundingBox<double, GeomDim1> bb = BoundingBox<double, GeomDim1>::CreateFromList(std::vector<Point1>{ Point1{ 1.0 }, Point1{ 2.0 }});
+   const IndexTreeScaled<double, GeomDim1> tree(std::make_unique<IndexTree<GeomDim1>>(), bb);
    const auto center = tree.scaleCenter(tree.getTree().getRoot());
    ASSERT_NEAR(center.at(0), 1.5, 1.0e-10);
 }
@@ -18,9 +17,8 @@ TEST(IndexTreeScaledTest, ScaleCenter)
 
 TEST(IndexTreeScaledTest, ScalePoint)
 {
-   constexpr int geomdim = 2;
-   const BoundingBox<double, geomdim> bb = BoundingBox<double, geomdim>::CreateFromList(std::vector<Point2>{ Point2{ 1.0, 2.0 }, Point2{ 2.0, 6.0 }});
-   const IndexTreeScaled<double, geomdim> tree(std::make_unique<IndexTree<geomdim>>(), bb);
+   const BoundingBox<double, GeomDim2> bb = BoundingBox<double, GeomDim2>::CreateFromList(std::vector<Point2>{ Point2{ 1.0, 2.0 }, Point2{ 2.0, 6.0 }});
+   const IndexTreeScaled<double, GeomDim2> tree(std::make_unique<IndexTree<GeomDim2>>(), bb);
 
    auto result = tree.scalePoint(RatPoint2{ Rational(0, 1), Rational(0, 1) });
    ASSERT_NEAR(result.at(0), 1.0, 1.0e-10);
