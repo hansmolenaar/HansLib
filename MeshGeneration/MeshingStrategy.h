@@ -18,5 +18,5 @@ private:
    const IRefinementPredicate<N>& m_refinementPredicate;
 };
 
-using MeshingStrategy2 = MeshingStrategy<2>;
-using MeshingStrategy3 = MeshingStrategy<3>;
+using MeshingStrategy2 = MeshingStrategy<GeomDim2>;
+using MeshingStrategy3 = MeshingStrategy<GeomDim3>;
