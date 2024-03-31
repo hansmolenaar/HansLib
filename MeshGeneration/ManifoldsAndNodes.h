@@ -20,7 +20,8 @@ namespace MeshGeneration
       ManifoldsWithNode getManifoldsContainingNode(NodeIndex node) const;
       std::vector<NodeIndex> getNodesInManifold(ManifoldPtrN manifoldPtr) const;
    private:
-      std::map<ManifoldPtrN, std::set<NodeIndex>> m_manifold2node;
-      std::map<NodeIndex, ManifoldsWithNode> m_node2manifolds;
+      // Use ordered set for test stability
+      std::unordered_map<ManifoldPtrN, std::set<NodeIndex>> m_manifold2node;
+      std::unordered_map<NodeIndex, ManifoldsWithNode> m_node2manifolds;
    };
 }

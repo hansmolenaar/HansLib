@@ -9,12 +9,12 @@ using namespace Geometry;
 using namespace IntervalTree;
 using namespace MeshGeneration;
 
-IndexTreeToSimplices2::Triangles MeshGeneration2::GenerateBaseTriangulation(const IGeometryRegion<double, 2>& region, MeshingStrategy2& strategy, Logger& logger)
+IndexTreeToSimplices2::Triangles MeshGeneration2::GenerateBaseTriangulation(const IGeometryRegion<GeomType, GeomDim2>& region, MeshingStrategy2& strategy, Logger& logger)
 {
    std::string msg = "MeshGeneration2::GenerateBaseTriangulation() region Bb " + region.getBoundingBox().toString();
    logger.logLine(msg);
 
-   IndexTree<2> tree;
+   IndexTree<GeomDim2> tree;
    tree.refineUntilReady(strategy.getRefinementPredicate());
    msg = "MeshGeneration2::GenerateBaseTriangulation() after refinement: " + tree.toString();
    logger.logLine(msg);
@@ -32,9 +32,9 @@ IndexTreeToSimplices2::Triangles MeshGeneration2::GenerateBaseTriangulation(cons
 
 void MeshGeneration2::BaseTriangulationToWorld(
    const IndexTreeToSimplices2::Triangles& baseTriangles,
-   const IGeometryPredicate<double, 2>& predicate,
-   const BoundingBox<double, 2>& worldBB,
-   std::unique_ptr<IDynamicUniquePointCollection<double, 2>>& pointGeometry,
+   const IGeometryPredicate<GeomType, GeomDim2>& predicate,
+   const BoundingBox<GeomType, GeomDim2>& worldBB,
+   std::unique_ptr<IDynamicUniquePointCollection<GeomType, GeomDim2>>& pointGeometry,
    std::unique_ptr<MeshGeneration::TrianglesNodes>& triangleNodes,
    Logger& logger)
 {
@@ -91,9 +91,9 @@ void MeshGeneration2::BaseTriangulationToWorld(
    logger.logLine("MeshGeneration2::BaseTriangulationToWorld topology\n" + triangleNodes->toString());
 }
 
-std::unique_ptr<Vtk::VtkData> MeshGeneration2::ToVtkData(const MeshGeneration::TrianglesNodes& triangleNodes, const IPointCollection<double, 2>& points)
+std::unique_ptr<Vtk::VtkData> MeshGeneration2::ToVtkData(const MeshGeneration::TrianglesNodes& triangleNodes, const IPointCollection<GeomType, GeomDim2>& points)
 {
-   constexpr int GeometryDimension = 2;
+   constexpr int GeometryDimension = GeomDim2;
    std::unique_ptr< Vtk::VtkData> result = std::make_unique<Vtk::VtkData>(GeometryDimension, 0);
 
    std::unordered_map<PointIndex, Vtk::NodeIndex> nodeToVtk;
@@ -117,10 +117,12 @@ std::unique_ptr<Vtk::VtkData> MeshGeneration2::ToVtkData(const MeshGeneration::T
    return result;
 }
 
-void MeshGeneration2::InsertLineManifoldInTriangleByMovingPoints(
-   const IManifold1D2<double>& manifold,
-   const TriangleNodes& trianglesNodes,
-   IDynamicUniquePointCollection<double, GeomDim2>& pointCollection)
+void MeshGeneration2::AddEdgeManifold1Intersections(
+   const Geometry::IManifold1D2<MeshGeneration::GeomType>& manifold,
+   const MeshGeneration::DirectedEdgeNodes& edge,
+   const MeshGeneration::TrianglesNodes& trianglesNodes,
+   MeshGeneration::ManifoldsAndNodes<GeomDim2>& manifoldsAndNodes,
+   IUniquePointCollecion2& pointCollection)
 {
-   throw MyException("Not yet implemented");
+   throw MyException("MeshGeneration2::AddEdgeManifold1Intersections not implemented");
 }

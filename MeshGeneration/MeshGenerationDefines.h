@@ -9,6 +9,7 @@ namespace MeshGeneration
 {
    using GeomType = double;
    using NodeIndex = PointIndex;
-   using TriangleNodes = std::array<PointIndex, Topology::NumNodesOnTriangle>;
-   using SortedEdge = std::array<PointIndex, Topology::NumNodesOnEdge>;
+   using TriangleNodes = std::array<NodeIndex, Topology::NumNodesOnTriangle>;
+   using DirectedEdgeNodes = std::array<NodeIndex, Topology::NumNodesOnEdge>;
+   using SortedEdge = std::array<NodeIndex, Topology::NumNodesOnEdge>;
 }

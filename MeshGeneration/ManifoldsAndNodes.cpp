@@ -48,10 +48,9 @@ template<int N>
 std::vector<NodeIndex> ManifoldsAndNodes<N>::getNodesInManifold(ManifoldPtrN manifoldPtr) const
 {
    const auto found = m_manifold2node.find(manifoldPtr);
-   if (found == m_manifold2node.end())
+   if (found != m_manifold2node.end())
    {
-      return {};
+      return { found->second.begin(), found->second.end() };
    }
-
-   return { found->second.begin(), found->second.end() };
+   return {};
 }

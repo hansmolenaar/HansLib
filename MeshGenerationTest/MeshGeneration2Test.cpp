@@ -85,18 +85,22 @@ TEST(MeshGeneration2Test, Ball2)
 }
 
 
-TEST(MeshGeneration2Test, Sphere2AndTriangle_1)
+TEST(MeshGeneration2Test, Sphere2AndEdge)
 {
    Logger logger;
-   const Sphere<double, GeomDim2> sphere(Point2{ 0, 0 }, 1);;
-   const Sphere2AsManifold1<double> manifold(sphere);
-   const PointClose<double, 2> areClose;
-   TriangleNodes tnodes;
-   UniquePointCollectionBinning<GeomDim2> points(areClose, {});
-   tnodes[0] = points.addIfNew(Point2{ -1, -2 });
-   tnodes[1] = points.addIfNew(Point2{ 1, -2 });
-   tnodes[2] = points.addIfNew(Point2{ 0, -0.9 });
+   const Sphere<GeomType, GeomDim2> sphere(Point2{ 0, 0 }, 1);
+   const auto bb = sphere.getBoundingBox();
+   const Sphere2AsManifold1<GeomType> manifold(sphere);
+   const PointClose<GeomType, GeomDim2> areClose;
+   UniquePointCollectionBinning<GeomDim2> points(areClose, std::vector < Point2>{bb.getLower(), bb.getUpper()});
+   ManifoldsAndNodes<GeomDim2> manifoldsAndNodes;
+   TrianglesNodes trianglesNodes;
+   const auto cellId = trianglesNodes.addTriangle(points.addIfNew(Point2{ -1, -2 }), points.addIfNew(Point2{ 1, -2 }), points.addIfNew(Point2{ 0, -0.9 }));
 
-   InsertLineManifoldInTriangleByMovingPoints(manifold, tnodes, points);
+   const NodeIndex node0 = points.addIfNew(Point2{ 0, -2 });
+   const NodeIndex node1 = points.addIfNew(Point2{ 0, -0.9 });
+   const DirectedEdgeNodes edge{ node0, node1 };
+
+   AddEdgeManifold1Intersections(manifold, edge, trianglesNodes, manifoldsAndNodes, points);
 }
 

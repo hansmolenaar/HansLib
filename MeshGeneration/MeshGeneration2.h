@@ -6,11 +6,14 @@
 #include "IDynamicUniquePointCollection.h"
 #include "TrianglesNodes.h"
 #include "IManifold1D2.h"
+#include "IManifold0.h"
+#include "ManifoldsAndNodes.h"
 #include "Logger.h"
 #include "VtkData.h"
 
 namespace MeshGeneration2
 {
+   using IUniquePointCollecion2 = IDynamicUniquePointCollection<MeshGeneration::GeomType, GeomDim2>;
    IndexTreeToSimplices2::Triangles GenerateBaseTriangulation(const Geometry::IGeometryRegion<MeshGeneration::GeomType,GeomDim2>& region, MeshingStrategy2& strategy, Logger& logger);
 
    void BaseTriangulationToWorld(
@@ -21,7 +24,12 @@ namespace MeshGeneration2
       std::unique_ptr<MeshGeneration::TrianglesNodes>& trianglesNodes,
       Logger& logger);
 
-   void InsertLineManifoldInTriangleByMovingPoints(const Geometry::IManifold1D2<MeshGeneration::GeomType>& manifold, const MeshGeneration::TriangleNodes& triangleNodes, IDynamicUniquePointCollection<MeshGeneration::GeomType, GeomDim2>& pointCollection);
-
+   void AddEdgeManifold1Intersections(
+      const Geometry::IManifold1D2<MeshGeneration::GeomType>& manifold, 
+      const MeshGeneration::DirectedEdgeNodes& edge, 
+      const MeshGeneration::TrianglesNodes& trianglesNodes,
+      MeshGeneration::ManifoldsAndNodes<GeomDim2>& manifoldsAndNodes,
+      IUniquePointCollecion2& pointCollection);
+  
    std::unique_ptr<Vtk::VtkData> ToVtkData(const MeshGeneration::TrianglesNodes& trianglesNodes, const IPointCollection<MeshGeneration::GeomType,GeomDim2>& points);
 }
