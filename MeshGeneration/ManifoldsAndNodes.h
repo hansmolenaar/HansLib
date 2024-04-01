@@ -19,6 +19,7 @@ namespace MeshGeneration
       void addNodeToManifold(NodeIndex node, ManifoldPtrN manifoldPtr);
       ManifoldsWithNode getManifoldsContainingNode(NodeIndex node) const;
       std::vector<NodeIndex> getNodesInManifold(ManifoldPtrN manifoldPtr) const;
+      bool isMobileOnManifold(NodeIndex node, ManifoldPtrN manifoldPtr) const;
    private:
       // Use ordered set for test stability
       std::unordered_map<ManifoldPtrN, std::set<NodeIndex>> m_manifold2node;
