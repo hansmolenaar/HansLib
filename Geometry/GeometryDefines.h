@@ -1,6 +1,5 @@
 #pragma once
 
-#include "DirectedEdge.h"
 #include <boost/container/static_vector.hpp>
 
 namespace Geometry
@@ -14,6 +13,7 @@ namespace Geometry
       DirectedEdgePointType PointType;
    };
 
+   using DirectedEdgePoint2 = DirectedEdgePoint<double, 2>;
 
    template<typename T, int N>
    struct DirectedEdgeInterval
@@ -23,5 +23,5 @@ namespace Geometry
    };
 
    template<typename T, int N>
-   using DirectedEdgeIntersections = boost::container::static_vector< std::variant< Point<T, N>, DirectedEdgeInterval<T, N> >, 4>;
+   using DirectedEdgeIntersections = boost::container::static_vector< std::variant< DirectedEdgePoint<T, N>, DirectedEdgeInterval<T, N> >, 4>;
 }

@@ -11,7 +11,6 @@ namespace Geometry
    {
    public:
 
-      // If the edge is fully/partially contained by the manifold then return a directed edge
       // Throw if the edge is degenerate
       virtual DirectedEdgeIntersections<T, GeomDim2> GetIntersections(const DirectedEdge<T, GeomDim2>& edge, const IGeometryPredicate<T, GeomDim2>& predicate) const = 0;
    };

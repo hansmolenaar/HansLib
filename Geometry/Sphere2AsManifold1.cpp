@@ -47,15 +47,15 @@ DirectedEdgeIntersections<T, GeomDim2> Sphere2AsManifold1<T>::GetIntersections(c
    DirectedEdgeIntersections<T, GeomDim2> result;
    if (firstPointInside)
    {
-      result.emplace_back(edge.point0());
+      result.emplace_back(edge.createEdgePoint(edge.point0(), predicate));
       if (firstIntersection)
       {
-         result.emplace_back(firstIntersection.value());
+         result.emplace_back(edge.createEdgePoint(firstIntersection.value(), predicate));
       }
    }
    else if (firstIntersection.has_value())
    {
-      result.emplace_back(firstIntersection.value());
+      result.emplace_back(edge.createEdgePoint(firstIntersection.value(), predicate));
       const DirectedEdge<T, GeomDim2> next(firstIntersection.value(), edge.point1());
       if (!next.isDegenerate(predicate))
       {
@@ -64,7 +64,7 @@ DirectedEdgeIntersections<T, GeomDim2> Sphere2AsManifold1<T>::GetIntersections(c
          {
             if (!predicate.SamePoints(firstIntersection.value(), secondIntersection.value()))
             {
-               result.emplace_back(secondIntersection.value());
+               result.emplace_back(edge.createEdgePoint(secondIntersection.value(), predicate));
             }
          }
       }
