@@ -4,7 +4,7 @@
 #include "Line.h"
 #include "Point.h"
 #include "Simplex.h"
-#include "DirectedEdgeIntersections.h"
+#include "GeometryDefines.h"
 
 namespace Geometry
 {
