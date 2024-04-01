@@ -54,6 +54,13 @@ namespace PointUtils
    }
 
    template<typename T, int N>
+   T GetDistanceSquared( const Point<T, N>& point0, const Point<T, N>& point1)
+   {
+      const auto dif = point0 - point1;
+      return GetNormSquared(dif);
+   }
+
+   template<typename T, int N>
    T Angle(const Point<T, N>& p0, const Point<T, N>& p1, const Point<T, N>& p2)
    {
       const auto d0 = p1 - p0;

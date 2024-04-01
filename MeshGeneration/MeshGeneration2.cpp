@@ -119,10 +119,36 @@ std::unique_ptr<Vtk::VtkData> MeshGeneration2::ToVtkData(const MeshGeneration::T
 
 void MeshGeneration2::AddEdgeManifold1Intersections(
    const Geometry::IManifold1D2<MeshGeneration::GeomType>& manifold,
-   const MeshGeneration::DirectedEdgeNodes& edge,
+   const MeshGeneration::DirectedEdgeNodes& edgeNodes,
    const MeshGeneration::TrianglesNodes& trianglesNodes,
    MeshGeneration::ManifoldsAndNodes<GeomDim2>& manifoldsAndNodes,
    IUniquePointCollecion2& pointCollection)
 {
-   throw MyException("MeshGeneration2::AddEdgeManifold1Intersections not implemented");
+   const auto& predicate = pointCollection.getGeometryPredicate();
+   const DirectedEdge<GeomType, GeomDim2> edge(pointCollection.getPoint(edgeNodes[0]), pointCollection.getPoint(edgeNodes[1]));
+   const auto intersections = manifold.GetIntersections(edge, predicate);
+   if (intersections.empty()) return; // Nothing to do
+   if (intersections.size() > 1)
+   {
+      throw MyException("Not yet implemented");
+   }
+
+   if (!std::holds_alternative<DirectedEdgePoint2>(intersections[0]))
+   {
+      throw MyException("Not yet implemented");
+   }
+
+   const auto& ip = std::get<DirectedEdgePoint2>(intersections[0]);
+   if (ip.PointType != DirectedEdgePointType::Inside)
+   {
+      const auto node = (ip.PointType == DirectedEdgePointType::Point0 ? edgeNodes[0] : edgeNodes[1]);
+      manifoldsAndNodes.addNodeToManifold(node, &manifold);
+   }
+
+   const auto dist0 = PointUtils::GetDistanceSquared(ip.EdgePoint, edge.point0());
+   const auto dist1 = PointUtils::GetDistanceSquared(ip.EdgePoint, edge.point1());
+   const auto nodeToMove = dist0 < dist1 ? edgeNodes[0] : edgeNodes[1];
+
+   pointCollection.movePoint(nodeToMove, ip.EdgePoint);
+   manifoldsAndNodes.addNodeToManifold(nodeToMove, &manifold);
 }

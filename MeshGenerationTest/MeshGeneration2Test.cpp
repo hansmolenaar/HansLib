@@ -91,8 +91,8 @@ TEST(MeshGeneration2Test, Sphere2AndEdge)
    const Sphere<GeomType, GeomDim2> sphere(Point2{ 0, 0 }, 1);
    const auto bb = sphere.getBoundingBox();
    const Sphere2AsManifold1<GeomType> manifold(sphere);
-   const PointClose<GeomType, GeomDim2> areClose;
-   UniquePointCollectionBinning<GeomDim2> points(areClose, std::vector < Point2>{bb.getLower(), bb.getUpper()});
+   const PointClose<GeomType, GeomDim2> predicate;
+   UniquePointCollectionBinning<GeomDim2> points(predicate, std::vector < Point2>{bb.getLower(), bb.getUpper()});
    ManifoldsAndNodes<GeomDim2> manifoldsAndNodes;
    TrianglesNodes trianglesNodes;
    const auto cellId = trianglesNodes.addTriangle(points.addIfNew(Point2{ -1, -2 }), points.addIfNew(Point2{ 1, -2 }), points.addIfNew(Point2{ 0, -0.9 }));
@@ -102,5 +102,6 @@ TEST(MeshGeneration2Test, Sphere2AndEdge)
    const DirectedEdgeNodes edge{ node0, node1 };
 
    AddEdgeManifold1Intersections(manifold, edge, trianglesNodes, manifoldsAndNodes, points);
+   ASSERT_TRUE(predicate.SamePoints(Point2{ 0,-1 }, points.getPoint(node1)));
 }
 

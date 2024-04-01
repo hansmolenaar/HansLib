@@ -3,11 +3,9 @@
 #include "PointClose.h"
 #include "Sphere2AsManifold1.h"
 #include "IManifold1D2Test.h"
-#include "Single.h"
 
 using namespace Geometry;
 using namespace Topology;
-using namespace Utilities;
 
 namespace
 {

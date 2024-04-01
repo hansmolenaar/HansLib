@@ -9,11 +9,11 @@
 namespace Geometry
 {
    template<typename T>
-   class IManifold2 : public IManifold<T, 3>
+   class IManifold2 : public IManifold<T, GeomDim3>
    {
    public:
-      virtual Hyperplane<3> GetEuclideanSubspaceAt(const Point<T, 3>& point) const = 0;
-      virtual IntersectionDirectedEdges<T, 3>  GetIntersections(const DirectedEdge<T, 3>& edge) const = 0;
+      virtual Hyperplane<GeomDim3> GetEuclideanSubspaceAt(const Point<T, GeomDim3>& point) const = 0;
+      virtual DirectedEdgeIntersections<T, GeomDim3>  GetIntersections(const DirectedEdge<T, GeomDim3>& edge) const = 0;
       TopologyDimension GetTopologyDimension() const override { return Topology::Face; };
    };
 
