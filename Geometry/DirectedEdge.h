@@ -3,6 +3,7 @@
 #include "Defines.h"
 #include "Point.h"
 #include "IGeometryPredicate.h"
+#include "GeometryDefines.h"
 
 namespace Geometry
 {
@@ -19,6 +20,8 @@ namespace Geometry
       bool contains(const Point<T, N>& point, const IGeometryPredicate<T, N>& predicate) const;
       bool isDegenerate(const IGeometryPredicate<T, N>& predicate) const;
 
+      // Edge *must* contain point, not checked!
+      DirectedEdgePoint<T, N> createEdgePoint(const Point<T, N>& point, const IGeometryPredicate<T, N>& predicate) const;
    private:
       Point<T, N> m_from;
       Point<T, N> m_to;
@@ -91,6 +94,22 @@ namespace Geometry
       {
          return predicate.SamePoints(point1(), point);
       }
+   }
+
+   template<typename T, int N>
+   DirectedEdgePoint<T, N> DirectedEdge<T, N>::createEdgePoint(const Point<T, N>& point, const IGeometryPredicate<T, N>& predicate) const
+   {
+      if (predicate.SamePoints(point, point0()))
+      {
+         return {point0(), DirectedEdgePointType::Point0};
+      }
+      if (predicate.SamePoints(point, point1()))
+      {
+         return { point1(), DirectedEdgePointType::Point1 };
+      }
+
+      // No check if edge contains point
+      return { point, DirectedEdgePointType::Inside };
    }
 
 
