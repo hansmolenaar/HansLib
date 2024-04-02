@@ -87,15 +87,34 @@ TEST(ManifoldsAndNodesTest, IsMobile)
    const Manifold0<GeomType, GeomDim2> pointManifold(Point2{ 1,2 });
    const Sphere2AsManifold1<GeomType> sphereManifold(Sphere<GeomType, GeomDim2>({0,0}, 1.0));
 
-   ManifoldsAndNodes<GeomDim2>::ManifoldPtrN manifoldPtr1 = &pointManifold;
-   ManifoldsAndNodes<GeomDim2>::ManifoldPtrN manifoldPtr2 = &sphereManifold;
+   ManifoldsAndNodes<GeomDim2>::ManifoldPtrN pointManifoldPtr = &pointManifold;
+   ManifoldsAndNodes<GeomDim2>::ManifoldPtrN sphereManifoldPtr = &sphereManifold;
 
    ManifoldsAndNodes<GeomDim2> manifoldsAndNodes;
 
    const NodeIndex node{ 0 };
-   ASSERT_TRUE(manifoldsAndNodes.isMobileOnManifold(node, manifoldPtr1));
+   ASSERT_TRUE(manifoldsAndNodes.isMobileOnManifold(node, pointManifoldPtr));
 
-   manifoldsAndNodes.addNodeToManifold(node, manifoldPtr1);
-   ASSERT_TRUE(manifoldsAndNodes.isMobileOnManifold(node, manifoldPtr1));
-   ASSERT_FALSE(manifoldsAndNodes.isMobileOnManifold(node, manifoldPtr2));
+   manifoldsAndNodes.addNodeToManifold(node, pointManifoldPtr);
+   ASSERT_TRUE(manifoldsAndNodes.isMobileOnManifold(node, pointManifoldPtr));
+   ASSERT_FALSE(manifoldsAndNodes.isMobileOnManifold(node, sphereManifoldPtr));
+}
+
+
+TEST(ManifoldsAndNodesTest, IsMobileTwoCornerManifolds)
+{
+   const Manifold0<GeomType, GeomDim2> pointManifold1(Point2{ 1,2 });
+   const Manifold0<GeomType, GeomDim2> pointManifold2(Point2{ 2,1 });
+
+   ManifoldsAndNodes<GeomDim2>::ManifoldPtrN pointManifold1Ptr = &pointManifold1;
+   ManifoldsAndNodes<GeomDim2>::ManifoldPtrN pointManifold2Ptr = &pointManifold2;
+
+   ManifoldsAndNodes<GeomDim2> manifoldsAndNodes;
+
+   const NodeIndex node{ 0 };
+   ASSERT_TRUE(manifoldsAndNodes.isMobileOnManifold(node, pointManifold1Ptr));
+
+   manifoldsAndNodes.addNodeToManifold(node, pointManifold1Ptr);
+   ASSERT_TRUE(manifoldsAndNodes.isMobileOnManifold(node, pointManifold1Ptr));
+   ASSERT_FALSE(manifoldsAndNodes.isMobileOnManifold(node, pointManifold2Ptr));
 }
