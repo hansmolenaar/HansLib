@@ -11,5 +11,5 @@ namespace MeshGeneration
    using NodeIndex = PointIndex;
    using TriangleNodes = std::array<NodeIndex, Topology::NumNodesOnTriangle>;
    using DirectedEdgeNodes = std::array<NodeIndex, Topology::NumNodesOnEdge>;
-   using SortedEdge = std::array<NodeIndex, Topology::NumNodesOnEdge>;
+   using SortedEdgeNodes = std::array<NodeIndex, Topology::NumNodesOnEdge>;
 }

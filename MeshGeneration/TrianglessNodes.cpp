@@ -21,11 +21,14 @@ namespace
       return nodes;
    }
 
-   SortedEdge CreateSortedEdge(PointIndex n0, PointIndex n1)
-   {
-      if (n1 > n0) return { n0, n1 };
-      return { n1, n0 };
-   }
+
+}
+
+SortedEdgeNodes TrianglesNodes::CreateSortedEdge(PointIndex n0, PointIndex n1)
+{
+   if (n1 > n0) return { n0, n1 };
+   if (n0 == n1) throw MyException("CreateSortedEdge edge is degenerate");
+   return { n1, n0 };
 }
 
 CellIndex TrianglesNodes::addTriangle(PointIndex n0, PointIndex n1, PointIndex n2)
@@ -208,9 +211,9 @@ std::vector<CellIndex> TrianglesNodes::getAllTriangles() const
    return result;
 }
 
-std::vector<SortedEdge> TrianglesNodes::getAllSortedEdges() const
+std::vector<SortedEdgeNodes> TrianglesNodes::getAllSortedEdges() const
 {
-   std::vector<SortedEdge> result;
+   std::vector<SortedEdgeNodes> result;
    result.reserve(3 * m_toNodes.size());
    for (auto& itr : m_toNodes)
    {

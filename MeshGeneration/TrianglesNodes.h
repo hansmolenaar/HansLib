@@ -31,10 +31,11 @@ namespace MeshGeneration
 
       std::vector<CellIndex> getAllTriangles() const;
       std::vector<PointIndex> getAllNodes() const;
-      std::vector<SortedEdge> getAllSortedEdges() const;
+      std::vector<SortedEdgeNodes> getAllSortedEdges() const;
 
       std::string toString() const;
-
+      static SortedEdgeNodes CreateSortedEdge(PointIndex n0, PointIndex n1);
+      
    private:
       std::optional<CellIndex> tryGetTriangleFromSortedNodes(const TriangleNodes& nodes) const;
       void checkNodeId(PointIndex nodeId) const;

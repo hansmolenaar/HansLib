@@ -183,3 +183,13 @@ TEST(BallTest, FirstIntersectionFirstOutside)
 }
 
 
+TEST(BallTest, FirstIntersection_1)
+{
+   const Ball<double, GeomDim2> ball(Point2{ 1.5, 2.5 }, 3);
+   const Point2 point0{ 4.78125, 5.78125 };
+   const Point2 point1{ 5.25, 6.25 };
+   const DirectedEdge<double, GeomDim2> edge(point0, point1);
+   const PointClose<double, GeomDim2> predicate;
+   const auto ip = ball.TryGetFirstIntersectionWithDirectedEdge(edge, predicate);
+
+}

@@ -185,11 +185,11 @@ TEST(TriangleNodesTest, GetAllEdges)
 
    const auto triangle0 = tnodes.addTriangle(42, 999, 0);
    allEdges = tnodes.getAllSortedEdges();
-   ASSERT_TRUE(str::equal(allEdges, std::vector<SortedEdge>{SortedEdge{ 0, 42 }, SortedEdge{ 0,999 }, SortedEdge{ 42,999 }}));
+   ASSERT_TRUE(str::equal(allEdges, std::vector<SortedEdgeNodes>{SortedEdgeNodes{ 0, 42 }, SortedEdgeNodes{ 0,999 }, SortedEdgeNodes{ 42,999 }}));
 
    const auto triangle1 = tnodes.addTriangle(42, 0, 2);
    allEdges = tnodes.getAllSortedEdges();
-   ASSERT_TRUE(str::equal(allEdges, std::vector<SortedEdge>{{ 0, 2 }, { 0,42 }, { 0,999 }, { 2, 42 }, { 42, 999 }}));
+   ASSERT_TRUE(str::equal(allEdges, std::vector<SortedEdgeNodes>{{ 0, 2 }, { 0,42 }, { 0,999 }, { 2, 42 }, { 42, 999 }}));
 }
 
 TEST(TriangleNodesTest, ToString)
@@ -205,4 +205,19 @@ TEST(TriangleNodesTest, ToString)
    const auto triangle1 = tnodes.addTriangle(999, 42, 1);
    msg = tnodes.toString();
    ASSERT_EQ(msg, "TriangleNodes NUMNODES=4 NUMTRIANGLES=2");
+}
+
+TEST(TriangleNodesTest, CreateSortedEdge)
+{
+   SortedEdgeNodes edge;
+
+   edge = TrianglesNodes::CreateSortedEdge(1, 2);
+   ASSERT_EQ(edge[0], 1);
+   ASSERT_EQ(edge[1], 2);
+
+   edge = TrianglesNodes::CreateSortedEdge(2, 1);
+   ASSERT_EQ(edge[0], 1);
+   ASSERT_EQ(edge[1], 2);
+
+   ASSERT_THROW(TrianglesNodes::CreateSortedEdge(2, 2), MyException);
 }
