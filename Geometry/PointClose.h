@@ -42,6 +42,6 @@ T PointClose<T, N>::getSmallLengthInDirection(int n) const
 template<typename T, int N>
 T PointClose<T, N>::getSmallNormSquared() const
 {
-   constexpr T result = N * m_smallInDirection * m_smallInDirection;
+   constexpr T result = N * m_smallInDirection;
    return result;
 }

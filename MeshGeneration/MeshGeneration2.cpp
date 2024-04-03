@@ -133,12 +133,12 @@ bool MeshGeneration2::AddEdgeManifold1Intersections(
    if (intersections.empty()) return false; // Nothing to do
    if (intersections.size() > 1)
    {
-      throw MyException("Not yet implemented");
+      throw MyException("More than 1 intersection not yet implemented");
    }
 
    if (!std::holds_alternative<DirectedEdgePoint2>(intersections[0]))
    {
-      throw MyException("Not yet implemented");
+      throw MyException("Intersecion interval not yet implemented");
    }
 
    const auto& ip = std::get<DirectedEdgePoint2>(intersections[0]);
