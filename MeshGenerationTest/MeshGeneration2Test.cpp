@@ -131,26 +131,6 @@ TEST(MeshGeneration2Test, Sphere2AndEdge_immobilePoint)
    ASSERT_THROW(AddEdgeManifold1Intersections(manifold, edge, trianglesNodes, manifoldsAndNodes, points), MyException);
 }
 
-
-TEST(MeshGeneration2Test, Sphere2AndEdge_2Intersections)
-{
-   Logger logger;
-   const Sphere<GeomType, GeomDim2> sphere(Point2{ 0, 0 }, 1);
-   const auto bb = sphere.getBoundingBox();
-   const Sphere2AsManifold1<GeomType> manifold(sphere);
-   const PointClose<GeomType, GeomDim2> predicate;
-   UniquePointCollectionBinning<GeomDim2> points(predicate, std::vector < Point2>{bb.getLower(), bb.getUpper()});
-   ManifoldsAndNodes<GeomDim2> manifoldsAndNodes;
-   TrianglesNodes trianglesNodes;
-
-   const NodeIndex node0 = points.addIfNew(Point2{ -2, 0 });
-   const NodeIndex node1 = points.addIfNew(Point2{ 2, 0 });
-   const DirectedEdgeNodes edge{ node0, node1 };
-
-   ASSERT_THROW(AddEdgeManifold1Intersections(manifold, edge, trianglesNodes, manifoldsAndNodes, points), MyException);
-}
-
-
 TEST(MeshGeneration2Test, Sphere2AndEdge_NoIntersections)
 {
    Logger logger;
@@ -192,6 +172,93 @@ TEST(MeshGeneration2Test, Sphere2AndEdge_EdgePointOnSphere)
    ASSERT_EQ(Utilities::Single(manifoldsAndNodes.getNodesInManifold(&manifold)), node0);
 }
 
+
+TEST(MeshGeneration2Test, Sphere2AndEdge_EdgePointOnSphere2)
+{
+   Logger logger;
+   const Sphere<GeomType, GeomDim2> sphere(Point2{ 0, 0 }, 1);
+   const auto bb = sphere.getBoundingBox();
+   const Sphere2AsManifold1<GeomType> manifold(sphere);
+   const PointClose<GeomType, GeomDim2> predicate;
+   UniquePointCollectionBinning<GeomDim2> points(predicate, std::vector < Point2>{bb.getLower(), bb.getUpper()});
+   ManifoldsAndNodes<GeomDim2> manifoldsAndNodes;
+   TrianglesNodes trianglesNodes;
+
+   const NodeIndex node0 = points.addIfNew(Point2{ 0, -2 });
+   const NodeIndex node1 = points.addIfNew(Point2{ 0, -1 });
+   const DirectedEdgeNodes edge{ node0, node1 };
+
+   const bool anyNodeMoved = AddEdgeManifold1Intersections(manifold, edge, trianglesNodes, manifoldsAndNodes, points);
+   ASSERT_FALSE(anyNodeMoved);
+   ASSERT_EQ(Utilities::Single(manifoldsAndNodes.getNodesInManifold(&manifold)), node1);
+}
+
+
+TEST(MeshGeneration2Test, Sphere2AndEdge_EdgePointBothOnSphere)
+{
+   Logger logger;
+   const Sphere<GeomType, GeomDim2> sphere(Point2{ 0, 0 }, 1);
+   const auto bb = sphere.getBoundingBox();
+   const Sphere2AsManifold1<GeomType> manifold(sphere);
+   const PointClose<GeomType, GeomDim2> predicate;
+   UniquePointCollectionBinning<GeomDim2> points(predicate, std::vector < Point2>{bb.getLower(), bb.getUpper()});
+   ManifoldsAndNodes<GeomDim2> manifoldsAndNodes;
+   TrianglesNodes trianglesNodes;
+
+   const NodeIndex node0 = points.addIfNew(Point2{ 0, 1 });
+   const NodeIndex node1 = points.addIfNew(Point2{ 0, -1 });
+   const DirectedEdgeNodes edge{ node0, node1 };
+
+   const bool anyNodeMoved = AddEdgeManifold1Intersections(manifold, edge, trianglesNodes, manifoldsAndNodes, points);
+   ASSERT_FALSE(anyNodeMoved);
+   ASSERT_EQ(manifoldsAndNodes.getNodesInManifold(&manifold).size(), 2);
+}
+
+
+TEST(MeshGeneration2Test, Sphere2AndEdge_OneEdgePointOnSphereTwoIntersections)
+{
+   Logger logger;
+   const Sphere<GeomType, GeomDim2> sphere(Point2{ 0, 0 }, 1);
+   const auto bb = sphere.getBoundingBox();
+   const Sphere2AsManifold1<GeomType> manifold(sphere);
+   const PointClose<GeomType, GeomDim2> predicate;
+   UniquePointCollectionBinning<GeomDim2> points(predicate, std::vector < Point2>{bb.getLower(), bb.getUpper()});
+   ManifoldsAndNodes<GeomDim2> manifoldsAndNodes;
+   TrianglesNodes trianglesNodes;
+
+   const NodeIndex node0 = points.addIfNew(Point2{ 0, 1 });
+   const NodeIndex node1 = points.addIfNew(Point2{ 0, -100 });
+   const DirectedEdgeNodes edge{ node0, node1 };
+
+   const bool anyNodeMoved = AddEdgeManifold1Intersections(manifold, edge, trianglesNodes, manifoldsAndNodes, points);
+   ASSERT_TRUE(anyNodeMoved);
+   ASSERT_EQ(manifoldsAndNodes.getNodesInManifold(&manifold).size(), 2);
+   ASSERT_TRUE(predicate.SamePoints(points.getPoint(node1), Point2{ 0, -1 }));
+}
+
+
+TEST(MeshGeneration2Test, Sphere2AndEdge_TwoIntersections)
+{
+   Logger logger;
+   const Sphere<GeomType, GeomDim2> sphere(Point2{ 0, 0 }, 1);
+   const auto bb = sphere.getBoundingBox();
+   const Sphere2AsManifold1<GeomType> manifold(sphere);
+   const PointClose<GeomType, GeomDim2> predicate;
+   UniquePointCollectionBinning<GeomDim2> points(predicate, std::vector < Point2>{bb.getLower(), bb.getUpper()});
+   ManifoldsAndNodes<GeomDim2> manifoldsAndNodes;
+   TrianglesNodes trianglesNodes;
+
+   const NodeIndex node0 = points.addIfNew(Point2{ 0, -2 });
+   const NodeIndex node1 = points.addIfNew(Point2{ 0, 2 });
+   const DirectedEdgeNodes edge{ node0, node1 };
+
+   const bool anyNodeMoved = AddEdgeManifold1Intersections(manifold, edge, trianglesNodes, manifoldsAndNodes, points);
+   ASSERT_TRUE(anyNodeMoved);
+   ASSERT_EQ(manifoldsAndNodes.getNodesInManifold(&manifold).size(), 2);
+   ASSERT_TRUE(predicate.SamePoints(points.getPoint(node0), Point2{ 0, -1 }));
+   ASSERT_TRUE(predicate.SamePoints(points.getPoint(node1), Point2{ 0, 1 }));
+}
+
 TEST(MeshGeneration2Test, Sphere2_intersect)
 {
    Logger logger;
@@ -214,7 +281,7 @@ TEST(MeshGeneration2Test, Sphere2_intersect)
    ManifoldsAndNodes<GeomDim2> manifoldsAndNodes;
    MeshGeneration2::AddManifold1Intersections(manifold, *trianglesNodes, manifoldsAndNodes, *pointGeometry);
 
-   //const auto vtkData = MeshGeneration2::ToVtkData(*trianglesNodes, *pointGeometry);
-   //ASSERT_EQ(504, vtkData->getNumCells());
-   //Paraview::Write("MeshGeneration2Test_Ball2", *vtkData);
+   const auto vtkData = MeshGeneration2::ToVtkData(*trianglesNodes, *pointGeometry);
+   ASSERT_EQ(504, vtkData->getNumCells());
+   //Paraview::Write("MeshGeneration2Test_Sphere2_intersect", *vtkData);
 }

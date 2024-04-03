@@ -4,6 +4,7 @@
 #include "BoundingBox.h"
 #include "UniqueHashedPointCollection.h"
 #include "UniquePointCollectionBinning.h"
+#include "MyAssert.h"
 
 #include <set>
 
@@ -119,6 +120,28 @@ std::unique_ptr<Vtk::VtkData> MeshGeneration2::ToVtkData(const MeshGeneration::T
    return result;
 }
 
+static boost::container::static_vector< NodeIndex, 2> HandleEndPoints(
+   DirectedEdgeIntersections<GeomType, GeomDim2>& intersections,
+   const Geometry::IManifold1D2<MeshGeneration::GeomType>& manifold,
+   const MeshGeneration::DirectedEdgeNodes& edgeNodes,
+   MeshGeneration::ManifoldsAndNodes<GeomDim2>& manifoldsAndNodes)
+{
+   boost::container::static_vector< NodeIndex, 2> nodeUsed;
+   if (intersections.empty()) return nodeUsed;
+   for (int n = static_cast<int>(intersections.size()) - 1; n >= 0; --n)
+   {
+      const auto& ip = std::get<DirectedEdgePoint2>(intersections[n]);
+      if (ip.PointType != DirectedEdgePointType::Inside)
+      {
+         const auto node = (ip.PointType == DirectedEdgePointType::Point0 ? edgeNodes[0] : edgeNodes[1]);
+         nodeUsed.push_back(node);
+         manifoldsAndNodes.addNodeToManifold(node, &manifold);
+         intersections.erase(intersections.begin() + n);
+      }
+   }
+   return nodeUsed;
+}
+
 // Return value: any node moved?
 bool MeshGeneration2::AddEdgeManifold1Intersections(
    const Geometry::IManifold1D2<MeshGeneration::GeomType>& manifold,
@@ -129,36 +152,52 @@ bool MeshGeneration2::AddEdgeManifold1Intersections(
 {
    const auto& predicate = pointCollection.getGeometryPredicate();
    const DirectedEdge<GeomType, GeomDim2> edge(pointCollection.getPoint(edgeNodes[0]), pointCollection.getPoint(edgeNodes[1]));
-   const auto intersections = manifold.GetIntersections(edge, predicate);
+   auto intersections = manifold.GetIntersections(edge, predicate);
    if (intersections.empty()) return false; // Nothing to do
-   if (intersections.size() > 1)
-   {
-      throw MyException("More than 1 intersection not yet implemented");
-   }
 
    if (!std::holds_alternative<DirectedEdgePoint2>(intersections[0]))
    {
       throw MyException("Intersecion interval not yet implemented");
    }
 
-   const auto& ip = std::get<DirectedEdgePoint2>(intersections[0]);
-   if (ip.PointType != DirectedEdgePointType::Inside)
-   {
-      const auto node = (ip.PointType == DirectedEdgePointType::Point0 ? edgeNodes[0] : edgeNodes[1]);
-      manifoldsAndNodes.addNodeToManifold(node, &manifold);
-      return false;
-   }
+   const auto nodeUsed = HandleEndPoints(intersections, manifold, edgeNodes, manifoldsAndNodes);
+   if (intersections.empty()) return false;
 
-   const auto dist0 = PointUtils::GetDistanceSquared(ip.EdgePoint, edge.point0());
-   const auto dist1 = PointUtils::GetDistanceSquared(ip.EdgePoint, edge.point1());
-   const auto nodeToMove = dist0 < dist1 ? edgeNodes[0] : edgeNodes[1];
-
-   if (!manifoldsAndNodes.isMobileOnManifold(nodeToMove, &manifold))
+   if (intersections.size() == 1)
    {
-      throw MyException("MeshGeneration2::AddEdgeManifold1Intersections immovable node");
+      const auto& ip = std::get<DirectedEdgePoint2>(intersections[0]);
+      const auto dist0 = PointUtils::GetDistanceSquared(ip.EdgePoint, edge.point0());
+      const auto dist1 = PointUtils::GetDistanceSquared(ip.EdgePoint, edge.point1());
+      auto nodeToMove = dist0 < dist1 ? edgeNodes[0] : edgeNodes[1];
+      if (str::find(nodeUsed, nodeToMove) != nodeUsed.end())
+      {
+         // Take the other one
+         nodeToMove = (nodeToMove == edgeNodes[0]) ? edgeNodes[1] : edgeNodes[0];
+      }
+
+      if (!manifoldsAndNodes.isMobileOnManifold(nodeToMove, &manifold))
+      {
+         throw MyException("MeshGeneration2::AddEdgeManifold1Intersections immovable node");
+      }
+      pointCollection.movePoint(nodeToMove, ip.EdgePoint);
+      manifoldsAndNodes.addNodeToManifold(nodeToMove, &manifold);
    }
-   pointCollection.movePoint(nodeToMove, ip.EdgePoint);
-   manifoldsAndNodes.addNodeToManifold(nodeToMove, &manifold);
+   else
+   {
+      Utilities::MyAssert(intersections.size() == 2);
+      for (int n = 0; n < 2; ++n)
+      {
+         const auto& ip = std::get<DirectedEdgePoint2>(intersections[n]);
+         // Automatically ordered: directed edge
+         const auto nodeToMove = edgeNodes[n];
+         if (!manifoldsAndNodes.isMobileOnManifold(nodeToMove, &manifold))
+         {
+            throw MyException("MeshGeneration2::AddEdgeManifold1Intersections immovable node");
+         }
+         pointCollection.movePoint(nodeToMove, ip.EdgePoint);
+         manifoldsAndNodes.addNodeToManifold(nodeToMove, &manifold);
+      }
+   }
    return true;
 }
 
