@@ -4,14 +4,11 @@
 
 TEST(ConnectedComponentsTest, Basics)
 {
-   using MyGraph = Graph<int,int>;
-   MyGraph c;  
-   boost::add_vertex (c); 
-   boost::add_vertex (c); 
-   boost::add_vertex (c); 
-   boost::add_edge (1, 2, c); 
+   UGraph ug(3);
+   ASSERT_EQ(UGraphNumVertices(ug), 3);
+   constexpr UGraphVertex vertex2 = 2;
+   UGraphAddEdge(ug, 1, vertex2);
 
-   std::vector<int> component (boost::num_vertices (c));
-   size_t num_components = boost::connected_components (c, &component[0]);
-   ASSERT_EQ(num_components, 2);
+   const auto [components, numComponents] = UGraphGetConnectedComponents(ug);
+   ASSERT_EQ(numComponents, 2);
 }
