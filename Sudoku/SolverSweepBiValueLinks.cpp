@@ -5,9 +5,7 @@
 
 #include <iterator>
 #include <unordered_set>
-#include "boost/graph/adjacency_list.hpp"
-#include <boost/graph/connected_components.hpp>
-#include <boost/graph/sequential_vertex_coloring.hpp>
+#include "GraphDefines.h"
 
 using namespace Sudoku;
 

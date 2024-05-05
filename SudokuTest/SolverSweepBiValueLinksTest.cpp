@@ -4,9 +4,7 @@
 #include "TestModels.h"
 #include "Defines.h"
 #include "FieldInfoStatic.h"
-#include "boost/graph/adjacency_list.hpp"
-#include <boost/graph/connected_components.hpp>
-#include <boost/graph/sequential_vertex_coloring.hpp>
+#include "GraphDefines.h"
 
 using namespace Sudoku;
 using namespace boost;
@@ -15,10 +13,10 @@ TEST(SolverSweepBiValueLinksTest, MyFirstBoostGraph)
 {
    struct Vertex { int vertexId; int color; };
    struct Edge { };
-   typedef boost::adjacency_list<boost::listS, boost::vecS, boost::undirectedS, Vertex, Edge > Graph;
+   using  SudokuGraph = Graph<Vertex, Edge>;
 
    constexpr int numVertices = 4;
-   Graph g;
+   SudokuGraph g;
 
    for (int v = 0; v < numVertices; ++v)
    {
@@ -69,10 +67,10 @@ TEST(SolverSweepBiValueLinksTest, ColoringAndMultipleComponents)
 {
    struct Vertex { int vertexId; };
    struct Edge { };
-   typedef boost::adjacency_list<boost::listS, boost::vecS, boost::undirectedS, Vertex, Edge > Graph;
+   using  SudokuGraph = Graph<Vertex, Edge>;
 
    constexpr int numVertices = 5;
-   Graph g;
+   SudokuGraph g;
 
    for (int v = 0; v < numVertices; ++v)
    {
