@@ -47,6 +47,7 @@ add_subdirectory(BoundingBoxTest)
 add_subdirectory(Geometry)
 add_subdirectory(GeometryTest)
 
+add_subdirectory(Graph)
 add_subdirectory(GraphTest)
 
 add_subdirectory(Groups)

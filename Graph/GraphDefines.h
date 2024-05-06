@@ -4,6 +4,9 @@
 #include <boost/graph/connected_components.hpp>
 #include <boost/graph/sequential_vertex_coloring.hpp>
 
+using GraphVertex = size_t;
+using GraphEdge = size_t;
+
 template<typename Vertex, typename Edge>
 using Graph = boost::adjacency_list<boost::listS, boost::vecS, boost::undirectedS, Vertex, Edge >;
 
@@ -12,6 +15,8 @@ using UGraph = boost::adjacency_list<boost::listS, boost::vecS, boost::undirecte
 
 using UGraphVertex = boost::graph_traits<UGraph>::vertex_descriptor;
 using UGraphEdge = boost::graph_traits<UGraph>::edge_descriptor;
+
+
 
 inline UGraphVertex UGraphAddVertex(UGraph& ug) { return boost::add_vertex(ug); }
 

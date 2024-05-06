@@ -8,5 +8,5 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 	${CMAKE_INCLUDE_DIR}/Utilities
 )
 
-target_link_libraries(${PROJECT_NAME}  Utilities ${GTestLibs})
+target_link_libraries(${PROJECT_NAME} Graph  Utilities ${GTestLibs})
 gtest_discover_tests(${PROJECT_NAME})

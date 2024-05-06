@@ -1,14 +1,16 @@
 #include <gtest/gtest.h>
 
-#include "GraphDefines.h"
-
+#include "UndirectedGraph.h"
+#include "Defines.h"
 TEST(ConnectedComponentsTest, Basics)
 {
-   UGraph ug(3);
-   ASSERT_EQ(UGraphNumVertices(ug), 3);
-   constexpr UGraphVertex vertex2 = 2;
-   UGraphAddEdge(ug, 1, vertex2);
+   UndirectedGraph ug(3);
 
-   const auto [components, numComponents] = UGraphGetConnectedComponents(ug);
-   ASSERT_EQ(numComponents, 2);
+   ASSERT_EQ(ug.getNumVertices(), 3);
+
+   constexpr GraphVertex vertex2 = 2;
+   ug.addEdge(1, vertex2);
+
+   const auto components = ug.getConnectedComponents();
+   ASSERT_EQ(*str::max_element(components), 1);
 }
