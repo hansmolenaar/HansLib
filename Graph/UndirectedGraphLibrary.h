@@ -11,4 +11,6 @@ namespace UndirectedGraphLibrary
    std::unique_ptr<UndirectedGraph> Get_Diamond();
    std::unique_ptr<UndirectedGraph> Get_Claw();
    std::unique_ptr<UndirectedGraph> Get_Bull();
+   std::unique_ptr<UndirectedGraph> Get_Butterfly();
+   std::unique_ptr<UndirectedGraph> Get_Paw();
 }

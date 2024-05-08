@@ -1,5 +1,49 @@
 #include "UndirectedGraph.h"
 #include "Defines.h"
+#include "MyAssert.h"
+
+using namespace Utilities;
+
+namespace
+{
+   constexpr GraphVertex DegreeSequenceDone = std::numeric_limits<GraphVertex>::max();
+
+   // If a polygon is found the last node of the resulting list equals the first one
+   std::vector<GraphVertex> TraceLineOrPolygon(const UndirectedGraph& graph, GraphVertex start, GraphVertex nxt, std::vector<GraphVertex>& degreeSequence)
+   {
+      std::vector<GraphVertex> result;
+      std::vector<GraphVertex>  ngbVertices;
+      result.push_back(start);
+      while (true)
+      {
+         result.push_back(nxt);
+         if (nxt == start)
+         {
+            // interesting, a loop
+            MyAssert(result.size() > 3); // not a proper labeled graph: loop
+            return result;
+         }
+         else if (degreeSequence[nxt] == 2)
+         {
+            degreeSequence[nxt] = DegreeSequenceDone; // Mark as done
+            // Find next vertex
+            graph.setAdjacentVertices(nxt, ngbVertices);
+            MyAssert(ngbVertices.size() == 2);
+            nxt = (ngbVertices[0] == result[result.size() - 2] ? ngbVertices[1] : ngbVertices[0]);
+         }
+         else
+         {
+            if (degreeSequence.at(nxt) == 1)
+            {
+               degreeSequence.at(nxt) = DegreeSequenceDone;
+            }
+            // Last point of line reached
+            return result;
+         }
+      }
+   }
+}
+
 
 UndirectedGraph::UndirectedGraph(GraphVertex numVertices) : m_graph(numVertices)
 {
@@ -30,6 +74,7 @@ void UndirectedGraph::setAdjacentVertices(GraphVertex vertex, std::vector<GraphV
    {
       result.push_back(vd);
    }
+   str::sort(result);
 }
 
 GraphEdge UndirectedGraph::getNumEdges() const
@@ -43,7 +88,7 @@ GraphVertex UndirectedGraph::getDegree(GraphVertex vertex) const
    return std::distance(neighbours.first, neighbours.second);
 }
 
-std::vector< GraphVertex> UndirectedGraph::getDegreeSequence() const
+std::vector<GraphVertex> UndirectedGraph::getDegreeSequence() const
 {
    const auto numVertices = getNumVertices();
    std::vector<GraphVertex> result(numVertices);
@@ -51,6 +96,61 @@ std::vector< GraphVertex> UndirectedGraph::getDegreeSequence() const
    {
       result[v] = getDegree(v);
    }
-   str::sort(result);
    return result;
+}
+
+// Isolated vertices are ignored
+void UndirectedGraph::SplitInCyclesAndPaths(std::vector<std::vector<GraphVertex>>& cycles, std::vector<std::vector<GraphVertex>>& paths) const
+{
+   cycles.clear();
+   paths.clear();
+
+   const auto vertexCount = getNumVertices();
+   auto degreeSequence = getDegreeSequence();
+   std::vector<GraphVertex> ngbVertices;
+
+   for (GraphVertex v = 0; v < vertexCount; ++v)
+   {
+      // Set degree sequence to -1 if done
+      if (degreeSequence.at(v) != DegreeSequenceDone && degreeSequence.at(v) != 2)
+      {
+         // New lines starts here, loop over the edges that contain this node
+         //neighbors.
+         setAdjacentVertices(v, ngbVertices);
+         for (auto ngb : ngbVertices)
+         {
+            if (degreeSequence.at(ngb) != DegreeSequenceDone)
+            {
+               std::vector<GraphVertex> list = TraceLineOrPolygon(*this, v, ngb, degreeSequence);
+               if (list.front() != list.back())
+               {
+                  paths.emplace_back(std::move(list));
+               }
+               else
+               {
+                  list.pop_back();
+                  cycles.emplace_back(std::move(list));
+               }
+            }
+         }
+         degreeSequence.at(v) = DegreeSequenceDone; // Done here
+      }
+   }
+
+   // But there is more: isolated loops
+   for (GraphVertex v = 0; v < vertexCount; ++v)
+   {
+      if (degreeSequence.at(v) == 2)
+      {
+         setAdjacentVertices(v, ngbVertices);
+         MyAssert(ngbVertices.size() == 2);
+         auto list = TraceLineOrPolygon(*this, v, ngbVertices.front(), degreeSequence);
+         MyAssert(list.front() == list.back());
+         list.pop_back(); // remove last
+         cycles.emplace_back(std::move(list));
+         degreeSequence.at(v) = DegreeSequenceDone; // Done here
+      }
+   }
+
+   MyAssert(str::all_of(degreeSequence, [](GraphVertex v) {return v == DegreeSequenceDone; }));
 }

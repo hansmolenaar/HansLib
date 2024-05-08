@@ -14,6 +14,7 @@ public:
    void setAdjacentVertices(GraphVertex vertex, std::vector<GraphVertex>& result) const;
    GraphVertex getDegree(GraphVertex vertex) const;
    std::vector<GraphVertex> getDegreeSequence() const;
+   void SplitInCyclesAndPaths(std::vector<std::vector<GraphVertex>>& cycles, std::vector<std::vector<GraphVertex>>& paths) const;
 
 private:
    boost::adjacency_list<boost::listS, boost::vecS, boost::undirectedS, GraphVertex, GraphEdge > m_graph;

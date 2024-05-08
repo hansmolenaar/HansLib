@@ -100,3 +100,13 @@ std::unique_ptr<UndirectedGraph> UndirectedGraphLibrary::Get_Bull()
 {
    return UndirectedGraphFromG6::Create("D{O");
 }
+
+std::unique_ptr<UndirectedGraph> UndirectedGraphLibrary::Get_Butterfly()
+{
+   return UndirectedGraphFromG6::Create("D{c");
+}
+
+std::unique_ptr<UndirectedGraph> UndirectedGraphLibrary::Get_Paw()
+{
+   return UndirectedGraphFromG6::Create("Cx");
+}
