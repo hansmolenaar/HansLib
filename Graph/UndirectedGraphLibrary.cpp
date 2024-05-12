@@ -110,3 +110,26 @@ std::unique_ptr<UndirectedGraph> UndirectedGraphLibrary::Get_Paw()
 {
    return UndirectedGraphFromG6::Create("Cx");
 }
+
+std::unique_ptr<UndirectedGraph> UndirectedGraphLibrary::Get_DisconnectedGraph(GraphVertex numVertices)
+{
+   return std::make_unique<UndirectedGraph>(numVertices);
+}
+
+
+std::unique_ptr<UndirectedGraph> UndirectedGraphLibrary::Get_CompleteBipartite(GraphVertex size0, GraphVertex size1)
+{
+   if (std::min(size0, size1) < 1)
+   {
+      throw MyException("CompleteBipartiteGraph: both sets muust have positive size");
+   }
+   auto graph = std::make_unique<UndirectedGraph>(size0 + size1);
+   for (int n0 = 0; n0 < size0; ++n0)
+   {
+      for (int n1 = 0; n1 < size1; ++n1)
+      {
+         graph->addEdge(n0, n1 + size0);
+      }
+   }
+   return graph;
+}

@@ -183,5 +183,14 @@ TEST(UndirectedGraphTest, SplitInCyclesAndPaths)
 
    graph = UndirectedGraphLibrary::Get_Butterfly();
    CheckCyclesPaths(*graph, std::vector<GraphVertex>{3, 3}, std::vector<GraphVertex>{});
+
+   for (GraphVertex numVertices = 0; numVertices < 4; ++numVertices)
+   {
+      graph = UndirectedGraphLibrary::Get_DisconnectedGraph(numVertices);
+      CheckCyclesPaths(*graph, std::vector<GraphVertex>{}, std::vector<GraphVertex>{});
+   }
+
+   graph = UndirectedGraphLibrary::Get_CompleteBipartite(3,3);
+   CheckCyclesPaths(*graph, std::vector<GraphVertex>{}, std::vector<GraphVertex>(9,2));
 }
 

@@ -148,7 +148,7 @@ bool MeshGeneration2::AddEdgeManifold1Intersections(
    const MeshGeneration::DirectedEdgeNodes& edgeNodes,
    const MeshGeneration::TrianglesNodes& trianglesNodes,
    MeshGeneration::ManifoldsAndNodes<GeomDim2>& manifoldsAndNodes,
-   IUniquePointCollecion2& pointCollection)
+   MeshGeneration::IUniquePointCollecion2& pointCollection)
 {
    const auto& predicate = pointCollection.getGeometryPredicate();
    const DirectedEdge<GeomType, GeomDim2> edge(pointCollection.getPoint(edgeNodes[0]), pointCollection.getPoint(edgeNodes[1]));

@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <vector>
 #include <array>
+#include <span>
 #include <memory>
 #include <map>
 #include <numeric>
