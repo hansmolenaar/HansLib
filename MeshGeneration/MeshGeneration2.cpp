@@ -11,6 +11,7 @@
 using namespace Geometry;
 using namespace IntervalTree;
 using namespace MeshGeneration;
+using namespace MeshGeneration2;
 
 IndexTreeToSimplices2::Triangles MeshGeneration2::GenerateBaseTriangulation(const IGeometryRegion<GeomType, GeomDim2>& region, MeshingStrategy2& strategy, Logger& logger)
 {
@@ -38,7 +39,7 @@ void MeshGeneration2::BaseTriangulationToWorld(
    const IGeometryPredicate<GeomType, GeomDim2>& predicate,
    const BoundingBox<GeomType, GeomDim2>& worldBB,
    std::unique_ptr<IDynamicUniquePointCollection<GeomType, GeomDim2>>& pointGeometry,
-   std::unique_ptr<MeshGeneration::TrianglesNodes>& triangleNodes,
+   std::unique_ptr<TrianglesNodes>& triangleNodes,
    Logger& logger)
 {
    // Clear output
@@ -82,7 +83,7 @@ void MeshGeneration2::BaseTriangulationToWorld(
 
 
    // Create the triangles
-   triangleNodes = std::make_unique<MeshGeneration::TrianglesNodes>();
+   triangleNodes = std::make_unique<TrianglesNodes>();
    for (auto& triangle : baseTriangles)
    {
       const auto n0 = static_cast<PointIndex>(toWorld.at(triangle.at(0)));
@@ -94,7 +95,7 @@ void MeshGeneration2::BaseTriangulationToWorld(
    logger.logLine("MeshGeneration2::BaseTriangulationToWorld topology\n" + triangleNodes->toString());
 }
 
-std::unique_ptr<Vtk::VtkData> MeshGeneration2::ToVtkData(const MeshGeneration::TrianglesNodes& triangleNodes, const IPointCollection<GeomType, GeomDim2>& points)
+std::unique_ptr<Vtk::VtkData> MeshGeneration2::ToVtkData(const TrianglesNodes& triangleNodes, const IPointCollection<GeomType, GeomDim2>& points)
 {
    constexpr int GeometryDimension = GeomDim2;
    std::unique_ptr< Vtk::VtkData> result = std::make_unique<Vtk::VtkData>(GeometryDimension, 0);
@@ -122,9 +123,9 @@ std::unique_ptr<Vtk::VtkData> MeshGeneration2::ToVtkData(const MeshGeneration::T
 
 static boost::container::static_vector< NodeIndex, 2> HandleEndPoints(
    DirectedEdgeIntersections<GeomType, GeomDim2>& intersections,
-   const Geometry::IManifold1D2<MeshGeneration::GeomType>& manifold,
-   const MeshGeneration::DirectedEdgeNodes& edgeNodes,
-   MeshGeneration::ManifoldsAndNodes<GeomDim2>& manifoldsAndNodes)
+   const Geometry::IManifold1D2<GeomType>& manifold,
+   const DirectedEdgeNodes& edgeNodes,
+   ManifoldsAndNodes<GeomDim2>& manifoldsAndNodes)
 {
    boost::container::static_vector< NodeIndex, 2> nodeUsed;
    if (intersections.empty()) return nodeUsed;
@@ -144,11 +145,11 @@ static boost::container::static_vector< NodeIndex, 2> HandleEndPoints(
 
 // Return value: any node moved?
 bool MeshGeneration2::AddEdgeManifold1Intersections(
-   const Geometry::IManifold1D2<MeshGeneration::GeomType>& manifold,
-   const MeshGeneration::DirectedEdgeNodes& edgeNodes,
-   const MeshGeneration::TrianglesNodes& trianglesNodes,
-   MeshGeneration::ManifoldsAndNodes<GeomDim2>& manifoldsAndNodes,
-   MeshGeneration::IUniquePointCollecion2& pointCollection)
+   const Geometry::IManifold1D2<GeomType>& manifold,
+   const DirectedEdgeNodes& edgeNodes,
+   const TrianglesNodes& trianglesNodes,
+   ManifoldsAndNodes<GeomDim2>& manifoldsAndNodes,
+   IUniquePointCollecion2& pointCollection)
 {
    const auto& predicate = pointCollection.getGeometryPredicate();
    const DirectedEdge<GeomType, GeomDim2> edge(pointCollection.getPoint(edgeNodes[0]), pointCollection.getPoint(edgeNodes[1]));
@@ -202,9 +203,9 @@ bool MeshGeneration2::AddEdgeManifold1Intersections(
 }
 
 void MeshGeneration2::AddManifold1Intersections(
-   const Geometry::IManifold1D2<MeshGeneration::GeomType>& manifold,
-   MeshGeneration::TrianglesNodes& trianglesNodes,
-   MeshGeneration::ManifoldsAndNodes<GeomDim2>& manifoldsAndNodes,
+   const Geometry::IManifold1D2<GeomType>& manifold,
+   TrianglesNodes& trianglesNodes,
+   ManifoldsAndNodes<GeomDim2>& manifoldsAndNodes,
    IUniquePointCollecion2& pointCollection)
 {
    const auto initialSortedEdges = trianglesNodes.getAllSortedEdges();

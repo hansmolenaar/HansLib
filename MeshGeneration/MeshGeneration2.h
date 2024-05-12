@@ -30,13 +30,13 @@ namespace MeshGeneration2
       const MeshGeneration::DirectedEdgeNodes& edge,
       const MeshGeneration::TrianglesNodes& trianglesNodes,
       MeshGeneration::ManifoldsAndNodes<GeomDim2>& manifoldsAndNodes,
-      MeshGeneration::IUniquePointCollecion2& pointCollection);
+      IUniquePointCollecion2& pointCollection);
 
    void AddManifold1Intersections(
       const Geometry::IManifold1D2<MeshGeneration::GeomType>& manifold,
       MeshGeneration::TrianglesNodes& trianglesNodes,
       MeshGeneration::ManifoldsAndNodes<GeomDim2>& manifoldsAndNodes,
-      MeshGeneration::IUniquePointCollecion2& pointCollection);
+      IUniquePointCollecion2& pointCollection);
 
    std::unique_ptr<Vtk::VtkData> ToVtkData(const MeshGeneration::TrianglesNodes& trianglesNodes, const IPointCollection<MeshGeneration::GeomType, GeomDim2>& points);
 }
