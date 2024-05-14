@@ -4,7 +4,7 @@
 #include "MeshingStrategy.h"
 #include "IGeometryRegion.h"
 #include "IDynamicUniquePointCollection.h"
-#include "MeshGeneration2Defines.h"
+#include "MeshGenerationDefines.h"
 #include "TrianglesNodes.h"
 #include "IManifold1D2.h"
 #include "IManifold0.h"
@@ -21,7 +21,7 @@ namespace MeshGeneration2
       const IndexTreeToSimplices2::Triangles& baseTriangles,
       const IGeometryPredicate<MeshGeneration::GeomType, GeomDim2>& predicate,
       const BoundingBox<MeshGeneration::GeomType, GeomDim2>& worldBB,
-      std::unique_ptr<IDynamicUniquePointCollection<MeshGeneration::GeomType, GeomDim2>>& pointGeometry,
+      std::unique_ptr<MeshGeneration::IUniquePointCollecion2>& pointGeometry,
       std::unique_ptr<MeshGeneration::TrianglesNodes>& trianglesNodes,
       Logger& logger);
 
@@ -30,13 +30,13 @@ namespace MeshGeneration2
       const MeshGeneration::DirectedEdgeNodes& edge,
       const MeshGeneration::TrianglesNodes& trianglesNodes,
       MeshGeneration::ManifoldsAndNodes<GeomDim2>& manifoldsAndNodes,
-      IUniquePointCollecion2& pointCollection);
+      MeshGeneration::IUniquePointCollecion2& pointCollection);
 
    void AddManifold1Intersections(
       const Geometry::IManifold1D2<MeshGeneration::GeomType>& manifold,
       MeshGeneration::TrianglesNodes& trianglesNodes,
       MeshGeneration::ManifoldsAndNodes<GeomDim2>& manifoldsAndNodes,
-      IUniquePointCollecion2& pointCollection);
+      MeshGeneration::IUniquePointCollecion2& pointCollection);
 
    std::unique_ptr<Vtk::VtkData> ToVtkData(const MeshGeneration::TrianglesNodes& trianglesNodes, const IPointCollection<MeshGeneration::GeomType, GeomDim2>& points);
 }

@@ -38,7 +38,7 @@ void MeshGeneration2::BaseTriangulationToWorld(
    const IndexTreeToSimplices2::Triangles& baseTriangles,
    const IGeometryPredicate<GeomType, GeomDim2>& predicate,
    const BoundingBox<GeomType, GeomDim2>& worldBB,
-   std::unique_ptr<IDynamicUniquePointCollection<GeomType, GeomDim2>>& pointGeometry,
+   std::unique_ptr<IUniquePointCollecion2>& pointGeometry,
    std::unique_ptr<TrianglesNodes>& triangleNodes,
    Logger& logger)
 {
@@ -205,7 +205,7 @@ bool MeshGeneration2::AddEdgeManifold1Intersections(
 void MeshGeneration2::AddManifold1Intersections(
    const Geometry::IManifold1D2<GeomType>& manifold,
    TrianglesNodes& trianglesNodes,
-   ManifoldsAndNodes<GeomDim2>& manifoldsAndNodes,
+   MeshGeneration::ManifoldsAndNodes<GeomDim2>& manifoldsAndNodes,
    IUniquePointCollecion2& pointCollection)
 {
    const auto initialSortedEdges = trianglesNodes.getAllSortedEdges();
@@ -214,7 +214,7 @@ void MeshGeneration2::AddManifold1Intersections(
    {
       const auto edge = *todo.begin();
       todo.erase(edge);
-      const bool anyNodeMoved = MeshGeneration2::AddEdgeManifold1Intersections(manifold, edge,
+      const bool anyNodeMoved = AddEdgeManifold1Intersections(manifold, edge,
          trianglesNodes, manifoldsAndNodes, pointCollection);
       if (anyNodeMoved)
       {

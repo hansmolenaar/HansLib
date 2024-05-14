@@ -1,7 +1,7 @@
 #pragma once
 
 #include "TrianglesNodes.h"
-#include "MeshGeneration2Defines.h"
+#include "MeshGenerationDefines.h"
 
 namespace Manifold1Reconstruction
 {
@@ -12,5 +12,5 @@ namespace Manifold1Reconstruction
 		std::vector<std::vector<MeshGeneration::NodeIndex>> Paths;
 	};
 
-	Reconstruction Generate2(std::span<const MeshGeneration::NodeIndex> manifoldPoints, const MeshGeneration::TrianglesNodes& trianglesNodes, MeshGeneration2::IUniquePointCollecion2& pointCollection);
+	Reconstruction Generate2(std::span<const MeshGeneration::NodeIndex> manifoldPoints, const MeshGeneration::TrianglesNodes& trianglesNodes, MeshGeneration::IUniquePointCollecion2& pointCollection);
 }

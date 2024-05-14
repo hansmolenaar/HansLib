@@ -2,7 +2,6 @@
 
 using namespace Manifold1Reconstruction;
 using namespace MeshGeneration;
-using namespace MeshGeneration2;
 
 Manifold1Reconstruction::Reconstruction Manifold1Reconstruction::Generate2(std::span<const NodeIndex> manifoldPoints, const TrianglesNodes& trianglesNodes, IUniquePointCollecion2& pointCollection)
 {
