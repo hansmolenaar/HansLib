@@ -7,7 +7,7 @@ namespace Manifold1Reconstruction
 {
 	struct Reconstruction
 	{
-		std::vector<MeshGeneration::NodeIndex> Singletons;
+		std::vector<MeshGeneration::NodeIndex> Singletons; // TODO remove me?
 		std::vector<std::vector<MeshGeneration::NodeIndex>> Cycles;
 		std::vector<std::vector<MeshGeneration::NodeIndex>> Paths;
 	};

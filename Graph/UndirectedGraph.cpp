@@ -51,7 +51,10 @@ UndirectedGraph::UndirectedGraph(GraphVertex numVertices) : m_graph(numVertices)
 
 void UndirectedGraph::addEdge(GraphVertex vertex1, GraphVertex vertex2)
 {
-   boost::add_edge(vertex1, vertex2, m_graph);
+   if (!areAdjacent(vertex1, vertex2))
+   {
+      boost::add_edge(vertex1, vertex2, m_graph);
+   }
 }
 
 GraphVertex UndirectedGraph::getNumVertices() const
@@ -153,4 +156,15 @@ void UndirectedGraph::SplitInCyclesAndPaths(std::vector<std::vector<GraphVertex>
    }
 
    MyAssert(str::all_of(degreeSequence, [](GraphVertex v) {return v == DegreeSequenceDone; }));
+}
+
+bool UndirectedGraph::areAdjacent(GraphVertex v1, GraphVertex v2) const
+{
+   if (std::max(v1, v2) >= getNumVertices())
+   {
+      throw MyException("UndirectedGraph::areAdjacent invalid vertex");
+   }
+
+   auto [itr, found] = edge(vertex(v1, m_graph), vertex(v2, m_graph), m_graph);
+   return found;
 }

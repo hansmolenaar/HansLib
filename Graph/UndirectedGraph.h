@@ -12,6 +12,7 @@ public:
    GraphEdge getNumEdges() const;
    std::vector<GraphVertex> getConnectedComponents() const;
    void setAdjacentVertices(GraphVertex vertex, std::vector<GraphVertex>& result) const;
+   bool areAdjacent(GraphVertex v1, GraphVertex v2) const;
    GraphVertex getDegree(GraphVertex vertex) const;
    std::vector<GraphVertex> getDegreeSequence() const;
    void SplitInCyclesAndPaths(std::vector<std::vector<GraphVertex>>& cycles, std::vector<std::vector<GraphVertex>>& paths) const;

@@ -194,3 +194,25 @@ TEST(UndirectedGraphTest, SplitInCyclesAndPaths)
    CheckCyclesPaths(*graph, std::vector<GraphVertex>{}, std::vector<GraphVertex>(9,2));
 }
 
+
+TEST(UndirectedGraphTest, AddEdgeDuplicate)
+{
+   UndirectedGraph ug(2);
+   ug.addEdge(0, 1);
+   ug.addEdge(1, 0);
+   ug.addEdge(0, 1);
+   ug.addEdge(1, 0);
+
+   ASSERT_EQ(ug.getNumEdges(), 1);
+}
+
+
+TEST(UndirectedGraphTest, AreAdjacent)
+{
+   UndirectedGraph ug(3);
+   ug.addEdge(0, 1);
+   ASSERT_TRUE(ug.areAdjacent(0, 1));
+   ASSERT_TRUE(ug.areAdjacent(1, 0));
+   ASSERT_FALSE(ug.areAdjacent(1, 2));
+   ASSERT_ANY_THROW(ug.areAdjacent(1,3));
+}
