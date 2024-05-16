@@ -43,9 +43,9 @@ namespace
       std::vector<std::vector<GraphVertex>> cycles;
       std::vector<std::vector<GraphVertex>> paths;
 
-      graph.SplitInCyclesAndPaths(cycles, paths);
-      CheckSequenceAfterSorting(GetCyclePathSize(cycles), cycleSizesExpect);
-      CheckSequenceAfterSorting(GetCyclePathSize(paths), pathSizesExpect);
+      const UndirectedGraph::CyclesAndPaths  cyclesAndPaths = graph.SplitInCyclesAndPaths();
+      CheckSequenceAfterSorting(GetCyclePathSize(cyclesAndPaths.Cycles), cycleSizesExpect);
+      CheckSequenceAfterSorting(GetCyclePathSize(cyclesAndPaths.Paths), pathSizesExpect);
    }
 }
 TEST(UndirectedGraphTest, ConnectedComponents)
@@ -190,8 +190,8 @@ TEST(UndirectedGraphTest, SplitInCyclesAndPaths)
       CheckCyclesPaths(*graph, std::vector<GraphVertex>{}, std::vector<GraphVertex>{});
    }
 
-   graph = UndirectedGraphLibrary::Get_CompleteBipartite(3,3);
-   CheckCyclesPaths(*graph, std::vector<GraphVertex>{}, std::vector<GraphVertex>(9,2));
+   graph = UndirectedGraphLibrary::Get_CompleteBipartite(3, 3);
+   CheckCyclesPaths(*graph, std::vector<GraphVertex>{}, std::vector<GraphVertex>(9, 2));
 }
 
 
@@ -214,5 +214,5 @@ TEST(UndirectedGraphTest, AreAdjacent)
    ASSERT_TRUE(ug.areAdjacent(0, 1));
    ASSERT_TRUE(ug.areAdjacent(1, 0));
    ASSERT_FALSE(ug.areAdjacent(1, 2));
-   ASSERT_ANY_THROW(ug.areAdjacent(1,3));
+   ASSERT_ANY_THROW(ug.areAdjacent(1, 3));
 }

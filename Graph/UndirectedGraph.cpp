@@ -103,10 +103,9 @@ std::vector<GraphVertex> UndirectedGraph::getDegreeSequence() const
 }
 
 // Isolated vertices are ignored
-void UndirectedGraph::SplitInCyclesAndPaths(std::vector<std::vector<GraphVertex>>& cycles, std::vector<std::vector<GraphVertex>>& paths) const
+UndirectedGraph::CyclesAndPaths UndirectedGraph::SplitInCyclesAndPaths() const
 {
-   cycles.clear();
-   paths.clear();
+   CyclesAndPaths result;
 
    const auto vertexCount = getNumVertices();
    auto degreeSequence = getDegreeSequence();
@@ -127,12 +126,12 @@ void UndirectedGraph::SplitInCyclesAndPaths(std::vector<std::vector<GraphVertex>
                std::vector<GraphVertex> list = TraceLineOrPolygon(*this, v, ngb, degreeSequence);
                if (list.front() != list.back())
                {
-                  paths.emplace_back(std::move(list));
+                  result.Paths.emplace_back(std::move(list));
                }
                else
                {
                   list.pop_back();
-                  cycles.emplace_back(std::move(list));
+                  result.Cycles.emplace_back(std::move(list));
                }
             }
          }
@@ -150,12 +149,13 @@ void UndirectedGraph::SplitInCyclesAndPaths(std::vector<std::vector<GraphVertex>
          auto list = TraceLineOrPolygon(*this, v, ngbVertices.front(), degreeSequence);
          MyAssert(list.front() == list.back());
          list.pop_back(); // remove last
-         cycles.emplace_back(std::move(list));
+         result.Cycles.emplace_back(std::move(list));
          degreeSequence.at(v) = DegreeSequenceDone; // Done here
       }
    }
 
    MyAssert(str::all_of(degreeSequence, [](GraphVertex v) {return v == DegreeSequenceDone; }));
+   return result;
 }
 
 bool UndirectedGraph::areAdjacent(GraphVertex v1, GraphVertex v2) const

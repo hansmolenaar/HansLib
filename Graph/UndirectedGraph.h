@@ -15,7 +15,13 @@ public:
    bool areAdjacent(GraphVertex v1, GraphVertex v2) const;
    GraphVertex getDegree(GraphVertex vertex) const;
    std::vector<GraphVertex> getDegreeSequence() const;
-   void SplitInCyclesAndPaths(std::vector<std::vector<GraphVertex>>& cycles, std::vector<std::vector<GraphVertex>>& paths) const;
+
+   struct CyclesAndPaths
+   {
+      std::vector<std::vector<GraphVertex>> Cycles;
+      std::vector<std::vector<GraphVertex>> Paths;
+   };
+   CyclesAndPaths SplitInCyclesAndPaths() const;
 
 private:
    boost::adjacency_list<boost::listS, boost::vecS, boost::undirectedS, GraphVertex, GraphEdge > m_graph;
