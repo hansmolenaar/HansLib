@@ -11,7 +11,7 @@ template< int N>
 class UniquePointCollectionBinning : public IDynamicUniquePointCollection<double, N>
 {
 public:
-   UniquePointCollectionBinning(const IGeometryPredicate<double, N>& m_predicate, const std::vector<Point<double, N>>& points);
+   UniquePointCollectionBinning(const IGeometryPredicate<double, N>& predicate, const std::vector<Point<double, N>>& points);
 
    std::optional<PointIndex>  tryGetClosePoint(const Point<double, N>&) const override;
    void movePoint(PointIndex pointId, const Point<double, N>& newLocation) override;

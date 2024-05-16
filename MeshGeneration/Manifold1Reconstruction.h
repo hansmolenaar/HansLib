@@ -12,5 +12,5 @@ namespace Manifold1Reconstruction
 		std::vector<std::vector<MeshGeneration::NodeIndex>> Paths;
 	};
 
-	Reconstruction Generate2(std::span<const MeshGeneration::NodeIndex> manifoldPoints, const MeshGeneration::TrianglesNodes& trianglesNodes, MeshGeneration::IUniquePointCollecion2& pointCollection);
+	Reconstruction Generate2(std::span<const MeshGeneration::NodeIndex> manifoldPoints, const MeshGeneration::TrianglesNodes& trianglesNodes, const MeshGeneration::IUniquePointCollecion2& pointCollection);
 }

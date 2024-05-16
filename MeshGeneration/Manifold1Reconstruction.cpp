@@ -30,17 +30,44 @@ namespace
          }
          for (auto ngb : neighbors)
          {
-            result.addEdge(v, toVertex.at(ngb));
+            const auto findNgb = toVertex.find(ngb);
+            if (findNgb != toVertex.end())
+            {
+               result.addEdge(v, toVertex.at(ngb));
+            }
          }
       }
       return result;
    }
+
+   std::vector<NodeIndex> ToNodesIndices(const std::vector<GraphVertex>& grapVertices, std::span<const NodeIndex> manifoldNodes)
+   {
+      std::vector<NodeIndex> result(manifoldNodes.size());
+      str::transform(grapVertices, result.begin(), [&manifoldNodes](GraphVertex vertex) {return manifoldNodes[vertex]; });
+      return result;
+   }
 }
 
-Manifold1Reconstruction::Reconstruction Manifold1Reconstruction::Generate2(std::span<const NodeIndex> manifoldNodes, const TrianglesNodes& trianglesNodes, IUniquePointCollecion2& pointCollection)
+Manifold1Reconstruction::Reconstruction Manifold1Reconstruction::Generate2(std::span<const NodeIndex> manifoldNodes, const TrianglesNodes& trianglesNodes, const IUniquePointCollecion2& pointCollection)
 {
-   Manifold1Reconstruction::Reconstruction result;
    const auto toVertex = RenumberToGraph(manifoldNodes);
    const auto graph = CreateGraph(manifoldNodes, trianglesNodes, toVertex);
+   const auto degreeSequence = graph.getDegreeSequence();
+   if (*str::max_element(degreeSequence) > 2)
+   {
+      throw MyException("Manifold1Reconstruction::Generate2 only max degree is 2 implemented");
+   }
+   const auto cyclesAndPaths = graph.SplitInCyclesAndPaths();
+
+   Reconstruction result;
+   for (const auto& cycle : cyclesAndPaths.Cycles)
+   {
+      result.Cycles.emplace_back(ToNodesIndices(cycle, manifoldNodes));
+   }
+   for (const auto& path : cyclesAndPaths.Paths)
+   {
+      result.Paths.emplace_back(ToNodesIndices(path, manifoldNodes));
+   }
+
    return result;
 }
