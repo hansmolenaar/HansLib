@@ -14,11 +14,13 @@
 #include "UniquePointCollectionBinning.h"
 #include "Manifold0.h"
 #include "Single.h"
+#include "Manifold1Reconstruction.h"
 
 using namespace MeshGeneration;
 using namespace MeshGeneration2;
 using namespace IntervalTree;
 using namespace Geometry;
+using namespace Utilities;
 
 TEST(MeshGeneration2Test, Ball)
 {
@@ -259,7 +261,7 @@ TEST(MeshGeneration2Test, Sphere2AndEdge_TwoIntersections)
    ASSERT_TRUE(predicate.SamePoints(points.getPoint(node1), Point2{ 0, 1 }));
 }
 
-TEST(MeshGeneration2Test, Sphere2_intersect)
+TEST(MeshGeneration2Test, Sphere2_intersect_4)
 {
    Logger logger;
    const Ball<GeomType, GeomDim2> ball(Point2{ 1.5, 2.5 }, 3);
@@ -283,5 +285,77 @@ TEST(MeshGeneration2Test, Sphere2_intersect)
 
    const auto vtkData = MeshGeneration2::ToVtkData(*trianglesNodes, *pointGeometry);
    ASSERT_EQ(504, vtkData->getNumCells());
-   //Paraview::Write("MeshGeneration2Test_Sphere2_intersect", *vtkData);
+   const auto nodesOnManifold = manifoldsAndNodes.getNodesInManifold(&manifold);
+   const auto reconstruction = Manifold1Reconstruction::Generate2(nodesOnManifold, *trianglesNodes, *pointGeometry);
+   ASSERT_TRUE(reconstruction.Singletons.empty());
+   ASSERT_TRUE(reconstruction.Paths.empty());
+   ASSERT_EQ(reconstruction.Cycles.size(), 1);
+   ASSERT_EQ(Single(reconstruction.Cycles).size(), 42);
+   //Paraview::Write("MeshGeneration2Test_Sphere2_intersect_4", *vtkData);
+}
+
+TEST(MeshGeneration2Test, Sphere2_intersect_3)
+{
+   Logger logger;
+   const Ball<GeomType, GeomDim2> ball(Point2{ 1.5, 2.5 }, 3);
+   const Ball2AsRegion<GeomType> ballAsRegion(ball);
+   const PointClose<GeomType, GeomDim2> areClose;
+   const auto initialBbGenerator = InitialBoundingboxGenerator<GeomDim2>::Create(1.25);
+   const auto bbInitial = initialBbGenerator->generate(ballAsRegion);
+   const RefineRegionToMaxLevel<GeomDim2> predicate(3, ballAsRegion, areClose, *initialBbGenerator);
+   MeshingStrategy2 strategy(*initialBbGenerator, predicate);
+   const auto triangles = MeshGeneration2::GenerateBaseTriangulation(ballAsRegion, strategy, logger);
+
+   std::unique_ptr<IDynamicUniquePointCollection<GeomType, GeomDim2>> pointGeometry;
+   std::unique_ptr<MeshGeneration::TrianglesNodes> trianglesNodes;
+   MeshGeneration2::BaseTriangulationToWorld(triangles, areClose, bbInitial, pointGeometry, trianglesNodes, logger);
+
+   const Sphere<GeomType, GeomDim2> sphere(ball.getCenter(), ball.getRadius());
+   const Sphere2AsManifold1<GeomType> manifold(sphere);
+
+   ManifoldsAndNodes<GeomDim2> manifoldsAndNodes;
+   MeshGeneration2::AddManifold1Intersections(manifold, *trianglesNodes, manifoldsAndNodes, *pointGeometry);
+
+   const auto vtkData = MeshGeneration2::ToVtkData(*trianglesNodes, *pointGeometry);
+   ASSERT_EQ(128, vtkData->getNumCells());
+   const auto nodesOnManifold = manifoldsAndNodes.getNodesInManifold(&manifold);
+   const auto reconstruction = Manifold1Reconstruction::Generate2(nodesOnManifold, *trianglesNodes, *pointGeometry);
+   ASSERT_TRUE(reconstruction.Singletons.empty());
+   ASSERT_TRUE(reconstruction.Paths.empty());
+   ASSERT_EQ(reconstruction.Cycles.size(), 1);
+   ASSERT_EQ(Single(reconstruction.Cycles).size(), 20);
+   //Paraview::Write("MeshGeneration2Test_Sphere2_intersect_3", *vtkData);
+}
+
+TEST(MeshGeneration2Test, Sphere2_intersect_5)
+{
+   Logger logger;
+   const Ball<GeomType, GeomDim2> ball(Point2{ 1.5, 2.5 }, 3);
+   const Ball2AsRegion<GeomType> ballAsRegion(ball);
+   const PointClose<GeomType, GeomDim2> areClose;
+   const auto initialBbGenerator = InitialBoundingboxGenerator<GeomDim2>::Create(1.25);
+   const auto bbInitial = initialBbGenerator->generate(ballAsRegion);
+   const RefineRegionToMaxLevel<GeomDim2> predicate(5, ballAsRegion, areClose, *initialBbGenerator);
+   MeshingStrategy2 strategy(*initialBbGenerator, predicate);
+   const auto triangles = MeshGeneration2::GenerateBaseTriangulation(ballAsRegion, strategy, logger);
+
+   std::unique_ptr<IDynamicUniquePointCollection<GeomType, GeomDim2>> pointGeometry;
+   std::unique_ptr<MeshGeneration::TrianglesNodes> trianglesNodes;
+   MeshGeneration2::BaseTriangulationToWorld(triangles, areClose, bbInitial, pointGeometry, trianglesNodes, logger);
+
+   const Sphere<GeomType, GeomDim2> sphere(ball.getCenter(), ball.getRadius());
+   const Sphere2AsManifold1<GeomType> manifold(sphere);
+
+   ManifoldsAndNodes<GeomDim2> manifoldsAndNodes;
+   MeshGeneration2::AddManifold1Intersections(manifold, *trianglesNodes, manifoldsAndNodes, *pointGeometry);
+
+   const auto vtkData = MeshGeneration2::ToVtkData(*trianglesNodes, *pointGeometry);
+   ASSERT_EQ(1712, vtkData->getNumCells());
+   const auto nodesOnManifold = manifoldsAndNodes.getNodesInManifold(&manifold);
+   const auto reconstruction = Manifold1Reconstruction::Generate2(nodesOnManifold, *trianglesNodes, *pointGeometry);
+   ASSERT_TRUE(reconstruction.Singletons.empty());
+   ASSERT_TRUE(reconstruction.Paths.empty());
+   ASSERT_EQ(reconstruction.Cycles.size(), 1);
+   ASSERT_EQ(Single(reconstruction.Cycles).size(), 88);
+   Paraview::Write("MeshGeneration2Test_Sphere2_intersect_5", *vtkData);
 }
