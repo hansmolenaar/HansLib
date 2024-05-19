@@ -38,5 +38,11 @@ namespace MeshGeneration2
       MeshGeneration::ManifoldsAndNodes<GeomDim2>& manifoldsAndNodes,
       MeshGeneration::IUniquePointCollecion2& pointCollection);
 
+   void AddManifold0(
+      const Geometry::IManifold0<MeshGeneration::GeomType, GeomDim2>& manifold,
+      MeshGeneration::TrianglesNodes& trianglesNodes,
+      MeshGeneration::ManifoldsAndNodes<GeomDim2>& manifoldsAndNodes,
+      MeshGeneration::IUniquePointCollecion2& pointCollection);
+
    std::unique_ptr<Vtk::VtkData> ToVtkData(const MeshGeneration::TrianglesNodes& trianglesNodes, const IPointCollection<MeshGeneration::GeomType, GeomDim2>& points);
 }

@@ -228,3 +228,17 @@ void MeshGeneration2::AddManifold1Intersections(
       }
    }
 }
+
+void MeshGeneration2::AddManifold0(
+   const Geometry::IManifold0<MeshGeneration::GeomType, GeomDim2>& manifold,
+   MeshGeneration::TrianglesNodes& trianglesNodes,
+   MeshGeneration::ManifoldsAndNodes<GeomDim2>& manifoldsAndNodes,
+   MeshGeneration::IUniquePointCollecion2& pointCollection)
+{
+   // Collect triangles that contain point
+   const auto point = manifold.GetPoint();
+   const auto allTriangles = trianglesNodes.getAllTriangles();
+   std::vector<CellIndex> triangles;
+   throw MyException("Not yet implemented");
+   //str::copy_if(allTriangles, std::back_inserter(triangles), [&trianglesNodes](CellIndex triangle) {return trianglesNodes.});
+}
