@@ -1,7 +1,7 @@
 #pragma once
 
+#include "MeshGenerationDefines.h"
 #include "MeshingStrategy.h"
-#include "MeshQuality.h"
 #include "Logger.h"
 
 namespace MeshGeneration
@@ -10,15 +10,15 @@ namespace MeshGeneration
    class MeshingSettings
    {
    public:
-      MeshingSettings(std::unique_ptr<MeshingStrategy<N>>&& strategy, MeshQuality<N>&& quality );
-      static std::unique_ptr<MeshingSettings> CreateDefault();
+      MeshingSettings(std::unique_ptr<MeshingStrategy<N>>&& strategy /* , MeshGeneration::CellQuality<N> quality */ );
+      //static std::unique_ptr<MeshingSettings<2>> CreateDefault2();
       const MeshingStrategy<N>& getStrategy() const;
-      const MeshQuality<N>& getMeshQuality() const;
-      Logger getLogger() const;
+      //const MeshGeneration::CellQuality<N>& getMeshQuality() const;
+      Logger& getLogger();
 
    private:
-      std::unique_ptr<MeshingStrategy<N>>&& m_strategy;
-      MeshQuality<N> m_quality;
+      std::unique_ptr<MeshingStrategy<N>> m_strategy;
+      //MeshGeneration::CellQuality<N> m_quality;
       Logger m_logger;
    };
 
