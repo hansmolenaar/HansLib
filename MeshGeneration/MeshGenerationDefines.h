@@ -3,9 +3,10 @@
 #include "Defines.h"
 #include "TopologyDefines.h"
 #include "IDynamicUniquePointCollection.h"
+#include "Simplex.h"
 
 #include <boost/container/static_vector.hpp>
-#include <array>
+#include <functional>
 
 namespace MeshGeneration
 {
@@ -16,4 +17,10 @@ namespace MeshGeneration
    using SortedEdgeNodes = std::array<NodeIndex, Topology::NumNodesOnEdge>;
 
    using IUniquePointCollecion2 = IDynamicUniquePointCollection<MeshGeneration::GeomType, GeomDim2>;
+
+   // Should be GE 0 and 0 means degenerate
+   template<int N>
+   using CellQuality = std::function<double(const Geometry::Simplex<GeomType, N>)>;
+
+   using CellQuality2 = CellQuality<2>;
 }
