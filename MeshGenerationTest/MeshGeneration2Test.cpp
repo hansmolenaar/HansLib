@@ -28,7 +28,7 @@ TEST(MeshGeneration2Test, Ball)
    const Ball<GeomType, GeomDim2> ball(Point2{ 0.5, 0.5 }, 0.5);
    const Ball2AsRegion<GeomType> ballAsRegion(ball);
    MeshingSettingsStandard<2> settings(ballAsRegion, 5, 2.0);
-   const auto triangles = MeshGeneration2::GenerateBaseTriangulation(ballAsRegion, settings.getStrategy(), settings.getLogger());
+   const auto triangles = MeshGeneration2::GenerateBaseTriangulation(ballAsRegion, settings);
    const auto vtkData = IndexTreeToSimplices2::ToVtkData(triangles);
    ASSERT_EQ(1016, vtkData->getNumCells());
    //Paraview::Write("MeshGeneration2Test_Ball", *vtkData);

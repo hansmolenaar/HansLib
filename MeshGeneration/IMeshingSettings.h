@@ -1,3 +1,5 @@
+#pragma once
+
 #include "MeshGenerationDefines.h"
 #include "MeshingStrategy.h"
 #include "Logger.h"

@@ -13,6 +13,11 @@ using namespace IntervalTree;
 using namespace MeshGeneration;
 using namespace MeshGeneration2;
 
+IndexTreeToSimplices2::Triangles MeshGeneration2::GenerateBaseTriangulation(const Geometry::IGeometryRegion<MeshGeneration::GeomType, GeomDim2>& region, IMeshingSettings2& settings)
+{
+   return GenerateBaseTriangulation(region, settings.getStrategy(), settings.getLogger());
+}
+
 IndexTreeToSimplices2::Triangles MeshGeneration2::GenerateBaseTriangulation(const IGeometryRegion<GeomType, GeomDim2>& region, MeshingStrategy2& strategy, Logger& logger)
 {
    std::string msg = "MeshGeneration2::GenerateBaseTriangulation() region Bb " + region.getBoundingBox().toString();

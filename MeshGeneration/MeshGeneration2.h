@@ -11,11 +11,13 @@
 #include "ManifoldsAndNodes.h"
 #include "Logger.h"
 #include "VtkData.h"
+#include "IMeshingSettings.h"
 
 namespace MeshGeneration2
 {
    
    IndexTreeToSimplices2::Triangles GenerateBaseTriangulation(const Geometry::IGeometryRegion<MeshGeneration::GeomType, GeomDim2>& region, MeshingStrategy2& strategy, Logger& logger);
+   IndexTreeToSimplices2::Triangles GenerateBaseTriangulation(const Geometry::IGeometryRegion<MeshGeneration::GeomType, GeomDim2>& region, MeshGeneration::IMeshingSettings2& settings);
 
    void BaseTriangulationToWorld(
       const IndexTreeToSimplices2::Triangles& baseTriangles,
