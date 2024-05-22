@@ -67,7 +67,7 @@ TEST(MeshGeneration2Test, Ball2)
    const Ball<GeomType, GeomDim2> ball(Point2{ 1.5, 2.5 }, 3);
    const Ball2AsRegion<GeomType> ballAsRegion(ball);
    MeshingSettingsStandard<2> settings(4, 1.25);
-   const auto bbInitial = settings.getInitialBbGenerator().generate(ballAsRegion);
+   const auto bbInitial = settings.getInitialBb(ballAsRegion);
    const auto triangles = MeshGeneration2::GenerateBaseTriangulation(ballAsRegion, settings);
 
    std::unique_ptr<IDynamicUniquePointCollection<GeomType, GeomDim2>> pointGeometry;
@@ -261,7 +261,7 @@ TEST(MeshGeneration2Test, Sphere2_intersect_4)
 
    std::unique_ptr<IDynamicUniquePointCollection<GeomType, GeomDim2>> pointGeometry;
    std::unique_ptr<MeshGeneration::TrianglesNodes> trianglesNodes;
-   const auto bbInitial = settings.getInitialBbGenerator().generate(ballAsRegion);
+   const auto bbInitial = settings.getInitialBb(ballAsRegion);
    MeshGeneration2::BaseTriangulationToWorld(triangles, settings.getGeometryPredicate(), bbInitial, pointGeometry, trianglesNodes, settings.getLogger());
 
    const Sphere<GeomType, GeomDim2> sphere(ball.getCenter(), ball.getRadius());
@@ -290,7 +290,7 @@ TEST(MeshGeneration2Test, Sphere2_intersect_3)
 
    std::unique_ptr<IDynamicUniquePointCollection<GeomType, GeomDim2>> pointGeometry;
    std::unique_ptr<MeshGeneration::TrianglesNodes> trianglesNodes;
-   const auto bbInitial = settings.getInitialBbGenerator().generate(ballAsRegion);
+   const auto bbInitial = settings.getInitialBb(ballAsRegion);
    MeshGeneration2::BaseTriangulationToWorld(triangles, settings.getGeometryPredicate(), bbInitial, pointGeometry, trianglesNodes, settings.getLogger());
 
    const Sphere<GeomType, GeomDim2> sphere(ball.getCenter(), ball.getRadius());
@@ -319,7 +319,7 @@ TEST(MeshGeneration2Test, Sphere2_intersect_5)
 
    std::unique_ptr<IDynamicUniquePointCollection<GeomType, GeomDim2>> pointGeometry;
    std::unique_ptr<MeshGeneration::TrianglesNodes> trianglesNodes;
-   const auto bbInitial = settings.getInitialBbGenerator().generate(ballAsRegion);
+   const auto bbInitial = settings.getInitialBb(ballAsRegion);
    MeshGeneration2::BaseTriangulationToWorld(triangles, settings.getGeometryPredicate(), bbInitial, pointGeometry, trianglesNodes, settings.getLogger());
 
    const Sphere<GeomType, GeomDim2> sphere(ball.getCenter(), ball.getRadius());
