@@ -5,6 +5,8 @@ using namespace MeshGeneration;
 
 template RefineRegionToMaxLevel<2>;
 template RefineRegionToMaxLevel<3>;
+template RefineRegionToMaxLevelFactory<2>;
+template RefineRegionToMaxLevelFactory<3>;
 
 template<int N>
 RefineRegionToMaxLevel<N>::RefineRegionToMaxLevel(int maxLevel, const Geometry::IGeometryRegion<double, N>& region, const IGeometryPredicate<double, N>& predicate,
@@ -19,3 +21,17 @@ bool MeshGeneration::RefineRegionToMaxLevel<N>::operator()(const IntervalTree::I
    const auto& indxBb = m_initialBb.scaleFrom01(indx.getBbOfCell());
    return m_region.CouldIntersectWith(indxBb, m_geometryPredicate);
 };
+
+
+template<int N>
+RefineRegionToMaxLevelFactory<N>::RefineRegionToMaxLevelFactory(int maxLevel, const IInitialBoundingboxGenerator<N>& generator) :
+   m_maxLevel(maxLevel),
+   m_bbGenerator(generator)
+{
+}
+
+template<int N>
+std::unique_ptr<IRefinementPredicate<N>> RefineRegionToMaxLevelFactory<N>::Create(const Geometry::IGeometryRegion<double, N>& region, const IGeometryPredicate<double, N>& geometryPredicate)
+{
+   return std::make_unique<RefineRegionToMaxLevel<N>>(m_maxLevel, region, geometryPredicate, m_bbGenerator);
+}

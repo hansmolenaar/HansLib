@@ -9,7 +9,7 @@ namespace MeshGeneration
    class MeshingSettingsStandard : public IMeshingSettings<N>
    {
    public:
-      explicit MeshingSettingsStandard(int maxLevel);
+      MeshingSettingsStandard(const Geometry::IGeometryRegion<double, N>& region, int maxLevel);
       //static std::unique_ptr<MeshingSettingsStandard<2>> CreateDefault2();
 
       const MeshingStrategy<N>& getStrategy() const override;

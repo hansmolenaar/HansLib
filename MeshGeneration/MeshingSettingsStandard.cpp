@@ -9,12 +9,10 @@ using namespace MeshGeneration;
 template MeshingSettingsStandard<2>;
 
 template<int N>
-MeshingSettingsStandard<N>::MeshingSettingsStandard(int maxLevel)
+MeshingSettingsStandard<N>::MeshingSettingsStandard(const Geometry::IGeometryRegion<double, N>& region, int maxLevel)
 {
-   const Geometry::Ball<GeomType, GeomDim2> ball(Point2{ 0.5, 0.5 }, 0.5);
-   const Geometry::Ball2AsRegion<GeomType> ballAsRegion(ball);
    auto initialBbGenerator = InitialBoundingboxGenerator<GeomDim2>::Create(2.0);
-   RefineRegionToMaxLevel<N> predicate(maxLevel, ballAsRegion, m_areClose, *initialBbGenerator);
+   RefineRegionToMaxLevel<N> predicate(maxLevel, region, m_areClose, *initialBbGenerator);
    m_strategy = std::make_unique<MeshingStrategy2>(*initialBbGenerator, predicate);
 }
 

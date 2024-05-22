@@ -29,8 +29,9 @@ TEST(MeshGeneration2Test, Ball)
    const Ball2AsRegion<GeomType> ballAsRegion(ball);
    const PointClose<GeomType, GeomDim2> areClose;
    const auto initialBbGenerator = InitialBoundingboxGenerator<GeomDim2>::Create(2.0);
-   const RefineRegionToMaxLevel<2> predicate(5, ballAsRegion, areClose, *initialBbGenerator);
-   MeshingStrategy2 strategy(*initialBbGenerator, predicate);
+   RefineRegionToMaxLevelFactory<2> factory(5 , *initialBbGenerator);
+   const auto predicate = factory.Create(ballAsRegion, areClose);
+   MeshingStrategy2 strategy(*initialBbGenerator, *predicate);
    const auto triangles = MeshGeneration2::GenerateBaseTriangulation(ballAsRegion, strategy, logger);
 
    const auto vtkData = IndexTreeToSimplices2::ToVtkData(triangles);
