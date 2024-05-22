@@ -255,19 +255,15 @@ TEST(MeshGeneration2Test, Sphere2AndEdge_TwoIntersections)
 
 TEST(MeshGeneration2Test, Sphere2_intersect_4)
 {
-   Logger logger;
    const Ball<GeomType, GeomDim2> ball(Point2{ 1.5, 2.5 }, 3);
    const Ball2AsRegion<GeomType> ballAsRegion(ball);
-   const PointClose<GeomType, GeomDim2> areClose;
-   const auto initialBbGenerator = InitialBoundingboxGenerator<GeomDim2>::Create(1.25);
-   const auto bbInitial = initialBbGenerator->generate(ballAsRegion);
-   const RefineRegionToMaxLevel<GeomDim2> predicate(4, ballAsRegion, areClose, *initialBbGenerator);
-   MeshingStrategy2 strategy(*initialBbGenerator, predicate);
-   const auto triangles = MeshGeneration2::GenerateBaseTriangulation(ballAsRegion, strategy, logger);
+   MeshingSettingsStandard<2> settings(ballAsRegion, 4, 1.25);
+   const auto triangles = MeshGeneration2::GenerateBaseTriangulation(ballAsRegion, settings);
 
    std::unique_ptr<IDynamicUniquePointCollection<GeomType, GeomDim2>> pointGeometry;
    std::unique_ptr<MeshGeneration::TrianglesNodes> trianglesNodes;
-   MeshGeneration2::BaseTriangulationToWorld(triangles, areClose, bbInitial, pointGeometry, trianglesNodes, logger);
+   const auto bbInitial = settings.getInitialBbGenerator().generate(ballAsRegion);
+   MeshGeneration2::BaseTriangulationToWorld(triangles, settings.getGeometryPredicate(), bbInitial, pointGeometry, trianglesNodes, settings.getLogger());
 
    const Sphere<GeomType, GeomDim2> sphere(ball.getCenter(), ball.getRadius());
    const Sphere2AsManifold1<GeomType> manifold(sphere);
@@ -288,19 +284,15 @@ TEST(MeshGeneration2Test, Sphere2_intersect_4)
 
 TEST(MeshGeneration2Test, Sphere2_intersect_3)
 {
-   Logger logger;
    const Ball<GeomType, GeomDim2> ball(Point2{ 1.5, 2.5 }, 3);
    const Ball2AsRegion<GeomType> ballAsRegion(ball);
-   const PointClose<GeomType, GeomDim2> areClose;
-   const auto initialBbGenerator = InitialBoundingboxGenerator<GeomDim2>::Create(1.25);
-   const auto bbInitial = initialBbGenerator->generate(ballAsRegion);
-   const RefineRegionToMaxLevel<GeomDim2> predicate(3, ballAsRegion, areClose, *initialBbGenerator);
-   MeshingStrategy2 strategy(*initialBbGenerator, predicate);
-   const auto triangles = MeshGeneration2::GenerateBaseTriangulation(ballAsRegion, strategy, logger);
+   MeshingSettingsStandard<2> settings(ballAsRegion, 3, 1.25);
+   const auto triangles = MeshGeneration2::GenerateBaseTriangulation(ballAsRegion, settings);
 
    std::unique_ptr<IDynamicUniquePointCollection<GeomType, GeomDim2>> pointGeometry;
    std::unique_ptr<MeshGeneration::TrianglesNodes> trianglesNodes;
-   MeshGeneration2::BaseTriangulationToWorld(triangles, areClose, bbInitial, pointGeometry, trianglesNodes, logger);
+   const auto bbInitial = settings.getInitialBbGenerator().generate(ballAsRegion);
+   MeshGeneration2::BaseTriangulationToWorld(triangles, settings.getGeometryPredicate(), bbInitial, pointGeometry, trianglesNodes, settings.getLogger());
 
    const Sphere<GeomType, GeomDim2> sphere(ball.getCenter(), ball.getRadius());
    const Sphere2AsManifold1<GeomType> manifold(sphere);
@@ -321,19 +313,15 @@ TEST(MeshGeneration2Test, Sphere2_intersect_3)
 
 TEST(MeshGeneration2Test, Sphere2_intersect_5)
 {
-   Logger logger;
    const Ball<GeomType, GeomDim2> ball(Point2{ 1.5, 2.5 }, 3);
    const Ball2AsRegion<GeomType> ballAsRegion(ball);
-   const PointClose<GeomType, GeomDim2> areClose;
-   const auto initialBbGenerator = InitialBoundingboxGenerator<GeomDim2>::Create(1.25);
-   const auto bbInitial = initialBbGenerator->generate(ballAsRegion);
-   const RefineRegionToMaxLevel<GeomDim2> predicate(5, ballAsRegion, areClose, *initialBbGenerator);
-   MeshingStrategy2 strategy(*initialBbGenerator, predicate);
-   const auto triangles = MeshGeneration2::GenerateBaseTriangulation(ballAsRegion, strategy, logger);
+   MeshingSettingsStandard<2> settings(ballAsRegion, 5, 1.25);
+   const auto triangles = MeshGeneration2::GenerateBaseTriangulation(ballAsRegion, settings);
 
    std::unique_ptr<IDynamicUniquePointCollection<GeomType, GeomDim2>> pointGeometry;
    std::unique_ptr<MeshGeneration::TrianglesNodes> trianglesNodes;
-   MeshGeneration2::BaseTriangulationToWorld(triangles, areClose, bbInitial, pointGeometry, trianglesNodes, logger);
+   const auto bbInitial = settings.getInitialBbGenerator().generate(ballAsRegion);
+   MeshGeneration2::BaseTriangulationToWorld(triangles, settings.getGeometryPredicate(), bbInitial, pointGeometry, trianglesNodes, settings.getLogger());
 
    const Sphere<GeomType, GeomDim2> sphere(ball.getCenter(), ball.getRadius());
    const Sphere2AsManifold1<GeomType> manifold(sphere);
