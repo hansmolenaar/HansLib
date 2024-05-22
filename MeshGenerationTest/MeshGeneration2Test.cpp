@@ -5,7 +5,6 @@
 #include "Ball.h"
 #include "IntervalTreeIndexFactory.h"
 #include "MeshGeneration2.h"
-#include "MeshingStrategy.h"
 #include "InitialBoundingboxGenerator.h"
 #include "Ball2AsRegion.h"
 #include "Paraview.h"
@@ -27,7 +26,7 @@ TEST(MeshGeneration2Test, Ball)
 {
    const Ball<GeomType, GeomDim2> ball(Point2{ 0.5, 0.5 }, 0.5);
    const Ball2AsRegion<GeomType> ballAsRegion(ball);
-   MeshingSettingsStandard<2> settings(ballAsRegion, 5, 2.0);
+   MeshingSettingsStandard<2> settings(5, 2.0);
    const auto triangles = MeshGeneration2::GenerateBaseTriangulation(ballAsRegion, settings);
    const auto vtkData = IndexTreeToSimplices2::ToVtkData(triangles);
    ASSERT_EQ(1016, vtkData->getNumCells());
@@ -67,7 +66,7 @@ TEST(MeshGeneration2Test, Ball2)
 {
    const Ball<GeomType, GeomDim2> ball(Point2{ 1.5, 2.5 }, 3);
    const Ball2AsRegion<GeomType> ballAsRegion(ball);
-   MeshingSettingsStandard<2> settings(ballAsRegion, 4, 1.25);
+   MeshingSettingsStandard<2> settings(4, 1.25);
    const auto bbInitial = settings.getInitialBbGenerator().generate(ballAsRegion);
    const auto triangles = MeshGeneration2::GenerateBaseTriangulation(ballAsRegion, settings);
 
@@ -257,7 +256,7 @@ TEST(MeshGeneration2Test, Sphere2_intersect_4)
 {
    const Ball<GeomType, GeomDim2> ball(Point2{ 1.5, 2.5 }, 3);
    const Ball2AsRegion<GeomType> ballAsRegion(ball);
-   MeshingSettingsStandard<2> settings(ballAsRegion, 4, 1.25);
+   MeshingSettingsStandard<2> settings(4, 1.25);
    const auto triangles = MeshGeneration2::GenerateBaseTriangulation(ballAsRegion, settings);
 
    std::unique_ptr<IDynamicUniquePointCollection<GeomType, GeomDim2>> pointGeometry;
@@ -286,7 +285,7 @@ TEST(MeshGeneration2Test, Sphere2_intersect_3)
 {
    const Ball<GeomType, GeomDim2> ball(Point2{ 1.5, 2.5 }, 3);
    const Ball2AsRegion<GeomType> ballAsRegion(ball);
-   MeshingSettingsStandard<2> settings(ballAsRegion, 3, 1.25);
+   MeshingSettingsStandard<2> settings(3, 1.25);
    const auto triangles = MeshGeneration2::GenerateBaseTriangulation(ballAsRegion, settings);
 
    std::unique_ptr<IDynamicUniquePointCollection<GeomType, GeomDim2>> pointGeometry;
@@ -315,7 +314,7 @@ TEST(MeshGeneration2Test, Sphere2_intersect_5)
 {
    const Ball<GeomType, GeomDim2> ball(Point2{ 1.5, 2.5 }, 3);
    const Ball2AsRegion<GeomType> ballAsRegion(ball);
-   MeshingSettingsStandard<2> settings(ballAsRegion, 5, 1.25);
+   MeshingSettingsStandard<2> settings( 5, 1.25);
    const auto triangles = MeshGeneration2::GenerateBaseTriangulation(ballAsRegion, settings);
 
    std::unique_ptr<IDynamicUniquePointCollection<GeomType, GeomDim2>> pointGeometry;
