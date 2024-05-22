@@ -2,6 +2,7 @@
 
 #include "IntervalTree.h"
 #include "IGeometryRegion.h"
+#include "IInitialBoundingboxGenerator.h"
 
 template<int N>
 class IRefinementPredicate
@@ -17,5 +18,8 @@ class IRefinementPredicateFactory
 {
 public:
    ~IRefinementPredicateFactory() noexcept = default;
-   virtual std::unique_ptr<IRefinementPredicate<N>> Create(const Geometry::IGeometryRegion<double, N>& region, const IGeometryPredicate<double, N>& geometryPredicate) = 0;
+   virtual std::unique_ptr<IRefinementPredicate<N>> Create(
+      const Geometry::IGeometryRegion<double, N>& region, 
+      const IInitialBoundingboxGenerator<N>& generator,
+      const IGeometryPredicate<double, N>& geometryPredicate) = 0;
 };

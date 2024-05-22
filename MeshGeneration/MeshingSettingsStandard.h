@@ -14,12 +14,17 @@ namespace MeshGeneration
 
       MeshingStrategy<N>& getStrategy()  override;
       MeshGeneration::CellQualityFun<N>* getMeshQuality()  override;
+      IRefinementPredicateFactory<N>& getRefinementPredicateFactory() override;
       Logger& getLogger() override;
+      const IGeometryPredicate<double, N>& getGeometryPredicate() override;
+      const IInitialBoundingboxGenerator<N >& getInitialBbGenerator() override;
 
    private:
-      PointClose<GeomType, GeomDim2> m_areClose;
+      PointClose<GeomType, N> m_areClose;
       std::unique_ptr<MeshingStrategy<N>> m_strategy;
-      std::unique_ptr<RefineRegionToMaxLevel<N>> m_refinementPredicate;
+      RefineRegionToMaxLevelFactory<N> m_refinementPredicateFactory;
+      std::unique_ptr<IRefinementPredicate<N>> m_refinementPredicate;
+      std::unique_ptr<IInitialBoundingboxGenerator<N>> m_bbGenerator;
       Logger m_logger;
    };
 

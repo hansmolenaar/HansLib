@@ -24,14 +24,16 @@ bool MeshGeneration::RefineRegionToMaxLevel<N>::operator()(const IntervalTree::I
 
 
 template<int N>
-RefineRegionToMaxLevelFactory<N>::RefineRegionToMaxLevelFactory(int maxLevel, const IInitialBoundingboxGenerator<N>& generator) :
-   m_maxLevel(maxLevel),
-   m_bbGenerator(generator)
+RefineRegionToMaxLevelFactory<N>::RefineRegionToMaxLevelFactory(int maxLevel) :
+   m_maxLevel(maxLevel)
 {
 }
 
 template<int N>
-std::unique_ptr<IRefinementPredicate<N>> RefineRegionToMaxLevelFactory<N>::Create(const Geometry::IGeometryRegion<double, N>& region, const IGeometryPredicate<double, N>& geometryPredicate)
+std::unique_ptr<IRefinementPredicate<N>> RefineRegionToMaxLevelFactory<N>::Create(
+   const Geometry::IGeometryRegion<double, N>& region, 
+   const IInitialBoundingboxGenerator<N>& generator,
+   const IGeometryPredicate<double, N>& geometryPredicate)
 {
-   return std::make_unique<RefineRegionToMaxLevel<N>>(m_maxLevel, region, geometryPredicate, m_bbGenerator);
+   return std::make_unique<RefineRegionToMaxLevel<N>>(m_maxLevel, region, geometryPredicate, generator);
 }

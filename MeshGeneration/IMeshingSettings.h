@@ -2,6 +2,7 @@
 
 #include "MeshGenerationDefines.h"
 #include "MeshingStrategy.h"
+#include "RefinementPredicates.h"
 #include "Logger.h"
 
 namespace MeshGeneration
@@ -12,8 +13,11 @@ namespace MeshGeneration
    public:
       virtual ~IMeshingSettings() = default;
 
-      virtual  MeshingStrategy<N>& getStrategy() = 0;
+      virtual MeshingStrategy<N>& getStrategy() = 0;
       virtual MeshGeneration::CellQualityFun<N>* getMeshQuality() = 0;
+      virtual IRefinementPredicateFactory<N>& getRefinementPredicateFactory() = 0;
+      virtual const IGeometryPredicate<double, N>& getGeometryPredicate() = 0;
+      virtual const IInitialBoundingboxGenerator<N >& getInitialBbGenerator() = 0;
 
       virtual Logger& getLogger() = 0;
    };

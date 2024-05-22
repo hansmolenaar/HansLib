@@ -26,11 +26,14 @@ namespace MeshGeneration
    class RefineRegionToMaxLevelFactory : public IRefinementPredicateFactory<N>
    {
    public:
-      RefineRegionToMaxLevelFactory<N>(int maxLevel, const IInitialBoundingboxGenerator<N>& generator);
-      std::unique_ptr<IRefinementPredicate<N>> Create(const Geometry::IGeometryRegion<double, N>& region, const IGeometryPredicate<double, N>& geometryPredicate) override;
+      explicit RefineRegionToMaxLevelFactory<N>(int maxLevel);
+      std::unique_ptr<IRefinementPredicate<N>> Create(
+         const Geometry::IGeometryRegion<double, N>& region, 
+         const IInitialBoundingboxGenerator<N>& generator, 
+         const IGeometryPredicate<double, N>& geometryPredicate) override;
+
    private:
       int m_maxLevel;
-      const IInitialBoundingboxGenerator<N>& m_bbGenerator;
    };
 
 } // namespace MeshGeneration
