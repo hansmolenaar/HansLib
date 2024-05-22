@@ -10,7 +10,7 @@ namespace MeshGeneration
    public:
       virtual ~IMeshingSettings() = default;
 
-      virtual const MeshingStrategy<N>& getStrategy() const = 0;
+      virtual  MeshingStrategy<N>& getStrategy() = 0;
       virtual MeshGeneration::CellQualityFun<N>* getMeshQuality() = 0;
 
       virtual Logger& getLogger() = 0;

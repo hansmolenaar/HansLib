@@ -9,15 +9,15 @@ using namespace MeshGeneration;
 template MeshingSettingsStandard<2>;
 
 template<int N>
-MeshingSettingsStandard<N>::MeshingSettingsStandard(const Geometry::IGeometryRegion<double, N>& region, int maxLevel)
+MeshingSettingsStandard<N>::MeshingSettingsStandard(const Geometry::IGeometryRegion<double, N>& region, int maxLevel, double initBbMultiplier)
 {
-   auto initialBbGenerator = InitialBoundingboxGenerator<GeomDim2>::Create(2.0);
-   RefineRegionToMaxLevel<N> predicate(maxLevel, region, m_areClose, *initialBbGenerator);
-   m_strategy = std::make_unique<MeshingStrategy2>(*initialBbGenerator, predicate);
+   auto initialBbGenerator = InitialBoundingboxGenerator<GeomDim2>::Create(initBbMultiplier);
+   m_refinementPredicate =std::make_unique<RefineRegionToMaxLevel<GeomDim2>>(maxLevel, region, m_areClose, *initialBbGenerator);
+   m_strategy = std::make_unique<MeshingStrategy2>(*initialBbGenerator, *m_refinementPredicate);
 }
 
 template<int N>
-const MeshingStrategy<N>& MeshingSettingsStandard<N>::getStrategy() const
+MeshingStrategy<N>& MeshingSettingsStandard<N>::getStrategy()
 {
    return *m_strategy;
 }

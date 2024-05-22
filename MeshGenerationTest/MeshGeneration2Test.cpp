@@ -15,6 +15,7 @@
 #include "Manifold0.h"
 #include "Single.h"
 #include "Manifold1Reconstruction.h"
+#include "MeshingSettingsStandard.h"
 
 using namespace MeshGeneration;
 using namespace MeshGeneration2;
@@ -24,16 +25,10 @@ using namespace Utilities;
 
 TEST(MeshGeneration2Test, Ball)
 {
-   Logger logger;
    const Ball<GeomType, GeomDim2> ball(Point2{ 0.5, 0.5 }, 0.5);
    const Ball2AsRegion<GeomType> ballAsRegion(ball);
-   const PointClose<GeomType, GeomDim2> areClose;
-   const auto initialBbGenerator = InitialBoundingboxGenerator<GeomDim2>::Create(2.0);
-   RefineRegionToMaxLevelFactory<2> factory(5 , *initialBbGenerator);
-   const auto predicate = factory.Create(ballAsRegion, areClose);
-   MeshingStrategy2 strategy(*initialBbGenerator, *predicate);
-   const auto triangles = MeshGeneration2::GenerateBaseTriangulation(ballAsRegion, strategy, logger);
-
+   MeshingSettingsStandard<2> settings(ballAsRegion, 5, 2.0);
+   const auto triangles = MeshGeneration2::GenerateBaseTriangulation(ballAsRegion, settings.getStrategy(), settings.getLogger());
    const auto vtkData = IndexTreeToSimplices2::ToVtkData(triangles);
    ASSERT_EQ(1016, vtkData->getNumCells());
    //Paraview::Write("MeshGeneration2Test_Ball", *vtkData);
