@@ -35,7 +35,8 @@ namespace MeshGeneration2
       const Geometry::IManifold1D2<MeshGeneration::GeomType>& manifold,
       MeshGeneration::TrianglesNodes& trianglesNodes,
       MeshGeneration::ManifoldsAndNodes<GeomDim2>& manifoldsAndNodes,
-      MeshGeneration::IUniquePointCollecion2& pointCollection);
+      MeshGeneration::IUniquePointCollecion2& pointCollection,
+      Logger& logger);
 
    void AddManifold0(
       const Geometry::IManifold0<MeshGeneration::GeomType, GeomDim2>& manifold,

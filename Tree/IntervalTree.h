@@ -3,6 +3,7 @@
 #include "IntervalTreeIndexFactory.h"
 #include "IntervalTreeAction.h"
 #include "StdHash.h"
+#include "Logger.h"
 
 #include <unordered_map>
 #include <unordered_set>
@@ -37,8 +38,10 @@ namespace IntervalTree
       std::string toString() const;
 
    private:
+      std::vector<const Index<N>*> getLeavesInFixedOrder() const;
+
       IndexFactory<N> m_factory;
-      std::unordered_map < const Index<N>*, std::array< const Index<N>*, IntervalTree::NumKids<N>>> m_tree;
+      std::unordered_map <const Index<N>*, std::array< const Index<N>*, IntervalTree::NumKids<N>>> m_tree;
       std::unordered_set<const Index<N>*> m_leaves;
       const Index<N>* m_root;
    };
@@ -49,6 +52,13 @@ namespace IntervalTree
       m_leaves.insert(m_root);
    }
 
+   template<int N>
+   std::vector<const Index<N>*> IndexTree<N>::getLeavesInFixedOrder() const
+   {
+      std::vector<const Index<N>*> result(m_leaves.begin(), m_leaves.end());
+      std::sort(result.begin(), result.end(), IntervalTree::ComparePointer<N>());
+      return result;
+   }
 
    template<int N>
    const Index<N>& IndexTree<N>::getRoot() const
@@ -66,7 +76,7 @@ namespace IntervalTree
    template<typename A>
    void IndexTree<N>::foreachLeaf(A& action) const
    {
-      for (const auto* leaf : m_leaves)
+      for (const auto* leaf : getLeavesInFixedOrder())
       {
          action(*leaf);
       }
@@ -77,9 +87,10 @@ namespace IntervalTree
    int IndexTree<N>::refineLeaves(P& predicate)
    {
       std::vector<const Index<N>*> toRefine;
-      for (const auto* leaf : m_leaves)
+      for (const auto* leaf : getLeavesInFixedOrder())
       {
-         if (predicate(*leaf))
+         const bool doRefine = predicate(*leaf);
+         if (doRefine)
          {
             toRefine.emplace_back(leaf);
          }

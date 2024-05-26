@@ -34,5 +34,6 @@ double MeshQuality::getQuality2(
       [](double a, double b) {return std::min(a, b); },
       [&triangles, &points, qualityFunction](CellIndex cell) {return GetCellQuality(triangles.getTriangleNodes(cell), points, qualityFunction); }
    );
+
    return result;
 }

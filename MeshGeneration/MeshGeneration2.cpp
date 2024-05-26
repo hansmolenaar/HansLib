@@ -5,6 +5,7 @@
 #include "UniqueHashedPointCollection.h"
 #include "UniquePointCollectionBinning.h"
 #include "MyAssert.h"
+#include "MeshGenerationUtils.h"
 
 #include <set>
 
@@ -208,13 +209,17 @@ void MeshGeneration2::AddManifold1Intersections(
    const Geometry::IManifold1D2<GeomType>& manifold,
    TrianglesNodes& trianglesNodes,
    MeshGeneration::ManifoldsAndNodes<GeomDim2>& manifoldsAndNodes,
-   IUniquePointCollecion2& pointCollection)
+   IUniquePointCollecion2& pointCollection,
+   Logger& logger)
 {
+   //LogTriangles(logger, trianglesNodes, "trianglesNodes");
    const auto initialSortedEdges = trianglesNodes.getAllSortedEdges();
+   //Log(logger, initialSortedEdges, "initialSortedEdges "); 
    std::set<SortedEdgeNodes> todo(initialSortedEdges.begin(), initialSortedEdges.end());
    while (!todo.empty())
    {
       const auto edge = *todo.begin();
+      //LogSortedEdgeNodes(logger, edge, "TODO handle edge: ");
       todo.erase(edge);
       const bool anyNodeMoved = AddEdgeManifold1Intersections(manifold, edge,
          trianglesNodes, manifoldsAndNodes, pointCollection);
@@ -224,7 +229,9 @@ void MeshGeneration2::AddManifold1Intersections(
          {
             for (NodeIndex ngb : trianglesNodes.getEdgeConnectedNodes(node))
             {
-               todo.insert(TrianglesNodes::CreateSortedEdge(node, ngb));
+               const auto todoEdge = TrianglesNodes::CreateSortedEdge(node, ngb);
+               todo.insert(todoEdge);
+               //LogSortedEdgeNodes(logger, todoEdge, "Add to TODO ");
             }
          }
       }

@@ -6,6 +6,7 @@
 #include <chrono>
 #include <format>
 #include <iostream>
+#include <fstream>
 
 namespace
 {
@@ -43,4 +44,14 @@ void Logger::logLines(const std::vector<std::string>& lines)
 const std::vector<std::string>& Logger::get() const
 {
    return m_lines;
+}
+
+void Logger::toFile(std::filesystem::path filePath)const
+{
+   std::ofstream stream(filePath.string().c_str(), std::ios::out);
+   for (const auto& line : m_lines)
+   {
+      stream << line;
+   }
+   stream.close();
 }

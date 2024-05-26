@@ -45,12 +45,25 @@ namespace IntervalTree
 
       std::array<std::array<Rational, N>, NumKids<N>> getVerticesInVtkOrder() const;
 
+
+  
    private:
       Index1Factory& m_factory1;
       Key m_keys;
    };
-}
 
+   template<int N>
+   struct ComparePointer
+   {
+      bool operator()(const Index<N>* lhs, const Index<N>* rhs)
+      {
+         const auto levelDif = lhs->getLevel() - rhs->getLevel();
+         if (levelDif < 0) return true;
+         else if (levelDif > 0) return false;
+         return lhs->getKey() < rhs->getKey();
+      };
+   };
+}
 
 namespace IntervalTree
 {

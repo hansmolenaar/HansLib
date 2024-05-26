@@ -15,6 +15,8 @@
 #include "Single.h"
 #include "Manifold1Reconstruction.h"
 #include "MeshingSettingsStandard.h"
+#include "MeshStatistics.h"
+#include "MeshGenerationUtils.h"
 
 using namespace MeshGeneration;
 using namespace MeshGeneration2;
@@ -74,9 +76,13 @@ TEST(MeshGeneration2Test, Ball2)
    std::unique_ptr<MeshGeneration::TrianglesNodes> trianglesNodes;
    MeshGeneration2::BaseTriangulationToWorld(triangles, settings.getGeometryPredicate(), bbInitial, pointGeometry, trianglesNodes, settings.getLogger());
 
+   const auto stats = MeshStatistics::Create2(*trianglesNodes, *pointGeometry, settings.getCellQuality());
+   const MeshStatistics expect{ 281, 504, 0.75 };
+   ASSERT_EQ(stats, expect);
+
    const auto vtkData = MeshGeneration2::ToVtkData(*trianglesNodes, *pointGeometry);
    ASSERT_EQ(504, vtkData->getNumCells());
-   Paraview::Write("MeshGeneration2Test_Ball2", *vtkData);
+   //Paraview::Write("MeshGeneration2Test_Ball2", *vtkData);
 }
 
 
@@ -264,21 +270,31 @@ TEST(MeshGeneration2Test, Sphere2_intersect_4)
    const auto bbInitial = settings.getInitialBb(ballAsRegion);
    MeshGeneration2::BaseTriangulationToWorld(triangles, settings.getGeometryPredicate(), bbInitial, pointGeometry, trianglesNodes, settings.getLogger());
 
+   auto stats = MeshStatistics::Create2(*trianglesNodes, *pointGeometry, settings.getCellQuality());
+   MeshStatistics expect{ 281, 504, 0.75 };
+   ASSERT_EQ(expect, stats);
+
    const Sphere<GeomType, GeomDim2> sphere(ball.getCenter(), ball.getRadius());
    const Sphere2AsManifold1<GeomType> manifold(sphere);
 
    ManifoldsAndNodes<GeomDim2> manifoldsAndNodes;
-   MeshGeneration2::AddManifold1Intersections(manifold, *trianglesNodes, manifoldsAndNodes, *pointGeometry);
+   MeshGeneration2::AddManifold1Intersections(manifold, *trianglesNodes, manifoldsAndNodes, *pointGeometry, settings.getLogger());
 
-   const auto vtkData = MeshGeneration2::ToVtkData(*trianglesNodes, *pointGeometry);
-   ASSERT_EQ(504, vtkData->getNumCells());
+   stats = MeshStatistics::Create2(*trianglesNodes, *pointGeometry, settings.getCellQuality());
+   expect = { 281, 504, 0.37443649960593806 };
+
+   settings.getLogger().toFile("C:\\Users\\Hans\\Documents\\work\\logger.txt");
+   ASSERT_EQ(expect, stats);
+
    const auto nodesOnManifold = manifoldsAndNodes.getNodesInManifold(&manifold);
    const auto reconstruction = Manifold1Reconstruction::Generate2(nodesOnManifold, *trianglesNodes, *pointGeometry);
    ASSERT_TRUE(reconstruction.Singletons.empty());
    ASSERT_TRUE(reconstruction.Paths.empty());
    ASSERT_EQ(reconstruction.Cycles.size(), 1);
    ASSERT_EQ(Single(reconstruction.Cycles).size(), 42);
-   //Paraview::Write("MeshGeneration2Test_Sphere2_intersect_4", *vtkData);
+
+   const auto vtkData = MeshGeneration2::ToVtkData(*trianglesNodes, *pointGeometry);
+   Paraview::Write("MeshGeneration2Test_Sphere2_intersect_4", *vtkData);
 }
 
 TEST(MeshGeneration2Test, Sphere2_intersect_3)
@@ -297,7 +313,11 @@ TEST(MeshGeneration2Test, Sphere2_intersect_3)
    const Sphere2AsManifold1<GeomType> manifold(sphere);
 
    ManifoldsAndNodes<GeomDim2> manifoldsAndNodes;
-   MeshGeneration2::AddManifold1Intersections(manifold, *trianglesNodes, manifoldsAndNodes, *pointGeometry);
+   MeshGeneration2::AddManifold1Intersections(manifold, *trianglesNodes, manifoldsAndNodes, *pointGeometry, settings.getLogger());
+
+   const auto stats = MeshStatistics::Create2(*trianglesNodes, *pointGeometry, settings.getCellQuality());
+   const MeshStatistics expect{ 81, 128, 00.30877886910687341 };
+   ASSERT_EQ(expect, stats);
 
    const auto vtkData = MeshGeneration2::ToVtkData(*trianglesNodes, *pointGeometry);
    ASSERT_EQ(128, vtkData->getNumCells());
@@ -314,7 +334,7 @@ TEST(MeshGeneration2Test, Sphere2_intersect_5)
 {
    const Ball<GeomType, GeomDim2> ball(Point2{ 1.5, 2.5 }, 3);
    const Ball2AsRegion<GeomType> ballAsRegion(ball);
-   MeshingSettingsStandard<2> settings( 5, 1.25);
+   MeshingSettingsStandard<2> settings(5, 1.25);
    const auto triangles = MeshGeneration2::GenerateBaseTriangulation(ballAsRegion, settings);
 
    std::unique_ptr<IDynamicUniquePointCollection<GeomType, GeomDim2>> pointGeometry;
@@ -326,7 +346,12 @@ TEST(MeshGeneration2Test, Sphere2_intersect_5)
    const Sphere2AsManifold1<GeomType> manifold(sphere);
 
    ManifoldsAndNodes<GeomDim2> manifoldsAndNodes;
-   MeshGeneration2::AddManifold1Intersections(manifold, *trianglesNodes, manifoldsAndNodes, *pointGeometry);
+   MeshGeneration2::AddManifold1Intersections(manifold, *trianglesNodes, manifoldsAndNodes, *pointGeometry, settings.getLogger());
+
+
+   const auto stats = MeshStatistics::Create2(*trianglesNodes, *pointGeometry, settings.getCellQuality());
+   const MeshStatistics expect{ 885, 1712, 0.30491369274933333 };
+   ASSERT_EQ(expect, stats);
 
    const auto vtkData = MeshGeneration2::ToVtkData(*trianglesNodes, *pointGeometry);
    ASSERT_EQ(1712, vtkData->getNumCells());

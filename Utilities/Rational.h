@@ -2,6 +2,7 @@
 
 #include <boost/rational.hpp>
 #include <boost/functional/hash.hpp>
+#include  <span>
 
 using Rational = boost::rational<int>;
 
@@ -36,4 +37,26 @@ inline double operator*(double d, Rational r)
 inline double operator*(Rational r, double d)
 {
    return d * r.numerator() / r.denominator();
+}
+
+inline std::ostream& operator<< (std::ostream& stream, const Rational& rat)
+{
+   stream << std::to_string(rat.numerator()) << "/" << std::to_string(rat.denominator());
+   return stream;
+}
+
+
+inline std::ostream& operator<< (std::ostream& stream, std::span<const Rational> rat)
+{
+   stream << "(";
+   bool first = true;
+   for (auto r : rat)
+   {
+      if (!first) stream << ", ";
+      first = false;
+
+      stream << r;
+   }
+   stream << ")";
+   return stream;
 }

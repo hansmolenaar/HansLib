@@ -221,3 +221,13 @@ TEST(TriangleNodesTest, CreateSortedEdge)
 
    ASSERT_THROW(TrianglesNodes::CreateSortedEdge(2, 2), MyException);
 }
+
+
+TEST(TriangleNodesTest, GetAllNodes)
+{
+   TrianglesNodes tnodes;
+   const auto triangle0 = tnodes.addTriangle(2, 1, 999);
+   const auto triangle1 = tnodes.addTriangle(1, 2, 42);
+   const auto nodes = tnodes.getAllNodes();
+   ASSERT_TRUE(str::equal(nodes, std::vector<NodeIndex>{1, 2, 42, 999}));
+}

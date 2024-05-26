@@ -2,6 +2,7 @@
 
 #include "Rational.h"
 #include "IntervalTreeIndex.h"
+#include "Logger.h"
 #include <map>
 
 namespace IntervalTree
@@ -36,6 +37,16 @@ namespace IntervalTree
    {
       void operator()(const Index<N>& index) { MaxLevel = std::max(MaxLevel, index.getLevel()); };
       int MaxLevel = -1;
+   };
+
+
+   template<int N>
+   struct ActionLogLeaves
+   {
+      void operator()(const Index<N>& index) { 
+         ActionLogger.logLine(index.getBbOfCell().toString()); 
+      };
+      Logger& ActionLogger;
    };
 
 }
