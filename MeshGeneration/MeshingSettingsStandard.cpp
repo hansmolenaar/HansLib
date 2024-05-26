@@ -15,7 +15,7 @@ MeshingSettingsStandard<N>::MeshingSettingsStandard(int maxLevel, double initBbM
 }
 
 template<int N>
-CellQualityFun<N>* MeshingSettingsStandard<N>::getMeshQuality()
+CellQualityFun<N>* MeshingSettingsStandard<N>::getCellQuality()
 {
    return CellQuality2::MinimumAngle;
 }

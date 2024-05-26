@@ -12,7 +12,7 @@ namespace MeshGeneration
    public:
       MeshingSettingsStandard(int maxLevel, double initBbMultiplier);
 
-      MeshGeneration::CellQualityFun<N>* getMeshQuality()  override;
+      MeshGeneration::CellQualityFun<N>* getCellQuality()  override;
       IRefinementPredicateFactory<N>& getRefinementPredicateFactory() override;
       Logger& getLogger() override;
       const IGeometryPredicate<double, N>& getGeometryPredicate() override;

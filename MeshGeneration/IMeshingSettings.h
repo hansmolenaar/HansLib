@@ -13,7 +13,7 @@ namespace MeshGeneration
    public:
       virtual ~IMeshingSettings() = default;
 
-      virtual MeshGeneration::CellQualityFun<N>* getMeshQuality() = 0;
+      virtual MeshGeneration::CellQualityFun<N>* getCellQuality() = 0;
       virtual IRefinementPredicateFactory<N>& getRefinementPredicateFactory() = 0;
       virtual const IGeometryPredicate<double, N>& getGeometryPredicate() = 0;
       virtual const IInitialBoundingboxGenerator<N >& getInitialBbGenerator() = 0;
