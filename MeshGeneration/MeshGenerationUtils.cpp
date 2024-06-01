@@ -49,7 +49,7 @@ void MeshGeneration::Log(Logger& logger, const IndexTreeToSimplices2::Triangles&
    const std::string sep = "  ";
    std::vector<std::string> lines;
    lines.emplace_back(header);
-   
+
    for (const auto& t : triangles)
    {
       std::ostringstream buffer;
@@ -76,7 +76,7 @@ void MeshGeneration::LogBb2(Logger& logger, const BoundingBox<GeomType, GeomDim2
 void MeshGeneration::Log(Logger& logger, IntervalTree::IndexTree<GeomDim2> tree, std::string header)
 {
    std::vector<std::string> lines;
-   lines.emplace_back(header); 
+   lines.emplace_back(header);
    IntervalTree::ActionLogLeaves<2> actionLog{ logger };
    tree.foreachLeaf(actionLog);
 }
@@ -90,4 +90,13 @@ void MeshGeneration::Log(Logger& logger, const std::vector<const IntervalTree::I
       lines.push_back(indx->toString());
    }
    logger.logLines(lines);
+}
+
+std::array<Point<GeomType, GeomDim2>, Topology::NumNodesOnTriangle> MeshGeneration::GetTriangleGeometry(
+   const MeshGeneration::TriangleNodes& triangleNodes,
+   const IPointCollection<MeshGeneration::GeomType, GeomDim2>& points)
+{
+   std::array<Point<GeomType, GeomDim2>, Topology::NumNodesOnTriangle> result;
+   str::transform(triangleNodes, result.begin(), [&points](NodeIndex node) {return points.getPoint(node); });
+   return result;
 }

@@ -6,6 +6,7 @@
 #include "IndexTreeToSimplices2.h"
 #include "BoundingBox.h"
 #include "IntervalTree.h"
+#include "TopologyDefines.h"
 
 namespace MeshGeneration
 {
@@ -19,4 +20,7 @@ namespace MeshGeneration
    void Log(Logger& logger, IntervalTree::IndexTree<GeomDim2> tree, std::string header);
    void Log(Logger& logger, const std::vector<const IntervalTree::Index<GeomDim2>*>& cells, std::string header);
 
+   std::array<Point<GeomType, GeomDim2>, Topology::NumNodesOnTriangle> GetTriangleGeometry(
+      const MeshGeneration::TriangleNodes& triangleNodes, 
+      const IPointCollection<MeshGeneration::GeomType, GeomDim2>& points);
 }

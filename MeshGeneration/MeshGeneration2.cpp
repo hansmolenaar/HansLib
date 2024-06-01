@@ -6,6 +6,8 @@
 #include "UniquePointCollectionBinning.h"
 #include "MyAssert.h"
 #include "MeshGenerationUtils.h"
+#include "Triangle.h"
+#include "Polygon2D.h"
 
 #include <set>
 
@@ -13,6 +15,53 @@ using namespace Geometry;
 using namespace IntervalTree;
 using namespace MeshGeneration;
 using namespace MeshGeneration2;
+
+namespace
+{
+   using M0ToTriIds = std::multimap<const IManifold0D2*, CellIndex>;
+   M0ToTriIds GetTrianglesContainingPoints(
+      std::span<const IManifold0D2*> manifolds,
+      MeshGeneration::TrianglesNodes& trianglesNodes,
+      MeshGeneration::IUniquePointCollecion2& pointCollection)
+   {
+      M0ToTriIds result;
+      constexpr double eps = 0.01;
+      const auto scale = BoundingBox<GeomType, GeomDim2>::CreateFromList(std::vector<Point2>{Point2{ -eps, -eps }, Point2{ 1 + eps, 1 + eps }});
+      for (auto triangleId : trianglesNodes.getAllTriangles())
+      {
+         const auto triangle = GetTriangleGeometry(trianglesNodes.getTriangleNodes(triangleId), pointCollection);
+         const auto bb = BoundingBox<GeomType, GeomDim2>::CreateFromList(triangle).scaleFrom01(scale);
+         for (auto mptr : manifolds)
+         {
+            const auto point = mptr->GetPoint();
+            if (bb.contains(point))
+            {
+               if (Polygon2D::Contains((std::span < const Point<GeomType, 2>>)triangle, point, pointCollection.getGeometryPredicate()))
+               {
+                  result.emplace(mptr, triangleId);
+               }
+            }
+         }
+      }
+      return result;
+   }
+
+   // Explicit sorting, otherwise depence on pointer ordering
+   std::vector<const IManifold0D2*> OrderManifolds0(std::span<const IManifold0D2*> manifolds)
+   {
+      std::vector<const IManifold0D2*> result(manifolds.begin(), manifolds.end());
+      auto lessPoint = [](const IManifold0D2* ptr1, const IManifold0D2* ptr2) {return ptr1->GetPoint() < ptr2->GetPoint(); };
+      str::sort(result, lessPoint);
+      return result;
+   }
+
+   NodeIndex InsertPoint(Point2 point, std::span<const CellIndex> candidates, TrianglesNodes& trianglesNodes, MeshGeneration::IUniquePointCollecion2& pointCollection, const MeshGeneration::ManifoldsAndNodes<GeomDim2>& manifoldsAndNodes)
+   {
+      if (candidates.size() != 1) throw MyException("Not yet implemented");
+      return -1;
+   }
+}
+
 
 IndexTreeToSimplices2::Triangles MeshGeneration2::GenerateBaseTriangulation(const Geometry::IGeometryRegion<MeshGeneration::GeomType, GeomDim2>& region, IMeshingSettings2& settings)
 {
@@ -238,16 +287,23 @@ void MeshGeneration2::AddManifold1Intersections(
    }
 }
 
-void MeshGeneration2::AddManifold0(
-   const Geometry::IManifold0<MeshGeneration::GeomType, GeomDim2>& manifold,
+void MeshGeneration2::AddAllManifolds0(
+   std::span<const IManifold0D2*> manifolds,
    MeshGeneration::TrianglesNodes& trianglesNodes,
    MeshGeneration::ManifoldsAndNodes<GeomDim2>& manifoldsAndNodes,
    MeshGeneration::IUniquePointCollecion2& pointCollection)
 {
    // Collect triangles that contain point
-   const auto point = manifold.GetPoint();
-   const auto allTriangles = trianglesNodes.getAllTriangles();
-   std::vector<CellIndex> triangles;
+   const auto trianglesContainingPoints = GetTrianglesContainingPoints(manifolds, trianglesNodes, pointCollection);
+
+   for (const auto* manifold : OrderManifolds0(manifolds))
+   {
+      const auto range = trianglesContainingPoints.equal_range(manifold);
+      std::vector<CellIndex> candidates;
+      std::transform(range.first, range.second, std::back_inserter(candidates), [](const auto& itr) {return itr.second; });
+      const NodeIndex node = InsertPoint(manifold->GetPoint(), candidates, trianglesNodes, pointCollection, manifoldsAndNodes);
+      manifoldsAndNodes.addNodeToManifold(node, manifold);
+   }
+
    throw MyException("Not yet implemented");
-   //str::copy_if(allTriangles, std::back_inserter(triangles), [&trianglesNodes](CellIndex triangle) {return trianglesNodes.});
 }
