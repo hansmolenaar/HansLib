@@ -12,7 +12,7 @@ namespace ML
       virtual size_t getNumberOfNeuronsPrv() const = 0;
       virtual size_t getNumberOfNeuronsCur() const = 0;
       virtual size_t getNumberOfParameters() const = 0;
-      virtual void transform(std::span<const double> activatorValuesPrv, std::span<const double> params, std::span<double> weightedAverage) const = 0;
+      virtual void transform(std::span<const double> activatorValues, std::span<const double> params, std::span<double> weightedAverage) const = 0;
       // virtual void updateParameters(std::span<double> parameters) const = 0;
    };
 }
