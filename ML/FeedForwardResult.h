@@ -1,7 +1,7 @@
 #pragma once
 
 #include "IFeedForwardResult.h"
-#include <vector>
+#include "AnnArray.h"
 
 namespace ML
 {
@@ -15,9 +15,7 @@ namespace ML
       std::span<const double> getOutputAt(size_t n) const override;
       std::span<const double> getOutput() const override;
    private:
-      size_t getLayerSizeAt(size_t n) const;
-      std::vector<double>  m_outputs;
-      std::vector<double>  m_averages;
-      std::vector<size_t>  m_offset;
+      ML::AnnArray  m_outputs;
+      ML::AnnArray  m_averages;
    };
 }
