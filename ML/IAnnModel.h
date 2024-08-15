@@ -23,5 +23,6 @@ namespace ML
       void checkDimensions() const;
       std::vector<size_t> getLayerDimensions() const;
       std::unique_ptr<ML::IFeedForwardResult> feedForward(std::span<const double> input, const ML::IParameterSet& parameterSet) const;
+      double calculateError(const ML::IAnnDataSet& dataSet, const ML::IParameterSet& parameterSet) const;
    };
 }

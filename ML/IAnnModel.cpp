@@ -2,6 +2,7 @@
 #include "Defines.h"
 #include "MyAssert.h"
 #include "FeedForwardResult.h"
+#include "IAnnDataSet.h"
 
 #include <algorithm>
 
@@ -46,4 +47,17 @@ std::vector<size_t> ML::IAnnModel::getLayerDimensions() const
    std::vector<size_t> result(layers.size());
    str::transform(layers, result.begin(), [](const ML::IAnnLayer* layer) {return layer->getNumberOfNeurons(); });
    return result;
+}
+
+double ML::IAnnModel::calculateError(const ML::IAnnDataSet& dataSet, const ML::IParameterSet& parameterSet) const
+{
+   std::vector<std::unique_ptr<ML::IFeedForwardResult>> evaluations;
+   std::vector<std::span<const double>> actuals;
+   for (size_t n = 0; n < dataSet.getNumberOfSamples(); ++n)
+   {
+      const auto input = dataSet.getNthInput(n);
+      evaluations.emplace_back(feedForward(input, parameterSet));
+      actuals.emplace_back(evaluations.back()->getOutput());
+   }
+   return getCostFunction().calculate(dataSet, actuals);
 }
