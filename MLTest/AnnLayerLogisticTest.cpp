@@ -2,11 +2,11 @@
 #include <array>
 #include <cmath>
 
-#include "AnnLayerSigmoid.h" 
+#include "AnnLayerLogistic.h" 
 
-TEST(AnnLayerSigmoidTest, Two)
+TEST(AnnLayerLogisticTest, Two)
 {
-   const ML::AnnLayerSigmoid layer(2);
+   const ML::AnnLayerLogistic layer(2);
    std::array<double, 2> valIn = { 0.0, std::log(2.0) };
    std::array<double, 2> valOut;
 
