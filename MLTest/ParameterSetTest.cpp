@@ -6,7 +6,7 @@ TEST(ParameterSetTest, Basix)
 {
    ML::ParameterSet paramSet;
    paramSet.add({ 1, 2 });
-   paramSet.add({ 3 });
+   paramSet.add(std::vector<double>{ 3 });
 
    const auto params0 = paramSet.at(0);
    ASSERT_EQ(params0.size(), 2);

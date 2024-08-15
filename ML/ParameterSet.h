@@ -10,6 +10,9 @@ namespace ML
    {
    public:
       void add(std::initializer_list<double> parametersForTransformation);
+      void add(std::vector<double> parametersForTransformation);
+
+      size_t getNumLayers() const override;
       std::span<const double> at(size_t n) const override;
    private:
       std::vector<std::vector<double>> m_allParameters;

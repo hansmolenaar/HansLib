@@ -5,11 +5,13 @@
 
 namespace ML
 {
+   class IAnnDataSet;
+
    // Artificial Neural Network, cost-function
    class IAnnCostFunction
    {
    public:
-      virtual size_t getNumberOfOutputs() const = 0;
-      virtual double calculate(std::span<const double> estimated, std::span<const double> expected) const = 0;
+      virtual double calculateSingleSample(std::span<const double> ideal, std::span<const double> actual) const = 0;
+      virtual double calculate(const IAnnDataSet& ideal, std::span< std::span<const double>> actual) const = 0;
    };
 }
