@@ -3,9 +3,11 @@
 
 #include "AnnLayerLinear.h"
 #include "AnnWeightedAverageMatrix.h"
+#include "AnnWeightedAverageSingleBias.h"
 #include "ParameterSet.h"
 #include "AnnCostFunctionSE.h"
 #include "AnnModel.h"
+#include "Single.h"
 
 TEST(IAnnModelTest, FeedForwardBasic)
 {
@@ -15,7 +17,7 @@ TEST(IAnnModelTest, FeedForwardBasic)
    const ML::AnnLayerLinear outputLayer(1);
    std::vector<const ML::IAnnLayer*> layers{ &outputLayer };
 
-   const ML::AnnWeightedAverageMatrix averageWeight(1, 1);
+   const ML::AnnWeightedAverageSingleBias averageWeight(1, 1);
    std::vector<const ML::IAnnWeightedAverage*> matrices{ &averageWeight };
 
    ML::ParameterSet parameterSet;
@@ -23,5 +25,15 @@ TEST(IAnnModelTest, FeedForwardBasic)
 
    const ML::AnnModel model(layers, matrices, costFunction);
 
-   model.feedForward(std::vector<double>{0.1}, parameterSet);
+   const auto dims = model.getLayerDimensions();
+   ASSERT_EQ(dims.size(), 1);
+   ASSERT_EQ(dims[0], 1);
+
+   auto result = model.feedForward(std::vector<double>{0.1}, parameterSet);
+   auto output = result->getOutput();
+   ASSERT_DOUBLE_EQ(Utilities::Single(output), 0.05);
+
+   result = model.feedForward(std::vector<double>{0.3}, parameterSet);
+   output = result->getOutput();
+   ASSERT_DOUBLE_EQ(Utilities::Single(output), 0.15);
 }

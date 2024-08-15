@@ -9,6 +9,7 @@ namespace ML
    class IAnnLayer
    {
    public:
+      virtual ~IAnnLayer() = default;
       virtual size_t getNumberOfNeurons() const = 0;
       virtual void applyActivatorFunction(std::span<const double> weightedAverage, std::span<double> activatorValues) const = 0;
       virtual void applyActivatorFunctionDeriv(std::span<const double> weightedAverage, std::span<double> activatorDerivValues) const = 0;

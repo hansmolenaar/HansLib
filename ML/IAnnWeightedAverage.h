@@ -9,6 +9,7 @@ namespace ML
    class IAnnWeightedAverage
    {
    public:
+      virtual ~IAnnWeightedAverage() = default;
       virtual size_t getNumberOfNeuronsPrv() const = 0;
       virtual size_t getNumberOfNeuronsCur() const = 0;
       virtual size_t getNumberOfParameters() const = 0;
