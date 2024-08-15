@@ -4,6 +4,7 @@
 #include "AnnLayerLinear.h"
 #include "AnnWeightedAverageMatrix.h"
 #include "AnnWeightedAverageSingleBias.h"
+#include "AnnWeightedAverageWithBias.h"
 #include "ParameterSet.h"
 #include "AnnCostFunctionSE.h"
 #include "AnnModel.h"
@@ -48,7 +49,7 @@ TEST(IAnnModelTest, FeedForwardBasicError)
    const ML::AnnLayerLinear outputLayer(1);
    std::vector<const ML::IAnnLayer*> layers{ &outputLayer };
 
-   const ML::AnnWeightedAverageSingleBias averageWeight(1, 1);
+   const ML::AnnWeightedAverageWithBias averageWeight(1, 1);
    std::vector<const ML::IAnnWeightedAverage*> matrices{ &averageWeight };
 
    ML::ParameterSet parameterSet;
@@ -63,4 +64,31 @@ TEST(IAnnModelTest, FeedForwardBasicError)
    dataSet.addSample({ 0.7 }, { 0.7 });
 
    ASSERT_DOUBLE_EQ(model.calculateError(dataSet, parameterSet), 0.0825);
+}
+
+
+
+TEST(IAnnModelTest, FeedForwardSlightlyMoreComplex)
+{
+   // See https://towardsdatascience.com/training-a-neural-network-by-hand-1bcac4d82a6e
+   const ML::AnnCostFunctionSE costFunction;
+
+   const ML::AnnLayerLinear outputLayer(1);
+   std::vector<const ML::IAnnLayer*> layers{ &outputLayer };
+
+   const ML::AnnWeightedAverageSingleBias averageWeight(2, 1);
+   std::vector<const ML::IAnnWeightedAverage*> matrices{ &averageWeight };
+
+   ML::ParameterSet parameterSet;
+   parameterSet.add({ 0.5, 0.1, 0.0 });
+
+   const ML::AnnModel model(layers, matrices, costFunction);
+
+   ML::AnnDataSet dataSet(2, 1);
+   dataSet.addSample({ 0.1, 0.1 * 0.1 }, { 0.2 });
+   dataSet.addSample({ 0.3, 0.3 * 0.3 }, { 0.25 });
+   dataSet.addSample({ 0.6, 0.6 * 0.6 }, { 0.4 });
+   dataSet.addSample({ 0.7, 0.7 * 0.7 }, { 0.7 });
+
+   ASSERT_DOUBLE_EQ(model.calculateError(dataSet, parameterSet), 0.0625895);
 }
