@@ -66,8 +66,6 @@ TEST(IAnnModelTest, FeedForwardBasicError)
    ASSERT_DOUBLE_EQ(model.calculateError(dataSet, parameterSet), 0.0825);
 }
 
-
-
 TEST(IAnnModelTest, FeedForwardSlightlyMoreComplex)
 {
    // See https://towardsdatascience.com/training-a-neural-network-by-hand-1bcac4d82a6e
@@ -91,4 +89,31 @@ TEST(IAnnModelTest, FeedForwardSlightlyMoreComplex)
    dataSet.addSample({ 0.7, 0.7 * 0.7 }, { 0.7 });
 
    ASSERT_DOUBLE_EQ(model.calculateError(dataSet, parameterSet), 0.0625895);
+}
+
+
+TEST(IAnnModelTest, FeedForwardWithHiddenLayer)
+{
+   // See https://hmkcode.com/ai/backpropagation-step-by-step/
+   const ML::AnnCostFunctionSE costFunction;
+
+   const ML::AnnLayerLinear hiddenLayer(2);
+   const ML::AnnLayerLinear outputLayer(1);
+   std::vector<const ML::IAnnLayer*> layers{ &hiddenLayer, &outputLayer };
+
+   const ML::AnnWeightedAverageMatrix averageWeightHidden(2, 2);
+   const ML::AnnWeightedAverageMatrix averageWeightOutput(2, 1);
+   std::vector<const ML::IAnnWeightedAverage*> matrices{ &averageWeightHidden, &averageWeightOutput };
+
+   ML::ParameterSet parameterSet;
+   parameterSet.add({ 0.11, 0.21, 0.12, 0.08 });
+   parameterSet.add({ 0.14, 0.15 });
+
+   const ML::AnnModel model(layers, matrices, costFunction);
+
+   ML::AnnDataSet dataSet(2, 1);
+   dataSet.addSample({ 2, 3 }, { 1 });
+
+   const double expect = 0.5 * std::pow((1 - 0.191), 2);
+   ASSERT_DOUBLE_EQ(model.calculateError(dataSet, parameterSet), expect);
 }
