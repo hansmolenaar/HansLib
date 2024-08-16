@@ -31,8 +31,9 @@ void ML::AnnWeightedAverageSingleBias::transform(std::span<const double> activat
    std::transform(weightedAverage.begin(), weightedAverage.end(), weightedAverage.begin(), [bias](double x) {return x + bias; });
 }
 
-void ML::AnnWeightedAverageSingleBias::backpropInit(std::span<const double> activatorValuesPrv, std::span<const double> dError_dWeightedAverageLast, std::span<const double> params,
-   std::span<double> dError_dParam) const
+void ML::AnnWeightedAverageSingleBias::backpropInit(std::span<const double> activatorValuesPrv, std::span<const double> dError_dWeightedAverageLast, std::span<double> dError_dParam) const
 {
-   throw MyException("Not yet implemented: backpropInit");
+   Utilities::MyAssert(dError_dParam.size() == getNumberOfParameters());
+   m_matrixOnly.backpropInit(activatorValuesPrv, dError_dWeightedAverageLast, std::span<double>(dError_dParam.begin(), m_matrixOnly.getNumberOfParameters()));
+   dError_dParam.back() = std::accumulate(dError_dWeightedAverageLast.begin(), dError_dWeightedAverageLast.end(), 0.0);
 }

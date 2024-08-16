@@ -33,8 +33,10 @@ void ML::AnnWeightedAverageWithBias::transform(std::span<const double> activator
 }
 
 
-void ML::AnnWeightedAverageWithBias::backpropInit(std::span<const double> activatorValuesPrv, std::span<const double> dError_dWeightedAverageLast, std::span<const double> params,
-   std::span<double> dError_dParam) const
+void ML::AnnWeightedAverageWithBias::backpropInit(std::span<const double> activatorValuesPrv, std::span<const double> dError_dWeightedAverageLast, std::span<double> dError_dParam) const
 {
-   throw MyException("Not yet implemented: backpropInit");
+   Utilities::MyAssert(dError_dParam.size() == getNumberOfParameters());
+   const size_t numMatrixParams = m_matrixOnly.getNumberOfParameters();
+   m_matrixOnly.backpropInit(activatorValuesPrv, dError_dWeightedAverageLast, std::span<double>(dError_dParam.begin(), numMatrixParams));
+   std::copy(dError_dWeightedAverageLast.begin(), dError_dWeightedAverageLast.end(), dError_dParam.begin() + numMatrixParams);
 }

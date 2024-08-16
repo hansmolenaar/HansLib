@@ -117,3 +117,32 @@ TEST(IAnnModelTest, FeedForwardWithHiddenLayer)
    const double expect = 0.5 * std::pow((1 - 0.191), 2);
    ASSERT_DOUBLE_EQ(model.calculateError(dataSet, parameterSet), expect);
 }
+
+
+TEST(IAnnModelTest, BackPropagationSuperSimple)
+{
+   // See https://towardsdatascience.com/training-a-neural-network-by-hand-1bcac4d82a6e
+   const ML::AnnCostFunctionSE costFunction;
+
+   // Need a dummy layer for the back propagation
+   const ML::AnnLayerLinear inputLayer(1);
+
+   const ML::AnnLayerLinear outputLayer(1);
+   std::vector<const ML::IAnnLayer*> layers{&inputLayer, &outputLayer };
+
+   const ML::AnnWeightedAverageMatrix averageTrivial(1, 1);
+   const ML::AnnWeightedAverageSingleBias averageWeight(1, 1);
+   std::vector<const ML::IAnnWeightedAverage*> matrices{&averageTrivial, &averageWeight };
+
+   ML::ParameterSet parameterSet;
+   parameterSet.add({ 1.0 });
+   parameterSet.add({ 0.5, 0.0 });
+
+   const ML::AnnModel model(layers, matrices, costFunction);
+
+   auto result = model.feedForward(std::vector<double>{0.7}, parameterSet);
+
+
+   // TODO
+   model.backPropagation(*result, std::vector<double>{0.7}, 1.0, parameterSet);
+}

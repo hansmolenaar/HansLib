@@ -36,8 +36,18 @@ void ML::AnnWeightedAverageMatrix::transform(std::span<const double> activatorVa
    }
 }
 
-void ML::AnnWeightedAverageMatrix::backpropInit(std::span<const double> activatorValuesPrv, std::span<const double> dError_dWeightedAverageLast, std::span<const double> params,
-   std::span<double> dError_dParam) const
+void ML::AnnWeightedAverageMatrix::backpropInit(std::span<const double> activatorValuesPrv, std::span<const double> dError_dWeightedAverageLast, std::span<double> dError_dParam) const
 {
-   throw MyException("Not yet implemented: backpropInit");
+   Utilities::MyAssert(activatorValuesPrv.size() == m_layerSizePrv);
+   Utilities::MyAssert(dError_dWeightedAverageLast.size() == m_layerSizeCur);
+   Utilities::MyAssert(dError_dParam.size() == getNumberOfParameters());
+   size_t pos = 0;
+   for (size_t neuronCur = 0; neuronCur < m_layerSizeCur; ++neuronCur)
+   {
+      for (size_t neuronPrv = 0; neuronPrv < m_layerSizePrv; ++neuronPrv)
+      {
+         dError_dParam[pos] = activatorValuesPrv[neuronPrv] * dError_dWeightedAverageLast[neuronCur];
+         ++pos;
+      }
+   }
 }

@@ -14,8 +14,7 @@ namespace ML
       // Storage params: first the matrix params and then the single bias
       void transform(std::span<const double> activatorValuesPrv, std::span<const double> params, std::span<double> weightedAverage) const override;
 
-      void backpropInit(std::span<const double> activatorValuesPrv, std::span<const double> dError_dWeightedAverageLast, std::span<const double> params,
-         std::span<double> dError_dParam) const override;
+      void backpropInit(std::span<const double> activatorValuesPrv, std::span<const double> dError_dWeightedAverageLast, std::span<double> dError_dParam) const override;
    private:
       AnnWeightedAverageMatrix m_matrixOnly;
    };

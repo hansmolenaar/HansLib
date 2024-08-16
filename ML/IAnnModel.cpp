@@ -92,6 +92,11 @@ void ML::IAnnModel::backPropagation(const ML::IFeedForwardResult& forwardResult,
    layers.back()->applyActivatorFunctionDeriv(forwardResult.getWeightedInputAt(layer), activationDeriv);
    for (size_t n = 0; n < dimensions.back(); ++n)
    {
-      errorOutputLayer[n] = (ideal[n] - actual[n]) * activationDeriv.at(n);
+      errorOutputLayer[n] = (actual[n] - ideal[n]) * activationDeriv.at(n);
    }
+
+   std::vector<double> check(parameterSet.at(layer).size());
+
+   Utilities::MyAssert(layer > 0);
+   getWeightedAverages().back()->backpropInit(forwardResult.getOutputAt(layer - 1), errorOutputLayer, check);
 }
