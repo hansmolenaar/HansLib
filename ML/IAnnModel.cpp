@@ -3,9 +3,17 @@
 #include "MyAssert.h"
 #include "FeedForwardResult.h"
 #include "IAnnDataSet.h"
+#include "AnnArray.h"
 
 #include <algorithm>
 
+namespace
+{
+   void SetActivationDerivAt()
+   {
+
+   }
+}
 void ML::IAnnModel::checkDimensions() const
 {
    const auto layers = getLayers();
@@ -60,4 +68,30 @@ double ML::IAnnModel::calculateError(const ML::IAnnDataSet& dataSet, const ML::I
       actuals.emplace_back(evaluations.back()->getOutput());
    }
    return getCostFunction().calculate(dataSet, actuals);
+}
+
+
+// Single result at a time => stochastic back propagation
+void ML::IAnnModel::backPropagation(const ML::IFeedForwardResult& forwardResult, std::span<const double> ideal, double learningRate, ML::IParameterSet& parameterSet) const
+{
+   const auto dimensions = getLayerDimensions();
+   const auto maxDim = *str::max_element(dimensions);
+   Utilities::MyAssert(dimensions.back() == ideal.size());
+   Utilities::MyAssert(forwardResult.getOutput().size() == ideal.size());
+   Utilities::MyAssert(parameterSet.getNumLayers() == dimensions.size());
+
+   const auto layers = getLayers();
+   AnnArray neuronError(dimensions);
+   std::vector<double> activationDeriv(maxDim);
+
+   // Initialize
+   size_t layer = dimensions.size() - 1;
+   auto errorOutputLayer = neuronError.modifyValuesAt(layer);
+   const auto actual = forwardResult.getOutputAt(layer);
+   activationDeriv.resize(dimensions.back());
+   layers.back()->applyActivatorFunctionDeriv(forwardResult.getWeightedInputAt(layer), activationDeriv);
+   for (size_t n = 0; n < dimensions.back(); ++n)
+   {
+      errorOutputLayer[n] = (ideal[n] - actual[n]) * activationDeriv.at(n);
+   }
 }

@@ -21,3 +21,8 @@ std::span<const double> ML::ParameterSet::at(size_t n) const
 {
    return m_allParameters.at(n);
 }
+
+std::span< double> ML::ParameterSet::getModifiable(size_t n)
+{
+   return m_allParameters.at(n);
+}

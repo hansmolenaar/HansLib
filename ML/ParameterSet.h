@@ -14,6 +14,7 @@ namespace ML
 
       size_t getNumLayers() const override;
       std::span<const double> at(size_t n) const override;
+      std::span< double> getModifiable(size_t n) override;
    private:
       std::vector<std::vector<double>> m_allParameters;
    };

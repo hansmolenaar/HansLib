@@ -35,3 +35,9 @@ void ML::AnnWeightedAverageMatrix::transform(std::span<const double> activatorVa
       paramsIter += m_layerSizePrv;
    }
 }
+
+void ML::AnnWeightedAverageMatrix::backpropInit(std::span<const double> activatorValuesPrv, std::span<const double> dError_dWeightedAverageLast, std::span<const double> params,
+   std::span<double> dError_dParam) const
+{
+   throw MyException("Not yet implemented: backpropInit");
+}

@@ -25,3 +25,8 @@ double ML::AnnCostFunctionSE::calculate(const IAnnDataSet& ideal, std::span< std
    }
    return result;
 }
+
+double ML::AnnCostFunctionSE::getScaleFactor(const ML::IAnnDataSet&) const
+{
+   return 1;
+}

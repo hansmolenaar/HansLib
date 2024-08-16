@@ -16,4 +16,5 @@ TEST(AnnCostFunctionMSETest, Basic)
    std::vector<std::span<const double>> result{ result1, result2 };
    const double cost = costFunction.calculate(dataSet, result);
    ASSERT_DOUBLE_EQ(cost, 41.0 / 4);
+   ASSERT_DOUBLE_EQ(costFunction.getScaleFactor(dataSet), 0.5);
 }
