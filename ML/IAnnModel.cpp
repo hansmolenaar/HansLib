@@ -58,53 +58,6 @@ double ML::IAnnModel::calculateError(const ML::IAnnDataSet& dataSet, const ML::I
 void ML::IAnnModel::backPropagation(const ML::IFeedForwardResult& forwardResult, std::span<const double> ideal, double learningRate, ML::IParameterSet& parameterSet) const
 {
    ML::ParameterSet parameterDerivs = ML::ParameterSet::CreateUsingDimensions(parameterSet);
-   setParameterDerivatives(forwardResult, ideal, parameterSet, parameterDerivs);
-   updateParameters(parameterDerivs, learningRate, parameterSet);
-}
-
-void ML::IAnnModel::setParameterDerivatives(
-   const ML::IFeedForwardResult& forwardResult,
-   std::span<const double> ideal,
-   const ML::IParameterSet& parameters,
-   ML::IParameterSet& parameterDerivs) const
-{
-   const auto dimensions = ML::IAnnModelUtils::getLayerDimensions(*this);
-   const auto maxDim = *str::max_element(dimensions);
-   Utilities::MyAssert(dimensions.back() == ideal.size());
-   Utilities::MyAssert(forwardResult.getOutput().size() == ideal.size());
-   Utilities::MyAssert(parameters.getNumLayers() == dimensions.size());
-   Utilities::MyAssert(parameterDerivs.getNumLayers() == dimensions.size());
-
-   const auto layers = getLayers();
-   AnnArray neuronError(dimensions);
-   std::vector<double> activationDeriv(maxDim);
-
-   // Initialize
-   size_t layer = dimensions.size() - 1;
-   auto errorOutputLayer = neuronError.modifyValuesAt(layer);
-   const auto actual = forwardResult.getOutputAt(layer);
-   activationDeriv.resize(dimensions.at(layer));
-   layers.back()->applyActivatorFunctionDeriv(forwardResult.getWeightedInputAt(layer), activationDeriv);
-   for (size_t n = 0; n < dimensions.at(layer); ++n)
-   {
-      errorOutputLayer[n] = (actual[n] - ideal[n]) * activationDeriv.at(n);
-   }
-
-   const auto outputPrv = (layer > 0 ? forwardResult.getOutputAt(layer - 1) : forwardResult.getInput());
-   getWeightedAverages().back()->backpropInit(outputPrv, errorOutputLayer, parameterDerivs.getModifiable(layer));
-
-   Utilities::MyAssert(layer == 0);
-}
-
-void ML::IAnnModel::updateParameters(const ML::IParameterSet& parameterDerivs, double learningRate, ML::IParameterSet& parameters) const
-{
-   Utilities::MyAssert(parameterDerivs.getNumLayers() == parameters.getNumLayers());
-   const size_t nLlayer = parameters.getNumLayers();
-   for (size_t layer = 0; layer < nLlayer; ++layer)
-   {
-      const auto derivAtLayer = parameterDerivs.at(layer);
-      auto params = parameters.getModifiable(layer);
-      Utilities::MyAssert(derivAtLayer.size() == params.size());
-      std::transform(derivAtLayer.begin(), derivAtLayer.end(), params.begin(), params.begin(), [learningRate](double d, double p) {return p - learningRate * d; });
-   }
+   ML::IAnnModelUtils::setParameterDerivatives(*this, forwardResult, ideal, parameterSet, parameterDerivs);
+   ML::IAnnModelUtils::updateParameters(*this, parameterDerivs, learningRate, parameterSet);
 }

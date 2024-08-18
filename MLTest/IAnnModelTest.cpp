@@ -137,7 +137,7 @@ TEST(IAnnModelTest, SetParameterDerivativesSuperSimple)
    const ML::AnnModel model(layers, matrices, costFunction);
    auto result = model.feedForward(std::vector<double>{0.7}, parameterSet);
    auto derivs = ML::ParameterSet::CreateUsingDimensions(parameterSet);
-   model.setParameterDerivatives(*result, std::vector<double>{0.7}, parameterSet, derivs);
+   ML::IAnnModelUtils::setParameterDerivatives(model, *result, std::vector<double>{0.7}, parameterSet, derivs);
    ASSERT_DOUBLE_EQ(derivs.at(0)[0], -0.245);
    ASSERT_DOUBLE_EQ(derivs.at(0)[1], -0.35);
 }
@@ -160,7 +160,7 @@ TEST(IAnnModelTest, SetParameterDerivativesSimple)
    const ML::AnnModel model(layers, matrices, costFunction);
    auto result = model.feedForward(std::vector<double>{0.7, 0.49}, parameterSet);
    auto derivs = ML::ParameterSet::CreateUsingDimensions(parameterSet);
-   model.setParameterDerivatives(*result, std::vector<double>{0.7}, parameterSet, derivs);
+   ML::IAnnModelUtils::setParameterDerivatives(model, *result, std::vector<double>{0.7}, parameterSet, derivs);
    ASSERT_DOUBLE_EQ(derivs.at(0)[0], -0.2107);
    ASSERT_DOUBLE_EQ(derivs.at(0)[1], -0.14749);
    ASSERT_DOUBLE_EQ(derivs.at(0)[2], -0.301);
