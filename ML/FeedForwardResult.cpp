@@ -2,7 +2,7 @@
 
 #include "MyAssert.h"
 
-ML::FeedForwardResult::FeedForwardResult(std::span<const size_t> dimensions) : m_outputs(dimensions), m_averages(dimensions)
+ML::FeedForwardResult::FeedForwardResult(std::span<const double> input, std::span<const size_t> dimensions) : m_outputs(dimensions), m_averages(dimensions), m_input(input.begin(), input.end())
 {
 }
 
@@ -29,4 +29,9 @@ std::span<const double> ML::FeedForwardResult::getOutputAt(size_t n) const
 std::span<const double> ML::FeedForwardResult::getOutput() const
 {
    return getOutputAt(m_outputs.getNumLayers() - 1);
+}
+
+std::span<const double> ML::FeedForwardResult::getInput() const
+{
+   return m_input;
 }

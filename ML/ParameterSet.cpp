@@ -26,3 +26,13 @@ std::span< double> ML::ParameterSet::getModifiable(size_t n)
 {
    return m_allParameters.at(n);
 }
+
+ML::ParameterSet ML::ParameterSet::CreateUsingDimensions(const ML::ParameterSet& parameterSet)
+{
+   ParameterSet result;
+   for (auto p : parameterSet.m_allParameters)
+   {
+      result.add(p);
+   }
+   return result;
+}

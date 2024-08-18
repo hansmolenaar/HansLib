@@ -26,5 +26,6 @@ namespace ML
       std::unique_ptr<ML::IFeedForwardResult> feedForward(std::span<const double> input, const ML::IParameterSet& parameterSet) const;
       double calculateError(const ML::IAnnDataSet& dataSet, const ML::IParameterSet& parameterSet) const;
       void backPropagation( const ML::IFeedForwardResult& forwardResult, std::span<const double> ideal, double learningRate, ML::IParameterSet& parameterSet) const;
+      void setParameterDerivatives(const ML::IFeedForwardResult& forwardResult, std::span<const double> ideal, const ML::IParameterSet& parameters, ML::IParameterSet& parameterDerivs) const;
    };
 }

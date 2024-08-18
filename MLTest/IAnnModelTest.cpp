@@ -119,30 +119,24 @@ TEST(IAnnModelTest, FeedForwardWithHiddenLayer)
 }
 
 
-TEST(IAnnModelTest, BackPropagationSuperSimple)
+TEST(IAnnModelTest, SetParameterDerivativesSuperSimple)
 {
    // See https://towardsdatascience.com/training-a-neural-network-by-hand-1bcac4d82a6e
    const ML::AnnCostFunctionSE costFunction;
 
-   // Need a dummy layer for the back propagation
-   const ML::AnnLayerLinear inputLayer(1);
-
    const ML::AnnLayerLinear outputLayer(1);
-   std::vector<const ML::IAnnLayer*> layers{&inputLayer, &outputLayer };
+   std::vector<const ML::IAnnLayer*> layers{ &outputLayer };
 
-   const ML::AnnWeightedAverageMatrix averageTrivial(1, 1);
    const ML::AnnWeightedAverageSingleBias averageWeight(1, 1);
-   std::vector<const ML::IAnnWeightedAverage*> matrices{&averageTrivial, &averageWeight };
+   std::vector<const ML::IAnnWeightedAverage*> matrices{ &averageWeight };
 
    ML::ParameterSet parameterSet;
-   parameterSet.add({ 1.0 });
    parameterSet.add({ 0.5, 0.0 });
 
    const ML::AnnModel model(layers, matrices, costFunction);
-
    auto result = model.feedForward(std::vector<double>{0.7}, parameterSet);
-
-
-   // TODO
-   model.backPropagation(*result, std::vector<double>{0.7}, 1.0, parameterSet);
+   auto derivs = ML::ParameterSet::CreateUsingDimensions(parameterSet);
+   model.setParameterDerivatives(*result, std::vector<double>{0.7}, parameterSet, derivs);
+   ASSERT_DOUBLE_EQ(derivs.at(0)[0], -0.245);
+   ASSERT_DOUBLE_EQ(derivs.at(0)[1], -0.35);
 }

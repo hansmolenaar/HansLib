@@ -28,7 +28,7 @@ void ML::IAnnModel::checkDimensions() const
 
 std::unique_ptr<ML::IFeedForwardResult> ML::IAnnModel::feedForward(std::span<const double> input, const ML::IParameterSet& parameterSet) const
 {
-   auto result = std::make_unique< ML::FeedForwardResult>(getLayerDimensions());
+   auto result = std::make_unique< ML::FeedForwardResult>(input, getLayerDimensions());
 
    const auto layers = getLayers();
    const auto averages = getWeightedAverages();
@@ -97,6 +97,40 @@ void ML::IAnnModel::backPropagation(const ML::IFeedForwardResult& forwardResult,
 
    std::vector<double> check(parameterSet.at(layer).size());
 
-   Utilities::MyAssert(layer > 0);
-   getWeightedAverages().back()->backpropInit(forwardResult.getOutputAt(layer - 1), errorOutputLayer, check);
+   const auto outputPrv = (layer > 0 ? forwardResult.getOutputAt(layer - 1) : forwardResult.getInput());
+   getWeightedAverages().back()->backpropInit(outputPrv, errorOutputLayer, check);
+}
+
+void ML::IAnnModel::setParameterDerivatives(
+   const ML::IFeedForwardResult& forwardResult, 
+   std::span<const double> ideal, 
+   const ML::IParameterSet& parameters, 
+   ML::IParameterSet& parameterDerivs) const
+{
+   const auto dimensions = getLayerDimensions();
+   const auto maxDim = *str::max_element(dimensions);
+   Utilities::MyAssert(dimensions.back() == ideal.size());
+   Utilities::MyAssert(forwardResult.getOutput().size() == ideal.size());
+   Utilities::MyAssert(parameters.getNumLayers() == dimensions.size());
+   Utilities::MyAssert(parameterDerivs.getNumLayers() == dimensions.size());
+
+   const auto layers = getLayers();
+   AnnArray neuronError(dimensions);
+   std::vector<double> activationDeriv(maxDim);
+
+   // Initialize
+   size_t layer = dimensions.size() - 1;
+   auto errorOutputLayer = neuronError.modifyValuesAt(layer);
+   const auto actual = forwardResult.getOutputAt(layer);
+   activationDeriv.resize(dimensions.at(layer));
+   layers.back()->applyActivatorFunctionDeriv(forwardResult.getWeightedInputAt(layer), activationDeriv);
+   for (size_t n = 0; n < dimensions.at(layer); ++n)
+   {
+      errorOutputLayer[n] = (actual[n] - ideal[n]) * activationDeriv.at(n);
+   }
+
+   const auto outputPrv = (layer > 0 ? forwardResult.getOutputAt(layer - 1) : forwardResult.getInput());
+   getWeightedAverages().back()->backpropInit(outputPrv, errorOutputLayer, parameterDerivs.getModifiable(layer));
+
+   Utilities::MyAssert(layer == 0);
 }
