@@ -140,3 +140,27 @@ TEST(IAnnModelTest, SetParameterDerivativesSuperSimple)
    ASSERT_DOUBLE_EQ(derivs.at(0)[0], -0.245);
    ASSERT_DOUBLE_EQ(derivs.at(0)[1], -0.35);
 }
+
+
+TEST(IAnnModelTest, SetParameterDerivativesSimple)
+{
+   // See https://towardsdatascience.com/training-a-neural-network-by-hand-1bcac4d82a6e
+   const ML::AnnCostFunctionSE costFunction;
+
+   const ML::AnnLayerLinear outputLayer(1);
+   std::vector<const ML::IAnnLayer*> layers{ &outputLayer };
+
+   const ML::AnnWeightedAverageSingleBias averageWeight(2, 1);
+   std::vector<const ML::IAnnWeightedAverage*> matrices{ &averageWeight };
+
+   ML::ParameterSet parameterSet;
+   parameterSet.add({ 0.5, 0.1, 0.0 });
+
+   const ML::AnnModel model(layers, matrices, costFunction);
+   auto result = model.feedForward(std::vector<double>{0.7, 0.49}, parameterSet);
+   auto derivs = ML::ParameterSet::CreateUsingDimensions(parameterSet);
+   model.setParameterDerivatives(*result, std::vector<double>{0.7}, parameterSet, derivs);
+   ASSERT_DOUBLE_EQ(derivs.at(0)[0], -0.2107);
+   ASSERT_DOUBLE_EQ(derivs.at(0)[1], -0.14749);
+   ASSERT_DOUBLE_EQ(derivs.at(0)[2], -0.301);
+}

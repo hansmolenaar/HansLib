@@ -32,7 +32,7 @@ ML::ParameterSet ML::ParameterSet::CreateUsingDimensions(const ML::ParameterSet&
    ParameterSet result;
    for (auto p : parameterSet.m_allParameters)
    {
-      result.add(p);
+      result.m_allParameters.emplace_back(std::vector<double>(p.size()));
    }
    return result;
 }
