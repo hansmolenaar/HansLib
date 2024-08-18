@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 #include <array>
 
+#include "IAnnModelUtils.h"
 #include "AnnLayerLinear.h"
 #include "AnnWeightedAverageMatrix.h"
 #include "AnnWeightedAverageSingleBias.h"
@@ -27,7 +28,7 @@ TEST(IAnnModelTest, FeedForwardBasic)
 
    const ML::AnnModel model(layers, matrices, costFunction);
 
-   const auto dims = model.getLayerDimensions();
+   const auto dims = ML::IAnnModelUtils::getLayerDimensions(model);
    ASSERT_EQ(dims.size(), 1);
    ASSERT_EQ(dims[0], 1);
 

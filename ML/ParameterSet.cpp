@@ -27,12 +27,12 @@ std::span< double> ML::ParameterSet::getModifiable(size_t n)
    return m_allParameters.at(n);
 }
 
-ML::ParameterSet ML::ParameterSet::CreateUsingDimensions(const ML::ParameterSet& parameterSet)
+ML::ParameterSet ML::ParameterSet::CreateUsingDimensions(const ML::IParameterSet& parameterSet)
 {
    ParameterSet result;
-   for (auto p : parameterSet.m_allParameters)
+   for (size_t layer = 0; layer < parameterSet.getNumLayers(); ++layer)
    {
-      result.m_allParameters.emplace_back(std::vector<double>(p.size()));
+      result.m_allParameters.emplace_back(std::vector<double>(parameterSet.at(layer).size()));
    }
    return result;
 }

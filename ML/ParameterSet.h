@@ -9,7 +9,7 @@ namespace ML
    class ParameterSet : public IParameterSet
    {
    public:
-      static ParameterSet CreateUsingDimensions(const ML::ParameterSet& parameterSet);
+      static ParameterSet CreateUsingDimensions(const ML::IParameterSet& parameterSet);
       void add(std::initializer_list<double> parametersForTransformation);
       void add(std::vector<double> parametersForTransformation);
 

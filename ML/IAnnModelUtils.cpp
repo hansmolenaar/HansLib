@@ -1,6 +1,11 @@
 #include "IAnnModelUtils.h"
-#include "Defines.h"
+
 #include "MyAssert.h"
+#include "Defines.h"
+
+#if false
+
+
 #include "FeedForwardResult.h"
 #include "IAnnDataSet.h"
 #include "AnnArray.h"
@@ -16,10 +21,24 @@ namespace
 
    }
 }
+#endif
 
+void ML::IAnnModelUtils::checkDimensions(const ML::IAnnModel& model)
+{
+   const auto layers = model.getLayers();
+   const auto averages = model.getWeightedAverages();
+
+   Utilities::MyAssert(layers.size() == averages.size());
+   for (size_t layer = 0; layer < layers.size(); ++layer)
+   {
+      Utilities::MyAssert(averages[layer]->getNumberOfNeuronsCur() == layers[layer]->getNumberOfNeurons());
+   }
+}
+
+#if false
 std::unique_ptr<ML::IFeedForwardResult> ML::IAnnModel::feedForward(std::span<const double> input, const ML::IParameterSet& parameterSet) const
 {
-   auto result = std::make_unique< ML::FeedForwardResult>(input, ML::IAnnModelUtils::getLayerDimensions(*this));
+   auto result = std::make_unique< ML::FeedForwardResult>(input, getLayerDimensions());
 
    const auto layers = getLayers();
    const auto averages = getWeightedAverages();
@@ -40,6 +59,17 @@ std::unique_ptr<ML::IFeedForwardResult> ML::IAnnModel::feedForward(std::span<con
    return std::unique_ptr<ML::IFeedForwardResult>(result.release());
 }
 
+#endif
+
+std::vector<size_t> ML::IAnnModelUtils::getLayerDimensions(const ML::IAnnModel& model)
+{
+   const auto layers = model.getLayers();
+   std::vector<size_t> result(layers.size());
+   str::transform(layers, result.begin(), [](const ML::IAnnLayer* layer) {return layer->getNumberOfNeurons(); });
+   return result;
+}
+
+#if false
 double ML::IAnnModel::calculateError(const ML::IAnnDataSet& dataSet, const ML::IParameterSet& parameterSet) const
 {
    std::vector<std::unique_ptr<ML::IFeedForwardResult>> evaluations;
@@ -68,7 +98,7 @@ void ML::IAnnModel::setParameterDerivatives(
    const ML::IParameterSet& parameters,
    ML::IParameterSet& parameterDerivs) const
 {
-   const auto dimensions = ML::IAnnModelUtils::getLayerDimensions(*this);
+   const auto dimensions = getLayerDimensions();
    const auto maxDim = *str::max_element(dimensions);
    Utilities::MyAssert(dimensions.back() == ideal.size());
    Utilities::MyAssert(forwardResult.getOutput().size() == ideal.size());
@@ -108,3 +138,4 @@ void ML::IAnnModel::updateParameters(const ML::IParameterSet& parameterDerivs, d
       std::transform(derivAtLayer.begin(), derivAtLayer.end(), params.begin(), params.begin(), [learningRate](double d, double p) {return p - learningRate * d; });
    }
 }
+#endif
