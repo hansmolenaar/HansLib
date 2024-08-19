@@ -3,6 +3,7 @@
 
 #include "IAnnModelUtils.h"
 #include "AnnLayerLinear.h"
+#include "AnnLayerLogistic.h"
 #include "AnnWeightedAverageMatrix.h"
 #include "AnnWeightedAverageSingleBias.h"
 #include "AnnWeightedAverageWithBias.h"
@@ -163,4 +164,33 @@ TEST(IAnnModelUtilsTest, SetParameterDerivativesSimple)
    ASSERT_DOUBLE_EQ(derivs.at(0)[0], -0.2107);
    ASSERT_DOUBLE_EQ(derivs.at(0)[1], -0.14749);
    ASSERT_DOUBLE_EQ(derivs.at(0)[2], -0.301);
+}
+
+
+
+TEST(IAnnModelUtilsTest, GeeksExample)
+{
+   // See https://www.geeksforgeeks.org/backpropagation-in-neural-network/
+   const ML::AnnCostFunctionSE costFunction;
+
+   const ML::AnnLayerLogistic hiddenLayer(2);
+   const ML::AnnLayerLogistic outputLayer(1);
+   std::vector<const ML::IAnnLayer*> layers{ &hiddenLayer, &outputLayer };
+
+   const ML::AnnWeightedAverageMatrix weightHidden(2, 2);
+   const ML::AnnWeightedAverageMatrix weightOutput(2, 1);
+   std::vector<const ML::IAnnWeightedAverage*> matrices{ &weightHidden, &weightOutput };
+
+   ML::ParameterSet parameterSet;
+   parameterSet.add({ 0.2, 0.2, 0.3, 0.3 });
+   parameterSet.add({ 0.3, 0.9 });
+
+   const ML::AnnModel model(layers, matrices, costFunction);
+   auto forwardResult = ML::IAnnModelUtils::feedForward(model, std::vector<double>{0.35, 0.7}, parameterSet);
+   ASSERT_DOUBLE_EQ(Utilities::Single(forwardResult->getOutput()), 0.66507363952475640);
+
+   const std::vector<double> ideal{ 0.5 };
+   constexpr double learningRate = 1;
+   ML::IAnnModelUtils::backPropagation(model, *forwardResult, ideal, learningRate, parameterSet);
+
 }
