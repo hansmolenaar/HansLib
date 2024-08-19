@@ -37,3 +37,16 @@ void ML::AnnWeightedAverageSingleBias::backpropInit(std::span<const double> acti
    m_matrixOnly.backpropInit(activatorValuesPrv, dError_dWeightedAverageLast, std::span<double>(dError_dParam.begin(), m_matrixOnly.getNumberOfParameters()));
    dError_dParam.back() = std::accumulate(dError_dWeightedAverageLast.begin(), dError_dWeightedAverageLast.end(), 0.0);
 }
+
+
+void ML::AnnWeightedAverageSingleBias::backpropagateError(std::span<const double> errorCur, std::span<const double> params, std::span<double> errorPrv) const
+{
+   m_matrixOnly.backpropagateError(errorCur, std::span<const double>(params.begin(), m_matrixOnly.getNumberOfParameters()), errorPrv);
+}
+
+
+void ML::AnnWeightedAverageSingleBias::backpropagateParamDeriv(std::span<const double> errorCur, std::span<const double> activatorValuesPrv, std::span<double> dError_dParam) const
+{
+   m_matrixOnly.backpropagateError(errorCur, activatorValuesPrv, std::span< double>(dError_dParam.begin(), m_matrixOnly.getNumberOfParameters()));
+   dError_dParam.back() = 0;  // TODO is this correct?
+}

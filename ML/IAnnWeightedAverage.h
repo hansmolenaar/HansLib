@@ -15,5 +15,7 @@ namespace ML
       virtual size_t getNumberOfParameters() const = 0;
       virtual void transform(std::span<const double> activatorValuesPrv, std::span<const double> params, std::span<double> weightedAverage) const = 0;
       virtual void backpropInit(std::span<const double> activatorValuesPrv, std::span<const double> dError_dWeightedAverageLast, std::span<double> dError_dParam) const = 0;
+      virtual void backpropagateError(std::span<const double> error, std::span<const double> params, std::span<double> errorPrv) const = 0;
+      virtual void backpropagateParamDeriv(std::span<const double> errorCur, std::span<const double> activatorValuesPrv, std::span<double> dError_dParam) const = 0;
    };
 }

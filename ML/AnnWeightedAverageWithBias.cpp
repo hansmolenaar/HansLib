@@ -1,8 +1,6 @@
 #include "AnnWeightedAverageWithBias.h"
 #include "MyAssert.h"
-
-#include <numeric>
-#include <algorithm>
+#include "Defines.h"
 
 ML::AnnWeightedAverageWithBias::AnnWeightedAverageWithBias(size_t dimPrv, size_t dimCur) : m_matrixOnly(dimPrv, dimCur)
 {
@@ -39,4 +37,17 @@ void ML::AnnWeightedAverageWithBias::backpropInit(std::span<const double> activa
    const size_t numMatrixParams = m_matrixOnly.getNumberOfParameters();
    m_matrixOnly.backpropInit(activatorValuesPrv, dError_dWeightedAverageLast, std::span<double>(dError_dParam.begin(), numMatrixParams));
    std::copy(dError_dWeightedAverageLast.begin(), dError_dWeightedAverageLast.end(), dError_dParam.begin() + numMatrixParams);
+}
+
+
+void ML::AnnWeightedAverageWithBias::backpropagateError(std::span<const double> errorCur, std::span<const double> params, std::span<double> errorPrv) const
+{
+   m_matrixOnly.backpropagateError(errorCur, std::span<const double>(params.begin(), m_matrixOnly.getNumberOfParameters()), errorPrv);
+}
+
+
+void ML::AnnWeightedAverageWithBias::backpropagateParamDeriv(std::span<const double> errorCur, std::span<const double> activatorValuesPrv, std::span<double> dError_dParam) const
+{
+   str::fill(dError_dParam, 0.0);
+   m_matrixOnly.backpropagateError(errorCur, activatorValuesPrv, std::span< double>(dError_dParam.begin(), m_matrixOnly.getNumberOfParameters()));
 }

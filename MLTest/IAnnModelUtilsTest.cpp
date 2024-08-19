@@ -12,7 +12,7 @@
 #include "Single.h"
 #include "AnnDataSet.h"
 
-TEST(IAnnModelTest, FeedForwardBasic)
+TEST(IAnnModelUtilsTest, FeedForwardBasic)
 {
    // See https://towardsdatascience.com/training-a-neural-network-by-hand-1bcac4d82a6e
    const ML::AnnCostFunctionSE costFunction;
@@ -42,7 +42,7 @@ TEST(IAnnModelTest, FeedForwardBasic)
 }
 
 
-TEST(IAnnModelTest, FeedForwardBasicError)
+TEST(IAnnModelUtilsTest, FeedForwardBasicError)
 {
    // See https://towardsdatascience.com/training-a-neural-network-by-hand-1bcac4d82a6e
    const ML::AnnCostFunctionSE costFunction;
@@ -67,7 +67,7 @@ TEST(IAnnModelTest, FeedForwardBasicError)
    ASSERT_DOUBLE_EQ(ML::IAnnModelUtils::calculateError(model, dataSet, parameterSet), 0.0825);
 }
 
-TEST(IAnnModelTest, FeedForwardSlightlyMoreComplex)
+TEST(IAnnModelUtilsTest, FeedForwardSlightlyMoreComplex)
 {
    // See https://towardsdatascience.com/training-a-neural-network-by-hand-1bcac4d82a6e
    const ML::AnnCostFunctionSE costFunction;
@@ -93,7 +93,7 @@ TEST(IAnnModelTest, FeedForwardSlightlyMoreComplex)
 }
 
 
-TEST(IAnnModelTest, FeedForwardWithHiddenLayer)
+TEST(IAnnModelUtilsTest, FeedForwardWithHiddenLayer)
 {
    // See https://hmkcode.com/ai/backpropagation-step-by-step/
    const ML::AnnCostFunctionSE costFunction;
@@ -119,7 +119,7 @@ TEST(IAnnModelTest, FeedForwardWithHiddenLayer)
    ASSERT_DOUBLE_EQ(ML::IAnnModelUtils::calculateError(model, dataSet, parameterSet), expect);
 }
 
-TEST(IAnnModelTest, SetParameterDerivativesSuperSimple)
+TEST(IAnnModelUtilsTest, SetParameterDerivativesSuperSimple)
 {
    // See https://towardsdatascience.com/training-a-neural-network-by-hand-1bcac4d82a6e
    const ML::AnnCostFunctionSE costFunction;
@@ -142,7 +142,7 @@ TEST(IAnnModelTest, SetParameterDerivativesSuperSimple)
 }
 
 
-TEST(IAnnModelTest, SetParameterDerivativesSimple)
+TEST(IAnnModelUtilsTest, SetParameterDerivativesSimple)
 {
    // See https://towardsdatascience.com/training-a-neural-network-by-hand-1bcac4d82a6e
    const ML::AnnCostFunctionSE costFunction;

@@ -1,5 +1,6 @@
 #include "AnnWeightedAverageMatrix.h"
 #include "MyAssert.h"
+#include "Defines.h"
 
 #include <numeric>
 
@@ -47,6 +48,41 @@ void ML::AnnWeightedAverageMatrix::backpropInit(std::span<const double> activato
       for (size_t neuronPrv = 0; neuronPrv < m_layerSizePrv; ++neuronPrv)
       {
          dError_dParam[pos] = activatorValuesPrv[neuronPrv] * dError_dWeightedAverageLast[neuronCur];
+         ++pos;
+      }
+   }
+}
+
+void ML::AnnWeightedAverageMatrix::backpropagateError(std::span<const double> errorCur, std::span<const double> params, std::span<double> errorPrv) const
+{
+   Utilities::MyAssert(errorPrv.size() == m_layerSizePrv);
+   Utilities::MyAssert(errorCur.size() == m_layerSizeCur);
+   Utilities::MyAssert(params.size() == getNumberOfParameters());
+
+   str::fill(errorPrv, 0.0);
+   size_t pos = 0;
+   for (size_t neuronCur = 0; neuronCur < m_layerSizeCur; ++neuronCur)
+   {
+      for (size_t neuronPrv = 0; neuronPrv < m_layerSizePrv; ++neuronPrv)
+      {
+         errorPrv[neuronPrv] += params[pos] * errorCur[neuronCur];
+         ++pos;
+      }
+   }
+}
+
+void ML::AnnWeightedAverageMatrix::backpropagateParamDeriv(std::span<const double> errorCur, std::span<const double> activatorValuesPrv, std::span<double> dError_dParam) const
+{
+   Utilities::MyAssert(activatorValuesPrv.size() == m_layerSizePrv);
+   Utilities::MyAssert(errorCur.size() == m_layerSizeCur);
+   Utilities::MyAssert(dError_dParam.size() == getNumberOfParameters());
+
+   size_t pos = 0;
+   for (size_t neuronCur = 0; neuronCur < m_layerSizeCur; ++neuronCur)
+   {
+      for (size_t neuronPrv = 0; neuronPrv < m_layerSizePrv; ++neuronPrv)
+      {
+         dError_dParam[pos] = errorCur[neuronCur] * activatorValuesPrv[neuronPrv];
          ++pos;
       }
    }

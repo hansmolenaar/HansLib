@@ -113,5 +113,15 @@ void ML::IAnnModelUtils::setParameterDerivatives(const ML::IAnnModel& model, con
    const auto outputPrv = (layer > 0 ? forwardResult.getOutputAt(layer - 1) : forwardResult.getInput());
    model.getWeightedAverages().back()->backpropInit(outputPrv, errorOutputLayer, parameterDerivs.getModifiable(layer));
 
-   Utilities::MyAssert(layer == 0);
+   while (layer > 0)
+   {
+      --layer;
+      const auto errorNxtLayer = neuronError.getValuesAt(layer + 1);
+      const auto errorCurLayer = neuronError.modifyValuesAt(layer);
+      activationDeriv.resize(dimensions.at(layer));
+      layers[layer]->applyActivatorFunctionDeriv(forwardResult.getWeightedInputAt(layer), activationDeriv);
+      model.getWeightedAverages()[layer + 1]->backpropagateError(errorNxtLayer, parameters.at(layer + 1), errorCurLayer);
+      const auto outputPrv = (layer > 0 ? forwardResult.getOutputAt(layer - 1) : forwardResult.getInput());
+      model.getWeightedAverages()[layer]->backpropagateParamDeriv(errorCurLayer, outputPrv, parameterDerivs.getModifiable(layer));
+   }
 }
