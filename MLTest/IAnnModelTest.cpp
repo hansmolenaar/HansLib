@@ -32,11 +32,11 @@ TEST(IAnnModelTest, FeedForwardBasic)
    ASSERT_EQ(dims.size(), 1);
    ASSERT_EQ(dims[0], 1);
 
-   auto result = model.feedForward(std::vector<double>{0.1}, parameterSet);
+   auto result = ML::IAnnModelUtils::feedForward(model, std::vector<double>{0.1}, parameterSet);
    auto output = result->getOutput();
    ASSERT_DOUBLE_EQ(Utilities::Single(output), 0.05);
 
-   result = model.feedForward(std::vector<double>{0.3}, parameterSet);
+   result = ML::IAnnModelUtils::feedForward(model, std::vector<double>{0.3}, parameterSet);
    output = result->getOutput();
    ASSERT_DOUBLE_EQ(Utilities::Single(output), 0.15);
 }
@@ -64,7 +64,7 @@ TEST(IAnnModelTest, FeedForwardBasicError)
    dataSet.addSample({ 0.6 }, { 0.4 });
    dataSet.addSample({ 0.7 }, { 0.7 });
 
-   ASSERT_DOUBLE_EQ(model.calculateError(dataSet, parameterSet), 0.0825);
+   ASSERT_DOUBLE_EQ(ML::IAnnModelUtils::calculateError(model, dataSet, parameterSet), 0.0825);
 }
 
 TEST(IAnnModelTest, FeedForwardSlightlyMoreComplex)
@@ -89,7 +89,7 @@ TEST(IAnnModelTest, FeedForwardSlightlyMoreComplex)
    dataSet.addSample({ 0.6, 0.6 * 0.6 }, { 0.4 });
    dataSet.addSample({ 0.7, 0.7 * 0.7 }, { 0.7 });
 
-   ASSERT_DOUBLE_EQ(model.calculateError(dataSet, parameterSet), 0.0625895);
+   ASSERT_DOUBLE_EQ(ML::IAnnModelUtils::calculateError(model, dataSet, parameterSet), 0.0625895);
 }
 
 
@@ -116,9 +116,8 @@ TEST(IAnnModelTest, FeedForwardWithHiddenLayer)
    dataSet.addSample({ 2, 3 }, { 1 });
 
    const double expect = 0.5 * std::pow((1 - 0.191), 2);
-   ASSERT_DOUBLE_EQ(model.calculateError(dataSet, parameterSet), expect);
+   ASSERT_DOUBLE_EQ(ML::IAnnModelUtils::calculateError(model, dataSet, parameterSet), expect);
 }
-
 
 TEST(IAnnModelTest, SetParameterDerivativesSuperSimple)
 {
@@ -135,7 +134,7 @@ TEST(IAnnModelTest, SetParameterDerivativesSuperSimple)
    parameterSet.add({ 0.5, 0.0 });
 
    const ML::AnnModel model(layers, matrices, costFunction);
-   auto result = model.feedForward(std::vector<double>{0.7}, parameterSet);
+   auto result = ML::IAnnModelUtils::feedForward(model, std::vector<double>{0.7}, parameterSet);
    auto derivs = ML::ParameterSet::CreateUsingDimensions(parameterSet);
    ML::IAnnModelUtils::setParameterDerivatives(model, *result, std::vector<double>{0.7}, parameterSet, derivs);
    ASSERT_DOUBLE_EQ(derivs.at(0)[0], -0.245);
@@ -158,7 +157,7 @@ TEST(IAnnModelTest, SetParameterDerivativesSimple)
    parameterSet.add({ 0.5, 0.1, 0.0 });
 
    const ML::AnnModel model(layers, matrices, costFunction);
-   auto result = model.feedForward(std::vector<double>{0.7, 0.49}, parameterSet);
+   auto result = ML::IAnnModelUtils::feedForward(model, std::vector<double>{0.7, 0.49}, parameterSet);
    auto derivs = ML::ParameterSet::CreateUsingDimensions(parameterSet);
    ML::IAnnModelUtils::setParameterDerivatives(model, *result, std::vector<double>{0.7}, parameterSet, derivs);
    ASSERT_DOUBLE_EQ(derivs.at(0)[0], -0.2107);
