@@ -1,6 +1,6 @@
 #pragma once
 
-#include "AnnWeightedAverageMatrix.h"
+#include "AnnWeightsNoBias.h"
 
 namespace ML
 {
@@ -18,6 +18,6 @@ namespace ML
       void backpropagateError(std::span<const double> error, std::span<const double> params, std::span<double> errorPrv) const override;
       void backpropagateParamDeriv(std::span<const double> errorCur, std::span<const double> activatorValuesPrv, std::span<double> dError_dParam) const override;
    private:
-      AnnWeightedAverageMatrix m_matrixOnly;
+      AnnWeightsNoBias m_matrixOnly;
    };
 }

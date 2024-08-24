@@ -4,7 +4,7 @@
 #include "IAnnModelUtils.h"
 #include "AnnLayerLinear.h"
 #include "AnnLayerLogistic.h"
-#include "AnnWeightedAverageMatrix.h"
+#include "AnnWeightsNoBias.h"
 #include "AnnWeightsSingleBias.h"
 #include "AnnWeightsWithBias.h"
 #include "ParameterSet.h"
@@ -105,8 +105,8 @@ TEST(IAnnModelUtilsTest, FeedForwardWithHiddenLayer)
    const ML::AnnLayerLinear outputLayer(1);
    std::vector<const ML::IAnnLayer*> layers{ &hiddenLayer, &outputLayer };
 
-   const ML::AnnWeightedAverageMatrix averageWeightHidden(2, 2);
-   const ML::AnnWeightedAverageMatrix averageWeightOutput(2, 1);
+   const ML::AnnWeightsNoBias averageWeightHidden(2, 2);
+   const ML::AnnWeightsNoBias averageWeightOutput(2, 1);
    std::vector<const ML::IAnnWeights*> matrices{ &averageWeightHidden, &averageWeightOutput };
 
    ML::ParameterSet parameterSet;
@@ -179,8 +179,8 @@ TEST(IAnnModelUtilsTest, GeeksExample)
    const ML::AnnLayerLogistic outputLayer(1);
    std::vector<const ML::IAnnLayer*> layers{ &hiddenLayer, &outputLayer };
 
-   const ML::AnnWeightedAverageMatrix weightHidden(2, 2);
-   const ML::AnnWeightedAverageMatrix weightOutput(2, 1);
+   const ML::AnnWeightsNoBias weightHidden(2, 2);
+   const ML::AnnWeightsNoBias weightOutput(2, 1);
    std::vector<const ML::IAnnWeights*> matrices{ &weightHidden, &weightOutput };
 
    ML::ParameterSet parameterSet;

@@ -4,7 +4,7 @@
 
 namespace ML
 {
-   class AnnWeightedAverageMatrix : public IAnnWeights
+   class AnnWeightsNoBias : public IAnnWeights
    {
       // Storage
       //
@@ -16,7 +16,7 @@ namespace ML
       //
       // { n_13, n 23, n_41, n_42 }
    public:
-      AnnWeightedAverageMatrix(size_t dimPrv, size_t dimCur);
+      AnnWeightsNoBias(size_t dimPrv, size_t dimCur);
       size_t getNumberOfNeuronsPrv() const override;
       size_t getNumberOfNeuronsCur() const override;
       size_t getNumberOfParameters() const override;

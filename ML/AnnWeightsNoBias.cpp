@@ -1,29 +1,29 @@
-#include "AnnWeightedAverageMatrix.h"
+#include "AnnWeightsNoBias.h"
 #include "MyAssert.h"
 #include "Defines.h"
 
 #include <numeric>
 
-ML::AnnWeightedAverageMatrix::AnnWeightedAverageMatrix(size_t dimPrv, size_t dimCur) : m_layerSizePrv(dimPrv), m_layerSizeCur(dimCur)
+ML::AnnWeightsNoBias::AnnWeightsNoBias(size_t dimPrv, size_t dimCur) : m_layerSizePrv(dimPrv), m_layerSizeCur(dimCur)
 {
 }
 
-size_t ML::AnnWeightedAverageMatrix::getNumberOfNeuronsPrv() const
+size_t ML::AnnWeightsNoBias::getNumberOfNeuronsPrv() const
 {
    return m_layerSizePrv;
 }
 
-size_t ML::AnnWeightedAverageMatrix::getNumberOfNeuronsCur() const
+size_t ML::AnnWeightsNoBias::getNumberOfNeuronsCur() const
 {
    return m_layerSizeCur;
 }
 
-size_t ML::AnnWeightedAverageMatrix::getNumberOfParameters() const
+size_t ML::AnnWeightsNoBias::getNumberOfParameters() const
 {
    return m_layerSizePrv * m_layerSizeCur;
 }
 
-void ML::AnnWeightedAverageMatrix::transform(std::span<const double> activatorValuesPrv, std::span<const double> params, std::span<double> weightedAverage) const
+void ML::AnnWeightsNoBias::transform(std::span<const double> activatorValuesPrv, std::span<const double> params, std::span<double> weightedAverage) const
 {
    Utilities::MyAssert(activatorValuesPrv.size() == m_layerSizePrv);
    Utilities::MyAssert(weightedAverage.size() == m_layerSizeCur);
@@ -37,7 +37,7 @@ void ML::AnnWeightedAverageMatrix::transform(std::span<const double> activatorVa
    }
 }
 
-void ML::AnnWeightedAverageMatrix::backpropInit(std::span<const double> activatorValuesPrv, std::span<const double> dError_dWeightedAverageLast, std::span<double> dError_dParam) const
+void ML::AnnWeightsNoBias::backpropInit(std::span<const double> activatorValuesPrv, std::span<const double> dError_dWeightedAverageLast, std::span<double> dError_dParam) const
 {
    Utilities::MyAssert(activatorValuesPrv.size() == m_layerSizePrv);
    Utilities::MyAssert(dError_dWeightedAverageLast.size() == m_layerSizeCur);
@@ -53,7 +53,7 @@ void ML::AnnWeightedAverageMatrix::backpropInit(std::span<const double> activato
    }
 }
 
-void ML::AnnWeightedAverageMatrix::backpropagateError(std::span<const double> errorCur, std::span<const double> params, std::span<double> errorPrv) const
+void ML::AnnWeightsNoBias::backpropagateError(std::span<const double> errorCur, std::span<const double> params, std::span<double> errorPrv) const
 {
    Utilities::MyAssert(errorPrv.size() == m_layerSizePrv);
    Utilities::MyAssert(errorCur.size() == m_layerSizeCur);
@@ -71,7 +71,7 @@ void ML::AnnWeightedAverageMatrix::backpropagateError(std::span<const double> er
    }
 }
 
-void ML::AnnWeightedAverageMatrix::backpropagateParamDeriv(std::span<const double> errorCur, std::span<const double> activatorValuesPrv, std::span<double> dError_dParam) const
+void ML::AnnWeightsNoBias::backpropagateParamDeriv(std::span<const double> errorCur, std::span<const double> activatorValuesPrv, std::span<double> dError_dParam) const
 {
    Utilities::MyAssert(activatorValuesPrv.size() == m_layerSizePrv);
    Utilities::MyAssert(errorCur.size() == m_layerSizeCur);
