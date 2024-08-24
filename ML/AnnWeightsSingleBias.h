@@ -4,10 +4,10 @@
 
 namespace ML
 {
-   class AnnWeightedAverageWithBias : public IAnnWeights
+   class AnnWeightsSingleBias : public IAnnWeights
    {
    public:
-      AnnWeightedAverageWithBias(size_t dimPrv, size_t dimCur);
+      AnnWeightsSingleBias(size_t dimPrv, size_t dimCur);
       size_t getNumberOfNeuronsPrv() const override;
       size_t getNumberOfNeuronsCur() const override;
       size_t getNumberOfParameters() const override;

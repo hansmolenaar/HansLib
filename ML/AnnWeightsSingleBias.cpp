@@ -1,29 +1,29 @@
-#include "AnnWeightedAverageSingleBias.h"
+#include "AnnWeightsSingleBias.h"
 #include "MyAssert.h"
 
 #include <numeric>
 #include <algorithm>
 
-ML::AnnWeightedAverageSingleBias::AnnWeightedAverageSingleBias(size_t dimPrv, size_t dimCur) : m_matrixOnly(dimPrv, dimCur)
+ML::AnnWeightsSingleBias::AnnWeightsSingleBias(size_t dimPrv, size_t dimCur) : m_matrixOnly(dimPrv, dimCur)
 {
 }
 
-size_t ML::AnnWeightedAverageSingleBias::getNumberOfNeuronsPrv() const
+size_t ML::AnnWeightsSingleBias::getNumberOfNeuronsPrv() const
 {
    return m_matrixOnly.getNumberOfNeuronsPrv();
 }
 
-size_t ML::AnnWeightedAverageSingleBias::getNumberOfNeuronsCur() const
+size_t ML::AnnWeightsSingleBias::getNumberOfNeuronsCur() const
 {
    return m_matrixOnly.getNumberOfNeuronsCur();
 }
 
-size_t ML::AnnWeightedAverageSingleBias::getNumberOfParameters() const
+size_t ML::AnnWeightsSingleBias::getNumberOfParameters() const
 {
    return m_matrixOnly.getNumberOfParameters() + 1;
 }
 
-void ML::AnnWeightedAverageSingleBias::transform(std::span<const double> activatorValuesPrv, std::span<const double> params, std::span<double> weightedAverage) const
+void ML::AnnWeightsSingleBias::transform(std::span<const double> activatorValuesPrv, std::span<const double> params, std::span<double> weightedAverage) const
 {
    Utilities::MyAssert(params.size() == getNumberOfParameters());
    m_matrixOnly.transform(activatorValuesPrv, std::span<const double>(params.begin(), m_matrixOnly.getNumberOfParameters()), weightedAverage);
@@ -31,7 +31,7 @@ void ML::AnnWeightedAverageSingleBias::transform(std::span<const double> activat
    std::transform(weightedAverage.begin(), weightedAverage.end(), weightedAverage.begin(), [bias](double x) {return x + bias; });
 }
 
-void ML::AnnWeightedAverageSingleBias::backpropInit(std::span<const double> activatorValuesPrv, std::span<const double> dError_dWeightedAverageLast, std::span<double> dError_dParam) const
+void ML::AnnWeightsSingleBias::backpropInit(std::span<const double> activatorValuesPrv, std::span<const double> dError_dWeightedAverageLast, std::span<double> dError_dParam) const
 {
    Utilities::MyAssert(dError_dParam.size() == getNumberOfParameters());
    m_matrixOnly.backpropInit(activatorValuesPrv, dError_dWeightedAverageLast, std::span<double>(dError_dParam.begin(), m_matrixOnly.getNumberOfParameters()));
@@ -39,13 +39,13 @@ void ML::AnnWeightedAverageSingleBias::backpropInit(std::span<const double> acti
 }
 
 
-void ML::AnnWeightedAverageSingleBias::backpropagateError(std::span<const double> errorCur, std::span<const double> params, std::span<double> errorPrv) const
+void ML::AnnWeightsSingleBias::backpropagateError(std::span<const double> errorCur, std::span<const double> params, std::span<double> errorPrv) const
 {
    m_matrixOnly.backpropagateError(errorCur, std::span<const double>(params.begin(), m_matrixOnly.getNumberOfParameters()), errorPrv);
 }
 
 
-void ML::AnnWeightedAverageSingleBias::backpropagateParamDeriv(std::span<const double> errorCur, std::span<const double> activatorValuesPrv, std::span<double> dError_dParam) const
+void ML::AnnWeightsSingleBias::backpropagateParamDeriv(std::span<const double> errorCur, std::span<const double> activatorValuesPrv, std::span<double> dError_dParam) const
 {
    m_matrixOnly.backpropagateParamDeriv(errorCur, activatorValuesPrv, std::span< double>(dError_dParam.begin(), m_matrixOnly.getNumberOfParameters()));
    dError_dParam.back() = 0;  // TODO is this correct?

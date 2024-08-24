@@ -1,11 +1,11 @@
 #include <gtest/gtest.h>
 #include <array>
 
-#include "AnnWeightedAverageSingleBias.h" 
+#include "AnnWeightsSingleBias.h" 
 
-TEST(AnnWeightedAverageSingleBiasTest, Two2One)
+TEST(AnnWeightsSingleBiasTest, Two2One)
 {
-   const ML::AnnWeightedAverageSingleBias wasb(2, 1);
+   const ML::AnnWeightsSingleBias wasb(2, 1);
    const std::array< double, 3 > params = { 0.5, -0.5, 0.2 };
    const std::array<double, 2> dataIn1 = { 1, 2 };
    const std::array<double, 2> dataIn2 = { 2, 3 };
