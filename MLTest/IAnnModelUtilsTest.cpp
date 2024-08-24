@@ -251,10 +251,7 @@ TEST(IAnnModelUtilsTest, NeuroticExample)
    ASSERT_TRUE(areClose(parameterSet.at(0)[3], 0.39597));
 }
 
-
-
-
-TEST(IAnnModelUtilsTest, BiasedExample)
+TEST(IAnnModelUtilsTest, BiasedExampleFromBuggyPaper)
 {
    // See https://medium.com/@karna.sujan52/back-propagation-algorithm-numerical-solved-f60c6986b643
    const ML::AnnCostFunctionSE costFunction;
@@ -281,19 +278,10 @@ TEST(IAnnModelUtilsTest, BiasedExample)
    const Functors::AreClose areClose(1.0e-3);
    ASSERT_TRUE(areClose(Utilities::Single(forwardResult->getOutput()), 0.7391));
 
-   constexpr double learningRate = 0.5;
-   ML::IAnnModelUtils::backPropagation(model, *forwardResult, dataSet.getNthOutput(0), learningRate, parameterSet);
+   ML::AnnArray neuronError(ML::IAnnModelUtils::getLayerDimensions(model));
+   ML::IAnnModelUtils::setErrors( model, *forwardResult, dataSet.getNthOutput(0), parameterSet, neuronError);
 
-   ASSERT_TRUE(areClose(parameterSet.at(1)[0], 0.0508));
-   ASSERT_TRUE(areClose(parameterSet.at(1)[1], 0.2591));
-
-
-
-#if false
-   ASSERT_TRUE(areClose(parameterSet.at(0)[0], 0.484759));
-
-   ASSERT_TRUE(areClose(parameterSet.at(0)[1], 0.29667));
-   ASSERT_TRUE(areClose(parameterSet.at(0)[2], 0.19919));
-   ASSERT_TRUE(areClose(parameterSet.at(0)[3], 0.39597));
-#endif
+   ASSERT_TRUE(areClose(neuronError.getValuesAt(0)[1], 0.010451));
+   ASSERT_TRUE(areClose(neuronError.getValuesAt(0)[0], 0.0030481));
+   ASSERT_TRUE(areClose(neuronError.getValuesAt(1)[0], 0.1425));
 }

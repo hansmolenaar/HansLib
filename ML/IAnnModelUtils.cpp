@@ -86,6 +86,22 @@ void ML::IAnnModelUtils::updateParameters(const ML::IAnnModel& model, const ML::
    }
 }
 
+
+namespace
+{
+   void TimesActivationFunctionDeriv(const ML::IAnnLayer& layerCur, std::span<const double> activationCur, std::vector<double>& activationDerivWork, std::span<double> errorCur)
+   {
+      const size_t numNeuronsCur = layerCur.getNumberOfNeurons();
+      Utilities::MyAssert(activationCur.size() == numNeuronsCur);
+      Utilities::MyAssert(errorCur.size() == numNeuronsCur);
+
+      activationDerivWork.resize(numNeuronsCur);
+      layerCur.setActivatorFunctionDeriv(activationCur, activationDerivWork);
+      std::transform(errorCur.begin(), errorCur.end(), activationDerivWork.begin(), errorCur.begin(), std::multiplies());
+   }
+}
+
+
 void ML::IAnnModelUtils::setParameterDerivatives(const ML::IAnnModel& model, const ML::IFeedForwardResult& forwardResult, std::span<const double> ideal, const ML::IParameterSet& parameters, ML::IParameterSet& parameterDerivs)
 {
    const auto dimensions = ML::IAnnModelUtils::getLayerDimensions(model);
@@ -97,21 +113,45 @@ void ML::IAnnModelUtils::setParameterDerivatives(const ML::IAnnModel& model, con
 
    const auto layers = model.getLayers();
    ML::AnnArray neuronError(dimensions);
-   std::vector<double> activationDeriv(maxDim);
+   std::vector<double> activationDerivWork(maxDim);
+
+   setErrors(model, forwardResult, ideal, parameters, neuronError);
 
    // Initialize
    size_t layer = dimensions.size() - 1;
+   const auto outputPrv = (layer > 0 ? forwardResult.getOutputAt(layer - 1) : forwardResult.getInput());
+   model.getWeights().back()->backpropInit(outputPrv, neuronError.getValuesAt(layer), parameterDerivs.getModifiable(layer));
+
+   while (layer > 0)
+   {
+      --layer;
+      const auto errorCurLayer = neuronError.getValuesAt(layer);
+      const auto outputPrv = (layer > 0 ? forwardResult.getOutputAt(layer - 1) : forwardResult.getInput());
+      model.getWeights()[layer]->backpropagateParamDeriv(errorCurLayer, outputPrv, parameterDerivs.getModifiable(layer));
+   }
+}
+
+
+void ML::IAnnModelUtils::setErrors(const IAnnModel& model, const ML::IFeedForwardResult& forwardResult, std::span<const double> ideal, const ML::IParameterSet& parameters, ML::AnnArray& neuronError)
+{
+   const auto dimensions = ML::IAnnModelUtils::getLayerDimensions(model);
+   const auto maxDim = *str::max_element(dimensions);
+   Utilities::MyAssert(parameters.getNumLayers() == dimensions.size());
+   Utilities::MyAssert(neuronError.getNumLayers() == dimensions.size());
+
+   const auto layers = model.getLayers();
+   std::vector<double> activationDerivWork(maxDim);
+
+   // Initialize
+   size_t layer = dimensions.size() - 1;
+   const auto outputLayerSize = dimensions.back();
    auto errorOutputLayer = neuronError.modifyValuesAt(layer);
    const auto actual = forwardResult.getOutputAt(layer);
-   activationDeriv.resize(dimensions.at(layer));
-   layers.back()->setActivatorFunctionDeriv(forwardResult.getActivationAt(layer), activationDeriv);
-   for (size_t n = 0; n < dimensions.at(layer); ++n)
-   {
-      errorOutputLayer[n] = (actual[n] - ideal[n]) * activationDeriv.at(n);
-   }
-
-   const auto outputPrv = (layer > 0 ? forwardResult.getOutputAt(layer - 1) : forwardResult.getInput());
-   model.getWeights().back()->backpropInit(outputPrv, errorOutputLayer, parameterDerivs.getModifiable(layer));
+   Utilities::MyAssert(errorOutputLayer.size() == outputLayerSize);
+   Utilities::MyAssert(actual.size() == outputLayerSize);
+   Utilities::MyAssert(ideal.size() == outputLayerSize);
+   std::transform(actual.begin(), actual.end(), ideal.begin(), errorOutputLayer.begin(), std::minus());
+   TimesActivationFunctionDeriv(*layers[layer], forwardResult.getActivationAt(layer), activationDerivWork, errorOutputLayer);
 
    while (layer > 0)
    {
@@ -119,13 +159,6 @@ void ML::IAnnModelUtils::setParameterDerivatives(const ML::IAnnModel& model, con
       const auto errorNxtLayer = neuronError.getValuesAt(layer + 1);
       const auto errorCurLayer = neuronError.modifyValuesAt(layer);
       model.getWeights()[layer + 1]->backpropagateError(errorNxtLayer, parameters.at(layer + 1), errorCurLayer);
-
-      activationDeriv.resize(dimensions.at(layer));
-      layers[layer]->setActivatorFunctionDeriv(forwardResult.getActivationAt(layer), activationDeriv);
-      Utilities::MyAssert(activationDeriv.size() == errorCurLayer.size());
-      std::transform(errorCurLayer.begin(), errorCurLayer.end(), activationDeriv.begin(), errorCurLayer.begin(), std::multiplies());
-
-      const auto outputPrv = (layer > 0 ? forwardResult.getOutputAt(layer - 1) : forwardResult.getInput());
-      model.getWeights()[layer]->backpropagateParamDeriv(errorCurLayer, outputPrv, parameterDerivs.getModifiable(layer));
+      TimesActivationFunctionDeriv(*layers[layer], forwardResult.getActivationAt(layer), activationDerivWork, errorCurLayer);
    }
 }
