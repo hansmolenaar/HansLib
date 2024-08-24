@@ -160,12 +160,17 @@ TEST(IAnnModelUtilsTest, SetParameterDerivativesSimple)
    parameterSet.add({ 0.5, 0.1, 0.0 });
 
    const ML::AnnModel model(layers, matrices, costFunction);
-   auto result = ML::IAnnModelUtils::feedForward(model, std::vector<double>{0.7, 0.49}, parameterSet);
+   auto forwardResult = ML::IAnnModelUtils::feedForward(model, std::vector<double>{0.7, 0.49}, parameterSet);
    auto derivs = ML::ParameterSet::CreateUsingDimensions(parameterSet);
-   ML::IAnnModelUtils::setParameterDerivatives(model, *result, std::vector<double>{0.7}, parameterSet, derivs);
+   const std::vector<double> ideal{ 0.7 };
+   ML::IAnnModelUtils::setParameterDerivatives(model, *forwardResult, ideal, parameterSet, derivs);
    ASSERT_DOUBLE_EQ(derivs.at(0)[0], -0.2107);
    ASSERT_DOUBLE_EQ(derivs.at(0)[1], -0.14749);
    ASSERT_DOUBLE_EQ(derivs.at(0)[2], -0.301);
+
+   constexpr double learningRate = 1;
+   ML::IAnnModelUtils::backPropagation(model, *forwardResult, ideal, learningRate, parameterSet);
+   ASSERT_DOUBLE_EQ(parameterSet.at(0)[2], 0.301);
 }
 
 
@@ -201,9 +206,14 @@ TEST(IAnnModelUtilsTest, GeeksExample)
    ASSERT_TRUE(areClose(neuronError.getValuesAt(0)[1], 0.0080714273160845482));
    ASSERT_TRUE(areClose(neuronError.getValuesAt(1)[0], 0.036770267688329382));
 
+   ML::ParameterSet parameterDerivs = ML::ParameterSet::CreateUsingDimensions(parameterSet);
+   ML::IAnnModelUtils::setParameterDerivatives(model, *forwardResult,  ideal, parameterSet, parameterDerivs);
+   constexpr double expect = 0.00095465571103447143;
+   ASSERT_TRUE(areClose(parameterDerivs.at(0)[0], expect));
+                                                  
    constexpr double learningRate = 1;
    ML::IAnnModelUtils::backPropagation(model, *forwardResult, ideal, learningRate, parameterSet);
-
+   ASSERT_TRUE(areClose(parameterSet.at(0)[0], 0.2 - expect));
 }
 
 
@@ -288,7 +298,7 @@ TEST(IAnnModelUtilsTest, BuggedBiasedExample)
    ASSERT_TRUE(areClose(Utilities::Single(forwardResult->getOutput()), 0.7391));
 
    ML::AnnArray neuronError(ML::IAnnModelUtils::getLayerDimensions(model));
-   ML::IAnnModelUtils::setErrors( model, *forwardResult, dataSet.getNthOutput(0), parameterSet, neuronError);
+   ML::IAnnModelUtils::setErrors(model, *forwardResult, dataSet.getNthOutput(0), parameterSet, neuronError);
 
    ASSERT_TRUE(areClose(neuronError.getValuesAt(0)[1], 0.010451));
    ASSERT_TRUE(areClose(neuronError.getValuesAt(0)[0], 0.0030481));
