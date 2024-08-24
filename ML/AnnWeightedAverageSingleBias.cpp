@@ -47,6 +47,6 @@ void ML::AnnWeightedAverageSingleBias::backpropagateError(std::span<const double
 
 void ML::AnnWeightedAverageSingleBias::backpropagateParamDeriv(std::span<const double> errorCur, std::span<const double> activatorValuesPrv, std::span<double> dError_dParam) const
 {
-   m_matrixOnly.backpropagateError(errorCur, activatorValuesPrv, std::span< double>(dError_dParam.begin(), m_matrixOnly.getNumberOfParameters()));
+   m_matrixOnly.backpropagateParamDeriv(errorCur, activatorValuesPrv, std::span< double>(dError_dParam.begin(), m_matrixOnly.getNumberOfParameters()));
    dError_dParam.back() = 0;  // TODO is this correct?
 }

@@ -1,4 +1,4 @@
-#include <gtest/gtest.h>
+﻿#include <gtest/gtest.h>
 #include <array>
 
 #include "IAnnModelUtils.h"
@@ -12,6 +12,8 @@
 #include "AnnModel.h"
 #include "Single.h"
 #include "AnnDataSet.h"
+#include "Functors.h"
+
 
 TEST(IAnnModelUtilsTest, FeedForwardBasic)
 {
@@ -193,4 +195,45 @@ TEST(IAnnModelUtilsTest, GeeksExample)
    constexpr double learningRate = 1;
    ML::IAnnModelUtils::backPropagation(model, *forwardResult, ideal, learningRate, parameterSet);
 
+}
+
+
+TEST(IAnnModelUtilsTest, NeuroticExample)
+{
+   // See https://theneuralblog.com/forward-pass-backpropagation-example/
+   const ML::AnnCostFunctionSE costFunction;
+
+   const ML::AnnLayerLogistic hiddenLayer(2);
+   const ML::AnnLayerLogistic outputLayer(2);
+   std::vector<const ML::IAnnLayer*> layers{ &hiddenLayer, &outputLayer };
+
+   const ML::AnnWeightedAverageSingleBias weightHidden(2, 2);
+   const ML::AnnWeightedAverageSingleBias weightOutput(2, 2);
+   std::vector<const ML::IAnnWeightedAverage*> matrices{ &weightHidden, &weightOutput };
+
+   ML::ParameterSet parameterSet;
+   parameterSet.add({ 0.1, 0.3, 0.2, 0.4, 0.25 });
+   parameterSet.add({ 0.5, 0.6, 0.7, 0.8, 0.35 });
+
+   ML::AnnDataSet dataSet(2, 2);
+   dataSet.addSample({ 0.1, 0.5 }, { 0.05, 0.95 });
+
+   const ML::AnnModel model(layers, matrices, costFunction);
+   auto forwardResult = ML::IAnnModelUtils::feedForward(model, dataSet.getNthInput(0), parameterSet);
+   Functors::AreClose areClose(1.0e-3);
+   ASSERT_TRUE(areClose(forwardResult->getOutput()[0], 0.73492));
+   ASSERT_TRUE(areClose(forwardResult->getOutput()[1], 0.77955));
+
+   const double error = ML::IAnnModelUtils::calculateError(model, dataSet, parameterSet);
+   ASSERT_TRUE(areClose(error, 0.24908));
+
+   ML::ParameterSet parameterDerivs = ML::ParameterSet::CreateUsingDimensions(parameterSet);
+   ML::IAnnModelUtils::setParameterDerivatives(model, *forwardResult, dataSet.getNthOutput(0), parameterSet, parameterDerivs);
+   ASSERT_TRUE(areClose(parameterDerivs.at(1)[0], 0.08020));
+   ASSERT_TRUE(areClose(parameterDerivs.at(1)[1], 0.08211));
+   ASSERT_TRUE(areClose(parameterDerivs.at(1)[2], -0.01760));
+   ASSERT_TRUE(areClose(parameterDerivs.at(1)[3], -0.01802));
+
+   //constexpr double learningRate = 1;
+   //ML::IAnnModelUtils::backPropagation(model, *forwardResult, dataSet.getNthOutput(0), learningRate, parameterSet);
 }
