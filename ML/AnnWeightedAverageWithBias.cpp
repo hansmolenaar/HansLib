@@ -49,5 +49,5 @@ void ML::AnnWeightedAverageWithBias::backpropagateError(std::span<const double> 
 void ML::AnnWeightedAverageWithBias::backpropagateParamDeriv(std::span<const double> errorCur, std::span<const double> activatorValuesPrv, std::span<double> dError_dParam) const
 {
    str::fill(dError_dParam, 0.0);
-   m_matrixOnly.backpropagateError(errorCur, activatorValuesPrv, std::span< double>(dError_dParam.begin(), m_matrixOnly.getNumberOfParameters()));
+   m_matrixOnly.backpropagateParamDeriv(errorCur, activatorValuesPrv, std::span< double>(dError_dParam.begin(), m_matrixOnly.getNumberOfParameters()));
 }

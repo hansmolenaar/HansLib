@@ -24,7 +24,7 @@ TEST(IAnnModelUtilsTest, FeedForwardBasic)
    std::vector<const ML::IAnnLayer*> layers{ &outputLayer };
 
    const ML::AnnWeightedAverageSingleBias averageWeight(1, 1);
-   std::vector<const ML::IAnnWeightedAverage*> matrices{ &averageWeight };
+   std::vector<const ML::IAnnWeights*> matrices{ &averageWeight };
 
    ML::ParameterSet parameterSet;
    parameterSet.add({ 0.5, 0.0 });
@@ -54,7 +54,7 @@ TEST(IAnnModelUtilsTest, FeedForwardBasicError)
    std::vector<const ML::IAnnLayer*> layers{ &outputLayer };
 
    const ML::AnnWeightedAverageWithBias averageWeight(1, 1);
-   std::vector<const ML::IAnnWeightedAverage*> matrices{ &averageWeight };
+   std::vector<const ML::IAnnWeights*> matrices{ &averageWeight };
 
    ML::ParameterSet parameterSet;
    parameterSet.add({ 0.5, 0.0 });
@@ -79,7 +79,7 @@ TEST(IAnnModelUtilsTest, FeedForwardSlightlyMoreComplex)
    std::vector<const ML::IAnnLayer*> layers{ &outputLayer };
 
    const ML::AnnWeightedAverageSingleBias averageWeight(2, 1);
-   std::vector<const ML::IAnnWeightedAverage*> matrices{ &averageWeight };
+   std::vector<const ML::IAnnWeights*> matrices{ &averageWeight };
 
    ML::ParameterSet parameterSet;
    parameterSet.add({ 0.5, 0.1, 0.0 });
@@ -107,7 +107,7 @@ TEST(IAnnModelUtilsTest, FeedForwardWithHiddenLayer)
 
    const ML::AnnWeightedAverageMatrix averageWeightHidden(2, 2);
    const ML::AnnWeightedAverageMatrix averageWeightOutput(2, 1);
-   std::vector<const ML::IAnnWeightedAverage*> matrices{ &averageWeightHidden, &averageWeightOutput };
+   std::vector<const ML::IAnnWeights*> matrices{ &averageWeightHidden, &averageWeightOutput };
 
    ML::ParameterSet parameterSet;
    parameterSet.add({ 0.11, 0.21, 0.12, 0.08 });
@@ -131,7 +131,7 @@ TEST(IAnnModelUtilsTest, SetParameterDerivativesSuperSimple)
    std::vector<const ML::IAnnLayer*> layers{ &outputLayer };
 
    const ML::AnnWeightedAverageSingleBias averageWeight(1, 1);
-   std::vector<const ML::IAnnWeightedAverage*> matrices{ &averageWeight };
+   std::vector<const ML::IAnnWeights*> matrices{ &averageWeight };
 
    ML::ParameterSet parameterSet;
    parameterSet.add({ 0.5, 0.0 });
@@ -154,7 +154,7 @@ TEST(IAnnModelUtilsTest, SetParameterDerivativesSimple)
    std::vector<const ML::IAnnLayer*> layers{ &outputLayer };
 
    const ML::AnnWeightedAverageSingleBias averageWeight(2, 1);
-   std::vector<const ML::IAnnWeightedAverage*> matrices{ &averageWeight };
+   std::vector<const ML::IAnnWeights*> matrices{ &averageWeight };
 
    ML::ParameterSet parameterSet;
    parameterSet.add({ 0.5, 0.1, 0.0 });
@@ -181,7 +181,7 @@ TEST(IAnnModelUtilsTest, GeeksExample)
 
    const ML::AnnWeightedAverageMatrix weightHidden(2, 2);
    const ML::AnnWeightedAverageMatrix weightOutput(2, 1);
-   std::vector<const ML::IAnnWeightedAverage*> matrices{ &weightHidden, &weightOutput };
+   std::vector<const ML::IAnnWeights*> matrices{ &weightHidden, &weightOutput };
 
    ML::ParameterSet parameterSet;
    parameterSet.add({ 0.2, 0.2, 0.3, 0.3 });
@@ -209,7 +209,7 @@ TEST(IAnnModelUtilsTest, NeuroticExample)
 
    const ML::AnnWeightedAverageSingleBias weightHidden(2, 2);
    const ML::AnnWeightedAverageSingleBias weightOutput(2, 2);
-   std::vector<const ML::IAnnWeightedAverage*> matrices{ &weightHidden, &weightOutput };
+   std::vector<const ML::IAnnWeights*> matrices{ &weightHidden, &weightOutput };
 
    ML::ParameterSet parameterSet;
    parameterSet.add({ 0.1, 0.3, 0.2, 0.4, 0.25 });
@@ -249,4 +249,51 @@ TEST(IAnnModelUtilsTest, NeuroticExample)
    ASSERT_TRUE(areClose(parameterSet.at(0)[1], 0.29667));
    ASSERT_TRUE(areClose(parameterSet.at(0)[2], 0.19919));
    ASSERT_TRUE(areClose(parameterSet.at(0)[3], 0.39597));
+}
+
+
+
+
+TEST(IAnnModelUtilsTest, BiasedExample)
+{
+   // See https://medium.com/@karna.sujan52/back-propagation-algorithm-numerical-solved-f60c6986b643
+   const ML::AnnCostFunctionSE costFunction;
+
+   const ML::AnnLayerLogistic hiddenLayer(2);
+   const ML::AnnLayerLogistic outputLayer(1);
+   std::vector<const ML::IAnnLayer*> layers{ &hiddenLayer, &outputLayer };
+
+   const ML::AnnWeightedAverageWithBias weightHidden(2, 2);
+   const ML::AnnWeightedAverageWithBias weightOutput(2, 1);
+   std::vector<const ML::IAnnWeights*> matrices{ &weightHidden, &weightOutput };
+
+   ML::ParameterSet parameterSet;
+   parameterSet.add({ 0.5, -0.3, 0.2, 0.5, 0.6, -0.4 });
+   parameterSet.add({ 0.1, 0.3, 0.8 });
+
+   ML::AnnDataSet dataSet(2, 1);
+   dataSet.addSample({ 1, 1 }, { 0 });
+   dataSet.addSample({ 0, 1 }, { 1 });
+
+   const ML::AnnModel model(layers, matrices, costFunction);
+   auto forwardResult = ML::IAnnModelUtils::feedForward(model, dataSet.getNthInput(0), parameterSet);
+
+   const Functors::AreClose areClose(1.0e-3);
+   ASSERT_TRUE(areClose(Utilities::Single(forwardResult->getOutput()), 0.7391));
+
+   constexpr double learningRate = 0.5;
+   ML::IAnnModelUtils::backPropagation(model, *forwardResult, dataSet.getNthOutput(0), learningRate, parameterSet);
+
+   ASSERT_TRUE(areClose(parameterSet.at(1)[0], 0.0508));
+   ASSERT_TRUE(areClose(parameterSet.at(1)[1], 0.2591));
+
+
+
+
+   ASSERT_TRUE(areClose(parameterSet.at(0)[0], 0.484759));
+#if false
+   ASSERT_TRUE(areClose(parameterSet.at(0)[1], 0.29667));
+   ASSERT_TRUE(areClose(parameterSet.at(0)[2], 0.19919));
+   ASSERT_TRUE(areClose(parameterSet.at(0)[3], 0.39597));
+#endif
 }

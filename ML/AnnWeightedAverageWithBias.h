@@ -4,7 +4,7 @@
 
 namespace ML
 {
-   class AnnWeightedAverageWithBias : public IAnnWeightedAverage
+   class AnnWeightedAverageWithBias : public IAnnWeights
    {
    public:
       AnnWeightedAverageWithBias(size_t dimPrv, size_t dimCur);

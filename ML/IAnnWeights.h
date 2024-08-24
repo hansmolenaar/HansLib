@@ -6,10 +6,10 @@
 namespace ML
 {
    // Artificial Neural Network, affine transformation between layers
-   class IAnnWeightedAverage
+   class IAnnWeights
    {
    public:
-      virtual ~IAnnWeightedAverage() = default;
+      virtual ~IAnnWeights() = default;
       virtual size_t getNumberOfNeuronsPrv() const = 0;
       virtual size_t getNumberOfNeuronsCur() const = 0;
       virtual size_t getNumberOfParameters() const = 0;

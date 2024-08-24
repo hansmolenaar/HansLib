@@ -1,10 +1,10 @@
 #pragma once
 
-#include "IAnnWeightedAverage.h"
+#include "IAnnWeights.h"
 
 namespace ML
 {
-   class AnnWeightedAverageMatrix : public IAnnWeightedAverage
+   class AnnWeightedAverageMatrix : public IAnnWeights
    {
       // Storage
       //
