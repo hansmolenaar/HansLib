@@ -220,7 +220,8 @@ TEST(IAnnModelUtilsTest, NeuroticExample)
 
    const ML::AnnModel model(layers, matrices, costFunction);
    auto forwardResult = ML::IAnnModelUtils::feedForward(model, dataSet.getNthInput(0), parameterSet);
-   Functors::AreClose areClose(1.0e-3);
+
+   const Functors::AreClose areClose(8.0e-3); // Rounded numbers in article
    ASSERT_TRUE(areClose(forwardResult->getOutput()[0], 0.73492));
    ASSERT_TRUE(areClose(forwardResult->getOutput()[1], 0.77955));
 
@@ -233,7 +234,19 @@ TEST(IAnnModelUtilsTest, NeuroticExample)
    ASSERT_TRUE(areClose(parameterDerivs.at(1)[1], 0.08211));
    ASSERT_TRUE(areClose(parameterDerivs.at(1)[2], -0.01760));
    ASSERT_TRUE(areClose(parameterDerivs.at(1)[3], -0.01802));
+   ASSERT_TRUE(areClose(parameterDerivs.at(0)[0], 0.00110));
 
-   //constexpr double learningRate = 1;
-   //ML::IAnnModelUtils::backPropagation(model, *forwardResult, dataSet.getNthOutput(0), learningRate, parameterSet);
+
+   constexpr double learningRate = 0.6;
+   ML::IAnnModelUtils::backPropagation(model, *forwardResult, dataSet.getNthOutput(0), learningRate, parameterSet);
+
+   ASSERT_TRUE(areClose(parameterSet.at(1)[0], 0.45187));
+   ASSERT_TRUE(areClose(parameterSet.at(1)[1], 0.55073));
+   ASSERT_TRUE(areClose(parameterSet.at(1)[2], 0.71056));
+   ASSERT_TRUE(areClose(parameterSet.at(1)[3], 0.81081));
+
+   ASSERT_TRUE(areClose(parameterSet.at(0)[0], 0.09933));
+   ASSERT_TRUE(areClose(parameterSet.at(0)[1], 0.29667));
+   ASSERT_TRUE(areClose(parameterSet.at(0)[2], 0.19919));
+   ASSERT_TRUE(areClose(parameterSet.at(0)[3], 0.39597));
 }

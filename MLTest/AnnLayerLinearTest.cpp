@@ -11,10 +11,10 @@ TEST(AnnLayerLinearTest, Trivial)
 
    ASSERT_EQ(layer.getNumberOfNeurons(), 1);
 
-   layer.applyActivatorFunction(valIn, valOut);
+   layer.setActivatorFunction(valIn, valOut);
    ASSERT_DOUBLE_EQ(valOut[0], 2.0);
 
-   layer.applyActivatorFunctionDeriv(valIn, valOut);
+   layer.setActivatorFunctionDeriv(valIn, valOut);
    ASSERT_DOUBLE_EQ(valOut[0], 1.0);
 }
 
@@ -26,11 +26,11 @@ TEST(AnnLayerLinearTest, Two)
 
    ASSERT_EQ(layer.getNumberOfNeurons(), 2);
 
-   layer.applyActivatorFunction(valIn, valOut);
+   layer.setActivatorFunction(valIn, valOut);
    ASSERT_DOUBLE_EQ(valOut[0], 2.0);
    ASSERT_DOUBLE_EQ(valOut[1], -3.0);
 
-   layer.applyActivatorFunctionDeriv(valIn, valOut);
+   layer.setActivatorFunctionDeriv(valIn, valOut);
    ASSERT_DOUBLE_EQ(valOut[0], 1.0);
    ASSERT_DOUBLE_EQ(valOut[1], 1.0);
 }

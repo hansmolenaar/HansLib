@@ -12,11 +12,11 @@ TEST(AnnLayerLogisticTest, Two)
 
    ASSERT_EQ(layer.getNumberOfNeurons(), 2);
 
-   layer.applyActivatorFunction(valIn, valOut);
+   layer.setActivatorFunction(valIn, valOut);
    ASSERT_DOUBLE_EQ(valOut[0], 0.5);
    ASSERT_DOUBLE_EQ(valOut[1], 2.0 / 3.0);
 
-   layer.applyActivatorFunctionDeriv(valIn, valOut);
+   layer.setActivatorFunctionDeriv(valIn, valOut);
    ASSERT_DOUBLE_EQ(valOut[0], 0.25);
    ASSERT_DOUBLE_EQ(valOut[1], 2.0 / 9.0);
 }

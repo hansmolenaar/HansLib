@@ -24,12 +24,12 @@ size_t ML::AnnLayerUniform::getNumberOfNeurons() const
    return m_size;
 }
 
-void ML::AnnLayerUniform::applyActivatorFunction(std::span<const double> weightedAverage, std::span<double> activatorValues) const
+void ML::AnnLayerUniform::setActivatorFunction(std::span<const double> weightedAverage, std::span<double> activatorValues) const
 {
    Eval(m_size, weightedAverage, activatorValues, m_function);
 }
 
-void  ML::AnnLayerUniform::applyActivatorFunctionDeriv(std::span<const double> weightedAverage, std::span<double> activatorDerivValues) const
+void  ML::AnnLayerUniform::setActivatorFunctionDeriv(std::span<const double> weightedAverage, std::span<double> activatorDerivValues) const
 {
    Eval(m_size, weightedAverage, activatorDerivValues, m_derivative);
 }
