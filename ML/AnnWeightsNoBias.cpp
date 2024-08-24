@@ -37,22 +37,6 @@ void ML::AnnWeightsNoBias::setActivation(std::span<const double> outputPrv, std:
    }
 }
 
-void ML::AnnWeightsNoBias::backpropInit(std::span<const double> activatorValuesPrv, std::span<const double> dError_dWeightedAverageLast, std::span<double> dError_dParam) const
-{
-   Utilities::MyAssert(activatorValuesPrv.size() == m_layerSizePrv);
-   Utilities::MyAssert(dError_dWeightedAverageLast.size() == m_layerSizeCur);
-   Utilities::MyAssert(dError_dParam.size() == getNumberOfParameters());
-   size_t pos = 0;
-   for (size_t neuronCur = 0; neuronCur < m_layerSizeCur; ++neuronCur)
-   {
-      for (size_t neuronPrv = 0; neuronPrv < m_layerSizePrv; ++neuronPrv)
-      {
-         dError_dParam[pos] = activatorValuesPrv[neuronPrv] * dError_dWeightedAverageLast[neuronCur];
-         ++pos;
-      }
-   }
-}
-
 void ML::AnnWeightsNoBias::backpropagateError(std::span<const double> errorCur, std::span<const double> params, std::span<double> errorPrv) const
 {
    Utilities::MyAssert(errorPrv.size() == m_layerSizePrv);
@@ -71,18 +55,18 @@ void ML::AnnWeightsNoBias::backpropagateError(std::span<const double> errorCur, 
    }
 }
 
-void ML::AnnWeightsNoBias::backpropagateParamDeriv(std::span<const double> errorCur, std::span<const double> activatorValuesPrv, std::span<double> dError_dParam) const
+void ML::AnnWeightsNoBias::backpropagateParamDeriv(std::span<const double> errorCur, std::span<const double> outputPrv, std::span<double> dCost_dParam) const
 {
-   Utilities::MyAssert(activatorValuesPrv.size() == m_layerSizePrv);
+   Utilities::MyAssert(outputPrv.size() == m_layerSizePrv);
    Utilities::MyAssert(errorCur.size() == m_layerSizeCur);
-   Utilities::MyAssert(dError_dParam.size() == getNumberOfParameters());
+   Utilities::MyAssert(dCost_dParam.size() == getNumberOfParameters());
 
    size_t pos = 0;
    for (size_t neuronCur = 0; neuronCur < m_layerSizeCur; ++neuronCur)
    {
       for (size_t neuronPrv = 0; neuronPrv < m_layerSizePrv; ++neuronPrv)
       {
-         dError_dParam[pos] = errorCur[neuronCur] * activatorValuesPrv[neuronPrv];
+         dCost_dParam[pos] = errorCur[neuronCur] * outputPrv[neuronPrv];
          ++pos;
       }
    }

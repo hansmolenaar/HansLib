@@ -30,31 +30,17 @@ void ML::AnnWeightsWithBias::setActivation(std::span<const double> outputPrv, st
    std::transform(activation.begin(), activation.end(), bias.begin(), activation.begin(), [](double x, double y) {return x + y; });
 }
 
-
-void ML::AnnWeightsWithBias::backpropInit(std::span<const double> activatorValuesPrv, std::span<const double> dError_dWeightedAverageLast, std::span<double> dError_dParam) const
-{
-   Utilities::MyAssert(dError_dParam.size() == getNumberOfParameters());
-   const size_t numMatrixParams = m_matrixOnly.getNumberOfParameters();
-   m_matrixOnly.backpropInit(activatorValuesPrv, dError_dWeightedAverageLast, std::span<double>(dError_dParam.begin(), numMatrixParams));
-   std::copy(dError_dWeightedAverageLast.begin(), dError_dWeightedAverageLast.end(), dError_dParam.begin() + numMatrixParams);
-}
-
-
 void ML::AnnWeightsWithBias::backpropagateError(std::span<const double> errorCur, std::span<const double> params, std::span<double> errorPrv) const
 {
    m_matrixOnly.backpropagateError(errorCur, std::span<const double>(params.begin(), m_matrixOnly.getNumberOfParameters()), errorPrv);
 }
 
 
-void ML::AnnWeightsWithBias::backpropagateParamDeriv(std::span<const double> errorCur, std::span<const double> activatorValuesPrv, std::span<double> dError_dParam) const
+void ML::AnnWeightsWithBias::backpropagateParamDeriv(std::span<const double> errorCur, std::span<const double> outputPrv, std::span<double> dCost_dParam) const
 {
-   str::fill(dError_dParam, 0.0);
-   m_matrixOnly.backpropagateParamDeriv(errorCur, activatorValuesPrv, std::span< double>(dError_dParam.begin(), m_matrixOnly.getNumberOfParameters()));
+   str::fill(dCost_dParam, 0.0);
+   m_matrixOnly.backpropagateParamDeriv(errorCur, outputPrv, std::span< double>(dCost_dParam.begin(), m_matrixOnly.getNumberOfParameters()));
 
-   size_t pos = m_matrixOnly.getNumberOfParameters();
-   for (size_t neuronCur = 0; neuronCur < errorCur.size(); ++neuronCur)
-   {
-      dError_dParam[pos] = errorCur[neuronCur];
-      ++pos;
-   }
+   const size_t numMatrixParams = m_matrixOnly.getNumberOfParameters();
+   std::copy(errorCur.begin(), errorCur.end(), dCost_dParam.begin() + numMatrixParams);
 }

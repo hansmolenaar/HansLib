@@ -31,22 +31,14 @@ void ML::AnnWeightsSingleBias::setActivation(std::span<const double> outputPrv, 
    std::transform(activation.begin(), activation.end(), activation.begin(), [bias](double x) {return x + bias; });
 }
 
-void ML::AnnWeightsSingleBias::backpropInit(std::span<const double> activatorValuesPrv, std::span<const double> dError_dWeightedAverageLast, std::span<double> dError_dParam) const
-{
-   Utilities::MyAssert(dError_dParam.size() == getNumberOfParameters());
-   m_matrixOnly.backpropInit(activatorValuesPrv, dError_dWeightedAverageLast, std::span<double>(dError_dParam.begin(), m_matrixOnly.getNumberOfParameters()));
-   dError_dParam.back() = std::accumulate(dError_dWeightedAverageLast.begin(), dError_dWeightedAverageLast.end(), 0.0);
-}
-
-
 void ML::AnnWeightsSingleBias::backpropagateError(std::span<const double> errorCur, std::span<const double> params, std::span<double> errorPrv) const
 {
    m_matrixOnly.backpropagateError(errorCur, std::span<const double>(params.begin(), m_matrixOnly.getNumberOfParameters()), errorPrv);
 }
 
 
-void ML::AnnWeightsSingleBias::backpropagateParamDeriv(std::span<const double> errorCur, std::span<const double> activatorValuesPrv, std::span<double> dError_dParam) const
+void ML::AnnWeightsSingleBias::backpropagateParamDeriv(std::span<const double> errorCur, std::span<const double> outputPrv, std::span<double> dCost_dParam) const
 {
-   m_matrixOnly.backpropagateParamDeriv(errorCur, activatorValuesPrv, std::span< double>(dError_dParam.begin(), m_matrixOnly.getNumberOfParameters()));
-   dError_dParam.back() = std::accumulate(errorCur.begin(), errorCur.end(), 0.0);
+   m_matrixOnly.backpropagateParamDeriv(errorCur, outputPrv, std::span< double>(dCost_dParam.begin(), m_matrixOnly.getNumberOfParameters()));
+   dCost_dParam.back() = std::accumulate(errorCur.begin(), errorCur.end(), 0.0);
 }

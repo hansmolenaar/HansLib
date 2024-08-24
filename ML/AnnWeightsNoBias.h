@@ -21,9 +21,8 @@ namespace ML
       size_t getNumberOfNeuronsCur() const override;
       size_t getNumberOfParameters() const override;
       void setActivation(std::span<const double> outputPrv, std::span<const double> params, std::span<double> activation) const override;
-      void backpropInit(std::span<const double> activatorValuesPrv, std::span<const double> dError_dWeightedAverageLast, std::span<double> dError_dParam) const override;
       void backpropagateError(std::span<const double> error, std::span<const double> params, std::span<double> errorPrv) const override;
-      void backpropagateParamDeriv(std::span<const double> errorCur, std::span<const double> activatorValuesPrv, std::span<double> dError_dParam) const override;
+      void backpropagateParamDeriv(std::span<const double> errorCur, std::span<const double> outputPrv, std::span<double> dCost_dParam) const override;
    private:
       size_t m_layerSizePrv;
       size_t m_layerSizeCur;
