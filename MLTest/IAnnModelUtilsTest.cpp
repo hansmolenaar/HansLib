@@ -192,6 +192,15 @@ TEST(IAnnModelUtilsTest, GeeksExample)
    ASSERT_DOUBLE_EQ(Utilities::Single(forwardResult->getOutput()), 0.66507363952475640);
 
    const std::vector<double> ideal{ 0.5 };
+
+   ML::AnnArray neuronError(ML::IAnnModelUtils::getLayerDimensions(model));
+   ML::IAnnModelUtils::setErrors(model, *forwardResult, ideal, parameterSet, neuronError);
+
+   const Functors::AreClose areClose(1.0e-10); // Values in article?
+   ASSERT_TRUE(areClose(neuronError.getValuesAt(0)[0], 0.0027275877458127758));
+   ASSERT_TRUE(areClose(neuronError.getValuesAt(0)[1], 0.0080714273160845482));
+   ASSERT_TRUE(areClose(neuronError.getValuesAt(1)[0], 0.036770267688329382));
+
    constexpr double learningRate = 1;
    ML::IAnnModelUtils::backPropagation(model, *forwardResult, ideal, learningRate, parameterSet);
 
@@ -251,7 +260,7 @@ TEST(IAnnModelUtilsTest, NeuroticExample)
    ASSERT_TRUE(areClose(parameterSet.at(0)[3], 0.39597));
 }
 
-TEST(IAnnModelUtilsTest, BiasedExampleFromBuggyPaper)
+TEST(IAnnModelUtilsTest, BuggedBiasedExample)
 {
    // See https://medium.com/@karna.sujan52/back-propagation-algorithm-numerical-solved-f60c6986b643
    const ML::AnnCostFunctionSE costFunction;
