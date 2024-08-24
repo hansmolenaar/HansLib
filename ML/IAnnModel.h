@@ -17,7 +17,7 @@ namespace ML
    public:
       virtual ~IAnnModel() = default;
       virtual std::span<const ML::IAnnLayer*> getLayers() const = 0;
-      virtual std::span<const ML::IAnnWeights*> getWeightedAverages() const = 0;
+      virtual std::span<const ML::IAnnWeights*> getWeights() const = 0;
       virtual const ML::IAnnCostFunction& getCostFunction() const = 0;
    };
 }

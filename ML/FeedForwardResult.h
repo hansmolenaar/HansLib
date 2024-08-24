@@ -10,7 +10,7 @@ namespace ML
    public:
       explicit FeedForwardResult(std::span<const double> input, std::span<const size_t> dimensions);
       std::span< double> getActivationAtModifiable(size_t n);
-      std::span< double> setOutputAt(size_t n);
+      std::span< double> getOutputAtModifiable(size_t n);
       std::span<const double> getActivationAt(size_t n) const override;
       std::span<const double> getOutputAt(size_t n) const override;
       std::span<const double> getOutput() const override;

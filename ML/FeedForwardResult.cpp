@@ -11,7 +11,7 @@ std::span< double> ML::FeedForwardResult::getActivationAtModifiable(size_t n)
    return m_activations.modifyValuesAt(n);
 }
 
-std::span< double> ML::FeedForwardResult::setOutputAt(size_t n)
+std::span< double> ML::FeedForwardResult::getOutputAtModifiable(size_t n)
 {
    return m_outputs.modifyValuesAt(n);
 }

@@ -11,7 +11,7 @@
 void ML::IAnnModelUtils::checkDimensions(const ML::IAnnModel& model)
 {
    const auto layers = model.getLayers();
-   const auto averages = model.getWeightedAverages();
+   const auto averages = model.getWeights();
 
    Utilities::MyAssert(layers.size() == averages.size());
    for (size_t layer = 0; layer < layers.size(); ++layer)
@@ -25,20 +25,20 @@ std::unique_ptr<ML::IFeedForwardResult> ML::IAnnModelUtils::feedForward(const IA
    auto result = std::make_unique< ML::FeedForwardResult>(input, getLayerDimensions(model));
 
    const auto layers = model.getLayers();
-   const auto averages = model.getWeightedAverages();
+   const auto averages = model.getWeights();
 
    Utilities::MyAssert(input.size() == averages.front()->getNumberOfNeuronsPrv());
    Utilities::MyAssert(averages.size() == parameterSet.getNumLayers());
 
    // Initialize
    averages.front()->setActivation(input, parameterSet.at(0), result->getActivationAtModifiable(0));
-   layers.front()->setActivatorFunction(result->getActivationAt(0), result->setOutputAt(0));
+   layers.front()->setActivatorFunction(result->getActivationAt(0), result->getOutputAtModifiable(0));
 
    // Propagate
    for (size_t n = 1; n < layers.size(); ++n)
    {
       averages[n]->setActivation(result->getOutputAt(n - 1), parameterSet.at(n), result->getActivationAtModifiable(n));
-      layers[n]->setActivatorFunction(result->getActivationAt(n), result->setOutputAt(n));
+      layers[n]->setActivatorFunction(result->getActivationAt(n), result->getOutputAtModifiable(n));
    }
    return std::unique_ptr<ML::IFeedForwardResult>(result.release());
 }
@@ -111,14 +111,14 @@ void ML::IAnnModelUtils::setParameterDerivatives(const ML::IAnnModel& model, con
    }
 
    const auto outputPrv = (layer > 0 ? forwardResult.getOutputAt(layer - 1) : forwardResult.getInput());
-   model.getWeightedAverages().back()->backpropInit(outputPrv, errorOutputLayer, parameterDerivs.getModifiable(layer));
+   model.getWeights().back()->backpropInit(outputPrv, errorOutputLayer, parameterDerivs.getModifiable(layer));
 
    while (layer > 0)
    {
       --layer;
       const auto errorNxtLayer = neuronError.getValuesAt(layer + 1);
       const auto errorCurLayer = neuronError.modifyValuesAt(layer);
-      model.getWeightedAverages()[layer + 1]->backpropagateError(errorNxtLayer, parameters.at(layer + 1), errorCurLayer);
+      model.getWeights()[layer + 1]->backpropagateError(errorNxtLayer, parameters.at(layer + 1), errorCurLayer);
 
       activationDeriv.resize(dimensions.at(layer));
       layers[layer]->setActivatorFunctionDeriv(forwardResult.getActivationAt(layer), activationDeriv);
@@ -126,6 +126,6 @@ void ML::IAnnModelUtils::setParameterDerivatives(const ML::IAnnModel& model, con
       std::transform(errorCurLayer.begin(), errorCurLayer.end(), activationDeriv.begin(), errorCurLayer.begin(), std::multiplies());
 
       const auto outputPrv = (layer > 0 ? forwardResult.getOutputAt(layer - 1) : forwardResult.getInput());
-      model.getWeightedAverages()[layer]->backpropagateParamDeriv(errorCurLayer, outputPrv, parameterDerivs.getModifiable(layer));
+      model.getWeights()[layer]->backpropagateParamDeriv(errorCurLayer, outputPrv, parameterDerivs.getModifiable(layer));
    }
 }
