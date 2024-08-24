@@ -118,10 +118,7 @@ void ML::IAnnModelUtils::setParameterDerivatives(const ML::IAnnModel& model, con
    setErrors(model, forwardResult, ideal, parameters, neuronError);
 
    // Initialize
-   size_t layer = dimensions.size() - 1;
-   const auto outputPrv = (layer > 0 ? forwardResult.getOutputAt(layer - 1) : forwardResult.getInput());
-   model.getWeights().back()->backpropInit(outputPrv, neuronError.getValuesAt(layer), parameterDerivs.getModifiable(layer));
-
+   size_t layer = dimensions.size();
    while (layer > 0)
    {
       --layer;

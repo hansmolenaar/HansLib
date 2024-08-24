@@ -50,4 +50,11 @@ void ML::AnnWeightsWithBias::backpropagateParamDeriv(std::span<const double> err
 {
    str::fill(dError_dParam, 0.0);
    m_matrixOnly.backpropagateParamDeriv(errorCur, activatorValuesPrv, std::span< double>(dError_dParam.begin(), m_matrixOnly.getNumberOfParameters()));
+
+   size_t pos = m_matrixOnly.getNumberOfParameters();
+   for (size_t neuronCur = 0; neuronCur < errorCur.size(); ++neuronCur)
+   {
+      dError_dParam[pos] = errorCur[neuronCur];
+      ++pos;
+   }
 }
