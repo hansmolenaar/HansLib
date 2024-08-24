@@ -23,12 +23,12 @@ size_t ML::AnnWeightsSingleBias::getNumberOfParameters() const
    return m_matrixOnly.getNumberOfParameters() + 1;
 }
 
-void ML::AnnWeightsSingleBias::transform(std::span<const double> activatorValuesPrv, std::span<const double> params, std::span<double> weightedAverage) const
+void ML::AnnWeightsSingleBias::setActivation(std::span<const double> outputPrv, std::span<const double> params, std::span<double> activation) const
 {
    Utilities::MyAssert(params.size() == getNumberOfParameters());
-   m_matrixOnly.transform(activatorValuesPrv, std::span<const double>(params.begin(), m_matrixOnly.getNumberOfParameters()), weightedAverage);
+   m_matrixOnly.setActivation(outputPrv, std::span<const double>(params.begin(), m_matrixOnly.getNumberOfParameters()), activation);
    const double bias = params.back();
-   std::transform(weightedAverage.begin(), weightedAverage.end(), weightedAverage.begin(), [bias](double x) {return x + bias; });
+   std::transform(activation.begin(), activation.end(), activation.begin(), [bias](double x) {return x + bias; });
 }
 
 void ML::AnnWeightsSingleBias::backpropInit(std::span<const double> activatorValuesPrv, std::span<const double> dError_dWeightedAverageLast, std::span<double> dError_dParam) const

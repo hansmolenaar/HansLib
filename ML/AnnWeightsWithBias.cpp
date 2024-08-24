@@ -21,13 +21,13 @@ size_t ML::AnnWeightsWithBias::getNumberOfParameters() const
    return m_matrixOnly.getNumberOfParameters() + m_matrixOnly.getNumberOfNeuronsCur();
 }
 
-void ML::AnnWeightsWithBias::transform(std::span<const double> activatorValuesPrv, std::span<const double> params, std::span<double> weightedAverage) const
+void ML::AnnWeightsWithBias::setActivation(std::span<const double> outputPrv, std::span<const double> params, std::span<double> activation) const
 {
    Utilities::MyAssert(params.size() == getNumberOfParameters());
    const size_t matrixSize = m_matrixOnly.getNumberOfParameters();
-   m_matrixOnly.transform(activatorValuesPrv, std::span<const double>(params.begin(), matrixSize), weightedAverage);
+   m_matrixOnly.setActivation(outputPrv, std::span<const double>(params.begin(), matrixSize), activation);
    const std::span<const double> bias(params.begin() + matrixSize, getNumberOfNeuronsCur());
-   std::transform(weightedAverage.begin(), weightedAverage.end(), bias.begin(), weightedAverage.begin(), [](double x, double y) {return x + y; });
+   std::transform(activation.begin(), activation.end(), bias.begin(), activation.begin(), [](double x, double y) {return x + y; });
 }
 
 

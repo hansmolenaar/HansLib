@@ -2,13 +2,13 @@
 
 #include "MyAssert.h"
 
-ML::FeedForwardResult::FeedForwardResult(std::span<const double> input, std::span<const size_t> dimensions) : m_outputs(dimensions), m_averages(dimensions), m_input(input.begin(), input.end())
+ML::FeedForwardResult::FeedForwardResult(std::span<const double> input, std::span<const size_t> dimensions) : m_outputs(dimensions), m_activations(dimensions), m_input(input.begin(), input.end())
 {
 }
 
-std::span< double> ML::FeedForwardResult::setWeightedInputAt(size_t n)
+std::span< double> ML::FeedForwardResult::getActivationAtModifiable(size_t n)
 {
-   return m_averages.modifyValuesAt(n);
+   return m_activations.modifyValuesAt(n);
 }
 
 std::span< double> ML::FeedForwardResult::setOutputAt(size_t n)
@@ -16,9 +16,9 @@ std::span< double> ML::FeedForwardResult::setOutputAt(size_t n)
    return m_outputs.modifyValuesAt(n);
 }
 
-std::span<const double> ML::FeedForwardResult::getWeightedInputAt(size_t n) const
+std::span<const double> ML::FeedForwardResult::getActivationAt(size_t n) const
 {
-   return m_averages.getValuesAt(n);
+   return m_activations.getValuesAt(n);
 }
 
 std::span<const double> ML::FeedForwardResult::getOutputAt(size_t n) const

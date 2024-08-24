@@ -23,16 +23,16 @@ size_t ML::AnnWeightsNoBias::getNumberOfParameters() const
    return m_layerSizePrv * m_layerSizeCur;
 }
 
-void ML::AnnWeightsNoBias::transform(std::span<const double> activatorValuesPrv, std::span<const double> params, std::span<double> weightedAverage) const
+void ML::AnnWeightsNoBias::setActivation(std::span<const double> outputPrv, std::span<const double> params, std::span<double> activation)  const
 {
-   Utilities::MyAssert(activatorValuesPrv.size() == m_layerSizePrv);
-   Utilities::MyAssert(weightedAverage.size() == m_layerSizeCur);
+   Utilities::MyAssert(outputPrv.size() == m_layerSizePrv);
+   Utilities::MyAssert(activation.size() == m_layerSizeCur);
    Utilities::MyAssert(params.size() == getNumberOfParameters());
 
    const double* paramsIter = params.data();
    for (size_t cur = 0; cur < m_layerSizeCur; ++cur)
    {
-      weightedAverage[cur] = std::inner_product(activatorValuesPrv.begin(), activatorValuesPrv.end(), paramsIter, 0.0);
+      activation[cur] = std::inner_product(outputPrv.begin(), outputPrv.end(), paramsIter, 0.0);
       paramsIter += m_layerSizePrv;
    }
 }

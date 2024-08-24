@@ -31,14 +31,14 @@ std::unique_ptr<ML::IFeedForwardResult> ML::IAnnModelUtils::feedForward(const IA
    Utilities::MyAssert(averages.size() == parameterSet.getNumLayers());
 
    // Initialize
-   averages.front()->transform(input, parameterSet.at(0), result->setWeightedInputAt(0));
-   layers.front()->setActivatorFunction(result->getWeightedInputAt(0), result->setOutputAt(0));
+   averages.front()->setActivation(input, parameterSet.at(0), result->getActivationAtModifiable(0));
+   layers.front()->setActivatorFunction(result->getActivationAt(0), result->setOutputAt(0));
 
    // Propagate
    for (size_t n = 1; n < layers.size(); ++n)
    {
-      averages[n]->transform(result->getOutputAt(n - 1), parameterSet.at(n), result->setWeightedInputAt(n));
-      layers[n]->setActivatorFunction(result->getWeightedInputAt(n), result->setOutputAt(n));
+      averages[n]->setActivation(result->getOutputAt(n - 1), parameterSet.at(n), result->getActivationAtModifiable(n));
+      layers[n]->setActivatorFunction(result->getActivationAt(n), result->setOutputAt(n));
    }
    return std::unique_ptr<ML::IFeedForwardResult>(result.release());
 }
@@ -52,7 +52,7 @@ std::vector<size_t> ML::IAnnModelUtils::getLayerDimensions(const ML::IAnnModel& 
    return result;
 }
 
-double ML::IAnnModelUtils::calculateError(const IAnnModel& model, const ML::IAnnDataSet& dataSet, const ML::IParameterSet& parameterSet)
+double ML::IAnnModelUtils::getCost(const IAnnModel& model, const ML::IAnnDataSet& dataSet, const ML::IParameterSet& parameterSet)
 {
    std::vector<std::unique_ptr<ML::IFeedForwardResult>> evaluations;
    std::vector<std::span<const double>> actuals;
@@ -104,7 +104,7 @@ void ML::IAnnModelUtils::setParameterDerivatives(const ML::IAnnModel& model, con
    auto errorOutputLayer = neuronError.modifyValuesAt(layer);
    const auto actual = forwardResult.getOutputAt(layer);
    activationDeriv.resize(dimensions.at(layer));
-   layers.back()->setActivatorFunctionDeriv(forwardResult.getWeightedInputAt(layer), activationDeriv);
+   layers.back()->setActivatorFunctionDeriv(forwardResult.getActivationAt(layer), activationDeriv);
    for (size_t n = 0; n < dimensions.at(layer); ++n)
    {
       errorOutputLayer[n] = (actual[n] - ideal[n]) * activationDeriv.at(n);
@@ -121,7 +121,7 @@ void ML::IAnnModelUtils::setParameterDerivatives(const ML::IAnnModel& model, con
       model.getWeightedAverages()[layer + 1]->backpropagateError(errorNxtLayer, parameters.at(layer + 1), errorCurLayer);
 
       activationDeriv.resize(dimensions.at(layer));
-      layers[layer]->setActivatorFunctionDeriv(forwardResult.getWeightedInputAt(layer), activationDeriv);
+      layers[layer]->setActivatorFunctionDeriv(forwardResult.getActivationAt(layer), activationDeriv);
       Utilities::MyAssert(activationDeriv.size() == errorCurLayer.size());
       std::transform(errorCurLayer.begin(), errorCurLayer.end(), activationDeriv.begin(), errorCurLayer.begin(), std::multiplies());
 

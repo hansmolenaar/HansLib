@@ -67,7 +67,7 @@ TEST(IAnnModelUtilsTest, FeedForwardBasicError)
    dataSet.addSample({ 0.6 }, { 0.4 });
    dataSet.addSample({ 0.7 }, { 0.7 });
 
-   ASSERT_DOUBLE_EQ(ML::IAnnModelUtils::calculateError(model, dataSet, parameterSet), 0.0825);
+   ASSERT_DOUBLE_EQ(ML::IAnnModelUtils::getCost(model, dataSet, parameterSet), 0.0825);
 }
 
 TEST(IAnnModelUtilsTest, FeedForwardSlightlyMoreComplex)
@@ -92,7 +92,7 @@ TEST(IAnnModelUtilsTest, FeedForwardSlightlyMoreComplex)
    dataSet.addSample({ 0.6, 0.6 * 0.6 }, { 0.4 });
    dataSet.addSample({ 0.7, 0.7 * 0.7 }, { 0.7 });
 
-   ASSERT_DOUBLE_EQ(ML::IAnnModelUtils::calculateError(model, dataSet, parameterSet), 0.0625895);
+   ASSERT_DOUBLE_EQ(ML::IAnnModelUtils::getCost(model, dataSet, parameterSet), 0.0625895);
 }
 
 
@@ -119,7 +119,7 @@ TEST(IAnnModelUtilsTest, FeedForwardWithHiddenLayer)
    dataSet.addSample({ 2, 3 }, { 1 });
 
    const double expect = 0.5 * std::pow((1 - 0.191), 2);
-   ASSERT_DOUBLE_EQ(ML::IAnnModelUtils::calculateError(model, dataSet, parameterSet), expect);
+   ASSERT_DOUBLE_EQ(ML::IAnnModelUtils::getCost(model, dataSet, parameterSet), expect);
 }
 
 TEST(IAnnModelUtilsTest, SetParameterDerivativesSuperSimple)
@@ -225,7 +225,7 @@ TEST(IAnnModelUtilsTest, NeuroticExample)
    ASSERT_TRUE(areClose(forwardResult->getOutput()[0], 0.73492));
    ASSERT_TRUE(areClose(forwardResult->getOutput()[1], 0.77955));
 
-   const double error = ML::IAnnModelUtils::calculateError(model, dataSet, parameterSet);
+   const double error = ML::IAnnModelUtils::getCost(model, dataSet, parameterSet);
    ASSERT_TRUE(areClose(error, 0.24908));
 
    ML::ParameterSet parameterDerivs = ML::ParameterSet::CreateUsingDimensions(parameterSet);

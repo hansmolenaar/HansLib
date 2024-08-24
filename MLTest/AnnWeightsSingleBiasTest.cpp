@@ -16,12 +16,12 @@ TEST(AnnWeightsSingleBiasTest, Two2One)
    ASSERT_EQ(wasb.getNumberOfNeuronsCur(), 1);
    ASSERT_EQ(wasb.getNumberOfParameters(), 3);
 
-   wasb.transform(dataIn1, params, y);
+   wasb.setActivation(dataIn1, params, y);
    ASSERT_DOUBLE_EQ(y[0], -0.3);
 
-   wasb.transform(dataIn2, params, y);
+   wasb.setActivation(dataIn2, params, y);
    ASSERT_DOUBLE_EQ(y[0], -0.3);
 
-   wasb.transform(dataIn3, params, y);
+   wasb.setActivation(dataIn3, params, y);
    ASSERT_DOUBLE_EQ(y[0], -1.8);
 }
