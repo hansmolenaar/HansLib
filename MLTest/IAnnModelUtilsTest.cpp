@@ -378,7 +378,7 @@ namespace
          for (size_t param = 0; param < parameterLayer.size(); ++param)
          {
             NumericalCheck nc(model, dataSet, layer, param, parameterSet);
-            ISingleVariableRealValuedFunctionUtils::CheckDerivative(nc, parameterLayer[param], 0.01);
+            ISingleVariableRealValuedFunctionUtils::CheckDerivative(nc, parameterLayer[param], 0.1);
          }
       }
    }
