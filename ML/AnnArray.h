@@ -9,8 +9,8 @@ namespace ML
    {
    public:
       explicit AnnArray(std::span<const size_t> dimensions);
-      std::span< double> modifyValuesAt(size_t n);
-      std::span<const double> getValuesAt(size_t n) const;
+      std::span< double> getValuesMutable(size_t n);
+      std::span<const double> getValues(size_t n) const;
       size_t getNumLayers() const;
    private:
       size_t getLayerSizeAt(size_t n) const;

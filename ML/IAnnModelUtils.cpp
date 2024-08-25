@@ -122,7 +122,7 @@ void ML::IAnnModelUtils::setParameterDerivatives(const ML::IAnnModel& model, con
    while (layer > 0)
    {
       --layer;
-      const auto errorCurLayer = neuronError.getValuesAt(layer);
+      const auto errorCurLayer = neuronError.getValues(layer);
       const auto outputPrv = (layer > 0 ? forwardResult.getOutputAt(layer - 1) : forwardResult.getInput());
       model.getWeights()[layer]->backpropagateParamDeriv(errorCurLayer, outputPrv, parameterDerivs.getModifiable(layer));
    }
@@ -142,7 +142,7 @@ void ML::IAnnModelUtils::setErrors(const IAnnModel& model, const ML::IFeedForwar
    // Initialize
    size_t layer = dimensions.size() - 1;
    const auto outputLayerSize = dimensions.back();
-   auto errorOutputLayer = neuronError.modifyValuesAt(layer);
+   auto errorOutputLayer = neuronError.getValuesMutable(layer);
    const auto actual = forwardResult.getOutputAt(layer);
    Utilities::MyAssert(errorOutputLayer.size() == outputLayerSize);
    Utilities::MyAssert(actual.size() == outputLayerSize);
@@ -153,8 +153,8 @@ void ML::IAnnModelUtils::setErrors(const IAnnModel& model, const ML::IFeedForwar
    while (layer > 0)
    {
       --layer;
-      const auto errorNxtLayer = neuronError.getValuesAt(layer + 1);
-      const auto errorCurLayer = neuronError.modifyValuesAt(layer);
+      const auto errorNxtLayer = neuronError.getValues(layer + 1);
+      const auto errorCurLayer = neuronError.getValuesMutable(layer);
       model.getWeights()[layer + 1]->backpropagateError(errorNxtLayer, parameters.at(layer + 1), errorCurLayer);
       TimesActivationFunctionDeriv(*layers[layer], forwardResult.getActivationAt(layer), activationDerivWork, errorCurLayer);
    }

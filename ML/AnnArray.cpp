@@ -24,12 +24,12 @@ size_t ML::AnnArray::getLayerSizeAt(size_t n) const
    return m_offset.at(n + 1) - m_offset.at(n);
 }
 
-std::span<const double> ML::AnnArray::getValuesAt(size_t n) const
+std::span<const double> ML::AnnArray::getValues(size_t n) const
 {
    return std::span<const double>(m_values.begin() + m_offset.at(n), getLayerSizeAt(n));
 }
 
-std::span< double> ML::AnnArray::modifyValuesAt(size_t n)
+std::span< double> ML::AnnArray::getValuesMutable(size_t n)
 {
    return std::span<double>(m_values.begin() + m_offset.at(n), getLayerSizeAt(n));
 }

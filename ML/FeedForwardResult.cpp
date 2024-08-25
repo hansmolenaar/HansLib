@@ -8,22 +8,22 @@ ML::FeedForwardResult::FeedForwardResult(std::span<const double> input, std::spa
 
 std::span< double> ML::FeedForwardResult::getActivationAtModifiable(size_t n)
 {
-   return m_activations.modifyValuesAt(n);
+   return m_activations.getValuesMutable(n);
 }
 
 std::span< double> ML::FeedForwardResult::getOutputAtModifiable(size_t n)
 {
-   return m_outputs.modifyValuesAt(n);
+   return m_outputs.getValuesMutable(n);
 }
 
 std::span<const double> ML::FeedForwardResult::getActivationAt(size_t n) const
 {
-   return m_activations.getValuesAt(n);
+   return m_activations.getValues(n);
 }
 
 std::span<const double> ML::FeedForwardResult::getOutputAt(size_t n) const
 {
-   return m_outputs.getValuesAt(n);
+   return m_outputs.getValues(n);
 }
 
 std::span<const double> ML::FeedForwardResult::getOutput() const

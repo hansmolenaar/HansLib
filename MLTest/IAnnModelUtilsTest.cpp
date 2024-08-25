@@ -289,9 +289,9 @@ TEST(IAnnModelUtilsTest, GeeksExample)
    ML::IAnnModelUtils::setErrors(model, *forwardResult, ideal, parameterSet, neuronError);
 
    const Functors::AreClose areClose(1.0e-10); // Values in article?
-   ASSERT_TRUE(areClose(neuronError.getValuesAt(0)[0], 0.0027275877458127758));
-   ASSERT_TRUE(areClose(neuronError.getValuesAt(0)[1], 0.0080714273160845482));
-   ASSERT_TRUE(areClose(neuronError.getValuesAt(1)[0], 0.036770267688329382));
+   ASSERT_TRUE(areClose(neuronError.getValues(0)[0], 0.0027275877458127758));
+   ASSERT_TRUE(areClose(neuronError.getValues(0)[1], 0.0080714273160845482));
+   ASSERT_TRUE(areClose(neuronError.getValues(1)[0], 0.036770267688329382));
 
    ML::ParameterSet parameterDerivs = ML::ParameterSet::CreateUsingDimensions(parameterSet);
    ML::IAnnModelUtils::setParameterDerivatives(model, *forwardResult, ideal, parameterSet, parameterDerivs);
@@ -391,9 +391,9 @@ TEST(IAnnModelUtilsTest, BuggedBiasedExample)
    ML::AnnArray neuronError(ML::IAnnModelUtils::getLayerDimensions(model));
    ML::IAnnModelUtils::setErrors(model, *forwardResult, dataSet.getNthOutput(0), parameterSet, neuronError);
 
-   ASSERT_TRUE(areClose(neuronError.getValuesAt(0)[1], 0.010451));
-   ASSERT_TRUE(areClose(neuronError.getValuesAt(0)[0], 0.0030481));
-   ASSERT_TRUE(areClose(neuronError.getValuesAt(1)[0], 0.1425));
+   ASSERT_TRUE(areClose(neuronError.getValues(0)[1], 0.010451));
+   ASSERT_TRUE(areClose(neuronError.getValues(0)[0], 0.0030481));
+   ASSERT_TRUE(areClose(neuronError.getValues(1)[0], 0.1425));
 
    DoCheckDerivatives(model, parameterSet, std::vector<double>{0.1, 0.2}, std::vector<double>{std::numbers::pi});
    DoCheckDerivatives(model, parameterSet, std::vector<double>{0.2, 0.4}, std::vector<double>{std::numbers::e});
