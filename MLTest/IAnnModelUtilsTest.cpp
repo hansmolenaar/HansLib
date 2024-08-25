@@ -13,7 +13,8 @@
 #include "Single.h"
 #include "AnnDataSet.h"
 #include "Functors.h"
-
+#include "IRealFunctionUtils.h"
+#include "IRealFunction.h"
 
 TEST(IAnnModelUtilsTest, FeedForwardBasic)
 {
@@ -207,10 +208,10 @@ TEST(IAnnModelUtilsTest, GeeksExample)
    ASSERT_TRUE(areClose(neuronError.getValuesAt(1)[0], 0.036770267688329382));
 
    ML::ParameterSet parameterDerivs = ML::ParameterSet::CreateUsingDimensions(parameterSet);
-   ML::IAnnModelUtils::setParameterDerivatives(model, *forwardResult,  ideal, parameterSet, parameterDerivs);
+   ML::IAnnModelUtils::setParameterDerivatives(model, *forwardResult, ideal, parameterSet, parameterDerivs);
    constexpr double expect = 0.00095465571103447143;
    ASSERT_TRUE(areClose(parameterDerivs.at(0)[0], expect));
-                                                  
+
    constexpr double learningRate = 1;
    ML::IAnnModelUtils::backPropagation(model, *forwardResult, ideal, learningRate, parameterSet);
    ASSERT_TRUE(areClose(parameterSet.at(0)[0], 0.2 - expect));
@@ -303,4 +304,80 @@ TEST(IAnnModelUtilsTest, BuggedBiasedExample)
    ASSERT_TRUE(areClose(neuronError.getValuesAt(0)[1], 0.010451));
    ASSERT_TRUE(areClose(neuronError.getValuesAt(0)[0], 0.0030481));
    ASSERT_TRUE(areClose(neuronError.getValuesAt(1)[0], 0.1425));
+}
+
+namespace
+{
+   class NumericalCheck // : public IRealFunction
+   {
+   public:
+      NumericalCheck(const ML::IAnnModel& model, const ML::IAnnDataSet& dataSet, size_t layer, size_t param, ML::IParameterSet& parameterSet);
+      double operator()(double param) const;
+      double operator()() const;
+
+   private:
+      const ML::IAnnModel& m_model;
+      const ML::IAnnDataSet& m_dataSet;
+      ML::IParameterSet& m_parameterSet;
+      size_t m_layer;
+      size_t m_param;
+   };
+
+   NumericalCheck::NumericalCheck(const ML::IAnnModel& model, const ML::IAnnDataSet& dataSet, size_t layer, size_t param, ML::IParameterSet& parameterSet) :
+      m_model(model), m_dataSet(dataSet), m_parameterSet(parameterSet), m_layer(layer), m_param(param)
+   {
+   }
+
+   double NumericalCheck::operator()(double parameterValue) const
+   {
+      ML::ParameterSet parameterSet = ML::ParameterSet::CopyFrom(m_parameterSet);
+      auto params = parameterSet.getModifiable(m_layer);
+      params[m_param] = parameterValue;
+      auto forwardResult = ML::IAnnModelUtils::feedForward(m_model, m_dataSet.getNthInput(0), parameterSet);
+      return Utilities::Single(forwardResult->getOutput());
+   }
+
+   double NumericalCheck::operator()()const 
+   {
+      auto forwardResult = ML::IAnnModelUtils::feedForward(m_model, m_dataSet.getNthInput(0), m_parameterSet);
+      return Utilities::Single(forwardResult->getOutput());
+   }
+}
+
+TEST(IAnnModelUtilsTest, NumericalCheckSingleBias)
+{
+   const ML::AnnCostFunctionSE costFunction;
+
+   const ML::AnnLayerLogistic hiddenLayer(3);
+   const ML::AnnLayerLogistic outputLayer(1);
+   std::vector<const ML::IAnnLayer*> layers{ &hiddenLayer, &outputLayer };
+
+   const ML::AnnWeightsSingleBias weightHidden(2, 3);
+   const ML::AnnWeightsSingleBias weightOutput(3, 1);
+   std::vector<const ML::IAnnWeights*> matrices{ &weightHidden, &weightOutput };
+
+   ML::ParameterSet parameterSet;
+   parameterSet.add({ 0.5, 0.3, 0.2, 0.15, 0.65, 0.4, 0.55 });
+   parameterSet.add({ 0.1, 0.3, 0.8, 0.45 });
+
+   ML::AnnDataSet dataSet(2, 1);
+   dataSet.addSample({ 0.5, 0.6 }, { 1.1 });
+
+   const ML::AnnModel model(layers, matrices, costFunction);
+   auto forwardResult = ML::IAnnModelUtils::feedForward(model, dataSet.getNthInput(0), parameterSet);
+
+   const Functors::AreClose areClose(1.0e-10);
+   constexpr double expect = 0.79055228375924536;
+   ASSERT_TRUE(areClose(Utilities::Single(forwardResult->getOutput()), expect));
+
+   NumericalCheck nc(model, dataSet, 0, 1, parameterSet);
+   ASSERT_TRUE(areClose(nc(), expect));
+   ASSERT_FALSE(areClose(nc(0.2), expect));
+   ASSERT_TRUE(areClose(nc(0.3), expect));
+
+   {
+      {
+         //CheckDerivatives(nc, std::vector<double>{0.3}, std::vector< const double> {0.1});
+      }
+   }
 }

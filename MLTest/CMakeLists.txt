@@ -5,7 +5,8 @@ add_executable(${PROJECT_NAME} ${SOURCES})
 
 target_include_directories(${PROJECT_NAME} PRIVATE
 	${CMAKE_INCLUDE_DIR}/ML
+	${CMAKE_INCLUDE_DIR}/Functions
 )
 
-target_link_libraries(${PROJECT_NAME} ML Utilities ${GTestLibs})
+target_link_libraries(${PROJECT_NAME} ML Utilities Functions ${GTestLibs})
 gtest_discover_tests(${PROJECT_NAME})

@@ -12,6 +12,11 @@ void ML::ParameterSet::add(std::vector<double> parametersForTransformation)
    m_allParameters.emplace_back(std::move(parametersForTransformation));
 }
 
+void ML::ParameterSet::add(std::span<const double> parametersForTransformation)
+{
+   add(std::vector<double>(parametersForTransformation.begin(), parametersForTransformation.end()));
+}
+
 size_t ML::ParameterSet::getNumLayers() const
 {
    return m_allParameters.size();
@@ -33,6 +38,17 @@ ML::ParameterSet ML::ParameterSet::CreateUsingDimensions(const ML::IParameterSet
    for (size_t layer = 0; layer < parameterSet.getNumLayers(); ++layer)
    {
       result.m_allParameters.emplace_back(std::vector<double>(parameterSet.at(layer).size()));
+   }
+   return result;
+}
+
+ML::ParameterSet ML::ParameterSet::CopyFrom(const ML::IParameterSet& parameterSet)
+{
+   ParameterSet result;
+   const size_t numLayers = parameterSet.getNumLayers();
+   for (size_t layer = 0; layer < numLayers; ++layer)
+   {
+      result.add(parameterSet.at(layer));
    }
    return result;
 }

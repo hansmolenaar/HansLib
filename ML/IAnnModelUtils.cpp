@@ -25,19 +25,19 @@ std::unique_ptr<ML::IFeedForwardResult> ML::IAnnModelUtils::feedForward(const IA
    auto result = std::make_unique< ML::FeedForwardResult>(input, getLayerDimensions(model));
 
    const auto layers = model.getLayers();
-   const auto averages = model.getWeights();
+   const auto weightsAll = model.getWeights();
 
-   Utilities::MyAssert(input.size() == averages.front()->getNumberOfNeuronsPrv());
-   Utilities::MyAssert(averages.size() == parameterSet.getNumLayers());
+   Utilities::MyAssert(input.size() == weightsAll.front()->getNumberOfNeuronsPrv());
+   Utilities::MyAssert(weightsAll.size() == parameterSet.getNumLayers());
 
    // Initialize
-   averages.front()->setActivation(input, parameterSet.at(0), result->getActivationAtModifiable(0));
+   weightsAll.front()->setActivation(input, parameterSet.at(0), result->getActivationAtModifiable(0));
    layers.front()->setActivatorFunction(result->getActivationAt(0), result->getOutputAtModifiable(0));
 
    // Propagate
    for (size_t n = 1; n < layers.size(); ++n)
    {
-      averages[n]->setActivation(result->getOutputAt(n - 1), parameterSet.at(n), result->getActivationAtModifiable(n));
+      weightsAll[n]->setActivation(result->getOutputAt(n - 1), parameterSet.at(n), result->getActivationAtModifiable(n));
       layers[n]->setActivatorFunction(result->getActivationAt(n), result->getOutputAtModifiable(n));
    }
    return std::unique_ptr<ML::IFeedForwardResult>(result.release());
