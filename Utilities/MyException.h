@@ -1,5 +1,7 @@
 #pragma once
+
 #include <string>
+#include <exception>
 
 struct MyException : std::exception {
    MyException(const std::string msg)

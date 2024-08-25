@@ -42,6 +42,10 @@ void ISingleVariableRealValuedFunctionUtils::CheckDerivative(ISingleVariableReal
       NonLinearSolverStatus status = NonLinearSolver(fie).Solve(rhs, sol, strategy);
       Utilities::MyAssert(status == NonLinearSolverStatus::Converged, "Problem with derivative! ");
    }
+   else
+   {
+      Utilities::MyAssert(false, "Degenerate derivative in starting point");
+   }
 }
 
 void ISingleVariableRealValuedFunctionUtils::ToFile(const ISingleVariableRealValuedFunction& fie, double xmin, double xmax, int nPoints, const std::string& functionName)

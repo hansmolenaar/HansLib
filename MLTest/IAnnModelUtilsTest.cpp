@@ -16,7 +16,6 @@
 #include "IRealFunctionUtils.h"
 #include "IRealFunction.h"
 #include "MyAssert.h"
-#include "IMatrix.h"
 #include "ISingleVariableRealValuedFunction.h"
 #include "ISingleVariableRealValuedFunctionUtils.h"
 
