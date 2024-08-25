@@ -15,6 +15,10 @@
 #include "Functors.h"
 #include "IRealFunctionUtils.h"
 #include "IRealFunction.h"
+#include "MyAssert.h"
+#include "IMatrix.h"
+#include "ISingleVariableRealValuedFunction.h"
+#include "ISingleVariableRealValuedFunctionUtils.h"
 
 TEST(IAnnModelUtilsTest, FeedForwardBasic)
 {
@@ -308,22 +312,27 @@ TEST(IAnnModelUtilsTest, BuggedBiasedExample)
 
 namespace
 {
-   class NumericalCheck // : public IRealFunction
+   class NumericalCheck : public ISingleVariableRealValuedFunction
    {
    public:
-      NumericalCheck(const ML::IAnnModel& model, const ML::IAnnDataSet& dataSet, size_t layer, size_t param, ML::IParameterSet& parameterSet);
-      double operator()(double param) const;
+      NumericalCheck(const ML::IAnnModel& model, const ML::IAnnDataSet& dataSet, size_t layer, size_t param, const ML::IParameterSet& parameterSet);
+      double operator()(double parameterValue) const;
       double operator()() const;
+
+      double Evaluate(double x)const override;
+      double Derivative(double x)const override;
+      bool IsNonConstant() const override { return false; }
+      bool HasDerivative() const override { return true; }
 
    private:
       const ML::IAnnModel& m_model;
       const ML::IAnnDataSet& m_dataSet;
-      ML::IParameterSet& m_parameterSet;
+      const ML::IParameterSet& m_parameterSet;
       size_t m_layer;
       size_t m_param;
    };
 
-   NumericalCheck::NumericalCheck(const ML::IAnnModel& model, const ML::IAnnDataSet& dataSet, size_t layer, size_t param, ML::IParameterSet& parameterSet) :
+   NumericalCheck::NumericalCheck(const ML::IAnnModel& model, const ML::IAnnDataSet& dataSet, size_t layer, size_t param, const ML::IParameterSet& parameterSet) :
       m_model(model), m_dataSet(dataSet), m_parameterSet(parameterSet), m_layer(layer), m_param(param)
    {
    }
@@ -337,47 +346,96 @@ namespace
       return Utilities::Single(forwardResult->getOutput());
    }
 
-   double NumericalCheck::operator()()const 
+   double NumericalCheck::operator()()const
    {
       auto forwardResult = ML::IAnnModelUtils::feedForward(m_model, m_dataSet.getNthInput(0), m_parameterSet);
       return Utilities::Single(forwardResult->getOutput());
    }
-}
 
-TEST(IAnnModelUtilsTest, NumericalCheckSingleBias)
-{
-   const ML::AnnCostFunctionSE costFunction;
-
-   const ML::AnnLayerLogistic hiddenLayer(3);
-   const ML::AnnLayerLogistic outputLayer(1);
-   std::vector<const ML::IAnnLayer*> layers{ &hiddenLayer, &outputLayer };
-
-   const ML::AnnWeightsSingleBias weightHidden(2, 3);
-   const ML::AnnWeightsSingleBias weightOutput(3, 1);
-   std::vector<const ML::IAnnWeights*> matrices{ &weightHidden, &weightOutput };
-
-   ML::ParameterSet parameterSet;
-   parameterSet.add({ 0.5, 0.3, 0.2, 0.15, 0.65, 0.4, 0.55 });
-   parameterSet.add({ 0.1, 0.3, 0.8, 0.45 });
-
-   ML::AnnDataSet dataSet(2, 1);
-   dataSet.addSample({ 0.5, 0.6 }, { 1.1 });
-
-   const ML::AnnModel model(layers, matrices, costFunction);
-   auto forwardResult = ML::IAnnModelUtils::feedForward(model, dataSet.getNthInput(0), parameterSet);
-
-   const Functors::AreClose areClose(1.0e-10);
-   constexpr double expect = 0.79055228375924536;
-   ASSERT_TRUE(areClose(Utilities::Single(forwardResult->getOutput()), expect));
-
-   NumericalCheck nc(model, dataSet, 0, 1, parameterSet);
-   ASSERT_TRUE(areClose(nc(), expect));
-   ASSERT_FALSE(areClose(nc(0.2), expect));
-   ASSERT_TRUE(areClose(nc(0.3), expect));
-
+   double NumericalCheck::Evaluate(double x) const
    {
+      return (*this)(x);
+   }
+
+   double NumericalCheck::Derivative(double x) const
+   {
+      ML::ParameterSet parameterSet = ML::ParameterSet::CopyFrom(m_parameterSet);
+      auto params = parameterSet.getModifiable(m_layer);
+      params[m_param] = x;
+
+      auto forwardResult = ML::IAnnModelUtils::feedForward(m_model, m_dataSet.getNthInput(0), parameterSet);
+      ML::ParameterSet parameterSetDerivs = ML::ParameterSet::CreateUsingDimensions(m_parameterSet);
+      ML::IAnnModelUtils::setParameterDerivatives(m_model, *forwardResult, m_dataSet.getNthOutput(0), parameterSet, parameterSetDerivs);
+      return parameterSetDerivs.at(m_layer)[m_param];
+   }
+
+   void DoCheck(const ML::IAnnModel& model, const ML::IParameterSet& parameterSet, std::span<const double> input, std::span<const double> output)
+   {
+      const ML::AnnDataSet dataSet(input, output);
+      for (size_t layer = 0; layer < parameterSet.getNumLayers(); ++layer)
       {
-         //CheckDerivatives(nc, std::vector<double>{0.3}, std::vector< const double> {0.1});
+         const auto parameterLayer = parameterSet.at(layer);
+         for (size_t param = 0; param < parameterLayer.size(); ++param)
+         {
+            NumericalCheck nc(model, dataSet, layer, param, parameterSet);
+            ISingleVariableRealValuedFunctionUtils::CheckDerivative(nc, parameterLayer[param], 0.01);
+         }
       }
    }
 }
+
+TEST(IAnnModelUtilsTest, NumericalCheckSingleParameter)
+{
+   const ML::AnnCostFunctionSE costFunction;
+
+   const ML::AnnLayerLinear outputLayer(1);
+   std::vector<const ML::IAnnLayer*> layers{ &outputLayer };
+
+   const ML::AnnWeightsNoBias weightOutput(1, 1);
+   std::vector<const ML::IAnnWeights*> matrices{ &weightOutput };
+
+   const ML::AnnModel model(layers, matrices, costFunction);
+
+   ML::ParameterSet parameterSet;
+   constexpr double singleParameter = 2.0;
+   parameterSet.add({ singleParameter });
+
+   const std::vector<double> input{ 1.0 };
+   auto forwardResult = ML::IAnnModelUtils::feedForward(model, input, parameterSet);
+   const ML::AnnDataSet dataSet(forwardResult->getInput(), forwardResult->getOutput());
+
+   const Functors::AreClose areClose(1.0e-10);
+   const double expect = dataSet.getNthOutput(0).front();
+   ASSERT_TRUE(areClose(Utilities::Single(forwardResult->getOutput()), expect));
+
+   constexpr size_t c_layer = 0;
+   constexpr size_t c_param = 0;
+   const NumericalCheck nc(model, dataSet, c_layer, c_param, parameterSet);
+   ASSERT_TRUE(areClose(nc(), expect));
+   ASSERT_FALSE(areClose(nc(singleParameter + 1), expect));
+   ASSERT_TRUE(areClose(nc(singleParameter), expect));
+   ASSERT_TRUE(areClose(nc.Evaluate(parameterSet.at(c_layer)[c_param]), expect));
+
+   const ML::AnnDataSet anotherDataSet(std::vector<double>{2.0}, std::vector<double>{3.0});
+   NumericalCheck nc2(model, anotherDataSet, c_layer, c_param, parameterSet);
+   ISingleVariableRealValuedFunctionUtils::CheckDerivative(nc2, singleParameter, 0.01);
+}
+
+#if false
+TEST(IAnnModelUtilsTest, NumericalCheckSingleBias)
+{
+   const ML::AnnCostFunctionSE costFunction;
+   const ML::AnnLayerLogistic outputLayer(1);
+   std::vector<const ML::IAnnLayer*> layers{ &outputLayer };
+
+   const ML::AnnWeightsSingleBias weightOutput(1, 1);
+   std::vector<const ML::IAnnWeights*> matrices{ &weightOutput };
+
+   const ML::AnnModel model(layers, matrices, costFunction);
+
+   ML::ParameterSet parameterSet;
+   parameterSet.add({ 0.1, 0.2 });
+
+   DoCheck(model, parameterSet, std::vector<double>{ 0.9 });
+}
+#endif

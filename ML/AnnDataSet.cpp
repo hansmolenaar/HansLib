@@ -6,12 +6,22 @@ ML::AnnDataSet::AnnDataSet(size_t sizeIn, size_t sizeOut) : m_sizeIn(sizeIn), m_
 {
 }
 
-void ML::AnnDataSet::addSample(std::initializer_list<double> input, std::initializer_list<double> output)
+ML::AnnDataSet::AnnDataSet(std::span<const double> input, std::span<const double> output) : AnnDataSet(input.size(), output.size())
+{
+   addSample(input, output);
+}
+
+void ML::AnnDataSet::addSample(std::span<const double> input, std::span<const double> output)
 {
    Utilities::MyAssert(input.size() == m_sizeIn);
    Utilities::MyAssert(output.size() == m_sizeOut);
-   m_allSamples.insert(m_allSamples.end(), input);
-   m_allSamples.insert(m_allSamples.end(), output);
+   m_allSamples.insert(m_allSamples.end(), input.begin(), input.end());
+   m_allSamples.insert(m_allSamples.end(), output.begin(), output.end());
+}
+
+void ML::AnnDataSet::addSample(std::initializer_list<double> input, std::initializer_list<double> output)
+{
+   addSample(std::span<const double>(input), std::span<const double>(output));
 }
 
 size_t ML::AnnDataSet::getNumberOfSamples() const
