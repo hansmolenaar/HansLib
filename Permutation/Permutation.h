@@ -17,6 +17,8 @@ public:
    int operator()(int) const;
    int getCardinality() const;
   
+   friend Permutation operator*(const Permutation&, const Permutation&);
+   friend bool operator==(const Permutation&, const Permutation&);
 private:
    explicit Permutation(std::vector<int>&&);
    std::vector<int> m_permut;

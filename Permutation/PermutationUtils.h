@@ -11,5 +11,3 @@ namespace PermutationUtils
    bool areUnique(std::span<const Permutation> permutations);
 }
 
-Permutation operator*(const Permutation&, const Permutation&);
-bool operator==(const Permutation&, const Permutation&);
