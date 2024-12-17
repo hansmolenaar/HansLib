@@ -29,7 +29,9 @@ public:
 
    static int getDistance(Vertex v1, Vertex v2);
    static std::vector<Permutation> getRotations();
+   static std::vector<Permutation> getReflections();
    static std::vector<Permutation> getSymmetries();
+   static std::vector<Permutation> getGroupSymmetries();
    static bool isIsometry(const Permutation& permutation);
 
 private:

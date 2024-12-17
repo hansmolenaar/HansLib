@@ -2,11 +2,13 @@
 #include "GroupTable.h"
 #include "IndexerRowMajor.h"
 #include "MyException.h"
-//#include "Permutation.h"
+#include "PermutationUtils.h"
 
 namespace
 {
    constexpr unsigned int nrDims = 3;
+   constexpr unsigned int numRotations = 23;
+
 
    const std::array<std::array<bool, nrDims>, CubeGroup::numVertices> Coordinates
    {
@@ -57,6 +59,17 @@ namespace
 
       Permutation::CreateFromDisjunctCycles(CubeGroup::numVertices, {{0, 4}, {3,7}, {1,6}, {2,5}}),                  //  2-fold,  edge 0-4
       Permutation::CreateFromDisjunctCycles(CubeGroup::numVertices, {{1, 5}, {2,6}, {0,7}, {3,4}}),                  //  2-fold,  edge 1-5
+
+      Permutation::CreateFromDisjunctCycles(CubeGroup::numVertices, {{0, 1}, {2,3}, {4,5}, {6,7}}),                  //  Reflection i
+      Permutation::CreateFromDisjunctCycles(CubeGroup::numVertices, {{0, 2}, {1,3}, {4,6}, {5,7}}),                  //  Reflection j
+      Permutation::CreateFromDisjunctCycles(CubeGroup::numVertices, {{0, 4}, {1,5}, {3,7}, {2,6}}),                  //  Reflection k
+
+      Permutation::CreateFromDisjunctCycles(CubeGroup::numVertices, {{2, 4}, {3,5}}),                                //  Reflection 0-1
+      Permutation::CreateFromDisjunctCycles(CubeGroup::numVertices, {{1, 4}, {3,6}}),                                //  Reflection 0-2
+      Permutation::CreateFromDisjunctCycles(CubeGroup::numVertices, {{0, 5}, {2,7}}),                                //  Reflection 1-3
+      Permutation::CreateFromDisjunctCycles(CubeGroup::numVertices, {{0, 6}, {1,7}}),                                //  Reflection 2-3
+      Permutation::CreateFromDisjunctCycles(CubeGroup::numVertices, {{1, 2}, {5,6}}),                                //  Reflection 0-4
+      Permutation::CreateFromDisjunctCycles(CubeGroup::numVertices, {{0, 3}, {4,7}}),                                //  Reflection 1-5
    };
 
 }
@@ -84,8 +97,19 @@ GroupElement CubeGroup::operator()(GroupElement, GroupElement) const
 std::vector<Permutation> CubeGroup::getRotations()
 {
    std::vector<Permutation> result;
-   result.reserve(9);
+   result.reserve(23);
    for (size_t n = 1; n < 24; ++n)
+   {
+      result.emplace_back(Symmetries[n]);
+   }
+   return result;
+}
+
+std::vector<Permutation> CubeGroup::getReflections()
+{
+   std::vector<Permutation> result;
+   result.reserve(9);
+   for (size_t n = 24; n < 33; ++n)
    {
       result.emplace_back(Symmetries[n]);
    }
@@ -122,6 +146,22 @@ bool CubeGroup::isIsometry(const Permutation& permutation)
    }
 
    return true;
+}
+
+std::vector<Permutation> CubeGroup::getGroupSymmetries()
+{
+   static std::vector<Permutation> s_permutations;
+   if (s_permutations.empty())
+   {
+      const auto& reflection = Symmetries.at(numRotations+1);
+      s_permutations.reserve(48);
+      std::copy_n(Symmetries.begin(), numRotations + 1, std::back_inserter(s_permutations));
+      for (size_t n = 0; n < numRotations + 1; ++n)
+      {
+         s_permutations.emplace_back(Symmetries.at(n)* reflection);
+      }
+   }
+   return s_permutations;
 }
 
 std::vector<Permutation> CubeGroup::getSymmetries()

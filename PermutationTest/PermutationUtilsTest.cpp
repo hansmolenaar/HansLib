@@ -39,6 +39,42 @@ TEST(PermutationUtilsTest, Equals)
    ASSERT_FALSE(perm2 == perm1);
 }
 
+TEST(PermutationUtilsTest, findIdentity)
+{
+   std::vector<Permutation> permutations;
+   ASSERT_FALSE(PermutationUtils::findIdentity(permutations));
+   permutations.emplace_back(Permutation::CreateFromCycle(5, std::vector<int>{2, 4}));
+   ASSERT_FALSE(PermutationUtils::findIdentity(permutations));
+   permutations.emplace_back(Permutation::CreateTrivial(5));
+   ASSERT_EQ(1, *PermutationUtils::findIdentity(permutations));
+}
+
+TEST(PermutationUtilsTest, areUnique)
+{
+   std::vector<Permutation> permutations;
+   ASSERT_TRUE(PermutationUtils::areUnique(permutations));
+
+   permutations.emplace_back(Permutation::CreateTrivial(2));
+   ASSERT_TRUE(PermutationUtils::areUnique(permutations));
+
+   permutations.emplace_back(Permutation::CreateTrivial(7));
+   ASSERT_TRUE(PermutationUtils::areUnique(permutations));
+
+   permutations.emplace_back(Permutation::Create(std::vector<int>{0, 2, 6, 5, 4, 3, 1}));
+   ASSERT_TRUE(PermutationUtils::areUnique(permutations));
+
+   const Permutation c126 = Permutation::CreateFromCycle(7, std::vector<int>{1, 2, 6});
+   permutations.emplace_back(c126);
+   ASSERT_TRUE(PermutationUtils::areUnique(permutations));
+
+   const Permutation c35 = Permutation::CreateFromCycle(7, std::vector<int>{3, 5});
+   permutations.emplace_back(c35);
+   ASSERT_TRUE(PermutationUtils::areUnique(permutations));
+
+   permutations.emplace_back(c35 * c126);
+   ASSERT_FALSE(PermutationUtils::areUnique(permutations));
+}
+
 
 
 

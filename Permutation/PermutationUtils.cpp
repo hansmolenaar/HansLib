@@ -15,6 +15,39 @@ bool PermutationUtils::IsPermutation(std::span<const int> permut)
    return str::all_of(isSet, [](int n) { return n != 0; });
 }
 
+std::optional<size_t> PermutationUtils::findIdentity(std::span<const Permutation> permutations)
+{
+   if (permutations.empty()) return {};
+   const Permutation identity = Permutation::CreateTrivial(permutations.front().getCardinality());
+   for (size_t n = 0; n < permutations.size(); ++n)
+   {
+      if (permutations[n] == identity)
+      {
+         return n;
+      }
+   }
+   return {};
+}
+
+bool PermutationUtils::areUnique(std::span<const Permutation> permutations)
+{
+   const size_t numPermutations = permutations.size();
+   for (size_t p1 = 0; p1 < numPermutations; ++p1)
+   {
+      for (size_t p2 = 0; p2 < numPermutations; ++p2)
+      {
+         if (p1 != p2)
+         {
+            if (permutations[p1] == permutations[p2])
+            {
+               return false;
+            }
+         }
+      }
+   }
+   return true;
+}
+
 Permutation operator*(const Permutation& perm1, const Permutation& perm0)
 {
    Utilities::MyAssert(perm1.getCardinality() == perm0.getCardinality());

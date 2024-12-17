@@ -12,6 +12,11 @@ std::unique_ptr<IFiniteGroup> GroupTable::Create(std::unique_ptr<IIndexer<GroupE
    return result;
 }
 
+std::unique_ptr<IFiniteGroup> GroupTable::CreateFromPermutations(const std::vector<Permutation>& permutations)
+{
+   throw MyException("CreateFromPermutationsNot yet implemented");
+}
+
 GroupTable::GroupTable(std::unique_ptr<IIndexer<GroupElement>>& indexer, const std::vector< GroupElement>& elements) :
    m_table(elements), m_indexer(std::move(indexer))
 {

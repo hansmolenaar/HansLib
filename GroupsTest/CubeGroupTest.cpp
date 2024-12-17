@@ -46,14 +46,23 @@ TEST(CubeGroupTest, getRotations)
    const size_t numRotations = 23;
    const auto rotations = CubeGroup::getRotations();
    ASSERT_EQ(numRotations, rotations.size());
-   for (size_t p1 = 0; p1 < numRotations; ++p1)
-   {
-      for (size_t p2 =0; p2 < numRotations; ++p2)
-      {
-         if (p1 != p2)
-         {
-            ASSERT_FALSE(rotations.at(p1) == rotations.at(p2));
-         }
-      }
-   }
+   ASSERT_TRUE(PermutationUtils::areUnique(rotations));
 }
+
+TEST(CubeGroupTest, getReflections)
+{
+   const size_t numReflections = 9;
+   const auto reflections = CubeGroup::getReflections();
+   ASSERT_EQ(numReflections, reflections.size());
+   ASSERT_TRUE(PermutationUtils::areUnique(reflections));
+}
+
+
+TEST(CubeGroupTest, getGroupSymmetries)
+{
+   const size_t numSymmetries = 48;
+   const auto symmetries = CubeGroup::getGroupSymmetries();
+   ASSERT_EQ(numSymmetries, symmetries.size());
+   ASSERT_TRUE(PermutationUtils::areUnique(symmetries));
+}
+
