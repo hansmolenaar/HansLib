@@ -2,12 +2,12 @@
 
 #include "PermutationUtils.h" 
 
-TEST(PermutationUtils, Trivial)
+TEST(PermutationUtilsTest, Trivial)
 {
    ASSERT_TRUE(PermutationUtils::IsPermutation(std::vector<int>{0, 1, 2, 3}));
 }
 
-TEST(PermutationUtils, Basics)
+TEST(PermutationUtilsTest, Basics)
 {
    ASSERT_TRUE(PermutationUtils::IsPermutation(std::vector<int>{3, 1, 2, 0}));
    ASSERT_TRUE(PermutationUtils::IsPermutation(std::vector<int>{0}));
@@ -17,7 +17,7 @@ TEST(PermutationUtils, Basics)
 }
 
 
-TEST(PermutaionTest, Times)
+TEST(PermutationUtilsTest, Times)
 {
    const Permutation permut = Permutation::Create(std::vector<int>{1, 0});
    const auto trivial = permut * permut;
@@ -27,7 +27,7 @@ TEST(PermutaionTest, Times)
 }
 
 
-TEST(PermutaionTest, Equals)
+TEST(PermutationUtilsTest, Equals)
 {
    const Permutation perm0 = Permutation::Create(std::vector<int>{1, 0});
    const Permutation perm1 = Permutation::Create(std::vector<int>{1, 0, 2});
@@ -38,6 +38,8 @@ TEST(PermutaionTest, Equals)
    ASSERT_FALSE(perm1 == perm0);
    ASSERT_FALSE(perm2 == perm1);
 }
+
+
 
 
 

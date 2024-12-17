@@ -2,6 +2,8 @@
 
 #include "Permutation.h" 
 #include "PermutationUtils.h"
+
+#include <array>
 TEST(PermutaionTest, Trivial)
 {
    const Permutation permut = Permutation::CreateTrivial(2);
@@ -59,3 +61,44 @@ TEST(PermutaionTest, TetSymmetry)
    ASSERT_TRUE(permut == permut_cycle);
 }
 
+
+TEST(PermutaionTest, Apply_1)
+{
+   const Permutation permut = Permutation::Create(std::vector<int>{1, 0});
+   const std::array<bool, 2> in = { false, true };
+   std::vector<bool> out(2);
+   permut.apply(in.begin(), out.begin());
+   ASSERT_TRUE(out.at(0));
+   ASSERT_FALSE(out.at(1));
+}
+
+TEST(PermutaionTest, CreateFromDisjunctCycles_1)
+{
+   const auto perm = Permutation::CreateFromDisjunctCycles(3, { { 1,2 } });
+   ASSERT_EQ(perm.getCardinality(), 3);
+   const auto expect = Permutation::Create(std::vector<int>{0, 2, 1});
+   ASSERT_TRUE(expect == perm);
+}
+
+TEST(PermutaionTest, CreateFromDisjunctCycles_2)
+{
+   const auto perm = Permutation::CreateFromDisjunctCycles(4, { { 0, 1, 3 } });
+   ASSERT_EQ(perm.getCardinality(), 4);
+   const auto expect = Permutation::Create(std::vector<int>{1, 3, 2, 0});
+   ASSERT_TRUE(expect == perm);
+}
+
+TEST(PermutaionTest, CreateFromDisjunctCycles_3)
+{
+   const auto perm = Permutation::CreateFromDisjunctCycles(4, { { 0, 2 }, {1, 3} });
+   ASSERT_EQ(perm.getCardinality(), 4);
+   const auto expect = Permutation::Create(std::vector<int>{2, 3, 0, 1});
+   ASSERT_TRUE(expect == perm);
+}
+
+TEST(PermutaionTest, CreateFromDisjunctCycles_4)
+{
+   const auto perm = Permutation::CreateFromDisjunctCycles(7, { { 1, 2, 6 }, {3, 5} });
+   const auto expect = Permutation::Create(std::vector<int>{0, 2, 6, 5, 4, 3, 1});
+   ASSERT_TRUE(expect == perm);
+}

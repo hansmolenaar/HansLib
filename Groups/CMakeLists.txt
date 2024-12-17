@@ -8,5 +8,6 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 	${CMAKE_INCLUDE_DIR}/Point
 	${CMAKE_INCLUDE_DIR}/Utilities
 	${CMAKE_INCLUDE_DIR}/Groups
+	${CMAKE_INCLUDE_DIR}/Permutation
 	${Boost_INCLUDE_DIRS}
 )

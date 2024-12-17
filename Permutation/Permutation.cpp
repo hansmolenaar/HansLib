@@ -6,8 +6,12 @@
 
 
 Permutation::Permutation(std::vector<int>&& permut) :
-   m_permut(permut)
+   m_permut(std::move(permut))
 {
+   if (!PermutationUtils::IsPermutation(m_permut))
+   {
+      throw MyException("Permutation is not a permutation!!");
+   }
 }
 
 Permutation Permutation::CreateTrivial(int cardinality)
@@ -50,4 +54,39 @@ Permutation Permutation::CreateFromCycle(int cardinality, std::span<const int> c
       if (permut.at(n) == -1) permut.at(n) = static_cast<int>(n);
    }
    return Permutation::Create(permut);
+}
+
+Permutation Permutation::CreateFromDisjunctCycles(int cardinality, std::initializer_list<std::initializer_list<int>> cycles)
+{
+   std::vector<int> perm(cardinality, -1);
+   for (const auto& cycle : cycles)
+   {
+      const auto minmax = str::minmax_element(cycle);
+      if (*minmax.min < 0) throw MyException("CreateFromDisjunctCycles min element out of range: " + std::to_string(*minmax.min));
+      if (*minmax.max >= cardinality) throw MyException("CreateFromDisjunctCycles max element out of range: " + std::to_string(*minmax.max));
+      int prev = -1;
+      for (int c : cycle)
+      {
+         if (prev != -1)
+         {
+            if (perm[prev] != -1) throw MyException("Permutation::CreateFromDisjunctCycles duplicate entry!");
+            perm[prev] = c;
+         }
+         prev = c;
+      }
+      if (perm[prev] != -1) throw MyException("Permutation::CreateFromDisjunctCycles duplicate entry!");
+      perm[prev] = *cycle.begin();
+   }
+   for (int n = 0; n < cardinality; ++n)
+   {
+      if (perm[n] == -1)
+      {
+         perm[n] = n;
+      }
+   }
+   if (!PermutationUtils::IsPermutation(perm))
+   {
+      throw MyException("Permutation::CreateFromDisjunctCycles not a permutation??");
+   }
+   return Permutation(std::move(perm));
 }

@@ -26,7 +26,6 @@ TEST(MatrixRotation3DTest, TestBase)
    ASSERT_NEAR(mat(1, 0), MathConstants::SQRT1_2, eps);
 }
 
-
 TEST(MatrixRotation3DTest, TestUnit)
 {
    const auto axisz = UnitVector3::TryCreate(std::array<double, 3>({ 1,1,1 }));
@@ -45,12 +44,10 @@ TEST(MatrixRotation3DTest, TestUnit)
    ASSERT_NEAR(mat(2, 1), 0.0, eps);
 }
 
-
-
 TEST(MatrixRotation3DTest, TestPermute)
 {
    const auto axisz = UnitVector3::TryCreate(std::array<double, 3>({ 1,1,1 }));
-   const auto& mat = MatrixRotation3D::Create(*axisz, 2*MathConstants::PI/3);
+   const auto& mat = MatrixRotation3D::Create(*axisz, 2 * MathConstants::PI / 3);
 
    const std::array<double, 3> vecin = { 1,2,3 };
    std::vector<double> vecout(3);
@@ -61,9 +58,3 @@ TEST(MatrixRotation3DTest, TestPermute)
    ASSERT_NEAR(vecout[1], 1.0, eps);
    ASSERT_NEAR(vecout[2], 2.0, eps);
 }
-
-
-
-
-
-
