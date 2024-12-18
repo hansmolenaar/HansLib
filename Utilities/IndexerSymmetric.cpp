@@ -8,14 +8,14 @@ IndexerSymmetric::IndexerSymmetric(int dim) : m_dim(dim)
 	Utilities::MyAssert(dim > 0);
 }
 
-int IndexerSymmetric::ToFlat(std::initializer_list<int> ijk) const
+size_t IndexerSymmetric::ToFlat(std::initializer_list<int> ijk) const
 {
 	Utilities::MyAssert(2 == ijk.size());
 	return ToFlat(*ijk.begin(), *(ijk.begin()+1));
 }
 
 
-int IndexerSymmetric::ToFlat(int row, int col) const
+size_t IndexerSymmetric::ToFlat(int row, int col) const
 {
 	Utilities::MyAssert(row >= 0 && col >= 0 && row < m_dim && col < m_dim);
 	if (row < col) 

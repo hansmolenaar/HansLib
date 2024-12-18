@@ -8,9 +8,9 @@ class IndexerSymmetric :public IIndexer<int>
 {
 public:
 	IndexerSymmetric(int dim);
-	int ToFlat(std::initializer_list<int> ijk) const override;
+	size_t ToFlat(std::initializer_list<int> ijk) const override;
 	int numberOfIndices() const override;
-	int ToFlat(int, int) const;
+	size_t ToFlat(int, int) const;
 
 private:
 	int m_dim;

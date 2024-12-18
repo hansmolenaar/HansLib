@@ -43,7 +43,7 @@ std::unique_ptr<IFiniteGroup> GroupFromOrbit::Create<N>(
          const auto found = std::find_if(orbit.begin(), orbit.end(), finder);
          if (found == orbit.end()) return {};
          const GroupElement g = static_cast<GroupElement>(std::distance(orbit.begin(), found));
-         const int pos = indexer->ToFlat({ g0,g1 });
+         const auto pos = indexer->ToFlat({ g0,g1 });
          elements.at(pos) = g;
       }
    }

@@ -9,8 +9,8 @@ class IndexerRowMajor :public IIndexer<I>
 {
 public:
 	IndexerRowMajor(I dimRow, I dimCol);
-	int ToFlat(std::initializer_list<I> ijk) const override;
-	int numberOfIndices() const override;
+	size_t ToFlat(std::initializer_list<I> ijk) const override;
+	I numberOfIndices() const override;
 	I GetRowDimension() const;
 	I GetColDimension() const;
 private:
@@ -19,7 +19,7 @@ private:
 };
 
 template <typename I>
-int IndexerRowMajor<I>::numberOfIndices() const
+I IndexerRowMajor<I>::numberOfIndices() const
 {
 	return 2;
 }
@@ -43,7 +43,7 @@ I IndexerRowMajor<I>::GetColDimension() const
 }
 
 template <typename I>
-int IndexerRowMajor<I>::ToFlat(std::initializer_list<I> ijk) const
+size_t IndexerRowMajor<I>::ToFlat(std::initializer_list<I> ijk) const
 {
 	Utilities::MyAssert(2 == ijk.size());
 

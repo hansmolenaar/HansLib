@@ -35,7 +35,7 @@ TEST(IndexerKelvinRepr3Test, TestErrors)
 TEST(IndexerKelvinRepr3Test, Tet2RowCol)
 {
    const IndexerKelvinRepr3 indexer;
-   for (int flat = 0; flat < 6; ++flat)
+   for (size_t flat = 0; flat < 6; ++flat)
    {
       int row;
       int col;

@@ -14,7 +14,7 @@ IndexerKelvinRepr3::IndexerKelvinRepr3()
    // Empty
 }
 
-int IndexerKelvinRepr3::ToFlat(std::initializer_list<int> ijk) const
+size_t IndexerKelvinRepr3::ToFlat(std::initializer_list<int> ijk) const
 {
    Utilities::MyAssert(2 == ijk.size());
    const int row = *ijk.begin();
@@ -44,15 +44,15 @@ int IndexerKelvinRepr3::ToFlat(std::initializer_list<int> ijk) const
 }
 
 
-void IndexerKelvinRepr3::ToRowCol(const int flat, int&row, int&col)
+void IndexerKelvinRepr3::ToRowCol(const size_t flat, int&row, int&col)
 {
    switch (flat)
    {
    case 0:
    case 1:
    case 2:
-      row = flat;
-      col = flat;
+      row = 2;
+      col = 2;
       break;
    case 3:
       row = 1;
