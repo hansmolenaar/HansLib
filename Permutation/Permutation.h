@@ -19,7 +19,11 @@ public:
 
    Entry operator()(Entry) const;
    Entry getCardinality() const;
+
+   // perm^order = id
+   Entry getOrder() const;
    Permutation getInverse() const;
+   Permutation getPower(int pow) const;
 
    friend Permutation operator*(const Permutation&, const Permutation&);
    friend bool operator==(const Permutation&, const Permutation&);

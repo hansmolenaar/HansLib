@@ -8,7 +8,7 @@
 Permutation::Permutation(std::vector<Entry>&& permut) :
    m_permut(std::move(permut))
 {
-   if (permut.size() >= std::numeric_limits<Entry>::max())
+   if (m_permut.size() >= std::numeric_limits<Entry>::max())
    {
       throw MyException("Permutation input too large");
    }
@@ -127,4 +127,28 @@ Permutation Permutation::getInverse() const
       inverse.at(m_permut.at(n)) = n;
    }
    return Create(inverse);
+}
+
+Permutation::Entry Permutation::getOrder() const
+{
+   Permutation perm = *this;
+   for (Entry result = 1; result < std::numeric_limits<Entry>::max(); ++result)
+   {
+      if (PermutationUtils::isIdentity(perm)) return result;
+      perm = perm * (*this);
+   }
+   throw MyException("Permutation::getOrder error");
+}
+
+Permutation Permutation::getPower(int pow) const
+{
+   if (pow == 0) return Permutation::CreateTrivial(getCardinality());
+   if (pow == 1) return *this;
+   if (pow < 0) return getInverse().getPower(-pow);
+   Permutation result = *this;
+   for (int n = 1; n < pow; ++n)
+   {
+      result = result * *this;
+   }
+   return result;
 }

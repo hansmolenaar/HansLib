@@ -155,3 +155,42 @@ TEST(PermutaionTest, getInverse_2)
    const auto expect = Permutation::Create(std::vector<Permutation::Entry> {  0, 3, 5, 9, 7, 1, 6, 8, 4, 2 });
    ASSERT_TRUE(inverse == expect);
 }
+
+TEST(PermutaionTest, getOrder_1)
+{
+   const auto perm = Permutation::CreateTrivial(7);
+   ASSERT_EQ(perm.getOrder(), 1);
+}
+
+TEST(PermutaionTest, getOrder_2)
+{
+   const auto perm = Permutation::CreateFromDisjunctCycles(5, { {0, 4, 1}, {2, 3} });
+   ASSERT_EQ(perm.getOrder(), 6);
+}
+
+TEST(PermutaionTest, getOrder_3)
+{
+   const auto perm = Permutation::CreateFromCycle(6, { {0, 1, 2, 3, 4, 5} });
+   ASSERT_EQ(perm.getOrder(), 6);
+}
+
+TEST(PermutaionTest, getPower_1)
+{
+   const auto perm = Permutation::CreateTrivial(7);
+   ASSERT_TRUE(PermutationUtils::isIdentity(perm.getPower(-2)));
+   ASSERT_TRUE(PermutationUtils::isIdentity(perm.getPower(-1)));
+   ASSERT_TRUE(PermutationUtils::isIdentity(perm.getPower(0)));
+   ASSERT_TRUE(PermutationUtils::isIdentity(perm.getPower(1)));
+   ASSERT_TRUE(PermutationUtils::isIdentity(perm.getPower(2)));
+}
+
+
+TEST(PermutaionTest, getPower_2)
+{
+   const auto perm = Permutation::CreateFromCycle(3, { {1, 2} });
+   ASSERT_TRUE(PermutationUtils::isIdentity(perm.getPower(-2)));
+   ASSERT_FALSE(PermutationUtils::isIdentity(perm.getPower(-1)));
+   ASSERT_TRUE(PermutationUtils::isIdentity(perm.getPower(0)));
+   ASSERT_FALSE(PermutationUtils::isIdentity(perm.getPower(1)));
+   ASSERT_TRUE(PermutationUtils::isIdentity(perm.getPower(2)));
+}

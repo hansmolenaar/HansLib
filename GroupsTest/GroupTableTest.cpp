@@ -3,6 +3,7 @@
 #include "GroupTable.h"
 #include "IFiniteGroupUtils.h"
 #include "IndexerRowMajor.h"
+#include "PermutationUtils.h"
 
 TEST(GroupTableTest, Trivial)
 {
@@ -46,7 +47,37 @@ TEST(GroupTableTest, CreateFromPermutations_0)
 
 TEST(GroupTableTest, CreateFromPermutations_1)
 {
-   const auto& [group, elements] = GroupTable::GeneratedBy(std::vector<Permutation>{Permutation::CreateFromCycle(2, std::vector<Permutation::Entry>{ 0,1 })});
+   const auto& [group, elements] = GroupTable::GeneratedBy(std::vector<Permutation>{Permutation::CreateFromCycle(2, std::vector<Permutation::Entry>{ 0, 1 })});
    ASSERT_EQ(2, elements.size());
    ASSERT_EQ(2, group->getOrder());
+   ASSERT_TRUE(PermutationUtils::isIdentity(elements.at(group->getIdentity())));
+}
+
+TEST(GroupTableTest, CreateFromPermutations_S3)
+{
+   const auto& [group, elements] = GroupTable::GeneratedBy(std::vector<Permutation>{
+      Permutation::CreateFromCycle(3, std::vector<Permutation::Entry>{ 0, 1 }),
+         Permutation::CreateFromCycle(3, std::vector<Permutation::Entry>{ 0, 1, 2 }) });
+   ASSERT_EQ(6, elements.size());
+   ASSERT_EQ(6, group->getOrder());
+   ASSERT_TRUE(PermutationUtils::isIdentity(elements.at(group->getIdentity())));
+}
+
+
+TEST(GroupTableTest, CreateFromPermutations_S4)
+{
+   const auto& [group, elements] = GroupTable::GeneratedBy(std::vector<Permutation>{
+         Permutation::CreateFromCycle(4, std::vector<Permutation::Entry>{ 0, 1 }),
+         Permutation::CreateFromCycle(4, std::vector<Permutation::Entry>{ 0, 1, 2, 3 }) });
+   ASSERT_EQ(8, elements.size());
+   ASSERT_EQ(8, group->getOrder());
+   ASSERT_TRUE(PermutationUtils::isIdentity(elements.at(group->getIdentity())));
+}
+
+TEST(GroupTableTest, CreateFromPermutations_5)
+{
+   const auto& [group, elements] = GroupTable::GeneratedBy(std::vector<Permutation>{Permutation::CreateTrivial(1)});
+   ASSERT_EQ(1, elements.size());
+   ASSERT_EQ(1, group->getOrder());
+   ASSERT_TRUE(PermutationUtils::isIdentity(elements.at(group->getIdentity())));
 }

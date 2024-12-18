@@ -18,8 +18,7 @@ bool PermutationUtils::IsPermutation(std::span<const Permutation::Entry> permut)
 std::optional<Permutation::Entry> PermutationUtils::findIdentity(std::span<const Permutation> permutations)
 {
    if (permutations.empty()) return {};
-   const Permutation identity = Permutation::CreateTrivial(permutations.front().getCardinality());
-   const auto found = str::find(permutations, identity);
+   const auto found = str::find_if(permutations, isIdentity);
    if (found == permutations.end()) return {};
    return static_cast<Permutation::Entry>(std::distance(permutations.begin(), found));
 }

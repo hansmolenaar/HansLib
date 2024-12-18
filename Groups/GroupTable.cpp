@@ -3,8 +3,24 @@
 #include "ToString.h"
 #include "IFiniteGroupUtils.h"
 #include "IndexerRowMajor.h"
+#include "PermutationUtils.h"
+#include "MultiIndex.h"
 
 #include <cmath>
+
+namespace
+{
+   std::vector<Permutation> getPowers(const Permutation& perm)
+   {
+      std::vector<Permutation> result{ perm };
+      while (!PermutationUtils::isIdentity(result.back()))
+      {
+         result.emplace_back(result.back() * perm);
+      }
+      return result;
+   }
+
+} // namespace
 
 std::unique_ptr<IFiniteGroup> GroupTable::Create(std::unique_ptr<IIndexer<GroupElement>>& indexer, const std::vector< GroupElement>& elements)
 {
@@ -18,23 +34,34 @@ std::pair<std::unique_ptr<IFiniteGroup>, std::vector<Permutation>> GroupTable::G
    std::unique_ptr<IIndexer<GroupElement>> indexer;
    if (permutationsIn.empty()) return { Create(indexer, std::vector< GroupElement>{}), std::vector<Permutation> {} };
 
+   const auto permSize = permutationsIn.front().getCardinality();
+   if (!str::all_of(permutationsIn, [&permSize](const Permutation& perm) {return perm.getCardinality() == permSize; }))
+   {
+      throw MyException("GroupTable::GeneratedBy all permutations should have size " + std::to_string(permSize));
+   }
+
    std::map<Permutation, GroupElement> permLookup;
+
+   std::vector<std::vector<Permutation>> allPowers;
    for (const auto& perm : permutationsIn)
    {
-      Permutation permPow = perm;
-      while (true)
-      {
-         if (!permLookup.emplace(permPow, static_cast<Permutation::Entry>(permLookup.size())).second) break;
-         permPow = permPow * perm;
-      }
+      allPowers.emplace_back(getPowers(perm));
+   }
 
-      const Permutation inverse = perm.getInverse();
-      permPow = inverse;
-      while (true)
+   std::vector<size_t> powerSize(allPowers.size());
+   str::transform(allPowers, powerSize.begin(), [](const std::vector<Permutation>& perms) {return perms.size(); });
+   const auto multiIndex = MultiIndex<size_t>::Create(powerSize);
+
+   std::vector<size_t> mi(permutationsIn.size());
+   for (size_t flat = 0; flat < multiIndex.getFlatSize(); ++flat)
+   {
+      multiIndex.toMultiplet(flat, mi);
+      Permutation p = allPowers.at(0).at(mi.at(0));
+      for (size_t n = 1; n < mi.size(); ++n)
       {
-         if (!permLookup.emplace(permPow, static_cast<Permutation::Entry>(permLookup.size())).second) break;
-         permPow = permPow * inverse;
+         p = p * allPowers.at(n).at(mi.at(n));;
       }
+      permLookup.try_emplace(p, static_cast<GroupElement>(permLookup.size()));
    }
 
    if (permLookup.size() >= std::numeric_limits<GroupElement>::max()) throw MyException("CreateFromPermutations too large: " + std::to_string(permutationsIn.size()));
