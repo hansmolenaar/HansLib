@@ -130,3 +130,28 @@ TEST(PermutaionTest, spaceShip)
    ASSERT_FALSE(perm1 == perm2);
    ASSERT_TRUE(perm1 != perm2);
 }
+
+
+TEST(PermutaionTest, getInverse_0)
+{
+   const auto perm = Permutation::CreateTrivial(0);
+   const auto inverse = perm.getInverse();
+   ASSERT_EQ(0, inverse.getCardinality());
+}
+
+TEST(PermutaionTest, getInverse_1)
+{
+   const auto perm = Permutation::CreateFromDisjunctCycles(7, { { 1, 2, 6 }, {3, 5} });
+   const auto inverse = perm.getInverse();
+   const auto id = perm * inverse;
+   ASSERT_EQ(perm.getCardinality(), id.getCardinality());
+   ASSERT_TRUE(PermutationUtils::isIdentity(id));
+}
+
+TEST(PermutaionTest, getInverse_2)
+{
+   const auto perm = Permutation::Create(std::vector<Permutation::Entry> {  0, 5, 9, 1, 8, 2, 6, 4, 7, 3 });
+   const auto inverse = perm.getInverse();
+   const auto expect = Permutation::Create(std::vector<Permutation::Entry> {  0, 3, 5, 9, 7, 1, 6, 8, 4, 2 });
+   ASSERT_TRUE(inverse == expect);
+}

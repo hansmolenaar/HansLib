@@ -9,5 +9,6 @@ namespace PermutationUtils
    bool IsPermutation(std::span<const Permutation::Entry>);
    std::optional<Permutation::Entry> findIdentity(std::span<const Permutation> permutations);
    bool areUnique(std::span<const Permutation> permutations);
+   bool isIdentity(const Permutation& permutation);
 }
 

@@ -39,6 +39,14 @@ TEST(GroupTableTest, UnhappyPath)
 
 TEST(GroupTableTest, CreateFromPermutations_0)
 {
-   const auto group = GroupTable::CreateFromPermutations(std::vector<Permutation>{});
+   const auto& [group, elements] = GroupTable::GeneratedBy(std::vector<Permutation>{});
+   ASSERT_TRUE(elements.empty());
    ASSERT_EQ(0, group->getOrder());
+}
+
+TEST(GroupTableTest, CreateFromPermutations_1)
+{
+   const auto& [group, elements] = GroupTable::GeneratedBy(std::vector<Permutation>{Permutation::CreateFromCycle(2, std::vector<Permutation::Entry>{ 0,1 })});
+   ASSERT_EQ(2, elements.size());
+   ASSERT_EQ(2, group->getOrder());
 }

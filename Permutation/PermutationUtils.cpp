@@ -34,3 +34,12 @@ bool PermutationUtils::areUnique(std::span<const Permutation> permutations)
    }
    return true;
 }
+
+bool PermutationUtils::isIdentity(const Permutation& permutation)
+{
+   for (Permutation::Entry n = 0; n < permutation.getCardinality(); ++n)
+   {
+      if (permutation(n) != n) return false;
+   }
+   return true;
+}

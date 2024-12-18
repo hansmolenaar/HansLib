@@ -117,3 +117,14 @@ std::strong_ordering operator<=>(const Permutation& perm0, const Permutation& pe
 {
    return perm0.m_permut <=> perm1.m_permut;
 }
+
+Permutation Permutation::getInverse() const
+{
+   const auto order = getCardinality();
+   std::vector<Entry> inverse(order);
+   for (Entry n = 0; n < order; ++n)
+   {
+      inverse.at(m_permut.at(n)) = n;
+   }
+   return Create(inverse);
+}

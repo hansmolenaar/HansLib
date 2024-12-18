@@ -19,6 +19,7 @@ public:
 
    Entry operator()(Entry) const;
    Entry getCardinality() const;
+   Permutation getInverse() const;
 
    friend Permutation operator*(const Permutation&, const Permutation&);
    friend bool operator==(const Permutation&, const Permutation&);

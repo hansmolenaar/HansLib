@@ -13,18 +13,37 @@ std::unique_ptr<IFiniteGroup> GroupTable::Create(std::unique_ptr<IIndexer<GroupE
    return result;
 }
 
-std::unique_ptr<IFiniteGroup> GroupTable::CreateFromPermutations(const std::vector<Permutation>& permutations)
+std::pair<std::unique_ptr<IFiniteGroup>, std::vector<Permutation>> GroupTable::GeneratedBy(const std::vector<Permutation>& permutationsIn)
 {
    std::unique_ptr<IIndexer<GroupElement>> indexer;
-   if (permutations.empty()) return Create(indexer, std::vector< GroupElement>{});
-   if (permutations.size() >= std::numeric_limits<GroupElement>::max()) throw MyException("CreateFromPermutations too large: " + std::to_string(permutations.size()));
-   const auto order = permutations.front().getCardinality();
-
+   if (permutationsIn.empty()) return { Create(indexer, std::vector< GroupElement>{}), std::vector<Permutation> {} };
 
    std::map<Permutation, GroupElement> permLookup;
-   for (GroupElement n = 0; n < permutations.size(); ++n)
+   for (const auto& perm : permutationsIn)
    {
-      if (!permLookup.emplace(permutations.at(n), n).second) throw MyException("GroupTable::CreateFromPermutations duplicate permutation");
+      Permutation permPow = perm;
+      while (true)
+      {
+         if (!permLookup.emplace(permPow, static_cast<Permutation::Entry>(permLookup.size())).second) break;
+         permPow = permPow * perm;
+      }
+
+      const Permutation inverse = perm.getInverse();
+      permPow = inverse;
+      while (true)
+      {
+         if (!permLookup.emplace(permPow, static_cast<Permutation::Entry>(permLookup.size())).second) break;
+         permPow = permPow * inverse;
+      }
+   }
+
+   if (permLookup.size() >= std::numeric_limits<GroupElement>::max()) throw MyException("CreateFromPermutations too large: " + std::to_string(permutationsIn.size()));
+   const auto order = static_cast<GroupElement>(permLookup.size());
+
+   std::vector<Permutation> permutations(order, Permutation::CreateTrivial(0));
+   for (const auto& itr : permLookup)
+   {
+      permutations.at(itr.second) = itr.first;
    }
 
    indexer = std::make_unique< IndexerRowMajor<GroupElement>>(order, order);
@@ -44,7 +63,7 @@ std::unique_ptr<IFiniteGroup> GroupTable::CreateFromPermutations(const std::vect
    {
       throw MyException("CreateFromPermutations incomplete");
    }
-   return Create(indexer, table);
+   return { Create(indexer, table), permutations };
 }
 
 GroupTable::GroupTable(std::unique_ptr<IIndexer<GroupElement>>& indexer, const std::vector< GroupElement>& elements) :
@@ -58,11 +77,16 @@ GroupTable::GroupTable(std::unique_ptr<IIndexer<GroupElement>>& indexer, const s
       throw MyException("GroupTable::GroupTable() size incorrect: " + ToString(m_table.size()));
    }
 
-   for (GroupElement elm = 0; elm < m_order; ++elm)
+   for (GroupElement elm = 0; elm < m_order && m_identity == GroupElementInvalid; ++elm)
    {
-      if (((*this)(0, elm) == 0))
+      m_identity = elm; // Try...
+      for (GroupElement tst = 0; tst < m_order; ++tst)
       {
-         m_identity = elm;
+         if (((*this)(tst, elm) != tst))
+         {
+            m_identity = GroupElementInvalid;
+            break;
+         }
       }
    }
    if (m_identity == GroupElementInvalid)
