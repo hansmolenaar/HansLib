@@ -7,15 +7,16 @@ DihedralGroup::DihedralGroup(std::unique_ptr<IFiniteGroup>& groupTable) :
 {
 }
 
-std::unique_ptr<IFiniteGroup> DihedralGroup::Create(int numVertices)
+std::unique_ptr<IFiniteGroup> DihedralGroup::Create(GroupElement numVertices)
 {
-   std::unique_ptr<IIndexer<GroupElement>> indexer = std::make_unique< IndexerRowMajor<GroupElement>>(2 * numVertices, 2 * numVertices);
-   std::vector<GroupElement> table(4 * numVertices * numVertices, -1);
+   const GroupElement tableDim = 2 * numVertices;
+   std::unique_ptr<IIndexer<GroupElement>> indexer = std::make_unique< IndexerRowMajor<GroupElement>>(tableDim, tableDim);
+   std::vector<GroupElement> table(4 * numVertices * numVertices, Permutation::InvalidEntry);
 
    // Ordering: first n rotations, then n refelections
-   for (int n0 = 0; n0 < numVertices; ++n0)
+   for (GroupElement n0 = 0; n0 < numVertices; ++n0)
    {
-      for (int n1 = 0; n1 < numVertices; ++n1)
+      for (GroupElement n1 = 0; n1 < numVertices; ++n1)
       {
          table.at(indexer->ToFlat({ n0, n1 })) = (n0 + n1) % numVertices;
          table.at(indexer->ToFlat({ numVertices + n0, numVertices + n1 })) = (numVertices + n0 - n1) % numVertices;
@@ -28,7 +29,7 @@ std::unique_ptr<IFiniteGroup> DihedralGroup::Create(int numVertices)
    return std::unique_ptr<IFiniteGroup>(new DihedralGroup(groupTable));
 }
 
-int DihedralGroup::getOrder() const
+GroupElement DihedralGroup::getOrder() const
 {
    return m_groupTable->getOrder();
 }

@@ -22,7 +22,7 @@ public:
 
    //static std::unique_ptr<CubeGroup> Create(int);
 
-   int getOrder() const override;
+   GroupElement getOrder() const override;
    GroupElement getIdentity() const override;
    GroupElement getInverse(GroupElement) const override;
    GroupElement operator()(GroupElement, GroupElement) const override;

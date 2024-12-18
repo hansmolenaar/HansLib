@@ -8,6 +8,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 	${CMAKE_INCLUDE_DIR}/Groups
 	${CMAKE_INCLUDE_DIR}/Point
 	${CMAKE_INCLUDE_DIR}/Utilities
+	${CMAKE_INCLUDE_DIR}/Permutation
 )
 
 target_link_libraries(${PROJECT_NAME} MatrixVector Utilities ${GTestLibs})

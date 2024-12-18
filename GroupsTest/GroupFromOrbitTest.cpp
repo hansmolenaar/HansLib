@@ -45,13 +45,13 @@ TEST(GroupFromOrbitTest, Di3)
    const ActionDihedral action(3);
    const PointClose<double, 2> areClose;
    std::vector<PointTransformationFromGroupAction<2>> transformationsFromAction; 
-   for (int n = 0; n < action.getGroup().getOrder(); ++n)
+   for (GroupElement n = 0; n < action.getGroup().getOrder(); ++n)
    {
       transformationsFromAction.emplace_back(PointTransformationFromGroupAction(action, n));
    }
 
    std::vector<const IPointTransformation<double, 2>* > transformations;
-   for (int n = 0; n < action.getGroup().getOrder(); ++n)
+   for (GroupElement n = 0; n < action.getGroup().getOrder(); ++n)
    {
       transformations.push_back(transformationsFromAction.data() + n);
    }

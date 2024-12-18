@@ -31,18 +31,18 @@ std::unique_ptr<IFiniteGroup> GroupFromOrbit::Create<N>(
    }
 
 
-   const int groupSize = static_cast<int>(transformations.size());
-   std::unique_ptr<IIndexer<GroupElement>> indexer = std::make_unique<IndexerRowMajor<int>>(groupSize, groupSize);
-   std::vector< GroupElement> elements(groupSize * groupSize, -1);
-   for (int g0 = 0; g0 < groupSize; ++g0)
+   const GroupElement groupSize = static_cast<GroupElement>(transformations.size());
+   std::unique_ptr<IIndexer<GroupElement>> indexer = std::make_unique<IndexerRowMajor<GroupElement>>(groupSize, groupSize);
+   std::vector< GroupElement> elements(groupSize * groupSize, Permutation::InvalidEntry);
+   for (GroupElement g0 = 0; g0 < groupSize; ++g0)
    {
-      for (int g1 = 0; g1 < groupSize; ++g1)
+      for (GroupElement g1 = 0; g1 < groupSize; ++g1)
       {
          const auto image = (*transformations.at(g0))(orbit.at(g1));
          const SamePointPredicate<double, N> finder{ predicate, image };
          const auto found = std::find_if(orbit.begin(), orbit.end(), finder);
          if (found == orbit.end()) return {};
-         const int g = static_cast<int>(std::distance(orbit.begin(), found));
+         const GroupElement g = static_cast<GroupElement>(std::distance(orbit.begin(), found));
          const int pos = indexer->ToFlat({ g0,g1 });
          elements.at(pos) = g;
       }

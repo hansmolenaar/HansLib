@@ -1,3 +1,4 @@
 #pragma once
 
-using GroupElement = int;
+#include "Permutation.h"
+using GroupElement = Permutation::Entry;

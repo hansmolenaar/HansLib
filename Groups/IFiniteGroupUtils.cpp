@@ -13,7 +13,7 @@ std::vector<GroupElement> IFiniteGroupUtils::GetElements(const IFiniteGroup& gro
 {
    const auto order = group.getOrder();
    std::vector < GroupElement> result(order);
-   for (auto n = 0; n < order; ++n)
+   for (GroupElement n = 0; n < order; ++n)
    {
       result.at(n) = n;
    }

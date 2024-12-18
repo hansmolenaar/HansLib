@@ -74,7 +74,7 @@ namespace
 
 }
 
-int CubeGroup::getOrder() const
+GroupElement CubeGroup::getOrder() const
 {
    return 48;
 }

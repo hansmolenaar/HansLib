@@ -6,7 +6,7 @@
 class Permutation
 {
 public:
-   using Entry = unsigned char;
+   using Entry = unsigned int;
    static constexpr Entry InvalidEntry = std::numeric_limits<Entry>::max();
 
    static Permutation CreateTrivial(Entry);

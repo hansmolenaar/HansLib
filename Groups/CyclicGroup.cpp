@@ -3,18 +3,18 @@
 #include "MyAssert.h"
 #include "IFiniteGroupUtils.h"
 
-std::unique_ptr<CyclicGroup> CyclicGroup::Create(int order)
+std::unique_ptr<CyclicGroup> CyclicGroup::Create(GroupElement order)
 {
    return std::unique_ptr<CyclicGroup>(new CyclicGroup(order));
 }
 
 
-CyclicGroup::CyclicGroup(int order) : m_order(order)
+CyclicGroup::CyclicGroup(GroupElement order) : m_order(order)
 {
    Utilities::MyAssert(m_order > 0);
 }
 
-int CyclicGroup::getOrder() const
+GroupElement CyclicGroup::getOrder() const
 {
    return m_order;
 }

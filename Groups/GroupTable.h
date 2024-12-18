@@ -13,7 +13,7 @@ public:
    static std::unique_ptr<IFiniteGroup> Create(std::unique_ptr<IIndexer<GroupElement>>&, const std::vector< GroupElement>&);
    static std::unique_ptr<IFiniteGroup> CreateFromPermutations( const std::vector<Permutation>& permutations);
 
-   int getOrder() const override;
+   GroupElement getOrder() const override;
    GroupElement getIdentity() const  override;
    GroupElement getInverse(GroupElement) const  override;
    GroupElement operator()(GroupElement, GroupElement) const  override;
@@ -23,7 +23,7 @@ private:
 
    std::vector<GroupElement>  m_table;
    std::unique_ptr<IIndexer<GroupElement>> m_indexer;
-   int m_order;
-   GroupElement m_identity = -1;
+   GroupElement m_order;
+   GroupElement m_identity = Permutation::InvalidEntry;
    std::vector<GroupElement> m_inverse;
 };

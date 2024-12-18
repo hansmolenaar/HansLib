@@ -7,9 +7,9 @@
 class DihedralGroup : public IFiniteGroup
 {
 public:
-   static std::unique_ptr<IFiniteGroup> Create(int);
+   static std::unique_ptr<IFiniteGroup> Create(GroupElement);
 
-   int getOrder() const override;
+   GroupElement getOrder() const override;
    GroupElement getIdentity() const override;
    GroupElement getInverse(GroupElement) const override;
    GroupElement operator()(GroupElement, GroupElement) const override;

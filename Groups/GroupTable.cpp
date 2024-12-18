@@ -26,7 +26,7 @@ std::unique_ptr<IFiniteGroup> GroupTable::CreateFromPermutations(const std::vect
 GroupTable::GroupTable(std::unique_ptr<IIndexer<GroupElement>>& indexer, const std::vector< GroupElement>& elements) :
    m_table(elements), m_indexer(std::move(indexer))
 {
-   m_order = static_cast<int>(std::round(std::sqrt(m_table.size())));
+   m_order = static_cast<GroupElement>(std::round(std::sqrt(m_table.size())));
    if (m_order * m_order != m_table.size())
    {
       throw MyException("GroupTable::GroupTable() size incorrect: " + ToString(m_table.size()));
@@ -39,7 +39,7 @@ GroupTable::GroupTable(std::unique_ptr<IIndexer<GroupElement>>& indexer, const s
          m_identity = elm;
       }
    }
-   if (m_identity == -1)
+   if (m_identity == Permutation::InvalidEntry) 
    {
       throw MyException("GroupTable::GroupTable no identity");
    }
@@ -57,7 +57,7 @@ GroupTable::GroupTable(std::unique_ptr<IIndexer<GroupElement>>& indexer, const s
    }
 }
 
-int GroupTable::getOrder() const
+GroupElement GroupTable::getOrder() const
 {
    return m_order;
 }
