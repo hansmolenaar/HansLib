@@ -14,6 +14,12 @@ std::unique_ptr<IFiniteGroup> GroupTable::Create(std::unique_ptr<IIndexer<GroupE
 
 std::unique_ptr<IFiniteGroup> GroupTable::CreateFromPermutations(const std::vector<Permutation>& permutations)
 {
+   auto comp = [&permutations](size_t x, size_t y) { return permutations[x] < permutations[y]; };
+   auto permLookup = std::map<size_t, size_t, decltype(comp)>(comp);
+   for (size_t n = 0; n < permutations.size(); ++n)
+   {
+      if (!permLookup.emplace(n, n).second) throw MyException("GroupTable::CreateFromPermutations duplicate permutation");
+   }
    throw MyException("CreateFromPermutationsNot yet implemented");
 }
 

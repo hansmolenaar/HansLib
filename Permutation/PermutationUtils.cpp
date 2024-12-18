@@ -3,26 +3,25 @@
 #include "MyAssert.h"
 #include <set>
 
-bool PermutationUtils::IsPermutation(std::span<const int> permut)
+bool PermutationUtils::IsPermutation(std::span<const Permutation::Entry> permut)
 {
-   if (permut.empty()) return false;
-   std::vector<int> isSet(permut.size(), 0);
+   std::vector<Permutation::Entry> isSet(permut.size(), Permutation::InvalidEntry);
    for (const auto& n : permut)
    {
       if (n >= isSet.size()) return false;
-      if (!isSet[n]) isSet[n] = 1;
+      if (isSet[n] == Permutation::InvalidEntry) isSet[n] = n;
       else return false;
    }
-   return str::all_of(isSet, [](int n) { return n != 0; });
+   return str::all_of(isSet, [](Permutation::Entry n) { return n != Permutation::InvalidEntry; });
 }
 
-std::optional<size_t> PermutationUtils::findIdentity(std::span<const Permutation> permutations)
+std::optional<Permutation::Entry> PermutationUtils::findIdentity(std::span<const Permutation> permutations)
 {
    if (permutations.empty()) return {};
    const Permutation identity = Permutation::CreateTrivial(permutations.front().getCardinality());
    const auto found = str::find(permutations, identity);
    if (found == permutations.end()) return {};
-   return std::distance(permutations.begin(), found);
+   return static_cast<Permutation::Entry>(std::distance(permutations.begin(), found));
 }
 
 bool PermutationUtils::areUnique(std::span<const Permutation> permutations)

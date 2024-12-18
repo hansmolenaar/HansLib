@@ -5,81 +5,85 @@
 #include "Defines.h"
 
 
-Permutation::Permutation(std::vector<int>&& permut) :
+Permutation::Permutation(std::vector<Entry>&& permut) :
    m_permut(std::move(permut))
 {
+   if (permut.size() >= std::numeric_limits<Entry>::max())
+   {
+      throw MyException("Permutation input too large");
+   }
    if (!PermutationUtils::IsPermutation(m_permut))
    {
       throw MyException("Permutation is not a permutation!!");
    }
 }
 
-Permutation Permutation::CreateTrivial(int cardinality)
+Permutation Permutation::CreateTrivial(Entry cardinality)
 {
-   Utilities::MyAssert(cardinality > 0);
-   std::vector<int> permut(cardinality);
-   for (int n = 0; n < cardinality; ++n) permut[n] = n;
+   std::vector<Entry> permut(cardinality);
+   std::iota(permut.begin(), permut.end(), static_cast<Entry>(0));
    return Permutation(std::move(permut));
 }
 
-int Permutation::operator()(int n) const
+Permutation::Entry Permutation::operator()(Entry n) const
 {
    return m_permut.at(n);
 }
 
-int Permutation::getCardinality() const
+Permutation::Entry Permutation::getCardinality() const
 {
-   return static_cast<int>(m_permut.size());
+   return static_cast<Entry>(m_permut.size());
 }
 
-Permutation Permutation::Create(std::span<const int> permutSpan)
+Permutation Permutation::Create(std::span<const Entry> permutSpan)
 {
-   std::vector<int> permut(permutSpan.begin(), permutSpan.end());
+   std::vector<Entry> permut(permutSpan.begin(), permutSpan.end());
    Utilities::MyAssert(PermutationUtils::IsPermutation(permut));
    return Permutation(std::move(permut));
 }
 
-Permutation Permutation::CreateFromCycle(int cardinality, std::span<const int> cycle)
+Permutation Permutation::CreateFromCycle(Entry cardinality, std::span<const Entry> cycle)
 {
-   Utilities::MyAssert(cardinality > 0);
-   const auto bounds = BoundsCheck<int>::Create(0, cardinality - 1);
+   if (cardinality == 0) return CreateTrivial(0);
+
+   const auto bounds = BoundsCheck<Entry>::Create(0, cardinality - 1);
    Utilities::MyAssert(str::all_of(cycle, bounds));
-   std::vector<int> permut(cardinality, -1);
-   for (size_t n = 0; n < cycle.size(); ++n)
+   std::vector<Entry> permut(cardinality, InvalidEntry);
+   for (Entry n = 0; n < cycle.size(); ++n)
    {
       permut.at(cycle[n]) = cycle[(n + 1) % cycle.size()];
    }
-   for (size_t n = 0; n < permut.size(); ++n)
+   for (Entry n = 0; n < permut.size(); ++n)
    {
-      if (permut.at(n) == -1) permut.at(n) = static_cast<int>(n);
+      if (permut.at(n) == InvalidEntry) permut.at(n) = n;
    }
    return Permutation::Create(permut);
 }
 
-Permutation Permutation::CreateFromDisjunctCycles(int cardinality, std::initializer_list<std::initializer_list<int>> cycles)
+Permutation Permutation::CreateFromDisjunctCycles(Entry cardinality, std::initializer_list<std::initializer_list<Entry>> cycles)
 {
-   std::vector<int> perm(cardinality, -1);
+   std::vector<Entry> perm(cardinality, InvalidEntry);
    for (const auto& cycle : cycles)
    {
       const auto minmax = str::minmax_element(cycle);
       if (*minmax.min < 0) throw MyException("CreateFromDisjunctCycles min element out of range: " + std::to_string(*minmax.min));
       if (*minmax.max >= cardinality) throw MyException("CreateFromDisjunctCycles max element out of range: " + std::to_string(*minmax.max));
-      int prev = -1;
+      Entry prev = InvalidEntry;
       for (int c : cycle)
       {
-         if (prev != -1)
+         if (prev != InvalidEntry)
          {
-            if (perm[prev] != -1) throw MyException("Permutation::CreateFromDisjunctCycles duplicate entry!");
+            if (perm[prev] != InvalidEntry) throw MyException("Permutation::CreateFromDisjunctCycles duplicate entry!");
             perm[prev] = c;
          }
          prev = c;
       }
-      if (perm[prev] != -1) throw MyException("Permutation::CreateFromDisjunctCycles duplicate entry!");
+      if (perm[prev] != InvalidEntry) throw MyException("Permutation::CreateFromDisjunctCycles duplicate entry!");
       perm[prev] = *cycle.begin();
    }
-   for (int n = 0; n < cardinality; ++n)
+   for (Entry n = 0; n < cardinality; ++n)
    {
-      if (perm[n] == -1)
+      if (perm[n] == InvalidEntry)
       {
          perm[n] = n;
       }
@@ -96,8 +100,8 @@ Permutation operator*(const Permutation& perm1, const Permutation& perm0)
 {
    Utilities::MyAssert(perm1.getCardinality() == perm0.getCardinality());
    const auto siz = perm0.getCardinality();
-   std::vector<int> permut(siz, -1);
-   for (auto n = 0; n < siz; ++n)
+   std::vector<Permutation::Entry> permut(siz, Permutation::InvalidEntry);
+   for (Permutation::Entry n = 0; n < siz; ++n)
    {
       permut.at(n) = perm1(perm0(n));
    }

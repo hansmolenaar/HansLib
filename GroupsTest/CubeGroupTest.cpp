@@ -32,7 +32,7 @@ TEST(CubeGroupTest, isIsometry)
 {
    auto perm = Permutation::CreateTrivial(CubeGroup::numVertices);
    ASSERT_TRUE(CubeGroup().isIsometry(perm));
-   perm = Permutation::CreateFromCycle(CubeGroup::numVertices, std::array<int, 2>{0, 1});
+   perm = Permutation::CreateFromCycle(CubeGroup::numVertices, std::array<Permutation::Entry, 2>{0, 1});
    ASSERT_FALSE(CubeGroup::isIsometry(perm));
 
    for (const auto& perm : CubeGroup::getSymmetries())

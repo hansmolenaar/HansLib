@@ -6,23 +6,26 @@
 class Permutation
 {
 public:
-   static Permutation CreateTrivial(int);
-   static Permutation Create(std::span<const int>);
-   static Permutation CreateFromCycle(int, std::span<const int>);
-   static Permutation CreateFromDisjunctCycles(int, std::initializer_list<std::initializer_list<int>> cyvles);
+   using Entry = unsigned char;
+   static constexpr Entry InvalidEntry = std::numeric_limits<Entry>::max();
+
+   static Permutation CreateTrivial(Entry);
+   static Permutation Create(std::span<const Entry>);
+   static Permutation CreateFromCycle(Entry, std::span<const Entry>);
+   static Permutation CreateFromDisjunctCycles(Entry, std::initializer_list<std::initializer_list<Entry>> cyvles);
 
    template<typename InputIt, typename OutputIt>
    void apply(InputIt first, OutputIt d_first) const;
 
-   int operator()(int) const;
-   int getCardinality() const;
+   Entry operator()(Entry) const;
+   Entry getCardinality() const;
 
    friend Permutation operator*(const Permutation&, const Permutation&);
    friend bool operator==(const Permutation&, const Permutation&);
    friend  std::strong_ordering operator<=>(const Permutation&, const Permutation&);
 private:
-   explicit Permutation(std::vector<int>&&);
-   std::vector<int> m_permut;
+   explicit Permutation(std::vector<Entry>&&);
+   std::vector<Entry> m_permut;
 };
 
 template<typename InputIt, typename OutputIt>

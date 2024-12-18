@@ -17,7 +17,7 @@
 class CubeGroup : public IFiniteGroup
 {
 public:
-   using Vertex = unsigned short;
+   using Vertex = Permutation::Entry;
    static constexpr Vertex numVertices = 8;
 
    //static std::unique_ptr<CubeGroup> Create(int);
