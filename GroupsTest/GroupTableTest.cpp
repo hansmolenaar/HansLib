@@ -4,7 +4,7 @@
 #include "IFiniteGroupUtils.h"
 #include "IndexerRowMajor.h"
 
-TEST(GroupTable, Trivial)
+TEST(GroupTableTest, Trivial)
 {
    std::unique_ptr<IIndexer<GroupElement>> indexer = std::make_unique< IndexerRowMajor<GroupElement>>(1, 1);
    std::vector<GroupElement> table{ 0 };
@@ -15,7 +15,7 @@ TEST(GroupTable, Trivial)
    ASSERT_EQ((*trivial)(0, 0), 0);
 }
 
-TEST(GroupTable, Id2)
+TEST(GroupTableTest, Id2)
 {
    std::unique_ptr<IIndexer<GroupElement>> indexer = std::make_unique< IndexerRowMajor<GroupElement>>(2, 2);
    std::vector<GroupElement> table(4, 1);
@@ -29,7 +29,7 @@ TEST(GroupTable, Id2)
 }
 
 
-TEST(GroupTable, UnhappyPath)
+TEST(GroupTableTest, UnhappyPath)
 {
    std::unique_ptr<IIndexer<GroupElement>> indexer = std::make_unique< IndexerRowMajor<GroupElement>>(2, 2);
    std::vector<GroupElement> table(4, 0);
@@ -37,4 +37,8 @@ TEST(GroupTable, UnhappyPath)
    ASSERT_ANY_THROW(GroupTable::Create(indexer, table));
 }
 
-
+TEST(GroupTableTest, CreateFromPermutations_0)
+{
+   const auto group = GroupTable::CreateFromPermutations(std::vector<Permutation>{});
+   ASSERT_EQ(0, group->getOrder());
+}

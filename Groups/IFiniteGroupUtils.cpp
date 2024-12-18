@@ -23,7 +23,7 @@ std::vector<GroupElement> IFiniteGroupUtils::GetElements(const IFiniteGroup& gro
 void IFiniteGroupUtils::CheckGroupAxioms(const IFiniteGroup& group)
 {
    const int order = group.getOrder();
-   Utilities::MyAssert(order > 0);
+   if (order == 0) return;
 
    const auto& elements = GetElements(group);
 

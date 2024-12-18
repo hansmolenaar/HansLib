@@ -24,6 +24,6 @@ private:
    std::vector<GroupElement>  m_table;
    std::unique_ptr<IIndexer<GroupElement>> m_indexer;
    GroupElement m_order;
-   GroupElement m_identity = Permutation::InvalidEntry;
+   GroupElement m_identity = GroupElementInvalid;
    std::vector<GroupElement> m_inverse;
 };

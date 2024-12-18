@@ -46,12 +46,12 @@ TEST(Indexer2Test, FromFlat)
 TEST(Indexer2Test, RoundTrip)
 {
    const int np = 20;
-   std::set<int> flats;
+   std::set<size_t> flats;
    for (int i = 0; i < np; ++i)
    {
       for (int j = 0; j < np; ++j)
       {
-         const int flat = Indexer2<int>::ToFlat(i, j);
+         const auto flat = Indexer2<int>::ToFlat(i, j);
          flats.insert(flat);
          const auto rv = Indexer2<int>::FromFlat(flat);
          ASSERT_EQ(rv[0], i);

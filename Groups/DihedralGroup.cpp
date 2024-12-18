@@ -11,7 +11,7 @@ std::unique_ptr<IFiniteGroup> DihedralGroup::Create(GroupElement numVertices)
 {
    const GroupElement tableDim = 2 * numVertices;
    std::unique_ptr<IIndexer<GroupElement>> indexer = std::make_unique< IndexerRowMajor<GroupElement>>(tableDim, tableDim);
-   std::vector<GroupElement> table(4 * numVertices * numVertices, Permutation::InvalidEntry);
+   std::vector<GroupElement> table(4 * numVertices * numVertices, GroupElementInvalid);
 
    // Ordering: first n rotations, then n refelections
    for (GroupElement n0 = 0; n0 < numVertices; ++n0)

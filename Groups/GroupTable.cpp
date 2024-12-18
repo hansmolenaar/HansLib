@@ -2,6 +2,7 @@
 #include "MyAssert.h"
 #include "ToString.h"
 #include "IFiniteGroupUtils.h"
+#include "IndexerRowMajor.h"
 
 #include <cmath>
 
@@ -14,19 +15,44 @@ std::unique_ptr<IFiniteGroup> GroupTable::Create(std::unique_ptr<IIndexer<GroupE
 
 std::unique_ptr<IFiniteGroup> GroupTable::CreateFromPermutations(const std::vector<Permutation>& permutations)
 {
-   auto comp = [&permutations](size_t x, size_t y) { return permutations[x] < permutations[y]; };
-   auto permLookup = std::map<size_t, size_t, decltype(comp)>(comp);
-   for (size_t n = 0; n < permutations.size(); ++n)
+   std::unique_ptr<IIndexer<GroupElement>> indexer;
+   if (permutations.empty()) return Create(indexer, std::vector< GroupElement>{});
+   if (permutations.size() >= std::numeric_limits<GroupElement>::max()) throw MyException("CreateFromPermutations too large: " + std::to_string(permutations.size()));
+   const auto order = permutations.front().getCardinality();
+
+
+   std::map<Permutation, GroupElement> permLookup;
+   for (GroupElement n = 0; n < permutations.size(); ++n)
    {
-      if (!permLookup.emplace(n, n).second) throw MyException("GroupTable::CreateFromPermutations duplicate permutation");
+      if (!permLookup.emplace(permutations.at(n), n).second) throw MyException("GroupTable::CreateFromPermutations duplicate permutation");
    }
-   throw MyException("CreateFromPermutationsNot yet implemented");
+
+   indexer = std::make_unique< IndexerRowMajor<GroupElement>>(order, order);
+   std::vector<GroupElement> table(order * order, GroupElementInvalid);
+
+   for (GroupElement n0 = 0; n0 < permutations.size(); ++n0)
+   {
+      for (GroupElement n1 = 0; n1 < permutations.size(); ++n1)
+      {
+         const auto composition = permutations.at(n0) * permutations.at(n1);
+         const auto pos = indexer->ToFlat({ n0, n1 });
+         table.at(pos) = permLookup.at(composition);
+      }
+   }
+
+   if (str::any_of(table, [](GroupElement g) {return g == GroupElementInvalid; }))
+   {
+      throw MyException("CreateFromPermutations incomplete");
+   }
+   return Create(indexer, table);
 }
 
 GroupTable::GroupTable(std::unique_ptr<IIndexer<GroupElement>>& indexer, const std::vector< GroupElement>& elements) :
    m_table(elements), m_indexer(std::move(indexer))
 {
    m_order = static_cast<GroupElement>(std::round(std::sqrt(m_table.size())));
+   if (m_order == 0) return;
+
    if (m_order * m_order != m_table.size())
    {
       throw MyException("GroupTable::GroupTable() size incorrect: " + ToString(m_table.size()));
@@ -39,7 +65,7 @@ GroupTable::GroupTable(std::unique_ptr<IIndexer<GroupElement>>& indexer, const s
          m_identity = elm;
       }
    }
-   if (m_identity == Permutation::InvalidEntry) 
+   if (m_identity == GroupElementInvalid)
    {
       throw MyException("GroupTable::GroupTable no identity");
    }

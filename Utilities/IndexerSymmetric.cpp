@@ -3,32 +3,32 @@
 
 #include <tuple>
 
-IndexerSymmetric::IndexerSymmetric(int dim) : m_dim(dim)
+IndexerSymmetric::IndexerSymmetric(unsigned int dim) : m_dim(dim)
 {
-	Utilities::MyAssert(dim > 0);
+   Utilities::MyAssert(dim > 0);
 }
 
-size_t IndexerSymmetric::ToFlat(std::initializer_list<int> ijk) const
+size_t IndexerSymmetric::ToFlat(std::initializer_list<unsigned int> ijk) const
 {
-	Utilities::MyAssert(2 == ijk.size());
-	return ToFlat(*ijk.begin(), *(ijk.begin()+1));
+   Utilities::MyAssert(2 == ijk.size());
+   return ToFlat(*ijk.begin(), *(ijk.begin() + 1));
 }
 
 
-size_t IndexerSymmetric::ToFlat(int row, int col) const
+size_t IndexerSymmetric::ToFlat(unsigned int row, unsigned int col) const
 {
-	Utilities::MyAssert(row >= 0 && col >= 0 && row < m_dim && col < m_dim);
-	if (row < col) 
-	{
-		return col * (col + 1) / 2 + row;
-	}
-	else
-	{
-		return row * (row + 1) / 2 + col;
-	}
+   Utilities::MyAssert(row >= 0 && col >= 0 && row < m_dim && col < m_dim);
+   if (row < col)
+   {
+      return col * (col + 1) / 2 + row;
+   }
+   else
+   {
+      return row * (row + 1) / 2 + col;
+   }
 }
 
-int IndexerSymmetric::numberOfIndices() const
+unsigned int IndexerSymmetric::numberOfIndices() const
 {
-	return 2;
+   return 2;
 }

@@ -4,15 +4,15 @@
 #include <vector>
 
 
-class IndexerSymmetric :public IIndexer<int>
+class IndexerSymmetric :public IIndexer<unsigned int>
 {
 public:
-	IndexerSymmetric(int dim);
-	size_t ToFlat(std::initializer_list<int> ijk) const override;
-	int numberOfIndices() const override;
-	size_t ToFlat(int, int) const;
+   IndexerSymmetric(unsigned int dim);
+   size_t ToFlat(std::initializer_list<unsigned int> ijk) const override;
+   unsigned int numberOfIndices() const override;
+   size_t ToFlat(unsigned int, unsigned int) const;
 
 private:
-	int m_dim;
+   unsigned int m_dim;
 };
 

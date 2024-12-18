@@ -44,15 +44,15 @@ size_t IndexerKelvinRepr3::ToFlat(std::initializer_list<int> ijk) const
 }
 
 
-void IndexerKelvinRepr3::ToRowCol(const size_t flat, int&row, int&col)
+void IndexerKelvinRepr3::ToRowCol(const size_t flat, int& row, int& col)
 {
    switch (flat)
    {
    case 0:
    case 1:
    case 2:
-      row = 2;
-      col = 2;
+      row = static_cast<int>(flat);
+      col = static_cast<int>(flat);
       break;
    case 3:
       row = 1;

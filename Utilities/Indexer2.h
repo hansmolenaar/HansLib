@@ -14,12 +14,12 @@ template <typename T>
 class Indexer2 \
 {
 public:
-   static T ToFlat(T i, T j);
-   static std::array<T, 2> FromFlat(T flat);
+   static size_t ToFlat(T i, T j);
+   static std::array<T, 2> FromFlat(size_t flat);
 };
 
 template <typename T>
-T Indexer2<T>::ToFlat(T i, T j)
+size_t Indexer2<T>::ToFlat(T i, T j)
 {
    Utilities::MyAssert(std::min(i, j) >= 0);
    if (j >= i) return j * j + i;
@@ -28,13 +28,12 @@ T Indexer2<T>::ToFlat(T i, T j)
 
 
 template <typename T>
-std::array<T, 2> Indexer2<T>::FromFlat(T flat)
+std::array<T, 2> Indexer2<T>::FromFlat(size_t flat)
 {
-   Utilities::MyAssert(flat >= 0);
    // add something to avoid round-off problems
    const double md = std::floor(std::sqrt(flat + 0.1));
    const T m = static_cast<T>(md);
    const T diag = m * m + m;
-   if (flat <= diag) return std::array<T, 2>{flat - m * m, m};
-   return std::array<T, 2>{m, m* m + 2 * m - flat};
+   if (flat <= diag) return std::array<T, 2>{static_cast<T>(flat - m * m), m};
+   return std::array<T, 2>{m, static_cast<T>(m* m + 2 * m - flat)};
 }

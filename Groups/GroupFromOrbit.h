@@ -33,7 +33,7 @@ std::unique_ptr<IFiniteGroup> GroupFromOrbit::Create<N>(
 
    const GroupElement groupSize = static_cast<GroupElement>(transformations.size());
    std::unique_ptr<IIndexer<GroupElement>> indexer = std::make_unique<IndexerRowMajor<GroupElement>>(groupSize, groupSize);
-   std::vector< GroupElement> elements(groupSize * groupSize, Permutation::InvalidEntry);
+   std::vector< GroupElement> elements(groupSize * groupSize, GroupElementInvalid);
    for (GroupElement g0 = 0; g0 < groupSize; ++g0)
    {
       for (GroupElement g1 = 0; g1 < groupSize; ++g1)
