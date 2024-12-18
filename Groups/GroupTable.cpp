@@ -7,6 +7,7 @@
 #include "MultiIndex.h"
 
 #include <cmath>
+#include <set>
 
 namespace
 {
@@ -34,43 +35,41 @@ std::pair<std::unique_ptr<IFiniteGroup>, std::vector<Permutation>> GroupTable::G
    std::unique_ptr<IIndexer<GroupElement>> indexer;
    if (permutationsIn.empty()) return { Create(indexer, std::vector< GroupElement>{}), std::vector<Permutation> {} };
 
-   const auto permSize = permutationsIn.front().getCardinality();
-   if (!str::all_of(permutationsIn, [&permSize](const Permutation& perm) {return perm.getCardinality() == permSize; }))
+   std::set<Permutation> basis;
+   for (const auto& p : permutationsIn)
    {
-      throw MyException("GroupTable::GeneratedBy all permutations should have size " + std::to_string(permSize));
+      basis.insert(p);
+      basis.insert(p.getInverse());
    }
 
-   std::map<Permutation, GroupElement> permLookup;
-
-   std::vector<std::vector<Permutation>> allPowers;
-   for (const auto& perm : permutationsIn)
+   bool ready = false;
+   std::set<Permutation> generated = basis;
+   while (!ready)
    {
-      allPowers.emplace_back(getPowers(perm));
-   }
-
-   std::vector<size_t> powerSize(allPowers.size());
-   str::transform(allPowers, powerSize.begin(), [](const std::vector<Permutation>& perms) {return perms.size(); });
-   const auto multiIndex = MultiIndex<size_t>::Create(powerSize);
-
-   std::vector<size_t> mi(permutationsIn.size());
-   for (size_t flat = 0; flat < multiIndex.getFlatSize(); ++flat)
-   {
-      multiIndex.toMultiplet(flat, mi);
-      Permutation p = allPowers.at(0).at(mi.at(0));
-      for (size_t n = 1; n < mi.size(); ++n)
+      ready = true;
+      for (const auto& p : basis)
       {
-         p = p * allPowers.at(n).at(mi.at(n));;
+         for (const auto& itr : generated)
+         {
+            const auto trial = p * itr;
+            if (!generated.contains(trial))
+            {
+               generated.insert(trial);
+               ready = false;
+               break;
+            }
+         }
       }
-      permLookup.try_emplace(p, static_cast<GroupElement>(permLookup.size()));
    }
 
-   if (permLookup.size() >= std::numeric_limits<GroupElement>::max()) throw MyException("CreateFromPermutations too large: " + std::to_string(permutationsIn.size()));
-   const auto order = static_cast<GroupElement>(permLookup.size());
+   if (generated.size() >= std::numeric_limits<GroupElement>::max()) throw MyException("CreateFromPermutations too large: " + std::to_string(generated.size()));
+   const auto order = static_cast<GroupElement>(generated.size());
 
-   std::vector<Permutation> permutations(order, Permutation::CreateTrivial(0));
-   for (const auto& itr : permLookup)
+   std::vector<Permutation> permutations;
+   permutations.reserve(order);
+   for (const auto& itr : generated)
    {
-      permutations.at(itr.second) = itr.first;
+      permutations.emplace_back(itr);
    }
 
    indexer = std::make_unique< IndexerRowMajor<GroupElement>>(order, order);
@@ -81,8 +80,14 @@ std::pair<std::unique_ptr<IFiniteGroup>, std::vector<Permutation>> GroupTable::G
       for (GroupElement n1 = 0; n1 < permutations.size(); ++n1)
       {
          const auto composition = permutations.at(n0) * permutations.at(n1);
+         const auto found = str::find(permutations, composition);
+         if (found == permutations.end())
+         {
+            throw MyException("GroupTable::GeneratedBy missing permutation!!");
+         }
          const auto pos = indexer->ToFlat({ n0, n1 });
-         table.at(pos) = permLookup.at(composition);
+         const auto groupElement = static_cast<GroupElement>(std::distance(permutations.begin(), found));
+         table.at(pos) = groupElement;
       }
    }
 

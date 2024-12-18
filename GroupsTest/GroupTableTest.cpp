@@ -67,10 +67,10 @@ TEST(GroupTableTest, CreateFromPermutations_S3)
 TEST(GroupTableTest, CreateFromPermutations_S4)
 {
    const auto& [group, elements] = GroupTable::GeneratedBy(std::vector<Permutation>{
-         Permutation::CreateFromCycle(4, std::vector<Permutation::Entry>{ 0, 1 }),
+      Permutation::CreateFromCycle(4, std::vector<Permutation::Entry>{ 0, 1 }),
          Permutation::CreateFromCycle(4, std::vector<Permutation::Entry>{ 0, 1, 2, 3 }) });
-   ASSERT_EQ(8, elements.size());
-   ASSERT_EQ(8, group->getOrder());
+   ASSERT_EQ(24, elements.size());
+   ASSERT_EQ(24, group->getOrder());
    ASSERT_TRUE(PermutationUtils::isIdentity(elements.at(group->getIdentity())));
 }
 
@@ -79,5 +79,45 @@ TEST(GroupTableTest, CreateFromPermutations_5)
    const auto& [group, elements] = GroupTable::GeneratedBy(std::vector<Permutation>{Permutation::CreateTrivial(1)});
    ASSERT_EQ(1, elements.size());
    ASSERT_EQ(1, group->getOrder());
+   ASSERT_TRUE(PermutationUtils::isIdentity(elements.at(group->getIdentity())));
+}
+
+TEST(GroupTableTest, CreateFromPermutations_D4)
+{
+   const auto& [group, elements] = GroupTable::GeneratedBy(std::vector<Permutation>{
+      Permutation::CreateFromDisjunctCycles(4, { {0, 1}, {2,3} }),
+         Permutation::CreateFromCycle(4, std::vector<Permutation::Entry>{ 0, 1, 2, 3 }) });
+   ASSERT_EQ(8, elements.size());
+   ASSERT_EQ(8, group->getOrder());
+   ASSERT_TRUE(PermutationUtils::isIdentity(elements.at(group->getIdentity())));
+}
+
+TEST(GroupTableTest, CreateFromPermutations_D5)
+{
+   const auto& [group, elements] = GroupTable::GeneratedBy(std::vector<Permutation>{
+      Permutation::CreateFromDisjunctCycles(5, { {1, 4}, {2,3} }),
+         Permutation::CreateFromCycle(5, std::vector<Permutation::Entry>{ 0, 1, 2, 3, 4 }) });
+   ASSERT_EQ(10, elements.size());
+   ASSERT_EQ(10, group->getOrder());
+   ASSERT_TRUE(PermutationUtils::isIdentity(elements.at(group->getIdentity())));
+}
+
+TEST(GroupTableTest, CreateFromPermutations_A5)
+{
+   const auto& [group, elements] = GroupTable::GeneratedBy(std::vector<Permutation>{
+      Permutation::CreateFromCycle(5, std::vector<Permutation::Entry>{ 0, 1, 2, 3, 4 }),
+         Permutation::CreateFromCycle(5, std::vector<Permutation::Entry>{ 0, 1, 2 }) });
+   ASSERT_EQ(60, elements.size());
+   ASSERT_EQ(60, group->getOrder());
+   ASSERT_TRUE(PermutationUtils::isIdentity(elements.at(group->getIdentity())));
+}
+
+TEST(GroupTableTest, CreateFromPermutations_A6)
+{
+   const auto& [group, elements] = GroupTable::GeneratedBy(std::vector<Permutation>{
+      Permutation::CreateFromCycle(6, std::vector<Permutation::Entry>{ 1, 2, 3, 4, 5 }),
+         Permutation::CreateFromCycle(6, std::vector<Permutation::Entry>{ 0, 1, 2 }) });
+   ASSERT_EQ(360, elements.size());
+   ASSERT_EQ(360, group->getOrder());
    ASSERT_TRUE(PermutationUtils::isIdentity(elements.at(group->getIdentity())));
 }
