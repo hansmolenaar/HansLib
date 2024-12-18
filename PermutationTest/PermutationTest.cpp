@@ -102,3 +102,15 @@ TEST(PermutaionTest, CreateFromDisjunctCycles_4)
    const auto expect = Permutation::Create(std::vector<int>{0, 2, 6, 5, 4, 3, 1});
    ASSERT_TRUE(expect == perm);
 }
+
+TEST(PermutaionTest, spaceShip)
+{
+   const auto perm1 = Permutation::Create(std::vector<int>{2, 3, 0, 1});
+   const auto perm2 = Permutation::Create(std::vector<int>{2, 3, 1, 0});
+   ASSERT_TRUE(perm1 < perm2);
+   ASSERT_TRUE(perm1 <= perm2);
+   ASSERT_FALSE(perm1 > perm2);
+   ASSERT_FALSE(perm1 >= perm2);
+   ASSERT_FALSE(perm1 == perm2);
+   ASSERT_TRUE(perm1 != perm2);
+}

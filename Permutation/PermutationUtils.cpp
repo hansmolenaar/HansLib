@@ -1,6 +1,7 @@
 #include "PermutationUtils.h"
 #include "Defines.h"
 #include "MyAssert.h"
+#include <set>
 
 bool PermutationUtils::IsPermutation(std::span<const int> permut)
 {
@@ -26,13 +27,11 @@ std::optional<size_t> PermutationUtils::findIdentity(std::span<const Permutation
 
 bool PermutationUtils::areUnique(std::span<const Permutation> permutations)
 {
-   const size_t numPermutations = permutations.size();
-   if (numPermutations < 2) return true;
-
-   for (size_t p = 1; p < numPermutations; ++p)
+   auto comp = [&permutations](size_t x, size_t y) { return permutations[x] < permutations[y]; };
+   auto permSorted = std::set<size_t, decltype(comp)>(comp);
+   for (size_t n = 0; n < permutations.size(); ++n)
    {
-      const auto findEnd = permutations.begin() + p;
-      if (std::find(permutations.begin(), findEnd, permutations[p]) != findEnd) return false;
+      if (!permSorted.emplace(n).second) return false;
    }
    return true;
 }

@@ -104,8 +104,12 @@ Permutation operator*(const Permutation& perm1, const Permutation& perm0)
    return Permutation::Create(permut);
 }
 
-
 bool operator==(const Permutation& perm0, const Permutation& perm1)
 {
    return str::equal(perm0.m_permut, perm1.m_permut);
+}
+
+std::strong_ordering operator<=>(const Permutation& perm0, const Permutation& perm1)
+{
+   return perm0.m_permut <=> perm1.m_permut;
 }

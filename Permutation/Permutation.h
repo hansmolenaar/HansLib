@@ -9,16 +9,17 @@ public:
    static Permutation CreateTrivial(int);
    static Permutation Create(std::span<const int>);
    static Permutation CreateFromCycle(int, std::span<const int>);
-   static Permutation CreateFromDisjunctCycles(int, std::initializer_list<std::initializer_list<int>> cyvles );
+   static Permutation CreateFromDisjunctCycles(int, std::initializer_list<std::initializer_list<int>> cyvles);
 
    template<typename InputIt, typename OutputIt>
    void apply(InputIt first, OutputIt d_first) const;
 
    int operator()(int) const;
    int getCardinality() const;
-  
+
    friend Permutation operator*(const Permutation&, const Permutation&);
    friend bool operator==(const Permutation&, const Permutation&);
+   friend  std::strong_ordering operator<=>(const Permutation&, const Permutation&);
 private:
    explicit Permutation(std::vector<int>&&);
    std::vector<int> m_permut;
