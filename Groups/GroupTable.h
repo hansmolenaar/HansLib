@@ -39,7 +39,7 @@ static std::unique_ptr<IFiniteGroup> GroupTable::CreateUsingBinaryOperator(const
    if (elements.empty()) return  Create(indexer, std::vector<GroupElement>{});
 
    if (elements.size() >= std::numeric_limits<GroupElement>::max()) throw MyException("CreateUsingBinaryOperator too large: " + std::to_string(elements.size()));
-   const auto order = static_cast<GroupElement>(elements.size());
+   const auto order = SafeCastToGroupElement(elements.size());
 
    std::vector<GroupElement> table(order * order, GroupElementInvalid);
    indexer = std::make_unique< IndexerRowMajor<GroupElement>>(order, order);
@@ -54,7 +54,7 @@ static std::unique_ptr<IFiniteGroup> GroupTable::CreateUsingBinaryOperator(const
             throw MyException("CreateUsingBinaryOperator missing permutation!!");
          }
          const auto pos = indexer->ToFlat({ n0, n1 });
-         const auto groupElement = static_cast<GroupElement>(std::distance(elements.begin(), found));
+         const auto groupElement = SafeCastToGroupElement(std::distance(elements.begin(), found));
          table.at(pos) = groupElement;
       }
    }

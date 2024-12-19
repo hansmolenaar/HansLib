@@ -26,7 +26,7 @@ std::optional<Permutation::Entry> PermutationUtils::findIdentity(std::span<const
    if (permutations.empty()) return {};
    const auto found = str::find_if(permutations, isIdentity);
    if (found == permutations.end()) return {};
-   return static_cast<Permutation::Entry>(std::distance(permutations.begin(), found));
+   return PermutationUtils::SafeCastToEntry(std::distance(permutations.begin(), found));
 }
 
 bool PermutationUtils::areUnique(std::span<const Permutation> permutations)

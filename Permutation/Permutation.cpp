@@ -8,7 +8,7 @@ namespace
 {
    std::vector<std::vector<Permutation::Entry>> GetCycles(const std::vector<Permutation::Entry>& permutation)
    {
-      const Permutation::Entry size = static_cast<Permutation::Entry>(permutation.size());
+      const Permutation::Entry size = PermutationUtils::SafeCastToEntry(permutation.size());
       std::vector<std::vector<Permutation::Entry>> result;
       std::vector<unsigned short> done(size, 0);
 
@@ -61,7 +61,7 @@ Permutation::Entry Permutation::operator()(Entry n) const
 
 Permutation::Entry Permutation::getCardinality() const
 {
-   return static_cast<Entry>(m_permut.size());
+   return PermutationUtils::SafeCastToEntry(m_permut.size());
 }
 
 Permutation Permutation::Create(std::span<const Entry> permutSpan)
@@ -190,6 +190,6 @@ std::vector<std::vector<Permutation::Entry>> Permutation::getCycles() const
 Permutation::Parity Permutation::getParity() const
 {
    const auto sum = std::accumulate(m_cycles.begin(), m_cycles.end(), static_cast<Permutation::Entry>(0),
-      [](Permutation::Entry init, const std::vector<Permutation::Entry>& perm) { return init + static_cast<Permutation::Entry>(perm.size() + 1); });
+      [](Permutation::Entry init, const std::vector<Permutation::Entry>& perm) { return init + PermutationUtils::SafeCastToEntry(perm.size() + 1); });
    return (sum % 2 ? Parity::ODD : Parity::EVEN);
 }

@@ -26,9 +26,7 @@ std::pair<std::unique_ptr<IFiniteGroup>, std::vector<Permutation>> GroupTable::G
    if (permutationsIn.empty()) return { Create(indexer, std::vector< GroupElement>{}), std::vector<Permutation> {} };
 
    const std::set<Permutation> generated = PermutationUtils::generateAllPowerCombinations(permutationsIn);
-
-   if (generated.size() >= std::numeric_limits<GroupElement>::max()) throw MyException("CreateFromPermutations too large: " + std::to_string(generated.size()));
-   const auto order = static_cast<GroupElement>(generated.size());
+   const auto order = SafeCastToGroupElement(generated.size());
 
    std::vector<Permutation> permutations;
    permutations.reserve(order);
@@ -46,7 +44,7 @@ std::pair<std::unique_ptr<IFiniteGroup>, std::vector<Permutation>> GroupTable::G
 GroupTable::GroupTable(std::unique_ptr<IIndexer<GroupElement>>& indexer, const std::vector< GroupElement>& elements) :
    m_table(elements), m_indexer(std::move(indexer))
 {
-   m_order = static_cast<GroupElement>(std::round(std::sqrt(m_table.size())));
+   m_order = SafeCastToGroupElement(std::llroundl(std::sqrt(m_table.size())));
    if (m_order == 0) return;
 
    if (m_order * m_order != m_table.size())

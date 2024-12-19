@@ -106,7 +106,7 @@ TEST(GroupTableTest, CreateFromPermutations_D5)
 
 TEST(GroupTableTest, CreateUsingBinOp_0)
 {
-   auto mod2 = [](GroupElement n1, GroupElement n2) {return static_cast<GroupElement>((n1 + n2) % 2); };
+   auto mod2 = [](GroupElement n1, GroupElement n2) {return SafeCastToGroupElement((n1 + n2) % 2); };
    using MyBinOp = decltype(mod2);
 
    const std::vector<GroupElement> elements{};
@@ -116,7 +116,7 @@ TEST(GroupTableTest, CreateUsingBinOp_0)
 
 TEST(GroupTableTest, CreateUsingBinOp_1)
 {
-   auto mod2 = [](GroupElement n1, GroupElement n2) {return static_cast<GroupElement>((n1 + n2) % 2); };
+   auto mod2 = [](GroupElement n1, GroupElement n2) {return SafeCastToGroupElement((n1 + n2) % 2); };
    using MyBinOp = decltype(mod2);
 
    const std::vector<GroupElement> elements{ 0 };

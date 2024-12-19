@@ -141,3 +141,23 @@ TEST(PermutationUtilsTest, IsIsometry)
    permutation = Permutation::CreateFromDisjunctCycles(4, { {0,  1} });
    ASSERT_FALSE(PermutationUtils::isIsometry(permutation, DistanceSquare()));
 }
+
+
+TEST(PermutationUtilsTest, CastToEntry_0)
+{
+   constexpr int number = 2;
+   constexpr Permutation::Entry expect = 2;
+   ASSERT_EQ(expect, PermutationUtils::SafeCastToEntry(number));
+}
+
+TEST(PermutationUtilsTest, CastToEntry_1)
+{
+   constexpr int number = -1;
+   ASSERT_THROW(PermutationUtils::SafeCastToEntry(number), MyException);
+}
+
+TEST(PermutationUtilsTest, CastToEntry_2)
+{
+   constexpr size_t number = std::numeric_limits<size_t>::max();
+   ASSERT_THROW(PermutationUtils::SafeCastToEntry(number), MyException);
+}
