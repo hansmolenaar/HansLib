@@ -3,6 +3,8 @@
 #include "CubeGroup.h"
 #include "Permutation.h"
 #include "PermutationUtils.h"
+#include "GroupTable.h"
+#include "IFiniteGroupUtils.h"
 
 TEST(CubeGroupTest, getOrder)
 {
@@ -36,6 +38,11 @@ TEST(CubeGroupTest, isIsometry)
    ASSERT_FALSE(CubeGroup::isIsometry(perm));
 
    for (const auto& perm : CubeGroup::getSymmetries())
+   {
+      ASSERT_TRUE(CubeGroup::isIsometry(perm));
+   }
+
+   for (const auto& perm : CubeGroup::Create().second)
    {
       ASSERT_TRUE(CubeGroup::isIsometry(perm));
    }
@@ -73,3 +80,18 @@ TEST(CubeGroupTest, getGroupSymmetries)
    ASSERT_TRUE(PermutationUtils::areUnique(symmetries));
 }
 
+TEST(CubeGroupTest, Create)
+{
+   const auto group = CubeGroup::Create();
+   ASSERT_EQ(48, group.first->getOrder());
+   ASSERT_FALSE(IFiniteGroupUtils::IsAbelian(*group.first));
+}
+
+TEST(CubeGroupTest, ReflectionsIjk)
+{
+   const auto reflections = CubeGroup::getReflectionsIjk();
+   const auto retval = GroupTable::GeneratedBy(reflections);
+   const auto& group = *retval.first;
+   ASSERT_EQ(8, group.getOrder());
+   ASSERT_TRUE(IFiniteGroupUtils::IsAbelian(group));
+}

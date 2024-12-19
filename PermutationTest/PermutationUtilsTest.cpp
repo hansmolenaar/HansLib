@@ -3,6 +3,24 @@
 #include "PermutationUtils.h" 
 #include "Defines.h"
 
+namespace
+{
+   // 3 --- 2
+   // |     |
+   // 0 --- 1
+
+   struct DistanceSquare
+   {
+      int operator()(Permutation::Entry v0, Permutation::Entry v1)
+      {
+         if (v0 == v1) return 0;
+         if (v0 + 2 == v1) return 2;
+         if (v1 + 2 == v0) return 2;
+         return 1;
+      }
+   };
+
+} // namespace
 TEST(PermutationUtilsTest, Trivial)
 {
    ASSERT_TRUE(PermutationUtils::IsPermutation(std::vector<Permutation::Entry>{0, 1, 2, 3}));
@@ -17,7 +35,6 @@ TEST(PermutationUtilsTest, Basics)
    ASSERT_FALSE(PermutationUtils::IsPermutation(std::vector<Permutation::Entry>{0, 1, 0}));
 }
 
-
 TEST(PermutationUtilsTest, Times)
 {
    const Permutation permut = Permutation::Create(std::vector<Permutation::Entry>{1, 0});
@@ -26,7 +43,6 @@ TEST(PermutationUtilsTest, Times)
    ASSERT_EQ(trivial(0), 0);
    ASSERT_EQ(trivial(1), 1);
 }
-
 
 TEST(PermutationUtilsTest, Equals)
 {
@@ -111,3 +127,17 @@ TEST(PermutationUtilsTest, CreateFromPermutations_A6)
    ASSERT_EQ(1, str::count_if(permutations, PermutationUtils::isIdentity));
 }
 
+TEST(PermutationUtilsTest, IsIsometry)
+{
+   Permutation permutation = Permutation::CreateTrivial(4);
+   ASSERT_TRUE(PermutationUtils::isIsometry(permutation, DistanceSquare()));
+
+   permutation = Permutation::CreateFromDisjunctCycles(4, { {0, 1, 2, 3 } });
+   ASSERT_TRUE(PermutationUtils::isIsometry(permutation, DistanceSquare()));
+
+   permutation = Permutation::CreateFromDisjunctCycles(4, { {0, 2 } });
+   ASSERT_TRUE(PermutationUtils::isIsometry(permutation, DistanceSquare()));
+
+   permutation = Permutation::CreateFromDisjunctCycles(4, { {0,  1} });
+   ASSERT_FALSE(PermutationUtils::isIsometry(permutation, DistanceSquare()));
+}

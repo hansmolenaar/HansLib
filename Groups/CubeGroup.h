@@ -20,7 +20,7 @@ public:
    using Vertex = Permutation::Entry;
    static constexpr Vertex numVertices = 8;
 
-   //static std::unique_ptr<CubeGroup> Create(int);
+   static std::pair<std::unique_ptr<IFiniteGroup>, std::vector<Permutation>> Create();
 
    GroupElement getOrder() const override;
    GroupElement getIdentity() const override;

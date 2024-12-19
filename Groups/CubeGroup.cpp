@@ -9,7 +9,6 @@ namespace
    constexpr unsigned int nrDims = 3;
    constexpr unsigned int numRotations = 23;
 
-
    const std::array<std::array<bool, nrDims>, CubeGroup::numVertices> Coordinates
    {
       std::array<bool, nrDims>{false, false, false},
@@ -74,6 +73,13 @@ namespace
 
 }
 
+std::pair<std::unique_ptr<IFiniteGroup>, std::vector<Permutation>> CubeGroup::Create()
+{
+   auto subset = getRotations();
+   subset.emplace_back(getReflectionsIjk().front());
+   return GroupTable::GeneratedBy(subset);
+}
+
 GroupElement CubeGroup::getOrder() const
 {
    return 48;
@@ -130,22 +136,7 @@ int CubeGroup::getDistance(Vertex v1, Vertex v2)
 
 bool CubeGroup::isIsometry(const Permutation& permutation)
 {
-   constexpr std::array<Vertex, numVertices> ref = { 0,1,2,3,4,5,6,7 };
-   Utilities::MyAssert(permutation.getCardinality() == numVertices);
-   std::array<Vertex, numVertices> image;
-   permutation.apply(ref.begin(), image.begin());
-   for (auto v0 : ref)
-   {
-      for (auto v1 : ref)
-      {
-         if (v1 > v0)
-         {
-            if (CubeGroup::getDistance(v0, v1) != CubeGroup::getDistance(permutation(v0), permutation(v1))) return false;
-         }
-      }
-   }
-
-   return true;
+   return PermutationUtils::isIsometry(permutation, CubeGroup::getDistance);
 }
 
 std::vector<Permutation> CubeGroup::getGroupSymmetries()
