@@ -2,6 +2,8 @@
 
 #include "Permutation.h" 
 #include "PermutationUtils.h"
+#include "Single.h"
+#include "Defines.h"
 
 #include <array>
 TEST(PermutaionTest, Trivial)
@@ -193,4 +195,86 @@ TEST(PermutaionTest, getPower_2)
    ASSERT_TRUE(PermutationUtils::isIdentity(perm.getPower(0)));
    ASSERT_FALSE(PermutationUtils::isIdentity(perm.getPower(1)));
    ASSERT_TRUE(PermutationUtils::isIdentity(perm.getPower(2)));
+}
+
+TEST(PermutaionTest, getCycles_0)
+{
+   const auto perm = Permutation::CreateTrivial(0);
+   const auto cycles = perm.getCycles();
+   ASSERT_TRUE(cycles.empty());
+   ASSERT_EQ(Permutation::Parity::EVEN, perm.getParity());
+}
+
+TEST(PermutaionTest, getCycles_1)
+{
+   const auto perm = Permutation::CreateTrivial(1);
+   const auto cycles = perm.getCycles();
+   ASSERT_TRUE(cycles.empty());
+   ASSERT_EQ(Permutation::Parity::EVEN, perm.getParity());
+}
+
+TEST(PermutaionTest, getCycles_2)
+{
+   const auto perm = Permutation::CreateFromDisjunctCycles(2, { {0, 1} });
+   const auto cycles = perm.getCycles();
+   ASSERT_EQ(1, cycles.size());
+   ASSERT_EQ(2, cycles.front().size());
+   ASSERT_EQ(Permutation::Parity::ODD, perm.getParity());
+}
+
+TEST(PermutaionTest, getCycles_3)
+{
+   const auto perm = Permutation::CreateFromDisjunctCycles(10, { {0, 1}, {2, 5, 7} });
+   const std::vector<std::vector<Permutation::Entry>> expect{ {0,1}, {2,5,7} };
+   const auto cycles = perm.getCycles();
+   ASSERT_EQ(2, cycles.size());
+   ASSERT_TRUE(str::equal(cycles.at(0), expect.at(0)));
+   ASSERT_EQ(Permutation::Parity::ODD, perm.getParity());
+}
+
+TEST(PermutaionTest, getCycles_4)
+{
+   const auto perm = Permutation::Create(std::vector<Permutation::Entry>{1, 5, 4, 3, 2, 0});
+   const std::vector<std::vector<Permutation::Entry>> expect{ {0,1, 5}, {2,4} };
+   const auto cycles = perm.getCycles();
+   ASSERT_EQ(2, cycles.size());
+   ASSERT_TRUE(str::equal(cycles.at(0), expect.at(0)));
+   ASSERT_TRUE(str::equal(cycles.at(1), expect.at(1)));
+   ASSERT_EQ(Permutation::Parity::ODD, perm.getParity());
+}
+
+TEST(PermutaionTest, getCycles_5)
+{
+   const auto perm = Permutation::Create(std::vector<Permutation::Entry>{4, 0, 10, 9, 2, 3, 6, 1, 11, 5, 7, 8});
+   const std::vector<std::vector<Permutation::Entry>> expect{ {0,4, 2, 10, 7, 1}, {3, 9, 5}, {8, 11} };
+   const auto cycles = perm.getCycles();
+   ASSERT_EQ(3, cycles.size());
+   ASSERT_TRUE(str::equal(cycles.at(0), expect.at(0)));
+   ASSERT_TRUE(str::equal(cycles.at(1), expect.at(1)));
+   ASSERT_TRUE(str::equal(cycles.at(2), expect.at(2)));
+   ASSERT_EQ(Permutation::Parity::EVEN, perm.getParity());
+}
+
+TEST(PermutaionTest, getParity_0)
+{
+   const auto perm = Permutation::Create(std::vector<Permutation::Entry>{1, 2, 0});
+   ASSERT_EQ(Permutation::Parity::EVEN, perm.getParity());
+}
+
+TEST(PermutaionTest, getParity_1)
+{
+   const auto perm = Permutation::Create(std::vector<Permutation::Entry>{1, 2, 3, 0});
+   ASSERT_EQ(Permutation::Parity::ODD, perm.getParity());
+}
+
+TEST(PermutaionTest, getParity_2)
+{
+   const auto perm = Permutation::CreateFromDisjunctCycles(10, { {2,5}, {7,3} });
+   ASSERT_EQ(Permutation::Parity::EVEN, perm.getParity());
+}
+
+TEST(PermutaionTest, getParity_3)
+{
+   const auto perm = Permutation::CreateFromDisjunctCycles(11, { {2,5}, {7,3} });
+   ASSERT_EQ(Permutation::Parity::EVEN, perm.getParity());
 }

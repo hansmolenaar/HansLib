@@ -4,9 +4,38 @@
 #include "BoundsCheck.h"
 #include "Defines.h"
 
+namespace
+{
+   std::vector<std::vector<Permutation::Entry>> GetCycles(const std::vector<Permutation::Entry>& permutation)
+   {
+      const Permutation::Entry size = static_cast<Permutation::Entry>(permutation.size());
+      std::vector<std::vector<Permutation::Entry>> result;
+      std::vector<unsigned short> done(size, 0);
+
+      for (Permutation::Entry n = 0; n < size; ++n)
+      {
+         if (done.at(n) != 0) continue;
+         done.at(n) = 1; // Mark as done
+         if (permutation.at(n) == n) continue;
+         std::vector<Permutation::Entry> cycle{ n };
+         auto next = permutation.at(n);
+         while (done.at(next) == 0)
+         {
+            done.at(next) = 1;
+            cycle.push_back(next);
+            next = permutation.at(next);
+         }
+         result.push_back(cycle);
+      }
+
+      return result;
+   }
+
+} // namespace
 
 Permutation::Permutation(std::vector<Entry>&& permut) :
-   m_permut(std::move(permut))
+   m_permut(std::move(permut)),
+   m_cycles(GetCycles(m_permut))
 {
    if (m_permut.size() >= std::numeric_limits<Entry>::max())
    {
@@ -151,4 +180,16 @@ Permutation Permutation::getPower(int pow) const
       result = result * *this;
    }
    return result;
+}
+
+std::vector<std::vector<Permutation::Entry>> Permutation::getCycles() const
+{
+   return m_cycles;
+}
+
+Permutation::Parity Permutation::getParity() const
+{
+   const auto sum = std::accumulate(m_cycles.begin(), m_cycles.end(), static_cast<Permutation::Entry>(0),
+      [](Permutation::Entry init, const std::vector<Permutation::Entry>& perm) { return init + static_cast<Permutation::Entry>(perm.size() + 1); });
+   return (sum % 2 ? Parity::ODD : Parity::EVEN);
 }

@@ -9,6 +9,8 @@ public:
    using Entry = unsigned int;
    static constexpr Entry InvalidEntry = std::numeric_limits<Entry>::max();
 
+   enum class Parity { EVEN, ODD };
+
    static Permutation CreateTrivial(Entry);
    static Permutation Create(std::span<const Entry>);
    static Permutation CreateFromCycle(Entry, std::span<const Entry>);
@@ -24,6 +26,9 @@ public:
    Entry getOrder() const;
    Permutation getInverse() const;
    Permutation getPower(int pow) const;
+   std::vector<std::vector<Entry>> getCycles() const;
+   Parity getParity() const;
+
 
    friend Permutation operator*(const Permutation&, const Permutation&);
    friend bool operator==(const Permutation&, const Permutation&);
@@ -31,6 +36,7 @@ public:
 private:
    explicit Permutation(std::vector<Entry>&&);
    std::vector<Entry> m_permut;
+   std::vector<std::vector<Entry>> m_cycles;
 };
 
 template<typename InputIt, typename OutputIt>
