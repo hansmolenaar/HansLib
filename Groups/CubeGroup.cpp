@@ -153,13 +153,24 @@ std::vector<Permutation> CubeGroup::getGroupSymmetries()
    static std::vector<Permutation> s_permutations;
    if (s_permutations.empty())
    {
-      const auto& reflection = Symmetries.at(numRotations+1);
+      const auto& reflection = Symmetries.at(numRotations + 1);
       s_permutations.reserve(48);
       std::copy_n(Symmetries.begin(), numRotations + 1, std::back_inserter(s_permutations));
       for (size_t n = 0; n < numRotations + 1; ++n)
       {
-         s_permutations.emplace_back(Symmetries.at(n)* reflection);
+         s_permutations.emplace_back(Symmetries.at(n) * reflection);
       }
+   }
+   return s_permutations;
+}
+
+std::vector<Permutation> CubeGroup::getReflectionsIjk()
+{
+   static std::vector<Permutation> s_permutations;
+   if (s_permutations.empty())
+   {
+      s_permutations.reserve(3);
+      std::copy_n(Symmetries.begin() + numRotations + 1, 3, std::back_inserter(s_permutations));
    }
    return s_permutations;
 }

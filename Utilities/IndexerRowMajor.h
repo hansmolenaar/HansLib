@@ -27,7 +27,6 @@ I IndexerRowMajor<I>::numberOfIndices() const
 template <typename I>
 IndexerRowMajor<I>::IndexerRowMajor(I dimRow, I dimCol) : m_dimRow(dimRow), m_dimCol(dimCol)
 {
-	Utilities::MyAssert(dimRow > 0 && dimCol > 0);
 }
 
 template <typename I>

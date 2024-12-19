@@ -57,7 +57,14 @@ TEST(CubeGroupTest, getReflections)
    ASSERT_TRUE(PermutationUtils::areUnique(reflections));
 }
 
-
+TEST(CubeGroupTest, getReflectionsIjk)
+{
+   const size_t expect = 3;
+   const auto reflections = CubeGroup::getReflectionsIjk();
+   ASSERT_EQ(expect, reflections.size());
+   ASSERT_TRUE(PermutationUtils::areUnique(reflections));
+   ASSERT_TRUE(reflections.at(0) == Permutation::CreateFromDisjunctCycles(CubeGroup::numVertices, { {0, 1}, {2,3}, {4,5}, {6,7} }));
+}
 TEST(CubeGroupTest, getGroupSymmetries)
 {
    const size_t numSymmetries = 48;

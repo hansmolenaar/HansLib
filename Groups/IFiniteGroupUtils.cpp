@@ -69,5 +69,17 @@ void IFiniteGroupUtils::CheckGroupAxioms(const IFiniteGroup& group, bool checkAs
          }
       }
    }
+}
 
+bool IFiniteGroupUtils::IsAbelian(const IFiniteGroup& group)
+{
+   const auto order = group.getOrder();
+   for (GroupElement upr = 1; upr < order; ++upr)
+   {
+      for (GroupElement lwr = 0; lwr < upr; ++lwr)
+      {
+         if (group(lwr, upr) != group(upr, lwr)) return false;
+      }
+   }
+   return true;
 }

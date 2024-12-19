@@ -11,7 +11,6 @@ std::unique_ptr<CyclicGroup> CyclicGroup::Create(GroupElement order)
 
 CyclicGroup::CyclicGroup(GroupElement order) : m_order(order)
 {
-   Utilities::MyAssert(m_order > 0);
 }
 
 GroupElement CyclicGroup::getOrder() const
