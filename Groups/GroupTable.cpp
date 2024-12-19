@@ -37,33 +37,10 @@ std::pair<std::unique_ptr<IFiniteGroup>, std::vector<Permutation>> GroupTable::G
       permutations.emplace_back(itr);
    }
 
-   indexer = std::make_unique< IndexerRowMajor<GroupElement>>(order, order);
-   std::vector<GroupElement> table(order * order, GroupElementInvalid);
-
-   for (GroupElement n0 = 0; n0 < permutations.size(); ++n0)
-   {
-      for (GroupElement n1 = 0; n1 < permutations.size(); ++n1)
-      {
-         const auto composition = permutations.at(n0) * permutations.at(n1);
-         const auto found = str::find(permutations, composition);
-         if (found == permutations.end())
-         {
-            throw MyException("GroupTable::GeneratedBy missing permutation!!");
-         }
-         const auto pos = indexer->ToFlat({ n0, n1 });
-         const auto groupElement = static_cast<GroupElement>(std::distance(permutations.begin(), found));
-         table.at(pos) = groupElement;
-      }
-   }
-
-   if (str::any_of(table, [](GroupElement g) {return g == GroupElementInvalid; }))
-   {
-      throw MyException("CreateFromPermutations incomplete");
-   }
-
    // For permutations we don't have to check the associativity
    constexpr bool checkAssociativity = false;
-   return { Create(indexer, table, checkAssociativity), permutations };
+   auto compose = [](const Permutation& perm1, const Permutation& perm0) {return perm1 * perm0; };
+   return { CreateUsingBinaryOperator<Permutation, decltype(compose)>(permutations, compose, checkAssociativity), permutations };
 }
 
 GroupTable::GroupTable(std::unique_ptr<IIndexer<GroupElement>>& indexer, const std::vector< GroupElement>& elements) :

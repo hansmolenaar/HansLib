@@ -106,20 +106,30 @@ TEST(GroupTableTest, CreateFromPermutations_D5)
 
 TEST(GroupTableTest, CreateUsingBinOp_0)
 {
-   auto mod2 = [](GroupElement n1, GroupElement n2) {return (n1 + n2) % 2; };
+   auto mod2 = [](GroupElement n1, GroupElement n2) {return static_cast<GroupElement>((n1 + n2) % 2); };
    using MyBinOp = decltype(mod2);
 
    const std::vector<GroupElement> elements{};
-   auto result = GroupTable::CreateUsingBinaryOperator<MyBinOp>(elements, mod2, true);
+   auto result = GroupTable::CreateUsingBinaryOperator<GroupElement, MyBinOp>(elements, mod2, true);
    ASSERT_EQ(0, result->getOrder());
 }
 
 TEST(GroupTableTest, CreateUsingBinOp_1)
 {
-   auto mod2 = [](GroupElement n1, GroupElement n2) {return (n1 + n2) % 2; };
+   auto mod2 = [](GroupElement n1, GroupElement n2) {return static_cast<GroupElement>((n1 + n2) % 2); };
    using MyBinOp = decltype(mod2);
 
-   const std::vector<GroupElement> elements{0};
-   auto result = GroupTable::CreateUsingBinaryOperator<MyBinOp>(elements, mod2, true);
+   const std::vector<GroupElement> elements{ 0 };
+   auto result = GroupTable::CreateUsingBinaryOperator<GroupElement, MyBinOp>(elements, mod2, true);
    ASSERT_EQ(1, result->getOrder());
+}
+
+TEST(GroupTableTest, CreateUsingBinOp_3)
+{
+   auto mod3 = [](int n1, int n2) {return (n1 + n2) % 3; };
+   using MyBinOp = decltype(mod3);
+
+   const std::vector<int> elements{ 0, 1, 2 };
+   auto result = GroupTable::CreateUsingBinaryOperator<int, MyBinOp>(elements, mod3, true);
+   ASSERT_EQ(3, result->getOrder());
 }

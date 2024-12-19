@@ -95,7 +95,7 @@ Permutation Permutation::CreateFromDisjunctCycles(Entry cardinality, std::initia
    return Permutation(std::move(perm));
 }
 
-
+// First perm0 then perm1
 Permutation operator*(const Permutation& perm1, const Permutation& perm0)
 {
    Utilities::MyAssert(perm1.getCardinality() == perm0.getCardinality());
