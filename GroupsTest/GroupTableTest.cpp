@@ -101,23 +101,3 @@ TEST(GroupTableTest, CreateFromPermutations_D5)
    ASSERT_EQ(10, group->getOrder());
    ASSERT_TRUE(PermutationUtils::isIdentity(elements.at(group->getIdentity())));
 }
-
-TEST(GroupTableTest, CreateFromPermutations_A5)
-{
-   const auto& [group, elements] = GroupTable::GeneratedBy(std::vector<Permutation>{
-      Permutation::CreateFromCycle(5, std::vector<Permutation::Entry>{ 0, 1, 2, 3, 4 }),
-         Permutation::CreateFromCycle(5, std::vector<Permutation::Entry>{ 0, 1, 2 }) });
-   ASSERT_EQ(60, elements.size());
-   ASSERT_EQ(60, group->getOrder());
-   ASSERT_TRUE(PermutationUtils::isIdentity(elements.at(group->getIdentity())));
-}
-
-TEST(GroupTableTest, CreateFromPermutations_A6)
-{
-   const auto& [group, elements] = GroupTable::GeneratedBy(std::vector<Permutation>{
-      Permutation::CreateFromCycle(6, std::vector<Permutation::Entry>{ 1, 2, 3, 4, 5 }),
-         Permutation::CreateFromCycle(6, std::vector<Permutation::Entry>{ 0, 1, 2 }) });
-   ASSERT_EQ(360, elements.size());
-   ASSERT_EQ(360, group->getOrder());
-   ASSERT_TRUE(PermutationUtils::isIdentity(elements.at(group->getIdentity())));
-}

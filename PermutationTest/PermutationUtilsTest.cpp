@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "PermutationUtils.h" 
+#include "Defines.h"
 
 TEST(PermutationUtilsTest, Trivial)
 {
@@ -75,7 +76,38 @@ TEST(PermutationUtilsTest, areUnique)
    ASSERT_FALSE(PermutationUtils::areUnique(permutations));
 }
 
+TEST(PermutationUtilsTest, generateAllPowerCombinations_0)
+{
+   const std::set<Permutation> permutations = PermutationUtils::generateAllPowerCombinations(std::vector<Permutation>{});
+   ASSERT_TRUE(permutations.empty());
+}
 
+TEST(PermutationUtilsTest, generateAllPowerCombinations_1)
+{
+   const std::vector<Permutation> generators{ Permutation::CreateFromCycle(2, std::vector<Permutation::Entry>{ 0, 1 }) };
+   const std::set<Permutation> permutations = PermutationUtils::generateAllPowerCombinations(generators);
+   ASSERT_EQ(2, permutations.size());
+   ASSERT_EQ(1, str::count_if(permutations, PermutationUtils::isIdentity));
+}
 
+TEST(PermutationUtilsTest, CreateFromPermutations_A5)
+{
+   const std::vector<Permutation> generators{
+      Permutation::CreateFromCycle(5, std::vector<Permutation::Entry>{ 0, 1, 2, 3, 4 }),
+         Permutation::CreateFromCycle(5, std::vector<Permutation::Entry>{ 0, 1, 2 }) };
+   const std::set<Permutation> permutations = PermutationUtils::generateAllPowerCombinations(generators);
+   ASSERT_EQ(60, permutations.size());
+   ASSERT_EQ(1, str::count_if(permutations, PermutationUtils::isIdentity));
+}
 
+TEST(PermutationUtilsTest, CreateFromPermutations_A6)
+{
+   const std::vector<Permutation> generators{
+       Permutation::CreateFromCycle(6, std::vector<Permutation::Entry>{ 1, 2, 3, 4, 5 }),
+         Permutation::CreateFromCycle(6, std::vector<Permutation::Entry>{ 0, 1, 2 }) };
+
+   const std::set<Permutation> permutations = PermutationUtils::generateAllPowerCombinations(generators);
+   ASSERT_EQ(360, permutations.size());
+   ASSERT_EQ(1, str::count_if(permutations, PermutationUtils::isIdentity));
+}
 

@@ -10,7 +10,7 @@
 class GroupTable : public IFiniteGroup
 {
 public:
-   static std::unique_ptr<IFiniteGroup> Create(std::unique_ptr<IIndexer<GroupElement>>&, const std::vector< GroupElement>&);
+   static std::unique_ptr<IFiniteGroup> Create(std::unique_ptr<IIndexer<GroupElement>>&, const std::vector< GroupElement>&, bool checkAssociativity = true);
    static std::pair<std::unique_ptr<IFiniteGroup>, std::vector<Permutation>> GeneratedBy( const std::vector<Permutation>& permutations);
 
    GroupElement getOrder() const override;

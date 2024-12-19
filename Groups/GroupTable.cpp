@@ -11,22 +11,12 @@
 
 namespace
 {
-   std::vector<Permutation> getPowers(const Permutation& perm)
-   {
-      std::vector<Permutation> result{ perm };
-      while (!PermutationUtils::isIdentity(result.back()))
-      {
-         result.emplace_back(result.back() * perm);
-      }
-      return result;
-   }
-
 } // namespace
 
-std::unique_ptr<IFiniteGroup> GroupTable::Create(std::unique_ptr<IIndexer<GroupElement>>& indexer, const std::vector< GroupElement>& elements)
+std::unique_ptr<IFiniteGroup> GroupTable::Create(std::unique_ptr<IIndexer<GroupElement>>& indexer, const std::vector< GroupElement>& elements, bool checkAssociativity)
 {
    std::unique_ptr<IFiniteGroup> result(new GroupTable(indexer, elements));
-   IFiniteGroupUtils::CheckGroupAxioms(*result);
+   IFiniteGroupUtils::CheckGroupAxioms(*result, checkAssociativity);
    return result;
 }
 
@@ -35,32 +25,7 @@ std::pair<std::unique_ptr<IFiniteGroup>, std::vector<Permutation>> GroupTable::G
    std::unique_ptr<IIndexer<GroupElement>> indexer;
    if (permutationsIn.empty()) return { Create(indexer, std::vector< GroupElement>{}), std::vector<Permutation> {} };
 
-   std::set<Permutation> basis;
-   for (const auto& p : permutationsIn)
-   {
-      basis.insert(p);
-      basis.insert(p.getInverse());
-   }
-
-   bool ready = false;
-   std::set<Permutation> generated = basis;
-   while (!ready)
-   {
-      ready = true;
-      for (const auto& p : basis)
-      {
-         for (const auto& itr : generated)
-         {
-            const auto trial = p * itr;
-            if (!generated.contains(trial))
-            {
-               generated.insert(trial);
-               ready = false;
-               break;
-            }
-         }
-      }
-   }
+   const std::set<Permutation> generated = PermutationUtils::generateAllPowerCombinations(permutationsIn);
 
    if (generated.size() >= std::numeric_limits<GroupElement>::max()) throw MyException("CreateFromPermutations too large: " + std::to_string(generated.size()));
    const auto order = static_cast<GroupElement>(generated.size());
@@ -95,7 +60,10 @@ std::pair<std::unique_ptr<IFiniteGroup>, std::vector<Permutation>> GroupTable::G
    {
       throw MyException("CreateFromPermutations incomplete");
    }
-   return { Create(indexer, table), permutations };
+
+   // For permutations we don't have to check the associativity
+   constexpr bool checkAssociativity = false;
+   return { Create(indexer, table, checkAssociativity), permutations };
 }
 
 GroupTable::GroupTable(std::unique_ptr<IIndexer<GroupElement>>& indexer, const std::vector< GroupElement>& elements) :

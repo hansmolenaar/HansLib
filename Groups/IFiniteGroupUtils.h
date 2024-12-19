@@ -8,6 +8,6 @@ class IFiniteGroup;
 namespace IFiniteGroupUtils
 {
    void CheckValid(const IFiniteGroup&, GroupElement);
-   void CheckGroupAxioms(const IFiniteGroup&);
+   void CheckGroupAxioms(const IFiniteGroup& group, bool checkAssociativity = true);
    std::vector<GroupElement> GetElements(const IFiniteGroup&);
 }

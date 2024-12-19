@@ -3,6 +3,12 @@
 #include "MyAssert.h"
 #include <set>
 
+namespace
+{
+
+
+} // namespace
+
 bool PermutationUtils::IsPermutation(std::span<const Permutation::Entry> permut)
 {
    std::vector<Permutation::Entry> isSet(permut.size(), Permutation::InvalidEntry);
@@ -41,4 +47,36 @@ bool PermutationUtils::isIdentity(const Permutation& permutation)
       if (permutation(n) != n) return false;
    }
    return true;
+}
+
+std::set<Permutation> PermutationUtils::generateAllPowerCombinations(std::span<const Permutation> permutationsIn)
+{
+   std::set<Permutation> basis;
+   for (const auto& p : permutationsIn)
+   {
+      basis.insert(p);
+      basis.insert(p.getInverse());
+   }
+
+   bool ready = false;
+   std::set<Permutation> result = basis;
+   while (!ready)
+   {
+      ready = true;
+      for (const auto& p : basis)
+      {
+         for (const auto& itr : result)
+         {
+            const auto trial = p * itr;
+            if (!result.contains(trial))
+            {
+               result.insert(trial);
+               ready = false;
+               break;
+            }
+         }
+      }
+   }
+
+   return result;
 }

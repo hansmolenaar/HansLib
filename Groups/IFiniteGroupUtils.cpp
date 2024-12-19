@@ -20,7 +20,7 @@ std::vector<GroupElement> IFiniteGroupUtils::GetElements(const IFiniteGroup& gro
    return result;
 }
 
-void IFiniteGroupUtils::CheckGroupAxioms(const IFiniteGroup& group)
+void IFiniteGroupUtils::CheckGroupAxioms(const IFiniteGroup& group, bool checkAssociativity)
 {
    const int order = group.getOrder();
    if (order == 0) return;
@@ -54,15 +54,18 @@ void IFiniteGroupUtils::CheckGroupAxioms(const IFiniteGroup& group)
    }
 
    // Associativity, should inplement Light's algorithm
-   for (auto n0  : elements)
+   if (checkAssociativity)
    {
-      for (auto n1 : elements)
+      for (auto n0 : elements)
       {
-         for (auto n2 : elements)
+         for (auto n1 : elements)
          {
-            const auto res1 = group(group(n0, n1), n2);
-            const auto res2 = group(n0, group(n1, n2));
-            Utilities::MyAssert(res1 == res2);
+            for (auto n2 : elements)
+            {
+               const auto res1 = group(group(n0, n1), n2);
+               const auto res2 = group(n0, group(n1, n2));
+               Utilities::MyAssert(res1 == res2);
+            }
          }
       }
    }
