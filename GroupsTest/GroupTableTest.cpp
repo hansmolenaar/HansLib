@@ -5,6 +5,8 @@
 #include "IndexerRowMajor.h"
 #include "PermutationUtils.h"
 
+#include <typeinfo>
+
 TEST(GroupTableTest, Trivial)
 {
    std::unique_ptr<IIndexer<GroupElement>> indexer = std::make_unique< IndexerRowMajor<GroupElement>>(1, 1);
@@ -100,4 +102,24 @@ TEST(GroupTableTest, CreateFromPermutations_D5)
    ASSERT_EQ(10, elements.size());
    ASSERT_EQ(10, group->getOrder());
    ASSERT_TRUE(PermutationUtils::isIdentity(elements.at(group->getIdentity())));
+}
+
+TEST(GroupTableTest, CreateUsingBinOp_0)
+{
+   auto mod2 = [](GroupElement n1, GroupElement n2) {return (n1 + n2) % 2; };
+   using MyBinOp = decltype(mod2);
+
+   const std::vector<GroupElement> elements{};
+   auto result = GroupTable::CreateUsingBinaryOperator<MyBinOp>(elements, mod2, true);
+   ASSERT_EQ(0, result->getOrder());
+}
+
+TEST(GroupTableTest, CreateUsingBinOp_1)
+{
+   auto mod2 = [](GroupElement n1, GroupElement n2) {return (n1 + n2) % 2; };
+   using MyBinOp = decltype(mod2);
+
+   const std::vector<GroupElement> elements{0};
+   auto result = GroupTable::CreateUsingBinaryOperator<MyBinOp>(elements, mod2, true);
+   ASSERT_EQ(1, result->getOrder());
 }
