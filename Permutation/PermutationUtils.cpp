@@ -62,20 +62,17 @@ std::set<Permutation> PermutationUtils::generateAllPowerCombinations(std::span<c
    std::set<Permutation> result = basis;
    while (!ready)
    {
-      ready = true;
+      std::set<Permutation> trials;
       for (const auto& p : basis)
       {
          for (const auto& itr : result)
          {
-            const auto trial = p * itr;
-            if (!result.contains(trial))
-            {
-               result.insert(trial);
-               ready = false;
-               break;
-            }
+            trials.insert( p * itr);
          }
       }
+      const size_t oldSize = result.size();
+      result.insert_range(trials);
+      ready = result.size() == oldSize;
    }
 
    return result;
