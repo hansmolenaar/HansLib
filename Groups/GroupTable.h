@@ -6,8 +6,6 @@
 #include "Permutation.h"
 #include "IndexerRowMajor.h"
 
-#include <map>
-
 class GroupTable : public IFiniteGroup
 {
 public:
