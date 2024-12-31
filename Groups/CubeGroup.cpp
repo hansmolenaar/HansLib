@@ -6,7 +6,8 @@
 
 namespace
 {
-   constexpr unsigned int nrDims = 3;
+   using nrDims_t = unsigned int;
+   constexpr nrDims_t nrDims = 3;
    constexpr unsigned int numRotations = 23;
 
    const std::array<std::array<bool, nrDims>, CubeGroup::numVertices> Coordinates
@@ -127,7 +128,7 @@ int CubeGroup::getDistance(Vertex v1, Vertex v2)
    int result = 0;
    const auto& v1c = Coordinates[v1];
    const auto& v2c = Coordinates[v2];
-   for (auto n = 0; n < nrDims; ++n)
+   for (nrDims_t n = 0; n < nrDims; ++n)
    {
       if (v1c[n] != v2c[n]) result += 1;
    }
