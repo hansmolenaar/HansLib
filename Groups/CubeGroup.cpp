@@ -71,7 +71,7 @@ namespace
       Permutation::CreateFromDisjunctCycles(CubeGroup::numVertices, {{0, 3}, {4,7}}),                                //  Reflection 1-5
    };
 
-}
+} // namespace
 
 std::pair<std::unique_ptr<IFiniteGroup>, std::vector<Permutation>> CubeGroup::Create()
 {
