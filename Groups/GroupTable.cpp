@@ -37,8 +37,7 @@ std::pair<std::unique_ptr<IFiniteGroup>, std::vector<Permutation>> GroupTable::G
 
    // For permutations we don't have to check the associativity
    constexpr bool checkAssociativity = false;
-   auto compose = [](const Permutation& perm1, const Permutation& perm0) {return perm1 * perm0; };
-   return { CreateUsingBinaryOperator<Permutation, decltype(compose)>(permutations, compose, checkAssociativity), permutations };
+   return { CreateUsingBinaryOperator<Permutation, decltype(Permutation::compose)>(permutations, Permutation::compose, checkAssociativity), permutations };
 }
 
 GroupTable::GroupTable(std::unique_ptr<IIndexer<GroupElement>>& indexer, const std::vector< GroupElement>& elements) :
