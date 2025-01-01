@@ -4,7 +4,7 @@
 
 #include <memory>
 
-class SymmetricGroup
+class AlternatingGroup
 {
 public:
    static std::unique_ptr<IFiniteGroup> Create(GroupElement size);
