@@ -1,7 +1,7 @@
 #pragma once
 
-#include "IFinitePointGroupAction.h"
 #include "IFiniteGroupUtils.h"
+#include "IFinitePointGroupAction.h"
 
 namespace IFinitePointGroupActionUtils
 {

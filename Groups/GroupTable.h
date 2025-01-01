@@ -3,8 +3,8 @@
 #include "Defines.h"
 #include "IFiniteGroup.h"
 #include "IIndexer.h"
-#include "Permutation.h"
 #include "IndexerRowMajor.h"
+#include "Permutation.h"
 
 class GroupTable : public IFiniteGroup
 {

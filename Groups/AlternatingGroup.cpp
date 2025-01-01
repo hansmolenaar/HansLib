@@ -1,6 +1,6 @@
+
 #include "AlternatingGroup.h"
 #include "GroupTable.h"
-
 
 std::unique_ptr<IFiniteGroup> AlternatingGroup::Create(GroupElement size)
 {

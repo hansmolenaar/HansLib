@@ -1,10 +1,7 @@
 #include "GroupTable.h"
-#include "MyAssert.h"
-#include "ToString.h"
 #include "IFiniteGroupUtils.h"
-#include "IndexerRowMajor.h"
 #include "PermutationUtils.h"
-#include "MultiIndex.h"
+#include "ToString.h"
 
 #include <cmath>
 #include <set>

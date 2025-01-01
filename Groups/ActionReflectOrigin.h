@@ -1,8 +1,8 @@
 #pragma once
 
-#include "IFinitePointGroupAction.h"
-#include "Hyperplane.h"
 #include "DihedralGroup.h"
+#include "Hyperplane.h"
+#include "IFinitePointGroupAction.h"
 #include "PointReflection.h"
 
 template<int N>

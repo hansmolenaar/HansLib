@@ -1,7 +1,7 @@
 #pragma once
 
 #include "IFiniteGroup.h"
-#include "Defines.h"
+#include <memory>
 
 
 class CyclicGroup : public IFiniteGroup

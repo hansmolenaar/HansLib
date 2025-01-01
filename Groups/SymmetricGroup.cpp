@@ -1,6 +1,6 @@
-#include "SymmetricGroup.h"
-#include "GroupTable.h"
 #include "Defines.h"
+#include "GroupTable.h"
+#include "SymmetricGroup.h"
 
 std::unique_ptr<IFiniteGroup> SymmetricGroup::Create(GroupElement size)
 {

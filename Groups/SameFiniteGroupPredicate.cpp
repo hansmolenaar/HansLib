@@ -1,5 +1,5 @@
-#include "SameFiniteGroupPredicate.h"
 #include "IFiniteGroupUtils.h"
+#include "SameFiniteGroupPredicate.h"
 
 bool SameFiniteGroupPredicate::operator()(const IFiniteGroup& other) const
 {
