@@ -1,9 +1,10 @@
 #include "ActionDihedral.h"
-#include "Rotate2D.h"
-#include "UnitVector.h"
 #include "Hyperplane.h"
+#include "UnitVector.h"
+#include "Rotate2D.h"
 
 #include <numbers>
+
 
 ActionDihedral::ActionDihedral(int numVertices) : ActionDihedral(numVertices, Point2{ 1,0 })
 {

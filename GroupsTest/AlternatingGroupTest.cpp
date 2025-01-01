@@ -21,4 +21,4 @@ TEST(AlternatingGroupTest, Order5)
 
    const auto other = (id + 1) % 60;
    ASSERT_EQ(id, (*symgroup)(other, symgroup->getInverse(other)));
-}
+} 
