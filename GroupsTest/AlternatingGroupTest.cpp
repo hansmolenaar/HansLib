@@ -10,7 +10,7 @@ TEST(AlternatingGroupTest, Order0)
    ASSERT_EQ(0, symgroup->getOrder());
 }
 
-TEST(AlternatingGroupTest, Order6)
+TEST(AlternatingGroupTest, Order5)
 {
    const auto symgroup = AlternatingGroup::Create(5);
    ASSERT_EQ(60, symgroup->getOrder());
