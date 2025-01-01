@@ -1,13 +1,13 @@
 #pragma once
 
+#include <array>
+#include <filesystem>
+#include <fstream>
+#include <map>
+#include <ostream>
+#include <span>
 #include <string>
 #include <vector>
-#include <map>
-#include <filesystem>
-#include <ostream>
-#include <array>
-#include <fstream>
-#include <span>
 
 namespace Vtk
 {
@@ -16,7 +16,7 @@ namespace Vtk
    using NodeIndex = int;
    using CellIndex = int;
 
-   enum class CellType : int { VTK_LINE = 3, VTK_TRIANGLE = 5, VTK_QUAD = 9, VTK_TETRA=10, VTK_HEXAHEDRON = 12 };
+   enum class CellType : int { VTK_LINE = 3, VTK_TRIANGLE = 5, VTK_QUAD = 9, VTK_TETRA = 10, VTK_HEXAHEDRON = 12 };
    constexpr size_t NumNodesForType(CellType cellType);
 
    class VtkData

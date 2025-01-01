@@ -1,6 +1,6 @@
 #pragma once
-#include <vector>
 #include <numeric>
+#include <vector>
 
 namespace Iota
 {

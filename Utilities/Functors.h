@@ -2,11 +2,10 @@
 
 #include "MyException.h"
 
-#include <type_traits>
 #include <algorithm>
 #include <numeric>
+#include <type_traits>
 #include <vector>
-
 
 namespace Functors
 {

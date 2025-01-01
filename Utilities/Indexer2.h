@@ -1,8 +1,8 @@
 #pragma once
 
 #include "MyAssert.h"
-#include <cmath>
 #include <array>
+#include <cmath>
 
 // 3  4  5  6a          9 10 11 12
 // 2  3  4  5           4  5  6 13

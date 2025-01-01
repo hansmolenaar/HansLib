@@ -4,9 +4,8 @@
 #include "BoundsCheck.h"
 #include "Defines.h"
 
-#include <span>
 #include <boost/container/small_vector.hpp>
-
+#include <span>
 
 static constexpr size_t MULTI_INDEX_MAX_SMALL_VECTOR = 6;
 

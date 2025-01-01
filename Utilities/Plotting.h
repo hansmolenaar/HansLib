@@ -1,12 +1,10 @@
 #pragma once
 
 
+#include <filesystem>
 #include <functional>
 #include <initializer_list>
 #include <string>
-#include <filesystem>
-#include <fstream>
-#include <span>
 
 namespace Plotting
 {

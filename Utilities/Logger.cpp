@@ -1,12 +1,10 @@
-#include "Logger.h"
 #include "ArrayStatistics.h"
-#include "Rational.h"
+#include "Logger.h"
 
-#include <numeric>
 #include <chrono>
 #include <format>
-#include <iostream>
 #include <fstream>
+#include <iostream>
 
 namespace
 {

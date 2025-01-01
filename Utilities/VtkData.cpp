@@ -14,7 +14,7 @@ constexpr size_t Vtk::NumNodesForType(CellType cellType)
    case CellType::VTK_QUAD: return 4;
    case CellType::VTK_TETRA: return 4;
    case CellType::VTK_HEXAHEDRON: return 8;
-      
+
    default:
       throw MyException("NumNodesForType: unknown type");
    }

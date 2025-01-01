@@ -5,7 +5,7 @@ BoolContainer BoolContainerUtils::FromNumber(int number)
 {
    BoundsCheck<int>::CreateIsNonNegative().check(number);
 
-   if (number == 0) return {false};
+   if (number == 0) return { false };
    BoolContainer result;
 
    while (number > 0)
@@ -22,7 +22,7 @@ int BoolContainerUtils::ToNumber(const BoolContainer& bools)
 {
    int result = 0;
    int pow2 = 1;
-   for ( auto itr = bools.rbegin(); itr != bools.rend(); ++itr)
+   for (auto itr = bools.rbegin(); itr != bools.rend(); ++itr)
    {
       if (*itr) result += pow2;
       pow2 *= 2;

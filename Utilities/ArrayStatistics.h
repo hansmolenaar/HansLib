@@ -1,7 +1,7 @@
 #pragma once
 
-#include <span>
 #include <limits>
+#include <span>
 #include <string>
 
 template<typename T>

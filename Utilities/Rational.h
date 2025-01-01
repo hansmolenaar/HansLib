@@ -1,7 +1,7 @@
 #pragma once
 
-#include <boost/rational.hpp>
 #include <boost/functional/hash.hpp>
+#include <boost/rational.hpp>
 #include  <span>
 
 using Rational = boost::rational<int>;

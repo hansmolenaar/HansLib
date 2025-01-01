@@ -3,7 +3,6 @@
 #include "IIndexer.h"
 #include <vector>
 
-
 class IndexerSymmetric :public IIndexer<unsigned int>
 {
 public:

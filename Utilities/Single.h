@@ -1,9 +1,9 @@
 #pragma once
 
 #include "MyAssert.h"
-#include <vector>
-#include <span>
 #include <boost/container/static_vector.hpp>
+#include <span>
+#include <vector>
 
 namespace Utilities
 {

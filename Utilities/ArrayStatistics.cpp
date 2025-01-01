@@ -1,16 +1,15 @@
 #include "ArrayStatistics.h"
 #include "Rational.h"
 
-#include <algorithm>
-#include <numeric>
 #include <iostream>
+#include <numeric>
 
 template ArrayStatistics<int>;
 template ArrayStatistics<double>;
 template ArrayStatistics<Rational>;
 
 template<typename T>
-ArrayStatistics<T>::ArrayStatistics(std::span<const T> values) : 
+ArrayStatistics<T>::ArrayStatistics(std::span<const T> values) :
    m_size(values.size())
 {
    if (m_size == 0) return;
@@ -53,9 +52,9 @@ std::string ArrayStatistics<T>::toString() const
 
    const std::string sep = "  ";
    std::ostringstream oss;
-   oss        << "NUM=" << getSize()
-       << sep << "MIN=" << getMinimum()
-       << sep << "MAX=" << getMaximum()
-       << sep << "AVG=" << getAverage();
+   oss << "NUM=" << getSize()
+      << sep << "MIN=" << getMinimum()
+      << sep << "MAX=" << getMaximum()
+      << sep << "AVG=" << getAverage();
    return oss.str();
 }

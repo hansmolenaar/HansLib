@@ -1,5 +1,5 @@
-#include "Paraview.h"
 #include "MyAssert.h"
+#include "Paraview.h"
 
 std::filesystem::path Paraview::GetFileName(const std::string& baseName)
 {
