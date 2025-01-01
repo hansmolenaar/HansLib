@@ -1,8 +1,8 @@
 #pragma once
 
+#include "CyclicGroup.h"
 #include "IFinitePointGroupAction.h"
 #include "Rotate2D.h"
-#include "CyclicGroup.h"
 
 class ActionRotate2D : public IFinitePointGroupAction<2>
 {

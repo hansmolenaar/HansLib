@@ -5,5 +5,5 @@
 struct SameFiniteGroupPredicate
 {
    const IFiniteGroup& group;
-   bool operator()(const IFiniteGroup& ) const;
+   bool operator()(const IFiniteGroup&) const;
 };

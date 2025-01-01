@@ -1,7 +1,7 @@
 #pragma once
 
-#include "IFiniteGroup.h"
 #include "Defines.h"
+#include "IFiniteGroup.h"
 #include "Permutation.h"
 
 //                   6 ------ 7

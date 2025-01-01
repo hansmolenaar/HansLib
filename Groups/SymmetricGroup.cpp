@@ -7,7 +7,6 @@ std::unique_ptr<IFiniteGroup> SymmetricGroup::Create(GroupElement size)
    std::vector<Permutation> permutations;
    std::vector<Permutation::Entry> permut(size);
    str::iota(permut, 0);
-
    if (size > 0)
    {
       do {

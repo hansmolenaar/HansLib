@@ -5,7 +5,7 @@
 
 namespace IFinitePointGroupActionUtils
 {
-   template<int N> 
+   template<int N>
    std::vector<Point<double, N>> GetOrbit(const IFinitePointGroupAction<N>&, const Point<double, N>&);
 }
 
