@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
 
+#include "IManifold1D2Test.h"
 #include "PointClose.h"
 #include "Sphere2AsManifold1.h"
-#include "IManifold1D2Test.h"
 
 using namespace Geometry;
 using namespace Topology;
@@ -58,21 +58,21 @@ TEST(Sphere2AsManifold1, GetIntersections)
       edge = { first, { 0,2 } };
       intersections = sphereManifold.GetIntersections(edge, areClose);
       ASSERT_EQ(intersections.size(), 1);
-       ip = std::get<DirectedEdgePoint2>(intersections[0]);
+      ip = std::get<DirectedEdgePoint2>(intersections[0]);
       ASSERT_EQ(ip.PointType, DirectedEdgePointType::Point1);
       ASSERT_TRUE(areClose.SamePoints(ip.EdgePoint, { 0,2 }));
 
       edge = { first, { 0,0 } };
       intersections = sphereManifold.GetIntersections(edge, areClose);
       ip = std::get<DirectedEdgePoint2>(intersections[0]);
-      ASSERT_EQ(ip.PointType, DirectedEdgePointType:: Inside);
+      ASSERT_EQ(ip.PointType, DirectedEdgePointType::Inside);
       ASSERT_TRUE(areClose.SamePoints(ip.EdgePoint, { 0,2 }));
 
       edge = { first, { 0,-2 } };
       intersections = sphereManifold.GetIntersections(edge, areClose);
       ASSERT_EQ(intersections.size(), 2);
       ip = std::get<DirectedEdgePoint2>(intersections[0]);
-      ASSERT_EQ(ip.PointType, DirectedEdgePointType:: Inside);
+      ASSERT_EQ(ip.PointType, DirectedEdgePointType::Inside);
       ASSERT_TRUE(areClose.SamePoints(ip.EdgePoint, { 0,2 }));
       ip = std::get<DirectedEdgePoint2>(intersections[1]);
       ASSERT_EQ(ip.PointType, DirectedEdgePointType::Point1);

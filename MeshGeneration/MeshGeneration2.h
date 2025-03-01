@@ -52,5 +52,5 @@ namespace MeshGeneration2
       MeshGeneration::IUniquePointCollecion2& pointCollection);
 
    std::unique_ptr<Vtk::VtkData> ToVtkData(const MeshGeneration::TrianglesNodes& trianglesNodes, const IPointCollection<MeshGeneration::GeomType, GeomDim2>& points, const Vtk::Name& name);
-   std::vector<std::unique_ptr<Vtk::VtkData>> ToVtkData(const Manifold1Reconstruction::Reconstruction& reconstruction, const IPointCollection<MeshGeneration::GeomType, GeomDim2>& points);
+   std::vector<std::unique_ptr<Vtk::VtkData>> ToVtkData(const Manifold1Reconstruction::Reconstruction& reconstruction, const IPointCollection<MeshGeneration::GeomType, GeomDim2>& points, const Vtk::Name& name);
 }

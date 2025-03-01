@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Defines.h"
-#include "UnitVector.h"
 #include "IGeometryPredicate.h"
+#include "UnitVector.h"
 
 namespace Geometry
 {
@@ -12,6 +12,7 @@ namespace Geometry
 
    public:
       Line(Point<T, N> refPoint, UnitVector<T, N> direction);
+      Line(const Point<T, N>& p0, const Point<T, N>& p1);
 
       Point<T, N> project(const Point<T, N>& point) const;
       bool contains(const Point<T, N>& point, const IGeometryPredicate<T, N>& predicate) const;
@@ -25,6 +26,12 @@ namespace Geometry
    template<typename T, int N>
    Line<T, N>::Line(Point<T, N> refPoint, UnitVector<T, N> direction) :
       m_referencePoint(std::move(refPoint)), m_direction(std::move(direction))
+   {
+   }
+
+   template<typename T, int N>
+   Line<T, N>::Line(const Point<T, N>& p0, const Point<T, N>& p1) :
+      Line<T, N>::Line(p0, UnitVector<T, N>::Create(p0, p1).value())
    {
    }
 
@@ -43,6 +50,5 @@ namespace Geometry
       const auto projected = project(point);
       return predicate.SamePoints(projected, point);
    }
-
 
 } // namespace Geometry

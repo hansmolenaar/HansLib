@@ -150,8 +150,7 @@ void MeshGeneration2::BaseTriangulationToWorld(
 
 std::unique_ptr<Vtk::VtkData> MeshGeneration2::ToVtkData(const TrianglesNodes& triangleNodes, const IPointCollection<GeomType, GeomDim2>& points, const Vtk::Name& name)
 {
-   constexpr int GeometryDimension = GeomDim2;
-   std::unique_ptr< Vtk::VtkData> result = std::make_unique<Vtk::VtkData>(GeometryDimension, 0, name);
+   std::unique_ptr< Vtk::VtkData> result = std::make_unique<Vtk::VtkData>(GeomDim2, 0, name);
 
    for (const auto& cell : triangleNodes.getAllTriangles())
    {
@@ -162,22 +161,45 @@ std::unique_ptr<Vtk::VtkData> MeshGeneration2::ToVtkData(const TrianglesNodes& t
    return result;
 }
 
-std::vector<std::unique_ptr<Vtk::VtkData>> MeshGeneration2::ToVtkData(const Manifold1Reconstruction::Reconstruction& reconstruction, const IPointCollection<MeshGeneration::GeomType, GeomDim2>& points)
+std::vector<std::unique_ptr<Vtk::VtkData>> MeshGeneration2::ToVtkData(
+   const Manifold1Reconstruction::Reconstruction& reconstruction,
+   const IPointCollection<MeshGeneration::GeomType, GeomDim2>& points,
+   const Vtk::Name& name)
 {
+   std::vector<std::unique_ptr<Vtk::VtkData>> result;
    if (!reconstruction.Singletons.empty()) throw MyException("MeshGeneration2::ToVtkData unexpected singletons");
 
    // Collect Vtk nodes
    std::unordered_map<PointIndex, Vtk::NodeIndex> nodeToVtk;
    Vtk::NodeIndex nodeIndex = 0;
-   for (const auto& path : reconstruction.Paths)
+   for (int count = 0; const auto & path : reconstruction.Paths)
    {
-      for (const auto& p : path)
+      ++count;
+      const Vtk::Name  vtkName{ name.project, name.item + "_path_" + std::to_string(count) };
+      std::unique_ptr< Vtk::VtkData> part = std::make_unique< Vtk::VtkData>(GeomDim2, 0, vtkName);
+      for (size_t n = 1; n < path.size(); ++n)
       {
-         throw MyException("not yet implemented");
+         std::array<PointIndex, 2> edge{ path[n], path[n - 1] };
+         part->addCell(Vtk::CellType::VTK_LINE, edge, points, {});
       }
+      result.emplace_back(std::move(part));
    }
 
-   return {};
+   nodeIndex = 0;
+   for (int count = 0; const auto & cycle : reconstruction.Cycles)
+   {
+      ++count;
+      const Vtk::Name  vtkName{ name.project, name.item + "_cycle_" + std::to_string(count) };
+      std::unique_ptr< Vtk::VtkData> part = std::make_unique< Vtk::VtkData>(GeomDim2, 0, vtkName);
+      for (size_t n = 0; n < cycle.size(); ++n)
+      {
+         std::array<PointIndex, 2> edge{ cycle[n], cycle[(n + 1) % cycle.size()] };
+         part->addCell(Vtk::CellType::VTK_LINE, edge, points, {});
+      }
+      result.emplace_back(std::move(part));
+   }
+
+   return result;
 }
 
 static boost::container::static_vector< NodeIndex, 2> HandleEndPoints(
