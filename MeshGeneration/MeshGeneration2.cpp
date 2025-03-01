@@ -153,22 +153,10 @@ std::unique_ptr<Vtk::VtkData> MeshGeneration2::ToVtkData(const TrianglesNodes& t
    constexpr int GeometryDimension = GeomDim2;
    std::unique_ptr< Vtk::VtkData> result = std::make_unique<Vtk::VtkData>(GeometryDimension, 0);
 
-   std::unordered_map<PointIndex, Vtk::NodeIndex> nodeToVtk;
-   Vtk::NodeIndex nodeIndex = 0;
-   for (auto& node : triangleNodes.getAllNodes())
-   {
-      const auto v = points.getPoint(node);
-      std::array<Vtk::CoordinateType, GeometryDimension> coordinates{ static_cast<Vtk::CoordinateType>(v[0]),static_cast<Vtk::CoordinateType>(v[1]) };
-      result->addNode(coordinates);
-      nodeToVtk[node] = nodeIndex;
-      ++nodeIndex;
-   }
-
    for (const auto& cell : triangleNodes.getAllTriangles())
    {
       const auto tnodes = triangleNodes.getTriangleNodes(cell);
-      const std::array<Vtk::NodeIndex, 3> vtkNodes{ nodeToVtk.at(tnodes.at(0)), nodeToVtk.at(tnodes.at(1)), nodeToVtk.at(tnodes.at(2)) };
-      result->addCell(Vtk::CellType::VTK_TRIANGLE, vtkNodes, {});
+      result->addCell(Vtk::CellType::VTK_TRIANGLE, tnodes, points, {});
    }
 
    return result;

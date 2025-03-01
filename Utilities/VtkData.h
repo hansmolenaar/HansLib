@@ -27,8 +27,7 @@ namespace Vtk
    public:
       VtkData(int geomDim, int numData);
 
-      void addNode(std::span<const CoordinateType> coordinates);
-      void addCell(CellType typ, std::span<const NodeIndex> nodes, std::span<const DataType>data);
+
 
       CellIndex getNumCells() const;
       NodeIndex getNumNodes() const;
@@ -41,6 +40,9 @@ namespace Vtk
       template<typename T, int N>
       void addCell(CellType typ, std::span<const PointIndex> points, const IPointCollection<T, N>& pointCollection, std::span<const DataType>data);
 
+      // Do not use, only exposed for testing
+      void addNode(std::span<const CoordinateType> coordinates);
+      void addCell(CellType typ, std::span<const NodeIndex> nodes, std::span<const DataType>data);
    private:
       size_t m_geomDim;
       size_t m_numData;

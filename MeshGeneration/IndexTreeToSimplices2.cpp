@@ -1,7 +1,7 @@
 #include "IndexTreeToSimplices2.h"
+#include "IntervalTreeAdjacentDirection.h"
 #include "IntervalTreeIndex.h"
 #include "UniqueHashedPointCollection.h"
-#include "IntervalTreeAdjacentDirection.h"
 
 namespace
 {
@@ -105,23 +105,13 @@ std::unique_ptr<Vtk::VtkData> IndexTreeToSimplices2::ToVtkData(const Triangles& 
    UniqueHashedPointCollection<Rational, GeometryDimension>  toNodeIndex;
    for (const auto& cell : cells)
    {
-      std::array<Vtk::NodeIndex, ReferenceShapePolygon::TriangleNumCorners> cellNodes{ -1, -1, -1 };
-      size_t vertex = 0;
-      for (const auto& v : cell)
+      std::array<PointIndex, ReferenceShapePolygon::TriangleNumCorners> cellNodes;
+      for (size_t vertex = 0; const auto & v : cell)
       {
-         const auto nodeId = toNodeIndex.addIfNew(v);
-         cellNodes.at(vertex) = static_cast<Vtk::NodeIndex>(nodeId);
+         cellNodes.at(vertex) = toNodeIndex.addIfNew(v);
          ++vertex;
       }
-      result->addCell(Vtk::CellType::VTK_TRIANGLE, cellNodes, {});
-   }
-   for (auto n = 0; n < toNodeIndex.getNumPoints(); ++n)
-   {
-      const auto v = toNodeIndex.getPoint(n);
-      std::array<Vtk::CoordinateType, GeometryDimension> coordinates;
-      coordinates.at(0) = static_cast<Vtk::CoordinateType>(v[0].numerator()) / v[0].denominator();
-      coordinates.at(1) = static_cast<Vtk::CoordinateType>(v[1].numerator()) / v[1].denominator();
-      result->addNode(coordinates);
+      result->addCell(Vtk::CellType::VTK_TRIANGLE, cellNodes, toNodeIndex, {});
    }
    return result;
 }
