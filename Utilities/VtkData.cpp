@@ -1,6 +1,6 @@
-#include "VtkData.h"
-#include "MyException.h"
 #include "MyAssert.h"
+#include "MyException.h"
+#include "VtkData.h"
 
 using namespace Vtk;
 using namespace Utilities;
@@ -56,7 +56,7 @@ std::span<const CoordinateType> VtkData::getNode(NodeIndex n) const
 
 }
 
-CellIndex VtkData::getNumCells() const
+Vtk::CellIndex VtkData::getNumCells() const
 {
    return static_cast<CellIndex>(m_type.size());
 }

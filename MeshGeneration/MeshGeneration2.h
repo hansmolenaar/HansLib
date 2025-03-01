@@ -1,17 +1,21 @@
 #pragma once
 
-#include "IndexTreeToSimplices2.h"
-#include "IGeometryRegion.h"
 #include "IDynamicUniquePointCollection.h"
+#include "IGeometryRegion.h"
+#include "IManifold0.h"
+#include "IManifold1D2.h"
+#include "IMeshingSettings.h"
+#include "IndexTreeToSimplices2.h"
+#include "Logger.h"
+#include "ManifoldsAndNodes.h"
 #include "MeshGenerationDefines.h"
 #include "TrianglesNodes.h"
-#include "IManifold1D2.h"
-#include "IManifold0.h"
-#include "ManifoldsAndNodes.h"
-#include "Logger.h"
 #include "VtkData.h"
-#include "IMeshingSettings.h"
-#include "IManifold0.h"
+
+namespace Manifold1Reconstruction
+{
+   struct Reconstruction;
+}
 
 namespace MeshGeneration2
 {
@@ -48,4 +52,5 @@ namespace MeshGeneration2
       MeshGeneration::IUniquePointCollecion2& pointCollection);
 
    std::unique_ptr<Vtk::VtkData> ToVtkData(const MeshGeneration::TrianglesNodes& trianglesNodes, const IPointCollection<MeshGeneration::GeomType, GeomDim2>& points);
+   std::vector<std::unique_ptr<Vtk::VtkData>> ToVtkData(const Manifold1Reconstruction::Reconstruction& reconstruction, const IPointCollection<MeshGeneration::GeomType, GeomDim2>& points);
 }

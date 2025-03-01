@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Defines.h"
-#include "Sphere.h"
 #include "IManifold1D2.h"
+#include "Sphere.h"
 
 namespace Geometry
 {
@@ -11,7 +11,7 @@ namespace Geometry
    {
 
    public:
-      explicit  Sphere2AsManifold1(Sphere<T, GeomDim2> sphere);
+      explicit  Sphere2AsManifold1(Sphere<T, GeomDim2> sphere, std::string name = "Sphere2AsManifold1");
 
       bool contains(const Point<T, GeomDim2>& point, const IGeometryPredicate<T, GeomDim2>& predicate) const override;
 
@@ -21,8 +21,11 @@ namespace Geometry
 
       BoundingBox<T, GeomDim2> getBoundingBox() const override;
 
+      const std::string& getName() const;
+
    private:
       Sphere<T, GeomDim2> m_sphere;
+      std::string m_name;
    };
 
 } // namespace Geometry

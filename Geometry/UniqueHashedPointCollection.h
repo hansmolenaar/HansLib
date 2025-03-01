@@ -1,7 +1,7 @@
 #pragma once
 
-#include "IUniquePointCollection.h"
 #include "IGeometryPredicate.h"
+#include "IUniquePointCollection.h"
 #include "PointExact.h" 
 
 #include <unordered_map>
@@ -10,8 +10,7 @@ template<typename T, int N>
 class UniqueHashedPointCollection : public IUniquePointCollection<T, N>
 {
 public:
-
-   int addIfNew(const Point<T, N>&);
+   PointIndex addIfNew(const Point<T, N>&);
    std::optional<PointIndex>  tryGetClosePoint(const Point<T, N>&) const override;
    const IGeometryPredicate<T, N>& getGeometryPredicate() const override;
    Point<T, N> getPoint(PointIndex) const override;
@@ -42,7 +41,7 @@ std::optional<PointIndex>  UniqueHashedPointCollection<T, N>::tryGetClosePoint(c
 
 
 template<typename T, int N>
-int UniqueHashedPointCollection<T, N>::addIfNew(const Point<T, N>& point)
+PointIndex UniqueHashedPointCollection<T, N>::addIfNew(const Point<T, N>& point)
 {
    auto found = m_toIndex.find(point);
    if (found == m_toIndex.end())

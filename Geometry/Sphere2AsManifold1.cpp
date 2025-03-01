@@ -5,8 +5,9 @@ using namespace Geometry;
 template Sphere2AsManifold1<double>;
 
 template<typename T>
-Sphere2AsManifold1<T>::Sphere2AsManifold1(Sphere<T, GeomDim2> sphere) :
-   m_sphere(std::move(sphere))
+Sphere2AsManifold1<T>::Sphere2AsManifold1(Sphere<T, GeomDim2> sphere, std::string name) :
+   m_sphere(std::move(sphere)),
+   m_name(std::move(name))
 {
 }
 
@@ -70,4 +71,10 @@ DirectedEdgeIntersections<T, GeomDim2> Sphere2AsManifold1<T>::GetIntersections(c
       }
    }
    return result;
+}
+
+template<typename T>
+const std::string& Sphere2AsManifold1<T>::getName() const
+{
+   return m_name;
 }

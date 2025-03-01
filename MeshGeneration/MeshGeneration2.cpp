@@ -1,13 +1,14 @@
-#include "MeshGeneration2.h"
-#include "IntervalTreeBalance.h"
-#include "Defines.h"   
 #include "BoundingBox.h"
+#include "Defines.h"   
+#include "IntervalTreeBalance.h"
+#include "Manifold1Reconstruction.h"
+#include "MeshGeneration2.h"
+#include "MeshGenerationUtils.h"
+#include "MyAssert.h"
+#include "Polygon2D.h"
+#include "Triangle.h"
 #include "UniqueHashedPointCollection.h"
 #include "UniquePointCollectionBinning.h"
-#include "MyAssert.h"
-#include "MeshGenerationUtils.h"
-#include "Triangle.h"
-#include "Polygon2D.h"
 
 #include <set>
 
@@ -171,6 +172,24 @@ std::unique_ptr<Vtk::VtkData> MeshGeneration2::ToVtkData(const TrianglesNodes& t
    }
 
    return result;
+}
+
+std::vector<std::unique_ptr<Vtk::VtkData>> MeshGeneration2::ToVtkData(const Manifold1Reconstruction::Reconstruction& reconstruction, const IPointCollection<MeshGeneration::GeomType, GeomDim2>& points)
+{
+   if (!reconstruction.Singletons.empty()) throw MyException("MeshGeneration2::ToVtkData unexpected singletons");
+
+   // Collect Vtk nodes
+   std::unordered_map<PointIndex, Vtk::NodeIndex> nodeToVtk;
+   Vtk::NodeIndex nodeIndex = 0;
+   for (const auto& path : reconstruction.Paths)
+   {
+      for (const auto& p : path)
+      {
+         throw MyException("not yet implemented");
+      }
+   }
+
+   return {};
 }
 
 static boost::container::static_vector< NodeIndex, 2> HandleEndPoints(

@@ -1,7 +1,8 @@
 #pragma once
 
-#include "IManifold1.h"
+#include "DirectedEdge.h"
 #include "GeometryDefines.h"
+#include "IManifold1.h"
 
 namespace Geometry
 {

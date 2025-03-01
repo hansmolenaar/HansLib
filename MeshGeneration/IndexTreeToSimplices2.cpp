@@ -55,7 +55,7 @@ namespace
          ++pos;
       }
 
-     
+
       const auto lwr = bb.getLower();
       const auto upr = bb.getUpper();
       const RatPoint2 ll(lwr[0], lwr[1]);
@@ -110,7 +110,7 @@ std::unique_ptr<Vtk::VtkData> IndexTreeToSimplices2::ToVtkData(const Triangles& 
       for (const auto& v : cell)
       {
          const auto nodeId = toNodeIndex.addIfNew(v);
-         cellNodes.at(vertex) = nodeId;
+         cellNodes.at(vertex) = static_cast<Vtk::NodeIndex>(nodeId);
          ++vertex;
       }
       result->addCell(Vtk::CellType::VTK_TRIANGLE, cellNodes, {});

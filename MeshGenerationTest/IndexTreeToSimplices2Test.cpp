@@ -1,10 +1,10 @@
 #include <gtest/gtest.h>
 
 #include "IndexTreeToSimplices2.h"
-#include "IntervalTreeRefinePredicate.h"
-#include "Paraview.h"
 #include "IntervalTreeBalance.h"
+#include "IntervalTreeRefinePredicate.h"
 #include "IntervalTreeVtk.h"
+#include "Paraview.h"
 #include "UniqueHashedPointCollection.h"
 
 using namespace IntervalTree;
@@ -56,13 +56,13 @@ TEST(IndexTreeToSimplices2Test, RefinedToVtk_1)
    const auto triangles = IndexTreeToSimplices2::Create(tree);
    std::set<std::pair<RatPoint2, RatPoint2>> directedEdges;
    UniqueHashedPointCollection<Rational, IndexTreeToSimplices2::GeometryDimension>  toNodeIndex;
-   std::map<std::pair<int, int>, int> sortedEdgeCount;
+   std::map<std::pair<PointIndex, PointIndex>, int> sortedEdgeCount;
    for (const auto& triangle : triangles)
    {
       const auto edge0 = std::make_pair(triangle.at(0), triangle.at(1));
       const auto edge1 = std::make_pair(triangle.at(1), triangle.at(2));
       const auto edge2 = std::make_pair(triangle.at(2), triangle.at(0));
-      const std::array<std::pair<RatPoint2, RatPoint2>, 3> edges{edge0, edge1, edge2};
+      const std::array<std::pair<RatPoint2, RatPoint2>, 3> edges{ edge0, edge1, edge2 };
       for (const auto& e : edges)
       {
          ASSERT_FALSE(directedEdges.contains(e));
