@@ -99,9 +99,9 @@ IndexTreeToSimplices2::Triangles IndexTreeToSimplices2::Create(const IntervalTre
    return action.Triangles;
 }
 
-std::unique_ptr<Vtk::VtkData> IndexTreeToSimplices2::ToVtkData(const Triangles& cells)
+std::unique_ptr<Vtk::VtkData> IndexTreeToSimplices2::ToVtkData(const Triangles& cells, const Vtk::Name& name)
 {
-   std::unique_ptr< Vtk::VtkData> result = std::make_unique< Vtk::VtkData>(GeometryDimension, 0);
+   std::unique_ptr< Vtk::VtkData> result = std::make_unique< Vtk::VtkData>(GeometryDimension, 0, name);
    UniqueHashedPointCollection<Rational, GeometryDimension>  toNodeIndex;
    for (const auto& cell : cells)
    {

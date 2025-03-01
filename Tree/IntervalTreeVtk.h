@@ -8,14 +8,14 @@
 namespace IntervalTree
 {
    template<int N>
-   std::unique_ptr<Vtk::VtkData> GetVtkData(const IndexTree<N>& tree);
+   std::unique_ptr<Vtk::VtkData> GetVtkData(const IndexTree<N>& tree, const Vtk::Name& name);
 
    template<>
-   std::unique_ptr< Vtk::VtkData> GetVtkData(const IndexTree<1>& tree);
+   std::unique_ptr< Vtk::VtkData> GetVtkData(const IndexTree<1>& tree, const Vtk::Name& name);
 
    template<>
-   std::unique_ptr< Vtk::VtkData> GetVtkData(const IndexTree<2>& tree);
+   std::unique_ptr< Vtk::VtkData> GetVtkData(const IndexTree<2>& tree, const Vtk::Name& name);
 
    template<>
-   std::unique_ptr< Vtk::VtkData> GetVtkData(const IndexTree<3>& tree);
+   std::unique_ptr< Vtk::VtkData> GetVtkData(const IndexTree<3>& tree, const Vtk::Name& name);
 }

@@ -15,8 +15,9 @@ void Paraview::WriteHeader(std::ostream& stream)
    stream << "DATASET UNSTRUCTURED_GRID\n";
 }
 
-void Paraview::Write(const std::string& baseName, const Vtk::VtkData& data)
+void Paraview::Write(const Vtk::VtkData& data)
 {
+   const std::string& baseName = data.getName().project;
    const auto path = GetFileName(baseName);
    std::ofstream stream(path.string().c_str(), std::ios::out);
 

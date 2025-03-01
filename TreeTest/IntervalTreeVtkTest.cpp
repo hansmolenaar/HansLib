@@ -18,12 +18,11 @@ TEST(IndexTreeVtkTest, Level1ToVtk_dim1)
    IndexTree<dim> tree;
    RefineToMaxLevel<dim> doRefine{ 1 };
    tree.refineUntilReady(doRefine);
-   const auto data = GetVtkData(tree);
+   const auto data = GetVtkData(tree, { "IndexTreeVtkTest_Level1ToVtk_dim1", "test" });
    ASSERT_EQ(data->getNumNodes(), 3);
    ASSERT_EQ(data->getNumCells(), 2);
    ASSERT_EQ(data->getNumCellData(), 0);
 }
-
 
 TEST(IndexTreeVtkTest, Level1ToVtk_dim2)
 {
@@ -31,12 +30,11 @@ TEST(IndexTreeVtkTest, Level1ToVtk_dim2)
    IndexTree<dim> tree;
    RefineToMaxLevel<dim> doRefine{ 1 };
    tree.refineUntilReady(doRefine);
-   const auto data = GetVtkData(tree);
+   const auto data = GetVtkData(tree, { "IndexTreeVtkTest_Level1ToVtk_dim2", "test" });
    ASSERT_EQ(data->getNumNodes(), 9);
    ASSERT_EQ(data->getNumCells(), 4);
    ASSERT_EQ(data->getNumCellData(), 0);
 }
-
 
 TEST(IndexTreeVtkTest, Level1ToVtk_dim3)
 {
@@ -44,7 +42,7 @@ TEST(IndexTreeVtkTest, Level1ToVtk_dim3)
    IndexTree<dim> tree;
    RefineToMaxLevel<dim> doRefine{ 1 };
    tree.refineUntilReady(doRefine);
-   const auto data = GetVtkData(tree);
+   const auto data = GetVtkData(tree, { "IndexTreeVtkTest_Level1ToVtk_dim3", "test" });
    ASSERT_EQ(data->getNumNodes(), 27);
    ASSERT_EQ(data->getNumCells(), 8);
    ASSERT_EQ(data->getNumCellData(), 0);

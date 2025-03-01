@@ -20,9 +20,10 @@ constexpr size_t Vtk::NumNodesForType(CellType cellType)
    }
 }
 
-VtkData::VtkData(int geomDim, int numData) :
+VtkData::VtkData(int geomDim, int numData, Name name) :
    m_geomDim(geomDim),
-   m_numData(numData)
+   m_numData(numData),
+   m_name(name)
 {
 }
 
@@ -64,6 +65,11 @@ Vtk::CellIndex VtkData::getNumCells() const
 CellType VtkData::getCellType(CellIndex n) const
 {
    return m_type.at(n);
+}
+
+const Vtk::Name& VtkData::getName() const
+{
+   return m_name;
 }
 
 std::span<const NodeIndex> VtkData::getNodeIndices(CellIndex n) const

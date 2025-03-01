@@ -1,22 +1,22 @@
 #include <gtest/gtest.h>
 
-#include "IndexTreeScaled.h"
-#include "RefinementPredicates.h"
 #include "Ball.h"
-#include "IntervalTreeIndexFactory.h"
-#include "MeshGeneration2.h"
+#include "Ball2AsRegion.h"
+#include "Ball2AsRegion.h"
+#include "IndexTreeScaled.h"
 #include "InitialBoundingboxGenerator.h"
-#include "Ball2AsRegion.h"
-#include "Paraview.h"
-#include "PointClose.h"
-#include "Ball2AsRegion.h"
-#include "UniquePointCollectionBinning.h"
+#include "IntervalTreeIndexFactory.h"
 #include "Manifold0.h"
-#include "Single.h"
 #include "Manifold1Reconstruction.h"
+#include "MeshGeneration2.h"
+#include "MeshGenerationUtils.h"
 #include "MeshingSettingsStandard.h"
 #include "MeshStatistics.h"
-#include "MeshGenerationUtils.h"
+#include "Paraview.h"
+#include "PointClose.h"
+#include "RefinementPredicates.h"
+#include "Single.h"
+#include "UniquePointCollectionBinning.h"
 
 using namespace MeshGeneration;
 using namespace MeshGeneration2;
@@ -30,9 +30,9 @@ TEST(MeshGeneration2Test, Ball)
    const Ball2AsRegion<GeomType> ballAsRegion(ball);
    MeshingSettingsStandard<2> settings(5, 2.0);
    const auto triangles = MeshGeneration2::GenerateBaseTriangulation(ballAsRegion, settings);
-   const auto vtkData = IndexTreeToSimplices2::ToVtkData(triangles);
+   const auto vtkData = IndexTreeToSimplices2::ToVtkData(triangles, { "MeshGeneration2Test_Ball" , "triangles" });
    ASSERT_EQ(1016, vtkData->getNumCells());
-   //Paraview::Write("MeshGeneration2Test_Ball", *vtkData);
+   //Paraview::Write(*vtkData);
 }
 
 
@@ -80,9 +80,9 @@ TEST(MeshGeneration2Test, Ball2)
    const MeshStatistics expect{ 281, 504, 0.75 };
    ASSERT_EQ(stats, expect);
 
-   const auto vtkData = MeshGeneration2::ToVtkData(*trianglesNodes, *pointGeometry);
+   const auto vtkData = MeshGeneration2::ToVtkData(*trianglesNodes, *pointGeometry, { "MeshGeneration2Test_Ball2" , "mesh" });
    ASSERT_EQ(504, vtkData->getNumCells());
-   //Paraview::Write("MeshGeneration2Test_Ball2", *vtkData);
+   //Paraview::Write(*vtkData);
 }
 
 
@@ -293,8 +293,8 @@ TEST(MeshGeneration2Test, Sphere2_intersect_4)
    ASSERT_EQ(reconstruction.Cycles.size(), 1);
    ASSERT_EQ(Single(reconstruction.Cycles).size(), 42);
 
-   const auto vtkData = MeshGeneration2::ToVtkData(*trianglesNodes, *pointGeometry);
-   Paraview::Write("MeshGeneration2Test_Sphere2_intersect_4", *vtkData);
+   const auto vtkData = MeshGeneration2::ToVtkData(*trianglesNodes, *pointGeometry, { "MeshGeneration2Test_Sphere2_intersect_4" , "mesh" });
+   Paraview::Write(*vtkData);
 }
 
 TEST(MeshGeneration2Test, Sphere2_intersect_3)
@@ -319,7 +319,7 @@ TEST(MeshGeneration2Test, Sphere2_intersect_3)
    const MeshStatistics expect{ 81, 128, 00.30877886910687341 };
    ASSERT_EQ(expect, stats);
 
-   const auto vtkData = MeshGeneration2::ToVtkData(*trianglesNodes, *pointGeometry);
+   const auto vtkData = MeshGeneration2::ToVtkData(*trianglesNodes, *pointGeometry, { "MeshGeneration2Test_Sphere2_intersect_3" , "mesh" });
    ASSERT_EQ(128, vtkData->getNumCells());
    const auto nodesOnManifold = manifoldsAndNodes.getNodesInManifold(&manifold);
    const auto reconstruction = Manifold1Reconstruction::Generate2(nodesOnManifold, *trianglesNodes, *pointGeometry);
@@ -327,7 +327,7 @@ TEST(MeshGeneration2Test, Sphere2_intersect_3)
    ASSERT_TRUE(reconstruction.Paths.empty());
    ASSERT_EQ(reconstruction.Cycles.size(), 1);
    ASSERT_EQ(Single(reconstruction.Cycles).size(), 20);
-   //Paraview::Write("MeshGeneration2Test_Sphere2_intersect_3", *vtkData);
+   //Paraview::Write(*vtkData);
 }
 
 TEST(MeshGeneration2Test, Sphere2_intersect_5)
@@ -353,7 +353,7 @@ TEST(MeshGeneration2Test, Sphere2_intersect_5)
    const MeshStatistics expect{ 885, 1712, 0.30491369274933333 };
    ASSERT_EQ(expect, stats);
 
-   const auto vtkData = MeshGeneration2::ToVtkData(*trianglesNodes, *pointGeometry);
+   const auto vtkData = MeshGeneration2::ToVtkData(*trianglesNodes, *pointGeometry, { "MeshGeneration2Test_Sphere2_intersect_5" , "mesh" });
    ASSERT_EQ(1712, vtkData->getNumCells());
    const auto nodesOnManifold = manifoldsAndNodes.getNodesInManifold(&manifold);
    const auto reconstruction = Manifold1Reconstruction::Generate2(nodesOnManifold, *trianglesNodes, *pointGeometry);
@@ -361,5 +361,5 @@ TEST(MeshGeneration2Test, Sphere2_intersect_5)
    ASSERT_TRUE(reconstruction.Paths.empty());
    ASSERT_EQ(reconstruction.Cycles.size(), 1);
    ASSERT_EQ(Single(reconstruction.Cycles).size(), 88);
-   Paraview::Write("MeshGeneration2Test_Sphere2_intersect_5", *vtkData);
+   Paraview::Write(*vtkData);
 }

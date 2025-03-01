@@ -9,9 +9,9 @@ using namespace IntervalTree;
 namespace
 {
    template<int N>
-   std::unique_ptr<Vtk::VtkData> getVtkData(const IndexTree<N>& tree, Vtk::CellType cellType)
+   std::unique_ptr<Vtk::VtkData> getVtkData(const IndexTree<N>& tree, Vtk::CellType cellType, const Vtk::Name& name)
    {
-      std::unique_ptr< Vtk::VtkData> result = std::make_unique< Vtk::VtkData>(N, 0);
+      std::unique_ptr< Vtk::VtkData> result = std::make_unique< Vtk::VtkData>(N, 0, name);
       UniqueHashedPointCollection<Rational, N> pointCollection;
 
       ActionCollectLeaves<N> leaves;
@@ -32,19 +32,19 @@ namespace
 }
 
 template<>
-std::unique_ptr< Vtk::VtkData> IntervalTree::GetVtkData(const IndexTree<1>& tree)
+std::unique_ptr< Vtk::VtkData> IntervalTree::GetVtkData(const IndexTree<1>& tree, const Vtk::Name& name)
 {
-   return getVtkData(tree, Vtk::CellType::VTK_LINE);
+   return getVtkData(tree, Vtk::CellType::VTK_LINE, name);
 }
 
 template<>
-std::unique_ptr< Vtk::VtkData> IntervalTree::GetVtkData(const IndexTree<2>& tree)
+std::unique_ptr< Vtk::VtkData> IntervalTree::GetVtkData(const IndexTree<2>& tree, const Vtk::Name& name)
 {
-   return getVtkData(tree, Vtk::CellType::VTK_QUAD);
+   return getVtkData(tree, Vtk::CellType::VTK_QUAD, name);
 }
 
 template<>
-std::unique_ptr< Vtk::VtkData> IntervalTree::GetVtkData(const IndexTree<3>& tree)
+std::unique_ptr< Vtk::VtkData> IntervalTree::GetVtkData(const IndexTree<3>& tree, const Vtk::Name& name)
 {
-   return getVtkData(tree, Vtk::CellType::VTK_HEXAHEDRON);
+   return getVtkData(tree, Vtk::CellType::VTK_HEXAHEDRON, name);
 }

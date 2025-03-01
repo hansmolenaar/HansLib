@@ -11,7 +11,7 @@
 
 namespace Paraview
 {
-   void Write(const std::string& baseName, const Vtk::VtkData& data);
+   void Write(const Vtk::VtkData& data);
    void WritePoints(std::ostream& stream, const Vtk::VtkData& data);
    void WritePoint(std::ostream& stream, std::span<const Vtk::CoordinateType> coordinates);
    void WriteCells(std::ostream& stream, const Vtk::VtkData& data);

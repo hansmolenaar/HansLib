@@ -1,11 +1,11 @@
 #include <gtest/gtest.h>
 
 #include "IntervalTree.h"
+#include "IntervalTreeAction.h"
+#include "IntervalTreeBalance.h"
 #include "IntervalTreeRefinePredicate.h"
 #include "IntervalTreeStatistics.h"
-#include "IntervalTreeAction.h"
 #include "IntervalTreeVtk.h"
-#include "IntervalTreeBalance.h"
 #include "Paraview.h"
 #include "Point.h"
 
@@ -67,11 +67,11 @@ TEST(IndexTreeTest, refineUntilReady)
 TEST(IndexTreeTest, Level0ToVtk)
 {
    const IndexTree<2> tree;
-   const auto data = GetVtkData(tree);
+   const auto data = GetVtkData(tree, { "IndexTreeTest_Level0ToVtk", "test" });
    ASSERT_EQ(data->getNumNodes(), 4);
    ASSERT_EQ(data->getNumCells(), 1);
    ASSERT_EQ(data->getNumCellData(), 0);
-   //Paraview::Write("IndexTreeTest_Level0ToVtk", *data);
+   //Paraview::Write( *data);
 }
 
 
@@ -80,11 +80,11 @@ TEST(IndexTreeTest, Level1ToVtk)
    IndexTree<2> tree;
    RefineToMaxLevel<2> doRefine{ 1 };
    tree.refineUntilReady(doRefine);
-   const auto data = GetVtkData(tree);
+   const auto data = GetVtkData(tree, { "IndexTreeTest_Level1ToVtk" , "test" });
    ASSERT_EQ(data->getNumNodes(), 9);
    ASSERT_EQ(data->getNumCells(), 4);
    ASSERT_EQ(data->getNumCellData(), 0);
-   //Paraview::Write("IndexTreeTest_Level1ToVtk", *data);
+   //Paraview::Write(*data);
 }
 
 
@@ -94,22 +94,22 @@ TEST(IndexTreeTest, Level2ToVtk)
    IndexTree<1> tree;
    RefineToMaxLevel<1> doRefine{ 2 };
    tree.refineUntilReady(doRefine);
-   const auto data = GetVtkData(tree);
+   const auto data = GetVtkData(tree, { "IndexTreeTest_Level2ToVtk" , "test" });
    ASSERT_EQ(data->getNumNodes(), 5);
    ASSERT_EQ(data->getNumCells(), 4);
    ASSERT_EQ(data->getNumCellData(), 0);
-   //Paraview::Write("IndexTreeTest_Level2ToVtk", *data);
+   //Paraview::Write(*data);
 }
 
 
 TEST(IndexTreeTest, CubeToVtk)
 {
    IndexTree<3> tree;
-   const auto data = GetVtkData(tree);
+   const auto data = GetVtkData(tree, { "IndexTreeTest_CubeToVtk", "test" });
    ASSERT_EQ(data->getNumNodes(), 8);
    ASSERT_EQ(data->getNumCells(), 1);
    ASSERT_EQ(data->getNumCellData(), 0);
-   //Paraview::Write("IndexTreeTest_CubeToVtk", *data);
+   //Paraview::Write(*data);
    const auto str = tree.getRoot().toString();
    ASSERT_EQ(str, "((0, 1), (0, 1), (0, 1))");
 }
@@ -170,7 +170,6 @@ TEST(IndexTreeTest, GetExistingSelfOrAncestor)
    ASSERT_EQ(indexAtLevel2.getKey(), key);
 }
 
-
 TEST(IndexTreeTest, GetExistingSelfOrAncestor2)
 {
    IndexTree<3> tree;
@@ -179,18 +178,16 @@ TEST(IndexTreeTest, GetExistingSelfOrAncestor2)
    ASSERT_TRUE(root.isRoot());
 }
 
-
 TEST(IndexTreeTest, IsRefined1)
 {
    IndexTree<1> tree;
    ASSERT_TRUE(tree.isLeaf(tree.getRoot()));
 
    RefineToMaxLevel<1> doRefine1{ 1 };
-    tree.refineLeaves(doRefine1);
+   tree.refineLeaves(doRefine1);
 
    ASSERT_FALSE(tree.isLeaf(tree.getRoot()));
 }
-
 
 TEST(IndexTreeTest, ToString)
 {

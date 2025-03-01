@@ -22,12 +22,16 @@ namespace Vtk
    enum class CellType : int { VTK_LINE = 3, VTK_TRIANGLE = 5, VTK_QUAD = 9, VTK_TETRA = 10, VTK_HEXAHEDRON = 12 };
    constexpr size_t NumNodesForType(CellType cellType);
 
+   struct Name
+   {
+      std::string  project;
+      std::string item;
+   };
+
    class VtkData
    {
    public:
-      VtkData(int geomDim, int numData);
-
-
+      VtkData(int geomDim, int numData, Name name);
 
       CellIndex getNumCells() const;
       NodeIndex getNumNodes() const;
@@ -36,6 +40,7 @@ namespace Vtk
       std::span<const NodeIndex> getNodeIndices(CellIndex n) const;
       std::span<const DataType> getCellData(CellIndex n) const;
       size_t getNumCellData() const;
+      const Name& getName() const;
 
       template<typename T, int N>
       void addCell(CellType typ, std::span<const PointIndex> points, const IPointCollection<T, N>& pointCollection, std::span<const DataType>data);
@@ -46,6 +51,7 @@ namespace Vtk
    private:
       size_t m_geomDim;
       size_t m_numData;
+      Name m_name;
 
       // Node
       std::vector<CoordinateType> m_coordinates;

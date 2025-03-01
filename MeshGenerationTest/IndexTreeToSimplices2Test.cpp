@@ -17,10 +17,10 @@ TEST(IndexTreeToSimplices2Test, RootToVtk)
    const auto triangles = IndexTreeToSimplices2::Create(tree);
    ASSERT_EQ(2, triangles.size());
 
-   const auto vtkData = IndexTreeToSimplices2::ToVtkData(triangles);
+   const auto vtkData = IndexTreeToSimplices2::ToVtkData(triangles, { "IndexTreeToSimplices2Test_RootToVtk", "tree" });
    ASSERT_EQ(2, vtkData->getNumCells());
    ASSERT_EQ(4, vtkData->getNumNodes());
-   //Paraview::Write("IndexTreeToSimplices2Test_RootToVtk", *vtkData);
+   //Paraview::Write(*vtkData);
 }
 
 
@@ -34,10 +34,10 @@ TEST(IndexTreeToSimplices2Test, Level1ToVtk)
    const auto triangles = IndexTreeToSimplices2::Create(tree);
    ASSERT_EQ(8, triangles.size());
 
-   const auto vtkData = IndexTreeToSimplices2::ToVtkData(triangles);
+   const auto vtkData = IndexTreeToSimplices2::ToVtkData(triangles, { "IndexTreeToSimplices2Test_Level1ToVtk", "tree" });
    ASSERT_EQ(8, vtkData->getNumCells());
    ASSERT_EQ(9, vtkData->getNumNodes());
-   //Paraview::Write("IndexTreeToSimplices2Test_Level1ToVtk", *vtkData);
+   //Paraview::Write(*vtkData);
 }
 
 
@@ -75,7 +75,7 @@ TEST(IndexTreeToSimplices2Test, RefinedToVtk_1)
       }
    }
 
-   const auto vtkData = IndexTreeToSimplices2::ToVtkData(triangles);
+   const auto vtkData = IndexTreeToSimplices2::ToVtkData(triangles, { "IndexTreeToSimplices2Test_RefinedToVtk_1" , "tree" });
    ASSERT_EQ(90, vtkData->getNumCells());
    ASSERT_EQ(54, vtkData->getNumNodes());
 
@@ -104,6 +104,6 @@ TEST(IndexTreeToSimplices2Test, RefinedToVtk_1)
       }
    }
    ASSERT_EQ(4, length);
-   //Paraview::Write("IndexTreeToSimplices2Test_RefinedToVtk_1", *vtkData);
+   //Paraview::Write(*vtkData);
 }
 
