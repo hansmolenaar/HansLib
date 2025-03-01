@@ -4,7 +4,7 @@
 std::filesystem::path Paraview::GetFileName(const std::string& baseName)
 {
    std::filesystem::path p("C:\\Users\\Hans\\Documents\\work\\");
-   return p / (baseName + ".vtk");
+   return p / (baseName);
 }
 
 void Paraview::WriteHeader(std::ostream& stream)
@@ -18,8 +18,11 @@ void Paraview::WriteHeader(std::ostream& stream)
 void Paraview::Write(const Vtk::VtkData& data)
 {
    const std::string& baseName = data.getName().project;
-   const auto path = GetFileName(baseName);
-   std::ofstream stream(path.string().c_str(), std::ios::out);
+   const auto directoryPath = GetFileName(baseName);
+   std::filesystem::create_directory(directoryPath);
+   const auto fileName = directoryPath / (data.getName().item + ".vtk");
+
+   std::ofstream stream(fileName.c_str(), std::ios::out);
 
    WriteHeader(stream);
    WritePoints(stream, data);
