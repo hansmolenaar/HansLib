@@ -1,9 +1,9 @@
 #pragma once
 
 #include "Defines.h"
-#include "Point.h"
+#include "DirectedEdgeIntersections.h"
 #include "IGeometryPredicate.h"
-#include "GeometryDefines.h"
+#include "Point.h"
 
 namespace Geometry
 {
@@ -99,17 +99,18 @@ namespace Geometry
    template<typename T, int N>
    DirectedEdgePoint<T, N> DirectedEdge<T, N>::createEdgePoint(const Point<T, N>& point, const IGeometryPredicate<T, N>& predicate) const
    {
+      const auto scalar = project(point);
       if (predicate.SamePoints(point, point0()))
       {
-         return {point0(), DirectedEdgePointType::Point0};
+         return { scalar, point0(), DirectedEdgePointType::Point0 };
       }
       if (predicate.SamePoints(point, point1()))
       {
-         return { point1(), DirectedEdgePointType::Point1 };
+         return { scalar, point1(), DirectedEdgePointType::Point1 };
       }
 
       // No check if edge contains point
-      return { point, DirectedEdgePointType::Inside };
+      return { scalar, point, DirectedEdgePointType::Inside };
    }
 
 

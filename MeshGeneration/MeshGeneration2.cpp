@@ -218,7 +218,7 @@ static boost::container::static_vector< NodeIndex, 2> HandleEndPoints(
          const auto node = (ip.PointType == DirectedEdgePointType::Point0 ? edgeNodes[0] : edgeNodes[1]);
          nodeUsed.push_back(node);
          manifoldsAndNodes.addNodeToManifold(node, &manifold);
-         intersections.erase(intersections.begin() + n);
+         intersections.m_data.erase(intersections.m_data.begin() + n);
       }
    }
    return nodeUsed;
