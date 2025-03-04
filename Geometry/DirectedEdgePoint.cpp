@@ -39,3 +39,9 @@ const Point<T, N>& DirectedEdgePoint<T, N>::getPoint() const
 {
    return m_edgePoint;
 }
+
+template<typename T, int N>
+T DirectedEdgePoint<T, N>::getScalar() const
+{
+   return m_scalar;
+}
