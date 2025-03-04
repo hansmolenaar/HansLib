@@ -59,34 +59,34 @@ TEST(Sphere2AsManifold1, GetIntersections)
       intersections = sphereManifold.GetIntersections(edge, areClose);
       ASSERT_EQ(intersections.size(), 1);
       ip = std::get<DirectedEdgePoint2>(intersections[0]);
-      ASSERT_EQ(ip.PointType, DirectedEdgePointType::Point1);
-      ASSERT_TRUE(areClose.SamePoints(ip.EdgePoint, { 0,2 }));
+      ASSERT_EQ(ip.getPointType(), DirectedEdgePointType::Point1);
+      ASSERT_TRUE(areClose.SamePoints(ip.getPoint(), { 0,2 }));
 
       edge = { first, { 0,0 } };
       intersections = sphereManifold.GetIntersections(edge, areClose);
       ip = std::get<DirectedEdgePoint2>(intersections[0]);
-      ASSERT_EQ(ip.PointType, DirectedEdgePointType::Inside);
-      ASSERT_TRUE(areClose.SamePoints(ip.EdgePoint, { 0,2 }));
+      ASSERT_EQ(ip.getPointType(), DirectedEdgePointType::Inside);
+      ASSERT_TRUE(areClose.SamePoints(ip.getPoint(), { 0,2 }));
 
       edge = { first, { 0,-2 } };
       intersections = sphereManifold.GetIntersections(edge, areClose);
       ASSERT_EQ(intersections.size(), 2);
       ip = std::get<DirectedEdgePoint2>(intersections[0]);
-      ASSERT_EQ(ip.PointType, DirectedEdgePointType::Inside);
-      ASSERT_TRUE(areClose.SamePoints(ip.EdgePoint, { 0,2 }));
+      ASSERT_EQ(ip.getPointType(), DirectedEdgePointType::Inside);
+      ASSERT_TRUE(areClose.SamePoints(ip.getPoint(), { 0,2 }));
       ip = std::get<DirectedEdgePoint2>(intersections[1]);
-      ASSERT_EQ(ip.PointType, DirectedEdgePointType::Point1);
-      ASSERT_TRUE(areClose.SamePoints(ip.EdgePoint, { 0,-2 }));
+      ASSERT_EQ(ip.getPointType(), DirectedEdgePointType::Point1);
+      ASSERT_TRUE(areClose.SamePoints(ip.getPoint(), { 0,-2 }));
 
       edge = { first, { 0,-3 } };
       intersections = sphereManifold.GetIntersections(edge, areClose);
       ASSERT_EQ(intersections.size(), 2);
       ip = std::get<DirectedEdgePoint2>(intersections[0]);
-      ASSERT_EQ(ip.PointType, DirectedEdgePointType::Inside);
-      ASSERT_TRUE(areClose.SamePoints(ip.EdgePoint, { 0,2 }));
+      ASSERT_EQ(ip.getPointType(), DirectedEdgePointType::Inside);
+      ASSERT_TRUE(areClose.SamePoints(ip.getPoint(), { 0,2 }));
       ip = std::get<DirectedEdgePoint2>(intersections[1]);
-      ASSERT_EQ(ip.PointType, DirectedEdgePointType::Inside);
-      ASSERT_TRUE(areClose.SamePoints(ip.EdgePoint, { 0,-2 }));
+      ASSERT_EQ(ip.getPointType(), DirectedEdgePointType::Inside);
+      ASSERT_TRUE(areClose.SamePoints(ip.getPoint(), { 0,-2 }));
    }
 
 
@@ -98,28 +98,28 @@ TEST(Sphere2AsManifold1, GetIntersections)
       intersections = sphereManifold.GetIntersections(edge, areClose);
       ASSERT_EQ(intersections.size(), 1);
       ip = std::get<DirectedEdgePoint2>(intersections[0]);
-      ASSERT_EQ(ip.PointType, DirectedEdgePointType::Point0);
-      ASSERT_TRUE(areClose.SamePoints(ip.EdgePoint, { 0,2 }));
+      ASSERT_EQ(ip.getPointType(), DirectedEdgePointType::Point0);
+      ASSERT_TRUE(areClose.SamePoints(ip.getPoint(), { 0,2 }));
 
       edge = { first, { 0,-2 } };
       intersections = sphereManifold.GetIntersections(edge, areClose);
       ASSERT_EQ(intersections.size(), 2);
       ip = std::get<DirectedEdgePoint2>(intersections[0]);
-      ASSERT_EQ(ip.PointType, DirectedEdgePointType::Point0);
-      ASSERT_TRUE(areClose.SamePoints(ip.EdgePoint, { 0,2 }));
+      ASSERT_EQ(ip.getPointType(), DirectedEdgePointType::Point0);
+      ASSERT_TRUE(areClose.SamePoints(ip.getPoint(), { 0,2 }));
       ip = std::get<DirectedEdgePoint2>(intersections[1]);
-      ASSERT_EQ(ip.PointType, DirectedEdgePointType::Point1);
-      ASSERT_TRUE(areClose.SamePoints(ip.EdgePoint, { 0,-2 }));
+      ASSERT_EQ(ip.getPointType(), DirectedEdgePointType::Point1);
+      ASSERT_TRUE(areClose.SamePoints(ip.getPoint(), { 0,-2 }));
 
       edge = { first, { 0,-3 } };
       intersections = sphereManifold.GetIntersections(edge, areClose);
       ASSERT_EQ(intersections.size(), 2);
       ip = std::get<DirectedEdgePoint2>(intersections[0]);
-      ASSERT_EQ(ip.PointType, DirectedEdgePointType::Point0);
-      ASSERT_TRUE(areClose.SamePoints(ip.EdgePoint, { 0,2 }));
+      ASSERT_EQ(ip.getPointType(), DirectedEdgePointType::Point0);
+      ASSERT_TRUE(areClose.SamePoints(ip.getPoint(), { 0,2 }));
       ip = std::get<DirectedEdgePoint2>(intersections[1]);
-      ASSERT_EQ(ip.PointType, DirectedEdgePointType::Inside);
-      ASSERT_TRUE(areClose.SamePoints(ip.EdgePoint, { 0,-2 }));
+      ASSERT_EQ(ip.getPointType(), DirectedEdgePointType::Inside);
+      ASSERT_TRUE(areClose.SamePoints(ip.getPoint(), { 0,-2 }));
    }
 
 
@@ -135,15 +135,15 @@ TEST(Sphere2AsManifold1, GetIntersections)
       intersections = sphereManifold.GetIntersections(edge, areClose);
       ASSERT_EQ(intersections.size(), 1);
       ip = std::get<DirectedEdgePoint2>(intersections[0]);
-      ASSERT_EQ(ip.PointType, DirectedEdgePointType::Point1);
-      ASSERT_TRUE(areClose.SamePoints(ip.EdgePoint, { 0,-2 }));
+      ASSERT_EQ(ip.getPointType(), DirectedEdgePointType::Point1);
+      ASSERT_TRUE(areClose.SamePoints(ip.getPoint(), { 0,-2 }));
 
       edge = { first, { 0,-3 } };
       intersections = sphereManifold.GetIntersections(edge, areClose);
       ASSERT_EQ(intersections.size(), 1);
       ip = std::get<DirectedEdgePoint2>(intersections[0]);
-      ASSERT_EQ(ip.PointType, DirectedEdgePointType::Inside);
-      ASSERT_TRUE(areClose.SamePoints(ip.EdgePoint, { 0,-2 }));
+      ASSERT_EQ(ip.getPointType(), DirectedEdgePointType::Inside);
+      ASSERT_TRUE(areClose.SamePoints(ip.getPoint(), { 0,-2 }));
    }
 
    // First point on sphere
@@ -154,8 +154,8 @@ TEST(Sphere2AsManifold1, GetIntersections)
       intersections = sphereManifold.GetIntersections(edge, areClose);
       ASSERT_EQ(intersections.size(), 1);
       ip = std::get<DirectedEdgePoint2>(intersections[0]);
-      ASSERT_EQ(ip.PointType, DirectedEdgePointType::Point0);
-      ASSERT_TRUE(areClose.SamePoints(ip.EdgePoint, { 0,-2 }));
+      ASSERT_EQ(ip.getPointType(), DirectedEdgePointType::Point0);
+      ASSERT_TRUE(areClose.SamePoints(ip.getPoint(), { 0,-2 }));
    }
 
    // All outside

@@ -20,8 +20,6 @@ namespace Geometry
       bool contains(const Point<T, N>& point, const IGeometryPredicate<T, N>& predicate) const;
       bool isDegenerate(const IGeometryPredicate<T, N>& predicate) const;
 
-      // Edge *must* contain point, not checked!
-      DirectedEdgePoint<T, N> createEdgePoint(const Point<T, N>& point, const IGeometryPredicate<T, N>& predicate) const;
    private:
       Point<T, N> m_from;
       Point<T, N> m_to;
@@ -95,23 +93,5 @@ namespace Geometry
          return predicate.SamePoints(point1(), point);
       }
    }
-
-   template<typename T, int N>
-   DirectedEdgePoint<T, N> DirectedEdge<T, N>::createEdgePoint(const Point<T, N>& point, const IGeometryPredicate<T, N>& predicate) const
-   {
-      const auto scalar = project(point);
-      if (predicate.SamePoints(point, point0()))
-      {
-         return { scalar, point0(), DirectedEdgePointType::Point0 };
-      }
-      if (predicate.SamePoints(point, point1()))
-      {
-         return { scalar, point1(), DirectedEdgePointType::Point1 };
-      }
-
-      // No check if edge contains point
-      return { scalar, point, DirectedEdgePointType::Inside };
-   }
-
 
 } // namespace Geometry

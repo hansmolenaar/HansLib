@@ -1,20 +1,31 @@
 #pragma once
 
-#include "IManifold.h"
+#include "IGeometryPredicate.h"
+#include "IManifold.h" // TODO remove me
 
 #include <boost/container/static_vector.hpp>
 #include <functional>
 
 namespace Geometry
 {
+   template<typename T, int N>
+   class DirectedEdge;
+
    enum class DirectedEdgePointType { Point0, Inside, Point1 };
 
    template<typename T, int N>
-   struct DirectedEdgePoint
+   class DirectedEdgePoint
    {
-      T scalar = std::numeric_limits<T>::max();
-      Point<T, N> EdgePoint;
-      DirectedEdgePointType PointType;
+   public:
+      DirectedEdgePoint<T, N>() = default;
+
+      DirectedEdgePoint<T, N>(const Point<T, N>& point, const DirectedEdge<T, N>& edge, const IGeometryPredicate<T, N>& predicate);
+      DirectedEdgePointType getPointType() const;
+      const Point<T, N>& getPoint() const;
+   private:
+      T m_scalar = std::numeric_limits<T>::max();
+      Point<T, N> m_edgePoint;
+      DirectedEdgePointType m_pointType;
    };
 
    using DirectedEdgePoint2 = DirectedEdgePoint<double, 2>;
