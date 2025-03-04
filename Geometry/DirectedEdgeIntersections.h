@@ -5,9 +5,14 @@
 
 #include <boost/container/static_vector.hpp>
 #include <functional>
+#include <variant>
 
 namespace Geometry
 {
+   // forward declaration
+   template<typename T, int N>
+   class DirectedEdge;
+
    template<typename T, int N>
    struct DirectedEdgeInterval
    {
@@ -23,7 +28,7 @@ namespace Geometry
       DirectedEdgeIntersections<T, N>(
          std::span<const DirectedEdgePoint<T, N>> intersectionPoints,
          const std::function<bool(const Point<T, N>&)>& isContained,
-         const std::function<bool(const Point<T, N>&, const Point<T, N>&)>& areSame);
+         const IGeometryPredicate<T, N>& predicate);
 
       bool empty() const;
       size_t size() const;

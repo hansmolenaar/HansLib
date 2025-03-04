@@ -8,10 +8,26 @@ template<typename T, int N>
 DirectedEdgeIntersections<T, N>::DirectedEdgeIntersections(
    std::span<const DirectedEdgePoint<T, N>> intersectionPoints,
    const std::function<bool(const Point<T, N>&)>& isContained,
-   const std::function<bool(const Point<T, N>&, const Point<T, N>&)>& areSame)
+   const IGeometryPredicate<T, N>& predicate)
 {
-   std::vector<DirectedEdgePoint<T, N>> ipoints(intersectionPoints.size());
-   str::copy(intersectionPoints, ipoints.begin());
+   if (intersectionPoints.empty()) return;
+
+   std::vector<DirectedEdgePoint<T, N>> points(intersectionPoints.size());
+   str::copy(intersectionPoints, points.begin());
+   // Sort on scalar
+   std::sort(points.begin(), points.end(), DirectedEdgePointLess{ predicate });
+   // Remove duplicates
+   points.erase(std::unique(points.begin(), points.end(), DirectedEdgePointEquals{ predicate }), points.end());
+
+
+   if (points.size() == 1)
+   {
+      m_data.push_back(points.front());
+   }
+   else
+   {
+      throw MyException("not yet implemented");
+   }
 }
 
 template<typename T, int N>
