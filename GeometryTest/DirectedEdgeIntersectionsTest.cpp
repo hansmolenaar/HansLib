@@ -100,5 +100,23 @@ TEST(DirectedEdgeIntersections, three)
    ASSERT_FALSE(intersections[1].isIsolatedPoint());
    ASSERT_TRUE(intersections[1].getInterval().Point0.getPointType() == DirectedEdgePointType::Inside);
    ASSERT_TRUE(intersections[1].getInterval().Point1.getPointType() == DirectedEdgePointType::Point1);
+}
 
+TEST(DirectedEdgeIntersections, erase)
+{
+   const PointClose<double, GeomDim2> areClose;
+   const Point2 p0{ 0,0 };
+   const Point2 p1{ 1,1 };
+   const DirectedEdge<double, GeomDim2> edge(p0, p1);
+   const DirectedEdgePoint<double, GeomDim2> dep0(p0, edge, areClose);
+   const DirectedEdgePoint<double, GeomDim2> dep1(p1, edge, areClose);
+
+   const std::vector<DirectedEdgePoint<double, GeomDim2>> intersectionPoints{ dep0, dep1, dep0, dep1 };
+   const auto isContainedFalse = [](const Point2& p) {return false; };
+   DirectedEdgeIntersections<double, GeomDim2> intersections(intersectionPoints, isContainedFalse, areClose);
+   ASSERT_TRUE(intersections.get().size() == 2);
+   ASSERT_TRUE(intersections.get().front().getPoint().getPointType() == DirectedEdgePointType::Point0);
+   intersections.erase(0);
+   ASSERT_TRUE(intersections.get().size() == 1);
+   ASSERT_TRUE(intersections.get().front().getPoint().getPointType() == DirectedEdgePointType::Point1);
 }

@@ -61,3 +61,9 @@ std::span<const DirectedEdgeIntersection<T, N>> DirectedEdgeIntersections<T, N>:
 {
    return m_data;
 }
+
+template<typename T, int N>
+void DirectedEdgeIntersections<T, N>::erase(size_t n)
+{
+   m_data.erase(m_data.begin() + n);
+}

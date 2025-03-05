@@ -210,6 +210,8 @@ static boost::container::static_vector< NodeIndex, 2> HandleEndPoints(
 {
    boost::container::static_vector< NodeIndex, 2> nodeUsed;
    if (intersections.get().empty()) return nodeUsed;
+
+   // Loop backwards so that we can erase both end-points
    for (int n = static_cast<int>(intersections.get().size()) - 1; n >= 0; --n)
    {
       const auto& ip = intersections[n].getPoint();
@@ -218,7 +220,7 @@ static boost::container::static_vector< NodeIndex, 2> HandleEndPoints(
          const auto node = (ip.getPointType() == DirectedEdgePointType::Point0 ? edgeNodes[0] : edgeNodes[1]);
          nodeUsed.push_back(node);
          manifoldsAndNodes.addNodeToManifold(node, &manifold);
-         intersections.m_data.erase(intersections.m_data.begin() + n);
+         intersections.erase(n);
       }
    }
    return nodeUsed;
