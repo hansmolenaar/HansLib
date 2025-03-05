@@ -43,34 +43,34 @@ DirectedEdgeIntersections<T, GeomDim2> Sphere2AsManifold1<T>::GetIntersections(c
    {
       throw MyException("Sphere2AsManifold1<T>::GetIntersections degenerate edge");
    }
+   std::vector<DirectedEdgePoint<T, GeomDim2>> intersectionPoints;
    const bool firstPointInside = m_sphere.Contains(edge.point0(), predicate);
    const auto firstIntersection = m_sphere.TryGetFirstIntersectionWithDirectedEdge(edge, predicate);
-   DirectedEdgeIntersections<T, GeomDim2> result;
+
    if (firstPointInside)
    {
-      result.m_data.emplace_back(DirectedEdgePoint<T, GeomDim2>(edge.point0(), edge, predicate));
+      intersectionPoints.emplace_back(edge.point0(), edge, predicate);
       if (firstIntersection)
       {
-         result.m_data.emplace_back(DirectedEdgePoint<T, GeomDim2>(firstIntersection.value(), edge, predicate));
+         intersectionPoints.emplace_back(firstIntersection.value(), edge, predicate);
       }
    }
    else if (firstIntersection.has_value())
    {
-      result.m_data.emplace_back(DirectedEdgePoint<T, GeomDim2>(firstIntersection.value(), edge, predicate));
+      intersectionPoints.emplace_back(firstIntersection.value(), edge, predicate);
       const DirectedEdge<T, GeomDim2> next(firstIntersection.value(), edge.point1());
       if (!next.isDegenerate(predicate))
       {
          const auto secondIntersection = m_sphere.TryGetFirstIntersectionWithDirectedEdge(next, predicate);
          if (secondIntersection.has_value())
          {
-            if (!predicate.SamePoints(firstIntersection.value(), secondIntersection.value()))
-            {
-               result.m_data.emplace_back(DirectedEdgePoint<T, GeomDim2>(secondIntersection.value(), edge, predicate));
-            }
+            intersectionPoints.emplace_back(secondIntersection.value(), edge, predicate);
          }
       }
    }
-   return result;
+
+   auto containsPoint = [this, &predicate](const Point2& p) {return this->contains(p, predicate); };
+   return DirectedEdgeIntersections<T, GeomDim2>(intersectionPoints, containsPoint, predicate);
 }
 
 template<typename T>
