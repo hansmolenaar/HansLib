@@ -209,8 +209,8 @@ static boost::container::static_vector< NodeIndex, 2> HandleEndPoints(
    ManifoldsAndNodes<GeomDim2>& manifoldsAndNodes)
 {
    boost::container::static_vector< NodeIndex, 2> nodeUsed;
-   if (intersections.empty()) return nodeUsed;
-   for (int n = static_cast<int>(intersections.size()) - 1; n >= 0; --n)
+   if (intersections.get().empty()) return nodeUsed;
+   for (int n = static_cast<int>(intersections.get().size()) - 1; n >= 0; --n)
    {
       const auto& ip = intersections[n].getPoint();
       if (ip.getPointType() != DirectedEdgePointType::Inside)
@@ -235,7 +235,7 @@ bool MeshGeneration2::AddEdgeManifold1Intersections(
    const auto& predicate = pointCollection.getGeometryPredicate();
    const DirectedEdge<GeomType, GeomDim2> edge(pointCollection.getPoint(edgeNodes[0]), pointCollection.getPoint(edgeNodes[1]));
    auto intersections = manifold.GetIntersections(edge, predicate);
-   if (intersections.empty()) return false; // Nothing to do
+   if (intersections.get().empty()) return false; // Nothing to do
 
    if (!intersections[0].isIsolatedPoint())
    {
@@ -243,9 +243,9 @@ bool MeshGeneration2::AddEdgeManifold1Intersections(
    }
 
    const auto nodeUsed = HandleEndPoints(intersections, manifold, edgeNodes, manifoldsAndNodes);
-   if (intersections.empty()) return false;
+   if (intersections.get().empty()) return false;
 
-   if (intersections.size() == 1)
+   if (intersections.get().size() == 1)
    {
       const auto& ip = intersections[0].getPoint();
       const auto dist0 = PointUtils::GetDistanceSquared(ip.getPoint(), edge.point0());
@@ -266,7 +266,7 @@ bool MeshGeneration2::AddEdgeManifold1Intersections(
    }
    else
    {
-      Utilities::MyAssert(intersections.size() == 2);
+      Utilities::MyAssert(intersections.get().size() == 2);
       for (int n = 0; n < 2; ++n)
       {
          const auto& ip = intersections[n].getPoint();

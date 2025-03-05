@@ -19,31 +19,45 @@ DirectedEdgeIntersections<T, N>::DirectedEdgeIntersections(
    // Remove duplicates
    points.erase(std::unique(points.begin(), points.end(), DirectedEdgePointEquals{ predicate }), points.end());
 
-
-   if (points.size() == 1)
+   auto addIntersection = [this, &points](size_t f, size_t l)
+      {
+         if (f == l) // Single point
+         {
+            m_data.push_back(DirectedEdgeIntersection<T, N>(points.at(f)));
+         }
+         else
+         {
+            m_data.push_back(DirectedEdgeInterval<T, N>{points.at(f), points.at(l)});
+         }
+      };
+   size_t first = 0;
+   size_t last = 0;
+   while (first < points.size())
    {
-      m_data.push_back(points.front());
+      ++last;
+      if (last >= points.size())
+      {
+         addIntersection(first, last - 1);
+         break;
+      }
+      const auto mid = (points.at(last - 1).getPoint() + points.at(last).getPoint()) * 0.5;
+      if (!isContained(mid))
+      {
+         addIntersection(first, last - 1);
+         first = last;
+      }
    }
-   else
-   {
-      throw MyException("not yet implemented");
-   }
+
 }
 
 template<typename T, int N>
-bool DirectedEdgeIntersections<T, N>::empty() const
-{
-   return m_data.empty();
-}
-
-template<typename T, int N>
-size_t DirectedEdgeIntersections<T, N>::size() const
-{
-   return m_data.size();
-}
-
-template<typename T, int N>
-const Geometry::DirectedEdgeIntersection<T, N>& DirectedEdgeIntersections<T, N>::operator[](size_t n) const
+const DirectedEdgeIntersection<T, N>& DirectedEdgeIntersections<T, N>::operator[](size_t n) const
 {
    return m_data.at(n);
+}
+
+template<typename T, int N>
+std::span<const DirectedEdgeIntersection<T, N>> DirectedEdgeIntersections<T, N>::get() const
+{
+   return m_data;
 }

@@ -53,11 +53,11 @@ TEST(Sphere2AsManifold1, GetIntersections)
       const Point2 first{ 0,4 };
       edge = { first, { 0,3 } };
       intersections = sphereManifold.GetIntersections(edge, areClose);
-      ASSERT_EQ(intersections.size(), 0);
+      ASSERT_EQ(intersections.get().size(), 0);
 
       edge = { first, { 0,2 } };
       intersections = sphereManifold.GetIntersections(edge, areClose);
-      ASSERT_EQ(intersections.size(), 1);
+      ASSERT_EQ(intersections.get().size(), 1);
       ip = intersections[0].getPoint();
       ASSERT_EQ(ip.getPointType(), DirectedEdgePointType::Point1);
       ASSERT_TRUE(areClose.SamePoints(ip.getPoint(), { 0,2 }));
@@ -70,7 +70,7 @@ TEST(Sphere2AsManifold1, GetIntersections)
 
       edge = { first, { 0,-2 } };
       intersections = sphereManifold.GetIntersections(edge, areClose);
-      ASSERT_EQ(intersections.size(), 2);
+      ASSERT_EQ(intersections.get().size(), 2);
       ip = intersections[0].getPoint();
       ASSERT_EQ(ip.getPointType(), DirectedEdgePointType::Inside);
       ASSERT_TRUE(areClose.SamePoints(ip.getPoint(), { 0,2 }));
@@ -80,7 +80,7 @@ TEST(Sphere2AsManifold1, GetIntersections)
 
       edge = { first, { 0,-3 } };
       intersections = sphereManifold.GetIntersections(edge, areClose);
-      ASSERT_EQ(intersections.size(), 2);
+      ASSERT_EQ(intersections.get().size(), 2);
       ip = intersections[0].getPoint();
       ASSERT_EQ(ip.getPointType(), DirectedEdgePointType::Inside);
       ASSERT_TRUE(areClose.SamePoints(ip.getPoint(), { 0,2 }));
@@ -96,14 +96,14 @@ TEST(Sphere2AsManifold1, GetIntersections)
 
       edge = { first, { 0,0 } };
       intersections = sphereManifold.GetIntersections(edge, areClose);
-      ASSERT_EQ(intersections.size(), 1);
+      ASSERT_EQ(intersections.get().size(), 1);
       ip = intersections[0].getPoint();
       ASSERT_EQ(ip.getPointType(), DirectedEdgePointType::Point0);
       ASSERT_TRUE(areClose.SamePoints(ip.getPoint(), { 0,2 }));
 
       edge = { first, { 0,-2 } };
       intersections = sphereManifold.GetIntersections(edge, areClose);
-      ASSERT_EQ(intersections.size(), 2);
+      ASSERT_EQ(intersections.get().size(), 2);
       ip = intersections[0].getPoint();
       ASSERT_EQ(ip.getPointType(), DirectedEdgePointType::Point0);
       ASSERT_TRUE(areClose.SamePoints(ip.getPoint(), { 0,2 }));
@@ -113,7 +113,7 @@ TEST(Sphere2AsManifold1, GetIntersections)
 
       edge = { first, { 0,-3 } };
       intersections = sphereManifold.GetIntersections(edge, areClose);
-      ASSERT_EQ(intersections.size(), 2);
+      ASSERT_EQ(intersections.get().size(), 2);
       ip = intersections[0].getPoint();
       ASSERT_EQ(ip.getPointType(), DirectedEdgePointType::Point0);
       ASSERT_TRUE(areClose.SamePoints(ip.getPoint(), { 0,2 }));
@@ -129,18 +129,18 @@ TEST(Sphere2AsManifold1, GetIntersections)
 
       edge = { first, { 0,-1 } };
       intersections = sphereManifold.GetIntersections(edge, areClose);
-      ASSERT_EQ(intersections.size(), 0);
+      ASSERT_EQ(intersections.get().size(), 0);
 
       edge = { first, { 0,-2 } };
       intersections = sphereManifold.GetIntersections(edge, areClose);
-      ASSERT_EQ(intersections.size(), 1);
+      ASSERT_EQ(intersections.get().size(), 1);
       ip = intersections[0].getPoint();
       ASSERT_EQ(ip.getPointType(), DirectedEdgePointType::Point1);
       ASSERT_TRUE(areClose.SamePoints(ip.getPoint(), { 0,-2 }));
 
       edge = { first, { 0,-3 } };
       intersections = sphereManifold.GetIntersections(edge, areClose);
-      ASSERT_EQ(intersections.size(), 1);
+      ASSERT_EQ(intersections.get().size(), 1);
       ip = intersections[0].getPoint();
       ASSERT_EQ(ip.getPointType(), DirectedEdgePointType::Inside);
       ASSERT_TRUE(areClose.SamePoints(ip.getPoint(), { 0,-2 }));
@@ -152,7 +152,7 @@ TEST(Sphere2AsManifold1, GetIntersections)
 
       edge = { first, { 0,-3 } };
       intersections = sphereManifold.GetIntersections(edge, areClose);
-      ASSERT_EQ(intersections.size(), 1);
+      ASSERT_EQ(intersections.get().size(), 1);
       ip = intersections[0].getPoint();
       ASSERT_EQ(ip.getPointType(), DirectedEdgePointType::Point0);
       ASSERT_TRUE(areClose.SamePoints(ip.getPoint(), { 0,-2 }));
@@ -164,6 +164,6 @@ TEST(Sphere2AsManifold1, GetIntersections)
 
       edge = { first, { 0,-4 } };
       intersections = sphereManifold.GetIntersections(edge, areClose);
-      ASSERT_EQ(intersections.size(), 0);
+      ASSERT_EQ(intersections.get().size(), 0);
    }
 }

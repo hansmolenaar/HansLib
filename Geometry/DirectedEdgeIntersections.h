@@ -5,7 +5,6 @@
 
 #include <boost/container/static_vector.hpp>
 #include <functional>
-#include <variant>
 
 namespace Geometry
 {
@@ -23,15 +22,14 @@ namespace Geometry
          const std::function<bool(const Point<T, N>&)>& isContained,
          const IGeometryPredicate<T, N>& predicate);
 
-      bool empty() const;
-      size_t size() const;
       const DirectedEdgeIntersection<T, N>& operator[](size_t n) const;
-      //private:
-      boost::container::static_vector<DirectedEdgeIntersection<T, N>, 8 > m_data;
-   };
-   //template<typename T, int N>
-   //using DirectedEdgeIntersections = boost::container::static_vector< std::variant< DirectedEdgePoint<T, N>, DirectedEdgeInterval<T, N> >, 4>;
 
-   //template<typename T, int N>
-   //DirectedEdgeIntersections<T, N> CreateDirectedEdgeIntersections(std::span<const DirectedEdgePoint<T, N>> intersectionPoints, const IManifold<T, N>& manifold, const IGeometryPredicate<T, N>& predicate);
+      std::span<const DirectedEdgeIntersection<T, N>> get() const;
+
+      // TODO
+      //private:
+      //boost::container::static_vector<DirectedEdgeIntersection<T, N>, 8 > m_data;
+      std::vector<DirectedEdgeIntersection<T, N>> m_data;
+   };
+
 }
