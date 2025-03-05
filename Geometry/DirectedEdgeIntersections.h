@@ -1,6 +1,6 @@
 #pragma once
 
-#include "DirectedEdgePoint.h"
+#include "DirectedEdgeIntersection.h"
 #include "IGeometryPredicate.h"
 
 #include <boost/container/static_vector.hpp>
@@ -14,13 +14,6 @@ namespace Geometry
    class DirectedEdge;
 
    template<typename T, int N>
-   struct DirectedEdgeInterval
-   {
-      DirectedEdgePoint<T, N> Point0;
-      DirectedEdgePoint<T, N> Point1;
-   };
-
-   template<typename T, int N>
    class DirectedEdgeIntersections
    {
    public:
@@ -32,9 +25,9 @@ namespace Geometry
 
       bool empty() const;
       size_t size() const;
-      const std::variant < DirectedEdgePoint<T, N>, DirectedEdgeInterval<T, N>>& operator[](size_t n) const;
+      const DirectedEdgeIntersection<T, N>& operator[](size_t n) const;
       //private:
-      boost::container::static_vector<std::variant < DirectedEdgePoint<T, N>, DirectedEdgeInterval<T, N>>, 8 > m_data;
+      boost::container::static_vector<DirectedEdgeIntersection<T, N>, 8 > m_data;
    };
    //template<typename T, int N>
    //using DirectedEdgeIntersections = boost::container::static_vector< std::variant< DirectedEdgePoint<T, N>, DirectedEdgeInterval<T, N> >, 4>;

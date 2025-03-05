@@ -212,7 +212,7 @@ static boost::container::static_vector< NodeIndex, 2> HandleEndPoints(
    if (intersections.empty()) return nodeUsed;
    for (int n = static_cast<int>(intersections.size()) - 1; n >= 0; --n)
    {
-      const auto& ip = std::get<DirectedEdgePoint2>(intersections[n]);
+      const auto& ip = intersections[n].getPoint();
       if (ip.getPointType() != DirectedEdgePointType::Inside)
       {
          const auto node = (ip.getPointType() == DirectedEdgePointType::Point0 ? edgeNodes[0] : edgeNodes[1]);
@@ -237,7 +237,7 @@ bool MeshGeneration2::AddEdgeManifold1Intersections(
    auto intersections = manifold.GetIntersections(edge, predicate);
    if (intersections.empty()) return false; // Nothing to do
 
-   if (!std::holds_alternative<DirectedEdgePoint2>(intersections[0]))
+   if (!intersections[0].isIsolatedPoint())
    {
       throw MyException("Intersecion interval not yet implemented");
    }
@@ -247,7 +247,7 @@ bool MeshGeneration2::AddEdgeManifold1Intersections(
 
    if (intersections.size() == 1)
    {
-      const auto& ip = std::get<DirectedEdgePoint2>(intersections[0]);
+      const auto& ip = intersections[0].getPoint();
       const auto dist0 = PointUtils::GetDistanceSquared(ip.getPoint(), edge.point0());
       const auto dist1 = PointUtils::GetDistanceSquared(ip.getPoint(), edge.point1());
       auto nodeToMove = dist0 < dist1 ? edgeNodes[0] : edgeNodes[1];
@@ -269,7 +269,7 @@ bool MeshGeneration2::AddEdgeManifold1Intersections(
       Utilities::MyAssert(intersections.size() == 2);
       for (int n = 0; n < 2; ++n)
       {
-         const auto& ip = std::get<DirectedEdgePoint2>(intersections[n]);
+         const auto& ip = intersections[n].getPoint();
          // Automatically ordered: directed edge
          const auto nodeToMove = edgeNodes[n];
          if (!manifoldsAndNodes.isMobileOnManifold(nodeToMove, &manifold))

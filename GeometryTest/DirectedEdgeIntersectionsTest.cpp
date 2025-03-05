@@ -29,5 +29,5 @@ TEST(DirectedEdgeIntersections, single)
    ASSERT_FALSE(intersections.empty());
    ASSERT_TRUE(intersections.size() == 1);
    const auto i0 = intersections[0];
-   ASSERT_TRUE((std::get<DirectedEdgePoint<double, 2>>(i0)).getPointType() == DirectedEdgePointType::Point1);
+   ASSERT_TRUE(i0.getPoint().getPointType() == DirectedEdgePointType::Point1);
 }

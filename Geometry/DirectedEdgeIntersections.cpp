@@ -43,7 +43,7 @@ size_t DirectedEdgeIntersections<T, N>::size() const
 }
 
 template<typename T, int N>
-const std::variant < DirectedEdgePoint<T, N>, DirectedEdgeInterval<T, N>>& DirectedEdgeIntersections<T, N>::operator[](size_t n) const
+const Geometry::DirectedEdgeIntersection<T, N>& DirectedEdgeIntersections<T, N>::operator[](size_t n) const
 {
    return m_data.at(n);
 }
