@@ -25,6 +25,8 @@ namespace Geometry
       Point<T, N> m_to;
    };
 
+   using DirectedEdge2 = DirectedEdge<double, GeomDim2>;
+
    template<typename T, int N>
    DirectedEdge<T, N>::DirectedEdge(const Point<T, N>& from, const Point<T, N>& to) :
       m_from(from), m_to(to)
