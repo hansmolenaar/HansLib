@@ -13,8 +13,8 @@ TEST(Manifold0Test, Basics)
    ASSERT_EQ(manifold.getTopologyDimension(), Topology::Corner);
    PointExact<Rational, 1> areEqual;
    ASSERT_TRUE(manifold.contains(point, areEqual));
-   ASSERT_TRUE(areEqual.SamePoints(manifold.GetPoint(), point));
+   ASSERT_TRUE(areEqual.samePoints(manifold.getPoint(), point));
    const auto bb = manifold.getBoundingBox();
-   ASSERT_TRUE(areEqual.SamePoints(bb.getLower(), point));
-   ASSERT_TRUE(areEqual.SamePoints(bb.getUpper(), point));
+   ASSERT_TRUE(areEqual.samePoints(bb.getLower(), point));
+   ASSERT_TRUE(areEqual.samePoints(bb.getUpper(), point));
 }

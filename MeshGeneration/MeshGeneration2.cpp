@@ -34,7 +34,7 @@ namespace
          const auto bb = BoundingBox<GeomType, GeomDim2>::CreateFromList(triangle).scaleFrom01(scale);
          for (auto mptr : manifolds)
          {
-            const auto point = mptr->GetPoint();
+            const auto point = mptr->getPoint();
             if (bb.contains(point))
             {
                if (Polygon2D::Contains((std::span < const Point<GeomType, 2>>)triangle, point, pointCollection.getGeometryPredicate()))
@@ -51,7 +51,7 @@ namespace
    std::vector<const IManifold0D2*> OrderManifolds0(std::span<const IManifold0D2*> manifolds)
    {
       std::vector<const IManifold0D2*> result(manifolds.begin(), manifolds.end());
-      auto lessPoint = [](const IManifold0D2* ptr1, const IManifold0D2* ptr2) {return ptr1->GetPoint() < ptr2->GetPoint(); };
+      auto lessPoint = [](const IManifold0D2* ptr1, const IManifold0D2* ptr2) {return ptr1->getPoint() < ptr2->getPoint(); };
       str::sort(result, lessPoint);
       return result;
    }
@@ -214,7 +214,7 @@ static boost::container::static_vector< NodeIndex, 2> HandleEndPoints(
    // Loop backwards so that we can erase both end-points
    for (int n = static_cast<int>(intersections.get().size()) - 1; n >= 0; --n)
    {
-      const auto& ip = intersections[n].getPoint();
+      const auto& ip = intersections[n].getIsolatedPoint();
       if (ip.getPointType() != DirectedEdgePointType::Inside)
       {
          const auto node = (ip.getPointType() == DirectedEdgePointType::Point0 ? edgeNodes[0] : edgeNodes[1]);
@@ -236,7 +236,7 @@ bool MeshGeneration2::AddEdgeManifold1Intersections(
 {
    const auto& predicate = pointCollection.getGeometryPredicate();
    const DirectedEdge<GeomType, GeomDim2> edge(pointCollection.getPoint(edgeNodes[0]), pointCollection.getPoint(edgeNodes[1]));
-   auto intersections = manifold.GetIntersections(edge, predicate);
+   auto intersections = manifold.getIntersections(edge, predicate);
    if (intersections.get().empty()) return false; // Nothing to do
 
    if (!intersections[0].isIsolatedPoint())
@@ -249,7 +249,7 @@ bool MeshGeneration2::AddEdgeManifold1Intersections(
 
    if (intersections.get().size() == 1)
    {
-      const auto& ip = intersections[0].getPoint();
+      const auto& ip = intersections[0].getIsolatedPoint();
       const auto dist0 = PointUtils::GetDistanceSquared(ip.getPoint(), edge.point0());
       const auto dist1 = PointUtils::GetDistanceSquared(ip.getPoint(), edge.point1());
       auto nodeToMove = dist0 < dist1 ? edgeNodes[0] : edgeNodes[1];
@@ -271,7 +271,7 @@ bool MeshGeneration2::AddEdgeManifold1Intersections(
       Utilities::MyAssert(intersections.get().size() == 2);
       for (int n = 0; n < 2; ++n)
       {
-         const auto& ip = intersections[n].getPoint();
+         const auto& ip = intersections[n].getIsolatedPoint();
          // Automatically ordered: directed edge
          const auto nodeToMove = edgeNodes[n];
          if (!manifoldsAndNodes.isMobileOnManifold(nodeToMove, &manifold))
@@ -332,7 +332,7 @@ void MeshGeneration2::AddAllManifolds0(
       const auto range = trianglesContainingPoints.equal_range(manifold);
       std::vector<CellIndex> candidates;
       std::transform(range.first, range.second, std::back_inserter(candidates), [](const auto& itr) {return itr.second; });
-      const NodeIndex node = InsertPoint(manifold->GetPoint(), candidates, trianglesNodes, pointCollection, manifoldsAndNodes);
+      const NodeIndex node = InsertPoint(manifold->getPoint(), candidates, trianglesNodes, pointCollection, manifoldsAndNodes);
       manifoldsAndNodes.addNodeToManifold(node, manifold);
    }
 

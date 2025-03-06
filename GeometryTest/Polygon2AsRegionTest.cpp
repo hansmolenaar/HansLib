@@ -30,8 +30,8 @@ TEST(Polygon2AsRegion, Base)
    ASSERT_EQ(triangleRegion.getName(), "foo");
 
    const auto bb = triangleRegion.getBoundingBox();
-   ASSERT_TRUE(predicate.SamePoints(bb.getLower(), { 0,0 }));
-   ASSERT_TRUE(predicate.SamePoints(bb.getUpper(), { 1,1 }));
+   ASSERT_TRUE(predicate.samePoints(bb.getLower(), { 0,0 }));
+   ASSERT_TRUE(predicate.samePoints(bb.getUpper(), { 1,1 }));
 
    ASSERT_TRUE(triangleRegion.contains({ 0.1, 0.1 }, predicate));
    const auto allManifolds = triangleRegion.getManifolds().GetAllManifolds();
@@ -50,10 +50,10 @@ TEST(Polygon2AsRegion, Base)
 
    const auto edge2_connections = triangleRegion.GetConnectedLowers(*edgeManifolds.back());
    ASSERT_EQ(edge2_connections.size(), 2);
-   auto point = dynamic_cast<const Manifold0<double, GeomDim2>*>(edge2_connections.front())->GetPoint();
-   ASSERT_TRUE(predicate.SamePoints(point, trianglePoints.at(2)));
-   point = dynamic_cast<const Manifold0<double, GeomDim2>*>(edge2_connections.back())->GetPoint();
-   ASSERT_TRUE(predicate.SamePoints(point, trianglePoints.at(0)));
+   auto point = dynamic_cast<const Manifold0<double, GeomDim2>*>(edge2_connections.front())->getPoint();
+   ASSERT_TRUE(predicate.samePoints(point, trianglePoints.at(2)));
+   point = dynamic_cast<const Manifold0<double, GeomDim2>*>(edge2_connections.back())->getPoint();
+   ASSERT_TRUE(predicate.samePoints(point, trianglePoints.at(0)));
 
    const auto point2_connections = triangleRegion.GetConnectedHighers(*pointManifolds.at(2));
    ASSERT_EQ(point2_connections.size(), 2);

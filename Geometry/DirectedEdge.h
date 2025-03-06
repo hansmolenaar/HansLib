@@ -72,7 +72,7 @@ namespace Geometry
    template<typename T, int N>
    bool DirectedEdge<T, N>::isDegenerate(const IGeometryPredicate<T, N>& predicate) const
    {
-      return predicate.SamePoints(point0(), point1());
+      return predicate.samePoints(point0(), point1());
    }
 
    template<typename T, int N>
@@ -86,15 +86,15 @@ namespace Geometry
       if (lambda >= 0 && lambda <= 1)
       {
          const auto projected = interpolate(lambda);
-         return predicate.SamePoints(projected, point);
+         return predicate.samePoints(projected, point);
       }
       else if (lambda < 0)
       {
-         return predicate.SamePoints(point0(), point);
+         return predicate.samePoints(point0(), point);
       }
       else
       {
-         return predicate.SamePoints(point1(), point);
+         return predicate.samePoints(point1(), point);
       }
    }
 

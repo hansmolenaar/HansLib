@@ -158,7 +158,7 @@ std::optional<PointIndex> UniquePointCollectionBinning<N>::tryGetClosePointInBin
    for (auto itr = first; itr != last; ++itr)
    {
       const auto pointId = itr->second;
-      if (m_predicate.SamePoints(p, getPoint(pointId)))
+      if (m_predicate.samePoints(p, getPoint(pointId)))
       {
          return static_cast<PointIndex>(pointId);
       }
@@ -186,7 +186,7 @@ void UniquePointCollectionBinning<N>::movePoint(PointIndex pointId, const Point<
 {
    if (!m_points.contains(pointId))
    {
-      throw MyException("UniquePointCollectionBinning<N>::movePoint unknown point " + std::to_string(pointId) );
+      throw MyException("UniquePointCollectionBinning<N>::movePoint unknown point " + std::to_string(pointId));
    }
 
    const BinSpecifier location = locate(m_points.at(pointId));

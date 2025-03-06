@@ -37,7 +37,7 @@ BoundingBox<T, GeomDim2> Sphere2AsManifold1<T>::getBoundingBox() const
 }
 
 template<typename T>
-DirectedEdgeIntersections<T, GeomDim2> Sphere2AsManifold1<T>::GetIntersections(const DirectedEdge<T, GeomDim2>& edge, const IGeometryPredicate<T, GeomDim2>& predicate) const
+DirectedEdgeIntersections<T, GeomDim2> Sphere2AsManifold1<T>::getIntersections(const DirectedEdge<T, GeomDim2>& edge, const IGeometryPredicate<T, GeomDim2>& predicate) const
 {
    if (edge.isDegenerate(predicate))
    {

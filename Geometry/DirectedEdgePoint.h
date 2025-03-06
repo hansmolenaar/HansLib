@@ -44,7 +44,7 @@ namespace Geometry
             return true;
          }
          // both are inside
-         return predicate.SamePoints(lhs.getPoint(), rhs.getPoint());
+         return predicate.samePoints(lhs.getPoint(), rhs.getPoint());
       }
    };
 
@@ -64,7 +64,7 @@ namespace Geometry
             return false;
          }
          // both are inside
-         if (predicate.SamePoints(lhs.getPoint(), rhs.getPoint()))
+         if (predicate.samePoints(lhs.getPoint(), rhs.getPoint()))
          {
             return false;
          }

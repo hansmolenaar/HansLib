@@ -48,7 +48,7 @@ namespace Geometry
    {
       // Project the point on the line
       const auto projected = project(point);
-      return predicate.SamePoints(projected, point);
+      return predicate.samePoints(projected, point);
    }
 
 } // namespace Geometry

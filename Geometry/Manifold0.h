@@ -10,7 +10,7 @@ namespace Geometry
    public:
       explicit Manifold0<T, N>(const Point<T, N>& point);
 
-      Point<T, N> GetPoint() const override;
+      Point<T, N> getPoint() const override;
       bool contains(const Point<T, N>& point, const IGeometryPredicate<T, N>& predicate) const override;
 
       BoundingBox<T, N> getBoundingBox() const override;
@@ -26,7 +26,7 @@ namespace Geometry
    }
 
    template<typename T, int N>
-   Point<T, N> Manifold0<T, N>::GetPoint() const
+   Point<T, N> Manifold0<T, N>::getPoint() const
    {
       return m_point;
    }
@@ -34,7 +34,7 @@ namespace Geometry
    template<typename T, int N>
    bool Manifold0<T, N>::contains(const Point<T, N>& point, const IGeometryPredicate<T, N>& predicate) const
    {
-      return predicate.SamePoints(point, m_point);
+      return predicate.samePoints(point, m_point);
    }
 
    template<typename T, int N>

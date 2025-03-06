@@ -17,12 +17,12 @@ DirectedEdgePoint<T, N>::DirectedEdgePoint(const Point<T, N>& point, const Direc
    m_edgePoint(point),
    m_pointType(DirectedEdgePointType::Inside)
 {
-   if (predicate.SamePoints(point, edge.point0()))
+   if (predicate.samePoints(point, edge.point0()))
    {
       m_edgePoint = edge.point0();
       m_pointType = DirectedEdgePointType::Point0;
    }
-   if (predicate.SamePoints(point, edge.point1()))
+   if (predicate.samePoints(point, edge.point1()))
    {
       m_edgePoint = edge.point1();
       m_pointType = DirectedEdgePointType::Point1;

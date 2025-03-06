@@ -9,8 +9,8 @@ TEST(PointCloseTest, Int)
    const IntPoint2 p1{ 1,43 };
    ASSERT_FALSE(areClose(p0, p1));
    ASSERT_TRUE(areClose(p0, p0));
-   auto tmp = areClose.SamePoints(p0, p1);
-   //ASSERT_TRUE(areClose.SamePoints(p0, p1));
+   auto tmp = areClose.samePoints(p0, p1);
+   //ASSERT_TRUE(areClose.samePoints(p0, p1));
 }
 
 TEST(PointCloseTest, Double)

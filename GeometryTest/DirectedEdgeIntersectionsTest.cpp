@@ -29,7 +29,7 @@ TEST(DirectedEdgeIntersections, single)
    ASSERT_FALSE(intersections.get().empty());
    ASSERT_TRUE(intersections.get().size() == 1);
    const auto i0 = intersections[0];
-   ASSERT_TRUE(i0.getPoint().getPointType() == DirectedEdgePointType::Point1);
+   ASSERT_TRUE(i0.getIsolatedPoint().getPointType() == DirectedEdgePointType::Point1);
 }
 
 TEST(DirectedEdgeIntersections, two)
@@ -46,8 +46,8 @@ TEST(DirectedEdgeIntersections, two)
    DirectedEdgeIntersections<double, GeomDim2> intersections(intersectionPoints, isContainedFalse, areClose);
    ASSERT_FALSE(intersections.get().empty());
    ASSERT_TRUE(intersections.get().size() == 2);
-   ASSERT_TRUE(intersections[0].getPoint().getPointType() == DirectedEdgePointType::Point0);
-   ASSERT_TRUE(intersections[1].getPoint().getPointType() == DirectedEdgePointType::Point1);
+   ASSERT_TRUE(intersections[0].getIsolatedPoint().getPointType() == DirectedEdgePointType::Point0);
+   ASSERT_TRUE(intersections[1].getIsolatedPoint().getPointType() == DirectedEdgePointType::Point1);
 
    const auto isContainedTrue = [](const Point2& p) {return true; };
    intersections = DirectedEdgeIntersections<double, GeomDim2>(intersectionPoints, isContainedTrue, areClose);
@@ -72,9 +72,9 @@ TEST(DirectedEdgeIntersections, three)
    const auto isContainedFalse = [](const Point2& p) {return false; };
    DirectedEdgeIntersections<double, GeomDim2> intersections(intersectionPoints, isContainedFalse, areClose);
    ASSERT_TRUE(intersections.get().size() == 3);
-   ASSERT_TRUE(intersections[0].getPoint().getPointType() == DirectedEdgePointType::Point0);
-   ASSERT_TRUE(intersections[1].getPoint().getPointType() == DirectedEdgePointType::Inside);
-   ASSERT_TRUE(intersections[2].getPoint().getPointType() == DirectedEdgePointType::Point1);
+   ASSERT_TRUE(intersections[0].getIsolatedPoint().getPointType() == DirectedEdgePointType::Point0);
+   ASSERT_TRUE(intersections[1].getIsolatedPoint().getPointType() == DirectedEdgePointType::Inside);
+   ASSERT_TRUE(intersections[2].getIsolatedPoint().getPointType() == DirectedEdgePointType::Point1);
 
    const auto isContainedTrue = [](const Point2& p) {return true; };
    intersections = DirectedEdgeIntersections<double, GeomDim2>(intersectionPoints, isContainedTrue, areClose);
@@ -90,13 +90,13 @@ TEST(DirectedEdgeIntersections, three)
    ASSERT_TRUE(intersections[0].getInterval().Point0.getPointType() == DirectedEdgePointType::Point0);
    ASSERT_TRUE(intersections[0].getInterval().Point1.getPointType() == DirectedEdgePointType::Inside);
    ASSERT_TRUE(intersections[1].isIsolatedPoint());
-   ASSERT_TRUE(intersections[1].getPoint().getPointType() == DirectedEdgePointType::Point1);
+   ASSERT_TRUE(intersections[1].getIsolatedPoint().getPointType() == DirectedEdgePointType::Point1);
 
    const auto isContained12 = [&areClose](const Point2& p) {return areClose(p, Point2{ 0.75, 0.75 }); };
    intersections = DirectedEdgeIntersections<double, GeomDim2>(intersectionPoints, isContained12, areClose);
    ASSERT_TRUE(intersections.get().size() == 2);
    ASSERT_TRUE(intersections[0].isIsolatedPoint());
-   ASSERT_TRUE(intersections[0].getPoint().getPointType() == DirectedEdgePointType::Point0);
+   ASSERT_TRUE(intersections[0].getIsolatedPoint().getPointType() == DirectedEdgePointType::Point0);
    ASSERT_FALSE(intersections[1].isIsolatedPoint());
    ASSERT_TRUE(intersections[1].getInterval().Point0.getPointType() == DirectedEdgePointType::Inside);
    ASSERT_TRUE(intersections[1].getInterval().Point1.getPointType() == DirectedEdgePointType::Point1);
@@ -115,8 +115,8 @@ TEST(DirectedEdgeIntersections, erase)
    const auto isContainedFalse = [](const Point2& p) {return false; };
    DirectedEdgeIntersections<double, GeomDim2> intersections(intersectionPoints, isContainedFalse, areClose);
    ASSERT_TRUE(intersections.get().size() == 2);
-   ASSERT_TRUE(intersections.get().front().getPoint().getPointType() == DirectedEdgePointType::Point0);
+   ASSERT_TRUE(intersections.get().front().getIsolatedPoint().getPointType() == DirectedEdgePointType::Point0);
    intersections.erase(0);
    ASSERT_TRUE(intersections.get().size() == 1);
-   ASSERT_TRUE(intersections.get().front().getPoint().getPointType() == DirectedEdgePointType::Point1);
+   ASSERT_TRUE(intersections.get().front().getIsolatedPoint().getPointType() == DirectedEdgePointType::Point1);
 }

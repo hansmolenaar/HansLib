@@ -9,7 +9,7 @@ TEST(DirectedEdgeTest, UnhappyPath)
 {
    const PointClose<double, 1> areClose;
    const std::array<double, 1> point{ 1.0 };
-   ASSERT_TRUE(areClose.SamePoints(point, point));
+   ASSERT_TRUE(areClose.samePoints(point, point));
    const DirectedEdge<double, 1> edge(point, point);
    ASSERT_TRUE(edge.isDegenerate(areClose));
    ASSERT_THROW(edge.project(point), MyException);

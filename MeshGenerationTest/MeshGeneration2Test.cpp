@@ -106,7 +106,7 @@ TEST(MeshGeneration2Test, Sphere2AndEdge)
 
    const bool anyNodeMoved = AddEdgeManifold1Intersections(manifold, edge, trianglesNodes, manifoldsAndNodes, points);
    ASSERT_TRUE(anyNodeMoved);
-   ASSERT_TRUE(predicate.SamePoints(Point2{ 0,-1 }, points.getPoint(node1)));
+   ASSERT_TRUE(predicate.samePoints(Point2{ 0,-1 }, points.getPoint(node1)));
 }
 
 
@@ -234,7 +234,7 @@ TEST(MeshGeneration2Test, Sphere2AndEdge_OneEdgePointOnSphereTwoIntersections)
    const bool anyNodeMoved = AddEdgeManifold1Intersections(manifold, edge, trianglesNodes, manifoldsAndNodes, points);
    ASSERT_TRUE(anyNodeMoved);
    ASSERT_EQ(manifoldsAndNodes.getNodesInManifold(&manifold).size(), 2);
-   ASSERT_TRUE(predicate.SamePoints(points.getPoint(node1), Point2{ 0, -1 }));
+   ASSERT_TRUE(predicate.samePoints(points.getPoint(node1), Point2{ 0, -1 }));
 }
 
 
@@ -256,8 +256,8 @@ TEST(MeshGeneration2Test, Sphere2AndEdge_TwoIntersections)
    const bool anyNodeMoved = AddEdgeManifold1Intersections(manifold, edge, trianglesNodes, manifoldsAndNodes, points);
    ASSERT_TRUE(anyNodeMoved);
    ASSERT_EQ(manifoldsAndNodes.getNodesInManifold(&manifold).size(), 2);
-   ASSERT_TRUE(predicate.SamePoints(points.getPoint(node0), Point2{ 0, -1 }));
-   ASSERT_TRUE(predicate.SamePoints(points.getPoint(node1), Point2{ 0, 1 }));
+   ASSERT_TRUE(predicate.samePoints(points.getPoint(node0), Point2{ 0, -1 }));
+   ASSERT_TRUE(predicate.samePoints(points.getPoint(node1), Point2{ 0, 1 }));
 }
 
 TEST(MeshGeneration2Test, Sphere2_intersect_4)

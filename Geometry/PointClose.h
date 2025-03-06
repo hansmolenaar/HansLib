@@ -1,15 +1,15 @@
 #pragma once
 
-#include "Point.h"
 #include "IGeometryPredicate.h"
 #include "MyAssert.h"
+#include "Point.h"
 
 template<typename T, int N>
 class PointClose : public IGeometryPredicate<T, N>
 {
 public:
    bool operator ()(const Point<T, N>&, const Point<T, N>&) const;
-   bool SamePoints(Point<T, N> p0, Point<T, N> p1) const override;
+   bool samePoints(Point<T, N> p0, Point<T, N> p1) const override;
    T getSmallLengthInDirection(int n) const override;
    T getSmallNormSquared() const override;
 private:
@@ -26,7 +26,7 @@ bool PointClose<T, N>::operator ()(const Point<T, N>& p0, const Point<T, N>& p1)
 
 
 template<typename T, int N>
-bool PointClose<T, N>::SamePoints(Point<T, N> p0, Point<T, N> p1) const
+bool PointClose<T, N>::samePoints(Point<T, N> p0, Point<T, N> p1) const
 {
    return (*this)(p0, p1);
 }

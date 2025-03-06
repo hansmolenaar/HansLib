@@ -20,7 +20,7 @@ TEST(UniqueHashedPointCollectionTest, Basic)
    found = collection.tryGetClosePoint(ipoint);
    ASSERT_EQ(*found, 0);
    const auto retval = collection.getPoint(0);
-   collection.getGeometryPredicate().SamePoints(ipoint, retval);
+   collection.getGeometryPredicate().samePoints(ipoint, retval);
 
    added = collection.addIfNew(ipoint);
    ASSERT_EQ(added, 0);
@@ -31,7 +31,7 @@ TEST(UniqueHashedPointCollectionTest, Rat2)
 {
    UniqueHashedPointCollection<Rational, GeomDim2> collection;
    ASSERT_EQ(collection.getNumPoints(), 0);
-   for (const auto& point :{ RatPoint2{1,2}, RatPoint2{1,3}, RatPoint2{2,1}, RatPoint2{1,3} })
+   for (const auto& point : { RatPoint2{1,2}, RatPoint2{1,3}, RatPoint2{2,1}, RatPoint2{1,3} })
    {
       collection.addIfNew(point);
    }

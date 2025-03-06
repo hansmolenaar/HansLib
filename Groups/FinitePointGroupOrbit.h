@@ -1,8 +1,8 @@
 #pragma once
 
-#include "IUniquePointCollection.h"
-#include "IFinitePointGroupAction.h"
 #include "IFiniteGroupUtils.h"
+#include "IFinitePointGroupAction.h"
+#include "IUniquePointCollection.h"
 
 template<int N>
 class FinitePointGroupOrbit : public IUniquePointCollection<double, N>
@@ -60,7 +60,7 @@ std::optional<PointIndex>  FinitePointGroupOrbit<N>::tryGetClosePoint(const Poin
    for (const auto& up : m_uniquePoints)
    {
       result = result == PointIndexInvalid ? 0 : result + 1;
-      if (m_predicate.SamePoints(up, p)) return result;
+      if (m_predicate.samePoints(up, p)) return result;
    }
    return {};
 }

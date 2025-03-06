@@ -14,7 +14,7 @@ namespace Geometry
       DirectedEdgeIntersection<T, N>(DirectedEdgePoint<T, N> point);
       DirectedEdgeIntersection<T, N>(DirectedEdgeInterval<T, N> interval);
       bool isIsolatedPoint() const;
-      const DirectedEdgePoint<T, N>& getPoint() const;
+      const DirectedEdgePoint<T, N>& getIsolatedPoint() const;
       const DirectedEdgeInterval<T, N>& getInterval() const;
    private:
       std::variant<DirectedEdgePoint<T, N>, DirectedEdgeInterval<T, N>> m_intersection;
@@ -39,7 +39,7 @@ namespace Geometry
    }
 
    template<typename T, int N>
-   const DirectedEdgePoint<T, N>& DirectedEdgeIntersection<T, N>::getPoint() const
+   const DirectedEdgePoint<T, N>& DirectedEdgeIntersection<T, N>::getIsolatedPoint() const
    {
       return std::get<DirectedEdgePoint<T, N>>(m_intersection);
    }

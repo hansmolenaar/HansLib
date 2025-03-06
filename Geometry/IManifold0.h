@@ -10,7 +10,7 @@ namespace Geometry
    class IManifold0 : public IManifold<T, N>
    {
    public:
-      virtual Point<T, N> GetPoint() const = 0;
+      virtual Point<T, N> getPoint() const = 0;
 
       Topology::TopologyDimension getTopologyDimension() const override { return Topology::Corner; };
    };

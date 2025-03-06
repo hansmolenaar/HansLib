@@ -14,7 +14,7 @@ TEST(DirectedEdgeUtilsTest, degenerate)
    const DirectedEdge<double, 2> edge01(point0, point1);
    ASSERT_THROW(DirectedEdgeUtils::intersectWith2(edge00, edge01, areClose), MyException);
    const auto ipts = DirectedEdgeUtils::intersectWith2(edge01, edge00, areClose);
-   ASSERT_TRUE(ipts->getPoint().getPointType() == DirectedEdgePointType::Point0);
+   ASSERT_TRUE(ipts->getIsolatedPoint().getPointType() == DirectedEdgePointType::Point0);
 }
 
 TEST(DirectedEdgeUtilsTest, isContained_0_or_1)
@@ -31,20 +31,20 @@ TEST(DirectedEdgeUtilsTest, isContained_0_or_1)
    ASSERT_TRUE(!ipts);
 
    ipts = DirectedEdgeUtils::intersectWith2(edge01, { point2, point0 }, areClose);
-   ASSERT_TRUE(ipts->getPoint().getPointType() == DirectedEdgePointType::Point0);
+   ASSERT_TRUE(ipts->getIsolatedPoint().getPointType() == DirectedEdgePointType::Point0);
    ipts = DirectedEdgeUtils::intersectWith2(edge01, { point0, point2 }, areClose);
-   ASSERT_TRUE(ipts->getPoint().getPointType() == DirectedEdgePointType::Point0);
+   ASSERT_TRUE(ipts->getIsolatedPoint().getPointType() == DirectedEdgePointType::Point0);
 
    ipts = DirectedEdgeUtils::intersectWith2(edge01, { point2, Point2{1.5,1.5} }, areClose);
-   ASSERT_TRUE(ipts->getPoint().getPointType() == DirectedEdgePointType::Inside);
+   ASSERT_TRUE(ipts->getIsolatedPoint().getPointType() == DirectedEdgePointType::Inside);
    ipts = DirectedEdgeUtils::intersectWith2(edge01, { Point2{1.5,1.5}, point2 }, areClose);
-   ASSERT_TRUE(ipts->getPoint().getPointType() == DirectedEdgePointType::Inside);
+   ASSERT_TRUE(ipts->getIsolatedPoint().getPointType() == DirectedEdgePointType::Inside);
 
    ipts = DirectedEdgeUtils::intersectWith2(edge01, { point2, point1 }, areClose);
-   ASSERT_TRUE(ipts->getPoint().getPointType() == DirectedEdgePointType::Point1);
+   ASSERT_TRUE(ipts->getIsolatedPoint().getPointType() == DirectedEdgePointType::Point1);
    ipts = DirectedEdgeUtils::intersectWith2(edge01, { point1, point2 }, areClose);
-   ASSERT_TRUE(ipts->getPoint().getPointType() == DirectedEdgePointType::Point1);
-   ASSERT_TRUE(ipts->getPoint().getPointType() == DirectedEdgePointType::Point1);
+   ASSERT_TRUE(ipts->getIsolatedPoint().getPointType() == DirectedEdgePointType::Point1);
+   ASSERT_TRUE(ipts->getIsolatedPoint().getPointType() == DirectedEdgePointType::Point1);
 
    ipts = DirectedEdgeUtils::intersectWith2(edge01, { point2, Point2{3,3} }, areClose);
    ASSERT_TRUE(!ipts);
@@ -71,9 +71,9 @@ TEST(DirectedEdgeUtilsTest, isContained_0_and_1)
    ASSERT_TRUE(!ipts);
 
    ipts = DirectedEdgeUtils::intersectWith2(edge01, { point2, point0 }, areClose);
-   ASSERT_TRUE(ipts->getPoint().getPointType() == DirectedEdgePointType::Point0);
+   ASSERT_TRUE(ipts->getIsolatedPoint().getPointType() == DirectedEdgePointType::Point0);
    ipts = DirectedEdgeUtils::intersectWith2(edge01, { point0, point2 }, areClose);
-   ASSERT_TRUE(ipts->getPoint().getPointType() == DirectedEdgePointType::Point0);
+   ASSERT_TRUE(ipts->getIsolatedPoint().getPointType() == DirectedEdgePointType::Point0);
 
    ipts = DirectedEdgeUtils::intersectWith2(edge01, { point4, point3 }, areClose);
    ASSERT_TRUE(ipts->getInterval().Point0.getPointType() == DirectedEdgePointType::Point0);
@@ -132,9 +132,9 @@ TEST(DirectedEdgeUtilsTest, isContained_0_and_1)
    ASSERT_TRUE(ipts->getInterval().Point1.getPointType() == DirectedEdgePointType::Point1);
 
    ipts = DirectedEdgeUtils::intersectWith2(edge01, { point5, point1 }, areClose);
-   ASSERT_TRUE(ipts->getPoint().getPointType() == DirectedEdgePointType::Point1);
+   ASSERT_TRUE(ipts->getIsolatedPoint().getPointType() == DirectedEdgePointType::Point1);
    ipts = DirectedEdgeUtils::intersectWith2(edge01, { point1, point5 }, areClose);
-   ASSERT_TRUE(ipts->getPoint().getPointType() == DirectedEdgePointType::Point1);
+   ASSERT_TRUE(ipts->getIsolatedPoint().getPointType() == DirectedEdgePointType::Point1);
 
    ipts = DirectedEdgeUtils::intersectWith2(edge01, { point5, point6 }, areClose);
    ASSERT_TRUE(!ipts);
@@ -157,27 +157,27 @@ TEST(DirectedEdgeUtilsTest, isContained_0_nor_1)
    ASSERT_TRUE(!ipts);
 
    ipts = DirectedEdgeUtils::intersectWith2(edge01, { Point2{1,-10}, Point2{1, 10} }, areClose);
-   ASSERT_TRUE(ipts->getPoint().getPointType() == DirectedEdgePointType::Point0);
+   ASSERT_TRUE(ipts->getIsolatedPoint().getPointType() == DirectedEdgePointType::Point0);
 
    ipts = DirectedEdgeUtils::intersectWith2(edge01, { Point2{2,-10}, Point2{2, 10} }, areClose);
-   ASSERT_TRUE(ipts->getPoint().getPointType() == DirectedEdgePointType::Inside);
+   ASSERT_TRUE(ipts->getIsolatedPoint().getPointType() == DirectedEdgePointType::Inside);
 
    ipts = DirectedEdgeUtils::intersectWith2(edge01, { Point2{10,-10}, Point2{10, 10} }, areClose);
-   ASSERT_TRUE(ipts->getPoint().getPointType() == DirectedEdgePointType::Point1);
+   ASSERT_TRUE(ipts->getIsolatedPoint().getPointType() == DirectedEdgePointType::Point1);
 
    ipts = DirectedEdgeUtils::intersectWith2(edge01, { Point2{11,-10}, Point2{11, 10} }, areClose);
    ASSERT_TRUE(!ipts);
 
    ipts = DirectedEdgeUtils::intersectWith2(edge01, { Point2{6,4}, Point2{3, 7} }, areClose);
-   ASSERT_TRUE(areClose.SamePoints(ipts->getPoint().getPoint(), Point2{ 5,5 }));
+   ASSERT_TRUE(areClose.samePoints(ipts->getIsolatedPoint().getPoint(), Point2{ 5,5 }));
    ipts = DirectedEdgeUtils::intersectWith2(edge01, { Point2{3, 7}, Point2{6,4} }, areClose);
-   ASSERT_TRUE(areClose.SamePoints(ipts->getPoint().getPoint(), Point2{ 5,5 }));
+   ASSERT_TRUE(areClose.samePoints(ipts->getIsolatedPoint().getPoint(), Point2{ 5,5 }));
 
    ipts = DirectedEdgeUtils::intersectWith2(edge01, { Point2{3, 4}, Point2{9,7} }, areClose);
-   ASSERT_TRUE(areClose.SamePoints(ipts->getPoint().getPoint(), Point2{ 5,5 }));
+   ASSERT_TRUE(areClose.samePoints(ipts->getIsolatedPoint().getPoint(), Point2{ 5,5 }));
 
    ipts = DirectedEdgeUtils::intersectWith2(edge01, { Point2{0, 1}, Point2{6,4} }, areClose);
-   ASSERT_TRUE(areClose.SamePoints(ipts->getPoint().getPoint(), Point2{ 2,2 }));
+   ASSERT_TRUE(areClose.samePoints(ipts->getIsolatedPoint().getPoint(), Point2{ 2,2 }));
    ipts = DirectedEdgeUtils::intersectWith2(edge01, { Point2{6,4}, Point2{0, 1} }, areClose);
-   ASSERT_TRUE(areClose.SamePoints(ipts->getPoint().getPoint(), Point2{ 2,2 }));
+   ASSERT_TRUE(areClose.samePoints(ipts->getIsolatedPoint().getPoint(), Point2{ 2,2 }));
 }

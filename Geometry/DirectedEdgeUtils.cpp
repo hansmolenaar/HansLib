@@ -11,8 +11,8 @@ std::optional<DirectedEdgeIntersection<double, 2>> DirectedEdgeUtils::intersectW
    const double lambda1 = edge.project(target.point1());
    const Point2 p0 = edge.interpolate(lambda0);
    const Point2 p1 = edge.interpolate(lambda1);
-   const bool isContained0 = predicate.SamePoints(p0, target.point0());
-   const bool isContained1 = predicate.SamePoints(p1, target.point1());
+   const bool isContained0 = predicate.samePoints(p0, target.point0());
+   const bool isContained1 = predicate.samePoints(p1, target.point1());
    if (isContained0 && !isContained1)
    {
       if (edge.contains(p0, predicate))
@@ -41,7 +41,7 @@ std::optional<DirectedEdgeIntersection<double, 2>> DirectedEdgeUtils::intersectW
       const Point2 ipoint0 = edge.interpolate(lambdaIp0);
       const Point2 ipoint1 = edge.interpolate(lambdaIp1);
       const DirectedEdgePoint<double, GeomDim2> dep0(ipoint0, edge, predicate);
-      if (predicate.SamePoints(ipoint0, ipoint1))
+      if (predicate.samePoints(ipoint0, ipoint1))
       {
          return  { dep0 };
       }

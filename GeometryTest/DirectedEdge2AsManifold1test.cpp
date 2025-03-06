@@ -27,8 +27,8 @@ TEST(DirectedEdge2AsManifold1, Constructor)
    ASSERT_TRUE(edgeManifold.contains({ 0,0 }, predicate));
 
    const auto bb = edgeManifold.getBoundingBox();
-   ASSERT_TRUE(predicate.SamePoints(bb.getLower(), Point2{ -1, -1 }));
-   ASSERT_TRUE(predicate.SamePoints(bb.getUpper(), Point2{ 1, 1 }));
+   ASSERT_TRUE(predicate.samePoints(bb.getLower(), Point2{ -1, -1 }));
+   ASSERT_TRUE(predicate.samePoints(bb.getUpper(), Point2{ 1, 1 }));
 }
 
 
@@ -55,7 +55,7 @@ TEST(DirectedEdge2AsManifold1, GetIntersections)
    const DirectedEdge2 edge{ p0, p1 };
    const DirectedEdge2AsManifold1<double> edgeManifold(edge);
 
-   const auto intersections = edgeManifold.GetIntersections(DirectedEdge2{ p1, p2 }, predicate);
+   const auto intersections = edgeManifold.getIntersections(DirectedEdge2{ p1, p2 }, predicate);
    const auto& intersection = Utilities::Single(intersections.get());
-   ASSERT_TRUE(predicate.SamePoints(intersection.getPoint().getPoint(), p1));
+   ASSERT_TRUE(predicate.samePoints(intersection.getIsolatedPoint().getPoint(), p1));
 }

@@ -38,7 +38,7 @@ BoundingBox<T, GeomDim2> DirectedEdge2AsManifold1<T>::getBoundingBox() const
 }
 
 template<typename T>
-DirectedEdgeIntersections<T, GeomDim2> DirectedEdge2AsManifold1<T>::GetIntersections(const DirectedEdge<T, GeomDim2>& edge, const IGeometryPredicate<T, GeomDim2>& predicate) const
+DirectedEdgeIntersections<T, GeomDim2> DirectedEdge2AsManifold1<T>::getIntersections(const DirectedEdge<T, GeomDim2>& edge, const IGeometryPredicate<T, GeomDim2>& predicate) const
 {
    auto intersection = DirectedEdgeUtils::intersectWith2(edge, m_edge, predicate);
    if (!intersection) return {};

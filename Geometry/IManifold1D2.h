@@ -13,7 +13,7 @@ namespace Geometry
    public:
 
       // Throw if the edge is degenerate
-      virtual DirectedEdgeIntersections<T, GeomDim2> GetIntersections(const DirectedEdge<T, GeomDim2>& edge, const IGeometryPredicate<T, GeomDim2>& predicate) const = 0;
+      virtual DirectedEdgeIntersections<T, GeomDim2> getIntersections(const DirectedEdge<T, GeomDim2>& edge, const IGeometryPredicate<T, GeomDim2>& predicate) const = 0;
    };
 
 };
