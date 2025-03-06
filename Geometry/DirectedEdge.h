@@ -20,6 +20,8 @@ namespace Geometry
       bool contains(const Point<T, N>& point, const IGeometryPredicate<T, N>& predicate) const;
       bool isDegenerate(const IGeometryPredicate<T, N>& predicate) const;
 
+      // projected point is not necessarily on the edge (line segment)
+      Point<T, N> projectPointOnLine(const Point<T, N>& point) const;
    private:
       Point<T, N> m_from;
       Point<T, N> m_to;
@@ -94,6 +96,13 @@ namespace Geometry
       {
          return predicate.SamePoints(point1(), point);
       }
+   }
+
+   template<typename T, int N>
+   Point<T, N> DirectedEdge<T, N>::projectPointOnLine(const Point<T, N>& point) const
+   {
+      const T lambda = project(point);
+      return interpolate(lambda);
    }
 
 } // namespace Geometry
