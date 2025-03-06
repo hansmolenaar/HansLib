@@ -1,4 +1,5 @@
 #include "DirectedEdge.h"
+#include "DirectedEdgePoint.h"
 
 using namespace Geometry;
 

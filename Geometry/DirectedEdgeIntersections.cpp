@@ -5,6 +5,12 @@ using namespace Geometry;
 template DirectedEdgeIntersections<double, 2>;
 
 template<typename T, int N>
+DirectedEdgeIntersections<T, N>::DirectedEdgeIntersections(const DirectedEdgeIntersection<T, N>& intersection) :
+   m_data(1, intersection)
+{
+}
+
+template<typename T, int N>
 DirectedEdgeIntersections<T, N>::DirectedEdgeIntersections(
    std::span<const DirectedEdgePoint<T, N>> intersectionPoints,
    const std::function<bool(const Point<T, N>&)>& isContained,

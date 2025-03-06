@@ -1,7 +1,7 @@
 #pragma once
 
+#include "BoundingBox.h"
 #include "Defines.h"
-#include "DirectedEdgeIntersections.h"
 #include "IGeometryPredicate.h"
 #include "Point.h"
 
@@ -19,7 +19,7 @@ namespace Geometry
       Point<T, N> interpolate(T lambda) const;
       bool contains(const Point<T, N>& point, const IGeometryPredicate<T, N>& predicate) const;
       bool isDegenerate(const IGeometryPredicate<T, N>& predicate) const;
-
+      BoundingBox<T, N> getBoundingBox() const;
       // projected point is not necessarily on the edge (line segment)
       Point<T, N> projectPointOnLine(const Point<T, N>& point) const;
    private:
@@ -103,6 +103,12 @@ namespace Geometry
    {
       const T lambda = project(point);
       return interpolate(lambda);
+   }
+
+   template<typename T, int N>
+   BoundingBox<T, N> DirectedEdge<T, N>::getBoundingBox() const
+   {
+      return BoundingBox<T, N>::CreateFrom2Points(m_from, m_to);
    }
 
 } // namespace Geometry

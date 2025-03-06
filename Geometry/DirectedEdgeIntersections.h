@@ -16,6 +16,7 @@ namespace Geometry
          std::span<const DirectedEdgePoint<T, N>> intersectionPoints,
          const std::function<bool(const Point<T, N>&)>& isContained,
          const IGeometryPredicate<T, N>& predicate);
+      DirectedEdgeIntersections<T, N>(const DirectedEdgeIntersection<T, N>& intersection);
 
       const DirectedEdgeIntersection<T, N>& operator[](size_t n) const;
 

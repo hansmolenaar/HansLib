@@ -13,9 +13,23 @@ template Polygon2AsRegion<double>;
 template<typename T>
 Polygon2AsRegion<T>::Polygon2AsRegion(std::span<const Point<T, 2>> polygon, std::string name) :
    m_polygon(polygon.size()),
+   m_bb(BoundingBox<T, 2>::CreateFromList(polygon)),
    m_name(std::move(name))
 {
+   const auto numPoints = polygon.size();
+
    str::copy(polygon, m_polygon.begin());
+
+   m_pointManifolds.reserve(numPoints);
+   str::transform(m_polygon, std::back_inserter(m_pointManifolds), [](const auto& p) {return Manifold0<T, GeomDim2>(p); });
+
+   m_edgeManifolds.reserve(numPoints);
+   for (size_t n = 0; n < numPoints; ++n)
+   {
+      const DirectedEdge<T, GeomDim2> edge(polygon[n], polygon[(n + 1) % numPoints]);
+      const std::string name = m_name + "_edge_" + std::to_string(n);
+      m_edgeManifolds.emplace_back(edge, name);
+   }
 }
 
 template<typename T>
@@ -27,7 +41,7 @@ const std::string& Polygon2AsRegion<T>::getName() const
 template<typename T>
 BoundingBox<T, GeomDim2> Polygon2AsRegion<T>::getBoundingBox() const
 {
-   return BoundingBox<T, 2>::CreateFromList(m_polygon);
+   return m_bb;
 }
 
 template<typename T>
@@ -37,13 +51,51 @@ bool Polygon2AsRegion<T>::contains(const Point<T, GeomDim2>& point, const IGeome
 }
 
 template<typename T>
-bool Polygon2AsRegion<T>::couldIntersectWith(typename const BoundingBox<T, GeomDim2>& bb, const IGeometryPredicate<T, GeomDim2>& predicate) const
+const IRegionManifolds<T, GeomDim2>& Polygon2AsRegion<T>::getManifolds() const
 {
-   throw MyException("Polygon2AsRegion<T>::CouldIntersectWith() not yet implemented");
+   return *this;
 }
 
 template<typename T>
-const IRegionManifolds<T, GeomDim2>& Polygon2AsRegion<T>::getManifolds() const
+std::vector<const IManifold<T, GeomDim2>*> Polygon2AsRegion<T>::GetBoundaryHyperManifolds() const
 {
-   throw MyException("Polygon2AsRegion<T>::getManifolds() not yet implemented");
+   std::vector<const IManifold<T, GeomDim2>*> result(m_edgeManifolds.size());
+   str::transform(m_edgeManifolds, result.begin(), [](const auto& manifold) {return &manifold; });
+   return result;
+}
+
+template<typename T>
+std::vector<const IManifold<T, GeomDim2>*> Polygon2AsRegion<T>::GetAllManifolds() const
+{
+   const auto numPoints = m_polygon.size();
+   auto result = GetBoundaryHyperManifolds();
+   result.resize(2 * numPoints);
+   str::transform(m_pointManifolds, result.begin() + numPoints, [](const auto& manifold) {return &manifold; });
+   return result;
+}
+
+template<typename T>
+std::vector<const IManifold<T, GeomDim2>*> Polygon2AsRegion<T>::GetConnectedHighers(const IManifold<T, GeomDim2>& manifold) const
+{
+   const auto numPoints = m_polygon.size();
+   const auto predicateManifold = [&manifold](const Manifold0<T, GeomDim2>& pointManifold) { return &pointManifold == &manifold; };
+   const auto found = str::find_if(m_pointManifolds, predicateManifold);
+   if (found == m_pointManifolds.end()) return {};
+   const auto p = std::distance(m_pointManifolds.begin(), found);
+   const auto e0 = p;
+   const auto e1 = (p > 0) ? p - 1 : numPoints - 1;
+   return { &m_edgeManifolds.at(e0), &m_edgeManifolds.at(e1) };
+}
+
+template<typename T>
+std::vector<const IManifold<T, GeomDim2>*> Polygon2AsRegion<T>::GetConnectedLowers(const IManifold<T, GeomDim2>& manifold) const
+{
+   const auto numPoints = m_polygon.size();
+   const auto predicateManifold = [&manifold](const DirectedEdge2AsManifold1<T>& edgeManifold) { return &edgeManifold == &manifold; };
+   const auto found = str::find_if(m_edgeManifolds, predicateManifold);
+   if (found == m_edgeManifolds.end()) return {};
+   const auto e = std::distance(m_edgeManifolds.begin(), found);
+   const auto p0 = e;
+   const auto p1 = (e + 1) % numPoints;
+   return { &m_pointManifolds.at(p0), &m_pointManifolds.at(p1) };
 }
