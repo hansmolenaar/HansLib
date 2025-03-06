@@ -7,11 +7,11 @@
 namespace Geometry
 {
    template<typename T, int N>
-   class IManifold : public IGeometryObject<T,N>
+   class IManifold : public IGeometryObject<T, N>
    {
    public:
       virtual bool contains(const Point<T, N>& point, const IGeometryPredicate<T, N>& predicate) const = 0;
-      virtual Topology::TopologyDimension GetTopologyDimension() const = 0;
+      virtual Topology::TopologyDimension getTopologyDimension() const = 0;
    };
 
 }

@@ -40,10 +40,10 @@ TEST(DirectedEdge2AsManifold1, GetEuclideanSubspaceAt)
    const DirectedEdge2 edge{ p0, p1 };
    const DirectedEdge2AsManifold1<double> edgeManifold(edge);
 
-   const  Line<double, 2> line = edgeManifold.GetEuclideanSubspaceAt(Point2{ -0.2, 0.2 }, predicate);
+   const  Line<double, 2> line = edgeManifold.getEuclideanSubspaceAt(Point2{ -0.2, 0.2 }, predicate);
    ASSERT_TRUE(line.contains(Point2{ 0, 0 }, predicate));
 
-   ASSERT_THROW(edgeManifold.GetEuclideanSubspaceAt(Point2{ 3,3 }, predicate), MyException);
+   ASSERT_THROW(edgeManifold.getEuclideanSubspaceAt(Point2{ 3,3 }, predicate), MyException);
 }
 
 TEST(DirectedEdge2AsManifold1, GetIntersections)

@@ -39,10 +39,10 @@ TEST(Polygon2AsRegion, Base)
 
    const auto edgeManifolds = triangleRegion.GetBoundaryHyperManifolds();
    ASSERT_EQ(edgeManifolds.size(), 3);
-   ASSERT_TRUE(str::all_of(edgeManifolds, [](const auto* m) {return m->GetTopologyDimension() == Topology::Edge; }));
+   ASSERT_TRUE(str::all_of(edgeManifolds, [](const auto* m) {return m->getTopologyDimension() == Topology::Edge; }));
 
    std::vector<const IManifold<double, GeomDim2>*> pointManifolds;
-   str::copy_if(allManifolds, std::back_inserter(pointManifolds), [](const auto* m) { return m->GetTopologyDimension() == Topology::Corner; });
+   str::copy_if(allManifolds, std::back_inserter(pointManifolds), [](const auto* m) { return m->getTopologyDimension() == Topology::Corner; });
    ASSERT_EQ(pointManifolds.size(), 3);
 
    ASSERT_TRUE(triangleRegion.GetConnectedLowers(*pointManifolds.front()).empty());

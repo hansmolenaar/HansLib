@@ -1,7 +1,7 @@
 #pragma once
 
-#include <gtest/gtest.h>
 #include "IManifold1.h"
+#include <gtest/gtest.h>
 
 #include <algorithm> 
 #include <cstdlib>
@@ -41,13 +41,13 @@ namespace
 template<typename T, int N>
 void IManifold1TestInterface(const IManifold1<T, N>& manifold, const IGeometryPredicate<T, N>& predicate)
 {
-   ASSERT_EQ(manifold.GetTopologyDimension(), Topology::Edge);
+   ASSERT_EQ(manifold.getTopologyDimension(), Topology::Edge);
    const auto somePoints = GenerateSomePoints<T, N>(100);
    for (const auto& point : somePoints)
    {
       if (!manifold.contains(point, predicate))
       {
-         ASSERT_THROW(manifold.GetEuclideanSubspaceAt(point, predicate), MyException);
+         ASSERT_THROW(manifold.getEuclideanSubspaceAt(point, predicate), MyException);
          break;
       }
    }

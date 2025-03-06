@@ -15,14 +15,15 @@ namespace Geometry
 
       BoundingBox<T, N> getBoundingBox() const override;
 
-      Topology::TopologyDimension GetTopologyDimension() const override { return Topology::Corner; };
+      Topology::TopologyDimension getTopologyDimension() const override { return Topology::Corner; };
    private:
       Point<T, N> m_point;
    };
 
    template<typename T, int N>
    Manifold0<T, N>::Manifold0(const Point<T, N>& point) : m_point(point)
-   {}
+   {
+   }
 
    template<typename T, int N>
    Point<T, N> Manifold0<T, N>::GetPoint() const

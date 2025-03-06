@@ -12,7 +12,7 @@ namespace Geometry
    public:
       virtual Point<T, N> GetPoint() const = 0;
 
-      Topology::TopologyDimension GetTopologyDimension() const override { return Topology::Corner; };
+      Topology::TopologyDimension getTopologyDimension() const override { return Topology::Corner; };
    };
 
 }

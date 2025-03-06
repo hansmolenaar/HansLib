@@ -71,14 +71,14 @@ bool ManifoldsAndNodes<N>::isMobileOnManifold(NodeIndex node, ManifoldPtrN manif
    const auto found = m_node2manifolds.find(node);
    if (found == m_node2manifolds.end()) return true;
 
-   if (manifoldPtr->GetTopologyDimension() == Topology::Corner)
+   if (manifoldPtr->getTopologyDimension() == Topology::Corner)
    {
-      if (str::any_of(found->second, [manifoldPtr](const auto* m) {return m != manifoldPtr && m->GetTopologyDimension() == Topology::Corner; }))
+      if (str::any_of(found->second, [manifoldPtr](const auto* m) {return m != manifoldPtr && m->getTopologyDimension() == Topology::Corner; }))
       {
          return false;
       }
    }
 
    // Only movable if on the lowest dimensional manifold, e.g. the intersection line of 2 surfaces
-   return str::none_of(found->second, [manifoldPtr](const auto* m) {return manifoldPtr->GetTopologyDimension() > m->GetTopologyDimension(); });
+   return str::none_of(found->second, [manifoldPtr](const auto* m) {return manifoldPtr->getTopologyDimension() > m->getTopologyDimension(); });
 }

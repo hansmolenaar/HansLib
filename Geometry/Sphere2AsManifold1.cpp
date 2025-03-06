@@ -19,7 +19,7 @@ bool Sphere2AsManifold1<T>::contains(const Point<T, GeomDim2>& point, const IGeo
 
 
 template<typename T>
-Line<T, GeomDim2> Sphere2AsManifold1<T>::GetEuclideanSubspaceAt(const Point<T, GeomDim2>& point, const IGeometryPredicate<T, GeomDim2>& predicate) const
+Line<T, GeomDim2> Sphere2AsManifold1<T>::getEuclideanSubspaceAt(const Point<T, GeomDim2>& point, const IGeometryPredicate<T, GeomDim2>& predicate) const
 {
    if (!contains(point, predicate))
    {

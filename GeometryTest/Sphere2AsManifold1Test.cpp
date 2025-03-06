@@ -33,10 +33,10 @@ TEST(Sphere2AsManifold1, GetEuclideanSubspaceAt)
    const Sphere<double, GeomDim2> circle(p, 2.0);
    const Sphere2AsManifold1<double> sphereManifold(circle);
 
-   const  Line<double, 2> line = sphereManifold.GetEuclideanSubspaceAt(Point2{ 3,2 }, areClose);
+   const  Line<double, 2> line = sphereManifold.getEuclideanSubspaceAt(Point2{ 3,2 }, areClose);
    ASSERT_TRUE(line.contains(Point2{ 3,0 }, areClose));
 
-   ASSERT_THROW(sphereManifold.GetEuclideanSubspaceAt(Point2{ 3,3 }, areClose), MyException);
+   ASSERT_THROW(sphereManifold.getEuclideanSubspaceAt(Point2{ 3,3 }, areClose), MyException);
 }
 
 TEST(Sphere2AsManifold1, GetIntersections)
