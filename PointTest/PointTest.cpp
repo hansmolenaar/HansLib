@@ -1,10 +1,10 @@
 #include <gtest/gtest.h>
 
-#include "StdHash.h"
 #include "Point.h"
+#include "StdHash.h"
 
-#include <numeric>
 #include <numbers>
+#include <numeric>
 TEST(PointTest, PointArray)
 {
    const auto p = Point<int, 1>({ 42 });
@@ -64,13 +64,14 @@ TEST(PointTest, Subscript)
    ASSERT_EQ(p.data()[1], 2);
 }
 
-
 TEST(PointTest, Times)
 {
    IntPoint2 p{ 1,2 };
-   const IntPoint2 p2 = p * 2;
+   IntPoint2 p2 = p * 2;
    ASSERT_EQ(p2.data()[0], 2);
    ASSERT_EQ(p2.data()[1], 4);
+
+   ASSERT_TRUE(2 * p == p * 2);
 }
 
 TEST(PointTest, Bounds)
@@ -152,4 +153,11 @@ TEST(PointTest, Angle)
    ASSERT_NEAR(PointUtils::Angle(p0, p1, p2), std::numbers::pi / 3, 1.0e-12);
    ASSERT_NEAR(PointUtils::Angle(p0, p2, p1), std::numbers::pi / 6, 1.0e-12);
    ASSERT_NEAR(PointUtils::Angle(p0, p2, p0), 0.0, 1.0e-12);
+}
+
+TEST(PointTest, inner_product)
+{
+   IntPoint2 p1{ 1,2 };
+   IntPoint2 p2{ 3,4 };
+   ASSERT_EQ(PointUtils::innerProduct(p1, p2), 11);
 }

@@ -19,7 +19,7 @@ namespace
 
       // Adjacencies
       std::vector<const IManifold<T, GeomDim2>*> GetConnectedLowers(const IManifold<T, GeomDim2>& manifold) const override
-      { 
+      {
          return std::vector<const IManifold<T, GeomDim2>*>{};
       }
       std::vector<const IManifold<T, GeomDim2>*> GetConnectedHighers(const IManifold<T, GeomDim2>& manifold) const override { return std::vector<const IManifold<T, GeomDim2>*>{}; }
@@ -42,13 +42,13 @@ BoundingBox<T, GeomDim2> Ball2AsRegion<T>::getBoundingBox() const
 }
 
 template<typename T>
-bool Ball2AsRegion<T>::Contains(const Point<T, GeomDim2>& point, const IGeometryPredicate<T, GeomDim2>& predicate) const
+bool Ball2AsRegion<T>::contains(const Point<T, GeomDim2>& point, const IGeometryPredicate<T, GeomDim2>& predicate) const
 {
    return m_ball.Contains(point, predicate);
 }
 
 template<typename T>
-bool Ball2AsRegion<T>::CouldIntersectWith(const BoundingBox<T, GeomDim2>& bb, const IGeometryPredicate<T, GeomDim2>& predicate) const
+bool Ball2AsRegion<T>::couldIntersectWith(const BoundingBox<T, GeomDim2>& bb, const IGeometryPredicate<T, GeomDim2>& predicate) const
 {
    return m_ball.CouldIntersectWith(bb, predicate);
 }

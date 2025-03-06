@@ -1,9 +1,9 @@
 #include <gtest/gtest.h>
 
 #include "Ball.h"
-#include "PointClose.h"
 #include "Ball2AsRegion.h"
 #include "IGeometryRegionTest.h"
+#include "PointClose.h"
 
 using namespace Geometry;
 
@@ -23,8 +23,8 @@ TEST(Ball2AsRegion, Constructor)
    const auto bb = region.getBoundingBox();
    ASSERT_NEAR(bb.getMeasure(), 4.0, crit);
 
-   ASSERT_TRUE(region.Contains({ 0.1, 0.2 }, areClose));
-   ASSERT_TRUE(region.CouldIntersectWith(bb, areClose));
+   ASSERT_TRUE(region.contains({ 0.1, 0.2 }, areClose));
+   ASSERT_TRUE(region.couldIntersectWith(bb, areClose));
 
    const auto& regionManifolds = region.getManifolds();
    ASSERT_EQ(regionManifolds.GetAllManifolds().size(), 1);

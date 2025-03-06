@@ -1,20 +1,16 @@
 #pragma once
 
-#include "Ball.h"
+#include "Defines.h"
 #include "IGeometryRegion.h"
-#include "Sphere2AsManifold1.h"
 
 namespace Geometry
 {
-
    template<typename T>
-   class Ball2AsRegion : public IGeometryRegion<T, GeomDim2>
+   class Polygon2AsRegion : public IGeometryRegion<T, GeomDim2>
    {
+
    public:
-
-      explicit Ball2AsRegion(Ball<T, GeomDim2> ball);
-
-      BoundingBox<T, GeomDim2> getBoundingBox() const override;
+      Polygon2AsRegion(std::span<const Point<T, 2>> polygon, std::string name);
 
       bool contains(const Point<T, GeomDim2>& point, const IGeometryPredicate<T, GeomDim2>& predicate) const override;
 
@@ -22,9 +18,13 @@ namespace Geometry
 
       const IRegionManifolds<T, GeomDim2>& getManifolds() const override;
 
+      BoundingBox<T, GeomDim2> getBoundingBox() const override;
+
+      const std::string& getName() const;
+
    private:
-      Ball<T, GeomDim2> m_ball;
-      std::unique_ptr<IRegionManifolds<T, GeomDim2>> m_sphereManifolds;
+      std::vector <Point<T, 2>>  m_polygon;
+      std::string m_name;
    };
 
 } // namespace Geometry

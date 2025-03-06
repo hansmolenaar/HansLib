@@ -1,5 +1,5 @@
-#include "RefinementPredicates.h"
 #include "IGeometryPredicate.h"
+#include "RefinementPredicates.h"
 
 using namespace MeshGeneration;
 
@@ -12,14 +12,15 @@ template<int N>
 RefineRegionToMaxLevel<N>::RefineRegionToMaxLevel(int maxLevel, const Geometry::IGeometryRegion<double, N>& region, const IGeometryPredicate<double, N>& predicate,
    const IInitialBoundingboxGenerator<N>& generator) :
    m_maxLevel(maxLevel), m_region(region), m_initialBb(generator.generate(m_region)), m_geometryPredicate(predicate)
-{}
+{
+}
 
 template<int N>
 bool MeshGeneration::RefineRegionToMaxLevel<N>::operator()(const IntervalTree::Index<N>& indx) const
 {
    if (indx.getLevel() >= m_maxLevel) return false;
    const auto& indxBb = m_initialBb.scaleFrom01(indx.getBbOfCell());
-   return m_region.CouldIntersectWith(indxBb, m_geometryPredicate);
+   return m_region.couldIntersectWith(indxBb, m_geometryPredicate);
 };
 
 
@@ -31,7 +32,7 @@ RefineRegionToMaxLevelFactory<N>::RefineRegionToMaxLevelFactory(int maxLevel) :
 
 template<int N>
 std::unique_ptr<IRefinementPredicate<N>> RefineRegionToMaxLevelFactory<N>::Create(
-   const Geometry::IGeometryRegion<double, N>& region, 
+   const Geometry::IGeometryRegion<double, N>& region,
    const IInitialBoundingboxGenerator<N>& generator,
    const IGeometryPredicate<double, N>& geometryPredicate)
 {
