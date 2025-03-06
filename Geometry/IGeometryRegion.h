@@ -20,6 +20,8 @@ namespace Geometry
       virtual bool contains(const Point<T, N>& point, const IGeometryPredicate<T, N>& predicate) const = 0;
 
       virtual const IRegionManifolds<T, N>& getManifolds() const = 0;
+
+      virtual const std::string& getName() const = 0;
    };
 
    template<typename T, int N>

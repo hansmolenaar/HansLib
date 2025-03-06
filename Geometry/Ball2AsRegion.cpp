@@ -29,8 +29,9 @@ namespace
 }
 
 template<typename T>
-Ball2AsRegion<T>::Ball2AsRegion(Ball<T, GeomDim2> ball) :
+Ball2AsRegion<T>::Ball2AsRegion(Ball<T, GeomDim2> ball, std::string name) :
    m_ball(std::move(ball)),
+   m_name(std::move(name)),
    m_sphereManifolds(std::make_unique<BallManifolds<T>>(Sphere2AsManifold1<T>(Sphere<T, GeomDim2>(m_ball.getCenter(), m_ball.getRadius()))))
 {
 }
@@ -57,4 +58,10 @@ template<typename T>
 const IRegionManifolds<T, GeomDim2>& Ball2AsRegion<T>::getManifolds() const
 {
    return *m_sphereManifolds;
+}
+
+template<typename T>
+const std::string& Ball2AsRegion<T>::getName() const
+{
+   return m_name;
 }

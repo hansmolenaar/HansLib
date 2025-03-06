@@ -27,7 +27,7 @@ using namespace Utilities;
 TEST(MeshGeneration2Test, Ball)
 {
    const Ball<GeomType, GeomDim2> ball(Point2{ 0.5, 0.5 }, 0.5);
-   const Ball2AsRegion<GeomType> ballAsRegion(ball);
+   const Ball2AsRegion<GeomType> ballAsRegion(ball, "MeshGeneration2Test_Bal");
    MeshingSettingsStandard<2> settings(5, 2.0);
    const auto triangles = MeshGeneration2::GenerateBaseTriangulation(ballAsRegion, settings);
    const auto vtkData = IndexTreeToSimplices2::ToVtkData(triangles, { "MeshGeneration2Test_Ball" , "triangles" });
@@ -68,7 +68,7 @@ TEST(MeshGeneration2Test, Ball2)
 {
    const std::string project = "MeshGeneration2Test_Ball2";
    const Ball<GeomType, GeomDim2> ball(Point2{ 1.5, 2.5 }, 3);
-   const Ball2AsRegion<GeomType> ballAsRegion(ball);
+   const Ball2AsRegion<GeomType> ballAsRegion(ball, project);
    MeshingSettingsStandard<2> settings(4, 1.25);
    const auto bbInitial = settings.getInitialBb(ballAsRegion);
    const auto triangles = MeshGeneration2::GenerateBaseTriangulation(ballAsRegion, settings);
@@ -264,7 +264,7 @@ TEST(MeshGeneration2Test, Sphere2_intersect_4)
 {
    const std::string project = "MeshGeneration2Test_Sphere2_intersect_4";
    const Ball<GeomType, GeomDim2> ball(Point2{ 1.5, 2.5 }, 3);
-   const Ball2AsRegion<GeomType> ballAsRegion(ball);
+   const Ball2AsRegion<GeomType> ballAsRegion(ball, project);
    MeshingSettingsStandard<2> settings(4, 1.25);
    const auto triangles = MeshGeneration2::GenerateBaseTriangulation(ballAsRegion, settings);
 
@@ -307,7 +307,7 @@ TEST(MeshGeneration2Test, Sphere2_intersect_3)
 {
    const std::string project = "MeshGeneration2Test_Sphere2_intersect_3";
    const Ball<GeomType, GeomDim2> ball(Point2{ 1.5, 2.5 }, 3);
-   const Ball2AsRegion<GeomType> ballAsRegion(ball);
+   const Ball2AsRegion<GeomType> ballAsRegion(ball, "MeshGeneration2Test_Sphere2_intersect_3");
    MeshingSettingsStandard<2> settings(3, 1.25);
    const auto triangles = MeshGeneration2::GenerateBaseTriangulation(ballAsRegion, settings);
 
@@ -344,7 +344,7 @@ TEST(MeshGeneration2Test, Sphere2_intersect_5)
 {
    const std::string project = "MeshGeneration2Test_Sphere2_intersect_5";
    const Ball<GeomType, GeomDim2> ball(Point2{ 1.5, 2.5 }, 3);
-   const Ball2AsRegion<GeomType> ballAsRegion(ball);
+   const Ball2AsRegion<GeomType> ballAsRegion(ball, "MeshGeneration2Test_Sphere2_intersect_5");
    MeshingSettingsStandard<2> settings(5, 1.25);
    const auto triangles = MeshGeneration2::GenerateBaseTriangulation(ballAsRegion, settings);
 

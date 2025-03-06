@@ -12,7 +12,7 @@ namespace Geometry
    {
    public:
 
-      explicit Ball2AsRegion(Ball<T, GeomDim2> ball);
+      Ball2AsRegion(Ball<T, GeomDim2> ball, std::string name);
 
       BoundingBox<T, GeomDim2> getBoundingBox() const override;
 
@@ -22,8 +22,10 @@ namespace Geometry
 
       const IRegionManifolds<T, GeomDim2>& getManifolds() const override;
 
+      const std::string& getName() const override;
    private:
       Ball<T, GeomDim2> m_ball;
+      std::string m_name;
       std::unique_ptr<IRegionManifolds<T, GeomDim2>> m_sphereManifolds;
    };
 

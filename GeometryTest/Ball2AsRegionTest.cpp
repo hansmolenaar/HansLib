@@ -16,7 +16,7 @@ TEST(Ball2AsRegion, Constructor)
 {
    const PointClose<double, GeomDim2> areClose;
    const Ball<double, GeomDim2> ball({ 0,0 }, 1);
-   const  Ball2AsRegion<double> region(ball);
+   const  Ball2AsRegion<double> region(ball, "Ball2AsRegion_Constructor");
 
    IGeometryRegionTestInterface(region, areClose);
 
