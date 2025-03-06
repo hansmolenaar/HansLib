@@ -52,5 +52,21 @@ std::optional<DirectedEdgeIntersection<double, 2>> DirectedEdgeUtils::intersectW
       }
    }
 
+   const Point2 dif = edge.point1() - edge.point0();
+   const Point2 normal = std::abs(dif[0]) > std::abs(dif[1]) ? Point2{ dif[1], -dif[0] } : Point2{ -dif[1], dif[0] };
+   const double inprod0 = PointUtils::innerProduct(normal, target.point0() - p0);
+   const double inprod1 = PointUtils::innerProduct(normal, target.point1() - p1);
+
+   if (inprod0 * inprod1 < 0)
+   {
+      const double frac = (0.0 - inprod0) / (inprod1 - inprod0);
+      const double lambda = lambda0 + frac * (lambda1 - lambda0);
+      const Point2 ip = edge.interpolate(lambda);
+      if (edge.contains(ip, predicate))
+      {
+         return { DirectedEdgePoint<double, GeomDim2>(ip, edge, predicate) };
+      }
+   }
+
    return {};
 }

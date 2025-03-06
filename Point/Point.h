@@ -39,6 +39,12 @@ std::array<T, N> operator*(std::array<T, N> result, T factor)
 }
 
 template<typename T, int N>
+std::array<T, N> operator*(T factor, std::array<T, N> result)
+{
+   return result * factor;
+}
+
+template<typename T, int N>
 std::array<T, N> operator-(std::array<T, N> result)
 {
    str::transform(result, result.begin(), [](T value) {return -value; });
@@ -54,7 +60,7 @@ namespace PointUtils
    }
 
    template<typename T, int N>
-   T GetDistanceSquared( const Point<T, N>& point0, const Point<T, N>& point1)
+   T GetDistanceSquared(const Point<T, N>& point0, const Point<T, N>& point1)
    {
       const auto dif = point0 - point1;
       return GetNormSquared(dif);
@@ -72,5 +78,11 @@ namespace PointUtils
       constexpr double eps = 1.0e-12;
       if (norm02 < eps) throw MyException("Point::Angle degenerated");
       return std::acos(inprod / norm02);
+   }
+
+   template<typename T, int N>
+   T innerProduct(const Point<T, N>& p0, const Point<T, N>& p1)
+   {
+      return std::inner_product(p0.begin(), p0.end(), p1.begin(), T(0));
    }
 }

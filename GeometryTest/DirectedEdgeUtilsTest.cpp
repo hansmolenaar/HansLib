@@ -141,3 +141,43 @@ TEST(DirectedEdgeUtilsTest, isContained_0_and_1)
    ipts = DirectedEdgeUtils::intersectWith2(edge01, { point6, point5 }, areClose);
    ASSERT_TRUE(!ipts);
 }
+
+
+TEST(DirectedEdgeUtilsTest, isContained_0_nor_1)
+{
+   const PointClose<double, 2> areClose;
+   const std::array<double, 2> point0{ 1, 1 };
+   const std::array<double, 2> point1{ 10, 10 };
+   const DirectedEdge<double, 2> edge01(point0, point1);
+
+   auto ipts = DirectedEdgeUtils::intersectWith2(edge01, { Point2{0,1}, Point2{0, 10} }, areClose);
+   ASSERT_TRUE(!ipts);
+
+   ipts = DirectedEdgeUtils::intersectWith2(edge01, { Point2{0,-10}, Point2{0, 10} }, areClose);
+   ASSERT_TRUE(!ipts);
+
+   ipts = DirectedEdgeUtils::intersectWith2(edge01, { Point2{1,-10}, Point2{1, 10} }, areClose);
+   ASSERT_TRUE(ipts->getPoint().getPointType() == DirectedEdgePointType::Point0);
+
+   ipts = DirectedEdgeUtils::intersectWith2(edge01, { Point2{2,-10}, Point2{2, 10} }, areClose);
+   ASSERT_TRUE(ipts->getPoint().getPointType() == DirectedEdgePointType::Inside);
+
+   ipts = DirectedEdgeUtils::intersectWith2(edge01, { Point2{10,-10}, Point2{10, 10} }, areClose);
+   ASSERT_TRUE(ipts->getPoint().getPointType() == DirectedEdgePointType::Point1);
+
+   ipts = DirectedEdgeUtils::intersectWith2(edge01, { Point2{11,-10}, Point2{11, 10} }, areClose);
+   ASSERT_TRUE(!ipts);
+
+   ipts = DirectedEdgeUtils::intersectWith2(edge01, { Point2{6,4}, Point2{3, 7} }, areClose);
+   ASSERT_TRUE(areClose.SamePoints(ipts->getPoint().getPoint(), Point2{ 5,5 }));
+   ipts = DirectedEdgeUtils::intersectWith2(edge01, { Point2{3, 7}, Point2{6,4} }, areClose);
+   ASSERT_TRUE(areClose.SamePoints(ipts->getPoint().getPoint(), Point2{ 5,5 }));
+
+   ipts = DirectedEdgeUtils::intersectWith2(edge01, { Point2{3, 4}, Point2{9,7} }, areClose);
+   ASSERT_TRUE(areClose.SamePoints(ipts->getPoint().getPoint(), Point2{ 5,5 }));
+
+   ipts = DirectedEdgeUtils::intersectWith2(edge01, { Point2{0, 1}, Point2{6,4} }, areClose);
+   ASSERT_TRUE(areClose.SamePoints(ipts->getPoint().getPoint(), Point2{ 2,2 }));
+   ipts = DirectedEdgeUtils::intersectWith2(edge01, { Point2{6,4}, Point2{0, 1} }, areClose);
+   ASSERT_TRUE(areClose.SamePoints(ipts->getPoint().getPoint(), Point2{ 2,2 }));
+}
