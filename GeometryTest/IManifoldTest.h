@@ -24,8 +24,7 @@ void IManifoldTestInterface(const IManifold<T, N>& manifold, const IGeometryPred
       {
          str::generate(del, []() {return T(1); });
       }
-      const auto point = pCenter + 2.0 * del;
-      ASSERT_FALSE(manifold.contains(point, predicate));
+      const auto point = pCenter + T(2) * del;
       ASSERT_FALSE(manifold.contains(point, predicate));
    }
 }

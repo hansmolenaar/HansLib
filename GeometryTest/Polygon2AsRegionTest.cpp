@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "IManifold1D2Test.h"
+#include "IRegionManifoldsTest.h"
 #include "PointClose.h"
 #include "Polygon2AsRegion.h"
 
@@ -19,6 +20,8 @@ TEST(Polygon2AsRegion, Base)
    const Point2 p{ {2,-3} };
    const std::vector<Point2> trianglePoints{ Point2{0,0}, Point2{1,0}, Point2{0,1} };
    const Polygon2AsRegion<double> triangleRegion(trianglePoints, name);
+
+   IRegionManifoldsTestInterface(triangleRegion, predicate);
 
    ASSERT_FALSE(triangleRegion.contains(p, predicate));
    const std::vector<Point2> pointsInTriangle{ { 0.5, 0.5 }, {0.25, 0.25}, {1,0} };

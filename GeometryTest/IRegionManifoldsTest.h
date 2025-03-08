@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Defines.h"
+#include "IManifold0Test.h"
+#include "IManifold1Test.h"
 #include "IRegionManifolds.h"
 #include <gtest/gtest.h>
 
@@ -23,6 +25,18 @@ void IRegionManifoldsTestInterface(const IRegionManifolds<T, N>& manifolds, cons
    for (const auto* b : boundary)
    {
       ASSERT_TRUE(std::find(allManifolds.begin(), allManifolds.end(), b) != allManifolds.end());
+   }
+
+   const auto manifolds0 = manifolds.getManifoldsOfType<const IManifold0<T, N>*>();
+   for (const auto* manifold0 : manifolds0)
+   {
+      IManifold0TestInterface(*manifold0, predicate);
+   }
+
+   const auto manifolds1 = manifolds.getManifoldsOfType<const IManifold1<T, N>*>();
+   for (const auto* manifold1 : manifolds1)
+   {
+      IManifold1TestInterface(*manifold1, predicate);
    }
 }
 
