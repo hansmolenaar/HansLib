@@ -1,6 +1,6 @@
+#include "BoundsCheck.h"
 #include "TopologicalAdjacencies.h"
 #include "TopologicalAdjacency.h"
-#include "BoundsCheck.h"
 
 #include <algorithm>
 #include <set>

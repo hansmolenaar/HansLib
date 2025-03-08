@@ -14,15 +14,34 @@
 #include "MeshStatistics.h"
 #include "Paraview.h"
 #include "PointClose.h"
+#include "Polygon2AsRegion.h"
 #include "RefinementPredicates.h"
 #include "Single.h"
 #include "UniquePointCollectionBinning.h"
+
+#include <numbers>
 
 using namespace MeshGeneration;
 using namespace MeshGeneration2;
 using namespace IntervalTree;
 using namespace Geometry;
 using namespace Utilities;
+
+namespace
+{
+   std::vector<Point2> generateRegularPolygon(size_t numCorners, double angle)
+   {
+      std::vector<Point2> result;
+      double delAngle = 2 * std::numbers::pi / numCorners;
+      for (size_t n = 0; n < numCorners; ++n)
+      {
+         result.push_back(Point2{ std::cos(angle), std::sin(angle) });
+         angle += delAngle;
+      }
+      return result;
+   }
+
+}
 
 TEST(MeshGeneration2Test, Ball)
 {
@@ -376,4 +395,20 @@ TEST(MeshGeneration2Test, Sphere2_intersect_5)
 
    Paraview::Write(*vtkDataMesh);
    Paraview::Write(*(Utilities::Single(vtkDataManifold)));
+}
+
+
+TEST(MeshGeneration2Test, Triangle2_1)
+{
+   const std::string project = "MeshGeneration2Test_Triangle2_1";
+   const auto polygonPoints = generateRegularPolygon(3, 0.0);
+   const Polygon2AsRegion<double> region(polygonPoints, "triangle2_1");
+
+   MeshingSettingsStandard<2> settings(5, 1.25);
+   const auto triangles = MeshGeneration2::GenerateBaseTriangulation(region, settings);
+
+   std::unique_ptr<IDynamicUniquePointCollection<GeomType, GeomDim2>> pointGeometry;
+   std::unique_ptr<MeshGeneration::TrianglesNodes> trianglesNodes;
+   const auto bbInitial = settings.getInitialBb(region);
+   MeshGeneration2::BaseTriangulationToWorld(triangles, settings.getGeometryPredicate(), bbInitial, pointGeometry, trianglesNodes, settings.getLogger());
 }

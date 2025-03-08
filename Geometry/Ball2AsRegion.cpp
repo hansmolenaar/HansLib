@@ -12,17 +12,17 @@ namespace
    {
    public:
       explicit BallManifolds(Sphere2AsManifold1<T> sphereManifold) : m_sphereManifold(std::move(sphereManifold)) {}
-      std::vector<const IManifold<T, GeomDim2>*> GetAllManifolds() const override { return { &m_sphereManifold }; }
+      std::vector<const IManifold<T, GeomDim2>*> getAllManifolds() const override { return { &m_sphereManifold }; }
 
       // Ignore lower dimensional manifolds
-      std::vector<const IManifold<T, GeomDim2>*> GetBoundaryHyperManifolds() const override { return GetAllManifolds(); }
+      std::vector<const IManifold<T, GeomDim2>*> getBoundaryHyperManifolds() const override { return getAllManifolds(); }
 
       // Adjacencies
-      std::vector<const IManifold<T, GeomDim2>*> GetConnectedLowers(const IManifold<T, GeomDim2>& manifold) const override
+      std::vector<const IManifold<T, GeomDim2>*> getConnectedLowers(const IManifold<T, GeomDim2>& manifold) const override
       {
          return std::vector<const IManifold<T, GeomDim2>*>{};
       }
-      std::vector<const IManifold<T, GeomDim2>*> GetConnectedHighers(const IManifold<T, GeomDim2>& manifold) const override { return std::vector<const IManifold<T, GeomDim2>*>{}; }
+      std::vector<const IManifold<T, GeomDim2>*> getConnectedHighers(const IManifold<T, GeomDim2>& manifold) const override { return std::vector<const IManifold<T, GeomDim2>*>{}; }
    private:
       const Sphere2AsManifold1<T> m_sphereManifold;
    };

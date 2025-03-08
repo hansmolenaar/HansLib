@@ -27,10 +27,10 @@ TEST(Ball2AsRegion, Constructor)
    ASSERT_TRUE(region.couldIntersectWith(bb, areClose));
 
    const auto& regionManifolds = region.getManifolds();
-   ASSERT_EQ(regionManifolds.GetAllManifolds().size(), 1);
-   ASSERT_EQ(regionManifolds.GetBoundaryHyperManifolds().size(), 1);
-   const auto* boundary = regionManifolds.GetBoundaryHyperManifolds().front();
-   ASSERT_EQ(regionManifolds.GetConnectedLowers(*boundary).size(), 0);
-   ASSERT_EQ(regionManifolds.GetConnectedHighers(*boundary).size(), 0);
+   ASSERT_EQ(regionManifolds.getAllManifolds().size(), 1);
+   ASSERT_EQ(regionManifolds.getBoundaryHyperManifolds().size(), 1);
+   const auto* boundary = regionManifolds.getBoundaryHyperManifolds().front();
+   ASSERT_EQ(regionManifolds.getConnectedLowers(*boundary).size(), 0);
+   ASSERT_EQ(regionManifolds.getConnectedHighers(*boundary).size(), 0);
 
 }

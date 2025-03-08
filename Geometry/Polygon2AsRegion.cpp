@@ -60,7 +60,7 @@ const IRegionManifolds<T, GeomDim2>& Polygon2AsRegion<T>::getManifolds() const
 }
 
 template<typename T>
-std::vector<const IManifold<T, GeomDim2>*> Polygon2AsRegion<T>::GetBoundaryHyperManifolds() const
+std::vector<const IManifold<T, GeomDim2>*> Polygon2AsRegion<T>::getBoundaryHyperManifolds() const
 {
    std::vector<const IManifold<T, GeomDim2>*> result(m_edgeManifolds.size());
    str::transform(m_edgeManifolds, result.begin(), [](const auto& manifold) {return &manifold; });
@@ -68,17 +68,17 @@ std::vector<const IManifold<T, GeomDim2>*> Polygon2AsRegion<T>::GetBoundaryHyper
 }
 
 template<typename T>
-std::vector<const IManifold<T, GeomDim2>*> Polygon2AsRegion<T>::GetAllManifolds() const
+std::vector<const IManifold<T, GeomDim2>*> Polygon2AsRegion<T>::getAllManifolds() const
 {
    const auto numPoints = m_polygon.size();
-   auto result = GetBoundaryHyperManifolds();
+   auto result = getBoundaryHyperManifolds();
    result.resize(2 * numPoints);
    str::transform(m_pointManifolds, result.begin() + numPoints, [](const auto& manifold) {return &manifold; });
    return result;
 }
 
 template<typename T>
-std::vector<const IManifold<T, GeomDim2>*> Polygon2AsRegion<T>::GetConnectedHighers(const IManifold<T, GeomDim2>& manifold) const
+std::vector<const IManifold<T, GeomDim2>*> Polygon2AsRegion<T>::getConnectedHighers(const IManifold<T, GeomDim2>& manifold) const
 {
    const auto numPoints = m_polygon.size();
    const auto predicateManifold = [&manifold](const Manifold0<T, GeomDim2>& pointManifold) { return &pointManifold == &manifold; };
@@ -91,7 +91,7 @@ std::vector<const IManifold<T, GeomDim2>*> Polygon2AsRegion<T>::GetConnectedHigh
 }
 
 template<typename T>
-std::vector<const IManifold<T, GeomDim2>*> Polygon2AsRegion<T>::GetConnectedLowers(const IManifold<T, GeomDim2>& manifold) const
+std::vector<const IManifold<T, GeomDim2>*> Polygon2AsRegion<T>::getConnectedLowers(const IManifold<T, GeomDim2>& manifold) const
 {
    const auto numPoints = m_polygon.size();
    const auto predicateManifold = [&manifold](const DirectedEdge2AsManifold1<T>& edgeManifold) { return &edgeManifold == &manifold; };

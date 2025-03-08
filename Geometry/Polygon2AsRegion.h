@@ -23,14 +23,14 @@ namespace Geometry
 
       const std::string& getName() const override;
 
-      std::vector<const IManifold<T, GeomDim2>*> GetAllManifolds() const override;
+      std::vector<const IManifold<T, GeomDim2>*> getAllManifolds() const override;
 
       // Ignore lower dimensional manifolds
-      std::vector<const IManifold<T, GeomDim2>*> GetBoundaryHyperManifolds() const override;
+      std::vector<const IManifold<T, GeomDim2>*> getBoundaryHyperManifolds() const override;
 
       // Adjacencies
-      std::vector<const IManifold<T, GeomDim2>*> GetConnectedLowers(const IManifold<T, GeomDim2>& manifold) const override;
-      std::vector<const IManifold<T, GeomDim2>*> GetConnectedHighers(const IManifold<T, GeomDim2>& manifold) const override;
+      std::vector<const IManifold<T, GeomDim2>*> getConnectedLowers(const IManifold<T, GeomDim2>& manifold) const override;
+      std::vector<const IManifold<T, GeomDim2>*> getConnectedHighers(const IManifold<T, GeomDim2>& manifold) const override;
 
    private:
       std::vector <Point<T, GeomDim2>>  m_polygon;
