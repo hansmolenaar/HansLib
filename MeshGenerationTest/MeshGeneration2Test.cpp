@@ -2,7 +2,6 @@
 
 #include "Ball.h"
 #include "Ball2AsRegion.h"
-#include "Ball2AsRegion.h"
 #include "IndexTreeScaled.h"
 #include "InitialBoundingboxGenerator.h"
 #include "IntervalTreeIndexFactory.h"
@@ -401,7 +400,7 @@ TEST(MeshGeneration2Test, Sphere2_intersect_5)
 TEST(MeshGeneration2Test, Triangle2_1)
 {
    const std::string project = "MeshGeneration2Test_Triangle2_1";
-   const auto polygonPoints = generateRegularPolygon(3, 0.0);
+   const auto polygonPoints = generateRegularPolygon(3, 0.01); // TODO 0
    const Polygon2AsRegion<double> region(polygonPoints, "triangle2_1");
 
    MeshingSettingsStandard<2> settings(5, 1.25);
@@ -411,4 +410,8 @@ TEST(MeshGeneration2Test, Triangle2_1)
    std::unique_ptr<MeshGeneration::TrianglesNodes> trianglesNodes;
    const auto bbInitial = settings.getInitialBb(region);
    MeshGeneration2::BaseTriangulationToWorld(triangles, settings.getGeometryPredicate(), bbInitial, pointGeometry, trianglesNodes, settings.getLogger());
+
+   ManifoldsAndNodes<GeomDim2> manifoldsAndNodes;
+   std::vector<const IManifold0D2*> manifolds0 = region.getManifoldsOfType<const IManifold0D2*>();
+   MeshGeneration2::AddAllManifolds0(manifolds0, *trianglesNodes, manifoldsAndNodes, *pointGeometry);
 }

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "IManifold.h"
+#include "IManifold0.h"
 
 namespace Geometry
 {
@@ -19,7 +19,23 @@ namespace Geometry
       virtual std::vector<const IManifold<T, N>*> getConnectedLowers(const IManifold<T, N>& manifold) const = 0;
       virtual std::vector<const IManifold<T, N>*> getConnectedHighers(const IManifold<T, N>& manifold) const = 0;
 
-      //std::vector<const IManifold<T, N>*> 
+      template<typename Ttarget>
+      std::vector<Ttarget> getManifoldsOfType() const;
    };
 
+   template<typename T, int N>
+   template<typename Ttarget>
+   std::vector<Ttarget> IRegionManifolds<T, N>::getManifoldsOfType() const
+   {
+      std::vector<Ttarget> result;
+      for (const auto* mptr : getAllManifolds())
+      {
+         auto mptrCasted = dynamic_cast<Ttarget>(mptr);
+         if (mptrCasted != nullptr)
+         {
+            result.push_back(mptrCasted);
+         }
+      }
+      return result;
+   }
 }

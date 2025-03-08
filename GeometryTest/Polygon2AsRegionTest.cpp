@@ -50,10 +50,14 @@ TEST(Polygon2AsRegion, Base)
 
    const auto edge2_connections = triangleRegion.getConnectedLowers(*edgeManifolds.back());
    ASSERT_EQ(edge2_connections.size(), 2);
-   auto point = dynamic_cast<const Manifold0<double, GeomDim2>*>(edge2_connections.front())->getPoint();
+   const auto* manifold0_ptr = dynamic_cast<const Manifold0<double, GeomDim2>*>(edge2_connections.at(0));
+   auto point = manifold0_ptr->getPoint();
    ASSERT_TRUE(predicate.samePoints(point, trianglePoints.at(2)));
-   point = dynamic_cast<const Manifold0<double, GeomDim2>*>(edge2_connections.back())->getPoint();
+   ASSERT_EQ(manifold0_ptr->getName(), "foo_point_2");
+   manifold0_ptr = dynamic_cast<const Manifold0<double, GeomDim2>*>(edge2_connections.at(1));
+   point = manifold0_ptr->getPoint();
    ASSERT_TRUE(predicate.samePoints(point, trianglePoints.at(0)));
+   ASSERT_EQ(manifold0_ptr->getName(), "foo_point_0");
 
    const auto point2_connections = triangleRegion.getConnectedHighers(*pointManifolds.at(2));
    ASSERT_EQ(point2_connections.size(), 2);
