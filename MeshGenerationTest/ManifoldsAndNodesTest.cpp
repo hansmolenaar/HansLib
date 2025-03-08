@@ -26,7 +26,7 @@ TEST(ManifoldsAndNodesTest, Empty)
 TEST(ManifoldsAndNodesTest, Single)
 {
    const Point2 point{ 1,2 };
-   const Manifold0<GeomType, GeomDim2> pointManifold(point);
+   const Manifold0<GeomType, GeomDim2> pointManifold(point, "ManifoldsAndNodesTest_Single");
    ManifoldsAndNodes<GeomDim2>::ManifoldPtrN manifoldPtr = &pointManifold;
    ManifoldsAndNodes<GeomDim2> manifoldsAndNodes;
 
@@ -45,7 +45,7 @@ TEST(ManifoldsAndNodesTest, Single)
 TEST(ManifoldsAndNodesTest, AddTwice)
 {
    const Point2 point{ 1,2 };
-   const Manifold0<GeomType, GeomDim2> pointManifold(point);
+   const Manifold0<GeomType, GeomDim2> pointManifold(point, "ManifoldsAndNodesTest_AddTwice");
    ManifoldsAndNodes<GeomDim2>::ManifoldPtrN manifoldPtr = &pointManifold;
    ManifoldsAndNodes<GeomDim2> manifoldsAndNodes;
 
@@ -63,7 +63,7 @@ TEST(ManifoldsAndNodesTest, AddTwice)
 TEST(ManifoldsAndNodesTest, Delete)
 {
    const Point2 point{ 1,2 };
-   const Manifold0<GeomType, GeomDim2> pointManifold(point);
+   const Manifold0<GeomType, GeomDim2> pointManifold(point, "ManifoldsAndNodesTest_Delete");
    ManifoldsAndNodes<GeomDim2>::ManifoldPtrN manifoldPtr = &pointManifold;
    ManifoldsAndNodes<GeomDim2> manifoldsAndNodes;
    manifoldsAndNodes.addNodeToManifold(42, manifoldPtr);
@@ -84,8 +84,8 @@ TEST(ManifoldsAndNodesTest, Delete)
 
 TEST(ManifoldsAndNodesTest, IsMobile)
 {
-   const Manifold0<GeomType, GeomDim2> pointManifold(Point2{ 1,2 });
-   const Sphere2AsManifold1<GeomType> sphereManifold(Sphere<GeomType, GeomDim2>({0,0}, 1.0));
+   const Manifold0<GeomType, GeomDim2> pointManifold(Point2{ 1,2 }, "ManifoldsAndNodesTest_IsMobile");
+   const Sphere2AsManifold1<GeomType> sphereManifold(Sphere<GeomType, GeomDim2>({ 0,0 }, 1.0));
 
    ManifoldsAndNodes<GeomDim2>::ManifoldPtrN pointManifoldPtr = &pointManifold;
    ManifoldsAndNodes<GeomDim2>::ManifoldPtrN sphereManifoldPtr = &sphereManifold;
@@ -103,8 +103,8 @@ TEST(ManifoldsAndNodesTest, IsMobile)
 
 TEST(ManifoldsAndNodesTest, IsMobileTwoCornerManifolds)
 {
-   const Manifold0<GeomType, GeomDim2> pointManifold1(Point2{ 1,2 });
-   const Manifold0<GeomType, GeomDim2> pointManifold2(Point2{ 2,1 });
+   const Manifold0<GeomType, GeomDim2> pointManifold1(Point2{ 1,2 }, "ManifoldsAndNodesTest_IsMobileTwoCornerManifolds_1");
+   const Manifold0<GeomType, GeomDim2> pointManifold2(Point2{ 2,1 }, "ManifoldsAndNodesTest_IsMobileTwoCornerManifolds_2");
 
    ManifoldsAndNodes<GeomDim2>::ManifoldPtrN pointManifold1Ptr = &pointManifold1;
    ManifoldsAndNodes<GeomDim2>::ManifoldPtrN pointManifold2Ptr = &pointManifold2;

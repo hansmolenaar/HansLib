@@ -22,7 +22,7 @@ namespace Geometry
 
       BoundingBox<T, GeomDim2> getBoundingBox() const override;
 
-      const std::string& getName() const;
+      const std::string& getName() const override;
 
    private:
       std::string m_name;

@@ -21,7 +21,10 @@ Polygon2AsRegion<T>::Polygon2AsRegion(std::span<const Point<T, 2>> polygon, std:
    str::copy(polygon, m_polygon.begin());
 
    m_pointManifolds.reserve(numPoints);
-   str::transform(m_polygon, std::back_inserter(m_pointManifolds), [](const auto& p) {return Manifold0<T, GeomDim2>(p); });
+   for (size_t n = 0; n < m_polygon.size(); ++n)
+   {
+      m_pointManifolds.emplace_back(m_polygon[n], m_name + "_point_" + std::to_string(n));
+   }
 
    m_edgeManifolds.reserve(numPoints);
    for (size_t n = 0; n < numPoints; ++n)

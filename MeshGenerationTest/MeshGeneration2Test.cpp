@@ -115,7 +115,7 @@ TEST(MeshGeneration2Test, Sphere2AndEdge_immobilePoint)
    Logger logger;
    const Sphere<GeomType, GeomDim2> sphere(Point2{ 0, 0 }, 1);
    const auto bb = sphere.getBoundingBox();
-   const Manifold0<GeomType, GeomDim2> pointManifold(Point2{ 0,-1 });
+   const Manifold0<GeomType, GeomDim2> pointManifold(Point2{ 0,-1 }, "MeshGeneration2Test_Sphere2AndEdge_immobilePoint");
    const Sphere2AsManifold1<GeomType> manifold(sphere);
    const PointClose<GeomType, GeomDim2> predicate;
    UniquePointCollectionBinning<GeomDim2> points(predicate, std::vector < Point2>{bb.getLower(), bb.getUpper()});
