@@ -41,12 +41,20 @@ namespace Geometry
    template<typename T, int N>
    const DirectedEdgePoint<T, N>& DirectedEdgeIntersection<T, N>::getIsolatedPoint() const
    {
+      if (!isIsolatedPoint())
+      {
+         throw MyException("DirectedEdgeIntersection<T, N>::getIsolatedPoint()");
+      }
       return std::get<DirectedEdgePoint<T, N>>(m_intersection);
    }
 
    template<typename T, int N>
    const DirectedEdgeInterval<T, N>& DirectedEdgeIntersection<T, N>::getInterval() const
    {
+      if (isIsolatedPoint())
+      {
+         throw MyException("DirectedEdgeIntersection<T, N>::getInterval()");
+      }
       return std::get<DirectedEdgeInterval<T, N>>(m_intersection);
    }
 }

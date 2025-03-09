@@ -5,6 +5,7 @@
 #include "IndexTreeScaled.h"
 #include "InitialBoundingboxGenerator.h"
 #include "IntervalTreeIndexFactory.h"
+#include "IRegionManifoldsTest.h"
 #include "Manifold0.h"
 #include "Manifold1Reconstruction.h"
 #include "MeshGeneration2.h"
@@ -47,6 +48,7 @@ TEST(MeshGeneration2Test, Ball)
    const Ball<GeomType, GeomDim2> ball(Point2{ 0.5, 0.5 }, 0.5);
    const Ball2AsRegion<GeomType> ballAsRegion(ball, "MeshGeneration2Test_Bal");
    MeshingSettingsStandard<2> settings(5, 2.0);
+   IRegionManifoldsTestInterface(ballAsRegion.getManifolds(), settings.getGeometryPredicate());
    const auto triangles = MeshGeneration2::GenerateBaseTriangulation(ballAsRegion, settings);
    const auto vtkData = IndexTreeToSimplices2::ToVtkData(triangles, { "MeshGeneration2Test_Ball" , "triangles" });
    ASSERT_EQ(1016, vtkData->getNumCells());
@@ -88,6 +90,7 @@ TEST(MeshGeneration2Test, Ball2)
    const Ball<GeomType, GeomDim2> ball(Point2{ 1.5, 2.5 }, 3);
    const Ball2AsRegion<GeomType> ballAsRegion(ball, project);
    MeshingSettingsStandard<2> settings(4, 1.25);
+   IRegionManifoldsTestInterface(ballAsRegion.getManifolds(), settings.getGeometryPredicate());
    const auto bbInitial = settings.getInitialBb(ballAsRegion);
    const auto triangles = MeshGeneration2::GenerateBaseTriangulation(ballAsRegion, settings);
 
@@ -284,6 +287,7 @@ TEST(MeshGeneration2Test, Sphere2_intersect_4)
    const Ball<GeomType, GeomDim2> ball(Point2{ 1.5, 2.5 }, 3);
    const Ball2AsRegion<GeomType> ballAsRegion(ball, project);
    MeshingSettingsStandard<2> settings(4, 1.25);
+   IRegionManifoldsTestInterface(ballAsRegion.getManifolds(), settings.getGeometryPredicate());
    const auto triangles = MeshGeneration2::GenerateBaseTriangulation(ballAsRegion, settings);
 
    std::unique_ptr<IDynamicUniquePointCollection<GeomType, GeomDim2>> pointGeometry;
@@ -327,6 +331,7 @@ TEST(MeshGeneration2Test, Sphere2_intersect_3)
    const Ball<GeomType, GeomDim2> ball(Point2{ 1.5, 2.5 }, 3);
    const Ball2AsRegion<GeomType> ballAsRegion(ball, "MeshGeneration2Test_Sphere2_intersect_3");
    MeshingSettingsStandard<2> settings(3, 1.25);
+   IRegionManifoldsTestInterface(ballAsRegion.getManifolds(), settings.getGeometryPredicate());
    const auto triangles = MeshGeneration2::GenerateBaseTriangulation(ballAsRegion, settings);
 
    std::unique_ptr<IDynamicUniquePointCollection<GeomType, GeomDim2>> pointGeometry;
@@ -364,6 +369,7 @@ TEST(MeshGeneration2Test, Sphere2_intersect_5)
    const Ball<GeomType, GeomDim2> ball(Point2{ 1.5, 2.5 }, 3);
    const Ball2AsRegion<GeomType> ballAsRegion(ball, "MeshGeneration2Test_Sphere2_intersect_5");
    MeshingSettingsStandard<2> settings(5, 1.25);
+   IRegionManifoldsTestInterface(ballAsRegion.getManifolds(), settings.getGeometryPredicate());
    const auto triangles = MeshGeneration2::GenerateBaseTriangulation(ballAsRegion, settings);
 
    std::unique_ptr<IDynamicUniquePointCollection<GeomType, GeomDim2>> pointGeometry;
@@ -400,10 +406,11 @@ TEST(MeshGeneration2Test, Sphere2_intersect_5)
 TEST(MeshGeneration2Test, Triangle2_1)
 {
    const std::string project = "MeshGeneration2Test_Triangle2_1";
-   const auto polygonPoints = generateRegularPolygon(3, 0.01); // TODO 0
+   const auto polygonPoints = generateRegularPolygon(3, 0.1); // TODO 0
    const Polygon2AsRegion<double> region(polygonPoints, "triangle2_1");
 
-   MeshingSettingsStandard<2> settings(5, 1.25);
+   MeshingSettingsStandard<2> settings(6, 1.25);
+   IRegionManifoldsTestInterface(region.getManifolds(), settings.getGeometryPredicate());
    const auto triangles = MeshGeneration2::GenerateBaseTriangulation(region, settings);
 
    std::unique_ptr<IDynamicUniquePointCollection<GeomType, GeomDim2>> pointGeometry;
@@ -411,7 +418,18 @@ TEST(MeshGeneration2Test, Triangle2_1)
    const auto bbInitial = settings.getInitialBb(region);
    MeshGeneration2::BaseTriangulationToWorld(triangles, settings.getGeometryPredicate(), bbInitial, pointGeometry, trianglesNodes, settings.getLogger());
 
+   const auto vtkData = MeshGeneration2::ToVtkData(*trianglesNodes, *pointGeometry, { project, "MeshGeneration2Test_Triangle2_1" });
+   Paraview::Write(*vtkData);
+
    ManifoldsAndNodes<GeomDim2> manifoldsAndNodes;
    std::vector<const IManifold0D2*> manifolds0 = region.getManifoldsOfType<const IManifold0D2*>();
-   MeshGeneration2::AddAllManifolds0(manifolds0, *trianglesNodes, manifoldsAndNodes, *pointGeometry);
+   MeshGeneration2::AddAllManifolds0(manifolds0, *trianglesNodes, manifoldsAndNodes, *pointGeometry, settings.getLogger());
+
+   for (const auto* manifold1 : region.getManifoldsOfType<const IManifold1D2<GeomType>*>())
+   {
+      MeshGeneration2::AddManifold1Intersections(*manifold1, *trianglesNodes, manifoldsAndNodes, *pointGeometry, settings.getLogger());
+   }
+
+   const auto vtkDataMesh = MeshGeneration2::ToVtkData(*trianglesNodes, *pointGeometry, { project, "mesh" });
+   Paraview::Write(*vtkDataMesh);
 }

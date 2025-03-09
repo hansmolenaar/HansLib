@@ -161,3 +161,11 @@ TEST(PointTest, inner_product)
    IntPoint2 p2{ 3,4 };
    ASSERT_EQ(PointUtils::innerProduct(p1, p2), 11);
 }
+
+TEST(PointTest, ostreamPoint)
+{
+   const IntPoint3 p{ 2, 3, -6 };
+   std::ostringstream os;
+   os << p;
+   ASSERT_EQ(os.str(), "(2, 3, -6)");
+}

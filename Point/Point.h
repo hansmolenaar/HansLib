@@ -4,6 +4,8 @@
 #include "MyAssert.h"
 #include "Rational.h"
 
+#include <ostream>
+
 template<typename T, int N>
 using Point = std::array<T, N>;
 
@@ -49,6 +51,28 @@ std::array<T, N> operator-(std::array<T, N> result)
 {
    str::transform(result, result.begin(), [](T value) {return -value; });
    return result;
+}
+
+template<typename T, int N>
+std::ostream& operator<< (std::ostream& stream, typename const Point<T, N>& point)
+{
+
+   bool isFirst = true;
+   for (auto c : point)
+   {
+      if (isFirst)
+      {
+         stream << "(";
+         isFirst = false;
+      }
+      else
+      {
+         stream << ", ";
+      }
+      stream << c;
+   }
+   stream << ")";
+   return stream;
 }
 
 namespace PointUtils

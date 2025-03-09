@@ -38,6 +38,7 @@ namespace MeshGeneration2
       MeshGeneration::ManifoldsAndNodes<GeomDim2>& manifoldsAndNodes,
       MeshGeneration::IUniquePointCollecion2& pointCollection);
 
+   // TODO add all at once
    void AddManifold1Intersections(
       const Geometry::IManifold1D2<MeshGeneration::GeomType>& manifold,
       MeshGeneration::TrianglesNodes& trianglesNodes,
@@ -49,7 +50,8 @@ namespace MeshGeneration2
       std::span<const IManifold0D2*> manifolds,
       MeshGeneration::TrianglesNodes& trianglesNodes,
       MeshGeneration::ManifoldsAndNodes<GeomDim2>& manifoldsAndNodes,
-      MeshGeneration::IUniquePointCollecion2& pointCollection);
+      MeshGeneration::IUniquePointCollecion2& pointCollection,
+      Logger& logger);
 
    std::unique_ptr<Vtk::VtkData> ToVtkData(const MeshGeneration::TrianglesNodes& trianglesNodes, const IPointCollection<MeshGeneration::GeomType, GeomDim2>& points, const Vtk::Name& name);
    std::vector<std::unique_ptr<Vtk::VtkData>> ToVtkData(const Manifold1Reconstruction::Reconstruction& reconstruction, const IPointCollection<MeshGeneration::GeomType, GeomDim2>& points, const Vtk::Name& name);

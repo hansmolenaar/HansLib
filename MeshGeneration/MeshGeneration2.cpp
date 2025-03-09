@@ -58,8 +58,34 @@ namespace
 
    NodeIndex InsertPoint(Point2 point, std::span<const CellIndex> candidates, TrianglesNodes& trianglesNodes, MeshGeneration::IUniquePointCollecion2& pointCollection, const MeshGeneration::ManifoldsAndNodes<GeomDim2>& manifoldsAndNodes)
    {
-      if (candidates.size() != 1) throw MyException("Not yet implemented");
-      return -1;
+      // Find the nearest triangle node
+      double minDist2 = std::numeric_limits<double>::max();
+      NodeIndex minDist2Node = NodeIndexInvalid;
+      for (auto candidateTriangle : candidates)
+      {
+         const TriangleNodes triangle = trianglesNodes.getTriangleNodes(candidateTriangle);
+         for (auto n : triangle)
+         {
+            const Point<double, GeomDim2> trianglePoint = pointCollection.getPoint(n);
+            const double dist2 = PointUtils::GetDistanceSquared(point, trianglePoint);
+            if (dist2 < minDist2)
+            {
+               minDist2 = dist2;
+               minDist2Node = n;
+            }
+         }
+      }
+
+      for (const auto* manifold : manifoldsAndNodes.getManifoldsContainingNode(minDist2Node))
+      {
+         if (!manifoldsAndNodes.isMobileOnManifold(minDist2Node, manifold))
+         {
+            throw MyException("MeshGeneration2::InsertPoint immovable node");
+         }
+      }
+
+      pointCollection.movePoint(minDist2Node, point);
+      return minDist2Node;
    }
 }
 
@@ -214,12 +240,31 @@ static boost::container::static_vector< NodeIndex, 2> HandleEndPoints(
    // Loop backwards so that we can erase both end-points
    for (int n = static_cast<int>(intersections.get().size()) - 1; n >= 0; --n)
    {
-      const auto& ip = intersections[n].getIsolatedPoint();
-      if (ip.getPointType() != DirectedEdgePointType::Inside)
+      if (intersections[n].isIsolatedPoint())
       {
-         const auto node = (ip.getPointType() == DirectedEdgePointType::Point0 ? edgeNodes[0] : edgeNodes[1]);
-         nodeUsed.push_back(node);
-         manifoldsAndNodes.addNodeToManifold(node, &manifold);
+         const auto& ip = intersections[n].getIsolatedPoint();
+         if (ip.getPointType() != DirectedEdgePointType::Inside)
+         {
+            const auto node = (ip.getPointType() == DirectedEdgePointType::Point0 ? edgeNodes[0] : edgeNodes[1]);
+            nodeUsed.push_back(node);
+            manifoldsAndNodes.addNodeToManifold(node, &manifold);
+            intersections.erase(n);
+         }
+      }
+      else
+      {
+         // Only implemented: intersected on both sides
+         const auto& interval = intersections[n].getInterval();
+         if (interval.Point0.getPointType() == DirectedEdgePointType::Inside || interval.Point1.getPointType() == DirectedEdgePointType::Inside)
+         {
+            throw MyException("HandleEndPoints expect both end-points");
+         }
+         const auto minNode = std::min(edgeNodes[0], edgeNodes[1]);
+         const auto maxNode = std::max(edgeNodes[0], edgeNodes[1]);
+         nodeUsed.push_back(minNode);
+         nodeUsed.push_back(maxNode);
+         manifoldsAndNodes.addNodeToManifold(minNode, &manifold);
+         manifoldsAndNodes.addNodeToManifold(maxNode, &manifold);
          intersections.erase(n);
       }
    }
@@ -239,16 +284,15 @@ bool MeshGeneration2::AddEdgeManifold1Intersections(
    auto intersections = manifold.getIntersections(edge, predicate);
    if (intersections.get().empty()) return false; // Nothing to do
 
-   if (!intersections[0].isIsolatedPoint())
-   {
-      throw MyException("Intersecion interval not yet implemented");
-   }
-
    const auto nodeUsed = HandleEndPoints(intersections, manifold, edgeNodes, manifoldsAndNodes);
    if (intersections.get().empty()) return false;
 
    if (intersections.get().size() == 1)
    {
+      if (!intersections[0].isIsolatedPoint())
+      {
+         throw MyException("Intersection interval not yet implemented");
+      }
       const auto& ip = intersections[0].getIsolatedPoint();
       const auto dist0 = PointUtils::GetDistanceSquared(ip.getPoint(), edge.point0());
       const auto dist1 = PointUtils::GetDistanceSquared(ip.getPoint(), edge.point1());
@@ -271,6 +315,10 @@ bool MeshGeneration2::AddEdgeManifold1Intersections(
       Utilities::MyAssert(intersections.get().size() == 2);
       for (int n = 0; n < 2; ++n)
       {
+         if (!intersections[n].isIsolatedPoint())
+         {
+            throw MyException("Intersection interval not yet implemented, intersection = " + std::to_string(n));
+         }
          const auto& ip = intersections[n].getIsolatedPoint();
          // Automatically ordered: directed edge
          const auto nodeToMove = edgeNodes[n];
@@ -322,7 +370,8 @@ void MeshGeneration2::AddAllManifolds0(
    std::span<const IManifold0D2*> manifolds,
    MeshGeneration::TrianglesNodes& trianglesNodes,
    MeshGeneration::ManifoldsAndNodes<GeomDim2>& manifoldsAndNodes,
-   MeshGeneration::IUniquePointCollecion2& pointCollection)
+   MeshGeneration::IUniquePointCollecion2& pointCollection,
+   Logger& logger)
 {
    // Collect triangles that contain point
    const auto trianglesContainingPoints = GetTrianglesContainingPoints(manifolds, trianglesNodes, pointCollection);
@@ -334,7 +383,8 @@ void MeshGeneration2::AddAllManifolds0(
       std::transform(range.first, range.second, std::back_inserter(candidates), [](const auto& itr) {return itr.second; });
       const NodeIndex node = InsertPoint(manifold->getPoint(), candidates, trianglesNodes, pointCollection, manifoldsAndNodes);
       manifoldsAndNodes.addNodeToManifold(node, manifold);
+      std::ostringstream os;
+      os << "Added point manifold " << manifold->getName() << " with point " << manifold->getPoint() << "as node " << node;
+      logger.logLine(os.str());
    }
-
-   throw MyException("Not yet implemented");
 }
