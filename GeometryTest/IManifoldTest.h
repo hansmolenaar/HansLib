@@ -14,6 +14,7 @@ template<typename T, int N>
 void IManifoldTestInterface(const IManifold<T, N>& manifold, const IGeometryPredicate<T, N>& predicate)
 {
    ASSERT_FALSE(manifold.getName().empty());
+   ASSERT_TRUE(manifold == manifold);
    const auto bb = manifold.getBoundingBox();
    const auto pCenter = bb.getCenter();
 
