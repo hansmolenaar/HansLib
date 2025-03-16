@@ -25,7 +25,7 @@ const Geometry::IManifoldId& Manifold0Reconstruction::getManifoldId() const
    return m_manifold;
 }
 
-const Reconstruction0& Manifold0Reconstruction::getReconstruction0() const
+const Reconstruction0& Manifold0Reconstruction::getReconstruction() const
 {
    return m_reconstruction;
 }

@@ -19,7 +19,7 @@ namespace  MeshGeneration
    public:
       Manifold0Reconstruction(const Geometry::IManifoldId& manifoldId, const Reconstruction0& reconstruction);
       const Geometry::IManifoldId& getManifoldId() const override;
-      const Reconstruction0& getReconstruction0() const;
+      const Reconstruction0& getReconstruction() const;
    private:
       const Geometry::IManifoldId& m_manifold;
       const Reconstruction0& m_reconstruction;

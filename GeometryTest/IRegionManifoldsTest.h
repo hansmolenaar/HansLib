@@ -13,6 +13,19 @@ template<typename T, int N>
 void IRegionManifoldsTestInterface(const IRegionManifolds<T, N>& manifolds, const IGeometryPredicate<T, N>& predicate)
 {
    const auto allManifolds = manifolds.getAllManifolds();
+
+   // manifolds should be unique
+   auto cmp = [](const IManifoldId* a, const IManifoldId* b) { return *a < *b; };
+   std::set<const IManifoldId*, decltype(cmp)> manifoldIds;
+   for (const auto* m : allManifolds)
+   {
+      if (manifoldIds.contains(m))
+      {
+         throw MyException("Duplicate manifold " + m->getName());
+      }
+      manifoldIds.insert(m);
+   }
+
    const auto boundary = manifolds.getBoundaryHyperManifolds();
    ASSERT_TRUE(!allManifolds.empty());
    ASSERT_TRUE(!boundary.empty());

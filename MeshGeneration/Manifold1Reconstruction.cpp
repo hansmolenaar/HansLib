@@ -70,3 +70,25 @@ MeshGeneration::Reconstruction1 MeshGeneration::Generate2(std::span<const NodeIn
 
    return result;
 }
+
+Manifold1Reconstruction::Manifold1Reconstruction(const Geometry::IManifoldId& manifoldId, const Reconstruction1& reconstruction) :
+   m_manifoldId(manifoldId), m_reconstruction(reconstruction)
+{
+}
+
+Manifold1Reconstruction::Manifold1Reconstruction(const Geometry::IManifold1D2<GeomType>& manifold, const ManifoldsAndNodes<GeomDim2>& manifoldsAndNodes,
+   const TrianglesNodes& trianglesNodes, const IUniquePointCollecion2& pointCollection) :
+   m_manifoldId(manifold),
+   m_reconstruction(MeshGeneration::Generate2(manifoldsAndNodes.getNodesInManifold(&manifold), trianglesNodes, pointCollection))
+{
+}
+
+const Geometry::IManifoldId& Manifold1Reconstruction::getManifoldId() const
+{
+   return m_manifoldId;
+}
+
+const Reconstruction1& Manifold1Reconstruction::getReconstruction() const
+{
+   return m_reconstruction;
+}
