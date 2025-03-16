@@ -3,14 +3,15 @@
 #include "MeshGenerationDefines.h"
 #include "TrianglesNodes.h"
 
-namespace Manifold1Reconstruction
+namespace MeshGeneration
 {
-   struct Reconstruction
+   class Reconstruction1
    {
-      std::vector<MeshGeneration::NodeIndex> Singletons;
-      std::vector<std::vector<MeshGeneration::NodeIndex>> Cycles;
-      std::vector<std::vector<MeshGeneration::NodeIndex>> Paths;
+   public:
+      std::vector<NodeIndex> Singletons;
+      std::vector<std::vector<NodeIndex>> Cycles;
+      std::vector<std::vector<NodeIndex>> Paths;
    };
 
-   Reconstruction Generate2(std::span<const MeshGeneration::NodeIndex> manifoldPoints, const MeshGeneration::TrianglesNodes& trianglesNodes, const MeshGeneration::IUniquePointCollecion2& pointCollection);
+   Reconstruction1 Generate2(std::span<const NodeIndex> manifoldPoints, const TrianglesNodes& trianglesNodes, const IUniquePointCollecion2& pointCollection);
 }

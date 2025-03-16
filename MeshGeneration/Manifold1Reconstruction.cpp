@@ -1,7 +1,6 @@
 #include "Manifold1Reconstruction.h"
 #include "UndirectedGraph.h"
 
-using namespace Manifold1Reconstruction;
 using namespace MeshGeneration;
 
 namespace
@@ -48,7 +47,7 @@ namespace
    }
 }
 
-Manifold1Reconstruction::Reconstruction Manifold1Reconstruction::Generate2(std::span<const NodeIndex> manifoldNodes, const TrianglesNodes& trianglesNodes, const IUniquePointCollecion2& pointCollection)
+MeshGeneration::Reconstruction1 MeshGeneration::Generate2(std::span<const NodeIndex> manifoldNodes, const TrianglesNodes& trianglesNodes, const IUniquePointCollecion2& pointCollection)
 {
    const auto toVertex = RenumberToGraph(manifoldNodes);
    const auto graph = CreateGraph(manifoldNodes, trianglesNodes, toVertex);
@@ -59,7 +58,7 @@ Manifold1Reconstruction::Reconstruction Manifold1Reconstruction::Generate2(std::
    }
    const auto cyclesAndPaths = graph.SplitInCyclesAndPaths();
 
-   Reconstruction result;
+   Reconstruction1 result;
    for (const auto& cycle : cyclesAndPaths.Cycles)
    {
       result.Cycles.emplace_back(ToNodesIndices(cycle, manifoldNodes));

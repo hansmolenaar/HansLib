@@ -188,7 +188,7 @@ std::unique_ptr<Vtk::VtkData> MeshGeneration2::ToVtkData(const TrianglesNodes& t
 }
 
 std::vector<std::unique_ptr<Vtk::VtkData>> MeshGeneration2::ToVtkData(
-   const Manifold1Reconstruction::Reconstruction& reconstruction,
+   const MeshGeneration::Reconstruction1& reconstruction,
    const IPointCollection<MeshGeneration::GeomType, GeomDim2>& points,
    const Vtk::Name& name)
 {
