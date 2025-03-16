@@ -419,7 +419,7 @@ TEST(MeshGeneration2Test, Triangle2_1)
 {
    const std::string project = "MeshGeneration2Test_Triangle2_1";
    const auto polygonPoints = generateRegularPolygon(3, 0.1); // TODO 0
-   const Polygon2AsRegion<double> region(polygonPoints, "triangle2_1");
+   const Polygon2AsRegion<double> region(polygonPoints, "triangle");
 
    MeshingSettingsStandard<2> settings(6, 1.25);
    IRegionManifoldsTestInterface(region.getManifolds(), settings.getGeometryPredicate());

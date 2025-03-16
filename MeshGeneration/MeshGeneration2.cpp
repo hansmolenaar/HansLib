@@ -300,6 +300,14 @@ bool MeshGeneration2::AddEdgeManifold1Intersections(
    ManifoldsAndNodes<GeomDim2>& manifoldsAndNodes,
    IUniquePointCollecion2& pointCollection)
 {
+   // !!!!!! TODO
+   static int numCall = 0;
+   ++numCall;
+   if (numCall == 10432)
+   {
+      int hello = 0;
+   }
+   // !!!!!! TODO
    const auto& predicate = pointCollection.getGeometryPredicate();
    const DirectedEdge<GeomType, GeomDim2> edge(pointCollection.getPoint(edgeNodes[0]), pointCollection.getPoint(edgeNodes[1]));
    auto intersections = manifold.getIntersections(edge, predicate);
@@ -318,7 +326,7 @@ bool MeshGeneration2::AddEdgeManifold1Intersections(
       const auto dist0 = PointUtils::GetDistanceSquared(ip.getPoint(), edge.point0());
       const auto dist1 = PointUtils::GetDistanceSquared(ip.getPoint(), edge.point1());
       auto nodeToMove = dist0 < dist1 ? edgeNodes[0] : edgeNodes[1];
-      if (str::find(nodeUsed, nodeToMove) != nodeUsed.end())
+      if (str::find(nodeUsed, nodeToMove) != nodeUsed.end() || !manifoldsAndNodes.isMobileOnManifold(nodeToMove, &manifold))
       {
          // Take the other one
          nodeToMove = (nodeToMove == edgeNodes[0]) ? edgeNodes[1] : edgeNodes[0];
