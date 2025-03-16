@@ -51,11 +51,15 @@ MeshGeneration::Reconstruction1 MeshGeneration::Generate2(std::span<const NodeIn
 {
    const auto toVertex = RenumberToGraph(manifoldNodes);
    const auto graph = CreateGraph(manifoldNodes, trianglesNodes, toVertex);
-   const auto degreeSequence = graph.getDegreeSequence();
-   if (*str::max_element(degreeSequence) > 2)
+   for (GraphVertex v = 0; v < manifoldNodes.size(); ++v)
    {
-      throw MyException("Manifold1Reconstruction::Generate2 only max degree is 2 implemented");
+      const auto degree = graph.getDegree(v);
+      if (degree > 2)
+      {
+         throw MyException("Manifold1Reconstruction::Generate2 only max degree is 2 implemented, node " + std::to_string(manifoldNodes[v]) + " has degree " + std::to_string(degree));
+      }
    }
+
    const auto cyclesAndPaths = graph.SplitInCyclesAndPaths();
 
    Reconstruction1 result;

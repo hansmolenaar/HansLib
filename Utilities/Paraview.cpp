@@ -93,3 +93,11 @@ void Paraview::WriteCellData(std::ostream& stream, const Vtk::VtkData& data)
    // TODO not yet implemented
    Utilities::MyAssert(data.getNumCellData() == 0);
 }
+
+void Paraview::WriteList(const std::vector<std::unique_ptr<Vtk::VtkData>>& list)
+{
+   for (const auto& data : list)
+   {
+      Write(*data);
+   }
+}

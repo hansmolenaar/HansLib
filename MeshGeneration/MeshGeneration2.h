@@ -56,18 +56,13 @@ namespace MeshGeneration2
       const MeshGeneration::ManifoldsAndNodes<GeomDim2>& manifoldsAndNodes,
       const MeshGeneration::IUniquePointCollecion2& pointCollection);
 
-   void checkReconstructions(
+   bool checkReconstructions(
       const Geometry::IRegionManifolds<MeshGeneration::GeomType, GeomDim2>& regionManifolds,
       const std::vector<std::unique_ptr<MeshGeneration::IManifoldReconstruction>>& reconstructions,
       Logger& logger);
 
-   std::vector<std::unique_ptr<MeshGeneration::IManifoldReconstruction>> createAndCheckReconstructions(
-      const Geometry::IRegionManifolds<MeshGeneration::GeomType, GeomDim2>& regionManifolds,
-      const MeshGeneration::TrianglesNodes& trianglesNodes,
-      const MeshGeneration::ManifoldsAndNodes<GeomDim2>& manifoldsAndNodes,
-      const MeshGeneration::IUniquePointCollecion2& pointCollection,
-      Logger& logger);
-
    std::unique_ptr<Vtk::VtkData> ToVtkData(const MeshGeneration::TrianglesNodes& trianglesNodes, const IPointCollection<MeshGeneration::GeomType, GeomDim2>& points, const Vtk::Name& name);
    std::vector<std::unique_ptr<Vtk::VtkData>> ToVtkData(const MeshGeneration::Reconstruction1& reconstruction, const IPointCollection<MeshGeneration::GeomType, GeomDim2>& points, const Vtk::Name& name);
+   std::vector<std::unique_ptr<Vtk::VtkData>> ToVtkData(const std::vector<std::unique_ptr<MeshGeneration::IManifoldReconstruction>>& reconstructions,
+      const IPointCollection<MeshGeneration::GeomType, GeomDim2>& points, const std::string& project);
 }

@@ -5,12 +5,14 @@
 #include <filesystem>
 #include <fstream>
 #include <map>
+#include <memory>
 #include <ostream>
 #include <string>
 #include <vector>
 
 namespace Paraview
 {
+   void WriteList(const std::vector<std::unique_ptr<Vtk::VtkData>>& data);
    void Write(const Vtk::VtkData& data);
    void WritePoints(std::ostream& stream, const Vtk::VtkData& data);
    void WritePoint(std::ostream& stream, std::span<const Vtk::CoordinateType> coordinates);
