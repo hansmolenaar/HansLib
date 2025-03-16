@@ -299,11 +299,10 @@ TEST(MeshGeneration2Test, Sphere2_intersect_4)
    MeshStatistics expect{ 281, 504, 0.75 };
    ASSERT_EQ(expect, stats);
 
-   const Sphere<GeomType, GeomDim2> sphere(ball.getCenter(), ball.getRadius());
-   const Sphere2AsManifold1<GeomType> manifold(sphere);
+   const auto manifoldPtr = dynamic_cast<const Geometry::IManifold1D2<GeomType>*>(Utilities::Single(ballAsRegion.getManifolds().getAllManifolds()));
 
    ManifoldsAndNodes<GeomDim2> manifoldsAndNodes;
-   MeshGeneration2::AddManifold1Intersections(manifold, *trianglesNodes, manifoldsAndNodes, *pointGeometry, settings.getLogger());
+   MeshGeneration2::AddManifold1Intersections(*manifoldPtr, *trianglesNodes, manifoldsAndNodes, *pointGeometry, settings.getLogger());
 
    stats = MeshStatistics::Create2(*trianglesNodes, *pointGeometry, settings.getCellQuality());
    expect = { 281, 504, 0.37443649960593806 };
@@ -311,15 +310,18 @@ TEST(MeshGeneration2Test, Sphere2_intersect_4)
    settings.getLogger().toFile("C:\\Users\\Hans\\Documents\\work\\logger.txt");
    ASSERT_EQ(expect, stats);
 
-   const auto nodesOnManifold = manifoldsAndNodes.getNodesInManifold(&manifold);
-   const auto reconstruction = MeshGeneration::Generate2(nodesOnManifold, *trianglesNodes, *pointGeometry);
+   const auto nodesOnManifold = manifoldsAndNodes.getNodesInManifold(manifoldPtr);
+   const auto reconstructions = MeshGeneration2::createAndCheckReconstructions(ballAsRegion.getManifolds(),
+      *trianglesNodes, manifoldsAndNodes, *pointGeometry, settings.getLogger());
+   ASSERT_EQ(reconstructions.size(), 1);
+   const auto reconstruction = dynamic_cast<const Manifold1Reconstruction&>(*reconstructions.front()).getReconstruction();
    ASSERT_TRUE(reconstruction.Singletons.empty());
    ASSERT_TRUE(reconstruction.Paths.empty());
    ASSERT_EQ(reconstruction.Cycles.size(), 1);
    ASSERT_EQ(Single(reconstruction.Cycles).size(), 42);
 
    const auto vtkData = MeshGeneration2::ToVtkData(*trianglesNodes, *pointGeometry, { project, "mesh" });
-   const auto vtkDataManifold = MeshGeneration2::ToVtkData(reconstruction, *pointGeometry, { project, manifold.getName() });
+   const auto vtkDataManifold = MeshGeneration2::ToVtkData(reconstruction, *pointGeometry, { project, manifoldPtr->getName() });
 
    Paraview::Write(*vtkData);
    Paraview::Write(*(Utilities::Single(vtkDataManifold)));

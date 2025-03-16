@@ -1,6 +1,7 @@
 #include "BoundingBox.h"
 #include "Defines.h"   
 #include "IntervalTreeBalance.h"
+#include "Manifold0Reconstruction.h"
 #include "Manifold1Reconstruction.h"
 #include "MeshGeneration2.h"
 #include "MeshGenerationUtils.h"
@@ -387,4 +388,102 @@ void MeshGeneration2::AddAllManifolds0(
       os << "Added point manifold " << manifold->getName() << " with point " << manifold->getPoint() << "as node " << node;
       logger.logLine(os.str());
    }
+}
+
+std::vector<std::unique_ptr<MeshGeneration::IManifoldReconstruction>> MeshGeneration2::createAndCheckReconstructions(
+   const Geometry::IRegionManifolds<MeshGeneration::GeomType, GeomDim2>& regionManifolds,
+   const MeshGeneration::TrianglesNodes& trianglesNodes,
+   const MeshGeneration::ManifoldsAndNodes<GeomDim2>& manifoldsAndNodes,
+   const MeshGeneration::IUniquePointCollecion2& pointCollection,
+   Logger& logger)
+{
+   auto reconstructions = createReconstructions(regionManifolds, trianglesNodes, manifoldsAndNodes, pointCollection);
+   checkReconstructions(regionManifolds, reconstructions, logger);
+   return reconstructions;
+}
+
+std::vector<std::unique_ptr<MeshGeneration::IManifoldReconstruction>> MeshGeneration2::createReconstructions(
+   const IRegionManifolds<GeomType, GeomDim2>& regionManifolds,
+   const TrianglesNodes& trianglesNodes,
+   const ManifoldsAndNodes<GeomDim2>& manifoldsAndNodes,
+   const IUniquePointCollecion2& pointCollection)
+{
+   std::vector<std::unique_ptr<IManifoldReconstruction>> result;
+   const auto allManifolds = regionManifolds.getAllManifolds();
+   auto cmp = [](const IManifoldId* a, const IManifoldId* b) { return *a < *b; };
+   std::set<const IManifoldId*, decltype(cmp)> manifoldIds;
+   for (const auto* m : allManifolds)
+   {
+      if (manifoldIds.contains(m))
+      {
+         throw MyException("MeshGeneration2::createReconstructions Duplicate manifold " + m->getName());
+      }
+      manifoldIds.insert(m);
+
+      if (m->getTopologyDimension() == Topology::Corner)
+      {
+         const auto point = dynamic_cast<const IManifold0<GeomType, GeomDim2>*>(m)->getPoint();
+         const auto found = pointCollection.tryGetClosePoint(point);
+         if (found)
+         {
+            result.emplace_back(std::make_unique<Manifold0Reconstruction>(*m, Reconstruction0{ *found }));
+         }
+      }
+      else if (m->getTopologyDimension() == Topology::Edge)
+      {
+         const auto* m2 = dynamic_cast<const Geometry::IManifold1D2<GeomType>*>(m);
+         result.emplace_back(std::make_unique<Manifold1Reconstruction>(*m2, manifoldsAndNodes, trianglesNodes, pointCollection));
+      }
+      else
+      {
+         throw MyException("MeshGeneration2::createReconstructions unexpect dimension " + std::to_string(m->getTopologyDimension()) + " for manifold " + m->getName());
+      }
+   }
+
+   // manifold topology
+   return result;
+}
+
+void MeshGeneration2::checkReconstructions(
+   const Geometry::IRegionManifolds<MeshGeneration::GeomType, GeomDim2>& regionManifolds,
+   const std::vector<std::unique_ptr<MeshGeneration::IManifoldReconstruction>>& reconstructions,
+   Logger& logger)
+{
+   const auto allManifolds = regionManifolds.getAllManifolds();
+
+   // All point manifolds found?
+   std::vector<const IManifoldId*> reconstructedPointManifoldIds;
+   for (const auto* m : allManifolds)
+   {
+      if (m->getTopologyDimension() == Topology::Corner)
+      {
+         const auto found = str::find_if(reconstructions, [&m](const auto& up) {return *m == up->getManifoldId(); });
+         if (found == reconstructions.end())
+         {
+            logger.logLine("MeshGeneration2::createReconstructions point manifold " + m->getName() + " not found in mesh");
+         }
+         else
+         {
+            reconstructedPointManifoldIds.push_back(&(found->get()->getManifoldId()));
+         }
+      }
+   }
+
+   // Connection between corner and edge manifolds
+   for (const auto* m : allManifolds)
+   {
+      if (m->getTopologyDimension() == Topology::Edge)
+      {
+         const auto lowers = regionManifolds.getConnectedLowers(*m);
+         for (const auto lm : lowers)
+         {
+            const auto found = str::find_if(reconstructedPointManifoldIds, [&lm](const auto* r) {return *r == *lm; });
+            if (found == reconstructedPointManifoldIds.end())
+            {
+               logger.logLine("MeshGeneration2::createReconstructions edge " + m->getName() + " connected point manifold " + lm->getName() + " not found in mesh");
+            }
+         }
+      }
+   }
+
 }

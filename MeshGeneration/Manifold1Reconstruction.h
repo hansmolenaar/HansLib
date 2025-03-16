@@ -27,6 +27,6 @@ namespace MeshGeneration
       const Reconstruction1& getReconstruction() const;
    private:
       const Geometry::IManifoldId& m_manifoldId;
-      const Reconstruction1& m_reconstruction;
+      const Reconstruction1 m_reconstruction;
    };
 }

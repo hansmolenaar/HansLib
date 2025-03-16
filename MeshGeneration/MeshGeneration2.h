@@ -4,18 +4,15 @@
 #include "IGeometryRegion.h"
 #include "IManifold0.h"
 #include "IManifold1D2.h"
+#include "IManifoldReconstruction.h"
 #include "IMeshingSettings.h"
 #include "IndexTreeToSimplices2.h"
+#include "IRegionManifolds.h"
 #include "Logger.h"
 #include "ManifoldsAndNodes.h"
 #include "MeshGenerationDefines.h"
 #include "TrianglesNodes.h"
 #include "VtkData.h"
-
-namespace Manifold1Reconstruction
-{
-   struct Reconstruction;
-}
 
 namespace MeshGeneration2
 {
@@ -51,6 +48,24 @@ namespace MeshGeneration2
       MeshGeneration::TrianglesNodes& trianglesNodes,
       MeshGeneration::ManifoldsAndNodes<GeomDim2>& manifoldsAndNodes,
       MeshGeneration::IUniquePointCollecion2& pointCollection,
+      Logger& logger);
+
+   std::vector<std::unique_ptr<MeshGeneration::IManifoldReconstruction>> createReconstructions(
+      const Geometry::IRegionManifolds<MeshGeneration::GeomType, GeomDim2>& regionManifolds,
+      const MeshGeneration::TrianglesNodes& trianglesNodes,
+      const MeshGeneration::ManifoldsAndNodes<GeomDim2>& manifoldsAndNodes,
+      const MeshGeneration::IUniquePointCollecion2& pointCollection);
+
+   void checkReconstructions(
+      const Geometry::IRegionManifolds<MeshGeneration::GeomType, GeomDim2>& regionManifolds,
+      const std::vector<std::unique_ptr<MeshGeneration::IManifoldReconstruction>>& reconstructions,
+      Logger& logger);
+
+   std::vector<std::unique_ptr<MeshGeneration::IManifoldReconstruction>> createAndCheckReconstructions(
+      const Geometry::IRegionManifolds<MeshGeneration::GeomType, GeomDim2>& regionManifolds,
+      const MeshGeneration::TrianglesNodes& trianglesNodes,
+      const MeshGeneration::ManifoldsAndNodes<GeomDim2>& manifoldsAndNodes,
+      const MeshGeneration::IUniquePointCollecion2& pointCollection,
       Logger& logger);
 
    std::unique_ptr<Vtk::VtkData> ToVtkData(const MeshGeneration::TrianglesNodes& trianglesNodes, const IPointCollection<MeshGeneration::GeomType, GeomDim2>& points, const Vtk::Name& name);
