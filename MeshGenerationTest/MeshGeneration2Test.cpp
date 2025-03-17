@@ -12,6 +12,7 @@
 #include "MeshGenerationUtils.h"
 #include "MeshingSettingsStandard.h"
 #include "MeshStatistics.h"
+#include "Nibble.h"
 #include "Paraview.h"
 #include "PointClose.h"
 #include "Polygon2AsRegion.h"
@@ -368,6 +369,8 @@ TEST(MeshGeneration2Test, Sphere2_intersect_3)
 
    Paraview::Write(*vtkData);
    Paraview::Write(*(Utilities::Single(vtkDataManifold)));
+
+   nibble(ballAsRegion, reconstructions, *trianglesNodes, *pointGeometry, settings.getLogger());
 }
 
 TEST(MeshGeneration2Test, Sphere2_intersect_5)
@@ -429,7 +432,7 @@ TEST(MeshGeneration2Test, Triangle2_1)
    const auto bbInitial = settings.getInitialBb(region);
    MeshGeneration2::BaseTriangulationToWorld(triangles, settings.getGeometryPredicate(), bbInitial, pointGeometry, trianglesNodes, settings.getLogger());
 
-   const auto vtkData = MeshGeneration2::ToVtkData(*trianglesNodes, *pointGeometry, { project, "MeshGeneration2Test_Triangle2_1" });
+   const auto vtkData = MeshGeneration2::ToVtkData(*trianglesNodes, *pointGeometry, { project, "BaseTriangulation" });
    Paraview::Write(*vtkData);
 
    ManifoldsAndNodes<GeomDim2> manifoldsAndNodes;
@@ -485,4 +488,6 @@ TEST(MeshGeneration2Test, Triangle2D_2)
 
    const std::vector<std::unique_ptr<Vtk::VtkData>> list = ToVtkData(reconstructions, *pointGeometry, project);
    Paraview::WriteList(list);
+
+   nibble(region, reconstructions, *trianglesNodes, *pointGeometry, settings.getLogger());
 }

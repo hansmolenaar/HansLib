@@ -24,7 +24,7 @@ namespace MeshGeneration2
       const IndexTreeToSimplices2::Triangles& baseTriangles,
       const IGeometryPredicate<MeshGeneration::GeomType, GeomDim2>& predicate,
       const BoundingBox<MeshGeneration::GeomType, GeomDim2>& worldBB,
-      std::unique_ptr<MeshGeneration::IUniquePointCollecion2>& pointGeometry,
+      std::unique_ptr<MeshGeneration::IUniquePointCollection2>& pointGeometry,
       std::unique_ptr<MeshGeneration::TrianglesNodes>& trianglesNodes,
       Logger& logger);
 
@@ -33,28 +33,28 @@ namespace MeshGeneration2
       const MeshGeneration::DirectedEdgeNodes& edge,
       const MeshGeneration::TrianglesNodes& trianglesNodes,
       MeshGeneration::ManifoldsAndNodes<GeomDim2>& manifoldsAndNodes,
-      MeshGeneration::IUniquePointCollecion2& pointCollection);
+      MeshGeneration::IUniquePointCollection2& pointCollection);
 
    // TODO add all at once
    void AddManifold1Intersections(
       const Geometry::IManifold1D2<MeshGeneration::GeomType>& manifold,
       MeshGeneration::TrianglesNodes& trianglesNodes,
       MeshGeneration::ManifoldsAndNodes<GeomDim2>& manifoldsAndNodes,
-      MeshGeneration::IUniquePointCollecion2& pointCollection,
+      MeshGeneration::IUniquePointCollection2& pointCollection,
       Logger& logger);
 
    void AddAllManifolds0(
       std::span<const IManifold0D2*> manifolds,
       MeshGeneration::TrianglesNodes& trianglesNodes,
       MeshGeneration::ManifoldsAndNodes<GeomDim2>& manifoldsAndNodes,
-      MeshGeneration::IUniquePointCollecion2& pointCollection,
+      MeshGeneration::IUniquePointCollection2& pointCollection,
       Logger& logger);
 
    std::vector<std::unique_ptr<MeshGeneration::IManifoldReconstruction>> createReconstructions(
       const Geometry::IRegionManifolds<MeshGeneration::GeomType, GeomDim2>& regionManifolds,
       const MeshGeneration::TrianglesNodes& trianglesNodes,
       const MeshGeneration::ManifoldsAndNodes<GeomDim2>& manifoldsAndNodes,
-      const MeshGeneration::IUniquePointCollecion2& pointCollection);
+      const MeshGeneration::IUniquePointCollection2& pointCollection);
 
    bool checkReconstructions(
       const Geometry::IRegionManifolds<MeshGeneration::GeomType, GeomDim2>& regionManifolds,
@@ -65,4 +65,5 @@ namespace MeshGeneration2
    std::vector<std::unique_ptr<Vtk::VtkData>> ToVtkData(const MeshGeneration::Reconstruction1& reconstruction, const IPointCollection<MeshGeneration::GeomType, GeomDim2>& points, const Vtk::Name& name);
    std::vector<std::unique_ptr<Vtk::VtkData>> ToVtkData(const std::vector<std::unique_ptr<MeshGeneration::IManifoldReconstruction>>& reconstructions,
       const IPointCollection<MeshGeneration::GeomType, GeomDim2>& points, const std::string& project);
+
 }

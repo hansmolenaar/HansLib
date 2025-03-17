@@ -18,7 +18,7 @@ namespace MeshGeneration
    using DirectedEdgeNodes = std::array<NodeIndex, Topology::NumNodesOnEdge>;
    using SortedEdgeNodes = std::array<NodeIndex, Topology::NumNodesOnEdge>;
 
-   using IUniquePointCollecion2 = IDynamicUniquePointCollection<MeshGeneration::GeomType, GeomDim2>;
+   using IUniquePointCollection2 = IDynamicUniquePointCollection<MeshGeneration::GeomType, GeomDim2>;
 
    // Should be GE 0 and 0 means degenerate
    template<int N>
