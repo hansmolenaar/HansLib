@@ -499,5 +499,27 @@ bool MeshGeneration2::checkReconstructions(
       }
    }
 
+   // End-points?
+   for (const auto* m : regionManifolds.getManifoldsOfType<const IManifold1<GeomType, GeomDim2>*>())
+   {
+      const auto endPoints = regionManifolds.getConnectedLowers(*m);
+      size_t numEndPointsInReconstruction = 0;
+      for (const auto& reconstruction : reconstructions)
+      {
+         const auto* r = dynamic_cast<const Manifold1Reconstruction*>(reconstruction.get());
+         if (r != nullptr && *m == reconstruction->getManifoldId())
+         {
+            numEndPointsInReconstruction += 2 * r->getReconstruction().Paths.size();
+         }
+      }
+
+      if (endPoints.size() != numEndPointsInReconstruction)
+      {
+         succes = false;
+         logger.logLine("MeshGeneration2::createReconstructions edge " + m->getName() + " has " + std::to_string(endPoints.size()) +
+            "end-points, in the reconstruction there are " + std::to_string(numEndPointsInReconstruction) + " end-ponts");
+      }
+   }
+
    return succes;
 }

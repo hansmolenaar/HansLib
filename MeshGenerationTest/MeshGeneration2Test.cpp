@@ -414,7 +414,6 @@ TEST(MeshGeneration2Test, Sphere2_intersect_5)
    Paraview::WriteList(list);
 }
 
-
 TEST(MeshGeneration2Test, Triangle2_1)
 {
    const std::string project = "MeshGeneration2Test_Triangle2_1";
@@ -432,6 +431,41 @@ TEST(MeshGeneration2Test, Triangle2_1)
 
    const auto vtkData = MeshGeneration2::ToVtkData(*trianglesNodes, *pointGeometry, { project, "MeshGeneration2Test_Triangle2_1" });
    Paraview::Write(*vtkData);
+
+   ManifoldsAndNodes<GeomDim2> manifoldsAndNodes;
+   std::vector<const IManifold0D2*> manifolds0 = region.getManifoldsOfType<const IManifold0D2*>();
+   MeshGeneration2::AddAllManifolds0(manifolds0, *trianglesNodes, manifoldsAndNodes, *pointGeometry, settings.getLogger());
+
+   for (const auto* manifold1 : region.getManifoldsOfType<const IManifold1D2<GeomType>*>())
+   {
+      MeshGeneration2::AddManifold1Intersections(*manifold1, *trianglesNodes, manifoldsAndNodes, *pointGeometry, settings.getLogger());
+   }
+
+   const auto reconstructions = MeshGeneration2::createReconstructions(region, *trianglesNodes, manifoldsAndNodes, *pointGeometry);
+   const bool succes = MeshGeneration2::checkReconstructions(region, reconstructions, settings.getLogger());
+   ASSERT_TRUE(succes);
+
+   const auto vtkDataMesh = MeshGeneration2::ToVtkData(*trianglesNodes, *pointGeometry, { project, "mesh" });
+   Paraview::Write(*vtkDataMesh);
+
+   const std::vector<std::unique_ptr<Vtk::VtkData>> list = ToVtkData(reconstructions, *pointGeometry, project);
+   Paraview::WriteList(list);
+}
+
+TEST(MeshGeneration2Test, Triangle2D_2)
+{
+   const std::string project = "MeshGeneration2Test_Triangle2D_2";
+   const auto polygonPoints = generateRegularPolygon(3, 0.0);
+   const Polygon2AsRegion<double> region(polygonPoints, "triangle");
+
+   MeshingSettingsStandard<2> settings(4, 1.25);
+   IRegionManifoldsTestInterface(region.getManifolds(), settings.getGeometryPredicate());
+   const auto triangles = MeshGeneration2::GenerateBaseTriangulation(region, settings);
+
+   std::unique_ptr<IDynamicUniquePointCollection<GeomType, GeomDim2>> pointGeometry;
+   std::unique_ptr<MeshGeneration::TrianglesNodes> trianglesNodes;
+   const auto bbInitial = settings.getInitialBb(region);
+   MeshGeneration2::BaseTriangulationToWorld(triangles, settings.getGeometryPredicate(), bbInitial, pointGeometry, trianglesNodes, settings.getLogger());
 
    ManifoldsAndNodes<GeomDim2> manifoldsAndNodes;
    std::vector<const IManifold0D2*> manifolds0 = region.getManifoldsOfType<const IManifold0D2*>();
