@@ -39,6 +39,25 @@ TEST(Sphere2AsManifold1, GetEuclideanSubspaceAt)
    ASSERT_THROW(sphereManifold.getEuclideanSubspaceAt(Point2{ 3,3 }, areClose), MyException);
 }
 
+TEST(Sphere2AsManifold1, GetEuclideanSubspaceAtUnitCircle)
+{
+   const PointClose<double, GeomDim2> areClose;
+   const Sphere<double, GeomDim2> circle({ 0,0 }, 1.0);
+   const Sphere2AsManifold1<double> sphereManifold(circle);
+
+   Line<double, 2> line = sphereManifold.getEuclideanSubspaceAt(Point2{ 1, 0 }, areClose);
+   ASSERT_TRUE(line.contains(Point2{ 1, 1 }, areClose));
+
+   line = sphereManifold.getEuclideanSubspaceAt(Point2{ 0, 1 }, areClose);
+   ASSERT_TRUE(line.contains(Point2{ 1, 1 }, areClose));
+
+   line = sphereManifold.getEuclideanSubspaceAt(Point2{ -1, 0 }, areClose);
+   ASSERT_TRUE(line.contains(Point2{ -1, -1 }, areClose));
+
+   line = sphereManifold.getEuclideanSubspaceAt(Point2{ 0, -1 }, areClose);
+   ASSERT_TRUE(line.contains(Point2{ -1, -1 }, areClose));
+}
+
 TEST(Sphere2AsManifold1, GetIntersections)
 {
    const PointClose<double, GeomDim2> areClose;

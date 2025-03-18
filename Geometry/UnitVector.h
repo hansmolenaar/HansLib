@@ -3,11 +3,11 @@
 #include "Defines.h"
 #include "Point.h"
 
-#include <numeric>
-#include <limits>
 #include <cmath>
-#include <span>
+#include <limits>
+#include <numeric>
 #include <optional>
+#include <span>
 
 template<typename T, int N>
 class UnitVector
@@ -87,3 +87,13 @@ T UnitVector<T, N>::innerProduct(const Point<T, N>& p) const
    return std::inner_product(m_vector.begin(), m_vector.end(), p.begin(), 0.0);
 }
 
+namespace UnitVectorUtils
+{
+   template<typename T>
+   UnitVector<T, 2> getNormalTo(Point<T, GeomDim2> v)
+   {
+      std::swap(v[0], v[1]);
+      v[0] = -v[0];
+      return *UnitVector<T, GeomDim2>::Create(v);
+   }
+}

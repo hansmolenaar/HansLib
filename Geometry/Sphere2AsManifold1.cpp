@@ -26,7 +26,7 @@ Line<T, GeomDim2> Sphere2AsManifold1<T>::getEuclideanSubspaceAt(const Point<T, G
       throw MyException("Sphere2AsManifold1<T>::GetEuclideanSubspaceAt, point not on manifold");
    }
    const auto radial = point - m_sphere.getCenter();
-   const auto uv = UnitVector<T, GeomDim2>::Create({ -radial[1], radial[0] }).value();
+   const auto uv = UnitVectorUtils::getNormalTo<T>(radial);
    return { point, uv };
 }
 
