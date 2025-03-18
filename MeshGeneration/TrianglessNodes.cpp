@@ -1,6 +1,6 @@
-#include "TrianglesNodes.h"
 #include "Defines.h"
 #include "MyException.h"
+#include "TrianglesNodes.h"
 #include <limits>
 
 using namespace MeshGeneration;
@@ -120,6 +120,20 @@ boost::container::static_vector<CellIndex, 2> TrianglesNodes::getEdgeConnectedTr
       }
    }
    str::sort(result);
+   return result;
+}
+
+boost::container::static_vector<CellIndex, Topology::NumNodesOnTriangle> TrianglesNodes::getEdgeConnectedTriangles(CellIndex triangleId) const
+{
+   boost::container::static_vector<CellIndex, 3> result;
+   const auto triangle = getTriangleNodes(triangleId);
+   for (size_t n = 0; n < Topology::NumNodesOnTriangle; ++n)
+   {
+      const auto ngbs = getEdgeConnectedTriangles(triangle[n], triangle[(n + 1) % Topology::NumNodesOnTriangle]);
+      if (ngbs.size() > 0 && ngbs[0] != triangleId) result.push_back(ngbs[0]);
+      if (ngbs.size() > 1 && ngbs[1] != triangleId) result.push_back(ngbs[1]);
+   }
+
    return result;
 }
 

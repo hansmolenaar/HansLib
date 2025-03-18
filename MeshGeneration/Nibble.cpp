@@ -57,38 +57,93 @@ namespace
       return boundaryEdges;
    }
 
-   std::vector<CellIndex> getBoundaryTriangles(const std::vector<std::array<NodeIndex, NumNodesOnEdge>>& boundaryEdges, const MeshGeneration::TrianglesNodes& trianglesNodes)
+   NodeIndex getOtherNode(TriangleNodes triangle, DirectedEdgeNodes edge)
    {
-      std::vector<CellIndex> result;
-      result.reserve(boundaryEdges.size() * 2);
-      for (const auto& be : boundaryEdges)
+      // TODO TriangleNodes sorted, setdif?
+      std::sort(triangle.begin(), triangle.end());
+      if (edge[0] > edge[1]) std::swap(edge[0], edge[1]);
+      boost::container::static_vector<CellIndex, Topology::NumNodesOnTriangle + Topology::NumNodesOnEdge> symdif;
+      str::set_symmetric_difference(triangle, edge, std::back_inserter(symdif));
+      if (symdif.size() != 1)
       {
-         const auto connectedTriangles = trianglesNodes.getEdgeConnectedTriangles(be[0], be[1]);
-         result.insert(result.end(), connectedTriangles.begin(), connectedTriangles.end());
+         throw MyException("getOutNode expect a single node, actual size: " + std::to_string(symdif.size()));
       }
-      // remove duplicates
-      std::sort(result.begin(), result.end());
-      result.erase(unique(result.begin(), result.end()), result.end());
-      return result;
+      return symdif[0];
    }
 
-   std::pair<std::set<CellIndex>, std::vector<CellIndex>> splitInsideOutside(
-      const std::vector<CellIndex>& boundaryCells,
+   std::pair<CellIndex, CellIndex> getInsideAndOutsideCell(
+      const DirectedEdgeNodes& be,
+      const MeshGeneration::TrianglesNodes& trianglesNodes,
       const MeshGeneration::IUniquePointCollection2& pointCollection,
       const Geometry::IGeometryRegion<MeshGeneration::GeomType, GeomDim2>& region)
    {
-      return{};
+      const auto connectedTriangles = trianglesNodes.getEdgeConnectedTriangles(be[0], be[1]);
+      if (connectedTriangles.size() != 2)
+      {
+         throw MyException("getBoundaryTriangles expect 2 triangles adjacent to edge");
+      }
+      const auto triangleNodes0 = trianglesNodes.getTriangleNodes(connectedTriangles.at(0));
+      const auto triangleNodes1 = trianglesNodes.getTriangleNodes(connectedTriangles.at(1));
+      const NodeIndex otherNode0 = getOtherNode(triangleNodes0, be);
+      const NodeIndex otherNode1 = getOtherNode(triangleNodes1, be);
+      const Point2 otherPoint0 = pointCollection.getPoint(otherNode0);
+      const Point2 otherPoint1 = pointCollection.getPoint(otherNode1);
+      const bool isContained0 = region.contains(otherPoint0, pointCollection.getGeometryPredicate());
+      const bool isContained1 = region.contains(otherPoint1, pointCollection.getGeometryPredicate());
+      if (isContained0 == isContained1)
+      {
+         throw MyException("getInsideAndOutsideCell both points inside or outside");
+      }
+      if (isContained0) return { connectedTriangles.at(0) , connectedTriangles.at(1) };
+      return { connectedTriangles.at(1) , connectedTriangles.at(0) };
    }
+
+   std::pair<std::set<CellIndex>, std::vector<CellIndex>> getBoundaryTriangles(
+      const std::vector<std::array<NodeIndex, NumNodesOnEdge>>& boundaryEdges,
+      const MeshGeneration::TrianglesNodes& trianglesNodes,
+      const MeshGeneration::IUniquePointCollection2& pointCollection,
+      const Geometry::IGeometryRegion<MeshGeneration::GeomType, GeomDim2>& region)
+   {
+      std::set<CellIndex> insideCells;
+      std::vector<CellIndex> outsideCells;
+
+      for (const auto& be : boundaryEdges)
+      {
+         auto [inside, outside] = getInsideAndOutsideCell(be, trianglesNodes, pointCollection, region);
+         insideCells.insert(inside);
+         outsideCells.push_back(outside);
+      }
+      return { insideCells, outsideCells };
+   }
+
 }
 
 void MeshGeneration::nibble(
    const Geometry::IGeometryRegion<MeshGeneration::GeomType, GeomDim2>& region,
    const std::vector<std::unique_ptr<MeshGeneration::IManifoldReconstruction>>& reconstructions,
-   const MeshGeneration::TrianglesNodes& trianglesNodes,
+   MeshGeneration::TrianglesNodes& trianglesNodes,
    const MeshGeneration::IUniquePointCollection2& pointCollection,
    Logger& logger)
 {
    const auto boundaryReconstructions = getOuterBoundaryReconstructions(region, reconstructions);
    const auto boundaryEdges = getBoundaryEdges(boundaryReconstructions);
-   const auto boundaryTriangles = getBoundaryTriangles(boundaryEdges, trianglesNodes);
+   const auto [insideCells, outsideCells] = getBoundaryTriangles(boundaryEdges, trianglesNodes, pointCollection, region);
+   std::vector<CellIndex> todo = outsideCells;
+   while (!todo.empty())
+   {
+      const CellIndex cell = todo.back();
+      todo.pop_back();
+      if (trianglesNodes.isKnownTriangleId(cell))
+      {
+         const auto ngbs = trianglesNodes.getEdgeConnectedTriangles(cell);
+         for (auto ngb : ngbs)
+         {
+            if (!insideCells.contains(ngb))
+            {
+               todo.push_back(ngb);
+            }
+         }
+         trianglesNodes.deleteTriangle(cell);
+      }
+   }
 }

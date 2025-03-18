@@ -19,6 +19,7 @@ namespace MeshGeneration
       CellIndex addTriangle(PointIndex n0, PointIndex n1, PointIndex n2);
       void deleteTriangle(CellIndex triangleId);
       boost::container::static_vector<CellIndex, 2> getEdgeConnectedTriangles(PointIndex n0, PointIndex n1) const;
+      boost::container::static_vector<CellIndex, Topology::NumNodesOnTriangle> getEdgeConnectedTriangles(CellIndex triangleId) const;
       std::vector<CellIndex> getNodeConnectedTriangles(PointIndex node) const;
       std::vector<PointIndex> getEdgeConnectedNodes(PointIndex node) const;
       std::optional<CellIndex> tryGetTriangle(PointIndex n0, PointIndex n1, PointIndex n2) const;
@@ -35,7 +36,7 @@ namespace MeshGeneration
 
       std::string toString() const;
       static SortedEdgeNodes CreateSortedEdge(PointIndex n0, PointIndex n1);
-      
+
    private:
       std::optional<CellIndex> tryGetTriangleFromSortedNodes(const TriangleNodes& nodes) const;
       void checkNodeId(PointIndex nodeId) const;

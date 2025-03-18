@@ -15,7 +15,7 @@ namespace MeshGeneration
    void nibble(
       const Geometry::IGeometryRegion<MeshGeneration::GeomType, GeomDim2>& region,
       const std::vector<std::unique_ptr<MeshGeneration::IManifoldReconstruction>>& reconstructions,
-      const MeshGeneration::TrianglesNodes& trianglesNodes,
+      MeshGeneration::TrianglesNodes& trianglesNodes,
       const MeshGeneration::IUniquePointCollection2& pointCollection,
       Logger& logger);
 
