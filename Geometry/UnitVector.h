@@ -16,6 +16,7 @@ public:
    static std::optional<UnitVector<T, N>> Create(std::span<const T>);
    static std::optional<UnitVector<T, N>> Create(const Point<T, N>&);
    static std::optional<UnitVector<T, N>> Create(const Point<T, N>& from, const Point<T, N>& to);
+   static std::optional<UnitVector<T, N>> getNormalTo(Point<T, N> v);
 
    T operator[](int) const;
    const std::array<T, N>& data() const { return m_vector; }
@@ -87,13 +88,11 @@ T UnitVector<T, N>::innerProduct(const Point<T, N>& p) const
    return std::inner_product(m_vector.begin(), m_vector.end(), p.begin(), 0.0);
 }
 
-namespace UnitVectorUtils
+template<typename T, int N>
+std::optional<UnitVector<T, N>> UnitVector<T, N>::getNormalTo(Point<T, N> v)
 {
-   template<typename T>
-   UnitVector<T, 2> getNormalTo(Point<T, GeomDim2> v)
-   {
-      std::swap(v[0], v[1]);
-      v[0] = -v[0];
-      return *UnitVector<T, GeomDim2>::Create(v);
-   }
+   static_assert(N == 2);
+   std::swap(v[0], v[1]);
+   v[0] = -v[0];
+   return *UnitVector<T, GeomDim2>::Create(v);
 }
