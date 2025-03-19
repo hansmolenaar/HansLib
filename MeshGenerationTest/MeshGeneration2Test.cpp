@@ -2,6 +2,7 @@
 
 #include "Ball.h"
 #include "Ball2AsRegion.h"
+#include "EdgeFlip.h"
 #include "IndexTreeScaled.h"
 #include "InitialBoundingboxGenerator.h"
 #include "IntervalTreeIndexFactory.h"
@@ -538,4 +539,10 @@ TEST(MeshGeneration2Test, Triangle2D_2)
 
    const auto vtkDataNibbled = MeshGeneration2::ToVtkData(*trianglesNodes, *pointGeometry, { project, "mesh" });
    Paraview::Write(*vtkDataNibbled);
+
+   EdgeFlip edgeFlip(*trianglesNodes, settings.getCellQuality(), *pointGeometry, reconstructions);
+
+   const EdgeFlipStrategy strategy{ 0.25, 2 };
+   edgeFlip.execute(strategy);
+
 }
