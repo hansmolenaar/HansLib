@@ -1,9 +1,10 @@
-#include "MeshGenerationUtils.h"
 #include "IntervalTreeAction.h"
+#include "MeshGenerationUtils.h"
 
 #include <sstream>
 
 using namespace MeshGeneration;
+using namespace Topology;
 
 void MeshGeneration::LogSortedEdgeNodes(Logger& logger, const  SortedEdgeNodes& sortedEdgeNodes, std::string header)
 {

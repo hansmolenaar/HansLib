@@ -3,6 +3,7 @@
 
 using namespace MeshGeneration;
 using namespace Geometry;
+using namespace Topology;
 
 template ManifoldsAndNodes<GeomDim2>;
 template ManifoldsAndNodes<GeomDim3>;

@@ -1,10 +1,11 @@
 #include <gtest/gtest.h>
 
-#include "TrianglesNodes.h"
-#include "MyException.h"
 #include "Defines.h"
+#include "MyException.h"
+#include "TrianglesNodes.h"
 
 using namespace MeshGeneration;
+using namespace Topology;
 
 TEST(TriangleNodesTest, Empty)
 {

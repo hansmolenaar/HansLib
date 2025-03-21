@@ -9,7 +9,7 @@
 using namespace MeshGeneration;
 using namespace Geometry;
 using namespace Utilities;
-
+using namespace Topology;
 
 TEST(ManifoldsAndNodesTest, Empty)
 {

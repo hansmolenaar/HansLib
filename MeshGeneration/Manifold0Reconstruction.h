@@ -6,12 +6,11 @@
 
 namespace  MeshGeneration
 {
-   class Reconstruction0
+   struct Reconstruction0
    {
-   public:
-      NodeIndex node = NodeIndexInvalid;
+      Topology::NodeIndex node = Topology::NodeIndexInvalid;
 
-      void Check(MeshGeneration::NodeIndex manifoldPoint, const MeshGeneration::TrianglesNodes& trianglesNodes);
+      void Check(Topology::NodeIndex manifoldPoint, const MeshGeneration::TrianglesNodes& trianglesNodes);
    };
 
    class Manifold0Reconstruction : public IManifoldReconstruction

@@ -2,8 +2,9 @@
 #include "MyException.h"
 
 using namespace MeshGeneration;
+using namespace Topology;
 
-void Reconstruction0::Check(MeshGeneration::NodeIndex manifoldPoint, const MeshGeneration::TrianglesNodes& trianglesNodes)
+void Reconstruction0::Check(NodeIndex manifoldPoint, const MeshGeneration::TrianglesNodes& trianglesNodes)
 {
    if (!trianglesNodes.isKnownNodeId(manifoldPoint))
    {

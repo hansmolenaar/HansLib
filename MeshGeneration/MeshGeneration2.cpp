@@ -17,6 +17,7 @@ using namespace Geometry;
 using namespace IntervalTree;
 using namespace MeshGeneration;
 using namespace MeshGeneration2;
+using namespace Topology;
 
 namespace
 {

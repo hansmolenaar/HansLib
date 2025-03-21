@@ -10,12 +10,12 @@ namespace MeshGeneration
    class Reconstruction1
    {
    public:
-      std::vector<NodeIndex> Singletons;
-      std::vector<std::vector<NodeIndex>> Cycles;
-      std::vector<std::vector<NodeIndex>> Paths;
+      std::vector<Topology::NodeIndex> Singletons;
+      std::vector<std::vector<Topology::NodeIndex>> Cycles;
+      std::vector<std::vector<Topology::NodeIndex>> Paths;
    };
 
-   Reconstruction1 Generate2(std::span<const NodeIndex> manifoldPoints, const TrianglesNodes& trianglesNodes, const IUniquePointCollection2& pointCollection);
+   Reconstruction1 Generate2(std::span<const Topology::NodeIndex> manifoldPoints, const TrianglesNodes& trianglesNodes, const IUniquePointCollection2& pointCollection);
 
    class Manifold1Reconstruction : public IManifoldReconstruction
    {

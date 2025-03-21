@@ -6,6 +6,7 @@
 
 using namespace Geometry;
 using namespace MeshGeneration;
+using namespace Topology;
 
 namespace
 {

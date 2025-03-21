@@ -1,5 +1,7 @@
 #pragma once
 
+#include <limits>
+
 namespace Topology
 {
    using TopologyDimension = unsigned int;
@@ -10,4 +12,7 @@ namespace Topology
 
    inline constexpr size_t NumNodesOnEdge = 2;
    inline constexpr size_t NumNodesOnTriangle = 3;
+
+   using NodeIndex = size_t;
+   inline constexpr NodeIndex NodeIndexInvalid = std::numeric_limits<NodeIndex>::max();
 }

@@ -11,12 +11,10 @@
 namespace MeshGeneration
 {
    using GeomType = double;
-   using NodeIndex = PointIndex;
-   inline constexpr NodeIndex NodeIndexInvalid = std::numeric_limits<NodeIndex>::max();
 
-   using TriangleNodes = std::array<NodeIndex, Topology::NumNodesOnTriangle>;
-   using DirectedEdgeNodes = std::array<NodeIndex, Topology::NumNodesOnEdge>;
-   using SortedEdgeNodes = std::array<NodeIndex, Topology::NumNodesOnEdge>;
+   using TriangleNodes = std::array<Topology::NodeIndex, Topology::NumNodesOnTriangle>;
+   using DirectedEdgeNodes = std::array<Topology::NodeIndex, Topology::NumNodesOnEdge>;
+   using SortedEdgeNodes = std::array<Topology::NodeIndex, Topology::NumNodesOnEdge>;
 
    using IUniquePointCollection2 = IDynamicUniquePointCollection<MeshGeneration::GeomType, GeomDim2>;
 

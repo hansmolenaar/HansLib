@@ -2,7 +2,7 @@
 #include "UndirectedGraph.h"
 
 using namespace MeshGeneration;
-
+using namespace Topology;
 namespace
 {
    std::unordered_map<NodeIndex, GraphVertex> RenumberToGraph(std::span<const NodeIndex> manifoldNodes)
