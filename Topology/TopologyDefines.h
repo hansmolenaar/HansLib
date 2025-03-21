@@ -1,4 +1,5 @@
 #pragma once
+#include "Defines.h"
 
 #include <limits>
 
@@ -13,6 +14,9 @@ namespace Topology
    inline constexpr size_t NumNodesOnEdge = 2;
    inline constexpr size_t NumNodesOnTriangle = 3;
 
-   using NodeIndex = size_t;
-   inline constexpr NodeIndex NodeIndexInvalid = std::numeric_limits<NodeIndex>::max();
+   using NodeIndex = PointIndex;
+   inline constexpr NodeIndex NodeIndexInvalid = PointIndexInvalid;
+
+   using DirectedEdgeNodes = std::array<NodeIndex, NumNodesOnEdge>;
+   using SortedEdgeNodes = std::array<NodeIndex, NumNodesOnEdge>;
 }

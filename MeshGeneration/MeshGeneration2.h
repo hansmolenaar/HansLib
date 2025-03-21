@@ -30,7 +30,7 @@ namespace MeshGeneration2
 
    bool AddEdgeManifold1Intersections(
       const Geometry::IManifold1D2<MeshGeneration::GeomType>& manifold,
-      const MeshGeneration::DirectedEdgeNodes& edge,
+      const Topology::DirectedEdgeNodes& edge,
       const MeshGeneration::TrianglesNodes& trianglesNodes,
       MeshGeneration::ManifoldsAndNodes<GeomDim2>& manifoldsAndNodes,
       MeshGeneration::IUniquePointCollection2& pointCollection);

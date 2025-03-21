@@ -4,6 +4,7 @@
 #include <limits>
 
 using namespace MeshGeneration;
+using namespace Topology;
 
 namespace
 {
@@ -24,7 +25,7 @@ namespace
 
 }
 
-SortedEdgeNodes TrianglesNodes::CreateSortedEdge(PointIndex n0, PointIndex n1)
+Topology::SortedEdgeNodes TrianglesNodes::CreateSortedEdge(PointIndex n0, PointIndex n1)
 {
    if (n1 > n0) return { n0, n1 };
    if (n0 == n1) throw MyException("CreateSortedEdge edge is degenerate");

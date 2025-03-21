@@ -1,12 +1,12 @@
 #pragma once
 
 #include "MeshGenerationDefines.h"
-#include <boost/container/static_vector.hpp>
-#include <vector>
-#include <unordered_map>
 #include <array>
+#include <boost/container/static_vector.hpp>
 #include <optional>
 #include <string>
+#include <unordered_map>
+#include <vector>
 
 namespace MeshGeneration
 {
@@ -32,10 +32,10 @@ namespace MeshGeneration
 
       std::vector<CellIndex> getAllTriangles() const;
       std::vector<PointIndex> getAllNodes() const;
-      std::vector<SortedEdgeNodes> getAllSortedEdges() const;
+      std::vector<Topology::SortedEdgeNodes> getAllSortedEdges() const;
 
       std::string toString() const;
-      static SortedEdgeNodes CreateSortedEdge(PointIndex n0, PointIndex n1);
+      static Topology::SortedEdgeNodes CreateSortedEdge(PointIndex n0, PointIndex n1); // TODO
 
    private:
       std::optional<CellIndex> tryGetTriangleFromSortedNodes(const TriangleNodes& nodes) const;
