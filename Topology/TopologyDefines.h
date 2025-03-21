@@ -16,9 +16,4 @@ namespace Topology
 
    using NodeIndex = PointIndex;
    inline constexpr NodeIndex NodeIndexInvalid = PointIndexInvalid;
-
-   using DirectedEdgeNodes = std::array<NodeIndex, NumNodesOnEdge>;
-   using SortedEdgeNodes = std::array<NodeIndex, NumNodesOnEdge>;
-
-   using TriangleNodes = std::array<NodeIndex, NumNodesOnTriangle>;
 }

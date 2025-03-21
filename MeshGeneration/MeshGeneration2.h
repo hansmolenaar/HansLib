@@ -1,5 +1,6 @@
 #pragma once
 
+#include "DirectedEdgeNodes.h"
 #include "IDynamicUniquePointCollection.h"
 #include "IGeometryRegion.h"
 #include "IManifold0.h"

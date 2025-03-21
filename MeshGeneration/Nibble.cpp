@@ -1,3 +1,4 @@
+#include "DirectedEdgeNodes.h"
 #include "Manifold1Reconstruction.h"
 #include "Nibble.h"
 #include "TrianglesNodes.h"
@@ -61,7 +62,7 @@ namespace
    {
       // TODO TriangleNodes sorted, setdif?
       std::sort(triangle.begin(), triangle.end());
-      if (edge[0] > edge[1]) std::swap(edge[0], edge[1]);
+      DirectedEdgeNodesSort(edge);
       boost::container::static_vector<CellIndex, Topology::NumNodesOnTriangle + Topology::NumNodesOnEdge> symdif;
       str::set_symmetric_difference(triangle, edge, std::back_inserter(symdif));
       if (symdif.size() != 1)

@@ -1,6 +1,8 @@
 #pragma once
 
 #include "MeshGenerationDefines.h"
+#include "SortedEdgeNodes.h"
+#include "TriangleNodes.h"
 #include <array>
 #include <boost/container/static_vector.hpp>
 #include <optional>

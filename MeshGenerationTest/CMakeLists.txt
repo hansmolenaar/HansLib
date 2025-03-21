@@ -15,5 +15,5 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 	${Boost_INCLUDE_DIR}
 )
 
-target_link_libraries(${PROJECT_NAME}  Point Utilities Tree MeshGeneration Geometry Graph ${GTestLibs})
+target_link_libraries(${PROJECT_NAME}  Point Utilities Tree MeshGeneration Geometry Graph Topology ${GTestLibs})
 gtest_discover_tests(${PROJECT_NAME})
