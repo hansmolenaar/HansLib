@@ -1,9 +1,10 @@
 #include "MeshQuality.h"
-#include "TrianglesNodes.h"
-#include "Simplex.h"
 #include "MyAssert.h"
+#include "Simplex.h"
+#include "TrianglesNodes.h"
 
 using namespace MeshGeneration;
+using namespace Topology;
 
 namespace
 {

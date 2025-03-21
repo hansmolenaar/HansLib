@@ -1,7 +1,8 @@
-#include "MeshStatistics.h"
 #include "MeshQuality.h"
+#include "MeshStatistics.h"
 
 using namespace MeshGeneration;
+using namespace Topology;
 
 MeshStatistics MeshStatistics::Create2(const TrianglesNodes& triangles, const IPointCollection<GeomType, GeomDim2>& points, CellQualityFun<GeomDim2>* qualityFunction)
 {

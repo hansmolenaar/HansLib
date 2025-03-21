@@ -25,7 +25,7 @@ namespace MeshGeneration
       std::optional<CellIndex> tryGetTriangle(PointIndex n0, PointIndex n1, PointIndex n2) const;
       bool triangleContainsNode(CellIndex CellIndex, PointIndex nodeId) const;
 
-      TriangleNodes getTriangleNodes(CellIndex triangle) const;
+      Topology::TriangleNodes getTriangleNodes(CellIndex triangle) const;
 
       bool isKnownNodeId(PointIndex node) const;
       bool isKnownTriangleId(CellIndex triangle) const;
@@ -38,11 +38,11 @@ namespace MeshGeneration
       static Topology::SortedEdgeNodes CreateSortedEdge(PointIndex n0, PointIndex n1); // TODO
 
    private:
-      std::optional<CellIndex> tryGetTriangleFromSortedNodes(const TriangleNodes& nodes) const;
+      std::optional<CellIndex> tryGetTriangleFromSortedNodes(const Topology::TriangleNodes& nodes) const;
       void checkNodeId(PointIndex nodeId) const;
       void checkTriangleId(CellIndex triangleId) const;
 
-      std::unordered_map<CellIndex, TriangleNodes> m_toNodes;
+      std::unordered_map<CellIndex, Topology::TriangleNodes> m_toNodes;
       std::unordered_multimap<PointIndex, CellIndex> m_toTriangles;
    };
 }

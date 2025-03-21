@@ -19,4 +19,6 @@ namespace Topology
 
    using DirectedEdgeNodes = std::array<NodeIndex, NumNodesOnEdge>;
    using SortedEdgeNodes = std::array<NodeIndex, NumNodesOnEdge>;
+
+   using TriangleNodes = std::array<NodeIndex, NumNodesOnTriangle>;
 }

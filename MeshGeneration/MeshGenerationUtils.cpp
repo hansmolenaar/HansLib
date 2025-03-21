@@ -94,7 +94,7 @@ void MeshGeneration::Log(Logger& logger, const std::vector<const IntervalTree::I
 }
 
 std::array<Point<GeomType, GeomDim2>, Topology::NumNodesOnTriangle> MeshGeneration::GetTriangleGeometry(
-   const MeshGeneration::TriangleNodes& triangleNodes,
+   const TriangleNodes& triangleNodes,
    const IPointCollection<MeshGeneration::GeomType, GeomDim2>& points)
 {
    std::array<Point<GeomType, GeomDim2>, Topology::NumNodesOnTriangle> result;
