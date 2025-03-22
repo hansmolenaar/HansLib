@@ -379,7 +379,7 @@ void MeshGeneration2::AddManifold1Intersections(
       const auto edge = *todo.begin();
       //LogSortedEdgeNodes(logger, edge, "TODO handle edge: ");
       todo.erase(edge);
-      const bool anyNodeMoved = AddEdgeManifold1Intersections(manifold, edge,
+      const bool anyNodeMoved = AddEdgeManifold1Intersections(manifold, { edge[0], edge[1] },
          trianglesNodes, manifoldsAndNodes, pointCollection);
       if (anyNodeMoved)
       {

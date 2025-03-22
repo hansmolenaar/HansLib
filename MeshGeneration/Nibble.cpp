@@ -33,9 +33,9 @@ namespace
       return result;
    }
 
-   std::vector<std::array<NodeIndex, NumNodesOnEdge>> getBoundaryEdges(const std::vector<const MeshGeneration::IManifoldReconstruction*>& boundaryReconstructions)
+   std::vector<DirectedEdgeNodes> getBoundaryEdges(const std::vector<const MeshGeneration::IManifoldReconstruction*>& boundaryReconstructions)
    {
-      std::vector<std::array<NodeIndex, NumNodesOnEdge>> boundaryEdges;
+      std::vector<DirectedEdgeNodes> boundaryEdges;
       for (const auto* br : boundaryReconstructions)
       {
          const auto* br1 = dynamic_cast<const Manifold1Reconstruction*>(br);
@@ -86,7 +86,7 @@ namespace
    }
 
    std::pair<std::set<CellIndex>, std::vector<CellIndex>> getBoundaryTriangles(
-      const std::vector<std::array<NodeIndex, NumNodesOnEdge>>& boundaryEdges,
+      const std::vector<DirectedEdgeNodes>& boundaryEdges,
       const MeshGeneration::TrianglesNodes& trianglesNodes,
       const MeshGeneration::IUniquePointCollection2& pointCollection,
       const Geometry::IGeometryRegion<MeshGeneration::GeomType, GeomDim2>& region)

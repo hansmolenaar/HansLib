@@ -13,24 +13,24 @@ bool Topology::TriangleNodesNodesContainsEdge(const TriangleNodes& triangle, con
 
 Topology::NodeIndex Topology::TriangleNodesNodesOppositeNode(const TriangleNodes& triangle, const DirectedEdgeNodes& edge)
 {
-   if (!DirectedEdgeNodesContains(edge, triangle[0]))
+   if (!edge.contains(triangle[0]))
    {
-      if (!DirectedEdgeNodesContains(edge, triangle[1]) || !DirectedEdgeNodesContains(edge, triangle[2]))
+      if (!edge.contains(triangle[1]) || !edge.contains(triangle[2]))
       {
          throw MyException("Triangle does not contain edge");
       }
       return  triangle[0];
    }
-   else if (!DirectedEdgeNodesContains(edge, triangle[1]))
+   else if (!edge.contains(triangle[1]))
    {
 
-      if (!DirectedEdgeNodesContains(edge, triangle[2]))
+      if (!edge.contains(triangle[2]))
       {
          throw MyException("Triangle does not contain edge");
       }
       return triangle[1];
    }
-   else if (!DirectedEdgeNodesContains(edge, triangle[2]))
+   else if (!edge.contains(triangle[2]))
    {
       return  triangle[2];
    }

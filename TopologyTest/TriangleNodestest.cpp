@@ -22,12 +22,10 @@ TEST(TriangleNodesTest, ContainsEdge)
    ASSERT_TRUE(TriangleNodesNodesContainsEdge(triangle, { 3,1 }));
    ASSERT_TRUE(TriangleNodesNodesContainsEdge(triangle, { 2,3 }));
    ASSERT_TRUE(TriangleNodesNodesContainsEdge(triangle, { 3,2 }));
-   ASSERT_TRUE(TriangleNodesNodesContainsEdge(triangle, { 3,3 }));
 
    ASSERT_FALSE(TriangleNodesNodesContainsEdge(triangle, { 1,4 }));
    ASSERT_FALSE(TriangleNodesNodesContainsEdge(triangle, { 2,4 }));
    ASSERT_FALSE(TriangleNodesNodesContainsEdge(triangle, { 3,4 }));
-   ASSERT_FALSE(TriangleNodesNodesContainsEdge(triangle, { 1, NodeIndexInvalid }));
 }
 
 TEST(TriangleNodesTest, OppositeNode)
