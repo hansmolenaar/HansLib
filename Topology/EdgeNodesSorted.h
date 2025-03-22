@@ -1,5 +1,5 @@
 #pragma once
-#include "DirectedEdgeNodes.h"
+#include "EdgeNodesDirected.h"
 
 namespace Topology
 {
@@ -19,6 +19,6 @@ namespace Topology
          return os;
       }
    private:
-      DirectedEdgeNodes m_edge;
+      EdgeNodesDirected m_edge;
    };
 }

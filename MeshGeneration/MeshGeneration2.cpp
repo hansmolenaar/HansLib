@@ -253,7 +253,7 @@ std::vector<std::unique_ptr<Vtk::VtkData>> MeshGeneration2::ToVtkData(
 static boost::container::static_vector< NodeIndex, 2> HandleEndPoints(
    DirectedEdgeIntersections<GeomType, GeomDim2>& intersections,
    const Geometry::IManifold1D2<GeomType>& manifold,
-   const DirectedEdgeNodes& edgeNodes,
+   const EdgeNodesDirected& edgeNodes,
    ManifoldsAndNodes<GeomDim2>& manifoldsAndNodes)
 {
    boost::container::static_vector< NodeIndex, 2> nodeUsed;
@@ -296,7 +296,7 @@ static boost::container::static_vector< NodeIndex, 2> HandleEndPoints(
 // Return value: any node moved?
 bool MeshGeneration2::AddEdgeManifold1Intersections(
    const Geometry::IManifold1D2<GeomType>& manifold,
-   const DirectedEdgeNodes& edgeNodes,
+   const EdgeNodesDirected& edgeNodes,
    const TrianglesNodes& trianglesNodes,
    ManifoldsAndNodes<GeomDim2>& manifoldsAndNodes,
    IUniquePointCollection2& pointCollection)

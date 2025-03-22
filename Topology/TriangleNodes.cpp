@@ -27,12 +27,12 @@ bool Topology::TriangleNodes::contains(NodeIndex node) const
    return node == m_nodes[0] || node == m_nodes[1] || node == m_nodes[2];
 }
 
-bool Topology::TriangleNodes::contains(const DirectedEdgeNodes& edge) const
+bool Topology::TriangleNodes::contains(const EdgeNodesDirected& edge) const
 {
    return contains(edge[0]) && contains(edge[1]);
 }
 
-Topology::NodeIndex Topology::TriangleNodes::oppositeNode(const DirectedEdgeNodes& edge) const
+Topology::NodeIndex Topology::TriangleNodes::oppositeNode(const EdgeNodesDirected& edge) const
 {
    if (!edge.contains(m_nodes[0]))
    {

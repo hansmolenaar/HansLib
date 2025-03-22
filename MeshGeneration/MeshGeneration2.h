@@ -1,6 +1,6 @@
 #pragma once
 
-#include "DirectedEdgeNodes.h"
+#include "EdgeNodesDirected.h"
 #include "IDynamicUniquePointCollection.h"
 #include "IGeometryRegion.h"
 #include "IManifold0.h"
@@ -31,7 +31,7 @@ namespace MeshGeneration2
 
    bool AddEdgeManifold1Intersections(
       const Geometry::IManifold1D2<MeshGeneration::GeomType>& manifold,
-      const Topology::DirectedEdgeNodes& edge,
+      const Topology::EdgeNodesDirected& edge,
       const MeshGeneration::TrianglesNodes& trianglesNodes,
       MeshGeneration::ManifoldsAndNodes<GeomDim2>& manifoldsAndNodes,
       MeshGeneration::IUniquePointCollection2& pointCollection);

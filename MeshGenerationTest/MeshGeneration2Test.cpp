@@ -125,7 +125,7 @@ TEST(MeshGeneration2Test, Sphere2AndEdge)
 
    const NodeIndex node0 = points.addIfNew(Point2{ 0, -2 });
    const NodeIndex node1 = points.addIfNew(Point2{ 0, -0.9 });
-   const DirectedEdgeNodes edge{ node0, node1 };
+   const EdgeNodesDirected edge{ node0, node1 };
 
    const bool anyNodeMoved = AddEdgeManifold1Intersections(manifold, edge, trianglesNodes, manifoldsAndNodes, points);
    ASSERT_TRUE(anyNodeMoved);
@@ -149,7 +149,7 @@ TEST(MeshGeneration2Test, Sphere2AndEdge_immobilePoint)
    const NodeIndex node0 = points.addIfNew(Point2{ 0, -2 });
    const NodeIndex node1 = points.addIfNew(Point2{ 0, -0.9 });
    const NodeIndex node2 = points.addIfNew(Point2{ 0, -1 });
-   const DirectedEdgeNodes edge{ node0, node1 };
+   const EdgeNodesDirected edge{ node0, node1 };
    manifoldsAndNodes.addNodeToManifold(node2, &pointManifold);
 
    ASSERT_THROW(AddEdgeManifold1Intersections(manifold, edge, trianglesNodes, manifoldsAndNodes, points), MyException);
@@ -168,7 +168,7 @@ TEST(MeshGeneration2Test, Sphere2AndEdge_NoIntersections)
 
    const NodeIndex node0 = points.addIfNew(Point2{ -2, 2 });
    const NodeIndex node1 = points.addIfNew(Point2{ 2, 2 });
-   const DirectedEdgeNodes edge{ node0, node1 };
+   const EdgeNodesDirected edge{ node0, node1 };
 
    const bool anyNodeMoved = AddEdgeManifold1Intersections(manifold, edge, trianglesNodes, manifoldsAndNodes, points);
    ASSERT_FALSE(anyNodeMoved);
@@ -189,7 +189,7 @@ TEST(MeshGeneration2Test, Sphere2AndEdge_EdgePointOnSphere)
 
    const NodeIndex node0 = points.addIfNew(Point2{ 0, -1 });
    const NodeIndex node1 = points.addIfNew(Point2{ 0, -2 });
-   const DirectedEdgeNodes edge{ node0, node1 };
+   const EdgeNodesDirected edge{ node0, node1 };
 
    const bool anyNodeMoved = AddEdgeManifold1Intersections(manifold, edge, trianglesNodes, manifoldsAndNodes, points);
    ASSERT_FALSE(anyNodeMoved);
@@ -210,7 +210,7 @@ TEST(MeshGeneration2Test, Sphere2AndEdge_EdgePointOnSphere2)
 
    const NodeIndex node0 = points.addIfNew(Point2{ 0, -2 });
    const NodeIndex node1 = points.addIfNew(Point2{ 0, -1 });
-   const DirectedEdgeNodes edge{ node0, node1 };
+   const EdgeNodesDirected edge{ node0, node1 };
 
    const bool anyNodeMoved = AddEdgeManifold1Intersections(manifold, edge, trianglesNodes, manifoldsAndNodes, points);
    ASSERT_FALSE(anyNodeMoved);
@@ -231,7 +231,7 @@ TEST(MeshGeneration2Test, Sphere2AndEdge_EdgePointBothOnSphere)
 
    const NodeIndex node0 = points.addIfNew(Point2{ 0, 1 });
    const NodeIndex node1 = points.addIfNew(Point2{ 0, -1 });
-   const DirectedEdgeNodes edge{ node0, node1 };
+   const EdgeNodesDirected edge{ node0, node1 };
 
    const bool anyNodeMoved = AddEdgeManifold1Intersections(manifold, edge, trianglesNodes, manifoldsAndNodes, points);
    ASSERT_FALSE(anyNodeMoved);
@@ -252,7 +252,7 @@ TEST(MeshGeneration2Test, Sphere2AndEdge_OneEdgePointOnSphereTwoIntersections)
 
    const NodeIndex node0 = points.addIfNew(Point2{ 0, 1 });
    const NodeIndex node1 = points.addIfNew(Point2{ 0, -100 });
-   const DirectedEdgeNodes edge{ node0, node1 };
+   const EdgeNodesDirected edge{ node0, node1 };
 
    const bool anyNodeMoved = AddEdgeManifold1Intersections(manifold, edge, trianglesNodes, manifoldsAndNodes, points);
    ASSERT_TRUE(anyNodeMoved);
@@ -274,7 +274,7 @@ TEST(MeshGeneration2Test, Sphere2AndEdge_TwoIntersections)
 
    const NodeIndex node0 = points.addIfNew(Point2{ 0, -2 });
    const NodeIndex node1 = points.addIfNew(Point2{ 0, 2 });
-   const DirectedEdgeNodes edge{ node0, node1 };
+   const EdgeNodesDirected edge{ node0, node1 };
 
    const bool anyNodeMoved = AddEdgeManifold1Intersections(manifold, edge, trianglesNodes, manifoldsAndNodes, points);
    ASSERT_TRUE(anyNodeMoved);

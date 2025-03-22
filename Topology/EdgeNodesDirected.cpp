@@ -1,6 +1,6 @@
-#include "DirectedEdgeNodes.h"
+#include "EdgeNodesDirected.h"
 
-Topology::DirectedEdgeNodes::DirectedEdgeNodes(NodeIndex n0, NodeIndex n1) :
+Topology::EdgeNodesDirected::EdgeNodesDirected(NodeIndex n0, NodeIndex n1) :
    m_nodes{ n0, n1 }
 {
    if (m_nodes[0] == m_nodes[1] || m_nodes[0] == NodeIndexInvalid || m_nodes[1] == NodeIndexInvalid)
@@ -9,7 +9,7 @@ Topology::DirectedEdgeNodes::DirectedEdgeNodes(NodeIndex n0, NodeIndex n1) :
    }
 }
 
-bool Topology::DirectedEdgeNodes::contains(NodeIndex node) const
+bool Topology::EdgeNodesDirected::contains(NodeIndex node) const
 {
    return node == m_nodes[0] || node == m_nodes[1];
 }

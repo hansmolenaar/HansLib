@@ -1,4 +1,4 @@
-#include "DirectedEdgeNodes.h"
+#include "EdgeNodesDirected.h"
 #include "Manifold1Reconstruction.h"
 #include "Nibble.h"
 #include "TrianglesNodes.h"
@@ -33,9 +33,9 @@ namespace
       return result;
    }
 
-   std::vector<DirectedEdgeNodes> getBoundaryEdges(const std::vector<const MeshGeneration::IManifoldReconstruction*>& boundaryReconstructions)
+   std::vector<EdgeNodesDirected> getBoundaryEdges(const std::vector<const MeshGeneration::IManifoldReconstruction*>& boundaryReconstructions)
    {
-      std::vector<DirectedEdgeNodes> boundaryEdges;
+      std::vector<EdgeNodesDirected> boundaryEdges;
       for (const auto* br : boundaryReconstructions)
       {
          const auto* br1 = dynamic_cast<const Manifold1Reconstruction*>(br);
@@ -59,7 +59,7 @@ namespace
    }
 
    std::pair<CellIndex, CellIndex> getInsideAndOutsideCell(
-      const DirectedEdgeNodes& be,
+      const EdgeNodesDirected& be,
       const MeshGeneration::TrianglesNodes& trianglesNodes,
       const MeshGeneration::IUniquePointCollection2& pointCollection,
       const Geometry::IGeometryRegion<MeshGeneration::GeomType, GeomDim2>& region)
@@ -86,7 +86,7 @@ namespace
    }
 
    std::pair<std::set<CellIndex>, std::vector<CellIndex>> getBoundaryTriangles(
-      const std::vector<DirectedEdgeNodes>& boundaryEdges,
+      const std::vector<EdgeNodesDirected>& boundaryEdges,
       const MeshGeneration::TrianglesNodes& trianglesNodes,
       const MeshGeneration::IUniquePointCollection2& pointCollection,
       const Geometry::IGeometryRegion<MeshGeneration::GeomType, GeomDim2>& region)

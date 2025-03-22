@@ -1,5 +1,5 @@
 #pragma once
-#include "DirectedEdgeNodes.h"
+#include "EdgeNodesDirected.h"
 #include "TopologyDefines.h"
 
 namespace Topology
@@ -22,8 +22,8 @@ namespace Topology
       static TriangleNodes createSorted(NodeIndex n0, NodeIndex n1, NodeIndex n2);
 
       bool contains(NodeIndex node) const;
-      bool contains(const DirectedEdgeNodes& edge) const;
-      NodeIndex oppositeNode(const DirectedEdgeNodes& edge) const;
+      bool contains(const EdgeNodesDirected& edge) const;
+      NodeIndex oppositeNode(const EdgeNodesDirected& edge) const;
    private:
       std::array<NodeIndex, NumNodesOnTriangle> m_nodes;
    };
