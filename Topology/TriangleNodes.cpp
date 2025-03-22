@@ -1,38 +1,59 @@
 #include "MyException.h"
 #include "TriangleNodes.h"
 
-bool Topology::TriangleNodesNodesContainsNode(const TriangleNodes& triangle, NodeIndex node)
-{
-   return node == triangle[0] || node == triangle[1] || node == triangle[2];
-}
+#include <sstream>
 
-bool Topology::TriangleNodesNodesContainsEdge(const TriangleNodes& triangle, const DirectedEdgeNodes& edge)
+Topology::TriangleNodes::TriangleNodes(NodeIndex n0, NodeIndex n1, NodeIndex n2) :
+   m_nodes{ n0, n1, n2 }
 {
-   return TriangleNodesNodesContainsNode(triangle, edge[0]) && TriangleNodesNodesContainsNode(triangle, edge[1]);
-}
-
-Topology::NodeIndex Topology::TriangleNodesNodesOppositeNode(const TriangleNodes& triangle, const DirectedEdgeNodes& edge)
-{
-   if (!edge.contains(triangle[0]))
+   if (n0 == n1 || n0 == n2 || n1 == n2)
    {
-      if (!edge.contains(triangle[1]) || !edge.contains(triangle[2]))
+      std::ostringstream os;
+      os << *this;
+      throw MyException("TriangleNodes invalid: " + os.str());
+   }
+}
+
+Topology::TriangleNodes Topology::TriangleNodes::createSorted(NodeIndex n0, NodeIndex n1, NodeIndex n2)
+{
+   if (n1 < n0) std::swap(n0, n1);
+   if (n2 < n0) std::swap(n0, n2);
+   if (n2 < n1) std::swap(n1, n2);
+   return { n0, n1, n2 };
+}
+
+bool Topology::TriangleNodes::contains(NodeIndex node) const
+{
+   return node == m_nodes[0] || node == m_nodes[1] || node == m_nodes[2];
+}
+
+bool Topology::TriangleNodes::contains(const DirectedEdgeNodes& edge) const
+{
+   return contains(edge[0]) && contains(edge[1]);
+}
+
+Topology::NodeIndex Topology::TriangleNodes::oppositeNode(const DirectedEdgeNodes& edge) const
+{
+   if (!edge.contains(m_nodes[0]))
+   {
+      if (!edge.contains(m_nodes[1]) || !edge.contains(m_nodes[2]))
       {
          throw MyException("Triangle does not contain edge");
       }
-      return  triangle[0];
+      return  m_nodes[0];
    }
-   else if (!edge.contains(triangle[1]))
+   else if (!edge.contains(m_nodes[1]))
    {
 
-      if (!edge.contains(triangle[2]))
+      if (!edge.contains(m_nodes[2]))
       {
          throw MyException("Triangle does not contain edge");
       }
-      return triangle[1];
+      return m_nodes[1];
    }
-   else if (!edge.contains(triangle[2]))
+   else if (!edge.contains(m_nodes[2]))
    {
-      return  triangle[2];
+      return  m_nodes[2];
    }
 
    throw MyException("TriangleNodesNodesOppositeNode should not get here");

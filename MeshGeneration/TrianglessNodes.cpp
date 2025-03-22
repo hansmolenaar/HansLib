@@ -6,28 +6,9 @@
 using namespace MeshGeneration;
 using namespace Topology;
 
-namespace
-{
-   // Check for duplicates, etc
-   TriangleNodes SortAndCheckNodes(PointIndex n0, PointIndex n1, PointIndex n2)
-   {
-      TriangleNodes nodes = { n0, n1, n2 };
-      str::sort(nodes);
-      const auto last = std::unique(nodes.begin(), nodes.end());
-      if (last != nodes.end())
-      {
-         const std::string msg = "TriangleNodes::SortNodes: has duplicates: " + std::to_string(n0) + " " + std::to_string(n1) + " " + std::to_string(n2);
-         throw MyException(msg);
-      }
-      return nodes;
-   }
-
-
-}
-
 CellIndex TrianglesNodes::addTriangle(PointIndex n0, PointIndex n1, PointIndex n2)
 {
-   const auto nodes = SortAndCheckNodes(n0, n1, n2);
+   const auto nodes = TriangleNodes::createSorted(n0, n1, n2);
 
    // Check for duplicates
    if (tryGetTriangleFromSortedNodes(nodes))
@@ -47,7 +28,7 @@ CellIndex TrianglesNodes::addTriangle(PointIndex n0, PointIndex n1, PointIndex n
 
 std::optional<CellIndex> TrianglesNodes::tryGetTriangleFromSortedNodes(const TriangleNodes& nodes) const
 {
-   const auto triangles = m_toTriangles.equal_range(nodes.at(0));
+   const auto triangles = m_toTriangles.equal_range(nodes[0]);
    for (auto itr = triangles.first; itr != triangles.second; ++itr)
    {
       const CellIndex candidate = itr->second;
@@ -66,7 +47,7 @@ std::optional<CellIndex> TrianglesNodes::tryGetTriangle(PointIndex n0, PointInde
    checkNodeId(n0);
    checkNodeId(n1);
    checkNodeId(n2);
-   const auto nodes = SortAndCheckNodes(n0, n1, n2);
+   const auto nodes = TriangleNodes::createSorted(n0, n1, n2);
    return tryGetTriangleFromSortedNodes(nodes);
 }
 

@@ -71,8 +71,8 @@ namespace
       }
       const auto triangleNodes0 = trianglesNodes.getTriangleNodes(connectedTriangles.at(0));
       const auto triangleNodes1 = trianglesNodes.getTriangleNodes(connectedTriangles.at(1));
-      const NodeIndex otherNode0 = TriangleNodesNodesOppositeNode(triangleNodes0, be);
-      const NodeIndex otherNode1 = TriangleNodesNodesOppositeNode(triangleNodes1, be);
+      const NodeIndex otherNode0 = triangleNodes0.oppositeNode(be);
+      const NodeIndex otherNode1 = triangleNodes1.oppositeNode(be);
       const Point2 otherPoint0 = pointCollection.getPoint(otherNode0);
       const Point2 otherPoint1 = pointCollection.getPoint(otherNode1);
       const bool isContained0 = region.contains(otherPoint0, pointCollection.getGeometryPredicate());
