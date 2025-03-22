@@ -1,5 +1,6 @@
 #include "DirectedEdgeNodes.h"
 #include <gtest/gtest.h>
+#include <sstream>
 
 using namespace Topology;
 
@@ -27,4 +28,12 @@ TEST(DirectedEdgeNodesTest, SpaceShip)
    ASSERT_TRUE(edge >= DirectedEdgeNodes(2, 1));
    ASSERT_FALSE(edge < DirectedEdgeNodes(2, 1));
    ASSERT_FALSE(edge < DirectedEdgeNodes(1, 2));
+}
+
+TEST(DirectedEdgeNodesTest, StreamInsertion)
+{
+   std::ostringstream os;
+   const DirectedEdgeNodes edge{ 2,1 };
+   os << edge;
+   ASSERT_EQ(os.str(), "(2 -> 1)");
 }

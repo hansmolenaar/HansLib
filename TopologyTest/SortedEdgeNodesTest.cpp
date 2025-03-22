@@ -32,3 +32,11 @@ TEST(SortedEdgeNodestest, SpaceShip)
    ASSERT_FALSE(edge < SortedEdgeNodes(1, 2));
    ASSERT_TRUE(edge < SortedEdgeNodes(3, 1));
 }
+
+TEST(SortedEdgeNodestest, StreamInsertion)
+{
+   std::ostringstream os;
+   const SortedEdgeNodes edge{ 2,1 };
+   os << edge;
+   ASSERT_EQ(os.str(), "(1, 2)");
+}

@@ -1,10 +1,9 @@
 #pragma once
 #include "TopologyDefines.h"
+#include <ostream>
 
 namespace Topology
 {
-   //using DirectedEdgeNodes = std::array<NodeIndex, NumNodesOnEdge>;
-
    class DirectedEdgeNodes
    {
    public:
@@ -14,7 +13,11 @@ namespace Topology
       auto end() const { return m_nodes.end(); }
       auto operator<=>(const DirectedEdgeNodes& other) const { return m_nodes <=> other.m_nodes; };
       auto operator==(const DirectedEdgeNodes& other) const { return m_nodes == other.m_nodes; };
-
+      friend std::ostream& operator<<(std::ostream& os, const DirectedEdgeNodes& edge)
+      {
+         os << "(" << edge[0] << " -> " << edge[1] << ")";
+         return os;
+      }
       bool contains(NodeIndex node) const;
    private:
 
