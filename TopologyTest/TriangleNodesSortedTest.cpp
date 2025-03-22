@@ -50,14 +50,12 @@ TEST(TriangleNodesSortedTest, OppositeNode)
 TEST(TriangleNodesSortedTest, CreateSorted)
 {
    const std::array<NodeIndex, 3> expect{ 1,2,3 };
-   TriangleNodesSorted triangle(3, 2, 1);
-   ASSERT_TRUE(str::equal(triangle, expect));
-   triangle = TriangleNodesSorted(2, 1, 3);
-   ASSERT_TRUE(str::equal(triangle, expect));
-   triangle = TriangleNodesSorted(3, 1, 2);
-   ASSERT_TRUE(str::equal(triangle, expect));
-   triangle = TriangleNodesSorted(2, 3, 1);
-   ASSERT_TRUE(str::equal(triangle, expect));
+   std::array<NodeIndex, 3> actual{ 1,2,3 };
+   do
+   {
+      TriangleNodesSorted triangle(actual[0], actual[1], actual[2]);
+      ASSERT_TRUE(str::equal(triangle, expect));
+   } while (std::next_permutation(actual.begin(), actual.end()));
 }
 
 
