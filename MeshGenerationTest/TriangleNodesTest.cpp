@@ -186,11 +186,11 @@ TEST(TriangleNodesTest, GetAllEdges)
 
    const auto triangle0 = tnodes.addTriangle(42, 999, 0);
    allEdges = tnodes.getAllSortedEdges();
-   ASSERT_TRUE(str::equal(allEdges, std::vector<SortedEdgeNodes>{SortedEdgeNodes{ 0, 42 }, SortedEdgeNodes{ 0,999 }, SortedEdgeNodes{ 42,999 }}));
+   ASSERT_TRUE(str::equal(allEdges, std::vector<EdgeNodesSorted>{EdgeNodesSorted{ 0, 42 }, EdgeNodesSorted{ 0,999 }, EdgeNodesSorted{ 42,999 }}));
 
    const auto triangle1 = tnodes.addTriangle(42, 0, 2);
    allEdges = tnodes.getAllSortedEdges();
-   ASSERT_TRUE(str::equal(allEdges, std::vector<SortedEdgeNodes>{{ 0, 2 }, { 0,42 }, { 0,999 }, { 2, 42 }, { 42, 999 }}));
+   ASSERT_TRUE(str::equal(allEdges, std::vector<EdgeNodesSorted>{{ 0, 2 }, { 0,42 }, { 0,999 }, { 2, 42 }, { 42, 999 }}));
 }
 
 TEST(TriangleNodesTest, ToString)

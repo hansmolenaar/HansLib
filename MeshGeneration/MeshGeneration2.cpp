@@ -373,7 +373,7 @@ void MeshGeneration2::AddManifold1Intersections(
    //LogTriangles(logger, trianglesNodes, "trianglesNodes");
    const auto initialSortedEdges = trianglesNodes.getAllSortedEdges();
    //Log(logger, initialSortedEdges, "initialSortedEdges "); 
-   std::set<SortedEdgeNodes> todo(initialSortedEdges.begin(), initialSortedEdges.end());
+   std::set<EdgeNodesSorted> todo(initialSortedEdges.begin(), initialSortedEdges.end());
    while (!todo.empty())
    {
       const auto edge = *todo.begin();
@@ -387,7 +387,7 @@ void MeshGeneration2::AddManifold1Intersections(
          {
             for (NodeIndex ngb : trianglesNodes.getEdgeConnectedNodes(node))
             {
-               const SortedEdgeNodes todoEdge{ node, ngb };
+               const EdgeNodesSorted todoEdge{ node, ngb };
                todo.insert(todoEdge);
                //LogSortedEdgeNodes(logger, todoEdge, "Add to TODO ");
             }

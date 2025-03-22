@@ -6,14 +6,14 @@
 using namespace MeshGeneration;
 using namespace Topology;
 
-void MeshGeneration::LogSortedEdgeNodes(Logger& logger, const  SortedEdgeNodes& sortedEdgeNodes, std::string header)
+void MeshGeneration::LogSortedEdgeNodes(Logger& logger, const  EdgeNodesSorted& sortedEdgeNodes, std::string header)
 {
    std::ostringstream os;
    os << header << " " << sortedEdgeNodes;
    logger.logLine(os.str());
 }
 
-void MeshGeneration::Log(Logger& logger, const std::vector<SortedEdgeNodes>& sortedEdgeNodes, std::string header)
+void MeshGeneration::Log(Logger& logger, const std::vector<EdgeNodesSorted>& sortedEdgeNodes, std::string header)
 {
    std::vector<std::string> lines;
    lines.push_back(header);

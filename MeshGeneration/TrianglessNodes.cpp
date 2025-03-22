@@ -200,9 +200,9 @@ std::vector<CellIndex> TrianglesNodes::getAllTriangles() const
    return result;
 }
 
-std::vector<SortedEdgeNodes> TrianglesNodes::getAllSortedEdges() const
+std::vector<EdgeNodesSorted> TrianglesNodes::getAllSortedEdges() const
 {
-   std::vector<SortedEdgeNodes> result;
+   std::vector<EdgeNodesSorted> result;
    result.reserve(3 * m_toNodes.size());
    for (auto& itr : m_toNodes)
    {

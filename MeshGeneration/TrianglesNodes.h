@@ -1,7 +1,7 @@
 #pragma once
 
+#include "EdgeNodesSorted.h"
 #include "MeshGenerationDefines.h"
-#include "SortedEdgeNodes.h"
 #include "TriangleNodes.h"
 #include <array>
 #include <boost/container/static_vector.hpp>
@@ -34,7 +34,7 @@ namespace MeshGeneration
 
       std::vector<CellIndex> getAllTriangles() const;
       std::vector<PointIndex> getAllNodes() const;
-      std::vector<Topology::SortedEdgeNodes> getAllSortedEdges() const;
+      std::vector<Topology::EdgeNodesSorted> getAllSortedEdges() const;
 
       std::string toString() const;
 

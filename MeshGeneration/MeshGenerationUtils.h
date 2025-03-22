@@ -10,8 +10,8 @@
 
 namespace MeshGeneration
 {
-   void LogSortedEdgeNodes(Logger& logger, const  Topology::SortedEdgeNodes& sortedEdgeNodes, std::string header = "");
-   void Log(Logger& logger, const std::vector<Topology::SortedEdgeNodes>& sortedEdgeNodes, std::string header);
+   void LogSortedEdgeNodes(Logger& logger, const  Topology::EdgeNodesSorted& sortedEdgeNodes, std::string header = "");
+   void Log(Logger& logger, const std::vector<Topology::EdgeNodesSorted>& sortedEdgeNodes, std::string header);
    void Log(Logger& logger, std::span<const size_t> indices, std::string header);
    void LogTriangles(Logger& logger, const TrianglesNodes& trianglesNodes, std::string header = "");
    void Log(Logger& logger, const IndexTreeToSimplices2::Triangles& triangles, std::string header);
