@@ -1,5 +1,6 @@
 #include "Defines.h"
 #include "MyException.h"
+#include "TriangleNodesSorted.h"
 #include "TrianglesNodes.h"
 #include <limits>
 
@@ -8,7 +9,7 @@ using namespace Topology;
 
 CellIndex TrianglesNodes::addTriangle(PointIndex n0, PointIndex n1, PointIndex n2)
 {
-   const auto nodes = TriangleNodes::createSorted(n0, n1, n2);
+   const TriangleNodesSorted nodes(n0, n1, n2);
 
    // Check for duplicates
    if (tryGetTriangleFromSortedNodes(nodes))
@@ -26,7 +27,7 @@ CellIndex TrianglesNodes::addTriangle(PointIndex n0, PointIndex n1, PointIndex n
    return result;
 }
 
-std::optional<CellIndex> TrianglesNodes::tryGetTriangleFromSortedNodes(const TriangleNodes& nodes) const
+std::optional<CellIndex> TrianglesNodes::tryGetTriangleFromSortedNodes(const TriangleNodesSorted& nodes) const
 {
    const auto triangles = m_toTriangles.equal_range(nodes[0]);
    for (auto itr = triangles.first; itr != triangles.second; ++itr)
@@ -47,7 +48,7 @@ std::optional<CellIndex> TrianglesNodes::tryGetTriangle(PointIndex n0, PointInde
    checkNodeId(n0);
    checkNodeId(n1);
    checkNodeId(n2);
-   const auto nodes = TriangleNodes::createSorted(n0, n1, n2);
+   const TriangleNodesSorted nodes(n0, n1, n2);
    return tryGetTriangleFromSortedNodes(nodes);
 }
 
@@ -172,7 +173,7 @@ void TrianglesNodes::checkTriangleId(CellIndex triangle) const
    }
 }
 
-TriangleNodes TrianglesNodes::getTriangleNodes(CellIndex triangle) const
+TriangleNodesSorted TrianglesNodes::getTriangleNodes(CellIndex triangle) const
 {
    checkTriangleId(triangle);
    return m_toNodes.at(triangle);

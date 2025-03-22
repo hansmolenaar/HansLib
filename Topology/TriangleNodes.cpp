@@ -14,12 +14,9 @@ Topology::TriangleNodes::TriangleNodes(NodeIndex n0, NodeIndex n1, NodeIndex n2)
    }
 }
 
-Topology::TriangleNodes Topology::TriangleNodes::createSorted(NodeIndex n0, NodeIndex n1, NodeIndex n2)
+Topology::TriangleNodes::TriangleNodes(const std::array<NodeIndex, NumNodesOnTriangle>& nodes) :
+   TriangleNodes(nodes[0], nodes[1], nodes[2])
 {
-   if (n1 < n0) std::swap(n0, n1);
-   if (n2 < n0) std::swap(n0, n2);
-   if (n2 < n1) std::swap(n1, n2);
-   return { n0, n1, n2 };
 }
 
 bool Topology::TriangleNodes::contains(NodeIndex node) const

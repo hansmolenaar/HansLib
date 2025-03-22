@@ -32,7 +32,7 @@ namespace
       const auto scale = BoundingBox<GeomType, GeomDim2>::CreateFromList(std::vector<Point2>{Point2{ -eps, -eps }, Point2{ 1 + eps, 1 + eps }});
       for (auto triangleId : trianglesNodes.getAllTriangles())
       {
-         const auto triangle = GetTriangleGeometry(trianglesNodes.getTriangleNodes(triangleId), pointCollection);
+         const auto triangle = GetTriangleGeometry(trianglesNodes.getTriangleNodes(triangleId).asTriangleNodes(), pointCollection);
          const auto bb = BoundingBox<GeomType, GeomDim2>::CreateFromList(triangle).scaleFrom01(scale);
          for (auto mptr : manifolds)
          {
@@ -65,7 +65,7 @@ namespace
       NodeIndex minDist2Node = NodeIndexInvalid;
       for (auto candidateTriangle : candidates)
       {
-         const TriangleNodes triangle = trianglesNodes.getTriangleNodes(candidateTriangle);
+         const auto triangle = trianglesNodes.getTriangleNodes(candidateTriangle);
          for (auto n : triangle)
          {
             const Point<double, GeomDim2> trianglePoint = pointCollection.getPoint(n);

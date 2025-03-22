@@ -1,11 +1,11 @@
-#include "TriangleNodes.h"
+#include "TriangleNodesSorted.h"
 #include <gtest/gtest.h>
 
 using namespace Topology;
 
-TEST(TriangleNodesTest, ContainsNode)
+TEST(TriangleNodesSortedTest, ContainsNode)
 {
-   const TriangleNodes triangle{ 1, 2, 3 };
+   const TriangleNodesSorted triangle{ 3, 2, 1 };
    ASSERT_TRUE(triangle.contains(1));
    ASSERT_TRUE(triangle.contains(2));
    ASSERT_TRUE(triangle.contains(3));
@@ -13,9 +13,9 @@ TEST(TriangleNodesTest, ContainsNode)
    ASSERT_FALSE(triangle.contains(NodeIndexInvalid));
 }
 
-TEST(TriangleNodesTest, ContainsEdge)
+TEST(TriangleNodesSortedTest, ContainsEdge)
 {
-   const TriangleNodes triangle{ 1, 2, 3 };
+   const TriangleNodesSorted triangle{ 2, 1, 3 };
    ASSERT_TRUE(triangle.contains({ 1,2 }));
    ASSERT_TRUE(triangle.contains({ 2,1 }));
    ASSERT_TRUE(triangle.contains({ 1,3 }));
@@ -28,9 +28,9 @@ TEST(TriangleNodesTest, ContainsEdge)
    ASSERT_FALSE(triangle.contains({ 3,4 }));
 }
 
-TEST(TriangleNodesTest, OppositeNode)
+TEST(TriangleNodesSortedTest, OppositeNode)
 {
-   const TriangleNodes triangle{ 1, 2, 3 };
+   const TriangleNodesSorted triangle{ 3, 1, 2 };
    ASSERT_EQ(triangle.oppositeNode({ 1,2 }), 3);
    ASSERT_EQ(triangle.oppositeNode({ 2,1 }), 3);
    ASSERT_EQ(triangle.oppositeNode({ 1,3 }), 2);
@@ -47,10 +47,24 @@ TEST(TriangleNodesTest, OppositeNode)
    ASSERT_THROW(triangle.oppositeNode({ 4,5 }), MyException);
 }
 
-TEST(TriangleNodesTest, StreamInsertion)
+TEST(TriangleNodesSortedTest, CreateSorted)
+{
+   const std::array<NodeIndex, 3> expect{ 1,2,3 };
+   TriangleNodesSorted triangle(3, 2, 1);
+   ASSERT_TRUE(str::equal(triangle, expect));
+   triangle = TriangleNodesSorted(2, 1, 3);
+   ASSERT_TRUE(str::equal(triangle, expect));
+   triangle = TriangleNodesSorted(3, 1, 2);
+   ASSERT_TRUE(str::equal(triangle, expect));
+   triangle = TriangleNodesSorted(2, 3, 1);
+   ASSERT_TRUE(str::equal(triangle, expect));
+}
+
+
+TEST(TriangleNodesSortedTest, StreamInsertion)
 {
    std::ostringstream os;
-   const TriangleNodes edge{ 2,1,5 };
+   const TriangleNodesSorted edge{ 2,1,5 };
    os << edge;
-   ASSERT_EQ(os.str(), "(2, 1, 5)");
+   ASSERT_EQ(os.str(), "(1, 2, 5)");
 }

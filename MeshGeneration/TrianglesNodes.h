@@ -2,7 +2,7 @@
 
 #include "EdgeNodesSorted.h"
 #include "MeshGenerationDefines.h"
-#include "TriangleNodes.h"
+#include "TriangleNodesSorted.h"
 #include <array>
 #include <boost/container/static_vector.hpp>
 #include <optional>
@@ -27,7 +27,7 @@ namespace MeshGeneration
       std::optional<CellIndex> tryGetTriangle(PointIndex n0, PointIndex n1, PointIndex n2) const;
       bool triangleContainsNode(CellIndex CellIndex, PointIndex nodeId) const;
 
-      Topology::TriangleNodes getTriangleNodes(CellIndex triangle) const;
+      Topology::TriangleNodesSorted getTriangleNodes(CellIndex triangle) const;
 
       bool isKnownNodeId(PointIndex node) const;
       bool isKnownTriangleId(CellIndex triangle) const;
@@ -39,11 +39,11 @@ namespace MeshGeneration
       std::string toString() const;
 
    private:
-      std::optional<CellIndex> tryGetTriangleFromSortedNodes(const Topology::TriangleNodes& nodes) const;
+      std::optional<CellIndex> tryGetTriangleFromSortedNodes(const Topology::TriangleNodesSorted& nodes) const;
       void checkNodeId(PointIndex nodeId) const;
       void checkTriangleId(CellIndex triangleId) const;
 
-      std::unordered_map<CellIndex, Topology::TriangleNodes> m_toNodes;
+      std::unordered_map<CellIndex, Topology::TriangleNodesSorted> m_toNodes;
       std::unordered_multimap<PointIndex, CellIndex> m_toTriangles;
    };
 }
