@@ -1,7 +1,19 @@
 #pragma once
-#include "TopologyDefines.h"
+#include "DirectedEdgeNodes.h"
 
 namespace Topology
 {
-   using SortedEdgeNodes = std::array<NodeIndex, NumNodesOnEdge>;
+
+   class SortedEdgeNodes
+   {
+   public:
+      SortedEdgeNodes(NodeIndex n0, NodeIndex n1);
+      auto begin() const { return m_edge.begin(); }
+      auto end() const { return m_edge.end(); }
+      NodeIndex operator[](size_t n) const { return m_edge[n]; };
+      auto operator<=>(const SortedEdgeNodes& other) const { return m_edge <=> other.m_edge; };
+      auto operator==(const SortedEdgeNodes& other) const { return m_edge == other.m_edge; };
+   private:
+      DirectedEdgeNodes m_edge;
+   };
 }

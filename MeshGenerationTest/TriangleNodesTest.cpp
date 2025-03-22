@@ -208,22 +208,6 @@ TEST(TriangleNodesTest, ToString)
    ASSERT_EQ(msg, "TriangleNodes NUMNODES=4 NUMTRIANGLES=2");
 }
 
-TEST(TriangleNodesTest, CreateSortedEdge)
-{
-   SortedEdgeNodes edge;
-
-   edge = TrianglesNodes::CreateSortedEdge(1, 2);
-   ASSERT_EQ(edge[0], 1);
-   ASSERT_EQ(edge[1], 2);
-
-   edge = TrianglesNodes::CreateSortedEdge(2, 1);
-   ASSERT_EQ(edge[0], 1);
-   ASSERT_EQ(edge[1], 2);
-
-   ASSERT_THROW(TrianglesNodes::CreateSortedEdge(2, 2), MyException);
-}
-
-
 TEST(TriangleNodesTest, GetAllNodes)
 {
    TrianglesNodes tnodes;

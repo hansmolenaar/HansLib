@@ -25,13 +25,6 @@ namespace
 
 }
 
-Topology::SortedEdgeNodes TrianglesNodes::CreateSortedEdge(PointIndex n0, PointIndex n1)
-{
-   if (n1 > n0) return { n0, n1 };
-   if (n0 == n1) throw MyException("CreateSortedEdge edge is degenerate");
-   return { n1, n0 };
-}
-
 CellIndex TrianglesNodes::addTriangle(PointIndex n0, PointIndex n1, PointIndex n2)
 {
    const auto nodes = SortAndCheckNodes(n0, n1, n2);
@@ -233,9 +226,9 @@ std::vector<SortedEdgeNodes> TrianglesNodes::getAllSortedEdges() const
    for (auto& itr : m_toNodes)
    {
       const auto& triangleNodes = itr.second;
-      result.emplace_back(CreateSortedEdge(triangleNodes.at(0), triangleNodes.at(1)));
-      result.emplace_back(CreateSortedEdge(triangleNodes.at(0), triangleNodes.at(2)));
-      result.emplace_back(CreateSortedEdge(triangleNodes.at(1), triangleNodes.at(2)));
+      result.emplace_back(triangleNodes.at(0), triangleNodes.at(1));
+      result.emplace_back(triangleNodes.at(0), triangleNodes.at(2));
+      result.emplace_back(triangleNodes.at(1), triangleNodes.at(2));
    }
    str::sort(result);
    const auto [first, last] = str::unique(result);

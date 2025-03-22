@@ -8,7 +8,7 @@ using namespace Topology;
 
 void MeshGeneration::LogSortedEdgeNodes(Logger& logger, const  SortedEdgeNodes& sortedEdgeNodes, std::string header)
 {
-   logger.logLine(header + std::to_string(sortedEdgeNodes.front()) + "-> " + std::to_string(sortedEdgeNodes.back()));
+   logger.logLine(header + std::to_string(sortedEdgeNodes[0]) + "-> " + std::to_string(sortedEdgeNodes[1]));
 }
 
 void MeshGeneration::Log(Logger& logger, const std::vector<SortedEdgeNodes>& sortedEdgeNodes, std::string header)
@@ -17,7 +17,7 @@ void MeshGeneration::Log(Logger& logger, const std::vector<SortedEdgeNodes>& sor
    lines.push_back(header);
    for (const auto& e : sortedEdgeNodes)
    {
-      lines.push_back(std::to_string(e.front()) + " -> " + std::to_string(e.back()));
+      lines.push_back(std::to_string(e[0]) + " -> " + std::to_string(e[1]));
    }
    logger.logLines(lines);
 }

@@ -37,7 +37,6 @@ namespace MeshGeneration
       std::vector<Topology::SortedEdgeNodes> getAllSortedEdges() const;
 
       std::string toString() const;
-      static Topology::SortedEdgeNodes CreateSortedEdge(PointIndex n0, PointIndex n1); // TODO
 
    private:
       std::optional<CellIndex> tryGetTriangleFromSortedNodes(const Topology::TriangleNodes& nodes) const;

@@ -387,7 +387,7 @@ void MeshGeneration2::AddManifold1Intersections(
          {
             for (NodeIndex ngb : trianglesNodes.getEdgeConnectedNodes(node))
             {
-               const auto todoEdge = TrianglesNodes::CreateSortedEdge(node, ngb);
+               const SortedEdgeNodes todoEdge{ node, ngb };
                todo.insert(todoEdge);
                //LogSortedEdgeNodes(logger, todoEdge, "Add to TODO ");
             }
