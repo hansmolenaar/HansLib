@@ -58,20 +58,6 @@ namespace
       return boundaryEdges;
    }
 
-   NodeIndex getOtherNode(TriangleNodes triangle, DirectedEdgeNodes edge)
-   {
-      // TODO TriangleNodes sorted, setdif?
-      std::sort(triangle.begin(), triangle.end());
-      DirectedEdgeNodesSort(edge);
-      boost::container::static_vector<CellIndex, Topology::NumNodesOnTriangle + Topology::NumNodesOnEdge> symdif;
-      str::set_symmetric_difference(triangle, edge, std::back_inserter(symdif));
-      if (symdif.size() != 1)
-      {
-         throw MyException("getOutNode expect a single node, actual size: " + std::to_string(symdif.size()));
-      }
-      return symdif[0];
-   }
-
    std::pair<CellIndex, CellIndex> getInsideAndOutsideCell(
       const DirectedEdgeNodes& be,
       const MeshGeneration::TrianglesNodes& trianglesNodes,
@@ -85,8 +71,8 @@ namespace
       }
       const auto triangleNodes0 = trianglesNodes.getTriangleNodes(connectedTriangles.at(0));
       const auto triangleNodes1 = trianglesNodes.getTriangleNodes(connectedTriangles.at(1));
-      const NodeIndex otherNode0 = getOtherNode(triangleNodes0, be);
-      const NodeIndex otherNode1 = getOtherNode(triangleNodes1, be);
+      const NodeIndex otherNode0 = TriangleNodesNodesOppositeNode(triangleNodes0, be);
+      const NodeIndex otherNode1 = TriangleNodesNodesOppositeNode(triangleNodes1, be);
       const Point2 otherPoint0 = pointCollection.getPoint(otherNode0);
       const Point2 otherPoint1 = pointCollection.getPoint(otherNode1);
       const bool isContained0 = region.contains(otherPoint0, pointCollection.getGeometryPredicate());
