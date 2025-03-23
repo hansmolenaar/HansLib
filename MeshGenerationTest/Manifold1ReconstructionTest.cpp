@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "Manifold1Reconstruction.h"
+#include "ManifoldId.h"
 #include "PointClose.h"
 #include "Single.h"
 #include "TopologyDefines.h"
@@ -10,6 +11,7 @@
 using namespace MeshGeneration;
 using namespace Topology;
 using namespace Utilities;
+using namespace Geometry;
 
 TEST(Manifold1ReconstructionTest, singleEdge)
 {
@@ -31,14 +33,19 @@ TEST(Manifold1ReconstructionTest, twoEdges)
    const auto node2 = points.addIfNew(Point2{ 3,1 });
    const auto node3 = points.addIfNew(Point2{ 2,0 });
    const auto node4 = points.addIfNew(Point2{ 4,0 });
-   const std::array<NodeIndex, 3 > nodes{ 3, 1, 4 };
+   const std::array<NodeIndex, 3 > nodes{ node3, node1, node4 };
    TrianglesNodes trianglesNodes;
-   trianglesNodes.addTriangle(1, 0, 3);
-   trianglesNodes.addTriangle(3, 2, 4);
+   trianglesNodes.addTriangle(node1, node0, node3);
+   trianglesNodes.addTriangle(node3, node2, node4);
    const auto reconstruction = MeshGeneration::Generate2(nodes, trianglesNodes, points);
    ASSERT_TRUE(reconstruction.Singletons.empty());
    ASSERT_TRUE(reconstruction.Cycles.empty());
    const auto path = Single(reconstruction.Paths);
-   const std::vector<NodeIndex> expect{ 1, 3, 4 };
-   ASSERT_TRUE(std::equal(path.begin(), path.end(), expect.begin(), expect.end()));
+   const std::vector<NodeIndex> expect{ node1, node3, node4 };
+   ASSERT_TRUE(str::equal(path, expect));
+
+   const Geometry::ManifoldId manifoldId(Topology::Edge, "Hello");
+   const Manifold1Reconstruction mr(manifoldId, reconstruction);
+   ASSERT_TRUE(mr.contains(EdgeNodesSorted(node3, node1)));
+   ASSERT_FALSE(mr.contains(EdgeNodesSorted(node1, node2)));
 }

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "EdgeNodesSorted.h"
 #include "IManifoldReconstruction.h"
 #include "MeshGenerationDefines.h"
 
@@ -25,6 +26,7 @@ namespace MeshGeneration
          const std::vector<std::unique_ptr<IManifoldReconstruction>>& reconstructions);
 
       void execute(const EdgeFlipStrategy& strategy);
+      bool isFlippable(const Topology::EdgeNodesSorted& edge) const;
 
    private:
       TrianglesNodes& m_trianglesNodes;

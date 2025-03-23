@@ -82,3 +82,15 @@ void MeshGeneration::EdgeFlip::execute(const EdgeFlipStrategy& strategy)
       }
    }
 }
+
+bool MeshGeneration::EdgeFlip::isFlippable(const EdgeNodesSorted& edge) const
+{
+   for (const auto* r : m_reconstructions)
+   {
+      const auto* r1 = dynamic_cast<const Manifold1Reconstruction*>(r);
+      if (r1 == nullptr) continue;
+
+      if (r1->contains(edge)) return false;
+   }
+   return true;
+}

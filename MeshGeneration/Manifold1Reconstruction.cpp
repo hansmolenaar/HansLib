@@ -3,6 +3,7 @@
 
 using namespace MeshGeneration;
 using namespace Topology;
+
 namespace
 {
    std::unordered_map<NodeIndex, GraphVertex> RenumberToGraph(std::span<const NodeIndex> manifoldNodes)
@@ -45,6 +46,30 @@ namespace
       str::transform(grapVertices, result.begin(), [&manifoldNodes](GraphVertex vertex) {return manifoldNodes[vertex]; });
       return result;
    }
+
+   std::set<Topology::EdgeNodesSorted> getEdges(const Reconstruction1 reconstruction)
+   {
+      std::set<Topology::EdgeNodesSorted> result;
+      for (const auto& path : reconstruction.Paths)
+      {
+         const size_t siz = path.size();
+         for (size_t n = 1; n < siz; ++n)
+         {
+            result.emplace(path[n - 1], path[n]);
+         }
+      }
+
+      for (const auto& cycle : reconstruction.Cycles)
+      {
+         const size_t siz = cycle.size();
+         for (size_t n = 1; n <= siz; ++n)
+         {
+            result.emplace(cycle[n - 1], cycle[n % siz]);
+         }
+      }
+
+      return result;
+   }
 }
 
 MeshGeneration::Reconstruction1 MeshGeneration::Generate2(std::span<const NodeIndex> manifoldNodes, const TrianglesNodes& trianglesNodes, const IUniquePointCollection2& pointCollection)
@@ -76,14 +101,15 @@ MeshGeneration::Reconstruction1 MeshGeneration::Generate2(std::span<const NodeIn
 }
 
 Manifold1Reconstruction::Manifold1Reconstruction(const Geometry::IManifoldId& manifoldId, const Reconstruction1& reconstruction) :
-   m_manifoldId(manifoldId), m_reconstruction(reconstruction)
+   m_manifoldId(manifoldId), m_reconstruction(reconstruction), m_edges(getEdges(m_reconstruction))
 {
 }
 
 Manifold1Reconstruction::Manifold1Reconstruction(const Geometry::IManifold1D2<GeomType>& manifold, const ManifoldsAndNodes<GeomDim2>& manifoldsAndNodes,
    const TrianglesNodes& trianglesNodes, const IUniquePointCollection2& pointCollection) :
    m_manifoldId(manifold),
-   m_reconstruction(MeshGeneration::Generate2(manifoldsAndNodes.getNodesInManifold(&manifold), trianglesNodes, pointCollection))
+   m_reconstruction(MeshGeneration::Generate2(manifoldsAndNodes.getNodesInManifold(&manifold), trianglesNodes, pointCollection)),
+   m_edges(getEdges(m_reconstruction))
 {
 }
 
@@ -95,4 +121,9 @@ const Geometry::IManifoldId& Manifold1Reconstruction::getManifoldId() const
 const Reconstruction1& Manifold1Reconstruction::getReconstruction() const
 {
    return m_reconstruction;
+}
+
+bool Manifold1Reconstruction::contains(const EdgeNodesSorted& edge) const
+{
+   return m_edges.contains(edge);
 }

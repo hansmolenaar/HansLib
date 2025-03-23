@@ -7,6 +7,7 @@ namespace Topology
    class EdgeNodesSorted
    {
    public:
+      explicit EdgeNodesSorted(const EdgeNodesDirected& edge);
       EdgeNodesSorted(NodeIndex n0, NodeIndex n1);
       auto begin() const { return m_edge.begin(); }
       auto end() const { return m_edge.end(); }
