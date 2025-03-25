@@ -18,13 +18,20 @@ CellIndex TrianglesNodes::addTriangle(PointIndex n0, PointIndex n1, PointIndex n
       throw MyException(msg);
    }
 
-   const CellIndex result = static_cast<CellIndex>(m_toNodes.size());
+   // CellId must be unique to avoid an enormous mess
+   const CellIndex result = m_newCellId;
+   ++m_newCellId;
    m_toNodes.emplace(result, nodes);
    for (auto n : nodes)
    {
       m_toTriangles.emplace(n, result);
    }
    return result;
+}
+
+CellIndex TrianglesNodes::addTriangle(const TriangleNodes& triangle)
+{
+   return addTriangle(triangle[0], triangle[1], triangle[2]);
 }
 
 std::optional<CellIndex> TrianglesNodes::tryGetTriangleFromSortedNodes(const TriangleNodesSorted& nodes) const
@@ -110,6 +117,15 @@ boost::container::static_vector<CellIndex, Topology::NumNodesOnTriangle> Triangl
       if (ngbs.size() > 1 && ngbs[1] != triangleId) result.push_back(ngbs[1]);
    }
 
+   return result;
+}
+
+boost::container::static_vector<CellIndex, Topology::NumNodesOnTriangle>  TrianglesNodes::getCommonNodes(CellIndex triangle1, CellIndex triangle2) const
+{
+   boost::container::static_vector<CellIndex, Topology::NumNodesOnTriangle> result;
+   const auto trianglNodes1 = getTriangleNodes(triangle1);
+   const auto trianglNodes2 = getTriangleNodes(triangle2);
+   str::set_intersection(trianglNodes1, trianglNodes2, std::back_inserter(result));
    return result;
 }
 

@@ -17,19 +17,59 @@ namespace
       bool operator<(const CellAndQuality& other) const { return quality > other.quality; }
    };
 
+   struct EdgeFlipData
+   {
+      EdgeNodesDirected edge = { 0, 1 };
+      CellIndex otherCell = CellIndexInvalid;
+      double minQualityAfterFlip = std::numeric_limits<double>::min();
+      TriangleNodes newCell0{ 0,1,2 };
+      TriangleNodes newCell1{ 0,1,2 };
+   };
+
+   double getTriangleQuality(const TriangleNodes& triangleNodes, const IUniquePointCollection2& pointCollection, CellQuality2Fun* cellQuality)
+   {
+      std::array<Point2, Topology::NumNodesOnTriangle> triangle;
+      str::transform(triangleNodes, triangle.begin(), [&pointCollection](NodeIndex node) {return pointCollection.getPoint(node); });
+      return cellQuality(triangle);
+   }
+
    CellAndQuality getTriangleAndQuality(const CellIndex& cellId, const TrianglesNodes& trianglesNodes, const IUniquePointCollection2& pointCollection, CellQuality2Fun* cellQuality)
    {
       const auto triangleNodes = trianglesNodes.getTriangleNodes(cellId);
-      std::array<Point2, Topology::NumNodesOnTriangle> triangle;
-      str::transform(triangleNodes, triangle.begin(), [&pointCollection](NodeIndex node) {return pointCollection.getPoint(node); });
-      return CellAndQuality{ cellId, cellQuality(triangle) };
+      return CellAndQuality{ cellId, getTriangleQuality(triangleNodes.asTriangleNodes(), pointCollection, cellQuality) };
    }
 
-   CellIndex getOptimalFlip(CellIndex cell)
+   template<typename Pred>
+   EdgeFlipData getOptimalFlip(CellIndex cell, const TrianglesNodes& trianglesNodes, const IUniquePointCollection2& pointCollection, CellQuality2Fun* cellQuality, Pred isFlippable)
    {
-      return CellIndexInvalid;
+      EdgeFlipData optimalEdge;
+      const auto cellNodes = trianglesNodes.getTriangleNodes(cell);
+      const auto neighbors = trianglesNodes.getEdgeConnectedTriangles(cell);
+      for (CellIndex ngb : neighbors)
+      {
+         const auto commonNodes = trianglesNodes.getCommonNodes(cell, ngb);
+         if (commonNodes.size() != 2) continue;
+         const EdgeNodesDirected edge{ commonNodes[0], commonNodes[1] };
+         if (!isFlippable(EdgeNodesSorted(edge))) continue;
+
+         const auto ngbNodes = trianglesNodes.getTriangleNodes(ngb);
+         const auto oppNodeCell = cellNodes.oppositeNode(edge);
+         const auto oppNodeNgb = ngbNodes.oppositeNode(edge);
+         const TriangleNodes cell0{ edge[0], oppNodeNgb, oppNodeCell };
+         const TriangleNodes cell1{ edge[1], oppNodeNgb, oppNodeCell };
+         const double quality0 = getTriangleQuality(cell0, pointCollection, cellQuality);
+         const double quality1 = getTriangleQuality(cell1, pointCollection, cellQuality);
+         const double minQuality = std::min(quality0, quality1);
+         if (minQuality > optimalEdge.minQualityAfterFlip)
+         {
+            optimalEdge = { edge, ngb, minQuality, cell0, cell1 };
+         }
+      }
+
+      return optimalEdge;
    }
 }
+
 MeshGeneration::EdgeFlip::EdgeFlip(
    TrianglesNodes& trianglesNodes,
    CellQuality2Fun* getCellQuality,
@@ -73,11 +113,23 @@ void MeshGeneration::EdgeFlip::execute(const EdgeFlipStrategy& strategy)
          {
             continue;
          }
-         const auto flippedNeighbor = getOptimalFlip(poorTriangle.triangleId);
-         if (flippedNeighbor == CellIndexInvalid)
+
+         auto canBeFlipped = [this](const Topology::EdgeNodesSorted& edge) {return isFlippable(edge); };
+         const auto edgeFlipData = getOptimalFlip(poorTriangle.triangleId, m_trianglesNodes, m_pointCollection, m_cellQuality, canBeFlipped);
+         if (edgeFlipData.otherCell == CellIndexInvalid || edgeFlipData.minQualityAfterFlip < poorTriangle.quality)
          {
+            // Nothing we can do yet
             todo.push_back(poorTriangle.triangleId);
             continue;
+         }
+         else
+         {
+            m_trianglesNodes.deleteTriangle(poorTriangle.triangleId);
+            m_trianglesNodes.deleteTriangle(edgeFlipData.otherCell);
+            const auto newCellId0 = m_trianglesNodes.addTriangle(edgeFlipData.newCell0);
+            const auto newCellId1 = m_trianglesNodes.addTriangle(edgeFlipData.newCell1);
+            todo.push_back(newCellId0);
+            todo.push_back(newCellId1);
          }
       }
    }

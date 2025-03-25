@@ -33,9 +33,11 @@ TEST(EdgeFlipTest, base)
    std::vector<std::unique_ptr<IManifoldReconstruction>> reconstructions;
    reconstructions.emplace_back(std::make_unique<Manifold1Reconstruction>(manifoldId, reconstruction));
 
-   const EdgeFlip edgeFlip(trianglesNodes, CellQuality2::MinimumAngle, points, reconstructions);
+   EdgeFlip edgeFlip(trianglesNodes, CellQuality2::MinimumAngle, points, reconstructions);
    ASSERT_TRUE(edgeFlip.isFlippable(EdgeNodesSorted(node0, node1)));
    ASSERT_TRUE(edgeFlip.isFlippable(EdgeNodesSorted(node2, node3))); // does not exist
    ASSERT_FALSE(edgeFlip.isFlippable(EdgeNodesSorted(node0, node3)));
 
+   const EdgeFlipStrategy strategy{ 0.9, 2 };
+   edgeFlip.execute(strategy);
 }
