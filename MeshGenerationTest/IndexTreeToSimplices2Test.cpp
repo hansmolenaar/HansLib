@@ -5,9 +5,24 @@
 #include "IntervalTreeRefinePredicate.h"
 #include "IntervalTreeVtk.h"
 #include "Paraview.h"
+#include "Triangle.h"
 #include "UniqueHashedPointCollection.h"
 
 using namespace IntervalTree;
+using namespace IndexTreeToSimplices2;
+
+namespace
+{
+   void testOrientation(const Triangles triangles)
+   {
+      const auto toPoint = [](const RatPoint2& rpoint) {return Point2{ 1.0 * rpoint[0], 1.0 * rpoint[1] }; };
+      for (const auto& triangle : triangles)
+      {
+         const double area = Triangle::AreaSigned(toPoint(triangle[0]), toPoint(triangle[1]), toPoint(triangle[2]));
+         ASSERT_GT(area, 0.0);
+      }
+   }
+}
 
 TEST(IndexTreeToSimplices2Test, RootToVtk)
 {
@@ -16,13 +31,13 @@ TEST(IndexTreeToSimplices2Test, RootToVtk)
 
    const auto triangles = IndexTreeToSimplices2::Create(tree);
    ASSERT_EQ(2, triangles.size());
+   testOrientation(triangles);
 
    const auto vtkData = IndexTreeToSimplices2::ToVtkData(triangles, { "IndexTreeToSimplices2Test_RootToVtk", "tree" });
    ASSERT_EQ(2, vtkData->getNumCells());
    ASSERT_EQ(4, vtkData->getNumNodes());
    //Paraview::Write(*vtkData);
 }
-
 
 TEST(IndexTreeToSimplices2Test, Level1ToVtk)
 {
@@ -33,13 +48,13 @@ TEST(IndexTreeToSimplices2Test, Level1ToVtk)
 
    const auto triangles = IndexTreeToSimplices2::Create(tree);
    ASSERT_EQ(8, triangles.size());
+   testOrientation(triangles);
 
    const auto vtkData = IndexTreeToSimplices2::ToVtkData(triangles, { "IndexTreeToSimplices2Test_Level1ToVtk", "tree" });
    ASSERT_EQ(8, vtkData->getNumCells());
    ASSERT_EQ(9, vtkData->getNumNodes());
    //Paraview::Write(*vtkData);
 }
-
 
 TEST(IndexTreeToSimplices2Test, RefinedToVtk_1)
 {
@@ -54,6 +69,7 @@ TEST(IndexTreeToSimplices2Test, RefinedToVtk_1)
    IntervalTree::Balance(tree);
    //Paraview::Write("IndexTreeToSimplices2Test_RefinedToVtk_1_base", *IntervalTree::GetVtkData(tree));
    const auto triangles = IndexTreeToSimplices2::Create(tree);
+   testOrientation(triangles);
    std::set<std::pair<RatPoint2, RatPoint2>> directedEdges;
    UniqueHashedPointCollection<Rational, IndexTreeToSimplices2::GeometryDimension>  toNodeIndex;
    std::map<std::pair<PointIndex, PointIndex>, int> sortedEdgeCount;

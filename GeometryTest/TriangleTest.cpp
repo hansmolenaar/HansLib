@@ -15,7 +15,6 @@ TEST(TriangleTest, SignedArea2D)
    ASSERT_NEAR(-1.0, area, 1.0e-12);
 }
 
-
 TEST(TriangleTest, MinAngle)
 {
    const Point2 p0{ 1.0, 1.0 };
