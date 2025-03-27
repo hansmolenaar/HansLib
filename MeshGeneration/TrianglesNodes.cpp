@@ -1,6 +1,5 @@
 #include "Defines.h"
 #include "MyException.h"
-#include "TriangleNodesSorted.h"
 #include "TrianglesNodes.h"
 #include <limits>
 
@@ -9,7 +8,7 @@ using namespace Topology;
 
 CellIndex TrianglesNodes::addTriangle(PointIndex n0, PointIndex n1, PointIndex n2)
 {
-   const TriangleNodesSorted nodes(n0, n1, n2);
+   const TriangleNodesOriented nodes(n0, n1, n2);
 
    // Check for duplicates
    if (tryGetTriangleFromSortedNodes(nodes))
@@ -34,7 +33,7 @@ CellIndex TrianglesNodes::addTriangle(const TriangleNodes& triangle)
    return addTriangle(triangle[0], triangle[1], triangle[2]);
 }
 
-std::optional<CellIndex> TrianglesNodes::tryGetTriangleFromSortedNodes(const TriangleNodesSorted& nodes) const
+std::optional<CellIndex> TrianglesNodes::tryGetTriangleFromSortedNodes(const TriangleNodesOriented& nodes) const
 {
    const auto triangles = m_toTriangles.equal_range(nodes[0]);
    for (auto itr = triangles.first; itr != triangles.second; ++itr)
@@ -55,7 +54,7 @@ std::optional<CellIndex> TrianglesNodes::tryGetTriangle(PointIndex n0, PointInde
    checkNodeId(n0);
    checkNodeId(n1);
    checkNodeId(n2);
-   const TriangleNodesSorted nodes(n0, n1, n2);
+   const TriangleNodesOriented nodes(n0, n1, n2);
    return tryGetTriangleFromSortedNodes(nodes);
 }
 
@@ -123,9 +122,12 @@ boost::container::static_vector<CellIndex, Topology::NumNodesOnTriangle> Triangl
 boost::container::static_vector<CellIndex, Topology::NumNodesOnTriangle>  TrianglesNodes::getCommonNodes(CellIndex triangle1, CellIndex triangle2) const
 {
    boost::container::static_vector<CellIndex, Topology::NumNodesOnTriangle> result;
-   const auto trianglNodes1 = getTriangleNodes(triangle1);
-   const auto trianglNodes2 = getTriangleNodes(triangle2);
-   str::set_intersection(trianglNodes1, trianglNodes2, std::back_inserter(result));
+   const auto triangleNodes1 = getTriangleNodes(triangle1);
+   const auto triangleNodes2 = getTriangleNodes(triangle2);
+   for (auto node : triangleNodes1)
+   {
+      if (triangleNodes2.contains(node)) result.push_back(node);
+   }
    return result;
 }
 
@@ -189,7 +191,7 @@ void TrianglesNodes::checkTriangleId(CellIndex triangle) const
    }
 }
 
-TriangleNodesSorted TrianglesNodes::getTriangleNodes(CellIndex triangle) const
+TriangleNodesOriented TrianglesNodes::getTriangleNodes(CellIndex triangle) const
 {
    checkTriangleId(triangle);
    return m_toNodes.at(triangle);

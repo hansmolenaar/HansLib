@@ -134,8 +134,11 @@ TEST(TrianglesNodesTest, TryGetTriangle)
    const auto triangle0 = tnodes.addTriangle(42, 999, 0);
    const auto triangle1 = tnodes.addTriangle(999, 42, 1);
 
+   const auto found_42_1_999 = tnodes.tryGetTriangle(42, 1, 999);
+   ASSERT_EQ(triangle1, *found_42_1_999);
+
    const auto found_1_42_999 = tnodes.tryGetTriangle(1, 42, 999);
-   ASSERT_EQ(triangle1, *found_1_42_999);
+   ASSERT_FALSE(found_1_42_999);
 
    const auto found_0_1_42 = tnodes.tryGetTriangle(1, 42, 0);
    ASSERT_FALSE(found_0_1_42);
