@@ -1,5 +1,6 @@
 #include "EdgeFlip.h"
 #include "Manifold1Reconstruction.h"
+#include "Triangle.h"
 #include "TrianglesNodes.h"
 
 #include <queue>
@@ -22,11 +23,11 @@ namespace
       EdgeNodesDirected edge = { 0, 1 };
       CellIndex otherCell = CellIndexInvalid;
       double minQualityAfterFlip = std::numeric_limits<double>::min();
-      TriangleNodes newCell0{ 0,1,2 };
-      TriangleNodes newCell1{ 0,1,2 };
+      TriangleNodesOriented newCell0{ 0,1,2 };
+      TriangleNodesOriented newCell1{ 0,1,2 };
    };
 
-   double getTriangleQuality(const TriangleNodes& triangleNodes, const IUniquePointCollection2& pointCollection, CellQuality2Fun* cellQuality)
+   double getTriangleQuality(const TriangleNodesOriented& triangleNodes, const IUniquePointCollection2& pointCollection, CellQuality2Fun* cellQuality)
    {
       std::array<Point2, Topology::NumNodesOnTriangle> triangle;
       str::transform(triangleNodes, triangle.begin(), [&pointCollection](NodeIndex node) {return pointCollection.getPoint(node); });
@@ -36,7 +37,13 @@ namespace
    CellAndQuality getTriangleAndQuality(const CellIndex& cellId, const TrianglesNodes& trianglesNodes, const IUniquePointCollection2& pointCollection, CellQuality2Fun* cellQuality)
    {
       const auto triangleNodes = trianglesNodes.getTriangleNodes(cellId);
-      return CellAndQuality{ cellId, getTriangleQuality(triangleNodes.asTriangleNodes(), pointCollection, cellQuality) };
+      return CellAndQuality{ cellId, getTriangleQuality(triangleNodes, pointCollection, cellQuality) };
+   }
+
+   TriangleNodesOriented getFlippedTriangle(const TriangleNodesOriented& org, NodeIndex oppNode, NodeIndex oppNodeNgb)
+   {
+      const auto pos = org.find(oppNode);
+      return { oppNode, org[(pos + 1) % NumNodesOnTriangle], oppNodeNgb };
    }
 
    template<typename Pred>
@@ -55,8 +62,14 @@ namespace
          const auto ngbNodes = trianglesNodes.getTriangleNodes(ngb);
          const auto oppNodeCell = cellNodes.oppositeNode(edge);
          const auto oppNodeNgb = ngbNodes.oppositeNode(edge);
-         const TriangleNodes cell0{ edge[0], oppNodeNgb, oppNodeCell };
-         const TriangleNodes cell1{ edge[1], oppNodeNgb, oppNodeCell };
+         const TriangleNodesOriented cell0 = getFlippedTriangle(cellNodes, oppNodeCell, oppNodeNgb);
+         const TriangleNodesOriented cell1 = getFlippedTriangle(ngbNodes, oppNodeNgb, oppNodeCell);
+
+         // Is the flip allowed? 
+         const double area0 = Triangle::getAreaSigned(cell0, pointCollection);
+         const double area1 = Triangle::getAreaSigned(cell1, pointCollection);
+         if (std::min(area0, area1) <= 0.0) continue;
+
          const double quality0 = getTriangleQuality(cell0, pointCollection, cellQuality);
          const double quality1 = getTriangleQuality(cell1, pointCollection, cellQuality);
          const double minQuality = std::min(quality0, quality1);

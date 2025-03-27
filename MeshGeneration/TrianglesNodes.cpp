@@ -11,7 +11,7 @@ CellIndex TrianglesNodes::addTriangle(PointIndex n0, PointIndex n1, PointIndex n
    const TriangleNodesOriented nodes(n0, n1, n2);
 
    // Check for duplicates
-   if (tryGetTriangleFromSortedNodes(nodes))
+   if (tryGetTriangleFromOrientedNodes(nodes))
    {
       const std::string msg = "TriangleNodes::addTriangle() triangle already exists: " + std::to_string(n0) + " " + std::to_string(n1) + " " + std::to_string(n2);
       throw MyException(msg);
@@ -33,7 +33,13 @@ CellIndex TrianglesNodes::addTriangle(const TriangleNodes& triangle)
    return addTriangle(triangle[0], triangle[1], triangle[2]);
 }
 
-std::optional<CellIndex> TrianglesNodes::tryGetTriangleFromSortedNodes(const TriangleNodesOriented& nodes) const
+
+CellIndex TrianglesNodes::addTriangle(const TriangleNodesOriented& triangle)
+{
+   return addTriangle(triangle[0], triangle[1], triangle[2]);
+}
+
+std::optional<CellIndex> TrianglesNodes::tryGetTriangleFromOrientedNodes(const TriangleNodesOriented& nodes) const
 {
    const auto triangles = m_toTriangles.equal_range(nodes[0]);
    for (auto itr = triangles.first; itr != triangles.second; ++itr)
@@ -55,7 +61,7 @@ std::optional<CellIndex> TrianglesNodes::tryGetTriangle(PointIndex n0, PointInde
    checkNodeId(n1);
    checkNodeId(n2);
    const TriangleNodesOriented nodes(n0, n1, n2);
-   return tryGetTriangleFromSortedNodes(nodes);
+   return tryGetTriangleFromOrientedNodes(nodes);
 }
 
 void TrianglesNodes::deleteTriangle(CellIndex triangleId)

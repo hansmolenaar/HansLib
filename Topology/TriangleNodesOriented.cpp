@@ -18,3 +18,13 @@ Topology::TriangleNodesOriented::TriangleNodesOriented(NodeIndex n0, NodeIndex n
    m_triangle(order(n0, n1, n2))
 {
 }
+
+
+// returns std::numeric_limtis<size_t>::max() if not found
+size_t TriangleNodesOriented::find(NodeIndex node) const
+{
+   if (node == m_triangle[0])  return 0;
+   if (node == m_triangle[1])  return 1;
+   if (node == m_triangle[2])  return 2;
+   return std::numeric_limits<size_t>::max();
+}

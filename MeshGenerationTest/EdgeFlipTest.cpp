@@ -7,6 +7,7 @@
 #include "MeshQuality.h"
 #include "PointClose.h"
 #include "TopologyDefines.h"
+#include "Triangle.h"
 #include "TrianglesNodes.h"
 #include "UniquePointCollectionBinning.h"
 
@@ -14,6 +15,19 @@ using namespace MeshGeneration;
 using namespace Topology;
 using namespace Utilities;
 using namespace Geometry;
+
+namespace
+{
+   void checkTriangleArea(const TrianglesNodes& trianglesNodes, const IPointCollection<GeomType, GeomDim2>& points)
+   {
+      for (CellIndex cellIndex : trianglesNodes.getAllTriangles())
+      {
+         const auto& triangleNodes = trianglesNodes.getTriangleNodes(cellIndex);
+         const auto area = Triangle::getAreaSigned(triangleNodes, points);
+         ASSERT_GT(area, 0.0);
+      }
+   }
+}
 
 TEST(EdgeFlipTest, base)
 {
@@ -25,15 +39,16 @@ TEST(EdgeFlipTest, base)
    const auto node3 = points.addIfNew(Point2{ 0, -0.1 });
    TrianglesNodes trianglesNodes;
    trianglesNodes.addTriangle(node0, node1, node2);
-   trianglesNodes.addTriangle(node0, node1, node3);
+   trianglesNodes.addTriangle(node0, node3, node1);
 
    Reconstruction1 reconstruction;
-   reconstruction.Cycles.push_back(std::vector<NodeIndex>{ node0, node2, node1, node3 });
+   reconstruction.Cycles.push_back(std::vector<NodeIndex>{ node0, node3, node1, node2 });
 
    const Geometry::ManifoldId manifoldId(Topology::Edge, "Loop");
    std::vector<std::unique_ptr<IManifoldReconstruction>> reconstructions;
    reconstructions.emplace_back(std::make_unique<Manifold1Reconstruction>(manifoldId, reconstruction));
 
+   checkTriangleArea(trianglesNodes, points);
    auto cellQuality = CellQuality2::MinimumAngle;
    EdgeFlip edgeFlip(trianglesNodes, cellQuality, points, reconstructions);
    ASSERT_TRUE(edgeFlip.isFlippable(EdgeNodesSorted(node0, node1)));
@@ -63,7 +78,7 @@ TEST(EdgeFlipTest, threeCells)
    const auto node4 = points.addIfNew(Point2{ -0.02, 0.5 });
    TrianglesNodes trianglesNodes;
    trianglesNodes.addTriangle(node0, node1, node2);
-   trianglesNodes.addTriangle(node0, node1, node3);
+   trianglesNodes.addTriangle(node0, node3, node1);
    trianglesNodes.addTriangle(node0, node2, node4);
 
    Reconstruction1 reconstruction;
@@ -82,6 +97,7 @@ TEST(EdgeFlipTest, threeCells)
    const double qualityBefore = MeshQuality::getQuality2WholeMesh(trianglesNodes, points, cellQuality);
    ASSERT_TRUE(std::abs(qualityBefore - 0.019096047302913772) < 1.0e-6);
 
+   checkTriangleArea(trianglesNodes, points);
    const EdgeFlipStrategy strategy{ 1.0, 10 };
    const int numSweeps = edgeFlip.execute(strategy);
    ASSERT_EQ(numSweeps, 2);
@@ -100,10 +116,10 @@ TEST(EdgeFlipTest, nonConvex)
    const auto node3 = points.addIfNew(Point2{ 0.2, 0.1 });
    TrianglesNodes trianglesNodes;
    trianglesNodes.addTriangle(node0, node1, node2);
-   trianglesNodes.addTriangle(node0, node1, node3);
+   trianglesNodes.addTriangle(node0, node3, node1);
 
    Reconstruction1 reconstruction;
-   reconstruction.Cycles.push_back(std::vector<NodeIndex>{ node0, node2, node1, node3 });
+   reconstruction.Cycles.push_back(std::vector<NodeIndex>{ node0, node3, node1, node2 });
 
    const Geometry::ManifoldId manifoldId(Topology::Edge, "Loop");
    std::vector<std::unique_ptr<IManifoldReconstruction>> reconstructions;
@@ -114,11 +130,13 @@ TEST(EdgeFlipTest, nonConvex)
 
    const double qualityBefore = MeshQuality::getQuality2WholeMesh(trianglesNodes, points, cellQuality);
    ASSERT_TRUE(std::abs(qualityBefore - 0.086573815128912157) < 1.0e-6);
+   checkTriangleArea(trianglesNodes, points);
 
    const EdgeFlipStrategy strategy{ 0.15, 10 };
    const int numSweeps = edgeFlip.execute(strategy);
-   ASSERT_EQ(numSweeps, 2);
+   ASSERT_EQ(numSweeps, 1);
 
+   // Nothing has happened
    const double qualityAfter = MeshQuality::getQuality2WholeMesh(trianglesNodes, points, cellQuality);
-   ASSERT_TRUE(std::abs(qualityAfter - 0.19035310458332150) < 1.0e-6);
+   ASSERT_TRUE(std::abs(qualityAfter - 0.086573815128912157) < 1.0e-6);
 }

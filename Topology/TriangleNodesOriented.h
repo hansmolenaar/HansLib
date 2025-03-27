@@ -26,6 +26,9 @@ namespace Topology
       bool contains(const EdgeNodesDirected& edge) const { return m_triangle.contains(edge); };
       NodeIndex oppositeNode(const EdgeNodesDirected& edge) const { return m_triangle.oppositeNode(edge); }
       const TriangleNodes& asTriangleNodes() const { return m_triangle; }
+
+      // returns std::numeric_limtis<size_t>::max() if not found
+      size_t find(NodeIndex node) const;
    private:
       TriangleNodes m_triangle;
    };

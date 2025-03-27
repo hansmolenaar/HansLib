@@ -47,6 +47,15 @@ TEST(TriangleNodesOrientedTest, OppositeNode)
    ASSERT_THROW(triangle.oppositeNode({ 4,5 }), MyException);
 }
 
+TEST(TriangleNodesOrientedTest, Find)
+{
+   const TriangleNodesOriented triangle{ 3, 4, 5 };
+   ASSERT_EQ(triangle.find(3), 0);
+   ASSERT_EQ(triangle.find(4), 1);
+   ASSERT_EQ(triangle.find(5), 2);
+   ASSERT_EQ(triangle.find(6), std::numeric_limits<size_t>::max());
+}
+
 TEST(TriangleNodesOrientedTest, CreateOriented)
 {
    std::array<NodeIndex, 3> nodes{ 1,2,3 };

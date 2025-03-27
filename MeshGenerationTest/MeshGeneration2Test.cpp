@@ -19,6 +19,7 @@
 #include "Polygon2AsRegion.h"
 #include "RefinementPredicates.h"
 #include "Single.h"
+#include "Triangle.h"
 #include "UniquePointCollectionBinning.h"
 
 #include <numbers>
@@ -43,6 +44,15 @@ namespace
       return result;
    }
 
+   void checkTriangleArea(const TrianglesNodes& trianglesNodes, const IPointCollection<GeomType, GeomDim2>& points)
+   {
+      for (CellIndex cellIndex : trianglesNodes.getAllTriangles())
+      {
+         const auto& triangleNodes = trianglesNodes.getTriangleNodes(cellIndex);
+         const auto area = Triangle::getAreaSigned(triangleNodes, points);
+         ASSERT_GT(area, 0.0);
+      }
+   }
 }
 
 TEST(MeshGeneration2Test, Ball)
@@ -78,6 +88,7 @@ TEST(MeshGeneration2Test, SingleTriangleToWorld)
    ASSERT_TRUE(areClose(pointGeometry->getPoint(0), Point2{ 1,1 }));
    ASSERT_TRUE(areClose(pointGeometry->getPoint(1), Point2{ 2,1 }));
    ASSERT_TRUE(areClose(pointGeometry->getPoint(2), Point2{ 1,3 }));
+   checkTriangleArea(*trianglesNodes, *pointGeometry);
 
    ASSERT_EQ(trianglesNodes->getAllTriangles().size(), 1);
 
@@ -101,6 +112,7 @@ TEST(MeshGeneration2Test, Ball2)
    MeshGeneration2::BaseTriangulationToWorld(triangles, settings.getGeometryPredicate(), bbInitial, pointGeometry, trianglesNodes, settings.getLogger());
 
    const auto stats = MeshStatistics::Create2(*trianglesNodes, *pointGeometry, settings.getCellQuality());
+   checkTriangleArea(*trianglesNodes, *pointGeometry);
    const MeshStatistics expect{ 281, 504, 0.75 };
    ASSERT_EQ(stats, expect);
 
@@ -128,6 +140,7 @@ TEST(MeshGeneration2Test, Sphere2AndEdge)
    const EdgeNodesDirected edge{ node0, node1 };
 
    const bool anyNodeMoved = AddEdgeManifold1Intersections(manifold, edge, trianglesNodes, manifoldsAndNodes, points);
+   checkTriangleArea(trianglesNodes, points);
    ASSERT_TRUE(anyNodeMoved);
    ASSERT_TRUE(predicate.samePoints(Point2{ 0,-1 }, points.getPoint(node1)));
 }
@@ -151,6 +164,7 @@ TEST(MeshGeneration2Test, Sphere2AndEdge_immobilePoint)
    const NodeIndex node2 = points.addIfNew(Point2{ 0, -1 });
    const EdgeNodesDirected edge{ node0, node1 };
    manifoldsAndNodes.addNodeToManifold(node2, &pointManifold);
+   checkTriangleArea(trianglesNodes, points);
 
    ASSERT_THROW(AddEdgeManifold1Intersections(manifold, edge, trianglesNodes, manifoldsAndNodes, points), MyException);
 }
@@ -173,6 +187,7 @@ TEST(MeshGeneration2Test, Sphere2AndEdge_NoIntersections)
    const bool anyNodeMoved = AddEdgeManifold1Intersections(manifold, edge, trianglesNodes, manifoldsAndNodes, points);
    ASSERT_FALSE(anyNodeMoved);
    ASSERT_TRUE(manifoldsAndNodes.getNodesInManifold(&manifold).empty());
+   checkTriangleArea(trianglesNodes, points);
 }
 
 
@@ -194,6 +209,7 @@ TEST(MeshGeneration2Test, Sphere2AndEdge_EdgePointOnSphere)
    const bool anyNodeMoved = AddEdgeManifold1Intersections(manifold, edge, trianglesNodes, manifoldsAndNodes, points);
    ASSERT_FALSE(anyNodeMoved);
    ASSERT_EQ(Utilities::Single(manifoldsAndNodes.getNodesInManifold(&manifold)), node0);
+   checkTriangleArea(trianglesNodes, points);
 }
 
 
@@ -215,6 +231,7 @@ TEST(MeshGeneration2Test, Sphere2AndEdge_EdgePointOnSphere2)
    const bool anyNodeMoved = AddEdgeManifold1Intersections(manifold, edge, trianglesNodes, manifoldsAndNodes, points);
    ASSERT_FALSE(anyNodeMoved);
    ASSERT_EQ(Utilities::Single(manifoldsAndNodes.getNodesInManifold(&manifold)), node1);
+   checkTriangleArea(trianglesNodes, points);
 }
 
 
@@ -236,6 +253,7 @@ TEST(MeshGeneration2Test, Sphere2AndEdge_EdgePointBothOnSphere)
    const bool anyNodeMoved = AddEdgeManifold1Intersections(manifold, edge, trianglesNodes, manifoldsAndNodes, points);
    ASSERT_FALSE(anyNodeMoved);
    ASSERT_EQ(manifoldsAndNodes.getNodesInManifold(&manifold).size(), 2);
+   checkTriangleArea(trianglesNodes, points);
 }
 
 
@@ -258,6 +276,7 @@ TEST(MeshGeneration2Test, Sphere2AndEdge_OneEdgePointOnSphereTwoIntersections)
    ASSERT_TRUE(anyNodeMoved);
    ASSERT_EQ(manifoldsAndNodes.getNodesInManifold(&manifold).size(), 2);
    ASSERT_TRUE(predicate.samePoints(points.getPoint(node1), Point2{ 0, -1 }));
+   checkTriangleArea(trianglesNodes, points);
 }
 
 
@@ -281,6 +300,7 @@ TEST(MeshGeneration2Test, Sphere2AndEdge_TwoIntersections)
    ASSERT_EQ(manifoldsAndNodes.getNodesInManifold(&manifold).size(), 2);
    ASSERT_TRUE(predicate.samePoints(points.getPoint(node0), Point2{ 0, -1 }));
    ASSERT_TRUE(predicate.samePoints(points.getPoint(node1), Point2{ 0, 1 }));
+   checkTriangleArea(trianglesNodes, points);
 }
 
 TEST(MeshGeneration2Test, Sphere2_intersect_4)
@@ -332,6 +352,7 @@ TEST(MeshGeneration2Test, Sphere2_intersect_4)
    nibble(ballAsRegion, reconstructions, *trianglesNodes, *pointGeometry, settings.getLogger());
    ASSERT_EQ(trianglesNodes->getAllTriangles().size(), 250);
    ASSERT_EQ(trianglesNodes->getAllNodes().size(), 147);
+   checkTriangleArea(*trianglesNodes, *pointGeometry);
 
    stats = MeshStatistics::Create2(*trianglesNodes, *pointGeometry, settings.getCellQuality());
    expect = { 147, 250, 0.37443649960593806 };
@@ -387,6 +408,7 @@ TEST(MeshGeneration2Test, Sphere2_intersect_3)
    nibble(ballAsRegion, reconstructions, *trianglesNodes, *pointGeometry, settings.getLogger());
    ASSERT_EQ(trianglesNodes->getAllTriangles().size(), 60);
    ASSERT_EQ(trianglesNodes->getAllNodes().size(), 41);
+   checkTriangleArea(*trianglesNodes, *pointGeometry);
 
 
    stats = MeshStatistics::Create2(*trianglesNodes, *pointGeometry, settings.getCellQuality());
@@ -444,6 +466,7 @@ TEST(MeshGeneration2Test, Sphere2_intersect_5)
    stats = MeshStatistics::Create2(*trianglesNodes, *pointGeometry, settings.getCellQuality());
    expect = { 565, 1040, 0.36698742876122409 };
    ASSERT_EQ(expect, stats);
+   checkTriangleArea(*trianglesNodes, *pointGeometry);
 
    const auto vtkDataNibbled = MeshGeneration2::ToVtkData(*trianglesNodes, *pointGeometry, { project, "mesh" });
    Paraview::Write(*vtkDataNibbled);
@@ -488,6 +511,7 @@ TEST(MeshGeneration2Test, Triangle2_1)
 
    nibble(region, reconstructions, *trianglesNodes, *pointGeometry, settings.getLogger());
    ASSERT_EQ(trianglesNodes->getAllTriangles().size(), 2297);
+   checkTriangleArea(*trianglesNodes, *pointGeometry);
 
    const auto stats = MeshStatistics::Create2(*trianglesNodes, *pointGeometry, settings.getCellQuality());
    const MeshStatistics expect = { 1233, 2297, 0.21379225557104328 };
@@ -545,4 +569,5 @@ TEST(MeshGeneration2Test, Triangle2D_2)
    const EdgeFlipStrategy strategy{ 0.25, 2 };
    edgeFlip.execute(strategy);
 
+   checkTriangleArea(*trianglesNodes, *pointGeometry);
 }

@@ -19,7 +19,8 @@ namespace MeshGeneration
 
       // No ordering of the nodes assumed
       CellIndex addTriangle(PointIndex n0, PointIndex n1, PointIndex n2);
-      CellIndex addTriangle(const Topology::TriangleNodes& triangle);
+      CellIndex addTriangle(const Topology::TriangleNodes& triangle); // TODO remove me
+      CellIndex addTriangle(const Topology::TriangleNodesOriented& triangle);
       void deleteTriangle(CellIndex triangleId);
       boost::container::static_vector<CellIndex, 2> getEdgeConnectedTriangles(PointIndex n0, PointIndex n1) const;
       boost::container::static_vector<CellIndex, Topology::NumNodesOnTriangle> getEdgeConnectedTriangles(CellIndex triangleId) const;
@@ -41,7 +42,7 @@ namespace MeshGeneration
       std::string toString() const;
 
    private:
-      std::optional<CellIndex> tryGetTriangleFromSortedNodes(const Topology::TriangleNodesOriented& nodes) const;
+      std::optional<CellIndex> tryGetTriangleFromOrientedNodes(const Topology::TriangleNodesOriented& nodes) const;
       void checkNodeId(PointIndex nodeId) const;
       void checkTriangleId(CellIndex triangleId) const;
 

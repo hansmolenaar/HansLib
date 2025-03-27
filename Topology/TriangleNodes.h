@@ -24,6 +24,7 @@ namespace Topology
       bool contains(NodeIndex node) const;
       bool contains(const EdgeNodesDirected& edge) const;
       NodeIndex oppositeNode(const EdgeNodesDirected& edge) const;
+
    private:
       std::array<NodeIndex, NumNodesOnTriangle> m_nodes;
    };
