@@ -19,7 +19,7 @@ TEST(Manifold1ReconstructionTest, singleEdge)
    const UniquePointCollectionBinning<GeomDim2> points(areClose, std::vector<Point2>{Point2{ 1,1 }, Point2{ 2,1 }, Point2{ 1,2 }});
    const std::array<NodeIndex, 2 > nodes{ 1, 2 };
    TrianglesNodes trianglesNodes;
-   trianglesNodes.addTriangle(0, 1, 2);
+   trianglesNodes.addTriangle(TriangleNodesOriented(0, 1, 2));
    const auto reconstruction = MeshGeneration::Generate2(nodes, trianglesNodes, points);
 }
 
@@ -35,8 +35,8 @@ TEST(Manifold1ReconstructionTest, twoEdges)
    const auto node4 = points.addIfNew(Point2{ 4,0 });
    const std::array<NodeIndex, 3 > nodes{ node3, node1, node4 };
    TrianglesNodes trianglesNodes;
-   trianglesNodes.addTriangle(node1, node0, node3);
-   trianglesNodes.addTriangle(node3, node2, node4);
+   trianglesNodes.addTriangle(TriangleNodesOriented(node1, node0, node3));
+   trianglesNodes.addTriangle(TriangleNodesOriented(node3, node2, node4));
    const auto reconstruction = MeshGeneration::Generate2(nodes, trianglesNodes, points);
    ASSERT_TRUE(reconstruction.Singletons.empty());
    ASSERT_TRUE(reconstruction.Cycles.empty());

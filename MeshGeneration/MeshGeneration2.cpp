@@ -170,7 +170,7 @@ void MeshGeneration2::BaseTriangulationToWorld(
       const auto n0 = static_cast<PointIndex>(toWorld.at(triangle.at(0)));
       const auto n1 = static_cast<PointIndex>(toWorld.at(triangle.at(1)));
       const auto n2 = static_cast<PointIndex>(toWorld.at(triangle.at(2)));
-      triangleNodes->addTriangle(n0, n1, n2);
+      triangleNodes->addTriangle(TriangleNodesOriented(n0, n1, n2));
    }
 
    logger.logLine("MeshGeneration2::BaseTriangulationToWorld topology\n" + triangleNodes->toString());

@@ -15,11 +15,6 @@ namespace MeshGeneration
    class TrianglesNodes
    {
    public:
-
-
-      // No ordering of the nodes assumed
-      CellIndex addTriangle(PointIndex n0, PointIndex n1, PointIndex n2);
-      CellIndex addTriangle(const Topology::TriangleNodes& triangle); // TODO remove me
       CellIndex addTriangle(const Topology::TriangleNodesOriented& triangle);
       void deleteTriangle(CellIndex triangleId);
       boost::container::static_vector<CellIndex, 2> getEdgeConnectedTriangles(PointIndex n0, PointIndex n1) const;

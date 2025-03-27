@@ -6,15 +6,14 @@
 using namespace MeshGeneration;
 using namespace Topology;
 
-CellIndex TrianglesNodes::addTriangle(PointIndex n0, PointIndex n1, PointIndex n2)
+CellIndex TrianglesNodes::addTriangle(const TriangleNodesOriented& nodes)
 {
-   const TriangleNodesOriented nodes(n0, n1, n2);
-
    // Check for duplicates
    if (tryGetTriangleFromOrientedNodes(nodes))
    {
-      const std::string msg = "TriangleNodes::addTriangle() triangle already exists: " + std::to_string(n0) + " " + std::to_string(n1) + " " + std::to_string(n2);
-      throw MyException(msg);
+      std::ostringstream os;
+      os << "TriangleNodes::addTriangle() triangle already exists: " << nodes;
+      throw MyException(os.str());
    }
 
    // CellId must be unique to avoid an enormous mess
@@ -26,17 +25,6 @@ CellIndex TrianglesNodes::addTriangle(PointIndex n0, PointIndex n1, PointIndex n
       m_toTriangles.emplace(n, result);
    }
    return result;
-}
-
-CellIndex TrianglesNodes::addTriangle(const TriangleNodes& triangle)
-{
-   return addTriangle(triangle[0], triangle[1], triangle[2]);
-}
-
-
-CellIndex TrianglesNodes::addTriangle(const TriangleNodesOriented& triangle)
-{
-   return addTriangle(triangle[0], triangle[1], triangle[2]);
 }
 
 std::optional<CellIndex> TrianglesNodes::tryGetTriangleFromOrientedNodes(const TriangleNodesOriented& nodes) const

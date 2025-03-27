@@ -38,8 +38,8 @@ TEST(EdgeFlipTest, base)
    const auto node2 = points.addIfNew(Point2{ 0,0.1 });
    const auto node3 = points.addIfNew(Point2{ 0, -0.1 });
    TrianglesNodes trianglesNodes;
-   trianglesNodes.addTriangle(node0, node1, node2);
-   trianglesNodes.addTriangle(node0, node3, node1);
+   trianglesNodes.addTriangle(TriangleNodesOriented(node0, node1, node2));
+   trianglesNodes.addTriangle(TriangleNodesOriented(node0, node3, node1));
 
    Reconstruction1 reconstruction;
    reconstruction.Cycles.push_back(std::vector<NodeIndex>{ node0, node3, node1, node2 });
@@ -77,9 +77,9 @@ TEST(EdgeFlipTest, threeCells)
    const auto node3 = points.addIfNew(Point2{ 0.5, -0.01 });
    const auto node4 = points.addIfNew(Point2{ -0.02, 0.5 });
    TrianglesNodes trianglesNodes;
-   trianglesNodes.addTriangle(node0, node1, node2);
-   trianglesNodes.addTriangle(node0, node3, node1);
-   trianglesNodes.addTriangle(node0, node2, node4);
+   trianglesNodes.addTriangle(TriangleNodesOriented(node0, node1, node2));
+   trianglesNodes.addTriangle(TriangleNodesOriented(node0, node3, node1));
+   trianglesNodes.addTriangle(TriangleNodesOriented(node0, node2, node4));
 
    Reconstruction1 reconstruction;
    reconstruction.Cycles.push_back(std::vector<NodeIndex>{ node0, node3, node1, node2, node4 });
@@ -115,8 +115,8 @@ TEST(EdgeFlipTest, nonConvex)
    const auto node2 = points.addIfNew(Point2{ -0.1, -0.1 });
    const auto node3 = points.addIfNew(Point2{ 0.2, 0.1 });
    TrianglesNodes trianglesNodes;
-   trianglesNodes.addTriangle(node0, node1, node2);
-   trianglesNodes.addTriangle(node0, node3, node1);
+   trianglesNodes.addTriangle(TriangleNodesOriented(node0, node1, node2));
+   trianglesNodes.addTriangle(TriangleNodesOriented(node0, node3, node1));
 
    Reconstruction1 reconstruction;
    reconstruction.Cycles.push_back(std::vector<NodeIndex>{ node0, node3, node1, node2 });

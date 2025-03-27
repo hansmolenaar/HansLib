@@ -133,7 +133,7 @@ TEST(MeshGeneration2Test, Sphere2AndEdge)
    UniquePointCollectionBinning<GeomDim2> points(predicate, std::vector < Point2>{bb.getLower(), bb.getUpper()});
    ManifoldsAndNodes<GeomDim2> manifoldsAndNodes;
    TrianglesNodes trianglesNodes;
-   const auto cellId = trianglesNodes.addTriangle(points.addIfNew(Point2{ -1, -2 }), points.addIfNew(Point2{ 1, -2 }), points.addIfNew(Point2{ 0, -0.9 }));
+   const auto cellId = trianglesNodes.addTriangle(TriangleNodesOriented(points.addIfNew(Point2{ -1, -2 }), points.addIfNew(Point2{ 1, -2 }), points.addIfNew(Point2{ 0, -0.9 })));
 
    const NodeIndex node0 = points.addIfNew(Point2{ 0, -2 });
    const NodeIndex node1 = points.addIfNew(Point2{ 0, -0.9 });
@@ -157,7 +157,7 @@ TEST(MeshGeneration2Test, Sphere2AndEdge_immobilePoint)
    UniquePointCollectionBinning<GeomDim2> points(predicate, std::vector < Point2>{bb.getLower(), bb.getUpper()});
    ManifoldsAndNodes<GeomDim2> manifoldsAndNodes;
    TrianglesNodes trianglesNodes;
-   const auto cellId = trianglesNodes.addTriangle(points.addIfNew(Point2{ -1, -2 }), points.addIfNew(Point2{ 1, -2 }), points.addIfNew(Point2{ 0, -0.9 }));
+   const auto cellId = trianglesNodes.addTriangle(TriangleNodesOriented(points.addIfNew(Point2{ -1, -2 }), points.addIfNew(Point2{ 1, -2 }), points.addIfNew(Point2{ 0, -0.9 })));
 
    const NodeIndex node0 = points.addIfNew(Point2{ 0, -2 });
    const NodeIndex node1 = points.addIfNew(Point2{ 0, -0.9 });
