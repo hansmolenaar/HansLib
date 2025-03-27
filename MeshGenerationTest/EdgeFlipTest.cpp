@@ -4,6 +4,7 @@
 #include "EdgeFlip.h"
 #include "Manifold1Reconstruction.h"
 #include "ManifoldId.h"
+#include "MeshQuality.h"
 #include "PointClose.h"
 #include "TopologyDefines.h"
 #include "TrianglesNodes.h"
@@ -33,11 +34,91 @@ TEST(EdgeFlipTest, base)
    std::vector<std::unique_ptr<IManifoldReconstruction>> reconstructions;
    reconstructions.emplace_back(std::make_unique<Manifold1Reconstruction>(manifoldId, reconstruction));
 
-   EdgeFlip edgeFlip(trianglesNodes, CellQuality2::MinimumAngle, points, reconstructions);
+   auto cellQuality = CellQuality2::MinimumAngle;
+   EdgeFlip edgeFlip(trianglesNodes, cellQuality, points, reconstructions);
    ASSERT_TRUE(edgeFlip.isFlippable(EdgeNodesSorted(node0, node1)));
    ASSERT_TRUE(edgeFlip.isFlippable(EdgeNodesSorted(node2, node3))); // does not exist
    ASSERT_FALSE(edgeFlip.isFlippable(EdgeNodesSorted(node0, node3)));
 
-   const EdgeFlipStrategy strategy{ 0.9, 2 };
-   edgeFlip.execute(strategy);
+   const double qualityBefore = MeshQuality::getQuality2WholeMesh(trianglesNodes, points, cellQuality);
+   ASSERT_TRUE(std::abs(qualityBefore - 0.095176552291659472) < 1.0e-6);
+
+   const EdgeFlipStrategy strategy{ 0.15, 10 };
+   const int numSweeps = edgeFlip.execute(strategy);
+   ASSERT_EQ(numSweeps, 2);
+
+   const double qualityAfter = MeshQuality::getQuality2WholeMesh(trianglesNodes, points, cellQuality);
+   ASSERT_TRUE(std::abs(qualityAfter - 0.19035310458332150) < 1.0e-6);
+}
+
+
+TEST(EdgeFlipTest, threeCells)
+{
+   const PointClose<GeomType, GeomDim2> areClose;
+   UniquePointCollectionBinning<GeomDim2> points(areClose, std::vector<Point2>{Point2{ -1, -1 }, Point2{ 2,2 }});
+   const auto node0 = points.addIfNew(Point2{ 0,0 });
+   const auto node1 = points.addIfNew(Point2{ 1,0 });
+   const auto node2 = points.addIfNew(Point2{ 0,1 });
+   const auto node3 = points.addIfNew(Point2{ 0.5, -0.01 });
+   const auto node4 = points.addIfNew(Point2{ -0.02, 0.5 });
+   TrianglesNodes trianglesNodes;
+   trianglesNodes.addTriangle(node0, node1, node2);
+   trianglesNodes.addTriangle(node0, node1, node3);
+   trianglesNodes.addTriangle(node0, node2, node4);
+
+   Reconstruction1 reconstruction;
+   reconstruction.Cycles.push_back(std::vector<NodeIndex>{ node0, node3, node1, node2, node4 });
+
+   const Geometry::ManifoldId manifoldId(Topology::Edge, "Loop");
+   std::vector<std::unique_ptr<IManifoldReconstruction>> reconstructions;
+   reconstructions.emplace_back(std::make_unique<Manifold1Reconstruction>(manifoldId, reconstruction));
+
+   auto cellQuality = CellQuality2::MinimumAngle;
+   EdgeFlip edgeFlip(trianglesNodes, cellQuality, points, reconstructions);
+   ASSERT_TRUE(edgeFlip.isFlippable(EdgeNodesSorted(node0, node1)));
+   ASSERT_TRUE(edgeFlip.isFlippable(EdgeNodesSorted(node0, node2)));
+   ASSERT_FALSE(edgeFlip.isFlippable(EdgeNodesSorted(node0, node3)));
+
+   const double qualityBefore = MeshQuality::getQuality2WholeMesh(trianglesNodes, points, cellQuality);
+   ASSERT_TRUE(std::abs(qualityBefore - 0.019096047302913772) < 1.0e-6);
+
+   const EdgeFlipStrategy strategy{ 1.0, 10 };
+   const int numSweeps = edgeFlip.execute(strategy);
+   ASSERT_EQ(numSweeps, 2);
+
+   const double qualityAfter = MeshQuality::getQuality2WholeMesh(trianglesNodes, points, cellQuality);
+   ASSERT_TRUE(std::abs(qualityAfter - 0.31103853056520964) < 1.0e-6);
+}
+
+TEST(EdgeFlipTest, nonConvex)
+{
+   const PointClose<GeomType, GeomDim2> areClose;
+   UniquePointCollectionBinning<GeomDim2> points(areClose, std::vector<Point2>{Point2{ -2, -2 }, Point2{ 2,2 }});
+   const auto node0 = points.addIfNew(Point2{ 0,0 });
+   const auto node1 = points.addIfNew(Point2{ 0,1 });
+   const auto node2 = points.addIfNew(Point2{ -0.1, -0.1 });
+   const auto node3 = points.addIfNew(Point2{ 0.2, 0.1 });
+   TrianglesNodes trianglesNodes;
+   trianglesNodes.addTriangle(node0, node1, node2);
+   trianglesNodes.addTriangle(node0, node1, node3);
+
+   Reconstruction1 reconstruction;
+   reconstruction.Cycles.push_back(std::vector<NodeIndex>{ node0, node2, node1, node3 });
+
+   const Geometry::ManifoldId manifoldId(Topology::Edge, "Loop");
+   std::vector<std::unique_ptr<IManifoldReconstruction>> reconstructions;
+   reconstructions.emplace_back(std::make_unique<Manifold1Reconstruction>(manifoldId, reconstruction));
+
+   auto cellQuality = CellQuality2::MinimumAngle;
+   EdgeFlip edgeFlip(trianglesNodes, cellQuality, points, reconstructions);
+
+   const double qualityBefore = MeshQuality::getQuality2WholeMesh(trianglesNodes, points, cellQuality);
+   ASSERT_TRUE(std::abs(qualityBefore - 0.086573815128912157) < 1.0e-6);
+
+   const EdgeFlipStrategy strategy{ 0.15, 10 };
+   const int numSweeps = edgeFlip.execute(strategy);
+   ASSERT_EQ(numSweeps, 2);
+
+   const double qualityAfter = MeshQuality::getQuality2WholeMesh(trianglesNodes, points, cellQuality);
+   ASSERT_TRUE(std::abs(qualityAfter - 0.19035310458332150) < 1.0e-6);
 }

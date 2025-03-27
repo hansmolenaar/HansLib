@@ -25,7 +25,7 @@ namespace MeshGeneration
          const IUniquePointCollection2& pointCollection,
          const std::vector<std::unique_ptr<IManifoldReconstruction>>& reconstructions);
 
-      void execute(const EdgeFlipStrategy& strategy);
+      int execute(const EdgeFlipStrategy& strategy);
       bool isFlippable(const Topology::EdgeNodesSorted& edge) const;
 
    private:

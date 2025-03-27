@@ -83,14 +83,17 @@ MeshGeneration::EdgeFlip::EdgeFlip(
    str::transform(reconstructions, m_reconstructions.begin(), [](const std::unique_ptr<IManifoldReconstruction>& up) {return up.get(); });
 }
 
-void MeshGeneration::EdgeFlip::execute(const EdgeFlipStrategy& strategy)
+int MeshGeneration::EdgeFlip::execute(const EdgeFlipStrategy& strategy)
 {
-   if (strategy.maxNumSweeps <= 0) return;
+   if (strategy.maxNumSweeps <= 0) return 0;
    std::priority_queue<CellAndQuality> taq;
 
    std::vector<CellIndex> todo = m_trianglesNodes.getAllTriangles();
-   for (int sweep = 0; sweep < strategy.maxNumSweeps; ++sweep)
+   bool anyChange = true;
+   int sweep = 0;
+   for (; sweep < strategy.maxNumSweeps && anyChange; ++sweep)
    {
+      anyChange = false;
       for (auto c : todo)
       {
          if (m_trianglesNodes.isKnownTriangleId(c))
@@ -124,6 +127,7 @@ void MeshGeneration::EdgeFlip::execute(const EdgeFlipStrategy& strategy)
          }
          else
          {
+            anyChange = true;
             m_trianglesNodes.deleteTriangle(poorTriangle.triangleId);
             m_trianglesNodes.deleteTriangle(edgeFlipData.otherCell);
             const auto newCellId0 = m_trianglesNodes.addTriangle(edgeFlipData.newCell0);
@@ -133,6 +137,8 @@ void MeshGeneration::EdgeFlip::execute(const EdgeFlipStrategy& strategy)
          }
       }
    }
+
+   return sweep;
 }
 
 bool MeshGeneration::EdgeFlip::isFlippable(const EdgeNodesSorted& edge) const
