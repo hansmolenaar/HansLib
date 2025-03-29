@@ -169,3 +169,38 @@ TEST(PointTest, ostreamPoint)
    os << p;
    ASSERT_EQ(os.str(), "(2, 3, -6)");
 }
+
+TEST(PointTest, IntDivide)
+{
+   IntPoint2 p0{ 2,4 };
+   p0 = p0 / 2;
+
+   ASSERT_EQ(p0, (IntPoint2{ 1,2 }));
+}
+
+TEST(PointTest, VectorProduct1)
+{
+   const IntPoint3 a{ 2,3, 4 };
+   const IntPoint3 b{ 5,6, 7 };
+   const IntPoint3 c = a * b;
+
+   ASSERT_EQ(c, (IntPoint3{ -3, 6, -3 }));
+}
+
+TEST(PointTest, VectorProduct2)
+{
+   const IntPoint3 a{ 3,-3, 1 };
+   const IntPoint3 b{ 4,9, 2 };
+   const IntPoint3 c = a * b;
+
+   ASSERT_EQ(c, (IntPoint3{ -15, -2, 39 }));
+}
+
+TEST(PointTest, VectorProduct3)
+{
+   const IntPoint3 a{ 3,4, 7 };
+   const IntPoint3 b{ 4,9, 2 };
+   const IntPoint3 c = a * b;
+
+   ASSERT_EQ(c, (IntPoint3{ -55,22,11 }));
+}

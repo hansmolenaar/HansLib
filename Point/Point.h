@@ -40,6 +40,19 @@ std::array<T, N> operator*(std::array<T, N> result, T factor)
    return result;
 }
 
+template<typename T>
+std::array<T, 3> operator*(const std::array<T, 3>& a, const std::array<T, 3>& b)
+{
+   return { a[1] * b[2] - a[2] * b[1],a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0] };
+}
+
+template<typename T, int N>
+std::array<T, N> operator/(std::array<T, N> result, int divisor)
+{
+   str::transform(result, result.begin(), [divisor](T value) {return value / divisor; });
+   return result;
+}
+
 template<typename T, int N>
 std::array<T, N> operator*(T factor, std::array<T, N> result)
 {

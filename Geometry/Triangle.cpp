@@ -20,13 +20,35 @@ double Triangle::SmallestAngle(const Point2& p0, const Point2& p1, const Point2&
    return minAngle;
 }
 
-std::array<Point2, Topology::NumNodesOnTriangle> Triangle::getPoints(const Topology::TriangleNodesOriented& nodes, const IPointCollection<double, GeomDim2>& points)
+std::array<Point2, Topology::NumNodesOnTriangle> Triangle::getPoints(const Topology::TriangleNodesOriented& nodes, const IPointCollection2& points)
 {
    return { points.getPoint(nodes[0]),points.getPoint(nodes[1]), points.getPoint(nodes[2]) };
 }
 
-double Triangle::getAreaSigned(const Topology::TriangleNodesOriented& nodes, const IPointCollection<double, GeomDim2>& points)
+double Triangle::getAreaSigned(const Topology::TriangleNodesOriented& nodes, const IPointCollection2& points)
 {
    const auto triangle = getPoints(nodes, points);
    return AreaSigned(triangle[0], triangle[1], triangle[2]);
+}
+
+Point3 Triangle::getCenter(const Point3& p0, const Point3& p1, const Point3& p2)
+{
+   return (p0 + p1 + p2) / 3;
+}
+
+Point3 Triangle::getCenter(const Topology::TriangleNodesOriented& nodes, const IPointCollection3& points)
+{
+   return getCenter(points.getPoint(nodes[0]), points.getPoint(nodes[1]), points.getPoint(nodes[2]));
+}
+
+Point3 Triangle::getAreaDirected(const Point3& p0, const Point3& p1, const Point3& p2)
+{
+   const auto d1 = p1 - p0;
+   const auto d2 = p2 - p0;
+   return (d1 * d2) / 2;
+}
+
+Point3 Triangle::getAreaDirected(const Topology::TriangleNodesOriented& nodes, const IPointCollection3& points)
+{
+   return getAreaDirected(points.getPoint(nodes[0]), points.getPoint(nodes[1]), points.getPoint(nodes[2]));
 }
