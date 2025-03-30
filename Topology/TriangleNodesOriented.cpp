@@ -28,3 +28,8 @@ size_t TriangleNodesOriented::find(NodeIndex node) const
    if (node == m_triangle[2])  return 2;
    return std::numeric_limits<size_t>::max();
 }
+
+std::array<Topology::EdgeNodesDirected, NumEdgesOnTriangle> TriangleNodesOriented::getEdges() const
+{
+   return { EdgeNodesDirected(m_triangle[0], m_triangle[1]),EdgeNodesDirected(m_triangle[1], m_triangle[2]), EdgeNodesDirected(m_triangle[2], m_triangle[0]) };
+}

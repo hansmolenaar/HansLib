@@ -23,12 +23,14 @@
 #include "UniquePointCollectionBinning.h"
 
 #include <numbers>
+#include <set>
 
 using namespace MeshGeneration;
 using namespace MeshGeneration2;
 using namespace IntervalTree;
 using namespace Geometry;
 using namespace Utilities;
+using namespace Topology;
 
 namespace
 {
@@ -52,6 +54,71 @@ namespace
          const auto area = Triangle::getAreaSigned(triangleNodes, points);
          ASSERT_GT(area, 0.0);
       }
+   }
+
+   std::vector<EdgeNodesDirected> checkEdgeOrientations(const TrianglesNodes& trianglesNodes)
+   {
+      std::set<EdgeNodesDirected> uniqueEdges;
+      for (CellIndex triangleId : trianglesNodes.getAllTriangles())
+      {
+         const auto triangle = trianglesNodes.getTriangleNodes(triangleId);
+         for (const auto& edge : triangle.getEdges())
+         {
+            const auto retval = uniqueEdges.insert(edge);
+            if (!retval.second)
+            {
+               throw MyException("checkEdgeOrientations overconnected edge");
+            }
+         }
+      }
+
+      std::vector<EdgeNodesDirected> result;
+      for (const auto& edge : uniqueEdges)
+      {
+         if (!uniqueEdges.contains(EdgeNodesDirected(edge[1], edge[0])))
+         {
+            result.push_back(edge);
+         }
+      }
+      return result;
+   }
+
+   void checkBoundaryEdgesInReconstruction(
+      const std::vector<EdgeNodesDirected>& boundaryEdges,
+      const std::vector<std::unique_ptr<MeshGeneration::IManifoldReconstruction>>& reconstructions)
+   {
+      std::vector< const Manifold1Reconstruction*> manifolds1;
+      for (const auto& up : reconstructions)
+      {
+         const auto* reconstruction1 = dynamic_cast<const Manifold1Reconstruction*>(up.get());
+         if (reconstruction1 != nullptr)
+         {
+            manifolds1.push_back(reconstruction1);
+         }
+      }
+
+      for (const auto& edge : boundaryEdges)
+      {
+         const EdgeNodesSorted edgeSorted(edge[0], edge[1]);
+         ASSERT_TRUE(str::any_of(manifolds1, [&edgeSorted](const  Manifold1Reconstruction* mptr) {return mptr->contains(edgeSorted); }));
+      }
+   }
+
+   void checkMesh(
+      const IGeometryRegion<double, GeomDim2>& region,
+      const TrianglesNodes& triangles,
+      const std::vector<std::unique_ptr<MeshGeneration::IManifoldReconstruction>>& reconstructions,
+      const IPointCollection2& points,
+      IMeshingSettings2& settings)
+   {
+      IRegionManifoldsTestInterface(region.getManifolds(), settings.getGeometryPredicate());
+      checkTriangleArea(triangles, points);
+      const bool succes = MeshGeneration2::checkReconstructions(region.getManifolds(), reconstructions, settings.getLogger());
+      ASSERT_TRUE(succes);
+
+      const auto boundaryEdges = checkEdgeOrientations(triangles);
+      checkBoundaryEdgesInReconstruction(boundaryEdges, reconstructions);
+
    }
 }
 
@@ -309,7 +376,6 @@ TEST(MeshGeneration2Test, Sphere2_intersect_4)
    const Ball<GeomType, GeomDim2> ball(Point2{ 1.5, 2.5 }, 3);
    const Ball2AsRegion<GeomType> ballAsRegion(ball, project);
    MeshingSettingsStandard<2> settings(4, 1.25);
-   IRegionManifoldsTestInterface(ballAsRegion.getManifolds(), settings.getGeometryPredicate());
    const auto triangles = MeshGeneration2::GenerateBaseTriangulation(ballAsRegion, settings);
 
    std::unique_ptr<IDynamicUniquePointCollection<GeomType, GeomDim2>> pointGeometry;
@@ -334,8 +400,7 @@ TEST(MeshGeneration2Test, Sphere2_intersect_4)
 
    const auto nodesOnManifold = manifoldsAndNodes.getNodesInManifold(manifoldPtr);
    const auto reconstructions = MeshGeneration2::createReconstructions(ballAsRegion.getManifolds(), *trianglesNodes, manifoldsAndNodes, *pointGeometry);
-   const bool succes = MeshGeneration2::checkReconstructions(ballAsRegion.getManifolds(), reconstructions, settings.getLogger());
-   ASSERT_TRUE(succes);
+
    ASSERT_EQ(reconstructions.size(), 1);
    const auto reconstruction = dynamic_cast<const Manifold1Reconstruction&>(*reconstructions.front()).getReconstruction();
    ASSERT_TRUE(reconstruction.Singletons.empty());
@@ -352,7 +417,7 @@ TEST(MeshGeneration2Test, Sphere2_intersect_4)
    nibble(ballAsRegion, reconstructions, *trianglesNodes, *pointGeometry, settings.getLogger());
    ASSERT_EQ(trianglesNodes->getAllTriangles().size(), 250);
    ASSERT_EQ(trianglesNodes->getAllNodes().size(), 147);
-   checkTriangleArea(*trianglesNodes, *pointGeometry);
+   checkMesh(ballAsRegion, *trianglesNodes, reconstructions, *pointGeometry, settings);
 
    stats = MeshStatistics::Create2(*trianglesNodes, *pointGeometry, settings.getCellQuality());
    expect = { 147, 250, 0.37443649960593806 };
@@ -368,7 +433,6 @@ TEST(MeshGeneration2Test, Sphere2_intersect_3)
    const Ball<GeomType, GeomDim2> ball(Point2{ 1.5, 2.5 }, 3);
    const Ball2AsRegion<GeomType> ballAsRegion(ball, "MeshGeneration2Test_Sphere2_intersect_3");
    MeshingSettingsStandard<2> settings(3, 1.25);
-   IRegionManifoldsTestInterface(ballAsRegion.getManifolds(), settings.getGeometryPredicate());
    const auto triangles = MeshGeneration2::GenerateBaseTriangulation(ballAsRegion, settings);
 
    std::unique_ptr<IDynamicUniquePointCollection<GeomType, GeomDim2>> pointGeometry;
@@ -389,8 +453,7 @@ TEST(MeshGeneration2Test, Sphere2_intersect_3)
    ASSERT_EQ(128, vtkData->getNumCells());
    const auto nodesOnManifold = manifoldsAndNodes.getNodesInManifold(manifoldPtr);
    const auto reconstructions = MeshGeneration2::createReconstructions(ballAsRegion.getManifolds(), *trianglesNodes, manifoldsAndNodes, *pointGeometry);
-   const bool succes = MeshGeneration2::checkReconstructions(ballAsRegion.getManifolds(), reconstructions, settings.getLogger());
-   ASSERT_TRUE(succes);
+
    ASSERT_EQ(reconstructions.size(), 1);
    const auto reconstruction = dynamic_cast<const Manifold1Reconstruction&>(*reconstructions.front()).getReconstruction();
 
@@ -408,8 +471,7 @@ TEST(MeshGeneration2Test, Sphere2_intersect_3)
    nibble(ballAsRegion, reconstructions, *trianglesNodes, *pointGeometry, settings.getLogger());
    ASSERT_EQ(trianglesNodes->getAllTriangles().size(), 60);
    ASSERT_EQ(trianglesNodes->getAllNodes().size(), 41);
-   checkTriangleArea(*trianglesNodes, *pointGeometry);
-
+   checkMesh(ballAsRegion, *trianglesNodes, reconstructions, *pointGeometry, settings);
 
    stats = MeshStatistics::Create2(*trianglesNodes, *pointGeometry, settings.getCellQuality());
    expect = { 41, 60, 0.55410066890581655 };
@@ -425,7 +487,6 @@ TEST(MeshGeneration2Test, Sphere2_intersect_5)
    const Ball<GeomType, GeomDim2> ball(Point2{ 1.5, 2.5 }, 3);
    const Ball2AsRegion<GeomType> ballAsRegion(ball, "MeshGeneration2Test_Sphere2_intersect_5");
    MeshingSettingsStandard<2> settings(5, 1.25);
-   IRegionManifoldsTestInterface(ballAsRegion.getManifolds(), settings.getGeometryPredicate());
    const auto triangles = MeshGeneration2::GenerateBaseTriangulation(ballAsRegion, settings);
 
    std::unique_ptr<IDynamicUniquePointCollection<GeomType, GeomDim2>> pointGeometry;
@@ -446,8 +507,7 @@ TEST(MeshGeneration2Test, Sphere2_intersect_5)
    ASSERT_EQ(1712, vtkDataMesh->getNumCells());
    const auto nodesOnManifold = manifoldsAndNodes.getNodesInManifold(manifoldPtr);
    const auto reconstructions = MeshGeneration2::createReconstructions(ballAsRegion.getManifolds(), *trianglesNodes, manifoldsAndNodes, *pointGeometry);
-   const bool succes = MeshGeneration2::checkReconstructions(ballAsRegion.getManifolds(), reconstructions, settings.getLogger());
-   ASSERT_TRUE(succes);
+
    ASSERT_EQ(reconstructions.size(), 1);
    const auto reconstruction = dynamic_cast<const Manifold1Reconstruction&>(*reconstructions.front()).getReconstruction();
 
@@ -466,7 +526,7 @@ TEST(MeshGeneration2Test, Sphere2_intersect_5)
    stats = MeshStatistics::Create2(*trianglesNodes, *pointGeometry, settings.getCellQuality());
    expect = { 565, 1040, 0.36698742876122409 };
    ASSERT_EQ(expect, stats);
-   checkTriangleArea(*trianglesNodes, *pointGeometry);
+   checkMesh(ballAsRegion, *trianglesNodes, reconstructions, *pointGeometry, settings);
 
    const auto vtkDataNibbled = MeshGeneration2::ToVtkData(*trianglesNodes, *pointGeometry, { project, "mesh" });
    Paraview::Write(*vtkDataNibbled);
@@ -479,7 +539,6 @@ TEST(MeshGeneration2Test, Triangle2_1)
    const Polygon2AsRegion<double> region(polygonPoints, "triangle");
 
    MeshingSettingsStandard<2> settings(6, 1.25);
-   IRegionManifoldsTestInterface(region.getManifolds(), settings.getGeometryPredicate());
    const auto triangles = MeshGeneration2::GenerateBaseTriangulation(region, settings);
 
    std::unique_ptr<IDynamicUniquePointCollection<GeomType, GeomDim2>> pointGeometry;
@@ -500,8 +559,6 @@ TEST(MeshGeneration2Test, Triangle2_1)
    }
 
    const auto reconstructions = MeshGeneration2::createReconstructions(region, *trianglesNodes, manifoldsAndNodes, *pointGeometry);
-   const bool succes = MeshGeneration2::checkReconstructions(region, reconstructions, settings.getLogger());
-   ASSERT_TRUE(succes);
 
    const auto vtkDataMesh = MeshGeneration2::ToVtkData(*trianglesNodes, *pointGeometry, { project, "mesh before nibbling" });
    Paraview::Write(*vtkDataMesh);
@@ -511,7 +568,7 @@ TEST(MeshGeneration2Test, Triangle2_1)
 
    nibble(region, reconstructions, *trianglesNodes, *pointGeometry, settings.getLogger());
    ASSERT_EQ(trianglesNodes->getAllTriangles().size(), 2297);
-   checkTriangleArea(*trianglesNodes, *pointGeometry);
+   checkMesh(region, *trianglesNodes, reconstructions, *pointGeometry, settings);
 
    const auto stats = MeshStatistics::Create2(*trianglesNodes, *pointGeometry, settings.getCellQuality());
    const MeshStatistics expect = { 1233, 2297, 0.21379225557104328 };
@@ -528,7 +585,6 @@ TEST(MeshGeneration2Test, Triangle2D_2)
    const Polygon2AsRegion<double> region(polygonPoints, "triangle");
 
    MeshingSettingsStandard<2> settings(4, 1.25);
-   IRegionManifoldsTestInterface(region.getManifolds(), settings.getGeometryPredicate());
    const auto triangles = MeshGeneration2::GenerateBaseTriangulation(region, settings);
 
    std::unique_ptr<IDynamicUniquePointCollection<GeomType, GeomDim2>> pointGeometry;
@@ -546,8 +602,6 @@ TEST(MeshGeneration2Test, Triangle2D_2)
    }
 
    const auto reconstructions = MeshGeneration2::createReconstructions(region, *trianglesNodes, manifoldsAndNodes, *pointGeometry);
-   const bool succes = MeshGeneration2::checkReconstructions(region, reconstructions, settings.getLogger());
-   ASSERT_TRUE(succes);
 
    const auto vtkDataMesh = MeshGeneration2::ToVtkData(*trianglesNodes, *pointGeometry, { project, "mesh full" });
    Paraview::Write(*vtkDataMesh);
@@ -569,5 +623,5 @@ TEST(MeshGeneration2Test, Triangle2D_2)
    const EdgeFlipStrategy strategy{ 0.25, 2 };
    edgeFlip.execute(strategy);
 
-   checkTriangleArea(*trianglesNodes, *pointGeometry);
+   checkMesh(region, *trianglesNodes, reconstructions, *pointGeometry, settings);
 }

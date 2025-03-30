@@ -103,9 +103,9 @@ boost::container::static_vector<CellIndex, Topology::NumNodesOnTriangle> Triangl
 {
    boost::container::static_vector<CellIndex, 3> result;
    const auto triangle = getTriangleNodes(triangleId);
-   for (size_t n = 0; n < Topology::NumNodesOnTriangle; ++n)
+   for (const auto& edge : triangle.getEdges())
    {
-      const auto ngbs = getEdgeConnectedTriangles(triangle[n], triangle[(n + 1) % Topology::NumNodesOnTriangle]);
+      const auto ngbs = getEdgeConnectedTriangles(edge[0], edge[1]);
       if (ngbs.size() > 0 && ngbs[0] != triangleId) result.push_back(ngbs[0]);
       if (ngbs.size() > 1 && ngbs[1] != triangleId) result.push_back(ngbs[1]);
    }
