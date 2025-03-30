@@ -50,7 +50,7 @@ TEST(TriangleNodesTest, OppositeNode)
 TEST(TriangleNodesTest, StreamInsertion)
 {
    std::ostringstream os;
-   const TriangleNodes edge{ 2,1,5 };
-   os << edge;
+   const TriangleNodes triangle{ 2,1,5 };
+   os << triangle;
    ASSERT_EQ(os.str(), "(2, 1, 5)");
 }

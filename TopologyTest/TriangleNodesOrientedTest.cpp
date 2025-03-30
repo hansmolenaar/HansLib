@@ -78,7 +78,7 @@ TEST(TriangleNodesOrientedTest, CreateOriented)
 TEST(TriangleNodesOrientedTest, StreamInsertion)
 {
    std::ostringstream os;
-   const TriangleNodesOriented edge{ 2,1,5 };
-   os << edge;
+   const TriangleNodesOriented triangle{ 2,1,5 };
+   os << triangle;
    ASSERT_EQ(os.str(), "(1, 5, 2)");
 }
