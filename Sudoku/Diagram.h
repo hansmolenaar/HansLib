@@ -2,15 +2,15 @@
 
 #include "Potential.h"
 #include "Potentials.h"
-#include <unordered_map>
 #include <ostream>
+#include <unordered_map>
 
 namespace Sudoku
 {
    class Diagram
    {
    public:
-      static Diagram Create(const  std::array<Value, NumFields> values);
+      static Diagram Create(const  std::array<Value, NumFields>& values);
       static Diagram Create(const std::unordered_map<FieldIndex, Value>& input);
       static Diagram Create(const Potentials& values);
       Value operator()(FieldIndex field) const;

@@ -31,7 +31,7 @@ namespace MeshGeneration
       bool contains(const Topology::EdgeNodesSorted& edge) const;
    private:
       const Geometry::IManifoldId& m_manifoldId;
-      const Reconstruction1 m_reconstruction;
+      Reconstruction1 m_reconstruction;
       std::set<Topology::EdgeNodesSorted> m_edges;
    };
 }

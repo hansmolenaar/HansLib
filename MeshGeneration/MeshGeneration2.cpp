@@ -120,12 +120,15 @@ void MeshGeneration2::BaseTriangulationToWorld(
    const IGeometryPredicate<GeomType, GeomDim2>& predicate,
    const BoundingBox<GeomType, GeomDim2>& worldBB,
    std::unique_ptr<IUniquePointCollection2>& pointGeometry,
-   std::unique_ptr<TrianglesNodes>& triangleNodes,
+   TrianglesNodes& triangleNodes,
    Logger& logger)
 {
    // Clear output
    pointGeometry.reset();
-   triangleNodes.reset();
+   if (triangleNodes.getNumTriangles() != 0)
+   {
+      throw MyException("BaseTriangulationToWorld triangleNodes should be empty");
+   }
 
    // Collect unique points
    std::unordered_map<RatPoint2, Point2> uniquePoints;
@@ -164,16 +167,15 @@ void MeshGeneration2::BaseTriangulationToWorld(
 
 
    // Create the triangles
-   triangleNodes = std::make_unique<TrianglesNodes>();
    for (auto& triangle : baseTriangles)
    {
       const auto n0 = static_cast<PointIndex>(toWorld.at(triangle.at(0)));
       const auto n1 = static_cast<PointIndex>(toWorld.at(triangle.at(1)));
       const auto n2 = static_cast<PointIndex>(toWorld.at(triangle.at(2)));
-      triangleNodes->addTriangle(TriangleNodesOriented(n0, n1, n2));
+      triangleNodes.addTriangle(TriangleNodesOriented(n0, n1, n2));
    }
 
-   logger.logLine("MeshGeneration2::BaseTriangulationToWorld topology\n" + triangleNodes->toString());
+   logger.logLine("MeshGeneration2::BaseTriangulationToWorld topology\n" + triangleNodes.toString());
 }
 
 std::vector<std::unique_ptr<Vtk::VtkData>> MeshGeneration2::ToVtkData(const std::vector<std::unique_ptr<MeshGeneration::IManifoldReconstruction>>& reconstructions,

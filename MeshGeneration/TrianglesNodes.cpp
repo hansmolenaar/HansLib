@@ -251,3 +251,8 @@ std::string TrianglesNodes::toString() const
    result += sep + "NUMTRIANGLES=" + std::to_string(m_toNodes.size());
    return result;
 }
+
+size_t TrianglesNodes::getNumTriangles() const
+{
+   return m_toNodes.size();
+}

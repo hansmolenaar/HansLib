@@ -1,11 +1,11 @@
 #pragma once
 
-#include "Diagram.h"
 #include "Defines.h"
-#include "Potential.h"
+#include "Diagram.h"
 #include "FieldInfoStatic.h"
-#include "MyException.h"
 #include "Functors.h"
+#include "MyException.h"
+#include "Potential.h"
 #include "ValueSetUtils.h"
 #include <algorithm>
 #include <sstream>
@@ -47,7 +47,7 @@ Diagram Diagram::Create(const Potentials& values)
    return Create(map);
 }
 
-Diagram Diagram::Create(const  std::array<Value, NumFields> values)
+Diagram Diagram::Create(const  std::array<Value, NumFields>& values)
 {
    std::unordered_map<FieldIndex, Value> map;
    FieldIndex field = 0;

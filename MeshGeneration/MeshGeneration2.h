@@ -26,7 +26,7 @@ namespace MeshGeneration2
       const IGeometryPredicate<MeshGeneration::GeomType, GeomDim2>& predicate,
       const BoundingBox<MeshGeneration::GeomType, GeomDim2>& worldBB,
       std::unique_ptr<MeshGeneration::IUniquePointCollection2>& pointGeometry,
-      std::unique_ptr<MeshGeneration::TrianglesNodes>& trianglesNodes,
+      MeshGeneration::TrianglesNodes& trianglesNodes,
       Logger& logger);
 
    bool AddEdgeManifold1Intersections(

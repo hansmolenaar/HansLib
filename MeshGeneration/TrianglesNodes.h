@@ -35,6 +35,7 @@ namespace MeshGeneration
       std::vector<Topology::EdgeNodesSorted> getAllSortedEdges() const;
 
       std::string toString() const;
+      size_t getNumTriangles() const;
 
    private:
       std::optional<CellIndex> tryGetTriangleFromOrientedNodes(const Topology::TriangleNodesOriented& nodes) const;

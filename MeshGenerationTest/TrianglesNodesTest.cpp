@@ -10,6 +10,7 @@ using namespace Topology;
 TEST(TrianglesNodesTest, Empty)
 {
    TrianglesNodes tnodes;
+   ASSERT_EQ(tnodes.getNumTriangles(), 0);
    ASSERT_THROW(tnodes.deleteTriangle(0), MyException);
    ASSERT_THROW(tnodes.getEdgeConnectedTriangles(0, 1), MyException);
    ASSERT_THROW(tnodes.getNodeConnectedTriangles(0), MyException);
@@ -23,6 +24,7 @@ TEST(TrianglesNodesTest, SingleTriangle)
 {
    TrianglesNodes tnodes;
    const auto triangleId = tnodes.addTriangle(TriangleNodesOriented(42, 999, 0));
+   ASSERT_EQ(tnodes.getNumTriangles(), 1);
 
    const auto connectedTriangles = tnodes.getEdgeConnectedTriangles(0, 42);
    ASSERT_EQ(1, connectedTriangles.size());
@@ -49,6 +51,7 @@ TEST(TrianglesNodesTest, SingleTriangle)
    tnodes.deleteTriangle(triangleId);
    ASSERT_FALSE(tnodes.isKnownNodeId(42));
    ASSERT_FALSE(tnodes.isKnownNodeId(999));
+   ASSERT_EQ(tnodes.getNumTriangles(), 0);
 }
 
 TEST(TrianglesNodesTest, Delete)
@@ -162,22 +165,27 @@ TEST(TrianglesNodesTest, GetAllTriangles)
    TrianglesNodes tnodes;
    auto allTriangles = tnodes.getAllTriangles();
    ASSERT_TRUE(allTriangles.empty());
+   ASSERT_EQ(tnodes.getNumTriangles(), allTriangles.size());
 
    const auto triangle0 = tnodes.addTriangle(TriangleNodesOriented(42, 999, 0));
    allTriangles = tnodes.getAllTriangles();
    ASSERT_TRUE(str::equal(allTriangles, std::vector<CellIndex>{triangle0}));
+   ASSERT_EQ(tnodes.getNumTriangles(), allTriangles.size());
 
    const auto triangle1 = tnodes.addTriangle(TriangleNodesOriented(999, 42, 1));
    allTriangles = tnodes.getAllTriangles();
    ASSERT_TRUE(str::equal(allTriangles, std::vector<CellIndex>{triangle0, triangle1}));
+   ASSERT_EQ(tnodes.getNumTriangles(), allTriangles.size());
 
    tnodes.deleteTriangle(triangle0);
    allTriangles = tnodes.getAllTriangles();
    ASSERT_TRUE(str::equal(allTriangles, std::vector<CellIndex>{triangle1}));
+   ASSERT_EQ(tnodes.getNumTriangles(), allTriangles.size());
 
    tnodes.deleteTriangle(triangle1);
    allTriangles = tnodes.getAllTriangles();
    ASSERT_TRUE(allTriangles.empty());
+   ASSERT_EQ(tnodes.getNumTriangles(), allTriangles.size());
 }
 
 
