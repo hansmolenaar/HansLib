@@ -178,33 +178,31 @@ void MeshGeneration2::BaseTriangulationToWorld(
    logger.logLine("MeshGeneration2::BaseTriangulationToWorld topology\n" + triangleNodes.toString());
 }
 
-std::vector<std::unique_ptr<Vtk::VtkData>> MeshGeneration2::ToVtkData(const std::vector<const MeshGeneration::IManifoldReconstruction*>& reconstructions,
-   const IPointCollection<MeshGeneration::GeomType, GeomDim2>& points, const std::string& project)
+std::vector<std::unique_ptr<Vtk::VtkData>> MeshGeneration2::reconstructionsToVtkData(const Mesh2& mesh, const std::string& project)
 {
+   const auto& points = mesh.getPoints();
    std::vector<std::unique_ptr<Vtk::VtkData>> result;
 
-   for (const auto& up : reconstructions)
+   auto cast = [](const IManifoldReconstruction* reconstruction) { return dynamic_cast<const Manifold1Reconstruction*>(reconstruction); };
+   for (const auto* manifold1 : mesh.getReconstructions() | stv::transform(cast) | stv::filter(std::identity()))
    {
-      const auto* manifold1 = dynamic_cast<const Manifold1Reconstruction*>(up);
-      if (manifold1 != nullptr)
-      {
-         auto vtkDatas = ToVtkData(manifold1->getReconstruction(), points, { project, manifold1->getManifoldId().getName() });
-         result.insert(result.end(),
-            std::make_move_iterator(vtkDatas.begin()),
-            std::make_move_iterator(vtkDatas.end()));
-      }
+      auto vtkDatas = ToVtkData(manifold1->getReconstruction(), points, { project, manifold1->getManifoldId().getName() });
+      result.insert(result.end(),
+         std::make_move_iterator(vtkDatas.begin()),
+         std::make_move_iterator(vtkDatas.end()));
    }
 
    return result;
 }
 
-std::unique_ptr<Vtk::VtkData> MeshGeneration2::ToVtkData(const TrianglesNodes& triangleNodes, const IPointCollection<GeomType, GeomDim2>& points, const Vtk::Name& name)
+std::unique_ptr<Vtk::VtkData> MeshGeneration2::trianglesToVtkData(const Mesh2& mesh, const Vtk::Name& name)
 {
    std::unique_ptr< Vtk::VtkData> result = std::make_unique<Vtk::VtkData>(GeomDim2, 0, name);
-
-   for (const auto& cell : triangleNodes.getAllTriangles())
+   const auto& trianglesNodes = mesh.getTriangles();
+   const auto& points = mesh.getPoints();
+   for (const auto& cell : trianglesNodes.getAllTriangles())
    {
-      const auto tnodes = triangleNodes.getTriangleNodes(cell);
+      const auto tnodes = trianglesNodes.getTriangleNodes(cell);
       result->addCell(Vtk::CellType::VTK_TRIANGLE, tnodes, points, {});
    }
 
@@ -507,13 +505,11 @@ bool MeshGeneration2::checkReconstructions(
    {
       const auto endPoints = regionManifolds.getConnectedLowers(*m);
       size_t numEndPointsInReconstruction = 0;
-      for (const auto& reconstruction : reconstructions)
+      auto cast1 = [](const auto* r) {return dynamic_cast<const Manifold1Reconstruction*>(r); };
+      auto pred = [&m](const auto* r1) {return r1 != nullptr && *m == r1->getManifoldId(); };
+      for (const auto& reconstruction : reconstructions | stv::transform(cast1) | stv::filter(pred))
       {
-         const auto* r = dynamic_cast<const Manifold1Reconstruction*>(reconstruction);
-         if (r != nullptr && *m == reconstruction->getManifoldId())
-         {
-            numEndPointsInReconstruction += 2 * r->getReconstruction().Paths.size();
-         }
+         numEndPointsInReconstruction += 2 * reconstruction->getReconstruction().Paths.size();
       }
 
       if (endPoints.size() != numEndPointsInReconstruction)

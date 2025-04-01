@@ -1,18 +1,13 @@
 #pragma once
 
 #include "EdgeNodesDirected.h"
-#include "IDynamicUniquePointCollection.h"
 #include "IGeometryRegion.h"
 #include "IManifold0.h"
 #include "IManifold1D2.h"
-#include "IManifoldReconstruction.h"
 #include "IMeshingSettings.h"
-#include "IndexTreeToSimplices2.h"
 #include "IRegionManifolds.h"
 #include "Logger.h"
-#include "ManifoldsAndNodes.h"
-#include "MeshGenerationDefines.h"
-#include "TrianglesNodes.h"
+#include "Mesh2.h"
 #include "VtkData.h"
 
 namespace MeshGeneration2
@@ -62,9 +57,8 @@ namespace MeshGeneration2
       const std::vector<const MeshGeneration::IManifoldReconstruction*>& reconstructions,
       Logger& logger);
 
-   std::unique_ptr<Vtk::VtkData> ToVtkData(const MeshGeneration::TrianglesNodes& trianglesNodes, const IPointCollection<MeshGeneration::GeomType, GeomDim2>& points, const Vtk::Name& name);
+   std::unique_ptr<Vtk::VtkData> trianglesToVtkData(const MeshGeneration2::Mesh2& mesh, const Vtk::Name& name);
    std::vector<std::unique_ptr<Vtk::VtkData>> ToVtkData(const MeshGeneration::Reconstruction1& reconstruction, const IPointCollection<MeshGeneration::GeomType, GeomDim2>& points, const Vtk::Name& name);
-   std::vector<std::unique_ptr<Vtk::VtkData>> ToVtkData(const std::vector<const MeshGeneration::IManifoldReconstruction*>& reconstructions,
-      const IPointCollection<MeshGeneration::GeomType, GeomDim2>& points, const std::string& project);
+   std::vector<std::unique_ptr<Vtk::VtkData>> reconstructionsToVtkData(const Mesh2& mesh, const std::string& project);
 
 }
