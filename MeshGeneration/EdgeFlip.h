@@ -23,7 +23,7 @@ namespace MeshGeneration
          TrianglesNodes& trianglesNodes,
          CellQuality2Fun* getCellQuality,
          const IPointCollection2& pointCollection,
-         const std::vector<std::unique_ptr<IManifoldReconstruction>>& reconstructions);
+         const std::vector<const IManifoldReconstruction*>& reconstructions);
 
       int execute(const EdgeFlipStrategy& strategy);
       bool isFlippable(const Topology::EdgeNodesSorted& edge) const;

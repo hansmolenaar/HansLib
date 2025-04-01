@@ -52,3 +52,15 @@ MeshGeneration::ManifoldsAndNodes<GeomDim2>& Mesh2::setManifoldsAndNodes()
 {
    return m_manifoldsAndNodes;
 }
+
+void Mesh2::addReconstructions(std::vector<std::unique_ptr<MeshGeneration::IManifoldReconstruction>>&& reconstructions)
+{
+   m_reconstructions = std::move(reconstructions);
+}
+
+std::vector<const MeshGeneration::IManifoldReconstruction*>  Mesh2::getReconstructions() const
+{
+   std::vector<const MeshGeneration::IManifoldReconstruction*> result(m_reconstructions.size());
+   str::transform(m_reconstructions, result.begin(), [](const auto& up) {return up.get(); });
+   return result;
+}

@@ -45,8 +45,8 @@ TEST(EdgeFlipTest, base)
    reconstruction.Cycles.push_back(std::vector<NodeIndex>{ node0, node3, node1, node2 });
 
    const Geometry::ManifoldId manifoldId(Topology::Edge, "Loop");
-   std::vector<std::unique_ptr<IManifoldReconstruction>> reconstructions;
-   reconstructions.emplace_back(std::make_unique<Manifold1Reconstruction>(manifoldId, reconstruction));
+   const Manifold1Reconstruction manifoldReconstruction(manifoldId, reconstruction);
+   const std::vector<const IManifoldReconstruction*> reconstructions{ &manifoldReconstruction };
 
    checkTriangleArea(trianglesNodes, points);
    auto cellQuality = CellQuality2::MinimumAngle;
@@ -85,8 +85,8 @@ TEST(EdgeFlipTest, threeCells)
    reconstruction.Cycles.push_back(std::vector<NodeIndex>{ node0, node3, node1, node2, node4 });
 
    const Geometry::ManifoldId manifoldId(Topology::Edge, "Loop");
-   std::vector<std::unique_ptr<IManifoldReconstruction>> reconstructions;
-   reconstructions.emplace_back(std::make_unique<Manifold1Reconstruction>(manifoldId, reconstruction));
+   const Manifold1Reconstruction manifoldReconstruction(manifoldId, reconstruction);
+   const std::vector<const IManifoldReconstruction*> reconstructions{ &manifoldReconstruction };
 
    auto cellQuality = CellQuality2::MinimumAngle;
    EdgeFlip edgeFlip(trianglesNodes, cellQuality, points, reconstructions);
@@ -122,8 +122,8 @@ TEST(EdgeFlipTest, nonConvex)
    reconstruction.Cycles.push_back(std::vector<NodeIndex>{ node0, node3, node1, node2 });
 
    const Geometry::ManifoldId manifoldId(Topology::Edge, "Loop");
-   std::vector<std::unique_ptr<IManifoldReconstruction>> reconstructions;
-   reconstructions.emplace_back(std::make_unique<Manifold1Reconstruction>(manifoldId, reconstruction));
+   const Manifold1Reconstruction manifoldReconstruction(manifoldId, reconstruction);
+   const std::vector<const IManifoldReconstruction*> reconstructions{ &manifoldReconstruction };
 
    auto cellQuality = CellQuality2::MinimumAngle;
    EdgeFlip edgeFlip(trianglesNodes, cellQuality, points, reconstructions);

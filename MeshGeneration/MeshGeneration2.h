@@ -59,12 +59,12 @@ namespace MeshGeneration2
 
    bool checkReconstructions(
       const Geometry::IRegionManifolds<MeshGeneration::GeomType, GeomDim2>& regionManifolds,
-      const std::vector<std::unique_ptr<MeshGeneration::IManifoldReconstruction>>& reconstructions,
+      const std::vector<const MeshGeneration::IManifoldReconstruction*>& reconstructions,
       Logger& logger);
 
    std::unique_ptr<Vtk::VtkData> ToVtkData(const MeshGeneration::TrianglesNodes& trianglesNodes, const IPointCollection<MeshGeneration::GeomType, GeomDim2>& points, const Vtk::Name& name);
    std::vector<std::unique_ptr<Vtk::VtkData>> ToVtkData(const MeshGeneration::Reconstruction1& reconstruction, const IPointCollection<MeshGeneration::GeomType, GeomDim2>& points, const Vtk::Name& name);
-   std::vector<std::unique_ptr<Vtk::VtkData>> ToVtkData(const std::vector<std::unique_ptr<MeshGeneration::IManifoldReconstruction>>& reconstructions,
+   std::vector<std::unique_ptr<Vtk::VtkData>> ToVtkData(const std::vector<const MeshGeneration::IManifoldReconstruction*>& reconstructions,
       const IPointCollection<MeshGeneration::GeomType, GeomDim2>& points, const std::string& project);
 
 }

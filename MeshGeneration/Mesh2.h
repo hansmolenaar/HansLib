@@ -1,5 +1,6 @@
 #pragma once
 
+#include "IManifoldReconstruction.h"
 #include "IndexTreeToSimplices2.h"
 #include "ManifoldsAndNodes.h"
 #include "MeshGenerationDefines.h"
@@ -23,11 +24,15 @@ namespace MeshGeneration2
 
       const MeshGeneration::ManifoldsAndNodes<GeomDim2>& getManifoldsAndNodes() const;
       MeshGeneration::ManifoldsAndNodes<GeomDim2>& setManifoldsAndNodes();
+
+      void addReconstructions(std::vector<std::unique_ptr<MeshGeneration::IManifoldReconstruction>>&& reconstructions);
+      std::vector<const MeshGeneration::IManifoldReconstruction*> getReconstructions() const;
    private:
       IndexTreeToSimplices2::Triangles m_baseTriangles;
       MeshGeneration::TrianglesNodes m_trianglesNodes;
       std::unique_ptr<IDynamicUniquePointCollection2> m_points;
       MeshGeneration::ManifoldsAndNodes<GeomDim2> m_manifoldsAndNodes;
+      std::vector<std::unique_ptr<MeshGeneration::IManifoldReconstruction>> m_reconstructions;
    };
 
 }

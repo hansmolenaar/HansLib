@@ -87,13 +87,12 @@ MeshGeneration::EdgeFlip::EdgeFlip(
    TrianglesNodes& trianglesNodes,
    CellQuality2Fun* getCellQuality,
    const IPointCollection2& pointCollection,
-   const std::vector<std::unique_ptr<IManifoldReconstruction>>& reconstructions) :
+   const std::vector<const IManifoldReconstruction*>& reconstructions) :
    m_trianglesNodes(trianglesNodes),
    m_cellQuality(getCellQuality),
    m_pointCollection(pointCollection),
-   m_reconstructions(reconstructions.size())
+   m_reconstructions(reconstructions)
 {
-   str::transform(reconstructions, m_reconstructions.begin(), [](const std::unique_ptr<IManifoldReconstruction>& up) {return up.get(); });
 }
 
 int MeshGeneration::EdgeFlip::execute(const EdgeFlipStrategy& strategy)

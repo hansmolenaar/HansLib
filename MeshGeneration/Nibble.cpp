@@ -22,13 +22,12 @@ namespace
 
    std::vector<const MeshGeneration::IManifoldReconstruction*> getOuterBoundaryReconstructions(
       const Geometry::IGeometryRegion<MeshGeneration::GeomType, GeomDim2>& region,
-      const std::vector<std::unique_ptr<MeshGeneration::IManifoldReconstruction>>& reconstructions)
+      const std::vector<const MeshGeneration::IManifoldReconstruction*>& reconstructions)
    {
       const std::set<const Geometry::IManifoldId*> boundaryManifolds = getBoundaryManifoldIds(region);
       std::vector< const MeshGeneration::IManifoldReconstruction*> reconstructionPtrs(reconstructions.size());
-      str::transform(reconstructions, reconstructionPtrs.begin(), [](const auto& up) {return up.get(); });
       std::vector<const MeshGeneration::IManifoldReconstruction*> result;
-      str::copy_if(reconstructionPtrs, std::back_inserter(result), [&boundaryManifolds](const auto* ptr) {return boundaryManifolds.contains(&(ptr->getManifoldId())); });
+      str::copy_if(reconstructions, std::back_inserter(result), [&boundaryManifolds](const auto* ptr) {return boundaryManifolds.contains(&(ptr->getManifoldId())); });
 
       return result;
    }
@@ -107,7 +106,7 @@ namespace
 
 void MeshGeneration::nibble(
    const Geometry::IGeometryRegion<MeshGeneration::GeomType, GeomDim2>& region,
-   const std::vector<std::unique_ptr<MeshGeneration::IManifoldReconstruction>>& reconstructions,
+   const std::vector<const MeshGeneration::IManifoldReconstruction*>& reconstructions,
    MeshGeneration::TrianglesNodes& trianglesNodes,
    const IUniquePointCollection2& pointCollection,
    Logger& logger)

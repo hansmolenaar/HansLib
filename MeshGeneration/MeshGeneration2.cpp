@@ -178,14 +178,14 @@ void MeshGeneration2::BaseTriangulationToWorld(
    logger.logLine("MeshGeneration2::BaseTriangulationToWorld topology\n" + triangleNodes.toString());
 }
 
-std::vector<std::unique_ptr<Vtk::VtkData>> MeshGeneration2::ToVtkData(const std::vector<std::unique_ptr<MeshGeneration::IManifoldReconstruction>>& reconstructions,
+std::vector<std::unique_ptr<Vtk::VtkData>> MeshGeneration2::ToVtkData(const std::vector<const MeshGeneration::IManifoldReconstruction*>& reconstructions,
    const IPointCollection<MeshGeneration::GeomType, GeomDim2>& points, const std::string& project)
 {
    std::vector<std::unique_ptr<Vtk::VtkData>> result;
 
    for (const auto& up : reconstructions)
    {
-      const auto* manifold1 = dynamic_cast<const Manifold1Reconstruction*>(up.get());
+      const auto* manifold1 = dynamic_cast<const Manifold1Reconstruction*>(up);
       if (manifold1 != nullptr)
       {
          auto vtkDatas = ToVtkData(manifold1->getReconstruction(), points, { project, manifold1->getManifoldId().getName() });
@@ -465,7 +465,7 @@ std::vector<std::unique_ptr<MeshGeneration::IManifoldReconstruction>> MeshGenera
 
 bool MeshGeneration2::checkReconstructions(
    const Geometry::IRegionManifolds<MeshGeneration::GeomType, GeomDim2>& regionManifolds,
-   const std::vector<std::unique_ptr<MeshGeneration::IManifoldReconstruction>>& reconstructions,
+   const std::vector<const MeshGeneration::IManifoldReconstruction*>& reconstructions,
    Logger& logger)
 {
    bool succes = true;
@@ -475,7 +475,7 @@ bool MeshGeneration2::checkReconstructions(
    std::vector<const IManifoldId*> reconstructedPointManifoldIds;
    for (const auto* m : regionManifolds.getManifoldsOfType<const IManifold0<GeomType, GeomDim2>* >())
    {
-      const auto found = str::find_if(reconstructions, [&m](const auto& up) {return *m == up->getManifoldId(); });
+      const auto found = str::find_if(reconstructions, [&m](const auto* ptr) {return *m == ptr->getManifoldId(); });
       if (found == reconstructions.end())
       {
          succes = false;
@@ -483,7 +483,7 @@ bool MeshGeneration2::checkReconstructions(
       }
       else
       {
-         reconstructedPointManifoldIds.push_back(&(found->get()->getManifoldId()));
+         reconstructedPointManifoldIds.push_back(&((*found)->getManifoldId()));
       }
    }
 
@@ -509,7 +509,7 @@ bool MeshGeneration2::checkReconstructions(
       size_t numEndPointsInReconstruction = 0;
       for (const auto& reconstruction : reconstructions)
       {
-         const auto* r = dynamic_cast<const Manifold1Reconstruction*>(reconstruction.get());
+         const auto* r = dynamic_cast<const Manifold1Reconstruction*>(reconstruction);
          if (r != nullptr && *m == reconstruction->getManifoldId())
          {
             numEndPointsInReconstruction += 2 * r->getReconstruction().Paths.size();
