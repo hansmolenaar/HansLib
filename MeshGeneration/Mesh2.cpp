@@ -23,3 +23,22 @@ const MeshGeneration::TrianglesNodes& MeshGeneration2::Mesh2::getTriangles() con
 {
    return m_trianglesNodes;
 }
+
+std::unique_ptr<MeshGeneration::IUniquePointCollection2>& MeshGeneration2::Mesh2::createPoints()
+{
+   if (m_points)
+   {
+      throw MyException("Mesh2::setPoints already set");
+   }
+   return m_points;
+}
+
+const IPointCollection2& MeshGeneration2::Mesh2::getPoints() const
+{
+   return *m_points;
+}
+
+MeshGeneration::IUniquePointCollection2& MeshGeneration2::Mesh2::getPoints()
+{
+   return *m_points;
+}

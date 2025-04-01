@@ -129,7 +129,7 @@ TEST(MeshGeneration2Test, Ball)
    const Ball2AsRegion<GeomType> ballAsRegion(ball, "MeshGeneration2Test_Bal");
    MeshingSettingsStandard<2> settings(5, 2.0);
    IRegionManifoldsTestInterface(ballAsRegion.getManifolds(), settings.getGeometryPredicate());
-   Mesh2 mesh;
+   MeshGeneration2::Mesh2 mesh;
    mesh.setBaseTriangles(MeshGeneration2::GenerateBaseTriangulation(ballAsRegion, settings));
    const auto vtkData = IndexTreeToSimplices2::ToVtkData(mesh.getBaseTriangles(), { "MeshGeneration2Test_Ball" , "triangles" });
    ASSERT_EQ(1016, vtkData->getNumCells());
@@ -148,16 +148,14 @@ TEST(MeshGeneration2Test, SingleTriangleToWorld)
    const auto bb = BoundingBox<GeomType, GeomDim2>::CreateFrom2Points(Point2{ 1,1 }, Point2{ 2,3 });
    const PointClose<GeomType, GeomDim2> areClose;
 
-   std::unique_ptr<IDynamicUniquePointCollection<GeomType, GeomDim2>> pointGeometry;
    Mesh2 mesh;
-
-   MeshGeneration2::BaseTriangulationToWorld(baseTriangles, areClose, bb, pointGeometry, mesh.getTriangles(), logger);
-
-   ASSERT_EQ(pointGeometry->getNumPoints(), 3);
-   ASSERT_TRUE(areClose(pointGeometry->getPoint(0), Point2{ 1,1 }));
-   ASSERT_TRUE(areClose(pointGeometry->getPoint(1), Point2{ 2,1 }));
-   ASSERT_TRUE(areClose(pointGeometry->getPoint(2), Point2{ 1,3 }));
-   checkTriangleArea(mesh.getTriangles(), *pointGeometry);
+   MeshGeneration2::BaseTriangulationToWorld(baseTriangles, areClose, bb, mesh.createPoints(), mesh.getTriangles(), logger);
+   const auto& pointGeometry = mesh.getPoints();
+   ASSERT_EQ(pointGeometry.getNumPoints(), 3);
+   ASSERT_TRUE(areClose(pointGeometry.getPoint(0), Point2{ 1,1 }));
+   ASSERT_TRUE(areClose(pointGeometry.getPoint(1), Point2{ 2,1 }));
+   ASSERT_TRUE(areClose(pointGeometry.getPoint(2), Point2{ 1,3 }));
+   checkTriangleArea(mesh.getTriangles(), mesh.getPoints());
 
    ASSERT_EQ(mesh.getTriangles().getAllTriangles().size(), 1);
 
@@ -177,15 +175,14 @@ TEST(MeshGeneration2Test, Ball2)
    Mesh2 mesh;
    mesh.setBaseTriangles(MeshGeneration2::GenerateBaseTriangulation(ballAsRegion, settings));
 
-   std::unique_ptr<IDynamicUniquePointCollection<GeomType, GeomDim2>> pointGeometry;
-   MeshGeneration2::BaseTriangulationToWorld(mesh.getBaseTriangles(), settings.getGeometryPredicate(), bbInitial, pointGeometry, mesh.getTriangles(), settings.getLogger());
+   MeshGeneration2::BaseTriangulationToWorld(mesh.getBaseTriangles(), settings.getGeometryPredicate(), bbInitial, mesh.createPoints(), mesh.getTriangles(), settings.getLogger());
 
-   const auto stats = MeshStatistics::Create2(mesh.getTriangles(), *pointGeometry, settings.getCellQuality());
-   checkTriangleArea(mesh.getTriangles(), *pointGeometry);
+   const auto stats = MeshStatistics::Create2(mesh.getTriangles(), mesh.getPoints(), settings.getCellQuality());
+   checkTriangleArea(mesh.getTriangles(), mesh.getPoints());
    const MeshStatistics expect{ 281, 504, 0.75 };
    ASSERT_EQ(stats, expect);
 
-   const auto vtkData = MeshGeneration2::ToVtkData(mesh.getTriangles(), *pointGeometry, { project, "mesh" });
+   const auto vtkData = MeshGeneration2::ToVtkData(mesh.getTriangles(), mesh.getPoints(), { project, "mesh" });
    ASSERT_EQ(504, vtkData->getNumCells());
 
    //Paraview::Write(*vtkData);
@@ -381,27 +378,26 @@ TEST(MeshGeneration2Test, Sphere2_intersect_4)
    Mesh2 mesh;
    mesh.setBaseTriangles(MeshGeneration2::GenerateBaseTriangulation(ballAsRegion, settings));
 
-   std::unique_ptr<IDynamicUniquePointCollection<GeomType, GeomDim2>> pointGeometry;
    const auto bbInitial = settings.getInitialBb(ballAsRegion);
-   MeshGeneration2::BaseTriangulationToWorld(mesh.getBaseTriangles(), settings.getGeometryPredicate(), bbInitial, pointGeometry, mesh.getTriangles(), settings.getLogger());
+   MeshGeneration2::BaseTriangulationToWorld(mesh.getBaseTriangles(), settings.getGeometryPredicate(), bbInitial, mesh.createPoints(), mesh.getTriangles(), settings.getLogger());
 
-   auto stats = MeshStatistics::Create2(mesh.getTriangles(), *pointGeometry, settings.getCellQuality());
+   auto stats = MeshStatistics::Create2(mesh.getTriangles(), mesh.getPoints(), settings.getCellQuality());
    MeshStatistics expect{ 281, 504, 0.75 };
    ASSERT_EQ(expect, stats);
 
    const auto manifoldPtr = dynamic_cast<const Geometry::IManifold1D2<GeomType>*>(Utilities::Single(ballAsRegion.getManifolds().getAllManifolds()));
 
    ManifoldsAndNodes<GeomDim2> manifoldsAndNodes;
-   MeshGeneration2::AddManifold1Intersections(*manifoldPtr, mesh.getTriangles(), manifoldsAndNodes, *pointGeometry, settings.getLogger());
+   MeshGeneration2::AddManifold1Intersections(*manifoldPtr, mesh.getTriangles(), manifoldsAndNodes, mesh.getPoints(), settings.getLogger());
 
-   stats = MeshStatistics::Create2(mesh.getTriangles(), *pointGeometry, settings.getCellQuality());
+   stats = MeshStatistics::Create2(mesh.getTriangles(), mesh.getPoints(), settings.getCellQuality());
    expect = { 281, 504, 0.37443649960593806 };
 
    settings.getLogger().toFile("C:\\Users\\Hans\\Documents\\work\\logger.txt");
    ASSERT_EQ(expect, stats);
 
    const auto nodesOnManifold = manifoldsAndNodes.getNodesInManifold(manifoldPtr);
-   const auto reconstructions = MeshGeneration2::createReconstructions(ballAsRegion.getManifolds(), mesh.getTriangles(), manifoldsAndNodes, *pointGeometry);
+   const auto reconstructions = MeshGeneration2::createReconstructions(ballAsRegion.getManifolds(), mesh.getTriangles(), manifoldsAndNodes, mesh.getPoints());
 
    ASSERT_EQ(reconstructions.size(), 1);
    const auto reconstruction = dynamic_cast<const Manifold1Reconstruction&>(*reconstructions.front()).getReconstruction();
@@ -410,22 +406,22 @@ TEST(MeshGeneration2Test, Sphere2_intersect_4)
    ASSERT_EQ(reconstruction.Cycles.size(), 1);
    ASSERT_EQ(Single(reconstruction.Cycles).size(), 42);
 
-   const auto vtkData = MeshGeneration2::ToVtkData(mesh.getTriangles(), *pointGeometry, { project, "mesh full" });
-   const auto vtkDataManifold = MeshGeneration2::ToVtkData(reconstruction, *pointGeometry, { project, manifoldPtr->getName() });
+   const auto vtkData = MeshGeneration2::ToVtkData(mesh.getTriangles(), mesh.getPoints(), { project, "mesh full" });
+   const auto vtkDataManifold = MeshGeneration2::ToVtkData(reconstruction, mesh.getPoints(), { project, manifoldPtr->getName() });
 
    Paraview::Write(*vtkData);
    Paraview::Write(*(Utilities::Single(vtkDataManifold)));
 
-   nibble(ballAsRegion, reconstructions, mesh.getTriangles(), *pointGeometry, settings.getLogger());
+   nibble(ballAsRegion, reconstructions, mesh.getTriangles(), mesh.getPoints(), settings.getLogger());
    ASSERT_EQ(mesh.getTriangles().getAllTriangles().size(), 250);
    ASSERT_EQ(mesh.getTriangles().getAllNodes().size(), 147);
-   checkMesh(ballAsRegion, mesh.getTriangles(), reconstructions, *pointGeometry, settings);
+   checkMesh(ballAsRegion, mesh.getTriangles(), reconstructions, mesh.getPoints(), settings);
 
-   stats = MeshStatistics::Create2(mesh.getTriangles(), *pointGeometry, settings.getCellQuality());
+   stats = MeshStatistics::Create2(mesh.getTriangles(), mesh.getPoints(), settings.getCellQuality());
    expect = { 147, 250, 0.37443649960593806 };
    ASSERT_EQ(expect, stats);
 
-   const auto vtkDataNibbled = MeshGeneration2::ToVtkData(mesh.getTriangles(), *pointGeometry, { project, "mesh" });
+   const auto vtkDataNibbled = MeshGeneration2::ToVtkData(mesh.getTriangles(), mesh.getPoints(), { project, "mesh" });
    Paraview::Write(*vtkDataNibbled);
 }
 
@@ -438,23 +434,22 @@ TEST(MeshGeneration2Test, Sphere2_intersect_3)
    Mesh2 mesh;
    mesh.setBaseTriangles(MeshGeneration2::GenerateBaseTriangulation(ballAsRegion, settings));
 
-   std::unique_ptr<IDynamicUniquePointCollection<GeomType, GeomDim2>> pointGeometry;
    const auto bbInitial = settings.getInitialBb(ballAsRegion);
-   MeshGeneration2::BaseTriangulationToWorld(mesh.getBaseTriangles(), settings.getGeometryPredicate(), bbInitial, pointGeometry, mesh.getTriangles(), settings.getLogger());
+   MeshGeneration2::BaseTriangulationToWorld(mesh.getBaseTriangles(), settings.getGeometryPredicate(), bbInitial, mesh.createPoints(), mesh.getTriangles(), settings.getLogger());
 
    const auto manifoldPtr = dynamic_cast<const Geometry::IManifold1D2<GeomType>*>(Utilities::Single(ballAsRegion.getManifolds().getAllManifolds()));
 
    ManifoldsAndNodes<GeomDim2> manifoldsAndNodes;
-   MeshGeneration2::AddManifold1Intersections(*manifoldPtr, mesh.getTriangles(), manifoldsAndNodes, *pointGeometry, settings.getLogger());
+   MeshGeneration2::AddManifold1Intersections(*manifoldPtr, mesh.getTriangles(), manifoldsAndNodes, mesh.getPoints(), settings.getLogger());
 
-   auto stats = MeshStatistics::Create2(mesh.getTriangles(), *pointGeometry, settings.getCellQuality());
+   auto stats = MeshStatistics::Create2(mesh.getTriangles(), mesh.getPoints(), settings.getCellQuality());
    MeshStatistics expect{ 81, 128, 00.30877886910687341 };
    ASSERT_EQ(expect, stats);
 
-   const auto vtkData = MeshGeneration2::ToVtkData(mesh.getTriangles(), *pointGeometry, { project, "mesh full" });
+   const auto vtkData = MeshGeneration2::ToVtkData(mesh.getTriangles(), mesh.getPoints(), { project, "mesh full" });
    ASSERT_EQ(128, vtkData->getNumCells());
    const auto nodesOnManifold = manifoldsAndNodes.getNodesInManifold(manifoldPtr);
-   const auto reconstructions = MeshGeneration2::createReconstructions(ballAsRegion.getManifolds(), mesh.getTriangles(), manifoldsAndNodes, *pointGeometry);
+   const auto reconstructions = MeshGeneration2::createReconstructions(ballAsRegion.getManifolds(), mesh.getTriangles(), manifoldsAndNodes, mesh.getPoints());
 
    ASSERT_EQ(reconstructions.size(), 1);
    const auto reconstruction = dynamic_cast<const Manifold1Reconstruction&>(*reconstructions.front()).getReconstruction();
@@ -463,23 +458,23 @@ TEST(MeshGeneration2Test, Sphere2_intersect_3)
    ASSERT_TRUE(reconstruction.Paths.empty());
    ASSERT_EQ(reconstruction.Cycles.size(), 1);
    ASSERT_EQ(Single(reconstruction.Cycles).size(), 20);
-   const auto vtkDataManifold = MeshGeneration2::ToVtkData(reconstruction, *pointGeometry, { project, manifoldPtr->getName() });
+   const auto vtkDataManifold = MeshGeneration2::ToVtkData(reconstruction, mesh.getPoints(), { project, manifoldPtr->getName() });
 
    Paraview::Write(*vtkData);
    Paraview::Write(*(Utilities::Single(vtkDataManifold)));
 
    ASSERT_EQ(mesh.getTriangles().getAllTriangles().size(), 128);
    ASSERT_EQ(mesh.getTriangles().getAllNodes().size(), 81);
-   nibble(ballAsRegion, reconstructions, mesh.getTriangles(), *pointGeometry, settings.getLogger());
+   nibble(ballAsRegion, reconstructions, mesh.getTriangles(), mesh.getPoints(), settings.getLogger());
    ASSERT_EQ(mesh.getTriangles().getAllTriangles().size(), 60);
    ASSERT_EQ(mesh.getTriangles().getAllNodes().size(), 41);
-   checkMesh(ballAsRegion, mesh.getTriangles(), reconstructions, *pointGeometry, settings);
+   checkMesh(ballAsRegion, mesh.getTriangles(), reconstructions, mesh.getPoints(), settings);
 
-   stats = MeshStatistics::Create2(mesh.getTriangles(), *pointGeometry, settings.getCellQuality());
+   stats = MeshStatistics::Create2(mesh.getTriangles(), mesh.getPoints(), settings.getCellQuality());
    expect = { 41, 60, 0.55410066890581655 };
    ASSERT_EQ(expect, stats);
 
-   const auto vtkDataNibbled = MeshGeneration2::ToVtkData(mesh.getTriangles(), *pointGeometry, { project, "mesh" });
+   const auto vtkDataNibbled = MeshGeneration2::ToVtkData(mesh.getTriangles(), mesh.getPoints(), { project, "mesh" });
    Paraview::Write(*vtkDataNibbled);
 }
 
@@ -492,23 +487,22 @@ TEST(MeshGeneration2Test, Sphere2_intersect_5)
    Mesh2 mesh;
    mesh.setBaseTriangles(MeshGeneration2::GenerateBaseTriangulation(ballAsRegion, settings));
 
-   std::unique_ptr<IDynamicUniquePointCollection<GeomType, GeomDim2>> pointGeometry;
    const auto bbInitial = settings.getInitialBb(ballAsRegion);
-   MeshGeneration2::BaseTriangulationToWorld(mesh.getBaseTriangles(), settings.getGeometryPredicate(), bbInitial, pointGeometry, mesh.getTriangles(), settings.getLogger());
+   MeshGeneration2::BaseTriangulationToWorld(mesh.getBaseTriangles(), settings.getGeometryPredicate(), bbInitial, mesh.createPoints(), mesh.getTriangles(), settings.getLogger());
 
    const auto manifoldPtr = dynamic_cast<const Geometry::IManifold1D2<GeomType>*>(Utilities::Single(ballAsRegion.getManifolds().getAllManifolds()));
 
    ManifoldsAndNodes<GeomDim2> manifoldsAndNodes;
-   MeshGeneration2::AddManifold1Intersections(*manifoldPtr, mesh.getTriangles(), manifoldsAndNodes, *pointGeometry, settings.getLogger());
+   MeshGeneration2::AddManifold1Intersections(*manifoldPtr, mesh.getTriangles(), manifoldsAndNodes, mesh.getPoints(), settings.getLogger());
 
-   auto stats = MeshStatistics::Create2(mesh.getTriangles(), *pointGeometry, settings.getCellQuality());
+   auto stats = MeshStatistics::Create2(mesh.getTriangles(), mesh.getPoints(), settings.getCellQuality());
    MeshStatistics expect{ 885, 1712, 0.30491369274933333 };
    ASSERT_EQ(expect, stats);
 
-   const auto vtkDataMesh = MeshGeneration2::ToVtkData(mesh.getTriangles(), *pointGeometry, { project, "mesh full" });
+   const auto vtkDataMesh = MeshGeneration2::ToVtkData(mesh.getTriangles(), mesh.getPoints(), { project, "mesh full" });
    ASSERT_EQ(1712, vtkDataMesh->getNumCells());
    const auto nodesOnManifold = manifoldsAndNodes.getNodesInManifold(manifoldPtr);
-   const auto reconstructions = MeshGeneration2::createReconstructions(ballAsRegion.getManifolds(), mesh.getTriangles(), manifoldsAndNodes, *pointGeometry);
+   const auto reconstructions = MeshGeneration2::createReconstructions(ballAsRegion.getManifolds(), mesh.getTriangles(), manifoldsAndNodes, mesh.getPoints());
 
    ASSERT_EQ(reconstructions.size(), 1);
    const auto reconstruction = dynamic_cast<const Manifold1Reconstruction&>(*reconstructions.front()).getReconstruction();
@@ -517,20 +511,20 @@ TEST(MeshGeneration2Test, Sphere2_intersect_5)
    ASSERT_TRUE(reconstruction.Paths.empty());
    ASSERT_EQ(reconstruction.Cycles.size(), 1);
    ASSERT_EQ(Single(reconstruction.Cycles).size(), 88);
-   const auto vtkDataManifold = MeshGeneration2::ToVtkData(reconstruction, *pointGeometry, { project, manifoldPtr->getName() });
+   const auto vtkDataManifold = MeshGeneration2::ToVtkData(reconstruction, mesh.getPoints(), { project, manifoldPtr->getName() });
 
    Paraview::Write(*vtkDataMesh);
-   const std::vector<std::unique_ptr<Vtk::VtkData>> list = ToVtkData(reconstructions, *pointGeometry, project);
+   const std::vector<std::unique_ptr<Vtk::VtkData>> list = ToVtkData(reconstructions, mesh.getPoints(), project);
    Paraview::WriteList(list);
 
-   nibble(ballAsRegion, reconstructions, mesh.getTriangles(), *pointGeometry, settings.getLogger());
+   nibble(ballAsRegion, reconstructions, mesh.getTriangles(), mesh.getPoints(), settings.getLogger());
 
-   stats = MeshStatistics::Create2(mesh.getTriangles(), *pointGeometry, settings.getCellQuality());
+   stats = MeshStatistics::Create2(mesh.getTriangles(), mesh.getPoints(), settings.getCellQuality());
    expect = { 565, 1040, 0.36698742876122409 };
    ASSERT_EQ(expect, stats);
-   checkMesh(ballAsRegion, mesh.getTriangles(), reconstructions, *pointGeometry, settings);
+   checkMesh(ballAsRegion, mesh.getTriangles(), reconstructions, mesh.getPoints(), settings);
 
-   const auto vtkDataNibbled = MeshGeneration2::ToVtkData(mesh.getTriangles(), *pointGeometry, { project, "mesh" });
+   const auto vtkDataNibbled = MeshGeneration2::ToVtkData(mesh.getTriangles(), mesh.getPoints(), { project, "mesh" });
    Paraview::Write(*vtkDataNibbled);
 }
 
@@ -544,39 +538,38 @@ TEST(MeshGeneration2Test, Triangle2_1)
    Mesh2 mesh;
    mesh.setBaseTriangles(MeshGeneration2::GenerateBaseTriangulation(region, settings));
 
-   std::unique_ptr<IDynamicUniquePointCollection<GeomType, GeomDim2>> pointGeometry;
    const auto bbInitial = settings.getInitialBb(region);
-   MeshGeneration2::BaseTriangulationToWorld(mesh.getBaseTriangles(), settings.getGeometryPredicate(), bbInitial, pointGeometry, mesh.getTriangles(), settings.getLogger());
+   MeshGeneration2::BaseTriangulationToWorld(mesh.getBaseTriangles(), settings.getGeometryPredicate(), bbInitial, mesh.createPoints(), mesh.getTriangles(), settings.getLogger());
 
-   const auto vtkData = MeshGeneration2::ToVtkData(mesh.getTriangles(), *pointGeometry, { project, "BaseTriangulation" });
+   const auto vtkData = MeshGeneration2::ToVtkData(mesh.getTriangles(), mesh.getPoints(), { project, "BaseTriangulation" });
    Paraview::Write(*vtkData);
 
    ManifoldsAndNodes<GeomDim2> manifoldsAndNodes;
    std::vector<const IManifold0D2*> manifolds0 = region.getManifoldsOfType<const IManifold0D2*>();
-   MeshGeneration2::AddAllManifolds0(manifolds0, mesh.getTriangles(), manifoldsAndNodes, *pointGeometry, settings.getLogger());
+   MeshGeneration2::AddAllManifolds0(manifolds0, mesh.getTriangles(), manifoldsAndNodes, mesh.getPoints(), settings.getLogger());
 
    for (const auto* manifold1 : region.getManifoldsOfType<const IManifold1D2<GeomType>*>())
    {
-      MeshGeneration2::AddManifold1Intersections(*manifold1, mesh.getTriangles(), manifoldsAndNodes, *pointGeometry, settings.getLogger());
+      MeshGeneration2::AddManifold1Intersections(*manifold1, mesh.getTriangles(), manifoldsAndNodes, mesh.getPoints(), settings.getLogger());
    }
 
-   const auto reconstructions = MeshGeneration2::createReconstructions(region, mesh.getTriangles(), manifoldsAndNodes, *pointGeometry);
+   const auto reconstructions = MeshGeneration2::createReconstructions(region, mesh.getTriangles(), manifoldsAndNodes, mesh.getPoints());
 
-   const auto vtkDataMesh = MeshGeneration2::ToVtkData(mesh.getTriangles(), *pointGeometry, { project, "mesh before nibbling" });
+   const auto vtkDataMesh = MeshGeneration2::ToVtkData(mesh.getTriangles(), mesh.getPoints(), { project, "mesh before nibbling" });
    Paraview::Write(*vtkDataMesh);
 
-   const std::vector<std::unique_ptr<Vtk::VtkData>> list = ToVtkData(reconstructions, *pointGeometry, project);
+   const std::vector<std::unique_ptr<Vtk::VtkData>> list = ToVtkData(reconstructions, mesh.getPoints(), project);
    Paraview::WriteList(list);
 
-   nibble(region, reconstructions, mesh.getTriangles(), *pointGeometry, settings.getLogger());
+   nibble(region, reconstructions, mesh.getTriangles(), mesh.getPoints(), settings.getLogger());
    ASSERT_EQ(mesh.getTriangles().getAllTriangles().size(), 2297);
-   checkMesh(region, mesh.getTriangles(), reconstructions, *pointGeometry, settings);
+   checkMesh(region, mesh.getTriangles(), reconstructions, mesh.getPoints(), settings);
 
-   const auto stats = MeshStatistics::Create2(mesh.getTriangles(), *pointGeometry, settings.getCellQuality());
+   const auto stats = MeshStatistics::Create2(mesh.getTriangles(), mesh.getPoints(), settings.getCellQuality());
    const MeshStatistics expect = { 1233, 2297, 0.21379225557104328 };
    ASSERT_EQ(expect, stats);
 
-   const auto vtkDataNibbled = MeshGeneration2::ToVtkData(mesh.getTriangles(), *pointGeometry, { project, "mesh" });
+   const auto vtkDataNibbled = MeshGeneration2::ToVtkData(mesh.getTriangles(), mesh.getPoints(), { project, "mesh" });
    Paraview::Write(*vtkDataNibbled);
 }
 
@@ -590,40 +583,39 @@ TEST(MeshGeneration2Test, Triangle2D_2)
    Mesh2 mesh;
    mesh.setBaseTriangles(MeshGeneration2::GenerateBaseTriangulation(region, settings));
 
-   std::unique_ptr<IDynamicUniquePointCollection<GeomType, GeomDim2>> pointGeometry;
    const auto bbInitial = settings.getInitialBb(region);
-   MeshGeneration2::BaseTriangulationToWorld(mesh.getBaseTriangles(), settings.getGeometryPredicate(), bbInitial, pointGeometry, mesh.getTriangles(), settings.getLogger());
+   MeshGeneration2::BaseTriangulationToWorld(mesh.getBaseTriangles(), settings.getGeometryPredicate(), bbInitial, mesh.createPoints(), mesh.getTriangles(), settings.getLogger());
 
    ManifoldsAndNodes<GeomDim2> manifoldsAndNodes;
    std::vector<const IManifold0D2*> manifolds0 = region.getManifoldsOfType<const IManifold0D2*>();
-   MeshGeneration2::AddAllManifolds0(manifolds0, mesh.getTriangles(), manifoldsAndNodes, *pointGeometry, settings.getLogger());
+   MeshGeneration2::AddAllManifolds0(manifolds0, mesh.getTriangles(), manifoldsAndNodes, mesh.getPoints(), settings.getLogger());
 
    for (const auto* manifold1 : region.getManifoldsOfType<const IManifold1D2<GeomType>*>())
    {
-      MeshGeneration2::AddManifold1Intersections(*manifold1, mesh.getTriangles(), manifoldsAndNodes, *pointGeometry, settings.getLogger());
+      MeshGeneration2::AddManifold1Intersections(*manifold1, mesh.getTriangles(), manifoldsAndNodes, mesh.getPoints(), settings.getLogger());
    }
 
-   const auto reconstructions = MeshGeneration2::createReconstructions(region, mesh.getTriangles(), manifoldsAndNodes, *pointGeometry);
+   const auto reconstructions = MeshGeneration2::createReconstructions(region, mesh.getTriangles(), manifoldsAndNodes, mesh.getPoints());
 
-   const auto vtkDataMesh = MeshGeneration2::ToVtkData(mesh.getTriangles(), *pointGeometry, { project, "mesh full" });
+   const auto vtkDataMesh = MeshGeneration2::ToVtkData(mesh.getTriangles(), mesh.getPoints(), { project, "mesh full" });
    Paraview::Write(*vtkDataMesh);
 
-   const std::vector<std::unique_ptr<Vtk::VtkData>> list = ToVtkData(reconstructions, *pointGeometry, project);
+   const std::vector<std::unique_ptr<Vtk::VtkData>> list = ToVtkData(reconstructions, mesh.getPoints(), project);
    Paraview::WriteList(list);
 
-   nibble(region, reconstructions, mesh.getTriangles(), *pointGeometry, settings.getLogger());
+   nibble(region, reconstructions, mesh.getTriangles(), mesh.getPoints(), settings.getLogger());
 
-   const auto stats = MeshStatistics::Create2(mesh.getTriangles(), *pointGeometry, settings.getCellQuality());
+   const auto stats = MeshStatistics::Create2(mesh.getTriangles(), mesh.getPoints(), settings.getCellQuality());
    const MeshStatistics expect = { 99, 154, 0.19197980850908997 };
    ASSERT_EQ(expect, stats);
 
-   const auto vtkDataNibbled = MeshGeneration2::ToVtkData(mesh.getTriangles(), *pointGeometry, { project, "mesh" });
+   const auto vtkDataNibbled = MeshGeneration2::ToVtkData(mesh.getTriangles(), mesh.getPoints(), { project, "mesh" });
    Paraview::Write(*vtkDataNibbled);
 
-   EdgeFlip edgeFlip(mesh.getTriangles(), settings.getCellQuality(), *pointGeometry, reconstructions);
+   EdgeFlip edgeFlip(mesh.getTriangles(), settings.getCellQuality(), mesh.getPoints(), reconstructions);
 
    const EdgeFlipStrategy strategy{ 0.25, 2 };
    edgeFlip.execute(strategy);
 
-   checkMesh(region, mesh.getTriangles(), reconstructions, *pointGeometry, settings);
+   checkMesh(region, mesh.getTriangles(), reconstructions, mesh.getPoints(), settings);
 }
