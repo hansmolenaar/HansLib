@@ -72,7 +72,7 @@ namespace
    }
 }
 
-MeshGeneration::Reconstruction1 MeshGeneration::Generate2(std::span<const NodeIndex> manifoldNodes, const TrianglesNodes& trianglesNodes, const IUniquePointCollection2& pointCollection)
+MeshGeneration::Reconstruction1 MeshGeneration::Generate2(std::span<const NodeIndex> manifoldNodes, const TrianglesNodes& trianglesNodes, const IPointCollection2& pointCollection)
 {
    const auto toVertex = RenumberToGraph(manifoldNodes);
    const auto graph = CreateGraph(manifoldNodes, trianglesNodes, toVertex);
@@ -106,7 +106,7 @@ Manifold1Reconstruction::Manifold1Reconstruction(const Geometry::IManifoldId& ma
 }
 
 Manifold1Reconstruction::Manifold1Reconstruction(const Geometry::IManifold1D2<GeomType>& manifold, const ManifoldsAndNodes<GeomDim2>& manifoldsAndNodes,
-   const TrianglesNodes& trianglesNodes, const IUniquePointCollection2& pointCollection) :
+   const TrianglesNodes& trianglesNodes, const IPointCollection2& pointCollection) :
    m_manifoldId(manifold),
    m_reconstruction(MeshGeneration::Generate2(manifoldsAndNodes.getNodesInManifold(&manifold), trianglesNodes, pointCollection)),
    m_edges(getEdges(m_reconstruction))

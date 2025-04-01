@@ -388,7 +388,7 @@ TEST(MeshGeneration2Test, Sphere2_intersect_4)
    const auto manifoldPtr = dynamic_cast<const Geometry::IManifold1D2<GeomType>*>(Utilities::Single(ballAsRegion.getManifolds().getAllManifolds()));
 
    ManifoldsAndNodes<GeomDim2> manifoldsAndNodes;
-   MeshGeneration2::AddManifold1Intersections(*manifoldPtr, mesh.getTriangles(), manifoldsAndNodes, mesh.getPoints(), settings.getLogger());
+   MeshGeneration2::AddManifold1Intersections(*manifoldPtr, mesh.getTriangles(), manifoldsAndNodes, mesh.getSetPoints(), settings.getLogger());
 
    stats = MeshStatistics::Create2(mesh.getTriangles(), mesh.getPoints(), settings.getCellQuality());
    expect = { 281, 504, 0.37443649960593806 };
@@ -440,7 +440,7 @@ TEST(MeshGeneration2Test, Sphere2_intersect_3)
    const auto manifoldPtr = dynamic_cast<const Geometry::IManifold1D2<GeomType>*>(Utilities::Single(ballAsRegion.getManifolds().getAllManifolds()));
 
    ManifoldsAndNodes<GeomDim2> manifoldsAndNodes;
-   MeshGeneration2::AddManifold1Intersections(*manifoldPtr, mesh.getTriangles(), manifoldsAndNodes, mesh.getPoints(), settings.getLogger());
+   MeshGeneration2::AddManifold1Intersections(*manifoldPtr, mesh.getTriangles(), manifoldsAndNodes, mesh.getSetPoints(), settings.getLogger());
 
    auto stats = MeshStatistics::Create2(mesh.getTriangles(), mesh.getPoints(), settings.getCellQuality());
    MeshStatistics expect{ 81, 128, 00.30877886910687341 };
@@ -493,7 +493,7 @@ TEST(MeshGeneration2Test, Sphere2_intersect_5)
    const auto manifoldPtr = dynamic_cast<const Geometry::IManifold1D2<GeomType>*>(Utilities::Single(ballAsRegion.getManifolds().getAllManifolds()));
 
    ManifoldsAndNodes<GeomDim2> manifoldsAndNodes;
-   MeshGeneration2::AddManifold1Intersections(*manifoldPtr, mesh.getTriangles(), manifoldsAndNodes, mesh.getPoints(), settings.getLogger());
+   MeshGeneration2::AddManifold1Intersections(*manifoldPtr, mesh.getTriangles(), manifoldsAndNodes, mesh.getSetPoints(), settings.getLogger());
 
    auto stats = MeshStatistics::Create2(mesh.getTriangles(), mesh.getPoints(), settings.getCellQuality());
    MeshStatistics expect{ 885, 1712, 0.30491369274933333 };
@@ -546,11 +546,11 @@ TEST(MeshGeneration2Test, Triangle2_1)
 
    ManifoldsAndNodes<GeomDim2> manifoldsAndNodes;
    std::vector<const IManifold0D2*> manifolds0 = region.getManifoldsOfType<const IManifold0D2*>();
-   MeshGeneration2::AddAllManifolds0(manifolds0, mesh.getTriangles(), manifoldsAndNodes, mesh.getPoints(), settings.getLogger());
+   MeshGeneration2::AddAllManifolds0(manifolds0, mesh.getTriangles(), manifoldsAndNodes, mesh.getSetPoints(), settings.getLogger());
 
    for (const auto* manifold1 : region.getManifoldsOfType<const IManifold1D2<GeomType>*>())
    {
-      MeshGeneration2::AddManifold1Intersections(*manifold1, mesh.getTriangles(), manifoldsAndNodes, mesh.getPoints(), settings.getLogger());
+      MeshGeneration2::AddManifold1Intersections(*manifold1, mesh.getTriangles(), manifoldsAndNodes, mesh.getSetPoints(), settings.getLogger());
    }
 
    const auto reconstructions = MeshGeneration2::createReconstructions(region, mesh.getTriangles(), manifoldsAndNodes, mesh.getPoints());
@@ -588,11 +588,11 @@ TEST(MeshGeneration2Test, Triangle2D_2)
 
    ManifoldsAndNodes<GeomDim2> manifoldsAndNodes;
    std::vector<const IManifold0D2*> manifolds0 = region.getManifoldsOfType<const IManifold0D2*>();
-   MeshGeneration2::AddAllManifolds0(manifolds0, mesh.getTriangles(), manifoldsAndNodes, mesh.getPoints(), settings.getLogger());
+   MeshGeneration2::AddAllManifolds0(manifolds0, mesh.getTriangles(), manifoldsAndNodes, mesh.getSetPoints(), settings.getLogger());
 
    for (const auto* manifold1 : region.getManifoldsOfType<const IManifold1D2<GeomType>*>())
    {
-      MeshGeneration2::AddManifold1Intersections(*manifold1, mesh.getTriangles(), manifoldsAndNodes, mesh.getPoints(), settings.getLogger());
+      MeshGeneration2::AddManifold1Intersections(*manifold1, mesh.getTriangles(), manifoldsAndNodes, mesh.getSetPoints(), settings.getLogger());
    }
 
    const auto reconstructions = MeshGeneration2::createReconstructions(region, mesh.getTriangles(), manifoldsAndNodes, mesh.getPoints());

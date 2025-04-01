@@ -2,6 +2,7 @@
 
 #include "IGeometryRegion.h"
 #include "IManifoldReconstruction.h"
+#include "IUniquePointCollection.h"
 #include "MeshGenerationDefines.h"
 
 #include <memory>
@@ -16,7 +17,7 @@ namespace MeshGeneration
       const Geometry::IGeometryRegion<MeshGeneration::GeomType, GeomDim2>& region,
       const std::vector<std::unique_ptr<MeshGeneration::IManifoldReconstruction>>& reconstructions,
       MeshGeneration::TrianglesNodes& trianglesNodes,
-      const MeshGeneration::IUniquePointCollection2& pointCollection,
+      const IUniquePointCollection2& pointCollection,
       Logger& logger);
 
 }

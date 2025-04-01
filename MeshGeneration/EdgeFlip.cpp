@@ -27,14 +27,14 @@ namespace
       TriangleNodesOriented newCell1{ 0,1,2 };
    };
 
-   double getTriangleQuality(const TriangleNodesOriented& triangleNodes, const IUniquePointCollection2& pointCollection, CellQuality2Fun* cellQuality)
+   double getTriangleQuality(const TriangleNodesOriented& triangleNodes, const IPointCollection2& pointCollection, CellQuality2Fun* cellQuality)
    {
       std::array<Point2, Topology::NumNodesOnTriangle> triangle;
       str::transform(triangleNodes, triangle.begin(), [&pointCollection](NodeIndex node) {return pointCollection.getPoint(node); });
       return cellQuality(triangle);
    }
 
-   CellAndQuality getTriangleAndQuality(const CellIndex& cellId, const TrianglesNodes& trianglesNodes, const IUniquePointCollection2& pointCollection, CellQuality2Fun* cellQuality)
+   CellAndQuality getTriangleAndQuality(const CellIndex& cellId, const TrianglesNodes& trianglesNodes, const IPointCollection2& pointCollection, CellQuality2Fun* cellQuality)
    {
       const auto triangleNodes = trianglesNodes.getTriangleNodes(cellId);
       return CellAndQuality{ cellId, getTriangleQuality(triangleNodes, pointCollection, cellQuality) };
@@ -47,7 +47,7 @@ namespace
    }
 
    template<typename Pred>
-   EdgeFlipData getOptimalFlip(CellIndex cell, const TrianglesNodes& trianglesNodes, const IUniquePointCollection2& pointCollection, CellQuality2Fun* cellQuality, Pred isFlippable)
+   EdgeFlipData getOptimalFlip(CellIndex cell, const TrianglesNodes& trianglesNodes, const IPointCollection2& pointCollection, CellQuality2Fun* cellQuality, Pred isFlippable)
    {
       EdgeFlipData optimalEdge;
       const auto cellNodes = trianglesNodes.getTriangleNodes(cell);
@@ -86,7 +86,7 @@ namespace
 MeshGeneration::EdgeFlip::EdgeFlip(
    TrianglesNodes& trianglesNodes,
    CellQuality2Fun* getCellQuality,
-   const IUniquePointCollection2& pointCollection,
+   const IPointCollection2& pointCollection,
    const std::vector<std::unique_ptr<IManifoldReconstruction>>& reconstructions) :
    m_trianglesNodes(trianglesNodes),
    m_cellQuality(getCellQuality),

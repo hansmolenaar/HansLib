@@ -25,7 +25,7 @@ namespace MeshGeneration2
       const IndexTreeToSimplices2::Triangles& baseTriangles,
       const IGeometryPredicate<MeshGeneration::GeomType, GeomDim2>& predicate,
       const BoundingBox<MeshGeneration::GeomType, GeomDim2>& worldBB,
-      std::unique_ptr<MeshGeneration::IUniquePointCollection2>& pointGeometry,
+      std::unique_ptr<IDynamicUniquePointCollection2>& pointGeometry,
       MeshGeneration::TrianglesNodes& trianglesNodes,
       Logger& logger);
 
@@ -34,28 +34,28 @@ namespace MeshGeneration2
       const Topology::EdgeNodesDirected& edge,
       const MeshGeneration::TrianglesNodes& trianglesNodes,
       MeshGeneration::ManifoldsAndNodes<GeomDim2>& manifoldsAndNodes,
-      MeshGeneration::IUniquePointCollection2& pointCollection);
+      IDynamicUniquePointCollection2& pointCollection);
 
    // TODO add all at once
    void AddManifold1Intersections(
       const Geometry::IManifold1D2<MeshGeneration::GeomType>& manifold,
       MeshGeneration::TrianglesNodes& trianglesNodes,
       MeshGeneration::ManifoldsAndNodes<GeomDim2>& manifoldsAndNodes,
-      MeshGeneration::IUniquePointCollection2& pointCollection,
+      IDynamicUniquePointCollection2& pointCollection,
       Logger& logger);
 
    void AddAllManifolds0(
       std::span<const IManifold0D2*> manifolds,
       MeshGeneration::TrianglesNodes& trianglesNodes,
       MeshGeneration::ManifoldsAndNodes<GeomDim2>& manifoldsAndNodes,
-      MeshGeneration::IUniquePointCollection2& pointCollection,
+      IDynamicUniquePointCollection2& pointCollection,
       Logger& logger);
 
    std::vector<std::unique_ptr<MeshGeneration::IManifoldReconstruction>> createReconstructions(
       const Geometry::IRegionManifolds<MeshGeneration::GeomType, GeomDim2>& regionManifolds,
       const MeshGeneration::TrianglesNodes& trianglesNodes,
       const MeshGeneration::ManifoldsAndNodes<GeomDim2>& manifoldsAndNodes,
-      const MeshGeneration::IUniquePointCollection2& pointCollection);
+      const IUniquePointCollection2& pointCollection);
 
    bool checkReconstructions(
       const Geometry::IRegionManifolds<MeshGeneration::GeomType, GeomDim2>& regionManifolds,

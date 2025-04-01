@@ -22,7 +22,7 @@ namespace MeshGeneration
       EdgeFlip(
          TrianglesNodes& trianglesNodes,
          CellQuality2Fun* getCellQuality,
-         const IUniquePointCollection2& pointCollection,
+         const IPointCollection2& pointCollection,
          const std::vector<std::unique_ptr<IManifoldReconstruction>>& reconstructions);
 
       int execute(const EdgeFlipStrategy& strategy);
@@ -31,7 +31,7 @@ namespace MeshGeneration
    private:
       TrianglesNodes& m_trianglesNodes;
       CellQuality2Fun* m_cellQuality;
-      const IUniquePointCollection2& m_pointCollection;
+      const IPointCollection2& m_pointCollection;
       std::vector<const IManifoldReconstruction*> m_reconstructions;
    };
 

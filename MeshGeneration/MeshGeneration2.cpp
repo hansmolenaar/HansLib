@@ -25,7 +25,7 @@ namespace
    M0ToTriIds GetTrianglesContainingPoints(
       std::span<const IManifold0D2*> manifolds,
       MeshGeneration::TrianglesNodes& trianglesNodes,
-      MeshGeneration::IUniquePointCollection2& pointCollection)
+      IUniquePointCollection2& pointCollection)
    {
       M0ToTriIds result;
       constexpr double eps = 0.01;
@@ -58,7 +58,7 @@ namespace
       return result;
    }
 
-   NodeIndex InsertPoint(Point2 point, std::span<const CellIndex> candidates, TrianglesNodes& trianglesNodes, MeshGeneration::IUniquePointCollection2& pointCollection, const MeshGeneration::ManifoldsAndNodes<GeomDim2>& manifoldsAndNodes)
+   NodeIndex InsertPoint(Point2 point, std::span<const CellIndex> candidates, TrianglesNodes& trianglesNodes, IDynamicUniquePointCollection2& pointCollection, const MeshGeneration::ManifoldsAndNodes<GeomDim2>& manifoldsAndNodes)
    {
       // Find the nearest triangle node
       double minDist2 = std::numeric_limits<double>::max();
@@ -119,7 +119,7 @@ void MeshGeneration2::BaseTriangulationToWorld(
    const IndexTreeToSimplices2::Triangles& baseTriangles,
    const IGeometryPredicate<GeomType, GeomDim2>& predicate,
    const BoundingBox<GeomType, GeomDim2>& worldBB,
-   std::unique_ptr<IUniquePointCollection2>& pointGeometry,
+   std::unique_ptr<IDynamicUniquePointCollection2>& pointGeometry,
    TrianglesNodes& triangleNodes,
    Logger& logger)
 {
@@ -301,7 +301,7 @@ bool MeshGeneration2::AddEdgeManifold1Intersections(
    const EdgeNodesDirected& edgeNodes,
    const TrianglesNodes& trianglesNodes,
    ManifoldsAndNodes<GeomDim2>& manifoldsAndNodes,
-   IUniquePointCollection2& pointCollection)
+   IDynamicUniquePointCollection2& pointCollection)
 {
    // !!!!!! TODO
    static int numCall = 0;
@@ -369,7 +369,7 @@ void MeshGeneration2::AddManifold1Intersections(
    const Geometry::IManifold1D2<GeomType>& manifold,
    TrianglesNodes& trianglesNodes,
    MeshGeneration::ManifoldsAndNodes<GeomDim2>& manifoldsAndNodes,
-   IUniquePointCollection2& pointCollection,
+   IDynamicUniquePointCollection2& pointCollection,
    Logger& logger)
 {
    //LogTriangles(logger, trianglesNodes, "trianglesNodes");
@@ -402,7 +402,7 @@ void MeshGeneration2::AddAllManifolds0(
    std::span<const IManifold0D2*> manifolds,
    MeshGeneration::TrianglesNodes& trianglesNodes,
    MeshGeneration::ManifoldsAndNodes<GeomDim2>& manifoldsAndNodes,
-   MeshGeneration::IUniquePointCollection2& pointCollection,
+   IDynamicUniquePointCollection2& pointCollection,
    Logger& logger)
 {
    // Collect triangles that contain point

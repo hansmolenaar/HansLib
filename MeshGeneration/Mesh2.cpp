@@ -24,7 +24,7 @@ const MeshGeneration::TrianglesNodes& MeshGeneration2::Mesh2::getTriangles() con
    return m_trianglesNodes;
 }
 
-std::unique_ptr<MeshGeneration::IUniquePointCollection2>& MeshGeneration2::Mesh2::createPoints()
+std::unique_ptr<IDynamicUniquePointCollection2>& MeshGeneration2::Mesh2::createPoints()
 {
    if (m_points)
    {
@@ -33,12 +33,12 @@ std::unique_ptr<MeshGeneration::IUniquePointCollection2>& MeshGeneration2::Mesh2
    return m_points;
 }
 
-const IPointCollection2& MeshGeneration2::Mesh2::getPoints() const
+const IUniquePointCollection2& MeshGeneration2::Mesh2::getPoints() const
 {
    return *m_points;
 }
 
-MeshGeneration::IUniquePointCollection2& MeshGeneration2::Mesh2::getPoints()
+IDynamicUniquePointCollection2& MeshGeneration2::Mesh2::getSetPoints()
 {
    return *m_points;
 }

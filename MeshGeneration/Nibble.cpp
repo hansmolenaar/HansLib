@@ -61,7 +61,7 @@ namespace
    std::pair<CellIndex, CellIndex> getInsideAndOutsideCell(
       const EdgeNodesDirected& be,
       const MeshGeneration::TrianglesNodes& trianglesNodes,
-      const MeshGeneration::IUniquePointCollection2& pointCollection,
+      const IUniquePointCollection2& pointCollection,
       const Geometry::IGeometryRegion<MeshGeneration::GeomType, GeomDim2>& region)
    {
       const auto connectedTriangles = trianglesNodes.getEdgeConnectedTriangles(be[0], be[1]);
@@ -88,7 +88,7 @@ namespace
    std::pair<std::set<CellIndex>, std::vector<CellIndex>> getBoundaryTriangles(
       const std::vector<EdgeNodesDirected>& boundaryEdges,
       const MeshGeneration::TrianglesNodes& trianglesNodes,
-      const MeshGeneration::IUniquePointCollection2& pointCollection,
+      const IUniquePointCollection2& pointCollection,
       const Geometry::IGeometryRegion<MeshGeneration::GeomType, GeomDim2>& region)
    {
       std::set<CellIndex> insideCells;
@@ -109,7 +109,7 @@ void MeshGeneration::nibble(
    const Geometry::IGeometryRegion<MeshGeneration::GeomType, GeomDim2>& region,
    const std::vector<std::unique_ptr<MeshGeneration::IManifoldReconstruction>>& reconstructions,
    MeshGeneration::TrianglesNodes& trianglesNodes,
-   const MeshGeneration::IUniquePointCollection2& pointCollection,
+   const IUniquePointCollection2& pointCollection,
    Logger& logger)
 {
    const auto boundaryReconstructions = getOuterBoundaryReconstructions(region, reconstructions);
