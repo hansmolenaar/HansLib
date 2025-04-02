@@ -2,7 +2,10 @@
 #include "DirectedEdgeIntersections.h"
 
 using namespace Geometry;
+
+template DirectedEdgeIntersections<double, 1>;
 template DirectedEdgeIntersections<double, 2>;
+template DirectedEdgeIntersections<double, 3>;
 
 template<typename T, int N>
 DirectedEdgeIntersections<T, N>::DirectedEdgeIntersections(const DirectedEdgeIntersection<T, N>& intersection) :

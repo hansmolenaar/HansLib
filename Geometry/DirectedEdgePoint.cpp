@@ -3,7 +3,9 @@
 
 using namespace Geometry;
 
-template DirectedEdgePoint<double, 2>;
+template DirectedEdgePoint<double, GeomDim1>;
+template DirectedEdgePoint<double, GeomDim2>;
+template DirectedEdgePoint<double, GeomDim3>;
 
 template<typename T, int N>
 DirectedEdgePoint<T, N>::DirectedEdgePoint()
