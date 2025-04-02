@@ -1,4 +1,5 @@
 #include "EdgeFlip.h"
+#include "Functors.h"
 #include "Manifold1Reconstruction.h"
 #include "Triangle.h"
 #include "TrianglesNodes.h"
@@ -155,12 +156,7 @@ int MeshGeneration::EdgeFlip::execute(const EdgeFlipStrategy& strategy)
 
 bool MeshGeneration::EdgeFlip::isFlippable(const EdgeNodesSorted& edge) const
 {
-   for (const auto* r : m_reconstructions)
-   {
-      const auto* r1 = dynamic_cast<const Manifold1Reconstruction*>(r);
-      if (r1 == nullptr) continue;
-
-      if (r1->contains(edge)) return false;
-   }
-   return true;
+   auto cast1 = [](const auto* ptr) {return dynamic_cast<const Manifold1Reconstruction*>(ptr); };
+   auto containsEdge = [&edge](const  Manifold1Reconstruction* m1r) {return m1r != nullptr && m1r->contains(edge); };
+   return (m_reconstructions | stv::transform(cast1) | stv::filter(containsEdge)).empty();
 }

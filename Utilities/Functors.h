@@ -66,4 +66,21 @@ namespace Functors
          return false;
       }
    };
+
+   struct PointerIsNull
+   {
+      bool operator()(const void* ptr) const
+      {
+         return ptr == nullptr;
+      }
+   };
+
+
+   struct PointerIsNotNull
+   {
+      bool operator()(const void* ptr) const
+      {
+         return ptr != nullptr;
+      }
+   };
 }

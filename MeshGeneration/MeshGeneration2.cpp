@@ -1,5 +1,6 @@
 #include "BoundingBox.h"
 #include "Defines.h"   
+#include "Functors.h"
 #include "IntervalTreeBalance.h"
 #include "Manifold0Reconstruction.h"
 #include "Manifold1Reconstruction.h"
@@ -184,7 +185,7 @@ std::vector<std::unique_ptr<Vtk::VtkData>> MeshGeneration2::reconstructionsToVtk
    std::vector<std::unique_ptr<Vtk::VtkData>> result;
 
    auto cast = [](const IManifoldReconstruction* reconstruction) { return dynamic_cast<const Manifold1Reconstruction*>(reconstruction); };
-   for (const auto* manifold1 : mesh.getReconstructions() | stv::transform(cast) | stv::filter(std::identity()))
+   for (const auto* manifold1 : mesh.getReconstructions() | stv::transform(cast) | stv::filter(Functors::PointerIsNotNull()))
    {
       auto vtkDatas = ToVtkData(manifold1->getReconstruction(), points, { project, manifold1->getManifoldId().getName() });
       result.insert(result.end(),

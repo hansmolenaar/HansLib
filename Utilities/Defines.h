@@ -1,15 +1,15 @@
 #pragma once
 
-#include <ranges>
 #include <algorithm>
-#include <vector>
 #include <array>
-#include <span>
-#include <memory>
-#include <map>
-#include <numeric>
-#include <limits>
 #include <cmath>
+#include <limits>
+#include <map>
+#include <memory>
+#include <numeric>
+#include <ranges>
+#include <span>
+#include <vector>
 
 #include "MyException.h"
 
