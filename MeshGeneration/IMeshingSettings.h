@@ -1,9 +1,9 @@
 #pragma once
 
-#include "MeshGenerationDefines.h"
-#include "RefinementPredicates.h"
 #include "IGeometryRegion.h"
 #include "Logger.h"
+#include "MeshGenerationDefines.h"
+#include "RefinementPredicates.h"
 
 namespace MeshGeneration
 {
@@ -22,5 +22,6 @@ namespace MeshGeneration
       BoundingBox<GeomType, N> getInitialBb(const Geometry::IGeometryRegion<GeomType, N>& region);
    };
 
-   using IMeshingSettings2 = IMeshingSettings<2>;
+   using IMeshingSettings2 = IMeshingSettings<GeomDim2>;
+   using IMeshingSettings3 = IMeshingSettings<GeomDim3>;
 }

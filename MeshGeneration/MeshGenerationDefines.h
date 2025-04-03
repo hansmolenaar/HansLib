@@ -17,5 +17,6 @@ namespace MeshGeneration
    using CellQualityFun = double(const Geometry::Simplex<GeomType, N>&);
 
    using CellQuality2Fun = double(const Geometry::Simplex<GeomType, GeomDim2>&);
+   using CellQuality3Fun = double(const Geometry::Simplex<GeomType, GeomDim3>&);
 }
 

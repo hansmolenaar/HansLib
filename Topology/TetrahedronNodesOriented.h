@@ -31,6 +31,9 @@ namespace Topology
 
       // returns std::numeric_limtis<size_t>::max() if not found
       size_t find(NodeIndex node) const;
+
+      // If the tetrahedron has positive volume, the normals to the faces are outward pointing.
+      std::array<TriangleNodes, NumFacesOnTetrehadron> getFaces() const;
    private:
       std::array<NodeIndex, Topology::NumNodesOnTetrehadron> m_nodes;
    };

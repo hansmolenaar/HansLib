@@ -57,3 +57,12 @@ size_t Topology::TetrahedronNodesOriented::find(NodeIndex node) const
    if (node == m_nodes[3]) return 3;
    return NodeIndexInvalid;
 }
+
+std::array<Topology::TriangleNodes, Topology::NumFacesOnTetrehadron> Topology::TetrahedronNodesOriented::getFaces() const
+{
+   return {
+      TriangleNodes{m_nodes[0], m_nodes[1], m_nodes[3]},
+      TriangleNodes{m_nodes[0], m_nodes[2], m_nodes[1]},
+      TriangleNodes{m_nodes[0], m_nodes[3], m_nodes[2]},
+      TriangleNodes{m_nodes[1], m_nodes[2], m_nodes[3]} };
+}

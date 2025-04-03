@@ -22,10 +22,13 @@ public:
    const std::array<T, N>& data() const { return m_vector; }
 
    T innerProduct(const Point<T, N>&) const;
+   // TODO innerproduct of 2 unit vectors
 private:
    UnitVector(std::array<T, N>&&);
    Point<T, N> m_vector;
 };
+
+using UnitVector3 = std::optional<UnitVector<double, GeomDim3>>;
 
 template<typename T, int N>
 UnitVector<T, N>::UnitVector(std::array<T, N>&& unitVector) :

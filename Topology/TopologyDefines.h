@@ -16,6 +16,7 @@ namespace Topology
    inline constexpr size_t NumNodesOnTetrehadron = 4;
 
    inline constexpr size_t NumEdgesOnTriangle = 3;
+   inline constexpr size_t NumFacesOnTetrehadron = 4;
 
    using NodeIndex = PointIndex;
    inline constexpr NodeIndex NodeIndexInvalid = PointIndexInvalid;
