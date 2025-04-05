@@ -107,6 +107,19 @@ TEST(TetrahedronTest, TriRectangularTetrahedron)
    ASSERT_DOUBLE_EQ(volume, 5.0);
 }
 
+
+TEST(TetrahedronTest, SmallDihedralAngle)
+{
+   for (size_t d = 0; d < GeomDim3; ++d)
+   {
+      std::array<double, GeomDim3> len{ 1,1,1 };
+      len[d] = 0.001;
+      const auto tet = Tetrahedron::getTriRectangularTetrahedron(len[0], len[1], len[2]);
+      const double angle = Tetrahedron::getSmallestDihedralAngle(tet);
+      ASSERT_LT(angle, 0.0015);
+   }
+
+}
 TEST(TetrahedronTest, TriRectangularTetrahedronSmallestDihedralAngle)
 {
    const auto tet = Tetrahedron::getTriRectangularTetrahedron();

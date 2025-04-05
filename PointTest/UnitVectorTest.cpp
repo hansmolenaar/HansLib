@@ -86,13 +86,24 @@ TEST(UnitVectorTest, TestUnitVector2)
 TEST(UnitVectorTest, TestUnitVectorThrow)
 {
    std::array<double, 2> data = { 0,0 };
-   auto vec = UnitVector<double, 2>::Create(data);
+   const auto vec = UnitVector<double, 2>::Create(data);
    ASSERT_FALSE(vec.isValid());
 }
 
 TEST(UnitVectorTest, InnerProduct2)
 {
    std::array<double, 2> data = { 1,0 };
-   auto vec = UnitVector<double, 2>::Create(data);
+   const auto vec = UnitVector<double, 2>::Create(data);
    ASSERT_DOUBLE_EQ(vec * vec, 1.0);
 }
+
+#if false
+TEST(UnitVectorTest, Default)
+{
+   std::array<double, 2> data = { 1,0 };
+   const UnitVector2 vec;
+#define NDEBUG 1
+   ASSERT_ANY_THROW(vec.data());
+   //ASSERT_THROW(vec[0], std::bad_optional_access);
+}
+#endif
