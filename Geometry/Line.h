@@ -27,11 +27,12 @@ namespace Geometry
    Line<T, N>::Line(Point<T, N> refPoint, UnitVector<T, N> direction) :
       m_referencePoint(std::move(refPoint)), m_direction(std::move(direction))
    {
+      if (!m_direction.isValid()) throw MyException(" Line<T, N>::Line invalid direction");
    }
 
    template<typename T, int N>
    Line<T, N>::Line(const Point<T, N>& p0, const Point<T, N>& p1) :
-      Line<T, N>::Line(p0, UnitVector<T, N>::Create(p0, p1).value())
+      Line<T, N>::Line(p0, UnitVector<T, N>::Create(p0, p1))
    {
    }
 

@@ -27,7 +27,7 @@ Line<T, GeomDim2> Sphere2AsManifold1<T>::getEuclideanSubspaceAt(const Point<T, G
    }
    const auto radial = point - m_sphere.getCenter();
    const auto uv = UnitVector<T, GeomDim2>::getNormalTo(radial);
-   return { point, *uv };
+   return { point, uv };
 }
 
 template<typename T>
