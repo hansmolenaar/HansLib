@@ -24,14 +24,14 @@ public:
    T innerProduct(const Point<T, N>&) const;
 
    // inner product
-   //friend T operator*(const UnitVector<T, N>& lhs, const UnitVector<T, N>& rhs) { return PointUtils::innerProduct(lhs.data(), rhs.data()); };
+   friend T operator*(const UnitVector<T, N>& lhs, const UnitVector<T, N>& rhs) { return PointUtils::innerProduct(lhs.data(), rhs.data()); };
 
 private:
    UnitVector(std::array<T, N>&&);
    Point<T, N> m_vector;
 };
 
-using UnitVector3 = std::optional<UnitVector<double, GeomDim3>>;
+using UnitVector3 = UnitVector<double, GeomDim3>;
 
 template<typename T, int N>
 UnitVector<T, N>::UnitVector(std::array<T, N>&& unitVector) :

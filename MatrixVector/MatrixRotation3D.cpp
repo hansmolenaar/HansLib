@@ -16,9 +16,9 @@ double MatrixRotation3D::operator() (int row, int col)  const
 MatrixRotation3D::MatrixRotation3D(const UnitVector3& axis, double angle) :
    m_matrix(3, 3)
 {
-   double ux = (*axis)[0];
-   double uy = (*axis)[1];
-   double uz = (*axis)[2];
+   double ux = axis[0];
+   double uy = axis[1];
+   double uz = axis[2];
 
    double c = std::cos(angle);
    double s = std::sin(angle);

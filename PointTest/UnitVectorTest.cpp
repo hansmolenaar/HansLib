@@ -42,7 +42,8 @@ TEST(UnitVectorTest, InnerProduct)
    const Point2 p{ {2,0} };
    const auto uv = UnitVector<double, GeomDim2>::Create(std::vector<double>{1, 1});
    const double ip = uv->innerProduct(p);
-   ASSERT_NEAR(ip, std::sqrt(2.0), crit);
+   ASSERT_DOUBLE_EQ(ip, std::sqrt(2.0));
+   ASSERT_DOUBLE_EQ(*uv * *uv, 1.0);
 }
 
 
@@ -88,4 +89,11 @@ TEST(UnitVectorTest, TestUnitVectorThrow)
    std::array<double, 2> data = { 0,0 };
    auto vec = UnitVector<double, 2>::Create(data);
    ASSERT_FALSE(vec);
+}
+
+TEST(UnitVectorTest, InnerProduct2)
+{
+   std::array<double, 2> data = { 1,0 };
+   auto vec = UnitVector<double, 2>::Create(data);
+   ASSERT_DOUBLE_EQ(*vec * *vec, 1.0);
 }
