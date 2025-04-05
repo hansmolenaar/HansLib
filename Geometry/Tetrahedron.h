@@ -8,6 +8,7 @@ namespace Tetrahedron
 {
    double getSignedVolume(const Point3& p0, const Point3& p1, const Point3& p2, const Point3& p3);
    std::array<Point3, Topology::NumNodesOnTetrehadron> getRegularTetrahedron();
+   std::array<Point3, Topology::NumNodesOnTetrehadron> getTriRectangularTetrahedron(double a = 1, double b = 1, double c = 1);
 
    double getSmallestDihedralAngle(const std::array<Point3, Topology::NumNodesOnTetrehadron>& vert); // [rad]
    double getSmallestDihedralAngle(const Point3& p0, const Point3& p1, const Point3& p2, const Point3& p3); // [rad]

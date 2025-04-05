@@ -1,9 +1,9 @@
 #include <gtest/gtest.h>
 
-#include "UnitVector.h"
 #include "IMatrixTest.h"
-#include "MyAssert.h"
 #include "MathConstants.h"
+#include "MyAssert.h"
+#include "UnitVector.h"
 
 namespace {
    const double eps = 1.0e-12;
@@ -21,14 +21,12 @@ TEST(UnitVectorTest, TestUnitVector2)
    ASSERT_NEAR(vec(1), -MathConstants::SQRT1_2, eps);
 }
 
-
 TEST(UnitVectorTest, TestUnitVectorInvalid)
 {
    std::array<double, 2> data = { 0,0 };
    const auto vec = UnitVector2::TryCreate(data);
    ASSERT_TRUE(vec.get() == nullptr);
 }
-
 
 TEST(UnitVectorTest, TestUnitVectorThrow)
 {
@@ -37,9 +35,3 @@ TEST(UnitVectorTest, TestUnitVectorThrow)
    auto vec = UnitVector2::TryCreate(data);
    ASSERT_ANY_THROW((*vec)(0) = 2.0);
 }
-
-
-
-
-
-

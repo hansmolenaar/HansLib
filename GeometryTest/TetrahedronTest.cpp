@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "Permutation.h"
+#include "PointClose.h"
 #include "Tetrahedron.h"
 #include "TetrahedronNodesOriented.h"
 #include "TopologyDefines.h"
@@ -12,6 +13,27 @@
 
 using namespace Topology;
 
+namespace
+{
+   void checkTranslationInvariance(const std::array<Point3, NumNodesOnTetrehadron>& org)
+   {
+      const PointClose<double, GeomDim3> areClose;
+      std::array<Point3, NumNodesOnTetrehadron> shifted;
+      str::transform(org, shifted.begin(), [](const Point3& p) {return p + Point3{ 1,2,3 }; });
+      const double volumeOrg = Tetrahedron::getSignedVolume(org[0], org[1], org[2], org[3]);
+      const double volumeShifted = Tetrahedron::getSignedVolume(shifted[0], shifted[1], shifted[2], shifted[3]);
+      ASSERT_DOUBLE_EQ(volumeOrg, volumeShifted);
+
+      const TetrahedronNodesOriented tetNodes{ 0,1,2,3 };
+      const auto faceNodes = tetNodes.getFaces();
+      for (const auto f : faceNodes)
+      {
+         const auto normalOrg = Triangle::getAreaDirected(org[f[0]], org[f[1]], org[f[2]]);
+         const auto normalShifted = Triangle::getAreaDirected(shifted[f[0]], shifted[f[1]], shifted[f[2]]);
+         ASSERT_TRUE(areClose.samePoints(normalOrg, normalShifted));
+      }
+   }
+}
 TEST(TetrahedronTest, Volume)
 {
    const Point3 p0{ 0,0,0 };
@@ -21,6 +43,12 @@ TEST(TetrahedronTest, Volume)
    const double volume = Tetrahedron::getSignedVolume(p0, p1, p2, p3);
    constexpr double expect = 1.0 / 6;
    ASSERT_DOUBLE_EQ(volume, expect);
+}
+
+TEST(TetrahedronTest, TranslationInvariance)
+{
+   checkTranslationInvariance(Tetrahedron::getRegularTetrahedron());
+   checkTranslationInvariance(Tetrahedron::getTriRectangularTetrahedron(2, 3, 5));
 }
 
 TEST(TetrahedronTest, VolumePermuted)
@@ -72,3 +100,16 @@ TEST(TetrahedronTest, SmallestDihedralAngle)
    ASSERT_DOUBLE_EQ(angle, std::acos(1.0 / 3.0));
 }
 
+TEST(TetrahedronTest, TriRectangularTetrahedron)
+{
+   const auto tet = Tetrahedron::getTriRectangularTetrahedron(2, 3, 5);
+   const double volume = Tetrahedron::getSignedVolume(tet[0], tet[1], tet[2], tet[3]);
+   ASSERT_DOUBLE_EQ(volume, 5.0);
+}
+
+TEST(TetrahedronTest, TriRectangularTetrahedronSmallestDihedralAngle)
+{
+   const auto tet = Tetrahedron::getTriRectangularTetrahedron();
+   const double angle = Tetrahedron::getSmallestDihedralAngle(tet);
+   ASSERT_DOUBLE_EQ(angle, std::acos(1 / std::sqrt(3.0)));
+}

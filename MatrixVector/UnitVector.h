@@ -5,11 +5,12 @@
 #include "MyAssert.h"
 
 #include <array>
+#include <cmath>
 #include <memory>
 #include <numeric>
 #include <span>
-#include <cmath>
 
+#if true
 template<int Dimension>
 class UnitVector : public IVector
 {
@@ -58,7 +59,7 @@ double UnitVector<Dimension>::operator() (int n)  const
 }
 
 template<int Dimension>
-double&  UnitVector<Dimension>::operator() (int n)
+double& UnitVector<Dimension>::operator() (int n)
 {
    throw std::exception("Don't call me, use const version instead");
 }
@@ -84,3 +85,5 @@ std::unique_ptr<UnitVector<Dimension>> UnitVector<Dimension>::TryCreate(std::spa
    }
    return result;
 }
+
+#endif
