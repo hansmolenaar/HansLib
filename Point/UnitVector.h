@@ -18,7 +18,7 @@ public:
    static std::optional<UnitVector<T, N>> Create(const Point<T, N>& from, const Point<T, N>& to);
    static std::optional<UnitVector<T, N>> getNormalTo(Point<T, N> v);
 
-   T operator[](int) const;
+   T operator[](int n) const;
    const std::array<T, N>& data() const { return m_vector; }
 
    T innerProduct(const Point<T, N>&) const;

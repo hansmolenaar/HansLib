@@ -1,7 +1,8 @@
 #include <gtest/gtest.h>
 
-#include "UnitVector.h"
+#include "MathConstants.h"
 #include "PointClose.h"
+#include "UnitVector.h"
 
 #include <numeric>
 
@@ -69,4 +70,22 @@ TEST(UnitVectorTest, CreateFromDirectedPair)
    auto uv = UnitVector<double, GeomDim2>::Create(from, to).value();
    ASSERT_NEAR(uv[0], 0.6, crit);
    ASSERT_EQ(uv[1], -0.8);
+}
+
+TEST(UnitVectorTest, TestUnitVector2)
+{
+   std::array<double, 2> data = { 1,-1 };
+   const auto vecptr = UnitVector<double, 2>::Create(data);
+   ASSERT_TRUE(vecptr);
+
+   const auto& vec = *vecptr;
+   ASSERT_DOUBLE_EQ(vec[0], MathConstants::SQRT1_2);
+   ASSERT_DOUBLE_EQ(vec[1], -MathConstants::SQRT1_2);
+}
+
+TEST(UnitVectorTest, TestUnitVectorThrow)
+{
+   std::array<double, 2> data = { 0,0 };
+   auto vec = UnitVector<double, 2>::Create(data);
+   ASSERT_FALSE(vec);
 }
