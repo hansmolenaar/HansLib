@@ -16,7 +16,9 @@ TEST(IndexTreeTest, DefaultConsturctor)
    IndexTree<2> tree;
    const auto& root = tree.getRoot();
    ASSERT_EQ(root.getLevel(), 0);
-   ASSERT_EQ(root.toString(), "((0, 1), (0, 1))");
+   std::ostringstream os;
+   os << root;
+   ASSERT_EQ(os.str(), "((0, 1), (0, 1))");
 
    const auto& statistics = GetStatistics<2>(tree);
    const Statistics expect{ 1, {1} };
@@ -110,8 +112,9 @@ TEST(IndexTreeTest, CubeToVtk)
    ASSERT_EQ(data->getNumCells(), 1);
    ASSERT_EQ(data->getNumCellData(), 0);
    //Paraview::Write(*data);
-   const auto str = tree.getRoot().toString();
-   ASSERT_EQ(str, "((0, 1), (0, 1), (0, 1))");
+   std::ostringstream os;
+   os << tree.getRoot();
+   ASSERT_EQ(os.str(), "((0, 1), (0, 1), (0, 1))");
 }
 TEST(IndexTreeTest, Contains)
 {
@@ -194,6 +197,7 @@ TEST(IndexTreeTest, ToString)
    IndexTree<1> tree;
    RefineToMaxLevel<1> doRefine1{ 2 };
    tree.refineUntilReady(doRefine1);
-   const auto msg = tree.toString();
-   ASSERT_EQ(msg, "IndexTree N=1  SIZE=7  NUMLEAVES=4  MAXLEVEL=2");
+   std::ostringstream os;
+   os << tree;
+   ASSERT_EQ(os.str(), "IndexTree N=1  SIZE=7  NUMLEAVES=4  MAXLEVEL=2");
 }

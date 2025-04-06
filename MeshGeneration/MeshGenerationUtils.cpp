@@ -92,7 +92,9 @@ void MeshGeneration::Log(Logger& logger, const std::vector<const IntervalTree::I
    lines.emplace_back(header);
    for (const auto& indx : cells)
    {
-      lines.push_back(indx->toString());
+      std::ostringstream os;
+      os << indx;
+      lines.push_back(os.str());
    }
    logger.logLines(lines);
 }

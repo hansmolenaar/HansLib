@@ -43,8 +43,10 @@ namespace IntervalTree
    template<int N>
    struct ActionLogLeaves
    {
-      void operator()(const Index<N>& index) { 
-         ActionLogger.logLine(index.getBbOfCell().toString()); 
+      void operator()(const Index<N>& index) {
+         std::ostringstream os;
+         os << index.getBbOfCell();
+         ActionLogger.logLine(os.str());
       };
       Logger& ActionLogger;
    };

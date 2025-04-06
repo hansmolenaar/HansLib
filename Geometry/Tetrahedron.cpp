@@ -38,7 +38,8 @@ double Tetrahedron::getSmallestDihedralAngle(const std::array<Point3, Topology::
    {
       for (size_t f1 = f0 + 1; f1 < NumNodesOnTetrehadron; ++f1)
       {
-         maxInprod = std::max(maxInprod, std::abs((*normal[f0]) * (*normal[f1])));
+         const auto inprod = (*normal[f0]) * (*normal[f1]);
+         maxInprod = std::max(maxInprod, std::abs(inprod));
       }
    }
    return std::acos(maxInprod);

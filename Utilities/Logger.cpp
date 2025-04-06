@@ -27,6 +27,11 @@ void Logger::logLine(const std::string& line)
    logLines(std::vector<std::string>{line});
 }
 
+void Logger::logLine(const std::ostringstream& os)
+{
+   logLine(os.str());
+}
+
 void Logger::logLines(const std::vector<std::string>& lines)
 {
    std::ostringstream oss;

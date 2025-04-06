@@ -34,7 +34,14 @@ namespace MeshGeneration
       std::vector<PointIndex> getAllNodes() const;
       std::vector<Topology::EdgeNodesSorted> getAllSortedEdges() const;
 
-      std::string toString() const;
+      friend std::ostream& operator<<(std::ostream& os, const TrianglesNodes& tnodes)
+      {
+         const std::string sep = " ";
+         os << "TriangleNodes";
+         os << sep << "NUMNODES=" << tnodes.getAllNodes().size();
+         os << sep + "NUMTRIANGLES=" << tnodes.m_toNodes.size();
+         return os;
+      }
       size_t getNumTriangles() const;
 
    private:

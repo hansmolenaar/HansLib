@@ -96,22 +96,26 @@ namespace
 IndexTreeToSimplices2::Triangles MeshGeneration2::GenerateBaseTriangulation(const Geometry::IGeometryRegion<MeshGeneration::GeomType, GeomDim2>& region, IMeshingSettings2& settings)
 {
    auto& logger = settings.getLogger();
-   std::string msg = "MeshGeneration2::GenerateBaseTriangulation() region Bb " + region.getBoundingBox().toString();
-   logger.logLine(msg);
+   std::ostringstream os;
+   os << "MeshGeneration2::GenerateBaseTriangulation() region Bb " << region.getBoundingBox();
+   logger.logLine(os);
 
    IndexTree<GeomDim2> tree;
    auto refinementPredicate = settings.getRefinementPredicateFactory().Create(region, settings.getInitialBbGenerator(), settings.getGeometryPredicate());
    tree.refineUntilReady(*refinementPredicate);
-   msg = "MeshGeneration2::GenerateBaseTriangulation() after refinement: " + tree.toString();
-   logger.logLine(msg);
+   os.str("");
+   os << "MeshGeneration2::GenerateBaseTriangulation() after refinement: " << tree;
+   logger.logLine(os);
 
    IntervalTree::Balance(tree);
-   msg = "MeshGeneration2::GenerateBaseTriangulation() after balancing (max 1 level difference): " + tree.toString();
-   logger.logLine(msg);
+   os.str("");
+   os << "MeshGeneration2::GenerateBaseTriangulation() after balancing (max 1 level difference): " << tree;
+   logger.logLine(os);
 
    const auto result = IndexTreeToSimplices2::Create(tree);
-   msg = "MeshGeneration2::GenerateBaseTriangulation(): number of triangles " + std::to_string(result.size());
-   logger.logLine(msg);
+   os.str("");
+   os << "MeshGeneration2::GenerateBaseTriangulation(): number of triangles " << result.size();
+   logger.logLine(os);
 
    return result;
 }
@@ -124,6 +128,8 @@ void MeshGeneration2::BaseTriangulationToWorld(
    TrianglesNodes& triangleNodes,
    Logger& logger)
 {
+   std::ostringstream os;
+
    // Clear output
    pointGeometry.reset();
    if (triangleNodes.getNumTriangles() != 0)
@@ -152,7 +158,9 @@ void MeshGeneration2::BaseTriangulationToWorld(
    // Build the point collection from the points
 
    auto binnedCollection = std::make_unique<UniquePointCollectionBinning<2>>(predicate, uniqueWorldPoints);
-   logger.logLine("MeshGeneration2::BaseTriangulationToWorld binning collecion: " + binnedCollection->toString());
+   os.str("");
+   os << "MeshGeneration2::BaseTriangulationToWorld binning collecion: " << *binnedCollection;
+   logger.logLine(os);
 
    pointGeometry.reset(binnedCollection.release());
 
@@ -176,7 +184,9 @@ void MeshGeneration2::BaseTriangulationToWorld(
       triangleNodes.addTriangle(TriangleNodesOriented(n0, n1, n2));
    }
 
-   logger.logLine("MeshGeneration2::BaseTriangulationToWorld topology\n" + triangleNodes.toString());
+   os.str("");
+   os << "MeshGeneration2::BaseTriangulationToWorld topology\n" << triangleNodes;
+   logger.logLine(os);
 }
 
 std::vector<std::unique_ptr<Vtk::VtkData>> MeshGeneration2::reconstructionsToVtkData(const Mesh2& mesh, const std::string& project)

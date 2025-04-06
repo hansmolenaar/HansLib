@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
-#include "UniquePointCollectionBinning.h"
 #include "PointClose.h"
+#include "UniquePointCollectionBinning.h"
 
 #include <numbers>
 
@@ -173,7 +173,9 @@ TEST(UniquePointCollectionBinningTest, ToString)
          Point3{ 0.6, 0.7, 0.8 },
          Point3{ 0.3, 0.6, 0.2 },
    });
-   const auto str = collection.toString();
+   std::ostringstream os;
+   os << collection;
+   const auto str = os.str();
    ASSERT_TRUE(str.contains("UniquePointCollectionBinning  NDIR=3  NPOINTS=11"));
    ASSERT_TRUE(str.contains("DIR=0  ->  (-INF)  LWR=0  UPR=1  (+INF)  NUM=5  MIN=0.05  MAX=0.35  AVG=0.2"));
 }

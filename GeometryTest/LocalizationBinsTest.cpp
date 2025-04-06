@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "LocalizationBins.h"
+#include <sstream>
 
 TEST(LocalizationBinsTest, SingleBin)
 {
@@ -94,14 +95,16 @@ TEST(LocalizationBinsTest, ToString)
 {
    const Interval<double> intv(2.0, 3.0);
    const LocalizationBins bins = LocalizationBins::CreateUniform(intv, 2);
-   const auto str = bins.toString();
-   ASSERT_TRUE(str.contains("LWR=2  UPR=3  NUM=2  MIN=0.5  MAX=0.5  AVG=0.5"));
+   std::ostringstream os;
+   os << bins;
+   ASSERT_TRUE(os.str().contains("LWR=2  UPR=3  NUM=2  MIN=0.5  MAX=0.5  AVG=0.5"));
 }
 
 
 TEST(LocalizationBinsTest, ToStringNonStrict)
 {
    const LocalizationBins bins = LocalizationBins::CreateFromValues(std::vector<double> { 2.0, 1.0 }, false);
-   const auto str = bins.toString();
-   ASSERT_TRUE(str.contains("(-INF)  LWR=1  UPR=2  (+INF)  NUM=2  MIN=0.5  MAX=0.5  AVG=0.5"));
+   std::ostringstream os;
+   os << bins;
+   ASSERT_TRUE(os.str().contains("(-INF)  LWR=1  UPR=2  (+INF)  NUM=2  MIN=0.5  MAX=0.5  AVG=0.5"));
 }

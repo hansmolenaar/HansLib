@@ -1,17 +1,17 @@
 #pragma once
 
-#include "StdHash.h"
-#include "IntervalTreeIndex1Factory.h"
 #include "BoolContainer.h"
-#include "MyAssert.h"
-#include "IntervalTreeAdjacentDirection.h"
 #include "BoundingBox.h"
+#include "IntervalTreeAdjacentDirection.h"
+#include "IntervalTreeIndex1Factory.h"
+#include "MyAssert.h"
+#include "StdHash.h"
 
-#include <vector>
 #include <array>
-#include <unordered_map>
 #include <functional>
 #include <string>
+#include <unordered_map>
+#include <vector>
 
 namespace IntervalTree
 {
@@ -32,7 +32,6 @@ namespace IntervalTree
       Key getKey() const;
       std::array<Key, IntervalTree::NumKids<N> > refine() const;
       Rational getMeasure() const;
-      std::string toString() const;
       std::array<Rational, N> getCenter() const;
 
       static bool IsRoot(const Key& key);
@@ -45,8 +44,17 @@ namespace IntervalTree
 
       std::array<std::array<Rational, N>, NumKids<N>> getVerticesInVtkOrder() const;
 
+      friend std::ostream& operator<<(std::ostream& os, const Index& ind)
+      {
+         os << "(" << *(ind.m_factory1(ind.m_keys[0]));
+         for (int n = 1; n < N; ++n)
+         {
+            os << ", " << *(ind.m_factory1(ind.m_keys[n]));
+         }
+         os << ")";
+         return os;
+      }
 
-  
    private:
       Index1Factory& m_factory1;
       Key m_keys;
@@ -123,18 +131,6 @@ namespace IntervalTree
             return acc * m_factory1(key1)->getMeasure();
          }
       );
-   }
-
-   template<int N>
-   std::string Index<N>::toString() const
-   {
-      std::string result = "(" + m_factory1(m_keys[0])->toString();
-      for (int n = 1; n < N; ++n)
-      {
-         result += ", " + m_factory1(m_keys[n])->toString();
-      }
-      result += ")";
-      return result;
    }
 
    template<int N>

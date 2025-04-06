@@ -1,7 +1,8 @@
 #include <gtest/gtest.h>
 
-#include "Interval.h"
 #include "Functors.h"
+#include "Interval.h"
+#include <sstream>
 
 TEST(IntervalTest, Basic1)
 {
@@ -111,7 +112,6 @@ TEST(IntervalTest, InterpolateFail)
    ASSERT_THROW(interval.inverseInterpolate(std::numeric_limits<double>::max()), MyException);
 }
 
-
 TEST(IntervalTest, Equals)
 {
    const Interval<int> interval1(0, 1);
@@ -120,4 +120,12 @@ TEST(IntervalTest, Equals)
    ASSERT_EQ(interval1, interval1);
    ASSERT_NE(interval1, interval2);
    ASSERT_NE(interval1, interval3);
+}
+
+TEST(IntervalTest, StreamInsertion)
+{
+   const Interval<int> interval(1, 2);
+   std::ostringstream os;
+   os << interval;
+   ASSERT_EQ(os.str(), "(1, 2)");
 }

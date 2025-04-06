@@ -1,13 +1,13 @@
 #pragma once
 
-#include "IntervalTreeIndexFactory.h"
 #include "IntervalTreeAction.h"
-#include "StdHash.h"
+#include "IntervalTreeIndexFactory.h"
 #include "Logger.h"
+#include "StdHash.h"
 
+#include <optional>
 #include <unordered_map>
 #include <unordered_set>
-#include <optional>
 
 namespace IntervalTree
 {
@@ -35,7 +35,19 @@ namespace IntervalTree
       bool isLeaf(typename const Index<N>& index) const;
 
       size_t size() const;
-      std::string toString() const;
+
+      friend std::ostream& operator<<(std::ostream& os, const IndexTree& tree)
+      {
+         static const std::string sep = "  ";
+         os << "IndexTree N=" << N;
+         os << sep << "SIZE=" << tree.size();
+         os << sep << "NUMLEAVES=" << tree.m_leaves.size();
+
+         ActionMaxLevel<N> actionMaxLevel;
+         tree.foreachLeaf(actionMaxLevel);
+         os << sep << "MAXLEVEL=" << actionMaxLevel.MaxLevel;
+         return os;
+      }
 
    private:
       std::vector<const Index<N>*> getLeavesInFixedOrder() const;
@@ -141,7 +153,9 @@ namespace IntervalTree
    {
       if (!contains(index.getKey()))
       {
-         throw MyException("IndexTree<N>::isLeaf() unknown key specified: " + index.toString());
+         std::ostringstream os;
+         os << "IndexTree<N>::isLeaf() unknown key specified: " << index;
+         throw MyException(os.str());
       }
       return m_leaves.contains(&index);
    }
@@ -155,20 +169,6 @@ namespace IntervalTree
          if (index) return *(index.value());
          key = Index<N>::GetParent(key);
       }
-   }
-
-   template<int N>
-   std::string IndexTree<N>::toString() const
-   {
-      static const std::string sep = "  ";
-      std::string result = "IndexTree N=" + std::to_string(N);
-      result += sep + "SIZE=" + std::to_string(size());
-      result += sep + "NUMLEAVES=" + std::to_string(m_leaves.size());
-
-      ActionMaxLevel<N> actionMaxLevel;
-      foreachLeaf(actionMaxLevel);
-      result += sep + "MAXLEVEL=" + std::to_string(actionMaxLevel.MaxLevel);
-      return result;
    }
 
 }

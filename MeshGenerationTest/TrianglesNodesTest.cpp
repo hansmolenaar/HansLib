@@ -205,17 +205,20 @@ TEST(TrianglesNodesTest, GetAllEdges)
 }
 TEST(TrianglesNodesTest, ToString)
 {
+   std::ostringstream os;
    TrianglesNodes tnodes;
-   std::string msg = tnodes.toString();
-   ASSERT_EQ(msg, "TriangleNodes NUMNODES=0 NUMTRIANGLES=0");
+   os << tnodes;
+   ASSERT_EQ(os.str(), "TriangleNodes NUMNODES=0 NUMTRIANGLES=0");
 
    const auto triangle0 = tnodes.addTriangle(TriangleNodesOriented(42, 999, 0));
-   msg = tnodes.toString();
-   ASSERT_EQ(msg, "TriangleNodes NUMNODES=3 NUMTRIANGLES=1");
+   os.str("");
+   os << tnodes;
+   ASSERT_EQ(os.str(), "TriangleNodes NUMNODES=3 NUMTRIANGLES=1");
 
    const auto triangle1 = tnodes.addTriangle(TriangleNodesOriented(999, 42, 1));
-   msg = tnodes.toString();
-   ASSERT_EQ(msg, "TriangleNodes NUMNODES=4 NUMTRIANGLES=2");
+   os.str("");
+   os << tnodes;
+   ASSERT_EQ(os.str(), "TriangleNodes NUMNODES=4 NUMTRIANGLES=2");
 }
 TEST(TrianglesNodesTest, GetAllNodes)
 {

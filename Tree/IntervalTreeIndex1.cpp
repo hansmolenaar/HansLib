@@ -1,7 +1,7 @@
 #include "IntervalTreeIndex1.h"
 
-#include "MyException.h"
 #include "MyAssert.h"
+#include "MyException.h"
 #include <cmath>
 
 using namespace IntervalTree;
@@ -36,18 +36,6 @@ namespace
          return interval.getLower().numerator();
       }
       return interval.getUpper().numerator() - 1;
-   }
-
-   std::string ToString(const Rational& rat)
-   {
-      if (rat == Rational(0, 1)) return "0";
-      if (rat == Rational(1, 1)) return "1";
-      return std::to_string(rat.numerator()) + "/" + std::to_string(rat.denominator());
-   }
-
-   std::string ToString(const Interval<Rational>& intv)
-   {
-      return "(" + ToString(intv.getLower()) + ", " + ToString(intv.getUpper()) + ")";
    }
 }
 
@@ -139,11 +127,6 @@ std::array<Index1, 2> Index1::refine() const
 Rational Index1::getMeasure() const
 {
    return m_interval.getMeasure();
-}
-
-std::string Index1::toString() const
-{
-   return ToString(getInterval());
 }
 
 bool Index1::IsRoot(Key key)

@@ -243,15 +243,6 @@ std::vector<PointIndex> TrianglesNodes::getAllNodes() const
    return result;
 }
 
-std::string TrianglesNodes::toString() const
-{
-   const std::string sep = " ";
-   std::string result = "TriangleNodes";
-   result += sep + "NUMNODES=" + std::to_string(getAllNodes().size());
-   result += sep + "NUMTRIANGLES=" + std::to_string(m_toNodes.size());
-   return result;
-}
-
 size_t TrianglesNodes::getNumTriangles() const
 {
    return m_toNodes.size();

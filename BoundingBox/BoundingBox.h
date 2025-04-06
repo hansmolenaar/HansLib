@@ -6,8 +6,8 @@
 #include "Point.h"
 #include "ToString.h"
 
-#include <span>
 #include <optional>
+#include <span>
 
 template <typename T, size_t... Is, typename... Args>
 std::array<T, sizeof...(Is)> MakeArrayHelper(
@@ -61,9 +61,19 @@ public:
    Point<T, N> getCenter() const;
    T getLengthDiagonalSquared() const;
 
-   std::string toString() const;
-
    auto operator<=>(const BoundingBox<T, N>&) const = default;
+
+   friend std::ostream& operator<<(std::ostream& os, const BoundingBox<T, N>& bb)
+   {
+      os << "( ";
+      for (int n = 0; n < N; ++n)
+      {
+         if (n > 0) os << ", ";
+         os << bb.m_intervals[n];
+      }
+      os << " )";
+      return os;
+   }
 
 private:
    explicit BoundingBox(const std::span<const T>&);
@@ -231,18 +241,6 @@ T BoundingBox<T, N>::getLengthDiagonalSquared() const
 {
    const auto dif = getUpper() - getLower();
    return  PointUtils::GetNormSquared(dif);
-}
-
-template<typename T, int N >
-std::string BoundingBox<T, N>::toString() const
-{
-   static const std::string sep = " ";
-   std::string result;
-   for (int n = 0; n < N; ++n)
-   {
-      result += sep + "(" + ToString(getLower(n)) + ", " + ToString(getUpper(n)) + ")";
-   }
-   return result;
 }
 
 template<typename T, int N >
