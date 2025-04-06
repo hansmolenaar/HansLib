@@ -38,13 +38,13 @@ TEST(TriangleNodesOrientedTest, OppositeNode)
    ASSERT_EQ(triangle.oppositeNode({ 2,3 }), 1);
    ASSERT_EQ(triangle.oppositeNode({ 3,2 }), 1);
 
-   ASSERT_THROW(triangle.oppositeNode({ 1,4 }), MyException);
-   ASSERT_THROW(triangle.oppositeNode({ 4,1 }), MyException);
-   ASSERT_THROW(triangle.oppositeNode({ 2,4 }), MyException);
-   ASSERT_THROW(triangle.oppositeNode({ 4,2 }), MyException);
-   ASSERT_THROW(triangle.oppositeNode({ 3,4 }), MyException);
-   ASSERT_THROW(triangle.oppositeNode({ 4,3 }), MyException);
-   ASSERT_THROW(triangle.oppositeNode({ 4,5 }), MyException);
+   ASSERT_MYEXCEPTION_MESSAGE(triangle.oppositeNode({ 1,4 }), "Triangle does not contain edge");
+   ASSERT_MYEXCEPTION_MESSAGE(triangle.oppositeNode({ 4,1 }), "Triangle does not contain edge");
+   ASSERT_MYEXCEPTION_MESSAGE(triangle.oppositeNode({ 2,4 }), "Triangle does not contain edge");
+   ASSERT_MYEXCEPTION_MESSAGE(triangle.oppositeNode({ 4,2 }), "Triangle does not contain edge");
+   ASSERT_MYEXCEPTION_MESSAGE(triangle.oppositeNode({ 3,4 }), "Triangle does not contain edge");
+   ASSERT_MYEXCEPTION_MESSAGE(triangle.oppositeNode({ 4,3 }), "Triangle does not contain edge");
+   ASSERT_MYEXCEPTION_MESSAGE(triangle.oppositeNode({ 4,5 }), "Triangle does not contain edge");
 }
 
 TEST(TriangleNodesOrientedTest, Find)

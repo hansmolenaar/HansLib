@@ -1,13 +1,13 @@
 #pragma once
 
-#include "Permutation.h"
 #include "MyException.h"
+#include "Permutation.h"
 
-#include <span>
-#include <optional>
-#include <set>
 #include <functional>
 #include <numeric>
+#include <optional>
+#include <set>
+#include <span>
 #include <string>
 
 namespace PermutationUtils
@@ -40,7 +40,7 @@ namespace PermutationUtils
    Permutation::Entry SafeCastToEntry(T number)
    {
       if (number < 0) throw MyException("CastToEntry negative number " + std::to_string(number));
-      if (std::cmp_greater_equal(number, std::numeric_limits<Permutation::Entry>::max())) throw MyException("CastToEntry too large number ");
+      if (std::cmp_greater_equal(number, std::numeric_limits<Permutation::Entry>::max())) throw MyException("CastToEntry too large number");
       return static_cast<Permutation::Entry>(number);
    }
 

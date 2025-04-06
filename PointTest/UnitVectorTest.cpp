@@ -59,7 +59,7 @@ TEST(UnitVectorTest, TimesFactor)
 TEST(UnitVectorTest, CreateUnhappyPath)
 {
    auto uv = UnitVector<double, GeomDim1>::Create(Point1{ 3 });
-   ASSERT_THROW((uv = UnitVector<double, 1>::Create(std::vector<double>{ 1.0, 2.0 })), MyException);
+   ASSERT_MYEXCEPTION_MESSAGE((uv = UnitVector<double, 1>::Create(std::vector<double>{ 1.0, 2.0 })), "UnitVector<N>::Create span dimension incorrect");
 }
 
 
@@ -96,14 +96,3 @@ TEST(UnitVectorTest, InnerProduct2)
    const auto vec = UnitVector<double, 2>::Create(data);
    ASSERT_DOUBLE_EQ(vec * vec, 1.0);
 }
-
-#if false
-TEST(UnitVectorTest, Default)
-{
-   std::array<double, 2> data = { 1,0 };
-   const UnitVector2 vec;
-#define NDEBUG 1
-   ASSERT_ANY_THROW(vec.data());
-   //ASSERT_THROW(vec[0], std::bad_optional_access);
-}
-#endif

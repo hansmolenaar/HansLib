@@ -226,7 +226,7 @@ TEST(MeshGeneration2Test, Sphere2AndEdge_immobilePoint)
    manifoldsAndNodes.addNodeToManifold(node2, &pointManifold);
    checkTriangleArea(trianglesNodes, points);
 
-   ASSERT_THROW(AddEdgeManifold1Intersections(manifold, edge, trianglesNodes, manifoldsAndNodes, points), MyException);
+   ASSERT_MYEXCEPTION_MESSAGE(AddEdgeManifold1Intersections(manifold, edge, trianglesNodes, manifoldsAndNodes, points), "UniquePointCollectionBinning<N>::movePoint point already exists");
 }
 
 TEST(MeshGeneration2Test, Sphere2AndEdge_NoIntersections)

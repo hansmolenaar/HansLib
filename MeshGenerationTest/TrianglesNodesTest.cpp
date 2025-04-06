@@ -11,13 +11,13 @@ TEST(TrianglesNodesTest, Empty)
 {
    TrianglesNodes tnodes;
    ASSERT_EQ(tnodes.getNumTriangles(), 0);
-   ASSERT_THROW(tnodes.deleteTriangle(0), MyException);
-   ASSERT_THROW(tnodes.getEdgeConnectedTriangles(0, 1), MyException);
-   ASSERT_THROW(tnodes.getNodeConnectedTriangles(0), MyException);
-   ASSERT_THROW(tnodes.getEdgeConnectedNodes(0), MyException);
-   ASSERT_THROW(tnodes.tryGetTriangle(0, 1, 2), MyException);
-   ASSERT_THROW(tnodes.triangleContainsNode(0, 1), MyException);
-   ASSERT_THROW(tnodes.getTriangleNodes(0), MyException);
+   ASSERT_MYEXCEPTION_MESSAGE(tnodes.deleteTriangle(0), "TriangleNodes::deleteTriangle() unkown triangle: 0");
+   ASSERT_MYEXCEPTION_MESSAGE(tnodes.getEdgeConnectedTriangles(0, 1), "TriangleNodes::checkNodeId() unknown NodeId 0");
+   ASSERT_MYEXCEPTION_MESSAGE(tnodes.getNodeConnectedTriangles(0), "TriangleNodes::checkNodeId() unknown NodeId 0");
+   ASSERT_MYEXCEPTION_MESSAGE(tnodes.getEdgeConnectedNodes(0), "TriangleNodes::checkNodeId() unknown NodeId 0");
+   ASSERT_MYEXCEPTION_MESSAGE(tnodes.tryGetTriangle(0, 1, 2), "TriangleNodes::checkNodeId() unknown NodeId 0");
+   ASSERT_MYEXCEPTION_MESSAGE(tnodes.triangleContainsNode(0, 1), "TriangleNodes::checkTriangleId() unknown TriangleId 0");
+   ASSERT_MYEXCEPTION_MESSAGE(tnodes.getTriangleNodes(0), "TriangleNodes::checkTriangleId() unknown TriangleId 0");
 }
 
 TEST(TrianglesNodesTest, SingleTriangle)
@@ -43,7 +43,7 @@ TEST(TrianglesNodesTest, SingleTriangle)
    ASSERT_EQ(triangleId, *foundTriangle);
 
    ASSERT_TRUE(tnodes.triangleContainsNode(triangleId, 999));
-   ASSERT_THROW(tnodes.triangleContainsNode(triangleId, 1), MyException);
+   ASSERT_MYEXCEPTION_MESSAGE(tnodes.triangleContainsNode(triangleId, 1), "TriangleNodes::checkNodeId() unknown NodeId 1");
 
    const auto triangleNodes = tnodes.getTriangleNodes(triangleId);
    ASSERT_TRUE(str::equal(triangleNodes, std::array<PointIndex, 3>{0, 42, 999}));

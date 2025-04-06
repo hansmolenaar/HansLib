@@ -36,7 +36,7 @@ TEST(Sphere2AsManifold1, GetEuclideanSubspaceAt)
    const  Line<double, 2> line = sphereManifold.getEuclideanSubspaceAt(Point2{ 3,2 }, areClose);
    ASSERT_TRUE(line.contains(Point2{ 3,0 }, areClose));
 
-   ASSERT_THROW(sphereManifold.getEuclideanSubspaceAt(Point2{ 3,3 }, areClose), MyException);
+   ASSERT_MYEXCEPTION_MESSAGE(sphereManifold.getEuclideanSubspaceAt(Point2{ 3,3 }, areClose), "Sphere2AsManifold1<T>::GetEuclideanSubspaceAt, point not on manifold");
 }
 
 TEST(Sphere2AsManifold1, GetEuclideanSubspaceAtUnitCircle)

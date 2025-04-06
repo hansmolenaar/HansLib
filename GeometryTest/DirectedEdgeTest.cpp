@@ -12,7 +12,7 @@ TEST(DirectedEdgeTest, UnhappyPath)
    ASSERT_TRUE(areClose.samePoints(point, point));
    const DirectedEdge<double, 1> edge(point, point);
    ASSERT_TRUE(edge.isDegenerate(areClose));
-   ASSERT_THROW(edge.project(point), MyException);
+   ASSERT_MYEXCEPTION_MESSAGE(edge.project(point), "DirectedEdge<T, N>::project edge is degenerated");
 }
 
 TEST(DirectedEdgeTest, LengthSquared)

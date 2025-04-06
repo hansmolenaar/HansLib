@@ -19,7 +19,7 @@ TEST(ManifoldsAndNodesTest, Empty)
    const auto nodes = man.getNodesInManifold(nullptr);
    ASSERT_TRUE(nodes.empty());
 
-   ASSERT_THROW(man.deleteNode(1), MyException);
+   ASSERT_MYEXCEPTION_MESSAGE(man.deleteNode(1), "ManifoldsAndNodes<N>::deleteNode unknown node specified");
 }
 
 
@@ -68,7 +68,7 @@ TEST(ManifoldsAndNodesTest, Delete)
    ManifoldsAndNodes<GeomDim2> manifoldsAndNodes;
    manifoldsAndNodes.addNodeToManifold(42, manifoldPtr);
 
-   ASSERT_THROW(manifoldsAndNodes.deleteNode(1), MyException);
+   ASSERT_MYEXCEPTION_MESSAGE(manifoldsAndNodes.deleteNode(1), "ManifoldsAndNodes<N>::deleteNode unknown node specified");
    auto nodes = manifoldsAndNodes.getNodesInManifold(manifoldPtr);
    ASSERT_EQ(Single(nodes), 42);
    auto manifolds = manifoldsAndNodes.getManifoldsContainingNode(42);

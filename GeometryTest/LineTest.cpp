@@ -42,5 +42,5 @@ TEST(LineTest, TwoPointsConstructor_error)
    const Point2 point1{ 1, 2 };
    const Point2 point2{ 2, 1 };
    auto line = Line<double, 2>(point1, point2);
-   ASSERT_THROW((line = Line<double, 2>(point1, point1)), MyException);
+   ASSERT_MYEXCEPTION_MESSAGE((line = Line<double, 2>(point1, point1)), "Line<T, N>::Line invalid direction");
 }

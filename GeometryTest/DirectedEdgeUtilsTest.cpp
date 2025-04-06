@@ -12,7 +12,7 @@ TEST(DirectedEdgeUtilsTest, degenerate)
    const std::array<double, 2> point1{ 2, 3 };
    const DirectedEdge<double, 2> edge00(point0, point0);
    const DirectedEdge<double, 2> edge01(point0, point1);
-   ASSERT_THROW(DirectedEdgeUtils::intersectWith2(edge00, edge01, areClose), MyException);
+   ASSERT_MYEXCEPTION_MESSAGE(DirectedEdgeUtils::intersectWith2(edge00, edge01, areClose), "DirectedEdgeUtils::IntersectWith2 edge degenerate");
    const auto ipts = DirectedEdgeUtils::intersectWith2(edge01, edge00, areClose);
    ASSERT_TRUE(ipts->getIsolatedPoint().getPointType() == DirectedEdgePointType::Point0);
 }

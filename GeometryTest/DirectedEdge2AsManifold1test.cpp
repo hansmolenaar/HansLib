@@ -43,7 +43,7 @@ TEST(DirectedEdge2AsManifold1, GetEuclideanSubspaceAt)
    const  Line<double, 2> line = edgeManifold.getEuclideanSubspaceAt(Point2{ -0.2, 0.2 }, predicate);
    ASSERT_TRUE(line.contains(Point2{ 0, 0 }, predicate));
 
-   ASSERT_THROW(edgeManifold.getEuclideanSubspaceAt(Point2{ 3,3 }, predicate), MyException);
+   ASSERT_MYEXCEPTION_MESSAGE(edgeManifold.getEuclideanSubspaceAt(Point2{ 3,3 }, predicate), "DirectedEdge2AsManifold1<T>::GetEuclideanSubspaceAt, point not on manifold");
 }
 
 TEST(DirectedEdge2AsManifold1, GetIntersections)
