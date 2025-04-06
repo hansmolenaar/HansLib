@@ -21,7 +21,6 @@ namespace MeshGeneration
       ManifoldsWithNode getManifoldsContainingNode(Topology::NodeIndex node) const;
       std::vector<Topology::NodeIndex> getNodesInManifold(ManifoldPtrN manifoldPtr) const;
       bool isMobileOnManifold(Topology::NodeIndex node, ManifoldPtrN manifoldPtr) const;
-      static std::string toString(const ManifoldsWithNode& manifoldsWithNode);
 
    private:
       // Use ordered set for test stability

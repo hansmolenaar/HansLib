@@ -124,12 +124,7 @@ TEST(ManifoldsAndNodesTest, nodeIn2Manifolds)
    const Manifold0<GeomType, GeomDim2> pointManifold1(Point2{ 1,2 }, "foo");
    const Manifold0<GeomType, GeomDim2> pointManifold2(Point2{ 2,1 }, "bar");
    ManifoldsAndNodes<GeomDim2> manifoldsAndNodes;
-   std::string str = ManifoldsAndNodes<GeomDim2>::toString(manifoldsAndNodes.getManifoldsContainingNode(node));
-   ASSERT_TRUE(str.empty());
-
    manifoldsAndNodes.addNodeToManifold(node, &pointManifold1);
-   str = ManifoldsAndNodes<GeomDim2>::toString(manifoldsAndNodes.getManifoldsContainingNode(node));
-   ASSERT_EQ(str, "foo");
 
-   ASSERT_THROW(manifoldsAndNodes.addNodeToManifold(node, &pointManifold2), MyException);
+   ASSERT_MYEXCEPTION_MESSAGE(manifoldsAndNodes.addNodeToManifold(node, &pointManifold2), "Try to add node 42 to manifold bar; it is already in foo");
 }

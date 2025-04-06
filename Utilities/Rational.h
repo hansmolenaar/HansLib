@@ -40,19 +40,9 @@ inline double operator*(Rational r, double d)
 
 inline std::ostream& operator<< (std::ostream& os, const Rational& rat)
 {
-   if (rat == Rational(0, 1))
-   {
-      os << 0;
-   }
-   else if (rat.denominator() == 1)
-   {
-      os << rat.numerator();
-   }
-   else
-   {
-      os << rat.numerator() << "/" << rat.denominator();
-   }
-   return os;
+   if (rat == Rational(0, 1)) return os << 0;
+   if (rat.denominator() == 1)return  os << rat.numerator();
+   return os << rat.numerator() << "/" << rat.denominator();
 }
 
 

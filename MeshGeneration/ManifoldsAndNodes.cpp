@@ -8,6 +8,26 @@ using namespace Topology;
 template ManifoldsAndNodes<GeomDim2>;
 template ManifoldsAndNodes<GeomDim3>;
 
+namespace
+{
+   template<int N>
+   std::string ManifoldsWithNodeToString(const typename ManifoldsAndNodes<N>::ManifoldsWithNode& manifoldsWithNode)
+   {
+      std::string result;
+      bool first = true;
+      for (const auto& m : manifoldsWithNode)
+      {
+         if (!first)
+         {
+            result += "    ";
+         }
+         first = false;
+         result += m->getName();
+      }
+      return result;
+   }
+}
+
 template<int N>
 ManifoldsAndNodes<N>::ManifoldsWithNode ManifoldsAndNodes<N>::getManifoldsContainingNode(NodeIndex node) const
 {
@@ -64,7 +84,7 @@ void ManifoldsAndNodes<N>::addNodeToManifold(NodeIndex node, ManifoldPtrN manifo
       }
       if (!isAlsoInLower)
       {
-         const std::string msg = "Try to add node " + std::to_string(node) + " to manifold " + manifoldPtr->getName() + "; it is already in " + ManifoldsAndNodes::toString(otherManifolds);
+         const std::string msg = "Try to add node " + std::to_string(node) + " to manifold " + manifoldPtr->getName() + "; it is already in " + ManifoldsWithNodeToString<N>(otherManifolds);
          throw MyException(msg);
       }
       // add node to lower  dimensional manifold
@@ -103,22 +123,4 @@ bool ManifoldsAndNodes<N>::isMobileOnManifold(NodeIndex node, ManifoldPtrN manif
       }
    }
    return true;
-}
-
-
-template<int N>
-std::string ManifoldsAndNodes<N>::toString(const ManifoldsWithNode& manifoldsWithNode)
-{
-   std::string result;
-   bool first = true;
-   for (const auto& m : manifoldsWithNode)
-   {
-      if (!first)
-      {
-         result += "    ";
-      }
-      first = false;
-      result += m->getName();
-   }
-   return result;
 }

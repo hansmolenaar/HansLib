@@ -117,7 +117,7 @@ std::string LocalizationBins::toString() const
    std::vector<double> binSizes;
    binSizes.reserve(numBins);
    const size_t first = skipLower ? 1 : 0;
-   const size_t last = m_vertices.size() - (skipUpper ? 1 : 0) -1;
+   const size_t last = m_vertices.size() - (skipUpper ? 1 : 0) - 1;
    for (size_t n = first; n < last; ++n) binSizes.push_back(m_vertices.at(n + 1) - m_vertices.at(n));
    const ArrayStatistics<double> stats(binSizes);
 
@@ -126,7 +126,7 @@ std::string LocalizationBins::toString() const
       << (skipLower ? "(-INF)" + sep : "")
       << "LWR=" << m_vertices.at(first)
       << sep << "UPR=" << m_vertices.at(last)
-      << (skipUpper ? sep +  "(+INF)" : "")
-      << sep << stats.toString();
+      << (skipUpper ? sep + "(+INF)" : "")
+      << sep << stats;
    return oss.str();
 }

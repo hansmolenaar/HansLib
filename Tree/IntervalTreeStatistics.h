@@ -2,8 +2,9 @@
 
 #include "IntervalTree.h"
 #include "IntervalTreeAction.h"
-#include <unordered_set>
 #include <map>
+#include <ostream>
+#include <unordered_set>
 
 namespace IntervalTree
 {
@@ -11,8 +12,26 @@ namespace IntervalTree
    {
       int Size = -1;
       std::vector<int> NumberOfLeavesPerLevel;
-      std::string toString() const;
       auto operator<=>(const Statistics&) const = default;
+
+      friend std::ostream& operator<<(std::ostream& os, const Statistics& stats)
+      {
+         os << stats.Size;
+         os << ", {";
+         bool first = true;
+         for (auto n : stats.NumberOfLeavesPerLevel)
+         {
+            if (!first)
+            {
+               os << ", ";
+            }
+            first = false;
+            os << n;
+         }
+         os << "}";
+         return os;
+      }
+
    };
 
    template<int N>
@@ -21,7 +40,7 @@ namespace IntervalTree
       Statistics result;
 
       ActionCountPerLevel<N> countPerLevel;
-      tree. foreachLeaf(countPerLevel);
+      tree.foreachLeaf(countPerLevel);
       result.Size = static_cast<int>(tree.size());
 
       result.NumberOfLeavesPerLevel = std::vector<int>(countPerLevel.Count.rbegin()->first + 1, 0);
