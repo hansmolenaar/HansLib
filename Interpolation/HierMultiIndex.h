@@ -3,8 +3,8 @@
 #include "HierLevelIndex.h"
 
 #include <array>
-#include <vector>
 #include <functional>
+#include <vector>
 
 class HierMultiIndex
 {
@@ -14,7 +14,18 @@ public:
    size_t getDimension() const;
    const std::vector<HierLevelIndex>& get() const;
    std::vector< double> toDoubles() const;
-   std::string toString() const;
+
+   friend std::ostream& operator<<(std::ostream& os, const HierMultiIndex& hmi)
+   {
+      bool first = true;
+      for (const auto& li : hmi.m_levelsIndices)
+      {
+         if (!first) os << " ";
+         first = false;
+         os << li;
+      }
+      return os;
+   }
 
 
    std::array<HierMultiIndex, 2> refine(size_t dir) const;

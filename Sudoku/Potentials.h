@@ -1,6 +1,6 @@
 #pragma once
-#include "SudokuDefines.h"
 #include "Potential.h"
+#include "SudokuDefines.h"
 #include <array>
 
 namespace Sudoku
@@ -27,7 +27,7 @@ namespace Sudoku
       int getTotalCount() const;
 
       void setNone();
-     
+
    private:
       std::array<Potential, NumFields> m_potentials;
    };

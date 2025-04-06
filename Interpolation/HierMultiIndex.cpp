@@ -1,6 +1,6 @@
+#include "Defines.h"
 #include "HierMultiIndex.h"
 #include "MyAssert.h"
-#include "Defines.h"
 
 #include <numeric>
 
@@ -75,18 +75,5 @@ std::array<HierMultiIndex, 2> HierMultiIndex::refine(size_t dir) const
       ++pos01;
    }
 
-   return result;
-}
-
-std::string HierMultiIndex::toString() const
-{
-   std::string result;
-   bool first = true;
-   for (const auto& li : m_levelsIndices)
-   {
-      if (!first) result += " ";
-      first = false;
-      result += li.toString();
-   }
    return result;
 }

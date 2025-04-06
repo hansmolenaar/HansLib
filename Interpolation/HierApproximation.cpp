@@ -1,6 +1,6 @@
-#include "HierApproximation.h"
 #include "Defines.h"
 #include "Functors.h"
+#include "HierApproximation.h"
 #include "Logger.h"
 
 namespace
@@ -51,7 +51,12 @@ namespace
    HierTreeNode* Get(const HierMultiIndex& hmi, std::map<HierMultiIndex, std::unique_ptr<HierTreeNode>>& treeNodeMap)
    {
       const auto& found = treeNodeMap.find(hmi);
-      if (found == treeNodeMap.end()) throw MyException("Get() not found: " + hmi.toString());
+      if (found == treeNodeMap.end())
+      {
+         std::ostringstream os;
+         os << "Get() not found: " << hmi;
+         throw MyException(os.str());
+      }
       return found->second.get();
    }
 
@@ -96,7 +101,7 @@ namespace
 
 }
 
-HierApproximation::HierApproximation(IHierBasisFunction_Factory& factory,  const IMultiVariableFunctionEvaluate& function) :
+HierApproximation::HierApproximation(IHierBasisFunction_Factory& factory, const IMultiVariableFunctionEvaluate& function) :
    m_function(function),
    m_factory(factory),
    m_indexer(MultiIndex<size_t>::Create(std::vector<size_t>{2, factory.getDimension()}))
@@ -117,6 +122,7 @@ double HierTreeNode::operator()(std::span<const double> x) const
 
 std::unique_ptr<HierApproximation> HierApproximation::Create(const IMultiVariableFunctionEvaluate& fie, IHierBasisFunction_Factory& factory, INodeRefinePredicateFactory& refinementFactory)
 {
+   std::ostringstream os;
    Logger logger;
    std::vector<std::string> loglines;
    std::unique_ptr<HierApproximation> result(new HierApproximation(factory, fie));
@@ -129,27 +135,35 @@ std::unique_ptr<HierApproximation> HierApproximation::Create(const IMultiVariabl
       if (kid != nullptr) result->m_root.push_back(kid);
    }
 
-   for (const auto& tr : result->m_treeNodeMap) loglines.push_back(tr.first.toString());
-   logger.logLines(loglines);
+   for (const auto& tr : result->m_treeNodeMap)
+   {
+      os << tr.first << "\n";
+   }
 
    while (!result->iterate(refinementFactory).empty())
    {
       loglines = std::vector<std::string>{ {"after refinement:"} };
-      for (const auto& tr : result->m_treeNodeMap) loglines.push_back(tr.first.toString());
-      loglines.push_back("Total number of cells: " + std::to_string(result->getAllTreeNodesRO().size()));
-      loglines = std::vector<std::string>{ {"leaf nodes:"} };
-      for (const auto& leaf : result->getLeafNodesRO()) loglines.push_back(leaf->BasisFunction->getMultiIndex().toString());
-      logger.logLines(loglines);
+      for (const auto& tr : result->m_treeNodeMap)
+      {
+         os << tr.first << "\n";
+      }
+      os << "Total number of cells: " << result->getAllTreeNodesRO().size() << "\n";
+      os << "leaf nodes:" << "\n";
+      for (const auto& leaf : result->getLeafNodesRO())
+      {
+         os << leaf->BasisFunction->getMultiIndex() << "\n";
+      }
+
    }
 
 
 #if true
-   loglines = std::vector<std::string>{ {"READY"} };
-   loglines.push_back("Number of cells: " + std::to_string(result->getAllTreeNodesRO().size()));
-   loglines.push_back("Number of leaf cells: " + std::to_string(result->getLeafNodesRO().size()));
-   logger.logLines(loglines);
+   os << "READY\n";
+   os << "Number of cells: " << result->getAllTreeNodesRO().size() << "\n";
+   os << "Number of leaf cells: " << result->getLeafNodesRO().size() << "\n";
 #endif
 
+   logger.logLine(os);
    return result;
 }
 

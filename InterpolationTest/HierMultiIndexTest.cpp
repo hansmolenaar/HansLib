@@ -1,9 +1,9 @@
 #include <gtest/gtest.h>
 
+#include "Defines.h"
+#include "Functors.h"
 #include "HierMultiIndex.h"
 #include "MyException.h"
-#include "Functors.h"
-#include "Defines.h"
 
 TEST(HierMultiIndex, Basics)
 {
@@ -76,6 +76,7 @@ TEST(HierMultiIndex, RefineInDir3)
 TEST(HierMultiIndex, ToString)
 {
    const HierMultiIndex mi(std::vector<HierLevelIndex>{ { 2, 3 }, { 3, 1 }, { 4,7 }});
-   const std::string res = mi.toString();
-   ASSERT_EQ(res, "{2, 3} {3, 1} {4, 7}");
+   std::ostringstream os;
+   os << mi;
+   ASSERT_EQ(os.str(), "{2, 3} {3, 1} {4, 7}");
 }

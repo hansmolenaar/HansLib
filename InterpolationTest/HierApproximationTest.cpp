@@ -127,11 +127,7 @@ TEST(HierApproximationTest, GetSomePolynomial_3)
    std::vector<HierMultiIndex> indices;
    str::transform(approximation->getAllTreeNodesRO(), std::back_inserter(indices), [](const HierTreeNode* hn) {return hn->getMultiIndex(); });
    str::sort(indices);
-   std::string str;
-   for (const auto& s : indices)
-   {
-      str += (s.toString() + "\n");
-   }
+
    ASSERT_EQ(approximation->getAllTreeNodesRO().size(), 17);
    ASSERT_EQ(approximation->getLeafNodesRO().size(), 12);
    ASSERT_NO_THROW(TestCollocationPoints(*fie, *approximation));
@@ -267,6 +263,6 @@ TEST(HierApproximationTest, PlotCollocationPoints)
 
    HierBasisFunction_Factory factory(dimension, &factory_extrapolated);
    const auto approximation = HierApproximation::Create(*squaredHat.Function, factory, refineOnLevel);
-  
+
    //CollocationPointsToFile("HierBasisFunctionTest_PlotCollocationPoints", *approximation);
 }
