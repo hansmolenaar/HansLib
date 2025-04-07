@@ -1,19 +1,19 @@
-#include "IndexTreeToSimplices2.h"
-#include "IntervalTreeAdjacentDirection.h"
+#include "IndexTreeToSimplices3.h"
+//#include "IntervalTreeAdjacentDirection.h"
 #include "IntervalTreeIndex.h"
-#include "UniqueHashedPointCollection.h"
+//#include "UniqueHashedPointCollection.h"
 
 namespace
 {
 
    struct ActionSplit
    {
-      void operator()(const IntervalTree::Index<2>& index);
+      void operator()(const IntervalTree::Index<GeomDim3>& index);
 
-      const IntervalTree::IndexTree<2>& Tree;
-      IndexTreeToSimplices2::Triangles Triangles;
+      const IntervalTree::IndexTree<GeomDim3>& Tree;
+      IndexTreeToSimplices3::Tetrahedrons Tetrahedrons;
    };
-
+#if false
    std::pair<RatPoint2, RatPoint2> GetOrientedEdge(const IntervalTree::AdjacentDirection& dir, const std::array<RatPoint2, 4> corners)
    {
       if (dir == IntervalTree::AdjacentDirection{ 0, true })
@@ -34,12 +34,12 @@ namespace
       }
       throw MyException("GetOrientedEdge should not come here");
    }
-
-   void ActionSplit::operator()(const IntervalTree::Index<2>& index)
+#endif
+   void ActionSplit::operator()(const IntervalTree::Index<GeomDim3>& index)
    {
-      const BoundingBox<Rational, 2> bb = index.getBbOfCell();
-      const auto& neighbors = IntervalTree::GetAdjacentNeighbors2();
-      std::array<bool, 4> moreRefined{ false, false, false, false };
+      const BoundingBox<Rational, GeomDim3> bb = index.getBbOfCell();
+      const auto& neighbors = IntervalTree::GetAdjacentNeighbors3();
+      std::array<bool, 2 * GeomDim3> moreRefined{ false, false, false, false, false, false };
       size_t pos = 0;
       for (const auto& dir : neighbors)
       {
@@ -62,14 +62,16 @@ namespace
       const RatPoint2 ul(upr[0], lwr[1]);
       const RatPoint2 uu(upr[0], upr[1]);
       const RatPoint2 lu(lwr[0], upr[1]);
-
+      throw MyException("not yet implemented");
       if (str::none_of(moreRefined, std::identity()))
       {
-         Triangles.emplace_back(std::array<RatPoint2, ReferenceShapePolygon::TriangleNumCorners >{ ll, ul, uu });
-         Triangles.emplace_back(std::array<RatPoint2, ReferenceShapePolygon::TriangleNumCorners >{ ll, uu, lu });
+         //Tetrahedrons.emplace_back(std::array<RatPoint3, Topology::NumNodesOnTetrehadron >{ ll, ul, uu });
+         //Tetrahedrons.emplace_back(std::array<RatPoint3, Topology::NumNodesOnTetrehadron >{ ll, uu, lu });
       }
       else
       {
+         throw MyException("not yet implemented");
+#if false
          const std::array<RatPoint2, 4> corners{ ll, ul, uu, lu };
          const RatPoint2 center = index.getCenter();
          pos = 0;
@@ -88,30 +90,17 @@ namespace
             }
             ++pos;
          }
+#endif
       }
+
    }
+
+
 }
 
-IndexTreeToSimplices2::Triangles IndexTreeToSimplices2::Create(const IntervalTree::IndexTree<2>& tree)
+IndexTreeToSimplices3::Tetrahedrons IndexTreeToSimplices3::Create(const IntervalTree::IndexTree<GeomDim3>& tree)
 {
    ActionSplit action{ tree };
    tree.foreachLeaf(action);
-   return action.Triangles;
-}
-
-std::unique_ptr<Vtk::VtkData> IndexTreeToSimplices2::ToVtkData(const Triangles& cells, const Vtk::Name& name)
-{
-   std::unique_ptr< Vtk::VtkData> result = std::make_unique< Vtk::VtkData>(GeometryDimension, 0, name);
-   UniqueHashedPointCollection<Rational, GeometryDimension>  toNodeIndex;
-   for (const auto& cell : cells)
-   {
-      std::array<PointIndex, ReferenceShapePolygon::TriangleNumCorners> cellNodes;
-      for (size_t vertex = 0; const auto & v : cell)
-      {
-         cellNodes.at(vertex) = toNodeIndex.addIfNew(v);
-         ++vertex;
-      }
-      result->addCell(Vtk::CellType::VTK_TRIANGLE, cellNodes, toNodeIndex, {});
-   }
-   return result;
+   return action.Tetrahedrons;
 }

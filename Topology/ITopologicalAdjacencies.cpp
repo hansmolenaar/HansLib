@@ -21,7 +21,10 @@ bool ITopologicalAdjacencies::isComplete() const
    {
       for (TopologyDimension dimL = Topology::Corner; dimL < dimH; ++dimL)
       {
-         if (!getAdjacency(dimL, dimH)) return false;
+         if (!getAdjacency(dimL, dimH))
+         {
+            return false;
+         }
       }
    }
    return true;

@@ -60,7 +60,7 @@ TEST(IntervalTreeBalanceTest, RefineAroundPoint2)
 
 TEST(IntervalTreeBalanceTest, RefineAroundPoint3)
 {
-   constexpr int dim = 3;
+   constexpr int dim = GeomDim3;
    const  std::array<Rational, dim> point{ Rational{49, 100}, Rational{51, 100}, Rational{49, 100} };
    RefineIfContainsPoint<dim> refinePoint{ point };
    RefineToMaxLevel<dim> refineToLevel{ 5 };
