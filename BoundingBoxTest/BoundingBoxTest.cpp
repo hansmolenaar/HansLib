@@ -219,5 +219,5 @@ TEST(BoundingBoxTest, StreamInsertion)
    const auto bb = BoundingBox<int, 2>::CreateFrom2Points(IntPoint2{ 3, 0 }, IntPoint2{ 1, 2 });
    std::ostringstream os;
    os << bb;
-   ASSERT_EQ(os.str(), "( (1, 3), (0, 2) )");
+   ASSERT_EQ(os.str(), "((1, 3), (0, 2))");
 }

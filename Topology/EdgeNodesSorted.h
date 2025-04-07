@@ -16,8 +16,7 @@ namespace Topology
       auto operator==(const EdgeNodesSorted& other) const { return m_edge == other.m_edge; };
       friend std::ostream& operator<<(std::ostream& os, const EdgeNodesSorted& edge)
       {
-         os << "(" << edge[0] << ", " << edge[1] << ")";
-         return os;
+         return StreamUtils::insertList(os, edge);
       }
    private:
       EdgeNodesDirected m_edge;

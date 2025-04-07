@@ -1,5 +1,6 @@
 #pragma once
 #include "EdgeNodesDirected.h"
+#include "StreamUtils.h"
 #include "TopologyDefines.h"
 
 namespace Topology
@@ -17,8 +18,7 @@ namespace Topology
       auto operator==(const TriangleNodes& other) const { return m_nodes == other.m_nodes; };
       friend std::ostream& operator<<(std::ostream& os, const TriangleNodes& triangle)
       {
-         os << "(" << triangle[0] << ", " << triangle[1] << ", " << triangle[2] << ")";
-         return os;
+         return StreamUtils::insertList(os, triangle);
       }
 
       bool contains(NodeIndex node) const;

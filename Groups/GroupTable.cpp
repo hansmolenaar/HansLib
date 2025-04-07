@@ -1,7 +1,6 @@
 #include "GroupTable.h"
 #include "IFiniteGroupUtils.h"
 #include "PermutationUtils.h"
-#include "ToString.h"
 
 #include <cmath>
 #include <set>
@@ -45,7 +44,7 @@ GroupTable::GroupTable(std::unique_ptr<IIndexer<GroupElement>>& indexer, const s
 
    if (m_order * m_order != m_table.size())
    {
-      throw MyException("GroupTable::GroupTable() size incorrect: " + ToString(m_table.size()));
+      throw MyException("GroupTable::GroupTable() size incorrect: " + std::to_string(m_table.size()));
    }
 
    for (GroupElement elm = 0; elm < m_order && m_identity == GroupElementInvalid; ++elm)

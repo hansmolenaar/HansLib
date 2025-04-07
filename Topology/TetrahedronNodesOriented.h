@@ -20,8 +20,7 @@ namespace Topology
 
       friend std::ostream& operator<<(std::ostream& os, const TetrahedronNodesOriented tet)
       {
-         os << "(" << tet[0] << ", " << tet[1] << ", " << tet[2] << ", " << tet[3] << ")";
-         return os;
+         return StreamUtils::insertList(os, tet);
       }
 
       bool contains(NodeIndex node) const;

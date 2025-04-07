@@ -1,6 +1,7 @@
 #pragma once
 
 #include "HierLevelIndex.h"
+#include "StreamUtils.h"
 
 #include <array>
 #include <functional>
@@ -17,14 +18,7 @@ public:
 
    friend std::ostream& operator<<(std::ostream& os, const HierMultiIndex& hmi)
    {
-      bool first = true;
-      for (const auto& li : hmi.m_levelsIndices)
-      {
-         if (!first) os << " ";
-         first = false;
-         os << li;
-      }
-      return os;
+      return StreamUtils::insertList(os, hmi.m_levelsIndices, "", " ", "");
    }
 
 

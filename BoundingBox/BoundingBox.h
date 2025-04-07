@@ -4,7 +4,7 @@
 #include "Interval.h"
 #include "MyAssert.h"
 #include "Point.h"
-#include "ToString.h"
+#include "StreamUtils.h"
 
 #include <optional>
 #include <span>
@@ -65,14 +65,7 @@ public:
 
    friend std::ostream& operator<<(std::ostream& os, const BoundingBox<T, N>& bb)
    {
-      os << "( ";
-      for (int n = 0; n < N; ++n)
-      {
-         if (n > 0) os << ", ";
-         os << bb.m_intervals[n];
-      }
-      os << " )";
-      return os;
+      return StreamUtils::insertList(os, bb.getIntervals());
    }
 
 private:

@@ -2,6 +2,7 @@
 
 #include "IntervalTree.h"
 #include "IntervalTreeAction.h"
+#include "StreamUtils.h"
 #include <map>
 #include <ostream>
 #include <unordered_set>
@@ -17,19 +18,7 @@ namespace IntervalTree
       friend std::ostream& operator<<(std::ostream& os, const Statistics& stats)
       {
          os << stats.Size;
-         os << ", {";
-         bool first = true;
-         for (auto n : stats.NumberOfLeavesPerLevel)
-         {
-            if (!first)
-            {
-               os << ", ";
-            }
-            first = false;
-            os << n;
-         }
-         os << "}";
-         return os;
+         return StreamUtils::insertList(os, stats.NumberOfLeavesPerLevel, ", {", ", ", "}");
       }
 
    };
