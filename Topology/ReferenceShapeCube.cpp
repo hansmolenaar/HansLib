@@ -103,5 +103,16 @@ ReferenceShapeCube::ReferenceShapeCube()
 {
    const std::vector<int> counts{ NumNodesOnCube, NumEdgesOnCube, NumFacesOnCube, 1 };
    m_adjacencies = TopologicalAdjacencies::Create(counts, createAdjacencies());
+}
 
+const std::array<Topology::TetrahedronNodesOriented, ReferenceShapeCube::numTetsInStandardSplit>& ReferenceShapeCube::getStandardSplit() const
+{
+   static std::array<TetrahedronNodesOriented, numTetsInStandardSplit> split{
+      TetrahedronNodesOriented(0, 3, 2, 7),
+      TetrahedronNodesOriented(0, 2, 6, 7),
+      TetrahedronNodesOriented(0, 6, 4, 7),
+      TetrahedronNodesOriented(0, 5, 7, 4),
+      TetrahedronNodesOriented(1, 5, 7, 0),
+      TetrahedronNodesOriented(1, 7, 3, 0) };
+   return split;
 }

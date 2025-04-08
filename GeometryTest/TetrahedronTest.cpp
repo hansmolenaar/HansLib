@@ -2,6 +2,7 @@
 
 #include "Permutation.h"
 #include "PointClose.h"
+#include "ReferenceShapeCube.h"
 #include "Tetrahedron.h"
 #include "TetrahedronNodesOriented.h"
 #include "TopologyDefines.h"
@@ -125,4 +126,17 @@ TEST(TetrahedronTest, TriRectangularTetrahedronSmallestDihedralAngle)
    const auto tet = Tetrahedron::getTriRectangularTetrahedron();
    const double angle = Tetrahedron::getSmallestDihedralAngle(tet);
    ASSERT_DOUBLE_EQ(angle, std::acos(1 / std::sqrt(3.0)));
+}
+
+TEST(TetrahedronTest, CubeSplit)
+{
+   const std::array<Point3, NumNodesOnCube> vertices{
+      Point3{ 0,0,0 }, Point3{ 1,0,0 }, Point3{ 0,1,0 }, Point3{ 1,1,0 },
+      Point3{ 0,0,1 },  Point3{ 1,0,1 },  Point3{ 0,1,1 }, Point3{ 1,1,1 } };
+   double volume = 0;
+   for (const auto& tet : ReferenceShapeCube::getInstance().getStandardSplit())
+   {
+      volume += Tetrahedron::getSignedVolume(vertices[tet[0]], vertices[tet[1]], vertices[tet[2]], vertices[tet[3]]);
+   }
+   ASSERT_DOUBLE_EQ(volume, 1.0);
 }
