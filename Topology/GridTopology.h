@@ -1,19 +1,22 @@
 #pragma once
 
-#include "ITopologicalAdjacencies.h"
 #include "IReferenceShapeHyperCube.h"
+#include "ITopologicalAdjacencies.h"
 
-#include <vector>
 #include <memory>
+#include <vector>
 
-class GridTopology
+namespace Topology
 {
-public:
-   explicit GridTopology(const std::vector<int>& cellDimensions);
-   const ITopologicalAdjacencies& getAdjacencies() const;
-   const IReferenceShapeHyperCube& getShape() const;
+   class GridTopology
+   {
+   public:
+      explicit GridTopology(const std::vector<int>& cellDimensions);
+      const ITopologicalAdjacencies& getAdjacencies() const;
+      const IReferenceShapeHyperCube& getShape() const;
 
-private:
-   std::unique_ptr<ITopologicalAdjacencies> m_adjacencies;
-   const IReferenceShapeHyperCube& m_shape;
-};
+   private:
+      std::unique_ptr<ITopologicalAdjacencies> m_adjacencies;
+      const IReferenceShapeHyperCube& m_shape;
+   };
+}

@@ -2,7 +2,10 @@
 
 #include "IPointCollection.h"
 
-class ITopologicalAdjacencies;
+namespace Topology
+{
+   class ITopologicalAdjacencies;
+}
 
 template<typename T, int N>
 class IMesh
@@ -10,6 +13,6 @@ class IMesh
 public:
    virtual ~IMesh() = default;
 
-   virtual const ITopologicalAdjacencies& getTopology() const = 0;
+   virtual const Topology::ITopologicalAdjacencies& getTopology() const = 0;
    virtual const IPointCollection<T, N>& getGeometry() const = 0;
 };

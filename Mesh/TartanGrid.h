@@ -1,7 +1,7 @@
 #pragma once
 
-#include "IMesh.h"
 #include "GridTopology.h"
+#include "IMesh.h"
 #include "MultiIndex.h"
 #include "MyException.h"
 
@@ -13,7 +13,7 @@ class TartanGrid : public IMesh<T, N>, IPointCollection<T, N>
 public:
    explicit TartanGrid(std::vector<std::vector<T>>&& coordinates);
 
-   const ITopologicalAdjacencies& getTopology() const override;
+   const Topology::ITopologicalAdjacencies& getTopology() const override;
    const IPointCollection<T, N>& getGeometry() const override;
 
    Point<T, N> getPoint(PointIndex) const override;
@@ -29,10 +29,10 @@ public:
 private:
    static MultiIndex<CellIndex> CreateCellIndexer(const MultiIndex<PointIndex>&);
    static MultiIndex<PointIndex> CreateMultiIndex(const std::vector<std::vector<T>>& coordinates);
-   static std::unique_ptr<GridTopology> CreateTopology(const std::vector<std::vector<T>>& coordinates);
+   static std::unique_ptr<Topology::GridTopology> CreateTopology(const std::vector<std::vector<T>>& coordinates);
 
    std::vector<std::vector<T>> m_coordinates;
-   std::unique_ptr<GridTopology> m_topology;
+   std::unique_ptr<Topology::GridTopology> m_topology;
    MultiIndex<PointIndex> m_multiIndexPoint;
    MultiIndex<CellIndex> m_multiIndexCell;
 
@@ -57,11 +57,11 @@ MultiIndex<CellIndex> TartanGrid<T, N>::CreateCellIndexer(const MultiIndex<Point
 
 
 template<typename T, int N>
-std::unique_ptr<GridTopology> TartanGrid<T, N>::CreateTopology(const std::vector<std::vector<T>>& coordinates)
+std::unique_ptr<Topology::GridTopology> TartanGrid<T, N>::CreateTopology(const std::vector<std::vector<T>>& coordinates)
 {
    std::vector<int> dimensions(coordinates.size());
    str::transform(coordinates, dimensions.begin(), [](const auto& d) {return static_cast<int>(d.size() - 1); });
-   return std::make_unique<GridTopology>(dimensions);
+   return std::make_unique<Topology::GridTopology>(dimensions);
 }
 
 
@@ -72,10 +72,11 @@ TartanGrid<T, N>::TartanGrid(std::vector<std::vector<T>>&& coordinates) :
    m_multiIndexPoint(CreateMultiIndex(m_coordinates)),
    m_multiIndexCell(CreateCellIndexer(m_multiIndexPoint))
 
-{}
+{
+}
 
 template<typename T, int N>
-const ITopologicalAdjacencies& TartanGrid<T, N>::getTopology() const
+const Topology::ITopologicalAdjacencies& TartanGrid<T, N>::getTopology() const
 {
    return m_topology->getAdjacencies();
 }

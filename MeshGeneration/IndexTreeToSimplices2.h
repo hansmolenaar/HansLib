@@ -4,8 +4,8 @@
 #include "ReferenceShapePolygon.h"
 #include "VtkData.h"
 
-#include <vector>
 #include <array>
+#include <vector>
 
 namespace Vtk
 {
@@ -14,7 +14,7 @@ namespace Vtk
 
 namespace IndexTreeToSimplices2
 {
-   using Triangles = std::vector<std::array<RatPoint2, ReferenceShapePolygon::TriangleNumCorners>>;
+   using Triangles = std::vector<std::array<RatPoint2, Topology::ReferenceShapePolygon::TriangleNumCorners>>;
 
    constexpr int GeometryDimension = 2;
    Triangles Create(const IntervalTree::IndexTree<2>& tree);

@@ -1,8 +1,8 @@
-#include "GridTopology.h"
-#include "ReferenceShapeHyperCube.h"
-#include "MyAssert.h"
 #include "BoundsCheck.h"
+#include "GridTopology.h"
 #include "MultiIndex.h"
+#include "MyAssert.h"
+#include "ReferenceShapeHyperCube.h"
 #include "TopologicalAdjacencies.h"
 #include "TopologicalAdjacency.h"
 
@@ -21,7 +21,7 @@ GridTopology::GridTopology(const std::vector<int>& cellDimensions) :
    const auto cornerIndexer = MultiIndex<int>::Create(std::vector<int>(crnrDimension));
    const auto numCorners = cornerIndexer.getFlatSize();
    std::map<int, std::vector<int>> cellToCorner;
-   const auto numCornersInCell = m_shape.getAdjacencies().getCountSafe(Topology::Corner);
+   const auto numCornersInCell = m_shape.getAdjacencies().getCountSafe(Corner);
    const auto cornerInCellIndexer = MultiIndex<int>::Create(std::vector<int>(maxdim, 2));
    std::vector<int> cellMultiplet(cellDimensions.size());
    std::vector<int> crnrMultiplet(maxdim);
@@ -41,10 +41,10 @@ GridTopology::GridTopology(const std::vector<int>& cellDimensions) :
    }
 
    std::map<TopologyDimension, int> counts{
-      {Topology::Corner, static_cast<int>(cornerIndexer.getFlatSize())},
+      {Corner, static_cast<int>(cornerIndexer.getFlatSize())},
       { m_shape.getAdjacencies().getMaxTopologyDimension(),static_cast<int>(numCells)} };
    std::vector<std::unique_ptr<ITopologicalAdjacency>> adjacenciesList;
-   adjacenciesList.emplace_back(TopologicalAdjacency::Create(maxdim, static_cast<int>(numCells), Topology::Corner, static_cast<int>(numCorners), cellToCorner));
+   adjacenciesList.emplace_back(TopologicalAdjacency::Create(maxdim, static_cast<int>(numCells), Corner, static_cast<int>(numCorners), cellToCorner));
    m_adjacencies = TopologicalAdjacencies::CreateWithPartialCounts(maxdim, std::move(counts), std::move(adjacenciesList));
 }
 

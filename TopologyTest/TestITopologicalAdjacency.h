@@ -4,6 +4,8 @@
 #include <gtest/gtest.h>
 #include <set>
 
+using namespace Topology;
+
 namespace TopologyTest
 {
    inline  void TestITopologicalAdjacency(const ITopologicalAdjacency& adjacency, int countLow, int countHig)

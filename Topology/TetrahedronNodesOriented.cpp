@@ -4,12 +4,14 @@
 
 #include <sstream>
 
-Topology::TetrahedronNodesOriented::TetrahedronNodesOriented(NodeIndex n0, NodeIndex n1, NodeIndex n2, NodeIndex n3) :
+using namespace Topology;
+
+TetrahedronNodesOriented::TetrahedronNodesOriented(NodeIndex n0, NodeIndex n1, NodeIndex n2, NodeIndex n3) :
    TetrahedronNodesOriented(std::array<NodeIndex, NumNodesOnTetrehadron>{ n0, n1, n2, n3 })
 {
 }
 
-Topology::TetrahedronNodesOriented::TetrahedronNodesOriented(std::array<NodeIndex, NumNodesOnTetrehadron> nodes) :
+TetrahedronNodesOriented::TetrahedronNodesOriented(std::array<NodeIndex, NumNodesOnTetrehadron> nodes) :
    m_nodes(std::move(nodes))
 {
    // Check for duplicates
@@ -44,12 +46,12 @@ Topology::TetrahedronNodesOriented::TetrahedronNodesOriented(std::array<NodeInde
    }
 }
 
-bool Topology::TetrahedronNodesOriented::contains(NodeIndex node) const
+bool TetrahedronNodesOriented::contains(NodeIndex node) const
 {
    return node == m_nodes[0] || node == m_nodes[1] || node == m_nodes[2] || node == m_nodes[3];
 }
 
-size_t Topology::TetrahedronNodesOriented::find(NodeIndex node) const
+size_t TetrahedronNodesOriented::find(NodeIndex node) const
 {
    if (node == m_nodes[0]) return 0;
    if (node == m_nodes[1]) return 1;
@@ -58,7 +60,7 @@ size_t Topology::TetrahedronNodesOriented::find(NodeIndex node) const
    return NodeIndexInvalid;
 }
 
-std::array<Topology::TriangleNodes, Topology::NumFacesOnTetrehadron> Topology::TetrahedronNodesOriented::getFaces() const
+std::array<TriangleNodes, NumFacesOnTetrehadron> TetrahedronNodesOriented::getFaces() const
 {
    return {
       TriangleNodes{m_nodes[0], m_nodes[1], m_nodes[3]},

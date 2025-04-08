@@ -1,12 +1,12 @@
-#include "ReferenceShapeNode.h"
-#include "MyException.h"
 #include "BoundsCheck.h"
+#include "MyException.h"
+#include "ReferenceShapeNode.h"
 
 using namespace Topology;
 
 namespace
 {
-   const auto Checker = BoundsCheck<TopologyDimension>::CreateUpperBound(Topology::Corner);
+   const auto Checker = BoundsCheck<TopologyDimension>::CreateUpperBound(Corner);
 }
 
 class NodeAdjacencies : public ITopologicalAdjacencies
@@ -14,7 +14,7 @@ class NodeAdjacencies : public ITopologicalAdjacencies
 public:
    inline TopologyDimension getMaxTopologyDimension() const override
    {
-      return Topology::Corner;
+      return Corner;
    }
 
    inline std::optional<int> getCount(TopologyDimension dim) const override

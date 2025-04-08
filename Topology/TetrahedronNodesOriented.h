@@ -9,7 +9,7 @@ namespace Topology
    public:
       // Nodes are permuted such that the first node is the smallest, the last the biggest and the permutation is even
       TetrahedronNodesOriented(NodeIndex n0, NodeIndex n1, NodeIndex n2, NodeIndex n3);
-      explicit Topology::TetrahedronNodesOriented(std::array<NodeIndex, NumNodesOnTetrehadron> nodes);
+      explicit TetrahedronNodesOriented(std::array<NodeIndex, NumNodesOnTetrehadron> nodes);
 
       NodeIndex operator[](size_t n) const { return m_nodes[n]; };
       NodeIndex at(size_t n) const { return m_nodes[n]; };
@@ -34,7 +34,7 @@ namespace Topology
       // If the tetrahedron has positive volume, the normals to the faces are outward pointing.
       std::array<TriangleNodes, NumFacesOnTetrehadron> getFaces() const;
    private:
-      std::array<NodeIndex, Topology::NumNodesOnTetrehadron> m_nodes;
+      std::array<NodeIndex, NumNodesOnTetrehadron> m_nodes;
    };
 
 

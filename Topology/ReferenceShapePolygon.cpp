@@ -1,8 +1,8 @@
-#include "ReferenceShapePolygon.h"
-#include "MyException.h"
-#include "TopologicalAdjacencies.h"
 #include "BoundsCheck.h"
+#include "MyException.h"
 #include "ReferenceShape.h"
+#include "ReferenceShapePolygon.h"
+#include "TopologicalAdjacencies.h"
 #include "TopologicalAdjacency.h"
 
 #include <map>
@@ -33,12 +33,12 @@ const IReferenceShape& ReferenceShapePolygon::Get(int numCorners)
       {
          face2edge[0].push_back(n);
       }
-      const TopologyDimension maxDimension = Topology::Face;
-      std::map<TopologyDimension, int> counts{ {Topology::Corner,numCorners},{Topology::Edge,numEdges}, {Topology::Face,1} };
+      const TopologyDimension maxDimension = Face;
+      std::map<TopologyDimension, int> counts{ {Corner,numCorners},{Edge,numEdges}, {Face,1} };
       std::vector<std::unique_ptr<ITopologicalAdjacency>> allAdjacencies;
-      allAdjacencies.emplace_back(TopologicalAdjacency::Create(Topology::Edge, numEdges, Topology::Corner, numCorners, edge2corners));
-      allAdjacencies.emplace_back(TopologicalAdjacency::CreateTrivial(Topology::Face, Topology::Edge, numEdges));
-      allAdjacencies.emplace_back(TopologicalAdjacency::CreateTrivial(Topology::Face, Topology::Corner, numCorners));
+      allAdjacencies.emplace_back(TopologicalAdjacency::Create(Edge, numEdges, Corner, numCorners, edge2corners));
+      allAdjacencies.emplace_back(TopologicalAdjacency::CreateTrivial(Face, Edge, numEdges));
+      allAdjacencies.emplace_back(TopologicalAdjacency::CreateTrivial(Face, Corner, numCorners));
       auto adjacencies = TopologicalAdjacencies::CreateWithPartialCounts(maxDimension, std::move(counts), std::move(allAdjacencies));
       m_polygons[numCorners] = std::make_unique< ReferenceShape>(std::move(adjacencies));
    }

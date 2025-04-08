@@ -4,8 +4,6 @@
 #include "TopologicalAdjacency.h"
 #include "TopologyDefines.h"
 
-//#include "BoundsCheck.h"
-
 using namespace Topology;
 
 /// Local vertex ordering of the Hexahedron
@@ -42,7 +40,7 @@ namespace
    std::vector<std::unique_ptr<ITopologicalAdjacency>> createAdjacencies()
    {
       std::vector<std::unique_ptr<ITopologicalAdjacency>> result;
-      result.emplace_back(TopologicalAdjacency::Create(Topology::Edge, NumEdgesOnCube, Topology::Corner, NumNodesOnCube,
+      result.emplace_back(TopologicalAdjacency::Create(Edge, NumEdgesOnCube, Corner, NumNodesOnCube,
          {
             { 0, { 0, 1 } },
             { 1, { 0, 2 } },
@@ -60,7 +58,7 @@ namespace
          ));
 
 
-      result.emplace_back(TopologicalAdjacency::Create(Topology::Face, NumFacesOnCube, Topology::Corner, NumNodesOnCube,
+      result.emplace_back(TopologicalAdjacency::Create(Face, NumFacesOnCube, Corner, NumNodesOnCube,
          {
            { 0, { 0, 1, 5, 4 } },
            { 1, { 2, 6, 7, 3 } },
@@ -71,7 +69,7 @@ namespace
          }
          ));
 
-      result.emplace_back(TopologicalAdjacency::Create(Topology::Face, NumFacesOnCube, Topology::Edge, NumEdgesOnCube,
+      result.emplace_back(TopologicalAdjacency::Create(Face, NumFacesOnCube, Edge, NumEdgesOnCube,
          {
            { 0, {0, 4, 8, 2 } },
            { 1, { 6, 11, 7, 5 } },
@@ -82,9 +80,9 @@ namespace
          }
          ));
 
-      result.emplace_back(TopologicalAdjacency::CreateTrivial(Topology::Volume, Topology::Corner, NumNodesOnCube));
-      result.emplace_back(TopologicalAdjacency::CreateTrivial(Topology::Volume, Topology::Edge, NumEdgesOnCube));
-      result.emplace_back(TopologicalAdjacency::CreateTrivial(Topology::Volume, Topology::Face, NumFacesOnCube));
+      result.emplace_back(TopologicalAdjacency::CreateTrivial(Volume, Corner, NumNodesOnCube));
+      result.emplace_back(TopologicalAdjacency::CreateTrivial(Volume, Edge, NumEdgesOnCube));
+      result.emplace_back(TopologicalAdjacency::CreateTrivial(Volume, Face, NumFacesOnCube));
       return result;
    }
 }
@@ -105,7 +103,7 @@ ReferenceShapeCube::ReferenceShapeCube()
    m_adjacencies = TopologicalAdjacencies::Create(counts, createAdjacencies());
 }
 
-const std::array<Topology::TetrahedronNodesOriented, ReferenceShapeCube::numTetsInStandardSplit>& ReferenceShapeCube::getStandardSplit() const
+const std::array<TetrahedronNodesOriented, ReferenceShapeCube::numTetsInStandardSplit>& ReferenceShapeCube::getStandardSplit() const
 {
    static std::array<TetrahedronNodesOriented, numTetsInStandardSplit> split{
       TetrahedronNodesOriented(0, 3, 2, 7),

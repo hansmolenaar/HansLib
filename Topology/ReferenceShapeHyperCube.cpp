@@ -24,7 +24,7 @@ namespace
 
    std::unique_ptr<ITopologicalAdjacency> CreateEdge2Corner(TopologyDimension dim)
    {
-      Utilities::MyAssert(dim > Topology::Edge);
+      Utilities::MyAssert(dim > Edge);
       const auto mi = MultiIndex<int>::Create(std::vector<int>(dim, 2));
       std::set<std::pair<int, int>> edges;
       std::vector<int> indx(dim);

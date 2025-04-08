@@ -3,6 +3,8 @@
 #include "IntervalTreeIndex.h"
 #include "UniqueHashedPointCollection.h"
 
+using namespace Topology;
+
 namespace
 {
 

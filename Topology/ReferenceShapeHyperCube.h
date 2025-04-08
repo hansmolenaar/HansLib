@@ -2,7 +2,10 @@
 
 #include "IReferenceShapeHyperCube.h"
 
-namespace ReferenceShapeHyperCube
+namespace Topology
 {
-   const IReferenceShapeHyperCube& Get(Topology::TopologyDimension dim);
+   namespace ReferenceShapeHyperCube
+   {
+      const IReferenceShapeHyperCube& Get(TopologyDimension dim);
+   }
 }

@@ -12,14 +12,14 @@ int ITopologicalAdjacencies::getCountSafe(TopologyDimension dim) const
 
 bool ITopologicalAdjacencies::isComplete() const
 {
-   for (TopologyDimension dim = Topology::Corner; dim <= getMaxTopologyDimension(); ++dim)
+   for (TopologyDimension dim = Corner; dim <= getMaxTopologyDimension(); ++dim)
    {
       if (!getCount(dim)) return false;
    }
 
-   for (TopologyDimension dimH = Topology::Edge; dimH <= getMaxTopologyDimension(); ++dimH)
+   for (TopologyDimension dimH = Edge; dimH <= getMaxTopologyDimension(); ++dimH)
    {
-      for (TopologyDimension dimL = Topology::Corner; dimL < dimH; ++dimL)
+      for (TopologyDimension dimL = Corner; dimL < dimH; ++dimL)
       {
          if (!getAdjacency(dimL, dimH))
          {
