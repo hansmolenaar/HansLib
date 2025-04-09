@@ -1,5 +1,6 @@
 #pragma once
 
+#include "CellsNodes.h"
 #include "EdgeNodesSorted.h"
 #include "MeshGenerationDefines.h"
 #include "TetrahedronNodesOriented.h"
@@ -23,12 +24,12 @@ namespace MeshGeneration
       //std::vector<CellIndex> getNodeConnectedTetrahedrons(Topology::NodeIndex node) const;
       //std::vector<Topology::NodeIndex> getEdgeConnectedNodes(Topology::NodeIndex node) const;
       std::optional<CellIndex> tryGetTetrahedron(Topology::NodeIndex n0, Topology::NodeIndex n1, Topology::NodeIndex n2, Topology::NodeIndex n3) const;
-      bool TetrahedronContainsNode(CellIndex CellIndex, Topology::NodeIndex nodeId) const;
+      bool tetrahedronContainsNode(CellIndex CellIndex, Topology::NodeIndex nodeId) const;
 
       Topology::TetrahedronNodesOriented getTetrahedronNodes(CellIndex tetId) const;
 
       bool isKnownNodeId(Topology::NodeIndex node) const;
-      bool isKnownTetrahedronId(CellIndex tetId) const;
+      bool isKnownTetId(CellIndex tetId) const;
 
       std::vector<CellIndex> getAllTetrahedrons() const;
       std::vector<Topology::NodeIndex> getAllNodes() const;
@@ -39,18 +40,12 @@ namespace MeshGeneration
          const std::string sep = " ";
          os << "TetrahedronNodes";
          os << sep << "NUMNODES=" << tnodes.getAllNodes().size();
-         os << sep + "NUMTETRAHEDRONS=" << tnodes.m_toNodes.size();
+         os << sep + "NUMTETRAHEDRONS=" << tnodes.m_cellsNodes.getNumCells();
          return os;
       }
       size_t getNumTetrahedrons() const;
 
    private:
-      std::optional<CellIndex> tryGetTetrahedronFromNodes(const Topology::TetrahedronNodesOriented& nodes) const;
-      void checkNodeId(Topology::NodeIndex nodeId) const;
-      void checkTetrahedronId(CellIndex tetId) const;
-
-      CellIndex m_newCellId = 0;
-      std::unordered_map<CellIndex, Topology::TetrahedronNodesOriented> m_toNodes;
-      std::unordered_multimap<Topology::NodeIndex, CellIndex> m_toTetrahedrons;
+      CellsNodes<Topology::TetrahedronNodesOriented> m_cellsNodes;
    };
 }
