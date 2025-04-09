@@ -30,10 +30,10 @@ namespace MeshGeneration
       std::vector<CellIndex> getAllCellIds() const;
       std::vector<Topology::NodeIndex> getAllNodes() const;
 
-   private:
       void checkNodeId(Topology::NodeIndex nodeId) const;
       void checkCellId(CellIndex cellId) const;
 
+   private:
       CellIndex m_newCellId = 0;
       std::unordered_map<CellIndex, TCell> m_cellIdToNodes;
       std::unordered_multimap<Topology::NodeIndex, CellIndex> m_nodeToCells;

@@ -11,13 +11,13 @@ TEST(TrianglesNodesTest, Empty)
 {
    TrianglesNodes tnodes;
    ASSERT_EQ(tnodes.getNumTriangles(), 0);
-   ASSERT_MYEXCEPTION_MESSAGE(tnodes.deleteTriangle(0), "TriangleNodes::deleteTriangle() unkown triangle: 0");
-   ASSERT_MYEXCEPTION_MESSAGE(tnodes.getEdgeConnectedTriangles(0, 1), "TriangleNodes::checkNodeId() unknown NodeId 0");
-   ASSERT_MYEXCEPTION_MESSAGE(tnodes.getNodeConnectedTriangles(0), "TriangleNodes::checkNodeId() unknown NodeId 0");
-   ASSERT_MYEXCEPTION_MESSAGE(tnodes.getEdgeConnectedNodes(0), "TriangleNodes::checkNodeId() unknown NodeId 0");
-   ASSERT_MYEXCEPTION_MESSAGE(tnodes.tryGetTriangle(0, 1, 2), "TriangleNodes::checkNodeId() unknown NodeId 0");
-   ASSERT_MYEXCEPTION_MESSAGE(tnodes.triangleContainsNode(0, 1), "TriangleNodes::checkTriangleId() unknown TriangleId 0");
-   ASSERT_MYEXCEPTION_MESSAGE(tnodes.getTriangleNodes(0), "TriangleNodes::checkTriangleId() unknown TriangleId 0");
+   ASSERT_MYEXCEPTION_MESSAGE(tnodes.deleteTriangle(0), "CellsNodes<TCell>::checkCellId() unknown cellId 0");
+   ASSERT_MYEXCEPTION_MESSAGE(tnodes.getEdgeConnectedTriangles(0, 1), "CellsNodes<TCell>::checkNodeId() unknown NodeId 0");
+   ASSERT_MYEXCEPTION_MESSAGE(tnodes.getNodeConnectedTriangles(0), "CellsNodes<TCell>::checkNodeId() unknown NodeId 0");
+   ASSERT_MYEXCEPTION_MESSAGE(tnodes.getEdgeConnectedNodes(0), "CellsNodes<TCell>::checkNodeId() unknown NodeId 0");
+   ASSERT_MYEXCEPTION_MESSAGE(tnodes.tryGetTriangle(0, 1, 2), "CellsNodes<TCell>::checkNodeId() unknown NodeId 0");
+   ASSERT_MYEXCEPTION_MESSAGE(tnodes.triangleContainsNode(0, 1), "CellsNodes<TCell>::checkCellId() unknown cellId 0");
+   ASSERT_MYEXCEPTION_MESSAGE(tnodes.getTriangleNodes(0), "CellsNodes<TCell>::checkCellId() unknown cellId 0");
 }
 
 TEST(TrianglesNodesTest, SingleTriangle)
@@ -43,7 +43,7 @@ TEST(TrianglesNodesTest, SingleTriangle)
    ASSERT_EQ(triangleId, *foundTriangle);
 
    ASSERT_TRUE(tnodes.triangleContainsNode(triangleId, 999));
-   ASSERT_MYEXCEPTION_MESSAGE(tnodes.triangleContainsNode(triangleId, 1), "TriangleNodes::checkNodeId() unknown NodeId 1");
+   ASSERT_MYEXCEPTION_MESSAGE(tnodes.triangleContainsNode(triangleId, 1), "CellsNodes<TCell>::checkNodeId() unknown NodeId 1");
 
    const auto triangleNodes = tnodes.getTriangleNodes(triangleId);
    ASSERT_TRUE(str::equal(triangleNodes, std::array<PointIndex, 3>{0, 42, 999}));
@@ -137,7 +137,7 @@ TEST(TrianglesNodesTest, TryGetTriangle)
    const auto triangle0 = tnodes.addTriangle(TriangleNodesOriented(42, 999, 0));
    const auto triangle1 = tnodes.addTriangle(TriangleNodesOriented(999, 42, 1));
 
-   const auto found_42_1_999 = tnodes.tryGetTriangle(42, 1, 999);
+   const auto found_42_1_999 = tnodes.tryGetTriangle(1, 999, 42);
    ASSERT_EQ(triangle1, *found_42_1_999);
 
    const auto found_1_42_999 = tnodes.tryGetTriangle(1, 42, 999);
