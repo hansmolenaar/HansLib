@@ -1,7 +1,10 @@
 #include "IndexTreeToSimplices3.h"
 //#include "IntervalTreeAdjacentDirection.h"
 #include "IntervalTreeIndex.h"
+#include "ReferenceShapeCube.h"
 //#include "UniqueHashedPointCollection.h"
+
+using namespace Topology;
 
 namespace
 {
@@ -55,18 +58,17 @@ namespace
          ++pos;
       }
 
-
       const auto lwr = bb.getLower();
       const auto upr = bb.getUpper();
-      const RatPoint2 ll(lwr[0], lwr[1]);
-      const RatPoint2 ul(upr[0], lwr[1]);
-      const RatPoint2 uu(upr[0], upr[1]);
-      const RatPoint2 lu(lwr[0], upr[1]);
-      throw MyException("not yet implemented");
+      const std::array<RatPoint3, NumNodesOnCube> p{
+         RatPoint3{ lwr[0],lwr[1],lwr[2]}, RatPoint3{upr[0],lwr[1],lwr[2]}, RatPoint3{lwr[0],upr[1],lwr[2]}, RatPoint3{upr[0],upr[1],lwr[2]},
+         RatPoint3{ lwr[0],lwr[1],upr[2]}, RatPoint3{upr[0],lwr[1],upr[2]}, RatPoint3{lwr[0],upr[1],upr[2]}, RatPoint3{upr[0],upr[1],upr[2]} };
       if (str::none_of(moreRefined, std::identity()))
       {
-         //Tetrahedrons.emplace_back(std::array<RatPoint3, Topology::NumNodesOnTetrehadron >{ ll, ul, uu });
-         //Tetrahedrons.emplace_back(std::array<RatPoint3, Topology::NumNodesOnTetrehadron >{ ll, uu, lu });
+         for (const auto& t : ReferenceShapeCube::getInstance().getStandardSplit())
+         {
+            Tetrahedrons.emplace_back(std::array<RatPoint3, Topology::NumNodesOnTetrehadron >{ p[t[0]], p[t[1]], p[t[2]], p[t[3]] });
+         }
       }
       else
       {
