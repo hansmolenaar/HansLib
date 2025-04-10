@@ -7,21 +7,31 @@
 #include "Paraview.h"
 #include "ReferenceShapeCube.h"
 #include "Tetrahedron.h"
+#include "TetrahedronsNodes.h"
 #include "TopologyDefines.h"
 #include "UniqueHashedPointCollection.h"
 
 using namespace IntervalTree;
 using namespace IndexTreeToSimplices3;
 using namespace Topology;
+using namespace MeshGeneration;
 
 namespace
 {
-   void testOrientation(const Tetrahedrons tets)
+   void testOrientation(const TetrahedronNodesOriented& tet, const IPointCollection3& points)
    {
-      for (const auto& tet : tets)
+      const double volume = Tetrahedron::getSignedVolume(points.getPoint(tet[0]), points.getPoint(tet[1]), points.getPoint(tet[2]), points.getPoint(tet[3]));
+      ASSERT_GT(volume, 0.0);
+   }
+
+   void checkMesh(
+      const TetrahedronsNodes& tets,
+      const IPointCollection3& points)
+   {
+      for (auto cellId : tets.getAllTetrahedrons())
       {
-         const double volume = Tetrahedron::getSignedVolume(PointUtils::toPoint(tet[0]), PointUtils::toPoint(tet[1]), PointUtils::toPoint(tet[2]), PointUtils::toPoint(tet[3]));
-         ASSERT_GT(volume, 0.0);
+         const auto tet = tets.getTetrahedronNodes(cellId);
+         testOrientation(tet, points);
       }
    }
 }
@@ -33,18 +43,24 @@ TEST(IndexTreeToSimplices3Test, RootToVtk)
 
    const auto tets = IndexTreeToSimplices3::Create(tree);
    ASSERT_EQ(ReferenceShapeCube::numTetsInStandardSplit, tets.size());
-   testOrientation(tets);
+   TetrahedronsNodes allTets;
+   UniqueHashedPointCollection<double, GeomDim3> points;
+   for (const auto& tet : tets)
+   {
+      std::array<NodeIndex, Topology::NumNodesOnTetrehadron> nodes;
+      for (size_t pos = 0; auto n : tet)
+      {
+         nodes[pos] = points.addIfNew(PointUtils::toPoint(n));
+         ++pos;
+      }
+      allTets.addTetrahedron(TetrahedronNodesOriented(nodes));
+   }
+   checkMesh(allTets, points);
 
    const auto vtkData = IndexTreeToSimplices3::ToVtkData(tets, { "IndexTreeToSimplices3Test_RootToVtk", "tree" });
    ASSERT_EQ(ReferenceShapeCube::numTetsInStandardSplit, vtkData->getNumCells());
    ASSERT_EQ(NumNodesOnCube, vtkData->getNumNodes());
-   Paraview::Write(*vtkData);
-
-   for (auto c = 0; c < 6; ++c)
-   {
-      const auto vtkDataCell = IndexTreeToSimplices3::ToVtkData(std::vector<std::array<RatPoint3, 4>>{tets[c]}, { "IndexTreeToSimplices3Test_RootToVtk_SingleCell" + std::to_string(c), "cell" + std::to_string(c) });
-      Paraview::Write(*vtkDataCell);
-   }
+   //Paraview::Write(*vtkData);
 }
 
 #if false

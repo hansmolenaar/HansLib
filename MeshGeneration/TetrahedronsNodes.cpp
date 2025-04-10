@@ -137,19 +137,12 @@ bool TetrahedronsNodes::isKnownTetId(CellIndex tetId) const
 {
    return m_cellsNodes.isKnownCellId(tetId);
 }
-#if false
+
 std::vector<CellIndex> TetrahedronsNodes::getAllTetrahedrons() const
 {
-   std::vector<CellIndex> result;
-   result.reserve(m_toNodes.size());
-   for (auto& itr : m_toNodes)
-   {
-      result.push_back(itr.first);
-   }
-   str::sort(result);
-   return result;
+   return m_cellsNodes.getAllCellIds();
 }
-
+#if false
 std::vector<EdgeNodesSorted> TetrahedronsNodes::getAllSortedEdges() const
 {
    std::vector<EdgeNodesSorted> result;
