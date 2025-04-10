@@ -21,20 +21,10 @@ void TrianglesNodes::deleteTriangle(CellIndex triangleId)
 }
 
 
-boost::container::static_vector<CellIndex, 2> TrianglesNodes::getEdgeConnectedTriangles(NodeIndex n0, NodeIndex n1) const
+boost::container::static_vector<CellIndex, 2> TrianglesNodes::getTrianglesContainingEdge(NodeIndex n0, NodeIndex n1) const
 {
    boost::container::static_vector<CellIndex, 2> result;
-   m_cellsNodes.checkNodeId(n0);
-   m_cellsNodes.checkNodeId(n1);
-   const auto [first, last] = m_cellsNodes.getNodeToCellIds().equal_range(n0);
-   for (auto itr = first; itr != last; ++itr)
-   {
-      if (triangleContainsNode(itr->second, n1))
-      {
-         result.push_back(itr->second);
-      }
-   }
-   str::sort(result);
+   m_cellsNodes.getCellsContainingNodes(result, std::array<NodeIndex, NumNodesOnEdge>{n0, n1});
    return result;
 }
 
@@ -44,7 +34,7 @@ boost::container::static_vector<CellIndex, Topology::NumNodesOnTriangle> Triangl
    const auto triangle = getTriangleNodes(triangleId);
    for (const auto& edge : triangle.getEdges())
    {
-      const auto ngbs = getEdgeConnectedTriangles(edge[0], edge[1]);
+      const auto ngbs = getTrianglesContainingEdge(edge[0], edge[1]);
       if (ngbs.size() > 0 && ngbs[0] != triangleId) result.push_back(ngbs[0]);
       if (ngbs.size() > 1 && ngbs[1] != triangleId) result.push_back(ngbs[1]);
    }
@@ -55,12 +45,7 @@ boost::container::static_vector<CellIndex, Topology::NumNodesOnTriangle> Triangl
 boost::container::static_vector<CellIndex, Topology::NumNodesOnTriangle>  TrianglesNodes::getCommonNodes(CellIndex triangle1, CellIndex triangle2) const
 {
    boost::container::static_vector<CellIndex, Topology::NumNodesOnTriangle> result;
-   const auto triangleNodes1 = getTriangleNodes(triangle1);
-   const auto triangleNodes2 = getTriangleNodes(triangle2);
-   for (auto node : triangleNodes1)
-   {
-      if (triangleNodes2.contains(node)) result.push_back(node);
-   }
+   m_cellsNodes.getCommonNodes(triangle1, triangle2, result);
    return result;
 }
 
@@ -73,35 +58,14 @@ bool TrianglesNodes::triangleContainsNode(CellIndex triangleId, NodeIndex nodeId
 std::vector<CellIndex> TrianglesNodes::getNodeConnectedTriangles(NodeIndex node) const
 {
    std::vector<CellIndex> result;
-   m_cellsNodes.checkNodeId(node);
-   const auto [first, last] = m_cellsNodes.getNodeToCellIds().equal_range(node);
-   for (auto itr = first; itr != last; ++itr)
-   {
-      result.push_back(itr->second);
-   }
-   str::sort(result);
+   m_cellsNodes.getCellsContainingNodes(result, std::array<NodeIndex, 1>{node});
    return result;
 }
 
 std::vector<NodeIndex> TrianglesNodes::getEdgeConnectedNodes(NodeIndex node) const
 {
    std::vector<NodeIndex> result;
-   m_cellsNodes.checkNodeId(node);
-   const auto [first, last] = m_cellsNodes.getNodeToCellIds().equal_range(node);
-   const auto& toNodes = m_cellsNodes.getCellIdToNodes();
-   for (auto itr = first; itr != last; ++itr)
-   {
-      const auto triangleId = itr->second;
-      const auto& triangleNodes = toNodes.at(triangleId);
-      for (auto ngb : triangleNodes)
-      {
-         if ((ngb != node) && (str::find(result, ngb) == result.end()))
-         {
-            result.push_back(ngb);
-         }
-      }
-   }
-   str::sort(result);
+   m_cellsNodes.getEdgeConnectedNodes(result, node);
    return result;
 }
 

@@ -63,7 +63,7 @@ namespace
       const IUniquePointCollection2& pointCollection,
       const Geometry::IGeometryRegion<MeshGeneration::GeomType, GeomDim2>& region)
    {
-      const auto connectedTriangles = trianglesNodes.getEdgeConnectedTriangles(be[0], be[1]);
+      const auto connectedTriangles = trianglesNodes.getTrianglesContainingEdge(be[0], be[1]);
       if (connectedTriangles.size() != 2)
       {
          throw MyException("getBoundaryTriangles expect 2 triangles adjacent to edge");

@@ -12,7 +12,7 @@ namespace MeshGeneration
    public:
       CellIndex addTriangle(const Topology::TriangleNodesOriented& triangle);
       void deleteTriangle(CellIndex triangleId);
-      boost::container::static_vector<CellIndex, 2> getEdgeConnectedTriangles(Topology::NodeIndex n0, Topology::NodeIndex n1) const;
+      boost::container::static_vector<CellIndex, 2> getTrianglesContainingEdge(Topology::NodeIndex n0, Topology::NodeIndex n1) const;
       boost::container::static_vector<CellIndex, Topology::NumNodesOnTriangle> getEdgeConnectedTriangles(CellIndex triangleId) const;
       boost::container::static_vector<CellIndex, Topology::NumNodesOnTriangle> getCommonNodes(CellIndex triangle1, CellIndex triangle2) const;
       std::vector<CellIndex> getNodeConnectedTriangles(Topology::NodeIndex node) const;

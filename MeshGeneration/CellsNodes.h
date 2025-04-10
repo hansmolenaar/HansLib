@@ -22,6 +22,15 @@ namespace MeshGeneration
       std::optional<CellIndex> tryGetCell(std::span<const Topology::NodeIndex> nodes) const;
       bool cellContainsNode(CellIndex CellIndex, Topology::NodeIndex nodeId) const;
 
+      template<typename C>
+      void getCommonNodes(CellIndex cellId1, CellIndex cellId2, C& containter) const;
+
+      template<typename C>
+      void getCellsContainingNodes(C& container, std::span<const Topology::NodeIndex> nodes) const;
+
+      template<typename C>
+      void getEdgeConnectedNodes(C& container, Topology::NodeIndex node) const;
+
       bool isKnownNodeId(Topology::NodeIndex node) const;
       bool isKnownCellId(CellIndex cellId) const;
 
@@ -136,6 +145,7 @@ namespace MeshGeneration
       return str::find(nodes, nodeId) != nodes.end();
    }
 
+
    template<typename TCell>
    TCell CellsNodes<TCell>::getCellNodes(CellIndex cellId) const
    {
@@ -194,5 +204,64 @@ namespace MeshGeneration
       }
       str::sort(result);
       return result;
+   }
+
+   template<typename TCell>
+   template<typename C>
+   void CellsNodes<TCell>::getCommonNodes(CellIndex cellId1, CellIndex cellId2, C& result) const
+   {
+      checkCellId(cellId1);
+      checkCellId(cellId2);
+
+      result.clear();
+      const auto& cellNodes1 = m_cellIdToNodes.at(cellId1);
+      const auto& cellNodes2 = m_cellIdToNodes.at(cellId2);
+      for (auto node : cellNodes1)
+      {
+         if (cellNodes2.contains(node)) result.push_back(node);
+      }
+   }
+
+   template<typename TCell>
+   template<typename C>
+   void CellsNodes<TCell>::getCellsContainingNodes(C& result, std::span<const Topology::NodeIndex> nodes) const
+   {
+      result.clear();
+
+      const auto node0 = nodes[0];
+      checkNodeId(node0);
+      const auto [first, last] = getNodeToCellIds().equal_range(node0);
+      for (auto itr = first; itr != last; ++itr)
+      {
+         const auto cellId = itr->second;
+         if (std::all_of(nodes.begin() + 1, nodes.end(), [this, cellId](auto nodeId) {return cellContainsNode(cellId, nodeId); }))
+         {
+            result.push_back(cellId);
+         }
+      }
+      str::sort(result);
+   }
+
+   template<typename TCell>
+   template<typename C>
+   void CellsNodes<TCell>::getEdgeConnectedNodes(C& result, Topology::NodeIndex node) const
+   {
+      result.clear();
+
+      checkNodeId(node);
+      const auto [first, last] = m_nodeToCells.equal_range(node);
+      for (auto itr = first; itr != last; ++itr)
+      {
+         const auto cellId = itr->second;
+         const auto& cellNodes = getCellNodes(cellId);
+         for (auto ngb : cellNodes)
+         {
+            if ((ngb != node) && (str::find(result, ngb) == result.end()))
+            {
+               result.push_back(ngb);
+            }
+         }
+      }
+      str::sort(result);
    }
 }

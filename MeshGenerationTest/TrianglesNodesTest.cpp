@@ -12,7 +12,7 @@ TEST(TrianglesNodesTest, Empty)
    TrianglesNodes tnodes;
    ASSERT_EQ(tnodes.getNumTriangles(), 0);
    ASSERT_MYEXCEPTION_MESSAGE(tnodes.deleteTriangle(0), "CellsNodes<TCell>::checkCellId() unknown cellId 0");
-   ASSERT_MYEXCEPTION_MESSAGE(tnodes.getEdgeConnectedTriangles(0, 1), "CellsNodes<TCell>::checkNodeId() unknown NodeId 0");
+   ASSERT_MYEXCEPTION_MESSAGE(tnodes.getTrianglesContainingEdge(0, 1), "CellsNodes<TCell>::checkNodeId() unknown NodeId 0");
    ASSERT_MYEXCEPTION_MESSAGE(tnodes.getNodeConnectedTriangles(0), "CellsNodes<TCell>::checkNodeId() unknown NodeId 0");
    ASSERT_MYEXCEPTION_MESSAGE(tnodes.getEdgeConnectedNodes(0), "CellsNodes<TCell>::checkNodeId() unknown NodeId 0");
    ASSERT_MYEXCEPTION_MESSAGE(tnodes.tryGetTriangle(0, 1, 2), "CellsNodes<TCell>::checkNodeId() unknown NodeId 0");
@@ -26,7 +26,7 @@ TEST(TrianglesNodesTest, SingleTriangle)
    const auto triangleId = tnodes.addTriangle(TriangleNodesOriented(42, 999, 0));
    ASSERT_EQ(tnodes.getNumTriangles(), 1);
 
-   const auto connectedTriangles = tnodes.getEdgeConnectedTriangles(0, 42);
+   const auto connectedTriangles = tnodes.getTrianglesContainingEdge(0, 42);
    ASSERT_EQ(1, connectedTriangles.size());
    ASSERT_EQ(triangleId, connectedTriangles.at(0));
 
@@ -116,16 +116,16 @@ TEST(TrianglesNodesTest, GetEdgeConnectedTriangles)
    const auto triangle0 = tnodes.addTriangle(TriangleNodesOriented(42, 999, 0));
    const auto triangle1 = tnodes.addTriangle(TriangleNodesOriented(999, 42, 1));
 
-   const auto found_0_1 = tnodes.getEdgeConnectedTriangles(1, 0);
+   const auto found_0_1 = tnodes.getTrianglesContainingEdge(1, 0);
    ASSERT_TRUE(found_0_1.empty());
 
-   const auto found_1_42 = tnodes.getEdgeConnectedTriangles(1, 42);
+   const auto found_1_42 = tnodes.getTrianglesContainingEdge(1, 42);
    ASSERT_TRUE(str::equal(found_1_42, std::vector<CellIndex>{triangle1}));
 
-   const auto found_999_42 = tnodes.getEdgeConnectedTriangles(999, 42);
+   const auto found_999_42 = tnodes.getTrianglesContainingEdge(999, 42);
    ASSERT_TRUE(str::equal(found_999_42, std::vector<CellIndex>{triangle0, triangle1}));
 
-   const auto found_42_999 = tnodes.getEdgeConnectedTriangles(42, 999);
+   const auto found_42_999 = tnodes.getTrianglesContainingEdge(42, 999);
    ASSERT_TRUE(str::equal(found_42_999, std::vector<CellIndex>{triangle0, triangle1}));
 }
 
