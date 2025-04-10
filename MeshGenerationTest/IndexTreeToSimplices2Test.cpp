@@ -15,10 +15,9 @@ namespace
 {
    void testOrientation(const Triangles triangles)
    {
-      const auto toPoint = [](const RatPoint2& rpoint) {return Point2{ 1.0 * rpoint[0], 1.0 * rpoint[1] }; };
       for (const auto& triangle : triangles)
       {
-         const double area = Triangle::AreaSigned(toPoint(triangle[0]), toPoint(triangle[1]), toPoint(triangle[2]));
+         const double area = Triangle::AreaSigned(PointUtils::toPoint(triangle[0]), PointUtils::toPoint(triangle[1]), PointUtils::toPoint(triangle[2]));
          ASSERT_GT(area, 0.0);
       }
    }

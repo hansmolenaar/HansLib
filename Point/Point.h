@@ -122,4 +122,12 @@ namespace PointUtils
    {
       return std::inner_product(p0.begin(), p0.end(), p1.begin(), T(0));
    }
+
+   template<int N>
+   Point<double, N> toPoint(const Point<Rational, N>& p)
+   {
+      Point<double, N> result;
+      str::transform(p, result.begin(), [](const Rational& r) {return 1.0 * r; });
+      return result;
+   }
 }

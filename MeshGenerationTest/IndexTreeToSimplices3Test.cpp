@@ -5,40 +5,46 @@
 #include "IntervalTreeRefinePredicate.h"
 #include "IntervalTreeVtk.h"
 #include "Paraview.h"
-#include "Triangle.h"
+#include "ReferenceShapeCube.h"
+#include "Tetrahedron.h"
+#include "TopologyDefines.h"
 #include "UniqueHashedPointCollection.h"
 
 using namespace IntervalTree;
 using namespace IndexTreeToSimplices3;
+using namespace Topology;
 
-#if false
 namespace
 {
-   void testOrientation(const Triangles triangles)
+   void testOrientation(const Tetrahedrons tets)
    {
-      const auto toPoint = [](const RatPoint2& rpoint) {return Point2{ 1.0 * rpoint[0], 1.0 * rpoint[1] }; };
-      for (const auto& triangle : triangles)
+      for (const auto& tet : tets)
       {
-         const double area = Triangle::AreaSigned(toPoint(triangle[0]), toPoint(triangle[1]), toPoint(triangle[2]));
-         ASSERT_GT(area, 0.0);
+         const double volume = Tetrahedron::getSignedVolume(PointUtils::toPoint(tet[0]), PointUtils::toPoint(tet[1]), PointUtils::toPoint(tet[2]), PointUtils::toPoint(tet[3]));
+         ASSERT_GT(volume, 0.0);
       }
    }
 }
-#endif
 
 TEST(IndexTreeToSimplices3Test, RootToVtk)
 {
    IndexTree<GeomDim3> tree;
    const auto& root = tree.getRoot();
 
-   const auto triangles = IndexTreeToSimplices3::Create(tree);
-   ASSERT_EQ(6, triangles.size());
-   //testOrientation(triangles);
+   const auto tets = IndexTreeToSimplices3::Create(tree);
+   ASSERT_EQ(ReferenceShapeCube::numTetsInStandardSplit, tets.size());
+   testOrientation(tets);
 
-   //const auto vtkData = IndexTreeToSimplices3::ToVtkData(triangles, { "IndexTreeToSimplices3Test_RootToVtk", "tree" });
-   //ASSERT_EQ(6, vtkData->getNumCells());
-   //ASSERT_EQ(8, vtkData->getNumNodes());
-   //Paraview::Write(*vtkData);
+   const auto vtkData = IndexTreeToSimplices3::ToVtkData(tets, { "IndexTreeToSimplices3Test_RootToVtk", "tree" });
+   ASSERT_EQ(ReferenceShapeCube::numTetsInStandardSplit, vtkData->getNumCells());
+   ASSERT_EQ(NumNodesOnCube, vtkData->getNumNodes());
+   Paraview::Write(*vtkData);
+
+   for (auto c = 0; c < 6; ++c)
+   {
+      const auto vtkDataCell = IndexTreeToSimplices3::ToVtkData(std::vector<std::array<RatPoint3, 4>>{tets[c]}, { "IndexTreeToSimplices3Test_RootToVtk_SingleCell" + std::to_string(c), "cell" + std::to_string(c) });
+      Paraview::Write(*vtkDataCell);
+   }
 }
 
 #if false

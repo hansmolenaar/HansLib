@@ -204,3 +204,12 @@ TEST(PointTest, VectorProduct3)
 
    ASSERT_EQ(c, (IntPoint3{ -55,22,11 }));
 }
+
+TEST(PointTest, ToPoint)
+{
+   const RatPoint2 a{ Rational{1,2}, Rational{-1,4} };
+   const Point2 b = PointUtils::toPoint(a);
+
+   ASSERT_DOUBLE_EQ(b[0], 0.5);
+   ASSERT_DOUBLE_EQ(b[1], -0.25);
+}

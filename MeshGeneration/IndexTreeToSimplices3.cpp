@@ -2,7 +2,8 @@
 //#include "IntervalTreeAdjacentDirection.h"
 #include "IntervalTreeIndex.h"
 #include "ReferenceShapeCube.h"
-//#include "UniqueHashedPointCollection.h"
+#include "TopologyDefines.h"
+#include "UniqueHashedPointCollection.h"
 
 using namespace Topology;
 
@@ -105,4 +106,22 @@ IndexTreeToSimplices3::Tetrahedrons IndexTreeToSimplices3::Create(const Interval
    ActionSplit action{ tree };
    tree.foreachLeaf(action);
    return action.Tetrahedrons;
+}
+
+
+std::unique_ptr<Vtk::VtkData> IndexTreeToSimplices3::ToVtkData(const Tetrahedrons& cells, const Vtk::Name& name)
+{
+   std::unique_ptr< Vtk::VtkData> result = std::make_unique< Vtk::VtkData>(GeomDim3, 0, name);
+   UniqueHashedPointCollection<Rational, GeomDim3>  toNodeIndex;
+   for (const auto& cell : cells)
+   {
+      std::array<PointIndex, NumNodesOnTetrehadron> cellNodes;
+      for (size_t vertex = 0; const auto & v : cell)
+      {
+         cellNodes.at(vertex) = toNodeIndex.addIfNew(v);
+         ++vertex;
+      }
+      result->addCell(Vtk::CellType::VTK_TETRA, cellNodes, toNodeIndex, {});
+   }
+   return result;
 }
