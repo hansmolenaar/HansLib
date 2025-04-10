@@ -15,7 +15,7 @@ namespace MeshGeneration
       boost::container::static_vector<CellIndex, 2> getTrianglesContainingEdge(Topology::NodeIndex n0, Topology::NodeIndex n1) const;
       boost::container::static_vector<CellIndex, Topology::NumNodesOnTriangle> getEdgeConnectedTriangles(CellIndex triangleId) const;
       boost::container::static_vector<CellIndex, Topology::NumNodesOnTriangle> getCommonNodes(CellIndex triangle1, CellIndex triangle2) const;
-      std::vector<CellIndex> getNodeConnectedTriangles(Topology::NodeIndex node) const;
+      std::vector<CellIndex> getTrianglesContainingNode(Topology::NodeIndex node) const;
       std::vector<Topology::NodeIndex> getEdgeConnectedNodes(Topology::NodeIndex node) const;
       std::optional<CellIndex> tryGetTriangle(Topology::NodeIndex n0, Topology::NodeIndex n1, Topology::NodeIndex n2) const;
       bool triangleContainsNode(CellIndex CellIndex, Topology::NodeIndex nodeId) const;

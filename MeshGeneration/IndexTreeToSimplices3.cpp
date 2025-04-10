@@ -68,7 +68,7 @@ namespace
       {
          for (const auto& t : ReferenceShapeCube::getInstance().getStandardSplit())
          {
-            Tetrahedrons.emplace_back(std::array<RatPoint3, Topology::NumNodesOnTetrehadron >{ p[t[0]], p[t[1]], p[t[2]], p[t[3]] });
+            Tetrahedrons.emplace_back(std::array<RatPoint3, Topology::NumNodesOnTetrahedron >{ p[t[0]], p[t[1]], p[t[2]], p[t[3]] });
          }
       }
       else
@@ -115,7 +115,7 @@ std::unique_ptr<Vtk::VtkData> IndexTreeToSimplices3::ToVtkData(const Tetrahedron
    UniqueHashedPointCollection<Rational, GeomDim3>  toNodeIndex;
    for (const auto& cell : cells)
    {
-      std::array<PointIndex, NumNodesOnTetrehadron> cellNodes;
+      std::array<PointIndex, NumNodesOnTetrahedron> cellNodes;
       for (size_t vertex = 0; const auto & v : cell)
       {
          cellNodes.at(vertex) = toNodeIndex.addIfNew(v);

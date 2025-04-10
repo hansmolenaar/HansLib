@@ -23,7 +23,7 @@ namespace MeshGeneration
       bool cellContainsNode(CellIndex CellIndex, Topology::NodeIndex nodeId) const;
 
       template<typename C>
-      void getCommonNodes(CellIndex cellId1, CellIndex cellId2, C& containter) const;
+      C& getCommonNodes(CellIndex cellId1, CellIndex cellId2, C& containter) const;
 
       template<typename C>
       void getCellsContainingNodes(C& container, std::span<const Topology::NodeIndex> nodes) const;
@@ -208,7 +208,7 @@ namespace MeshGeneration
 
    template<typename TCell>
    template<typename C>
-   void CellsNodes<TCell>::getCommonNodes(CellIndex cellId1, CellIndex cellId2, C& result) const
+   C& CellsNodes<TCell>::getCommonNodes(CellIndex cellId1, CellIndex cellId2, C& result) const
    {
       checkCellId(cellId1);
       checkCellId(cellId2);
@@ -220,6 +220,7 @@ namespace MeshGeneration
       {
          if (cellNodes2.contains(node)) result.push_back(node);
       }
+      return result;
    }
 
    template<typename TCell>

@@ -4,6 +4,8 @@
 #include "EdgeNodesSorted.h"
 #include "MeshGenerationDefines.h"
 #include "TetrahedronNodesOriented.h"
+#include "TopologyDefines.h"
+
 #include <array>
 #include <boost/container/static_vector.hpp>
 #include <optional>
@@ -18,11 +20,11 @@ namespace MeshGeneration
    public:
       CellIndex addTetrahedron(const Topology::TetrahedronNodesOriented& nodes);
       void deleteTetrahedron(CellIndex tetId);
-      //boost::container::static_vector<CellIndex, 2> getEdgeConnectedTetrahedrons(Topology::NodeIndex n0, Topology::NodeIndex n1) const;
+      std::vector<CellIndex> getTetrahedronsContainingNode(Topology::NodeIndex node) const;
+      std::vector<CellIndex> getTetrahedronsContainingEdge(Topology::NodeIndex n0, Topology::NodeIndex n1) const;
       //boost::container::static_vector<CellIndex, Topology::NumNodesOnTetrahedron> getEdgeConnectedTetrahedrons(CellIndex TetrahedronId) const;
-      //boost::container::static_vector<CellIndex, Topology::NumNodesOnTetrahedron> getCommonNodes(CellIndex Tetrahedron1, CellIndex Tetrahedron2) const;
-      //std::vector<CellIndex> getNodeConnectedTetrahedrons(Topology::NodeIndex node) const;
-      //std::vector<Topology::NodeIndex> getEdgeConnectedNodes(Topology::NodeIndex node) const;
+      boost::container::static_vector<CellIndex, Topology::NumNodesOnTetrahedron> getCommonNodes(CellIndex tetId1, CellIndex tetId2) const;
+      std::vector<Topology::NodeIndex> getEdgeConnectedNodes(Topology::NodeIndex node) const;
       std::optional<CellIndex> tryGetTetrahedron(Topology::NodeIndex n0, Topology::NodeIndex n1, Topology::NodeIndex n2, Topology::NodeIndex n3) const;
       bool tetrahedronContainsNode(CellIndex CellIndex, Topology::NodeIndex nodeId) const;
 
@@ -33,7 +35,7 @@ namespace MeshGeneration
 
       std::vector<CellIndex> getAllTetrahedrons() const;
       std::vector<Topology::NodeIndex> getAllNodes() const;
-      std::vector<Topology::EdgeNodesSorted> getAllSortedEdges() const;
+      //std::vector<Topology::EdgeNodesSorted> getAllSortedEdges() const;
 
       friend std::ostream& operator<<(std::ostream& os, const TetrahedronsNodes& tnodes)
       {
@@ -44,6 +46,7 @@ namespace MeshGeneration
          return os;
       }
       size_t getNumTetrahedrons() const;
+      std::vector<Topology::TriangleNodesOriented> getBoundaryFaces() const;
 
    private:
       CellsNodes<Topology::TetrahedronNodesOriented> m_cellsNodes;

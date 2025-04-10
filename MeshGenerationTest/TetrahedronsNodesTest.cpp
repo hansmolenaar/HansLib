@@ -2,59 +2,66 @@
 
 #include "Defines.h"
 #include "MyException.h"
-#include "TrianglesNodes.h"
+#include "TetrahedronsNodes.h"
 
 using namespace MeshGeneration;
 using namespace Topology;
 
-TEST(TrianglesNodesTest, Empty)
+TEST(TetrahedronsNodesTest, Empty)
 {
-   TrianglesNodes tnodes;
-   ASSERT_EQ(tnodes.getNumTriangles(), 0);
-   ASSERT_MYEXCEPTION_MESSAGE(tnodes.deleteTriangle(0), "CellsNodes<TCell>::checkCellId() unknown cellId 0");
-   ASSERT_MYEXCEPTION_MESSAGE(tnodes.getTrianglesContainingEdge(0, 1), "CellsNodes<TCell>::checkNodeId() unknown NodeId 0");
-   ASSERT_MYEXCEPTION_MESSAGE(tnodes.getTrianglesContainingNode(0), "CellsNodes<TCell>::checkNodeId() unknown NodeId 0");
-   ASSERT_MYEXCEPTION_MESSAGE(tnodes.getEdgeConnectedNodes(0), "CellsNodes<TCell>::checkNodeId() unknown NodeId 0");
-   ASSERT_MYEXCEPTION_MESSAGE(tnodes.tryGetTriangle(0, 1, 2), "CellsNodes<TCell>::checkNodeId() unknown NodeId 0");
-   ASSERT_MYEXCEPTION_MESSAGE(tnodes.triangleContainsNode(0, 1), "CellsNodes<TCell>::checkCellId() unknown cellId 0");
-   ASSERT_MYEXCEPTION_MESSAGE(tnodes.getTriangleNodes(0), "CellsNodes<TCell>::checkCellId() unknown cellId 0");
+   TetrahedronsNodes tnodes;
+   ASSERT_EQ(tnodes.getNumTetrahedrons(), 0);
+   ASSERT_TRUE(tnodes.getAllTetrahedrons().empty());
+   ASSERT_TRUE(tnodes.getAllNodes().empty());
+   ASSERT_TRUE(tnodes.getBoundaryFaces().empty());
+   ASSERT_MYEXCEPTION_MESSAGE(tnodes.deleteTetrahedron(0), "CellsNodes<TCell>::checkCellId() unknown cellId 0");
+   //ASSERT_MYEXCEPTION_MESSAGE(tnodes.getTrianglesContainingEdge(0, 1), "CellsNodes<TCell>::checkNodeId() unknown NodeId 0");
+   //ASSERT_MYEXCEPTION_MESSAGE(tnodes.getNodeConnectedTriangles(0), "CellsNodes<TCell>::checkNodeId() unknown NodeId 0");
+   //ASSERT_MYEXCEPTION_MESSAGE(tnodes.getEdgeConnectedNodes(0), "CellsNodes<TCell>::checkNodeId() unknown NodeId 0");
+   //ASSERT_MYEXCEPTION_MESSAGE(tnodes.tryGetTriangle(0, 1, 2), "CellsNodes<TCell>::checkNodeId() unknown NodeId 0");
+   ASSERT_MYEXCEPTION_MESSAGE(tnodes.tetrahedronContainsNode(0, 1), "CellsNodes<TCell>::checkCellId() unknown cellId 0");
+   ASSERT_MYEXCEPTION_MESSAGE(tnodes.getTetrahedronNodes(0), "CellsNodes<TCell>::checkCellId() unknown cellId 0");
 }
 
-TEST(TrianglesNodesTest, SingleTriangle)
+TEST(TetrahedronsNodesTest, SingleTet)
 {
-   TrianglesNodes tnodes;
-   const auto triangleId = tnodes.addTriangle(TriangleNodesOriented(42, 999, 0));
-   ASSERT_EQ(tnodes.getNumTriangles(), 1);
+   TetrahedronsNodes tnodes;
+   const auto tetId = tnodes.addTetrahedron(TetrahedronNodesOriented(42, 999, 0, 2));
+   ASSERT_EQ(tnodes.getNumTetrahedrons(), 1);
 
-   const auto connectedTriangles = tnodes.getTrianglesContainingEdge(0, 42);
+   const auto connectedTriangles = tnodes.getTetrahedronsContainingEdge(0, 42);
    ASSERT_EQ(1, connectedTriangles.size());
-   ASSERT_EQ(triangleId, connectedTriangles.at(0));
+   ASSERT_EQ(tetId, connectedTriangles.at(0));
 
-   const auto nodeConnectedTriangles = tnodes.getTrianglesContainingNode(999);
+   const auto nodeConnectedTriangles = tnodes.getTetrahedronsContainingNode(999);
    ASSERT_EQ(1, nodeConnectedTriangles.size());
-   ASSERT_EQ(triangleId, nodeConnectedTriangles.at(0));
+   ASSERT_EQ(tetId, nodeConnectedTriangles.at(0));
 
    const auto edgeConnectedNodes = tnodes.getEdgeConnectedNodes(0);
-   ASSERT_EQ(2, edgeConnectedNodes.size());
-   ASSERT_EQ(42, edgeConnectedNodes.at(0));
-   ASSERT_EQ(999, edgeConnectedNodes.at(1));
+   ASSERT_EQ(3, edgeConnectedNodes.size());
+   ASSERT_EQ(2, edgeConnectedNodes.at(0));
+   ASSERT_EQ(42, edgeConnectedNodes.at(1));
+   ASSERT_EQ(999, edgeConnectedNodes.at(2));
 
-   const auto foundTriangle = tnodes.tryGetTriangle(0, 42, 999);
-   ASSERT_EQ(triangleId, *foundTriangle);
+   auto foundTet = tnodes.tryGetTetrahedron(0, 2, 42, 999);
+   ASSERT_EQ(tetId, *foundTet);
+   foundTet = tnodes.tryGetTetrahedron(0, 42, 2, 999);
+   ASSERT_FALSE(foundTet);
 
-   ASSERT_TRUE(tnodes.triangleContainsNode(triangleId, 999));
-   ASSERT_MYEXCEPTION_MESSAGE(tnodes.triangleContainsNode(triangleId, 1), "CellsNodes<TCell>::checkNodeId() unknown NodeId 1");
+   ASSERT_TRUE(tnodes.tetrahedronContainsNode(tetId, 999));
+   ASSERT_MYEXCEPTION_MESSAGE(tnodes.tetrahedronContainsNode(tetId, 1), "CellsNodes<TCell>::checkNodeId() unknown NodeId 1");
 
-   const auto triangleNodes = tnodes.getTriangleNodes(triangleId);
-   ASSERT_TRUE(str::equal(triangleNodes, std::array<PointIndex, 3>{0, 42, 999}));
+   const auto tetNodes = tnodes.getTetrahedronNodes(tetId);
+   ASSERT_TRUE(str::equal(tetNodes, std::array<PointIndex, 4>{0, 2, 42, 999}));
 
-   tnodes.deleteTriangle(triangleId);
+   tnodes.deleteTetrahedron(tetId);
    ASSERT_FALSE(tnodes.isKnownNodeId(42));
    ASSERT_FALSE(tnodes.isKnownNodeId(999));
-   ASSERT_EQ(tnodes.getNumTriangles(), 0);
+   ASSERT_EQ(tnodes.getNumTetrahedrons(), 0);
 }
 
-TEST(TrianglesNodesTest, Delete)
+#if false
+TEST(TetrahedronsNodesTest, Delete)
 {
    TrianglesNodes tnodes;
    const auto triangleId = tnodes.addTriangle(TriangleNodesOriented(42, 999, 0));
@@ -65,7 +72,7 @@ TEST(TrianglesNodesTest, Delete)
    ASSERT_FALSE(tnodes.isKnownTriangleId(triangleId));
 }
 
-TEST(TrianglesNodesTest, IsKnown)
+TEST(TetrahedronsNodesTest, IsKnown)
 {
    TrianglesNodes tnodes;
    ASSERT_FALSE(tnodes.isKnownNodeId(0));
@@ -80,22 +87,22 @@ TEST(TrianglesNodesTest, IsKnown)
 }
 
 
-TEST(TrianglesNodesTest, GetNodeConnectedTriangles)
+TEST(TetrahedronsNodesTest, GetNodeConnectedTriangles)
 {
    TrianglesNodes tnodes;
-   ASSERT_ANY_THROW(tnodes.getTrianglesContainingNode(0));
+   ASSERT_ANY_THROW(tnodes.getNodeConnectedTriangles(0));
    const auto triangle0 = tnodes.addTriangle(TriangleNodesOriented(42, 999, 0));
    const auto triangle1 = tnodes.addTriangle(TriangleNodesOriented(43, 999, 1));
 
-   const auto found1 = tnodes.getTrianglesContainingNode(1);
+   const auto found1 = tnodes.getNodeConnectedTriangles(1);
    ASSERT_TRUE(str::equal(found1, std::vector<CellIndex>{triangle1}));
 
-   const auto found999 = tnodes.getTrianglesContainingNode(999);
+   const auto found999 = tnodes.getNodeConnectedTriangles(999);
    ASSERT_TRUE(str::equal(found999, std::vector<CellIndex>{triangle0, triangle1}));
 }
 
 
-TEST(TrianglesNodesTest, GetEdgeConnectedNodes)
+TEST(TetrahedronsNodesTest, GetEdgeConnectedNodes)
 {
    TrianglesNodes tnodes;
 
@@ -109,7 +116,7 @@ TEST(TrianglesNodesTest, GetEdgeConnectedNodes)
    ASSERT_TRUE(str::equal(found_42, std::vector<PointIndex>{0, 1, 999}));
 }
 
-TEST(TrianglesNodesTest, GetEdgeConnectedTriangles)
+TEST(TetrahedronsNodesTest, GetEdgeConnectedTriangles)
 {
    TrianglesNodes tnodes;
 
@@ -130,7 +137,7 @@ TEST(TrianglesNodesTest, GetEdgeConnectedTriangles)
 }
 
 
-TEST(TrianglesNodesTest, TryGetTriangle)
+TEST(TetrahedronsNodesTest, TryGetTriangle)
 {
    TrianglesNodes tnodes;
 
@@ -148,7 +155,7 @@ TEST(TrianglesNodesTest, TryGetTriangle)
 }
 
 
-TEST(TrianglesNodesTest, TriangleContainsNode)
+TEST(TetrahedronsNodesTest, TriangleContainsNode)
 {
    TrianglesNodes tnodes;
 
@@ -160,7 +167,7 @@ TEST(TrianglesNodesTest, TriangleContainsNode)
 }
 
 
-TEST(TrianglesNodesTest, GetAllTriangles)
+TEST(TetrahedronsNodesTest, GetAllTriangles)
 {
    TrianglesNodes tnodes;
    auto allTriangles = tnodes.getAllTriangles();
@@ -189,7 +196,7 @@ TEST(TrianglesNodesTest, GetAllTriangles)
 }
 
 
-TEST(TrianglesNodesTest, GetAllEdges)
+TEST(TetrahedronsNodesTest, GetAllEdges)
 {
    TrianglesNodes tnodes;
    auto allEdges = tnodes.getAllSortedEdges();
@@ -203,7 +210,7 @@ TEST(TrianglesNodesTest, GetAllEdges)
    allEdges = tnodes.getAllSortedEdges();
    ASSERT_TRUE(str::equal(allEdges, std::vector<EdgeNodesSorted>{{ 0, 2 }, { 0,42 }, { 0,999 }, { 2, 42 }, { 42, 999 }}));
 }
-TEST(TrianglesNodesTest, ToString)
+TEST(TetrahedronsNodesTest, ToString)
 {
    std::ostringstream os;
    TrianglesNodes tnodes;
@@ -220,7 +227,7 @@ TEST(TrianglesNodesTest, ToString)
    os << tnodes;
    ASSERT_EQ(os.str(), "TriangleNodes NUMNODES=4 NUMTRIANGLES=2");
 }
-TEST(TrianglesNodesTest, GetAllNodes)
+TEST(TetrahedronsNodesTest, GetAllNodes)
 {
    TrianglesNodes tnodes;
    const auto triangle0 = tnodes.addTriangle(TriangleNodesOriented(2, 1, 999));
@@ -229,7 +236,7 @@ TEST(TrianglesNodesTest, GetAllNodes)
    ASSERT_TRUE(str::equal(nodes, std::vector<NodeIndex>{1, 2, 42, 999}));
 }
 
-TEST(TrianglesNodesTest, GetCommonNodes)
+TEST(TetrahedronsNodesTest, GetCommonNodes)
 {
    TrianglesNodes tnodes;
    const auto triangle0 = tnodes.addTriangle(TriangleNodesOriented(1, 2, 3));
@@ -253,7 +260,7 @@ TEST(TrianglesNodesTest, GetCommonNodes)
    ASSERT_TRUE(actual.empty());
 }
 
-TEST(TrianglesNodesTest, AddDelete)
+TEST(TetrahedronsNodesTest, AddDelete)
 {
    TrianglesNodes tnodes;
    const TriangleNodesOriented triangle{ 1, 2, 3 };
@@ -262,3 +269,4 @@ TEST(TrianglesNodesTest, AddDelete)
    const auto triangleId1 = tnodes.addTriangle(triangle);
    ASSERT_NE(triangleId0, triangleId1);
 }
+#endif

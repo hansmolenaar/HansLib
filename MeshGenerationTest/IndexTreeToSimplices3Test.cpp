@@ -47,7 +47,7 @@ TEST(IndexTreeToSimplices3Test, RootToVtk)
    UniqueHashedPointCollection<double, GeomDim3> points;
    for (const auto& tet : tets)
    {
-      std::array<NodeIndex, Topology::NumNodesOnTetrehadron> nodes;
+      std::array<NodeIndex, Topology::NumNodesOnTetrahedron> nodes;
       for (size_t pos = 0; auto n : tet)
       {
          nodes[pos] = points.addIfNew(PointUtils::toPoint(n));

@@ -45,8 +45,7 @@ boost::container::static_vector<CellIndex, Topology::NumNodesOnTriangle> Triangl
 boost::container::static_vector<CellIndex, Topology::NumNodesOnTriangle>  TrianglesNodes::getCommonNodes(CellIndex triangle1, CellIndex triangle2) const
 {
    boost::container::static_vector<CellIndex, Topology::NumNodesOnTriangle> result;
-   m_cellsNodes.getCommonNodes(triangle1, triangle2, result);
-   return result;
+   return m_cellsNodes.getCommonNodes(triangle1, triangle2, result);
 }
 
 bool TrianglesNodes::triangleContainsNode(CellIndex triangleId, NodeIndex nodeId) const
@@ -55,7 +54,7 @@ bool TrianglesNodes::triangleContainsNode(CellIndex triangleId, NodeIndex nodeId
 }
 
 
-std::vector<CellIndex> TrianglesNodes::getNodeConnectedTriangles(NodeIndex node) const
+std::vector<CellIndex> TrianglesNodes::getTrianglesContainingNode(NodeIndex node) const
 {
    std::vector<CellIndex> result;
    m_cellsNodes.getCellsContainingNodes(result, std::array<NodeIndex, 1>{node});

@@ -7,11 +7,11 @@
 using namespace Topology;
 
 TetrahedronNodesOriented::TetrahedronNodesOriented(NodeIndex n0, NodeIndex n1, NodeIndex n2, NodeIndex n3) :
-   TetrahedronNodesOriented(std::array<NodeIndex, NumNodesOnTetrehadron>{ n0, n1, n2, n3 })
+   TetrahedronNodesOriented(std::array<NodeIndex, NumNodesOnTetrahedron>{ n0, n1, n2, n3 })
 {
 }
 
-TetrahedronNodesOriented::TetrahedronNodesOriented(std::array<NodeIndex, NumNodesOnTetrehadron> nodes) :
+TetrahedronNodesOriented::TetrahedronNodesOriented(std::array<NodeIndex, NumNodesOnTetrahedron> nodes) :
    m_nodes(std::move(nodes))
 {
    // Check for duplicates
@@ -60,11 +60,11 @@ size_t TetrahedronNodesOriented::find(NodeIndex node) const
    return NodeIndexInvalid;
 }
 
-std::array<TriangleNodes, NumFacesOnTetrehadron> TetrahedronNodesOriented::getFaces() const
+std::array<TriangleNodesOriented, NumFacesOnTetrehadron> TetrahedronNodesOriented::getFaces() const
 {
    return {
-      TriangleNodes{m_nodes[0], m_nodes[1], m_nodes[3]},
-      TriangleNodes{m_nodes[0], m_nodes[2], m_nodes[1]},
-      TriangleNodes{m_nodes[0], m_nodes[3], m_nodes[2]},
-      TriangleNodes{m_nodes[1], m_nodes[2], m_nodes[3]} };
+      TriangleNodesOriented{m_nodes[0], m_nodes[1], m_nodes[3]},
+      TriangleNodesOriented{m_nodes[0], m_nodes[2], m_nodes[1]},
+      TriangleNodesOriented{m_nodes[0], m_nodes[3], m_nodes[2]},
+      TriangleNodesOriented{m_nodes[1], m_nodes[2], m_nodes[3]} };
 }
