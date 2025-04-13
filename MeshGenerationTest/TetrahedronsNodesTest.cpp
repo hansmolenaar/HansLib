@@ -55,6 +55,9 @@ TEST(TetrahedronsNodesTest, SingleTet)
    const auto tetNodes = tnodes.getTetrahedronNodes(tetId);
    ASSERT_TRUE(str::equal(tetNodes, std::array<NodeIndex, 4>{0, 2, 42, 999}));
 
+   const auto boundaryFaces = tnodes.getBoundaryFaces();
+   ASSERT_EQ(boundaryFaces.size(), NumFacesOnTetrahedron);
+
    tnodes.deleteTetrahedron(tetId);
    ASSERT_FALSE(tnodes.isKnownNodeId(42));
    ASSERT_FALSE(tnodes.isKnownNodeId(999));
@@ -215,24 +218,38 @@ TEST(TetrahedronsNodesTest, GetAllEdges)
    ASSERT_EQ(allEdges.size(), 11);
 }
 
-#if false
+
+TEST(TetrahedronsNodesTest, TwoTets)
+{
+   TetrahedronsNodes tnodes;
+   const auto tetId1 = tnodes.addTetrahedron(TetrahedronNodesOriented(1, 2, 3, 4));
+   const auto tetId2 = tnodes.addTetrahedron(TetrahedronNodesOriented(1, 3, 2, 5));
+   ASSERT_EQ(tnodes.getNumTetrahedrons(), 2);
+
+   const auto boundaryFaces = tnodes.getBoundaryFaces();
+   ASSERT_EQ(boundaryFaces.size(), 6);
+}
+
+
 TEST(TetrahedronsNodesTest, ToString)
 {
    std::ostringstream os;
    TetrahedronsNodes tnodes;
    os << tnodes;
-   ASSERT_EQ(os.str(), "TetrahedronNodes NUMNODES=0 NUMTetrahedrons=0");
+   ASSERT_EQ(os.str(), "TetrahedronNodes NUMNODES=0 NUMTETRAHEDRONS=0");
 
-   const auto tetId0 = tnodes.addTetrahedron(TetrahedronNodesOriented(42, 999, 0));
+   const auto tetId0 = tnodes.addTetrahedron(TetrahedronNodesOriented(42, 999, 0, 2));
    os.str("");
    os << tnodes;
-   ASSERT_EQ(os.str(), "TetrahedronNodes NUMNODES=3 NUMTetrahedrons=1");
+   ASSERT_EQ(os.str(), "TetrahedronNodes NUMNODES=4 NUMTETRAHEDRONS=1");
 
-   const auto tetId1 = tnodes.addTetrahedron(TetrahedronNodesOriented(999, 42, 1));
+   const auto tetId1 = tnodes.addTetrahedron(TetrahedronNodesOriented(999, 42, 1, 3));
    os.str("");
    os << tnodes;
-   ASSERT_EQ(os.str(), "TetrahedronNodes NUMNODES=4 NUMTetrahedrons=2");
+   ASSERT_EQ(os.str(), "TetrahedronNodes NUMNODES=6 NUMTETRAHEDRONS=2");
 }
+
+#if false
 TEST(TetrahedronsNodesTest, GetAllNodes)
 {
    TetrahedronsNodes tnodes;
