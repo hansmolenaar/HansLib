@@ -13,19 +13,19 @@ TEST(TriangleNodesTest, ContainsNode)
    ASSERT_FALSE(triangle.contains(NodeIndexInvalid));
 }
 
-TEST(TriangleNodesTest, ContainsEdge)
+TEST(TriangleNodesTest, ContainsDirectedEdge)
 {
    const TriangleNodes triangle{ 1, 2, 3 };
-   ASSERT_TRUE(triangle.contains({ 1,2 }));
-   ASSERT_TRUE(triangle.contains({ 2,1 }));
-   ASSERT_TRUE(triangle.contains({ 1,3 }));
-   ASSERT_TRUE(triangle.contains({ 3,1 }));
-   ASSERT_TRUE(triangle.contains({ 2,3 }));
-   ASSERT_TRUE(triangle.contains({ 3,2 }));
+   ASSERT_TRUE(triangle.containsNodes(1, 2));
+   ASSERT_TRUE(triangle.containsNodes(2, 1));
+   ASSERT_TRUE(triangle.containsNodes(1, 3));
+   ASSERT_TRUE(triangle.containsNodes(3, 1));
+   ASSERT_TRUE(triangle.containsNodes(2, 3));
+   ASSERT_TRUE(triangle.containsNodes(3, 2));
 
-   ASSERT_FALSE(triangle.contains({ 1,4 }));
-   ASSERT_FALSE(triangle.contains({ 2,4 }));
-   ASSERT_FALSE(triangle.contains({ 3,4 }));
+   ASSERT_FALSE(triangle.containsNodes(1, 4));
+   ASSERT_FALSE(triangle.containsNodes(2, 4));
+   ASSERT_FALSE(triangle.containsNodes(3, 4));
 }
 
 TEST(TriangleNodesTest, OppositeNode)
@@ -62,7 +62,6 @@ TEST(TriangleNodesTest, GetEdges)
    ASSERT_EQ(edges.size(), 3);
    for (auto edge : edges)
    {
-      ASSERT_TRUE(triangle.contains(edge));
-      ASSERT_FALSE(triangle.contains(EdgeNodesDirected(edge[1], edge[0])));
+      ASSERT_TRUE(triangle.containsNodes(edge[0], edge[1]));
    }
 }

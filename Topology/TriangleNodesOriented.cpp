@@ -33,3 +33,8 @@ std::array<EdgeNodesDirected, NumEdgesOnTriangle> TriangleNodesOriented::getEdge
 {
    return { EdgeNodesDirected(m_triangle[0], m_triangle[1]),EdgeNodesDirected(m_triangle[1], m_triangle[2]), EdgeNodesDirected(m_triangle[2], m_triangle[0]) };
 }
+
+bool TriangleNodesOriented::containsDirectedEdge(const EdgeNodesDirected& edge) const
+{
+   return str::any_of(getEdges(), [&edge](const auto& e) {return edge == e; });
+}

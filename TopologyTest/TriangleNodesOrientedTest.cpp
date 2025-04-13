@@ -16,16 +16,16 @@ TEST(TriangleNodesOrientedTest, ContainsNode)
 TEST(TriangleNodesOrientedTest, ContainsEdge)
 {
    const TriangleNodesOriented triangle{ 2, 1, 3 };
-   ASSERT_TRUE(triangle.contains({ 1,2 }));
-   ASSERT_TRUE(triangle.contains({ 2,1 }));
-   ASSERT_TRUE(triangle.contains({ 1,3 }));
-   ASSERT_TRUE(triangle.contains({ 3,1 }));
-   ASSERT_TRUE(triangle.contains({ 2,3 }));
-   ASSERT_TRUE(triangle.contains({ 3,2 }));
+   ASSERT_FALSE(triangle.containsDirectedEdge({ 1,2 }));
+   ASSERT_TRUE(triangle.containsDirectedEdge({ 2,1 }));
+   ASSERT_TRUE(triangle.containsDirectedEdge({ 1,3 }));
+   ASSERT_FALSE(triangle.containsDirectedEdge({ 3,1 }));
+   ASSERT_FALSE(triangle.containsDirectedEdge({ 2,3 }));
+   ASSERT_TRUE(triangle.containsDirectedEdge({ 3,2 }));
 
-   ASSERT_FALSE(triangle.contains({ 1,4 }));
-   ASSERT_FALSE(triangle.contains({ 2,4 }));
-   ASSERT_FALSE(triangle.contains({ 3,4 }));
+   ASSERT_FALSE(triangle.containsDirectedEdge({ 1,4 }));
+   ASSERT_FALSE(triangle.containsDirectedEdge({ 2,4 }));
+   ASSERT_FALSE(triangle.containsDirectedEdge({ 3,4 }));
 }
 
 TEST(TriangleNodesOrientedTest, OppositeNode)
@@ -89,6 +89,6 @@ TEST(TriangleNodesOrientedTest, GetEdges)
    ASSERT_EQ(edges.size(), 3);
    for (auto edge : edges)
    {
-      ASSERT_TRUE(triangle.contains(edge));
+      ASSERT_TRUE(triangle.containsDirectedEdge(edge));
    }
 }

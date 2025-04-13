@@ -28,9 +28,9 @@ bool TriangleNodes::contains(NodeIndex node) const
    return node == m_nodes[0] || node == m_nodes[1] || node == m_nodes[2];
 }
 
-bool TriangleNodes::contains(const EdgeNodesDirected& edge) const
+bool TriangleNodes::containsNodes(NodeIndex node1, NodeIndex node2) const
 {
-   return contains(edge[0]) && contains(edge[1]);
+   return contains(node1) && contains(node2);
 }
 
 NodeIndex TriangleNodes::oppositeNode(const EdgeNodesDirected& edge) const

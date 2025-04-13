@@ -22,7 +22,7 @@ namespace Topology
       }
 
       bool contains(NodeIndex node) const;
-      bool contains(const EdgeNodesDirected& edge) const;
+      bool containsNodes(NodeIndex node1, NodeIndex node2) const;
       NodeIndex oppositeNode(const EdgeNodesDirected& edge) const;
       std::array<EdgeNodesDirected, NumEdgesOnTriangle> getEdges() const;
 

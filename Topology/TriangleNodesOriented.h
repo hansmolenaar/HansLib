@@ -23,7 +23,7 @@ namespace Topology
       }
 
       bool contains(NodeIndex node) const { return m_triangle.contains(node); }
-      bool contains(const EdgeNodesDirected& edge) const { return m_triangle.contains(edge); };
+      bool containsDirectedEdge(const EdgeNodesDirected& edge) const;
       NodeIndex oppositeNode(const EdgeNodesDirected& edge) const { return m_triangle.oppositeNode(edge); }
       const TriangleNodes& asTriangleNodes() const { return m_triangle; }
       std::array<EdgeNodesDirected, NumEdgesOnTriangle> getEdges() const;
