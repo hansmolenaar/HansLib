@@ -29,11 +29,15 @@ std::optional<CellIndex> TetrahedronsNodes::tryGetTetrahedronFromNodes(const Tet
 }
 #endif
 
-std::optional<CellIndex> TetrahedronsNodes::tryGetTetrahedron(NodeIndex n0, NodeIndex n1, NodeIndex n2, NodeIndex n3) const
+std::optional<CellIndex> TetrahedronsNodes::tryGetTetrahedronFromOrientedNodes(const std::array<NodeIndex, NumNodesOnTetrahedron>& nodes) const
 {
-   return m_cellsNodes.tryGetCell(std::array<NodeIndex, NumNodesOnTetrahedron>{n0, n1, n2, n3});
+   return m_cellsNodes.tryGetCell(nodes);
 }
 
+std::optional<CellIndex> TetrahedronsNodes::tryGetTetrahedronFromNodes(std::array<NodeIndex, NumNodesOnTetrahedron> nodes) const
+{
+   return tryGetTetrahedronFromOrientedNodes(TetrahedronNodesOriented::orient(nodes));
+}
 
 void TetrahedronsNodes::deleteTetrahedron(CellIndex tetId)
 {

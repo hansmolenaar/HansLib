@@ -1,5 +1,6 @@
 #pragma once
 #include "EdgeNodesDirected.h"
+#include "EdgeNodesSorted.h"
 #include "TriangleNodesOriented.h"
 
 namespace Topology
@@ -9,7 +10,7 @@ namespace Topology
    public:
       // Nodes are permuted such that the first node is the smallest, the last the biggest and the permutation is even
       TetrahedronNodesOriented(NodeIndex n0, NodeIndex n1, NodeIndex n2, NodeIndex n3);
-      explicit TetrahedronNodesOriented(std::array<NodeIndex, NumNodesOnTetrahedron> nodes);
+      explicit TetrahedronNodesOriented(const std::array<NodeIndex, NumNodesOnTetrahedron>& nodes);
 
       NodeIndex operator[](size_t n) const { return m_nodes[n]; };
       NodeIndex at(size_t n) const { return m_nodes[n]; };
@@ -33,6 +34,11 @@ namespace Topology
 
       // If the tetrahedron has positive volume, the normals to the faces are outward pointing.
       std::array<TriangleNodesOriented, NumFacesOnTetrehadron> getFaces() const;
+
+      std::array<EdgeNodesSorted, NumEdgesOnTetrahedronn> getEdges() const;
+
+      static std::array<NodeIndex, NumNodesOnTetrahedron> orient(NodeIndex n0, NodeIndex n1, NodeIndex n2, NodeIndex n3);
+      static std::array<NodeIndex, NumNodesOnTetrahedron> orient(std::array<NodeIndex, NumNodesOnTetrahedron> nodes);
    private:
       std::array<NodeIndex, NumNodesOnTetrahedron> m_nodes;
    };

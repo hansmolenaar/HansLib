@@ -25,7 +25,8 @@ namespace MeshGeneration
       //boost::container::static_vector<CellIndex, Topology::NumNodesOnTetrahedron> getEdgeConnectedTetrahedrons(CellIndex TetrahedronId) const;
       boost::container::static_vector<CellIndex, Topology::NumNodesOnTetrahedron> getCommonNodes(CellIndex tetId1, CellIndex tetId2) const;
       std::vector<Topology::NodeIndex> getEdgeConnectedNodes(Topology::NodeIndex node) const;
-      std::optional<CellIndex> tryGetTetrahedron(Topology::NodeIndex n0, Topology::NodeIndex n1, Topology::NodeIndex n2, Topology::NodeIndex n3) const;
+      std::optional<CellIndex> tryGetTetrahedronFromOrientedNodes(const std::array<Topology::NodeIndex, Topology::NumNodesOnTetrahedron>& nodes) const;
+      std::optional<CellIndex> tryGetTetrahedronFromNodes(std::array<Topology::NodeIndex, Topology::NumNodesOnTetrahedron> nodes) const;
       bool tetrahedronContainsNode(CellIndex CellIndex, Topology::NodeIndex nodeId) const;
 
       Topology::TetrahedronNodesOriented getTetrahedronNodes(CellIndex tetId) const;
