@@ -24,8 +24,7 @@ void TrianglesNodes::deleteTriangle(CellIndex triangleId)
 boost::container::static_vector<CellIndex, 2> TrianglesNodes::getTrianglesContainingEdge(NodeIndex n0, NodeIndex n1) const
 {
    boost::container::static_vector<CellIndex, 2> result;
-   m_cellsNodes.getCellsContainingNodes(result, std::array<NodeIndex, NumNodesOnEdge>{n0, n1});
-   return result;
+   return m_cellsNodes.getCellsContainingNodes(result, std::array<NodeIndex, NumNodesOnEdge>{n0, n1});
 }
 
 boost::container::static_vector<CellIndex, Topology::NumNodesOnTriangle> TrianglesNodes::getEdgeConnectedTriangles(CellIndex triangleId) const
@@ -57,15 +56,13 @@ bool TrianglesNodes::triangleContainsNode(CellIndex triangleId, NodeIndex nodeId
 std::vector<CellIndex> TrianglesNodes::getTrianglesContainingNode(NodeIndex node) const
 {
    std::vector<CellIndex> result;
-   m_cellsNodes.getCellsContainingNodes(result, std::array<NodeIndex, 1>{node});
-   return result;
+   return m_cellsNodes.getCellsContainingNodes(result, std::array<NodeIndex, 1>{node});
 }
 
 std::vector<NodeIndex> TrianglesNodes::getEdgeConnectedNodes(NodeIndex node) const
 {
    std::vector<NodeIndex> result;
-   m_cellsNodes.getEdgeConnectedNodes(result, node);
-   return result;
+   return m_cellsNodes.getEdgeConnectedNodes(result, node);
 }
 
 
@@ -92,19 +89,7 @@ std::vector<CellIndex> TrianglesNodes::getAllTriangles() const
 std::vector<EdgeNodesSorted> TrianglesNodes::getAllSortedEdges() const
 {
    std::vector<EdgeNodesSorted> result;
-   const auto& toNodes = m_cellsNodes.getCellIdToNodes();
-   result.reserve(3 * toNodes.size());
-   for (auto& itr : toNodes)
-   {
-      const auto& triangleNodes = itr.second;
-      result.emplace_back(triangleNodes.at(0), triangleNodes.at(1));
-      result.emplace_back(triangleNodes.at(0), triangleNodes.at(2));
-      result.emplace_back(triangleNodes.at(1), triangleNodes.at(2));
-   }
-   str::sort(result);
-   const auto [first, last] = str::unique(result);
-   result.erase(first, last);
-   return result;
+   return m_cellsNodes.getAlEdges(result);
 }
 
 std::vector<NodeIndex> TrianglesNodes::getAllNodes() const

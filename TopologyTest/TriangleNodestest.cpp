@@ -54,3 +54,15 @@ TEST(TriangleNodesTest, StreamInsertion)
    os << triangle;
    ASSERT_EQ(os.str(), "(2, 1, 5)");
 }
+
+TEST(TriangleNodesTest, GetEdges)
+{
+   const TriangleNodes triangle{ 2,1,5 };
+   const auto edges = triangle.getEdges();
+   ASSERT_EQ(edges.size(), 3);
+   for (auto edge : edges)
+   {
+      ASSERT_TRUE(triangle.contains(edge));
+      ASSERT_FALSE(triangle.contains(EdgeNodesDirected(edge[1], edge[0])));
+   }
+}

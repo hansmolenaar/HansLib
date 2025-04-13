@@ -36,7 +36,7 @@ namespace MeshGeneration
 
       std::vector<CellIndex> getAllTetrahedrons() const;
       std::vector<Topology::NodeIndex> getAllNodes() const;
-      //std::vector<Topology::EdgeNodesSorted> getAllSortedEdges() const;
+      std::vector<Topology::EdgeNodesSorted> getAllSortedEdges() const;
 
       friend std::ostream& operator<<(std::ostream& os, const TetrahedronsNodes& tnodes)
       {

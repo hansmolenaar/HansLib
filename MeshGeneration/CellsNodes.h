@@ -26,10 +26,13 @@ namespace MeshGeneration
       C& getCommonNodes(CellIndex cellId1, CellIndex cellId2, C& containter) const;
 
       template<typename C>
-      void getCellsContainingNodes(C& container, std::span<const Topology::NodeIndex> nodes) const;
+      C& getCellsContainingNodes(C& container, std::span<const Topology::NodeIndex> nodes) const;
 
       template<typename C>
-      void getEdgeConnectedNodes(C& container, Topology::NodeIndex node) const;
+      C& getEdgeConnectedNodes(C& container, Topology::NodeIndex node) const;
+
+      template<typename C>
+      C& getAlEdges(C& container) const;
 
       bool isKnownNodeId(Topology::NodeIndex node) const;
       bool isKnownCellId(CellIndex cellId) const;
@@ -225,7 +228,7 @@ namespace MeshGeneration
 
    template<typename TCell>
    template<typename C>
-   void CellsNodes<TCell>::getCellsContainingNodes(C& result, std::span<const Topology::NodeIndex> nodes) const
+   C& CellsNodes<TCell>::getCellsContainingNodes(C& result, std::span<const Topology::NodeIndex> nodes) const
    {
       result.clear();
 
@@ -241,11 +244,12 @@ namespace MeshGeneration
          }
       }
       str::sort(result);
+      return result;
    }
 
    template<typename TCell>
    template<typename C>
-   void CellsNodes<TCell>::getEdgeConnectedNodes(C& result, Topology::NodeIndex node) const
+   C& CellsNodes<TCell>::getEdgeConnectedNodes(C& result, Topology::NodeIndex node) const
    {
       result.clear();
 
@@ -264,5 +268,26 @@ namespace MeshGeneration
          }
       }
       str::sort(result);
+      return result;
+   }
+
+   template<typename TCell>
+   template<typename C>
+   C& CellsNodes<TCell>::getAlEdges(C& result) const
+   {
+      const auto& toNodes = getCellIdToNodes();
+      result.reserve(toNodes.size());
+      for (auto& itr : toNodes)
+      {
+         const auto& cnodes = itr.second;
+         for (const auto& edge : cnodes.getEdges())
+         {
+            result.emplace_back(edge);
+         }
+      }
+      str::sort(result);
+      const auto [first, last] = str::unique(result);
+      result.erase(first, last);
+      return result;
    }
 }

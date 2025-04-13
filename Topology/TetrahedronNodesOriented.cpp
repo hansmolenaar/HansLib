@@ -35,7 +35,6 @@ size_t TetrahedronNodesOriented::find(NodeIndex node) const
 
 std::array<TriangleNodesOriented, NumFacesOnTetrahedron> TetrahedronNodesOriented::getFaces() const
 {
-
    const auto& adjacencies = ReferenceShapeTetrahedron::getInstance().getAdjacencies();
    const auto* adjacencyC2F = *adjacencies.getAdjacency(Topology::Corner, Topology::Face);
    const auto& f0 = adjacencyC2F->getConnectedLowers(0);
@@ -51,7 +50,22 @@ std::array<TriangleNodesOriented, NumFacesOnTetrahedron> TetrahedronNodesOriente
 
 std::array<EdgeNodesSorted, NumEdgesOnTetrahedron> TetrahedronNodesOriented::getEdges() const
 {
-   throw MyException("TetrahedronNodesOriented::getEdges not yet implemented");
+   const auto& adjacencies = ReferenceShapeTetrahedron::getInstance().getAdjacencies();
+   const auto* adjacencyC2E = *adjacencies.getAdjacency(Topology::Corner, Topology::Edge);
+   const auto& e0 = adjacencyC2E->getConnectedLowers(0);
+   const auto& e1 = adjacencyC2E->getConnectedLowers(1);
+   const auto& e2 = adjacencyC2E->getConnectedLowers(2);
+   const auto& e3 = adjacencyC2E->getConnectedLowers(3);
+   const auto& e4 = adjacencyC2E->getConnectedLowers(4);
+   const auto& e5 = adjacencyC2E->getConnectedLowers(5);
+   return {
+     EdgeNodesSorted{m_nodes[e0[0]], m_nodes[e0[1]]},
+     EdgeNodesSorted{m_nodes[e1[0]], m_nodes[e1[1]]},
+     EdgeNodesSorted{m_nodes[e2[0]], m_nodes[e2[1]]},
+     EdgeNodesSorted{m_nodes[e3[0]], m_nodes[e3[1]]},
+     EdgeNodesSorted{m_nodes[e4[0]], m_nodes[e4[1]]},
+     EdgeNodesSorted{m_nodes[e5[0]], m_nodes[e5[1]]}
+   };
 }
 
 std::array<NodeIndex, NumNodesOnTetrahedron> TetrahedronNodesOriented::orient(NodeIndex n0, NodeIndex n1, NodeIndex n2, NodeIndex n3)

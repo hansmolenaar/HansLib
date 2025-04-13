@@ -74,11 +74,21 @@ TEST(TriangleNodesOrientedTest, CreateOriented)
    ASSERT_TRUE(str::equal(triangle, expect));
 }
 
-
 TEST(TriangleNodesOrientedTest, StreamInsertion)
 {
    std::ostringstream os;
    const TriangleNodesOriented triangle{ 2,1,5 };
    os << triangle;
    ASSERT_EQ(os.str(), "(1, 5, 2)");
+}
+
+TEST(TriangleNodesOrientedTest, GetEdges)
+{
+   const TriangleNodesOriented triangle{ 2,1,5 };
+   const auto edges = triangle.getEdges();
+   ASSERT_EQ(edges.size(), 3);
+   for (auto edge : edges)
+   {
+      ASSERT_TRUE(triangle.contains(edge));
+   }
 }

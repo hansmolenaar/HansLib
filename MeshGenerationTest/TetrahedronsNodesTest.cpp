@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "Defines.h"
+#include "EdgeNodesSorted.h"
 #include "MyException.h"
 #include "TetrahedronsNodes.h"
 
@@ -198,7 +199,6 @@ TEST(TetrahedronsNodesTest, GetAllTetrahedrons)
    ASSERT_EQ(tnodes.getNumTetrahedrons(), allTetrahedrons.size());
 }
 
-#if false
 TEST(TetrahedronsNodesTest, GetAllEdges)
 {
    TetrahedronsNodes tnodes;
@@ -207,14 +207,15 @@ TEST(TetrahedronsNodesTest, GetAllEdges)
 
    const auto tetId0 = tnodes.addTetrahedron(TetrahedronNodesOriented(42, 999, 0, 1));
    allEdges = tnodes.getAllSortedEdges();
-   ASSERT_TRUE(str::equal(allEdges, std::vector<EdgeNodesSorted>{EdgeNodesSorted{ 0, 1 }, EdgeNodesSorted{ 0, 42 }, EdgeNodesSorted{ 0,999 }, EdgeNodesSorted{ 1,42 }, EdgeNodesSorted{ 1,999 } EdgeNodesSorted{ 42,999 }}));
+   const std::vector<EdgeNodesSorted> expect{ EdgeNodesSorted(0, 1), EdgeNodesSorted(0, 42), EdgeNodesSorted(0,999), EdgeNodesSorted(1,42), EdgeNodesSorted(1,999), EdgeNodesSorted(42,999) };
+   ASSERT_TRUE(str::equal(allEdges, expect));
 
    const auto tetId1 = tnodes.addTetrahedron(TetrahedronNodesOriented(42, 3, 5, 1));
    allEdges = tnodes.getAllSortedEdges();
    ASSERT_EQ(allEdges.size(), 11);
 }
 
-
+#if false
 TEST(TetrahedronsNodesTest, ToString)
 {
    std::ostringstream os;

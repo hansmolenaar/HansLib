@@ -47,22 +47,19 @@ void TetrahedronsNodes::deleteTetrahedron(CellIndex tetId)
 std::vector<CellIndex> TetrahedronsNodes::getTetrahedronsContainingEdge(Topology::NodeIndex n0, Topology::NodeIndex n1) const
 {
    std::vector<CellIndex> result;
-   m_cellsNodes.getCellsContainingNodes(result, std::array<NodeIndex, NumNodesOnEdge>{n0, n1});
-   return result;
+   return m_cellsNodes.getCellsContainingNodes(result, std::array<NodeIndex, NumNodesOnEdge>{n0, n1});
 }
 
 std::vector<CellIndex> TetrahedronsNodes::getTetrahedronsContainingNode(NodeIndex node) const
 {
    std::vector<CellIndex> result;
-   m_cellsNodes.getCellsContainingNodes(result, std::array<NodeIndex, 1>{node});
-   return result;
+   return m_cellsNodes.getCellsContainingNodes(result, std::array<NodeIndex, 1>{node});
 }
 
 std::vector<Topology::NodeIndex> TetrahedronsNodes::getEdgeConnectedNodes(Topology::NodeIndex node) const
 {
    std::vector<Topology::NodeIndex> result;
-   m_cellsNodes.getEdgeConnectedNodes(result, node);
-   return result;
+   return m_cellsNodes.getEdgeConnectedNodes(result, node);
 }
 
 #if false
@@ -147,24 +144,12 @@ std::vector<CellIndex> TetrahedronsNodes::getAllTetrahedrons() const
 {
    return m_cellsNodes.getAllCellIds();
 }
-#if false
+
 std::vector<EdgeNodesSorted> TetrahedronsNodes::getAllSortedEdges() const
 {
    std::vector<EdgeNodesSorted> result;
-   result.reserve(3 * m_toNodes.size());
-   for (auto& itr : m_toNodes)
-   {
-      const auto& tetrahedronNodes = itr.second;
-      result.emplace_back(tetrahedronNodes.at(0), tetrahedronNodes.at(1));
-      result.emplace_back(tetrahedronNodes.at(0), tetrahedronNodes.at(2));
-      result.emplace_back(tetrahedronNodes.at(1), tetrahedronNodes.at(2));
-   }
-   str::sort(result);
-   const auto [first, last] = str::unique(result);
-   result.erase(first, last);
-   return result;
+   return m_cellsNodes.getAlEdges(result);
 }
-#endif
 
 std::vector<NodeIndex> TetrahedronsNodes::getAllNodes() const
 {
