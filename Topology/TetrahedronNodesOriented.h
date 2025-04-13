@@ -33,9 +33,9 @@ namespace Topology
       size_t find(NodeIndex node) const;
 
       // If the tetrahedron has positive volume, the normals to the faces are outward pointing.
-      std::array<TriangleNodesOriented, NumFacesOnTetrehadron> getFaces() const;
+      std::array<TriangleNodesOriented, NumFacesOnTetrahedron> getFaces() const;
 
-      std::array<EdgeNodesSorted, NumEdgesOnTetrahedronn> getEdges() const;
+      std::array<EdgeNodesSorted, NumEdgesOnTetrahedron> getEdges() const;
 
       static std::array<NodeIndex, NumNodesOnTetrahedron> orient(NodeIndex n0, NodeIndex n1, NodeIndex n2, NodeIndex n3);
       static std::array<NodeIndex, NumNodesOnTetrahedron> orient(std::array<NodeIndex, NumNodesOnTetrahedron> nodes);

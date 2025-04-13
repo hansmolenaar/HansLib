@@ -30,7 +30,7 @@ double Tetrahedron::getSmallestDihedralAngle(const Point3& p0, const Point3& p1,
 
 double Tetrahedron::getSmallestDihedralAngle(const std::array<Point3, Topology::NumNodesOnTetrahedron>& vert)
 {
-   std::array<std::optional<UnitVector3>, NumFacesOnTetrehadron> normal;
+   std::array<std::optional<UnitVector3>, NumFacesOnTetrahedron> normal;
    str::transform(TetrahedronNodesOriented{ 0,1,2,3 }.getFaces(), normal.begin(),
       [&vert](const auto f) {return UnitVector<double, 3>::Create(Triangle::getAreaDirected(vert[f[0]], vert[f[1]], vert[f[2]])); });
    double maxInprod = std::numeric_limits<double>::lowest();

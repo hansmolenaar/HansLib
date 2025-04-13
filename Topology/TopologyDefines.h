@@ -17,10 +17,10 @@ namespace Topology
    inline constexpr size_t NumNodesOnCube = 8;
 
    inline constexpr size_t NumEdgesOnTriangle = 3;
-   inline constexpr size_t NumEdgesOnTetrahedronn = 6;
+   inline constexpr size_t NumEdgesOnTetrahedron = 6;
    inline constexpr size_t NumEdgesOnCube = 12;
 
-   inline constexpr size_t NumFacesOnTetrehadron = 4;
+   inline constexpr size_t NumFacesOnTetrahedron = 4;
    inline constexpr size_t NumFacesOnCube = 6;
 
    using NodeIndex = PointIndex;

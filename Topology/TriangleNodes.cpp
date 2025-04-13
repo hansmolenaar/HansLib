@@ -12,7 +12,7 @@ TriangleNodes::TriangleNodes(NodeIndex n0, NodeIndex n1, NodeIndex n2) :
    {
       std::ostringstream os;
       os << *this;
-      throw MyException("TriangleNodes invalid: " + os.str());
+      throw MyException("TriangleNodes invalid, duplicate nodes " + os.str());
    }
 }
 

@@ -1,5 +1,7 @@
 #include "Defines.h"
+#include "ITopologicalAdjacency.h"
 #include "MyException.h"
+#include "ReferenceShapeTetrahedron.h"
 #include "StreamUtils.h"
 #include "TetrahedronNodesOriented.h"
 
@@ -31,16 +33,23 @@ size_t TetrahedronNodesOriented::find(NodeIndex node) const
    return NodeIndexInvalid;
 }
 
-std::array<TriangleNodesOriented, NumFacesOnTetrehadron> TetrahedronNodesOriented::getFaces() const
+std::array<TriangleNodesOriented, NumFacesOnTetrahedron> TetrahedronNodesOriented::getFaces() const
 {
+
+   const auto& adjacencies = ReferenceShapeTetrahedron::getInstance().getAdjacencies();
+   const auto* adjacencyC2F = *adjacencies.getAdjacency(Topology::Corner, Topology::Face);
+   const auto& f0 = adjacencyC2F->getConnectedLowers(0);
+   const auto& f1 = adjacencyC2F->getConnectedLowers(1);
+   const auto& f2 = adjacencyC2F->getConnectedLowers(2);
+   const auto& f3 = adjacencyC2F->getConnectedLowers(3);
    return {
-      TriangleNodesOriented{m_nodes[0], m_nodes[1], m_nodes[3]},
-      TriangleNodesOriented{m_nodes[0], m_nodes[2], m_nodes[1]},
-      TriangleNodesOriented{m_nodes[0], m_nodes[3], m_nodes[2]},
-      TriangleNodesOriented{m_nodes[1], m_nodes[2], m_nodes[3]} };
+      TriangleNodesOriented{m_nodes[f0[0]], m_nodes[f0[1]], m_nodes[f0[2]]},
+      TriangleNodesOriented{m_nodes[f1[0]], m_nodes[f1[1]], m_nodes[f1[2]]},
+      TriangleNodesOriented{m_nodes[f2[0]], m_nodes[f2[1]], m_nodes[f2[2]]},
+      TriangleNodesOriented{m_nodes[f3[0]], m_nodes[f3[1]], m_nodes[f3[2]]} };
 }
 
-std::array<EdgeNodesSorted, NumEdgesOnTetrahedronn> TetrahedronNodesOriented::getEdges() const
+std::array<EdgeNodesSorted, NumEdgesOnTetrahedron> TetrahedronNodesOriented::getEdges() const
 {
    throw MyException("TetrahedronNodesOriented::getEdges not yet implemented");
 }
