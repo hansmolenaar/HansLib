@@ -17,10 +17,20 @@ namespace
       return result;
    }
 
-   UndirectedGraph CreateGraph(const TrianglesNodes& trianglesNodes, const std::unordered_map<NodeIndex, GraphVertex>& toVertex)
+   UndirectedGraph CreateGraph(std::span<const Topology::EdgeNodesSorted> edges, const std::unordered_map<NodeIndex, GraphVertex>& toVertex)
    {
       UndirectedGraph result(toVertex.size());
-      std::vector<GraphVertex> neighbors;
+      for (const auto& edge : edges)
+      {
+         result.addEdge(toVertex.at(edge[0]), toVertex.at(edge[1]));
+      }
+      return result;
+   }
+
+   UndirectedGraph CreateGraph(const TrianglesNodes& trianglesNodes, const std::unordered_map<NodeIndex, GraphVertex>& toVertex)
+   {
+      std::vector< EdgeNodesSorted> edges;
+
       for (const auto& vert : toVertex)
       {
          const auto neighbors = trianglesNodes.getEdgeConnectedNodes(vert.first);
@@ -33,11 +43,11 @@ namespace
             const auto findNgb = toVertex.find(ngb);
             if (findNgb != toVertex.end())
             {
-               result.addEdge(vert.second, toVertex.at(ngb));
+               edges.emplace_back(vert.first, ngb);
             }
          }
       }
-      return result;
+      return CreateGraph(edges, toVertex);
    }
 
    std::vector<NodeIndex> ToNodesIndices(const std::vector<GraphVertex>& grapVertices, std::span<const NodeIndex> manifoldNodes)
@@ -72,14 +82,40 @@ namespace
    }
 }
 
+MeshGeneration::Boundary1::Boundary1(const std::vector<Topology::EdgeNodesSorted>& edgeSet)
+{
+   std::vector<NodeIndex> activeNodes;
+   for (const auto& edge : edgeSet)
+   {
+      activeNodes.push_back(edge[0]);
+      activeNodes.push_back(edge[1]);
+   }
+   str::sort(activeNodes);
+   activeNodes.erase(std::unique(activeNodes.begin(), activeNodes.end()), activeNodes.end());
+
+   const auto toVertex = RenumberToGraph(activeNodes);
+   const UndirectedGraph graph = CreateGraph(edgeSet, toVertex);
+
+   const auto cyclesAndPaths = graph.SplitInCyclesAndPaths();
+
+   for (const auto& cycle : cyclesAndPaths.Cycles)
+   {
+      m_cycles.emplace_back(ToNodesIndices(cycle, activeNodes));
+   }
+   for (const auto& path : cyclesAndPaths.Paths)
+   {
+      m_paths.emplace_back(ToNodesIndices(path, activeNodes));
+   }
+
+   for (auto v : graph.getIsolatedVertices())
+   {
+      m_singletons.push_back(activeNodes[v]);
+   }
+}
+
 MeshGeneration::Boundary1::Boundary1(const std::vector<Topology::NodeIndex>& cycle)
 {
    m_cycles.push_back(cycle);
-}
-
-MeshGeneration::Boundary1::Boundary1(const TrianglesNodes& trianglesNodes) :
-   Boundary1(trianglesNodes.getAllNodes(), trianglesNodes)
-{
 }
 
 MeshGeneration::Boundary1::Boundary1(std::span<const NodeIndex> activeNodes, const TrianglesNodes& trianglesNodes)
@@ -91,7 +127,7 @@ MeshGeneration::Boundary1::Boundary1(std::span<const NodeIndex> activeNodes, con
       const auto degree = graph.getDegree(v);
       if (degree > 2)
       {
-         throw MyException("Manifold1Reconstruction::Generate2 only max degree is 2 implemented, node " + std::to_string(activeNodes[v]) + " has degree " + std::to_string(degree));
+         throw MyException("Boundary1::Boundary1 only max node degree is 2 implemented, node " + std::to_string(activeNodes[v]) + " has degree " + std::to_string(degree));
       }
    }
 
@@ -136,4 +172,12 @@ Boundary1 Boundary1::createSingleCycleForTesting(const std::vector<Topology::Nod
 bool Boundary1::empty() const
 {
    return  m_singletons.empty() && m_paths.empty() && m_cycles.empty();
+}
+
+Boundary1 Boundary1::createFromBoundaryEdges(const TrianglesNodes& trianglesNodes)
+{
+   std::vector<EdgeNodesSorted> activeEdges;
+   str::copy_if(trianglesNodes.getAllSortedEdges(), std::back_inserter(activeEdges), [&trianglesNodes](const auto& edge) {
+      return trianglesNodes.getTrianglesContainingEdge(edge[0], edge[1]).size() == 1; });
+   return Boundary1(activeEdges);
 }

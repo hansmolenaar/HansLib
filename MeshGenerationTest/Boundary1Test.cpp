@@ -50,3 +50,17 @@ TEST(Boundary1Test, empty)
    boundary = Boundary1::createSingleCycleForTesting({ 1,2,3 });
    ASSERT_FALSE(boundary.empty());
 }
+
+
+TEST(Boundary1Test, OuterBoundary)
+{
+   TrianglesNodes trianglesNodes;
+   trianglesNodes.addTriangle(TriangleNodesOriented(0, 1, 2));
+   trianglesNodes.addTriangle(TriangleNodesOriented(2, 1, 3));
+
+   const auto boundary1 = Boundary1::createFromBoundaryEdges(trianglesNodes);
+   ASSERT_TRUE(boundary1.getSingletons().empty());
+   ASSERT_TRUE(boundary1.getPaths().empty());
+   ASSERT_EQ(boundary1.getCycles().size(), 1);
+   ASSERT_TRUE(str::equal(boundary1.getCycles().front(), std::vector<NodeIndex>{0, 1, 3, 2}));
+}

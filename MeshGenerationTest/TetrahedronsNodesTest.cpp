@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 
+#include "Boundary1.h"
 #include "Defines.h"
 #include "EdgeNodesSorted.h"
 #include "MyException.h"
@@ -14,7 +15,7 @@ TEST(TetrahedronsNodesTest, EmptyTetCollectionB)
    ASSERT_EQ(tnodes.getNumTetrahedrons(), 0);
    ASSERT_TRUE(tnodes.getAllTetrahedrons().empty());
    ASSERT_TRUE(tnodes.getAllNodes().empty());
-   ASSERT_TRUE(tnodes.getBoundaryFaces().empty());
+   ASSERT_EQ(tnodes.getBoundaryFaces().getNumTriangles(), 0);
    ASSERT_MYEXCEPTION_MESSAGE(tnodes.deleteTetrahedron(0), "CellsNodes<TCell>::checkCellId() unknown cellId 0");
    //ASSERT_MYEXCEPTION_MESSAGE(tnodes.getTetrahedronsContainingEdge(0, 1), "CellsNodes<TCell>::checkNodeId() unknown NodeId 0");
    //ASSERT_MYEXCEPTION_MESSAGE(tnodes.getNodeConnectedTetrahedrons(0), "CellsNodes<TCell>::checkNodeId() unknown NodeId 0");
@@ -56,7 +57,7 @@ TEST(TetrahedronsNodesTest, SingleTet)
    ASSERT_TRUE(str::equal(tetNodes, std::array<NodeIndex, 4>{0, 2, 42, 999}));
 
    const auto boundaryFaces = tnodes.getBoundaryFaces();
-   ASSERT_EQ(boundaryFaces.size(), NumFacesOnTetrahedron);
+   ASSERT_EQ(boundaryFaces.getNumTriangles(), NumFacesOnTetrahedron);
 
    tnodes.deleteTetrahedron(tetId);
    ASSERT_FALSE(tnodes.isKnownNodeId(42));
@@ -227,7 +228,9 @@ TEST(TetrahedronsNodesTest, TwoTets)
    ASSERT_EQ(tnodes.getNumTetrahedrons(), 2);
 
    const auto boundaryFaces = tnodes.getBoundaryFaces();
-   ASSERT_EQ(boundaryFaces.size(), 6);
+   ASSERT_EQ(boundaryFaces.getNumTriangles(), 6);
+   const auto boundary = Boundary1::createFromBoundaryEdges(boundaryFaces);
+   ASSERT_TRUE(boundary.empty());
 }
 
 

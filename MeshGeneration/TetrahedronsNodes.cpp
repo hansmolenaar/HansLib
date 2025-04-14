@@ -162,7 +162,7 @@ size_t TetrahedronsNodes::getNumTetrahedrons() const
 }
 
 
-std::vector<Topology::TriangleNodesOriented> TetrahedronsNodes::getBoundaryFaces() const
+TrianglesNodes TetrahedronsNodes::getBoundaryFaces() const
 {
    std::set<TriangleNodesOriented> uniqueFaces;
    for (CellIndex tetId : getAllTetrahedrons())
@@ -178,12 +178,12 @@ std::vector<Topology::TriangleNodesOriented> TetrahedronsNodes::getBoundaryFaces
       }
    }
 
-   std::vector<TriangleNodesOriented> result;
+   TrianglesNodes result;
    for (const auto& face : uniqueFaces)
    {
       if (!uniqueFaces.contains(TriangleNodesOriented(face[1], face[0], face[2])))
       {
-         result.push_back(face);
+         result.addTriangle(face);
       }
    }
    return result;

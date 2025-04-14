@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 
+#include "Boundary1.h"
 #include "IndexTreeToSimplices3.h"
 #include "IntervalTreeBalance.h"
 #include "IntervalTreeRefinePredicate.h"
@@ -57,30 +58,49 @@ TEST(IndexTreeToSimplices3Test, RootToVtk)
    }
    checkMesh(allTets, points);
 
-   const auto vtkData = IndexTreeToSimplices3::ToVtkData(tets, { "IndexTreeToSimplices3Test_RootToVtk", "tree" });
+   const auto vtkData = IndexTreeToSimplices3::cellsToVtkData(tets, { "IndexTreeToSimplices3Test_RootToVtk", "tree" });
    ASSERT_EQ(ReferenceShapeCube::numTetsInStandardSplit, vtkData->getNumCells());
    ASSERT_EQ(NumNodesOnCube, vtkData->getNumNodes());
    //Paraview::Write(*vtkData);
 }
 
-#if false
+
 TEST(IndexTreeToSimplices3Test, Level1ToVtk)
 {
-   IndexTree<2> tree;
+   IndexTree<GeomDim3> tree;
    const auto& root = tree.getRoot();
-   RefineToMaxLevel<IndexTreeToSimplices2::GeometryDimension> doRefine1{ 1 };
+   RefineToMaxLevel<GeomDim3> doRefine1{ 1 };
    tree.refineLeaves(doRefine1);
 
-   const auto triangles = IndexTreeToSimplices2::Create(tree);
-   ASSERT_EQ(8, triangles.size());
-   testOrientation(triangles);
+   const auto tets = IndexTreeToSimplices3::Create(tree);
+   ASSERT_EQ(8 * ReferenceShapeCube::numTetsInStandardSplit, tets.size());
 
-   const auto vtkData = IndexTreeToSimplices2::ToVtkData(triangles, { "IndexTreeToSimplices3Test_Level1ToVtk", "tree" });
-   ASSERT_EQ(8, vtkData->getNumCells());
-   ASSERT_EQ(9, vtkData->getNumNodes());
-   //Paraview::Write(*vtkData);
+   TetrahedronsNodes allTets;
+   UniqueHashedPointCollection<double, GeomDim3> points;
+   for (const auto& tet : tets)
+   {
+      std::array<NodeIndex, Topology::NumNodesOnTetrahedron> nodes;
+      for (size_t pos = 0; auto n : tet)
+      {
+         nodes[pos] = points.addIfNew(PointUtils::toPoint(n));
+         ++pos;
+      }
+      allTets.addTetrahedron(TetrahedronNodesOriented(nodes));
+   }
+   checkMesh(allTets, points);
+
+   auto vtkData = IndexTreeToSimplices3::cellsToVtkData(tets, { "IndexTreeToSimplices3Test_Level1ToVtk", "tree" });
+   ASSERT_EQ(8 * ReferenceShapeCube::numTetsInStandardSplit, vtkData->getNumCells());
+   ASSERT_EQ(27, vtkData->getNumNodes());
+   Paraview::Write(*vtkData);
+
+   const auto boundaryFaces = allTets.getBoundaryFaces();
+   ASSERT_EQ(boundaryFaces.getNumTriangles(), 48);
+   const Boundary1 bnd = Boundary1::createFromBoundaryEdges(boundaryFaces);
+   ASSERT_TRUE(bnd.empty());
 }
 
+#if false
 TEST(IndexTreeToSimplices3Test, RefinedToVtk_1)
 {
    constexpr auto dim = IndexTreeToSimplices2::GeometryDimension;

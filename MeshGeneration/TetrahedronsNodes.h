@@ -5,6 +5,7 @@
 #include "MeshGenerationDefines.h"
 #include "TetrahedronNodesOriented.h"
 #include "TopologyDefines.h"
+#include "TrianglesNodes.h"
 
 #include <array>
 #include <boost/container/static_vector.hpp>
@@ -47,7 +48,7 @@ namespace MeshGeneration
          return os;
       }
       size_t getNumTetrahedrons() const;
-      std::vector<Topology::TriangleNodesOriented> getBoundaryFaces() const;
+      TrianglesNodes getBoundaryFaces() const;
 
    private:
       CellsNodes<Topology::TetrahedronNodesOriented> m_cellsNodes;

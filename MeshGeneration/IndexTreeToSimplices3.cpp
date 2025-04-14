@@ -109,7 +109,7 @@ IndexTreeToSimplices3::Tetrahedrons IndexTreeToSimplices3::Create(const Interval
 }
 
 
-std::unique_ptr<Vtk::VtkData> IndexTreeToSimplices3::ToVtkData(const Tetrahedrons& cells, const Vtk::Name& name)
+std::unique_ptr<Vtk::VtkData> IndexTreeToSimplices3::cellsToVtkData(const Tetrahedrons& cells, const Vtk::Name& name)
 {
    std::unique_ptr< Vtk::VtkData> result = std::make_unique< Vtk::VtkData>(GeomDim3, 0, name);
    UniqueHashedPointCollection<Rational, GeomDim3>  toNodeIndex;
