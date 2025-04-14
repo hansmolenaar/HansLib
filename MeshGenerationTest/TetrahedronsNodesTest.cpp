@@ -249,26 +249,27 @@ TEST(TetrahedronsNodesTest, ToString)
    ASSERT_EQ(os.str(), "TetrahedronNodes NUMNODES=6 NUMTETRAHEDRONS=2");
 }
 
-#if false
+
 TEST(TetrahedronsNodesTest, GetAllNodes)
 {
    TetrahedronsNodes tnodes;
-   const auto tetId0 = tnodes.addTetrahedron(TetrahedronNodesOriented(2, 1, 999));
-   const auto tetId1 = tnodes.addTetrahedron(TetrahedronNodesOriented(1, 2, 42));
+   const auto tetId0 = tnodes.addTetrahedron(TetrahedronNodesOriented(2, 1, 999, 3));
+   const auto tetId1 = tnodes.addTetrahedron(TetrahedronNodesOriented(1, 2, 4, 42));
    const auto nodes = tnodes.getAllNodes();
-   ASSERT_TRUE(str::equal(nodes, std::vector<NodeIndex>{1, 2, 42, 999}));
+   ASSERT_TRUE(str::equal(nodes, std::vector<NodeIndex>{1, 2, 3, 4, 42, 999}));
 }
+
 
 TEST(TetrahedronsNodesTest, GetCommonNodes)
 {
    TetrahedronsNodes tnodes;
-   const auto tetId0 = tnodes.addTetrahedron(TetrahedronNodesOriented(1, 2, 3));
-   const auto tetId1 = tnodes.addTetrahedron(TetrahedronNodesOriented(6, 2, 1));
-   const auto tetId2 = tnodes.addTetrahedron(TetrahedronNodesOriented(6, 5, 1));
-   const auto tetId3 = tnodes.addTetrahedron(TetrahedronNodesOriented(6, 5, 4));
+   const auto tetId0 = tnodes.addTetrahedron(TetrahedronNodesOriented(1, 2, 3, 4));
+   const auto tetId1 = tnodes.addTetrahedron(TetrahedronNodesOriented(6, 2, 1, 5));
+   const auto tetId2 = tnodes.addTetrahedron(TetrahedronNodesOriented(6, 5, 1, 7));
+   const auto tetId3 = tnodes.addTetrahedron(TetrahedronNodesOriented(6, 5, 7, 8));
 
    auto actual = tnodes.getCommonNodes(tetId0, tetId0);
-   std::vector expect{ 1, 2, 3 };
+   std::vector expect{ 1, 2, 3, 4 };
    ASSERT_TRUE(str::equal(actual, expect));
 
    actual = tnodes.getCommonNodes(tetId0, tetId1);
@@ -283,13 +284,12 @@ TEST(TetrahedronsNodesTest, GetCommonNodes)
    ASSERT_TRUE(actual.empty());
 }
 
-TEST(TetrahedronsNodesTest, AddDelete)
+TEST(TetrahedronsNodesTest, AddDeleteAdd)
 {
    TetrahedronsNodes tnodes;
-   const TetrahedronNodesOriented tetrahedron{ 1, 2, 3 };
+   const TetrahedronNodesOriented tetrahedron{ 1, 2, 3, 4 };
    const auto tetrahedronId0 = tnodes.addTetrahedron(tetrahedron);
    tnodes.deleteTetrahedron(tetrahedronId0);
    const auto tetrahedronId1 = tnodes.addTetrahedron(tetrahedron);
    ASSERT_NE(tetrahedronId0, tetrahedronId1);
 }
-#endif

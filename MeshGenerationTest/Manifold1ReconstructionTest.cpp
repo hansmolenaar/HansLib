@@ -15,29 +15,25 @@ using namespace Geometry;
 
 TEST(Manifold1ReconstructionTest, singleEdge)
 {
-   const PointClose<GeomType, GeomDim2> areClose;
-   const UniquePointCollectionBinning<GeomDim2> points(areClose, std::vector<Point2>{Point2{ 1,1 }, Point2{ 2,1 }, Point2{ 1,2 }});
    const std::array<NodeIndex, 2 > nodes{ 1, 2 };
    TrianglesNodes trianglesNodes;
    trianglesNodes.addTriangle(TriangleNodesOriented(0, 1, 2));
-   const auto reconstruction = MeshGeneration::Generate2(nodes, trianglesNodes, points);
+   const auto reconstruction = MeshGeneration::Generate2(nodes, trianglesNodes);
 }
 
 
 TEST(Manifold1ReconstructionTest, twoEdges)
 {
-   const PointClose<GeomType, GeomDim2> areClose;
-   UniquePointCollectionBinning<GeomDim2> points(areClose, std::vector<Point2>{Point2{ -1, -1 }, Point2{ 5,2 }});
-   const auto node0 = points.addIfNew(Point2{ 1,0 });
-   const auto node1 = points.addIfNew(Point2{ 0,0 });
-   const auto node2 = points.addIfNew(Point2{ 3,1 });
-   const auto node3 = points.addIfNew(Point2{ 2,0 });
-   const auto node4 = points.addIfNew(Point2{ 4,0 });
+   const NodeIndex node0 = 1;
+   const NodeIndex node1 = 10;
+   const NodeIndex node2 = 100;
+   const NodeIndex node3 = 2;
+   const NodeIndex node4 = 12;
    const std::array<NodeIndex, 3 > nodes{ node3, node1, node4 };
    TrianglesNodes trianglesNodes;
    trianglesNodes.addTriangle(TriangleNodesOriented(node1, node0, node3));
    trianglesNodes.addTriangle(TriangleNodesOriented(node3, node2, node4));
-   const auto reconstruction = MeshGeneration::Generate2(nodes, trianglesNodes, points);
+   const auto reconstruction = MeshGeneration::Generate2(nodes, trianglesNodes);
    ASSERT_TRUE(reconstruction.Singletons.empty());
    ASSERT_TRUE(reconstruction.Cycles.empty());
    const auto path = Single(reconstruction.Paths);

@@ -58,7 +58,7 @@ namespace MeshGeneration2
       Logger& logger);
 
    std::unique_ptr<Vtk::VtkData> trianglesToVtkData(const MeshGeneration2::Mesh2& mesh, const Vtk::Name& name);
-   std::vector<std::unique_ptr<Vtk::VtkData>> ToVtkData(const MeshGeneration::Reconstruction1& reconstruction, const IPointCollection<MeshGeneration::GeomType, GeomDim2>& points, const Vtk::Name& name);
+   std::vector<std::unique_ptr<Vtk::VtkData>> ToVtkData(const MeshGeneration::Boundary1& reconstruction, const IPointCollection<MeshGeneration::GeomType, GeomDim2>& points, const Vtk::Name& name);
    std::vector<std::unique_ptr<Vtk::VtkData>> reconstructionsToVtkData(const Mesh2& mesh, const std::string& project);
 
 }

@@ -221,7 +221,7 @@ std::unique_ptr<Vtk::VtkData> MeshGeneration2::trianglesToVtkData(const Mesh2& m
 }
 
 std::vector<std::unique_ptr<Vtk::VtkData>> MeshGeneration2::ToVtkData(
-   const MeshGeneration::Reconstruction1& reconstruction,
+   const MeshGeneration::Boundary1& reconstruction,
    const IPointCollection<MeshGeneration::GeomType, GeomDim2>& points,
    const Vtk::Name& name)
 {
@@ -460,7 +460,7 @@ std::vector<std::unique_ptr<MeshGeneration::IManifoldReconstruction>> MeshGenera
       else if (m->getTopologyDimension() == Topology::Edge)
       {
          const auto* m2 = dynamic_cast<const Geometry::IManifold1D2<GeomType>*>(m);
-         result.emplace_back(std::make_unique<Manifold1Reconstruction>(*m2, manifoldsAndNodes, trianglesNodes, pointCollection));
+         result.emplace_back(std::make_unique<Manifold1Reconstruction>(*m2, manifoldsAndNodes, trianglesNodes));
       }
       else
       {
