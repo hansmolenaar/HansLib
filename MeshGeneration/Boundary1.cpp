@@ -82,9 +82,8 @@ namespace
    }
 }
 
-MeshGeneration::Boundary1::Boundary1(const std::vector<Topology::EdgeNodesSorted>& edgeSet)
+MeshGeneration::Boundary1::Boundary1(const std::vector<Topology::EdgeNodesSorted>& edgeSet, std::vector<Topology::NodeIndex> activeNodes)
 {
-   std::vector<NodeIndex> activeNodes;
    for (const auto& edge : edgeSet)
    {
       activeNodes.push_back(edge[0]);
@@ -113,41 +112,19 @@ MeshGeneration::Boundary1::Boundary1(const std::vector<Topology::EdgeNodesSorted
    }
 }
 
-MeshGeneration::Boundary1::Boundary1(const std::vector<Topology::NodeIndex>& cycle)
+MeshGeneration::Boundary1 Boundary1::createFromSubSet(const std::vector<Topology::NodeIndex>& activeNodes, const TrianglesNodes& trianglesNodes)
 {
-   m_cycles.push_back(cycle);
-}
-
-MeshGeneration::Boundary1::Boundary1(std::span<const NodeIndex> activeNodes, const TrianglesNodes& trianglesNodes)
-{
-   const auto toVertex = RenumberToGraph(activeNodes);
-   const auto graph = CreateGraph(trianglesNodes, toVertex);
-   for (GraphVertex v = 0; v < toVertex.size(); ++v)
+   std::set<NodeIndex> activeNodeSet(activeNodes.begin(), activeNodes.end());
+   std::vector<Topology::EdgeNodesSorted> edges;
+   for (const auto& edge : trianglesNodes.getAllSortedEdges())
    {
-      const auto degree = graph.getDegree(v);
-      if (degree > 2)
+      if (activeNodeSet.contains(edge[0]) && activeNodeSet.contains(edge[1]))
       {
-         throw MyException("Boundary1::Boundary1 only max node degree is 2 implemented, node " + std::to_string(activeNodes[v]) + " has degree " + std::to_string(degree));
+         edges.push_back(edge);
       }
    }
-
-   const auto cyclesAndPaths = graph.SplitInCyclesAndPaths();
-
-   for (const auto& cycle : cyclesAndPaths.Cycles)
-   {
-      m_cycles.emplace_back(ToNodesIndices(cycle, activeNodes));
-   }
-   for (const auto& path : cyclesAndPaths.Paths)
-   {
-      m_paths.emplace_back(ToNodesIndices(path, activeNodes));
-   }
-
-   for (auto v : graph.getIsolatedVertices())
-   {
-      m_singletons.push_back(activeNodes[v]);
-   }
+   return Boundary1(edges, activeNodes);
 }
-
 
 const std::vector<Topology::NodeIndex>& Boundary1::getSingletons() const
 {
@@ -162,11 +139,6 @@ const std::vector<std::vector<Topology::NodeIndex>>& Boundary1::getPaths() const
 const std::vector<std::vector<Topology::NodeIndex>>& Boundary1::getCycles() const
 {
    return m_cycles;
-}
-
-Boundary1 Boundary1::createSingleCycleForTesting(const std::vector<Topology::NodeIndex>& cycle)
-{
-   return Boundary1(cycle);
 }
 
 bool Boundary1::empty() const

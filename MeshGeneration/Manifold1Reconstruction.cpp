@@ -40,7 +40,7 @@ Manifold1Reconstruction::Manifold1Reconstruction(const Geometry::IManifoldId& ma
 Manifold1Reconstruction::Manifold1Reconstruction(const Geometry::IManifold1D2<GeomType>& manifold, const ManifoldsAndNodes<GeomDim2>& manifoldsAndNodes,
    const TrianglesNodes& trianglesNodes) :
    m_manifoldId(manifold),
-   m_reconstruction(manifoldsAndNodes.getNodesInManifold(&manifold), trianglesNodes),
+   m_reconstruction(Boundary1::createFromSubSet(manifoldsAndNodes.getNodesInManifold(&manifold), trianglesNodes)),
    m_edges(getEdges(m_reconstruction))
 {
 }

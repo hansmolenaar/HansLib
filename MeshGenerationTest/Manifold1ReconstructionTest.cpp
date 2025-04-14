@@ -16,10 +16,10 @@ using namespace Geometry;
 
 TEST(Manifold1ReconstructionTest, singleEdge)
 {
-   const std::array<NodeIndex, 2 > nodes{ 1, 2 };
+   const std::vector<NodeIndex> nodes{ 1, 2 };
    TrianglesNodes trianglesNodes;
    trianglesNodes.addTriangle(TriangleNodesOriented(0, 1, 2));
-   const Boundary1 reconstruction(nodes, trianglesNodes);
+   const Boundary1 reconstruction = Boundary1::createFromSubSet(nodes, trianglesNodes);
    ASSERT_TRUE(reconstruction.getCycles().empty());
    ASSERT_EQ(reconstruction.getPaths().size(), 1);
    const auto& edge = reconstruction.getPaths().front();
@@ -36,11 +36,11 @@ TEST(Manifold1ReconstructionTest, twoEdges)
    const NodeIndex node2 = 100;
    const NodeIndex node3 = 2;
    const NodeIndex node4 = 12;
-   const std::array<NodeIndex, 3 > nodes{ node3, node1, node4 };
+   const std::vector<NodeIndex> nodes{ node3, node1, node4 };
    TrianglesNodes trianglesNodes;
    trianglesNodes.addTriangle(TriangleNodesOriented(node1, node0, node3));
    trianglesNodes.addTriangle(TriangleNodesOriented(node3, node2, node4));
-   const Boundary1 reconstruction(nodes, trianglesNodes);
+   const Boundary1 reconstruction = Boundary1::createFromSubSet(nodes, trianglesNodes);
    ASSERT_TRUE(reconstruction.getSingletons().empty());
    ASSERT_TRUE(reconstruction.getCycles().empty());
    const auto& path = Single(reconstruction.getPaths());
