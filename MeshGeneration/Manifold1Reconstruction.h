@@ -12,8 +12,6 @@
 namespace MeshGeneration
 {
 
-   Boundary1 Generate2(std::span<const Topology::NodeIndex> manifoldPoints, const TrianglesNodes& trianglesNodes);
-
    class Manifold1Reconstruction : public IManifoldReconstruction
    {
    public:

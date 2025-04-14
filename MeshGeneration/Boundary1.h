@@ -1,18 +1,17 @@
 #pragma once
 
 #include "EdgeNodesSorted.h"
-#include "IManifold1D2.h"
-#include "IManifoldReconstruction.h"
-#include "ManifoldsAndNodes.h"
 #include "TrianglesNodes.h"
-
-#include <set>
 
 namespace MeshGeneration
 {
    class Boundary1
    {
    public:
+      Boundary1() = default;
+
+      Boundary1(std::span<const Topology::NodeIndex> activeNodes, const TrianglesNodes& trianglesNodes);
+
       std::vector<Topology::NodeIndex> Singletons;
       std::vector<std::vector<Topology::NodeIndex>> Cycles;
       std::vector<std::vector<Topology::NodeIndex>> Paths;
