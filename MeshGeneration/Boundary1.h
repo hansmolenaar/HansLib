@@ -16,6 +16,7 @@ namespace MeshGeneration
       const std::vector<Topology::NodeIndex>& getSingletons() const;
       const std::vector<std::vector<Topology::NodeIndex>>& getPaths() const;
       const std::vector<std::vector<Topology::NodeIndex>>& getCycles() const;
+      bool empty() const;
 
    private:
       explicit Boundary1(const std::vector<Topology::NodeIndex>& cycle);

@@ -105,6 +105,11 @@ MeshGeneration::Boundary1::Boundary1(std::span<const NodeIndex> activeNodes, con
    {
       m_paths.emplace_back(ToNodesIndices(path, activeNodes));
    }
+
+   for (auto v : graph.getIsolatedVertices())
+   {
+      m_singletons.push_back(activeNodes[v]);
+   }
 }
 
 
@@ -126,4 +131,9 @@ const std::vector<std::vector<Topology::NodeIndex>>& Boundary1::getCycles() cons
 Boundary1 Boundary1::createSingleCycleForTesting(const std::vector<Topology::NodeIndex>& cycle)
 {
    return Boundary1(cycle);
+}
+
+bool Boundary1::empty() const
+{
+   return  m_singletons.empty() && m_paths.empty() && m_cycles.empty();
 }

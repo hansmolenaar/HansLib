@@ -15,6 +15,7 @@ public:
    bool areAdjacent(GraphVertex v1, GraphVertex v2) const;
    GraphVertex getDegree(GraphVertex vertex) const;
    std::vector<GraphVertex> getDegreeSequence() const;
+   std::vector<GraphVertex> getIsolatedVertices() const;
 
    struct CyclesAndPaths
    {
