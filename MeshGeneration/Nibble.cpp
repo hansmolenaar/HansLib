@@ -38,14 +38,14 @@ namespace
       for (const auto* br : boundaryReconstructions)
       {
          const auto* br1 = dynamic_cast<const Manifold1Reconstruction*>(br);
-         for (const auto& path : br1->getReconstruction().Paths)
+         for (const auto& path : br1->getReconstruction().getPaths())
          {
             for (size_t n = 1; n < path.size(); ++n)
             {
                boundaryEdges.push_back({ path[n], path[n - 1] });
             }
          }
-         for (const auto& cycle : br1->getReconstruction().Cycles)
+         for (const auto& cycle : br1->getReconstruction().getCycles())
          {
             for (size_t n = 1; n < cycle.size(); ++n)
             {

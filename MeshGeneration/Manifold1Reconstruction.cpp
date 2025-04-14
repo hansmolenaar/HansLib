@@ -10,7 +10,7 @@ namespace
    std::set<Topology::EdgeNodesSorted> getEdges(const Boundary1 reconstruction)
    {
       std::set<Topology::EdgeNodesSorted> result;
-      for (const auto& path : reconstruction.Paths)
+      for (const auto& path : reconstruction.getPaths())
       {
          const size_t siz = path.size();
          for (size_t n = 1; n < siz; ++n)
@@ -19,7 +19,7 @@ namespace
          }
       }
 
-      for (const auto& cycle : reconstruction.Cycles)
+      for (const auto& cycle : reconstruction.getCycles())
       {
          const size_t siz = cycle.size();
          for (size_t n = 1; n <= siz; ++n)

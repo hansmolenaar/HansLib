@@ -226,12 +226,12 @@ std::vector<std::unique_ptr<Vtk::VtkData>> MeshGeneration2::ToVtkData(
    const Vtk::Name& name)
 {
    std::vector<std::unique_ptr<Vtk::VtkData>> result;
-   if (!reconstruction.Singletons.empty()) throw MyException("MeshGeneration2::ToVtkData unexpected singletons");
+   if (!reconstruction.getSingletons().empty()) throw MyException("MeshGeneration2::ToVtkData unexpected singletons");
 
    // Collect Vtk nodes
    std::unordered_map<PointIndex, Vtk::NodeIndex> nodeToVtk;
    Vtk::NodeIndex nodeIndex = 0;
-   for (int count = 0; const auto & path : reconstruction.Paths)
+   for (int count = 0; const auto & path : reconstruction.getPaths())
    {
       ++count;
       const Vtk::Name  vtkName{ name.project, name.item + "_path_" + std::to_string(count) };
@@ -245,7 +245,7 @@ std::vector<std::unique_ptr<Vtk::VtkData>> MeshGeneration2::ToVtkData(
    }
 
    nodeIndex = 0;
-   for (int count = 0; const auto & cycle : reconstruction.Cycles)
+   for (int count = 0; const auto & cycle : reconstruction.getCycles())
    {
       ++count;
       const Vtk::Name  vtkName{ name.project, name.item + "_cycle_" + std::to_string(count) };
@@ -520,7 +520,7 @@ bool MeshGeneration2::checkReconstructions(
       auto pred = [&m](const auto* r1) {return r1 != nullptr && *m == r1->getManifoldId(); };
       for (const auto& reconstruction : reconstructions | stv::transform(cast1) | stv::filter(pred))
       {
-         numEndPointsInReconstruction += 2 * reconstruction->getReconstruction().Paths.size();
+         numEndPointsInReconstruction += 2 * reconstruction->getReconstruction().getPaths().size();
       }
 
       if (endPoints.size() != numEndPointsInReconstruction)

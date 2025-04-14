@@ -50,7 +50,7 @@ namespace
    std::set<Topology::EdgeNodesSorted> getEdges(const Boundary1 reconstruction)
    {
       std::set<Topology::EdgeNodesSorted> result;
-      for (const auto& path : reconstruction.Paths)
+      for (const auto& path : reconstruction.getPaths())
       {
          const size_t siz = path.size();
          for (size_t n = 1; n < siz; ++n)
@@ -59,7 +59,7 @@ namespace
          }
       }
 
-      for (const auto& cycle : reconstruction.Cycles)
+      for (const auto& cycle : reconstruction.getCycles())
       {
          const size_t siz = cycle.size();
          for (size_t n = 1; n <= siz; ++n)
@@ -70,6 +70,16 @@ namespace
 
       return result;
    }
+}
+
+MeshGeneration::Boundary1::Boundary1(const std::vector<Topology::NodeIndex>& cycle)
+{
+   m_cycles.push_back(cycle);
+}
+
+MeshGeneration::Boundary1::Boundary1(const TrianglesNodes& trianglesNodes) :
+   Boundary1(trianglesNodes.getAllNodes(), trianglesNodes)
+{
 }
 
 MeshGeneration::Boundary1::Boundary1(std::span<const NodeIndex> activeNodes, const TrianglesNodes& trianglesNodes)
@@ -89,10 +99,31 @@ MeshGeneration::Boundary1::Boundary1(std::span<const NodeIndex> activeNodes, con
 
    for (const auto& cycle : cyclesAndPaths.Cycles)
    {
-      Cycles.emplace_back(ToNodesIndices(cycle, activeNodes));
+      m_cycles.emplace_back(ToNodesIndices(cycle, activeNodes));
    }
    for (const auto& path : cyclesAndPaths.Paths)
    {
-      Paths.emplace_back(ToNodesIndices(path, activeNodes));
+      m_paths.emplace_back(ToNodesIndices(path, activeNodes));
    }
+}
+
+
+const std::vector<Topology::NodeIndex>& Boundary1::getSingletons() const
+{
+   return m_singletons;
+}
+
+const std::vector<std::vector<Topology::NodeIndex>>& Boundary1::getPaths() const
+{
+   return m_paths;
+}
+
+const std::vector<std::vector<Topology::NodeIndex>>& Boundary1::getCycles() const
+{
+   return m_cycles;
+}
+
+Boundary1 Boundary1::createSingleCycleForTesting(const std::vector<Topology::NodeIndex>& cycle)
+{
+   return Boundary1(cycle);
 }

@@ -394,10 +394,10 @@ TEST(MeshGeneration2Test, Sphere2_intersect_4)
 
    ASSERT_EQ(mesh.getReconstructions().size(), 1);
    const auto reconstruction = dynamic_cast<const Manifold1Reconstruction&>(*mesh.getReconstructions().front()).getReconstruction();
-   ASSERT_TRUE(reconstruction.Singletons.empty());
-   ASSERT_TRUE(reconstruction.Paths.empty());
-   ASSERT_EQ(reconstruction.Cycles.size(), 1);
-   ASSERT_EQ(Single(reconstruction.Cycles).size(), 42);
+   ASSERT_TRUE(reconstruction.getSingletons().empty());
+   ASSERT_TRUE(reconstruction.getPaths().empty());
+   ASSERT_EQ(reconstruction.getCycles().size(), 1);
+   ASSERT_EQ(Single(reconstruction.getCycles()).size(), 42);
 
    const auto vtkData = MeshGeneration2::trianglesToVtkData(mesh, { project, "mesh full" });
    const auto vtkDataManifold = MeshGeneration2::ToVtkData(reconstruction, mesh.getPoints(), { project, manifoldPtr->getName() });
@@ -446,10 +446,10 @@ TEST(MeshGeneration2Test, Sphere2_intersect_3)
    ASSERT_EQ(mesh.getReconstructions().size(), 1);
    const auto reconstruction = dynamic_cast<const Manifold1Reconstruction&>(*mesh.getReconstructions().front()).getReconstruction();
 
-   ASSERT_TRUE(reconstruction.Singletons.empty());
-   ASSERT_TRUE(reconstruction.Paths.empty());
-   ASSERT_EQ(reconstruction.Cycles.size(), 1);
-   ASSERT_EQ(Single(reconstruction.Cycles).size(), 20);
+   ASSERT_TRUE(reconstruction.getSingletons().empty());
+   ASSERT_TRUE(reconstruction.getPaths().empty());
+   ASSERT_EQ(reconstruction.getCycles().size(), 1);
+   ASSERT_EQ(Single(reconstruction.getCycles()).size(), 20);
    const auto vtkDataManifold = MeshGeneration2::ToVtkData(reconstruction, mesh.getPoints(), { project, manifoldPtr->getName() });
 
    Paraview::Write(*vtkData);
@@ -498,10 +498,10 @@ TEST(MeshGeneration2Test, Sphere2_intersect_5)
    ASSERT_EQ(mesh.getReconstructions().size(), 1);
    const auto reconstruction = dynamic_cast<const Manifold1Reconstruction&>(*mesh.getReconstructions().front()).getReconstruction();
 
-   ASSERT_TRUE(reconstruction.Singletons.empty());
-   ASSERT_TRUE(reconstruction.Paths.empty());
-   ASSERT_EQ(reconstruction.Cycles.size(), 1);
-   ASSERT_EQ(Single(reconstruction.Cycles).size(), 88);
+   ASSERT_TRUE(reconstruction.getSingletons().empty());
+   ASSERT_TRUE(reconstruction.getPaths().empty());
+   ASSERT_EQ(reconstruction.getCycles().size(), 1);
+   ASSERT_EQ(Single(reconstruction.getCycles()).size(), 88);
    const auto vtkDataManifold = MeshGeneration2::ToVtkData(reconstruction, mesh.getPoints(), { project, manifoldPtr->getName() });
 
    Paraview::Write(*vtkDataMesh);

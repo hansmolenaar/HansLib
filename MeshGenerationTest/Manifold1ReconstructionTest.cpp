@@ -20,9 +20,9 @@ TEST(Manifold1ReconstructionTest, singleEdge)
    TrianglesNodes trianglesNodes;
    trianglesNodes.addTriangle(TriangleNodesOriented(0, 1, 2));
    const Boundary1 reconstruction(nodes, trianglesNodes);
-   ASSERT_TRUE(reconstruction.Cycles.empty());
-   ASSERT_EQ(reconstruction.Paths.size(), 1);
-   const auto& edge = reconstruction.Paths.front();
+   ASSERT_TRUE(reconstruction.getCycles().empty());
+   ASSERT_EQ(reconstruction.getPaths().size(), 1);
+   const auto& edge = reconstruction.getPaths().front();
    ASSERT_EQ(edge.size(), 2);
    ASSERT_EQ(edge[0], 1);
    ASSERT_EQ(edge[1], 2);
@@ -41,9 +41,9 @@ TEST(Manifold1ReconstructionTest, twoEdges)
    trianglesNodes.addTriangle(TriangleNodesOriented(node1, node0, node3));
    trianglesNodes.addTriangle(TriangleNodesOriented(node3, node2, node4));
    const Boundary1 reconstruction(nodes, trianglesNodes);
-   ASSERT_TRUE(reconstruction.Singletons.empty());
-   ASSERT_TRUE(reconstruction.Cycles.empty());
-   const auto path = Single(reconstruction.Paths);
+   ASSERT_TRUE(reconstruction.getSingletons().empty());
+   ASSERT_TRUE(reconstruction.getCycles().empty());
+   const auto& path = Single(reconstruction.getPaths());
    const std::vector<NodeIndex> expect{ node1, node3, node4 };
    ASSERT_TRUE(str::equal(path, expect));
 
