@@ -19,7 +19,7 @@ namespace MeshGeneration
 
       const std::unordered_map<CellIndex, TCell>& getCellIdToNodes() const;
       const std::unordered_multimap<Topology::NodeIndex, CellIndex>& getNodeToCellIds() const;
-      std::optional<CellIndex> tryGetCell(std::span<const Topology::NodeIndex> nodes) const;
+      std::optional<CellIndex> tryGetCellFromOrderedNodes(std::span<const Topology::NodeIndex> nodes) const;
       bool cellContainsNode(CellIndex CellIndex, Topology::NodeIndex nodeId) const;
 
       template<typename C>
@@ -118,7 +118,7 @@ namespace MeshGeneration
    }
 
    template<typename TCell>
-   std::optional<CellIndex> CellsNodes<TCell>::tryGetCell(std::span<const Topology::NodeIndex> nodes) const
+   std::optional<CellIndex> CellsNodes<TCell>::tryGetCellFromOrderedNodes(std::span<const Topology::NodeIndex> nodes) const
    {
       for (auto n : nodes)
       {

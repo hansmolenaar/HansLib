@@ -12,7 +12,7 @@ CellIndex TrianglesNodes::addTriangle(const TriangleNodesOriented& nodes)
 
 std::optional<CellIndex> TrianglesNodes::tryGetTriangle(NodeIndex n0, NodeIndex n1, NodeIndex n2) const
 {
-   return m_cellsNodes.tryGetCell(std::array<NodeIndex, NumNodesOnTriangle>{n0, n1, n2});
+   return m_cellsNodes.tryGetCellFromOrderedNodes(std::array<NodeIndex, NumNodesOnTriangle>{n0, n1, n2});
 }
 
 void TrianglesNodes::deleteTriangle(CellIndex triangleId)

@@ -31,7 +31,7 @@ std::optional<CellIndex> TetrahedronsNodes::tryGetTetrahedronFromNodes(const Tet
 
 std::optional<CellIndex> TetrahedronsNodes::tryGetTetrahedronFromOrientedNodes(const std::array<NodeIndex, NumNodesOnTetrahedron>& nodes) const
 {
-   return m_cellsNodes.tryGetCell(nodes);
+   return m_cellsNodes.tryGetCellFromOrderedNodes(nodes);
 }
 
 std::optional<CellIndex> TetrahedronsNodes::tryGetTetrahedronFromNodes(std::array<NodeIndex, NumNodesOnTetrahedron> nodes) const
