@@ -1,11 +1,16 @@
 #include "IndexTreeToSimplices3.h"
-//#include "IntervalTreeAdjacentDirection.h"
 #include "IntervalTreeIndex.h"
+#include "ITopologicalAdjacency.h"
+#include "PointClose.h"
 #include "ReferenceShapeCube.h"
+#include "ReferenceShapeTetrahedron.h"
+#include "TetrahedronsNodes.h"
 #include "TopologyDefines.h"
-#include "UniqueHashedPointCollection.h"
+#include "UniquePointCollectionBinning.h"
 
 using namespace Topology;
+using namespace Vtk;
+using namespace MeshGeneration;
 
 namespace
 {
@@ -98,8 +103,46 @@ namespace
 
    }
 
+   std::pair<TetrahedronsNodes, UniquePointCollectionBinning<GeomDim3>> toPointCollection(const IndexTreeToSimplices3::Tetrahedrons& cells, const IGeometryPredicate<double, 3>& predicate)
+   {
+      TetrahedronsNodes tnodes;
+      UniquePointCollectionBinning<GeomDim3> points(predicate, std::vector<Point3>{{0, 0, 0}, { 1,1,1 }});
+      for (const auto& cell : cells)
+      {
+         std::array<PointIndex, NumNodesOnTetrahedron> cellNodes;
+         for (size_t vertex = 0; const auto & v : cell)
+         {
+            cellNodes.at(vertex) = points.addIfNew(PointUtils::toPoint(v));
+            ++vertex;
+         }
+         tnodes.addTetrahedron(TetrahedronNodesOriented(cellNodes));
+      }
+      return { tnodes, points };
+   }
 
-}
+   std::unique_ptr<VtkData> toVtkDataCells(const TetrahedronsNodes& tnodes, const IPointCollection3& points, const Name& name)
+   {
+      std::unique_ptr< Vtk::VtkData> result = std::make_unique< Vtk::VtkData>(GeomDim3, 0, name);
+      for (const auto cellId : tnodes.getAllTetrahedrons())
+      {
+         const auto& cellNodes = tnodes.getTetrahedronNodes(cellId);
+         result->addCell(Vtk::CellType::VTK_TETRA, cellNodes, points, {});
+      }
+      return result;
+   }
+
+   std::unique_ptr<VtkData> toVtkDataEdges(const TetrahedronsNodes& tnodes, const IPointCollection3& points, const Name& name)
+   {
+      std::unique_ptr< Vtk::VtkData> result = std::make_unique< Vtk::VtkData>(GeomDim3, 0, name);
+      for (const auto& edge : tnodes.getAllSortedEdges())
+      {
+         std::array<PointIndex, NumNodesOnEdge> edgeNodes{ edge[0], edge[1] };
+         result->addCell(Vtk::CellType::VTK_LINE, edgeNodes, points, {});
+      }
+      return result;
+   }
+
+} // namespace
 
 IndexTreeToSimplices3::Tetrahedrons IndexTreeToSimplices3::Create(const IntervalTree::IndexTree<GeomDim3>& tree)
 {
@@ -109,19 +152,14 @@ IndexTreeToSimplices3::Tetrahedrons IndexTreeToSimplices3::Create(const Interval
 }
 
 
-std::unique_ptr<Vtk::VtkData> IndexTreeToSimplices3::cellsToVtkData(const Tetrahedrons& cells, const Vtk::Name& name)
+std::vector< std::unique_ptr<Vtk::VtkData>> IndexTreeToSimplices3::cellsToVtkData(const Tetrahedrons& cells, const std::string& projectName)
 {
-   std::unique_ptr< Vtk::VtkData> result = std::make_unique< Vtk::VtkData>(GeomDim3, 0, name);
-   UniqueHashedPointCollection<Rational, GeomDim3>  toNodeIndex;
-   for (const auto& cell : cells)
-   {
-      std::array<PointIndex, NumNodesOnTetrahedron> cellNodes;
-      for (size_t vertex = 0; const auto & v : cell)
-      {
-         cellNodes.at(vertex) = toNodeIndex.addIfNew(v);
-         ++vertex;
-      }
-      result->addCell(Vtk::CellType::VTK_TETRA, cellNodes, toNodeIndex, {});
-   }
+   const PointClose<double, GeomDim3> predicate;
+   const auto [tnodes, points] = toPointCollection(cells, predicate);
+
+   std::vector< std::unique_ptr<Vtk::VtkData>> result;
+   result.emplace_back(toVtkDataCells(tnodes, points, { projectName, std::string(Vtk::itemIndexTree3) }));
+   result.emplace_back(toVtkDataEdges(tnodes, points, { projectName, std::string(Vtk::itemIndexTree3_edges) }));
+
    return result;
 }

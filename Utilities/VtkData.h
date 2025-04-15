@@ -22,6 +22,10 @@ namespace Vtk
    enum class CellType : int { VTK_LINE = 3, VTK_TRIANGLE = 5, VTK_QUAD = 9, VTK_TETRA = 10, VTK_HEXAHEDRON = 12 };
    constexpr size_t NumNodesForType(CellType cellType);
 
+   constexpr std::string_view  itemIndexTree2 = "IndexTree2";
+   constexpr std::string_view  itemIndexTree3 = "IndexTree3";
+   constexpr std::string_view  itemIndexTree3_edges = "IndexTree3_edges";
+
    struct Name
    {
       std::string  project;

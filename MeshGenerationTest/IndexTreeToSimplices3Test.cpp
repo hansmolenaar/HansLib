@@ -58,10 +58,10 @@ TEST(IndexTreeToSimplices3Test, RootToVtk)
    }
    checkMesh(allTets, points);
 
-   const auto vtkData = IndexTreeToSimplices3::cellsToVtkData(tets, { "IndexTreeToSimplices3Test_RootToVtk", "tree" });
-   ASSERT_EQ(ReferenceShapeCube::numTetsInStandardSplit, vtkData->getNumCells());
-   ASSERT_EQ(NumNodesOnCube, vtkData->getNumNodes());
-   //Paraview::Write(*vtkData);
+   const auto vtkData = IndexTreeToSimplices3::cellsToVtkData(tets, "IndexTreeToSimplices3Test_RootToVtk");
+   ASSERT_EQ(ReferenceShapeCube::numTetsInStandardSplit, (vtkData.front())->getNumCells());
+   ASSERT_EQ(NumNodesOnCube, (vtkData.front())->getNumNodes());
+   //Paraview::Paraview::WriteList(vtkData);
 }
 
 
@@ -89,10 +89,10 @@ TEST(IndexTreeToSimplices3Test, Level1ToVtk)
    }
    checkMesh(allTets, points);
 
-   auto vtkData = IndexTreeToSimplices3::cellsToVtkData(tets, { "IndexTreeToSimplices3Test_Level1ToVtk", "tree" });
-   ASSERT_EQ(8 * ReferenceShapeCube::numTetsInStandardSplit, vtkData->getNumCells());
-   ASSERT_EQ(27, vtkData->getNumNodes());
-   Paraview::Write(*vtkData);
+   auto vtkData = IndexTreeToSimplices3::cellsToVtkData(tets, "IndexTreeToSimplices3Test_Level1ToVtk");
+   ASSERT_EQ(8 * ReferenceShapeCube::numTetsInStandardSplit, (vtkData.front())->getNumCells());
+   ASSERT_EQ(27, (vtkData.front())->getNumNodes());
+   Paraview::WriteList(vtkData);
 
    const auto boundaryFaces = allTets.getBoundaryFaces();
    ASSERT_EQ(boundaryFaces.getNumTriangles(), 48);
