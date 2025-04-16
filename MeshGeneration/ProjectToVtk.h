@@ -25,6 +25,8 @@ namespace MeshGeneration
 
       void addTetrahedrons(const TetrahedronsNodes& tnodes, const IPointCollection3& points, const std::string& name);
 
+      void addTrianglesAndReconstructions(const TrianglesNodes& tnodes, const std::vector<const IManifoldReconstruction*>& reconstructions, const IPointCollection2& points);
+
       template<int N>
       void addTriangles(const TrianglesNodes& tnodes, const IPointCollection<double, N>& points, const std::string& name);
 

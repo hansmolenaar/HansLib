@@ -43,7 +43,7 @@ template void ProjectToVtk::addEdges<Topology::EdgeNodesSorted, 3>(const std::ve
 template<typename T, int N>
 void ProjectToVtk::addEdges(const std::vector<T>& edges, const IPointCollection<double, N>& points, const std::string& name)
 {
-   std::unique_ptr< Vtk::VtkData> vtkData = std::make_unique< Vtk::VtkData>(GeomDim3, 0, Vtk::Name{ m_projectName, name });
+   std::unique_ptr< Vtk::VtkData> vtkData = std::make_unique< Vtk::VtkData>(N, 0, Vtk::Name{ m_projectName, name });
    for (const auto& edge : edges)
    {
       std::array<PointIndex, NumNodesOnEdge> edgeNodes{ edge[0], edge[1] };
@@ -120,4 +120,10 @@ void ProjectToVtk::addTriangles(const TrianglesNodes& tnodes, const IPointCollec
       vtkData->addCell(Vtk::CellType::VTK_TRIANGLE, std::array<NodeIndex, NumNodesOnTriangle>{trg[0], trg[1], trg[2]}, points, {});
    }
    m_vtk.emplace_back(std::move(vtkData));
+}
+
+void ProjectToVtk::addTrianglesAndReconstructions(const TrianglesNodes& tnodes, const std::vector<const IManifoldReconstruction*>& reconstructions, const IPointCollection2& points)
+{
+   addTriangles(tnodes, points, "mesh");
+   addReconstructions(reconstructions, points);
 }

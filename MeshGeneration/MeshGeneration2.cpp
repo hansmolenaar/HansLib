@@ -9,7 +9,6 @@
 #include "MyAssert.h"
 #include "Polygon2D.h"
 #include "Triangle.h"
-#include "UniqueHashedPointCollection.h"
 #include "UniquePointCollectionBinning.h"
 
 #include <set>
@@ -187,78 +186,6 @@ void MeshGeneration2::BaseTriangulationToWorld(
    os.str("");
    os << "MeshGeneration2::BaseTriangulationToWorld topology\n" << triangleNodes;
    logger.logLine(os);
-}
-
-std::vector<std::unique_ptr<Vtk::VtkData>> MeshGeneration2::reconstructionsToVtkData(const Mesh2& mesh, const std::string& project)
-{
-   const auto& points = mesh.getPoints();
-   std::vector<std::unique_ptr<Vtk::VtkData>> result;
-
-   auto cast = [](const IManifoldReconstruction* reconstruction) { return dynamic_cast<const Manifold1Reconstruction*>(reconstruction); };
-   for (const auto* manifold1 : mesh.getReconstructions() | stv::transform(cast) | stv::filter(Functors::PointerIsNotNull()))
-   {
-      auto vtkDatas = ToVtkData(manifold1->getReconstruction(), points, { project, manifold1->getManifoldId().getName() });
-      result.insert(result.end(),
-         std::make_move_iterator(vtkDatas.begin()),
-         std::make_move_iterator(vtkDatas.end()));
-   }
-
-   return result;
-}
-
-std::unique_ptr<Vtk::VtkData> MeshGeneration2::trianglesToVtkData(const Mesh2& mesh, const Vtk::Name& name)
-{
-   std::unique_ptr< Vtk::VtkData> result = std::make_unique<Vtk::VtkData>(GeomDim2, 0, name);
-   const auto& trianglesNodes = mesh.getTriangles();
-   const auto& points = mesh.getPoints();
-   for (const auto& cell : trianglesNodes.getAllTriangles())
-   {
-      const auto tnodes = trianglesNodes.getTriangleNodes(cell);
-      result->addCell(Vtk::CellType::VTK_TRIANGLE, tnodes, points, {});
-   }
-
-   return result;
-}
-
-std::vector<std::unique_ptr<Vtk::VtkData>> MeshGeneration2::ToVtkData(
-   const MeshGeneration::Boundary1& reconstruction,
-   const IPointCollection<MeshGeneration::GeomType, GeomDim2>& points,
-   const Vtk::Name& name)
-{
-   std::vector<std::unique_ptr<Vtk::VtkData>> result;
-   if (!reconstruction.getSingletons().empty()) throw MyException("MeshGeneration2::ToVtkData unexpected singletons");
-
-   // Collect Vtk nodes
-   std::unordered_map<PointIndex, Vtk::NodeIndex> nodeToVtk;
-   Vtk::NodeIndex nodeIndex = 0;
-   for (int count = 0; const auto & path : reconstruction.getPaths())
-   {
-      ++count;
-      const Vtk::Name  vtkName{ name.project, name.item + "_path_" + std::to_string(count) };
-      std::unique_ptr< Vtk::VtkData> part = std::make_unique< Vtk::VtkData>(GeomDim2, 0, vtkName);
-      for (size_t n = 1; n < path.size(); ++n)
-      {
-         std::array<PointIndex, 2> edge{ path[n], path[n - 1] };
-         part->addCell(Vtk::CellType::VTK_LINE, edge, points, {});
-      }
-      result.emplace_back(std::move(part));
-   }
-
-   nodeIndex = 0;
-   for (int count = 0; const auto & cycle : reconstruction.getCycles())
-   {
-      ++count;
-      const Vtk::Name  vtkName{ name.project, name.item + "_cycle_" + std::to_string(count) };
-      std::unique_ptr< Vtk::VtkData> part = std::make_unique< Vtk::VtkData>(GeomDim2, 0, vtkName);
-      for (size_t n = 0; n < cycle.size(); ++n)
-      {
-         std::array<PointIndex, 2> edge{ cycle[n], cycle[(n + 1) % cycle.size()] };
-         part->addCell(Vtk::CellType::VTK_LINE, edge, points, {});
-      }
-      result.emplace_back(std::move(part));
-   }
-
-   return result;
 }
 
 static boost::container::static_vector< NodeIndex, 2> HandleEndPoints(
