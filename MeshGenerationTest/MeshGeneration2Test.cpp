@@ -18,6 +18,7 @@
 #include "Paraview.h"
 #include "PointClose.h"
 #include "Polygon2AsRegion.h"
+#include "ProjectToVtk.h"
 #include "RefinementPredicates.h"
 #include "Single.h"
 #include "Triangle.h"
@@ -125,9 +126,13 @@ TEST(MeshGeneration2Test, Ball)
    IRegionManifoldsTestInterface(ballAsRegion.getManifolds(), settings.getGeometryPredicate());
    MeshGeneration2::Mesh2 mesh;
    mesh.setBaseTriangles(MeshGeneration2::GenerateBaseTriangulation(ballAsRegion, settings));
-   const auto vtkData = IndexTreeToSimplices2::ToVtkData(mesh.getBaseTriangles(), { "MeshGeneration2Test_Ball" , "triangles" });
+
+   ProjectToVtk p2v("MeshGeneration2Test_Ball");
+   IndexTreeToSimplices2::toVtkData(p2v, mesh.getBaseTriangles());
+   Paraview::WriteList(p2v.get());
+
+   const auto vtkData = p2v.get().front();
    ASSERT_EQ(1016, vtkData->getNumCells());
-   //Paraview::Write(*vtkData);
 }
 
 
@@ -153,6 +158,8 @@ TEST(MeshGeneration2Test, SingleTriangleToWorld)
 
    ASSERT_EQ(mesh.getTriangles().getAllTriangles().size(), 1);
 
+   ProjectToVtk p2v("MeshGeneration2Test_SingleTriangleToWorld");
+   //p2v.a
    //const auto vtkData = MeshGeneration2::ToVtkData(*triangleNodes, *pointGeometry);
    //Paraview::Write("MeshGeneration2Test_SingleTriangleToWorld", *vtkData);
 }
@@ -506,7 +513,7 @@ TEST(MeshGeneration2Test, Sphere2_intersect_5)
 
    Paraview::Write(*vtkDataMesh);
    const std::vector<std::unique_ptr<Vtk::VtkData>> list = reconstructionsToVtkData(mesh, project);
-   Paraview::WriteList(list);
+   Paraview::WriteListObsolete(list);
 
    nibble(ballAsRegion, mesh.getReconstructions(), mesh.getTriangles(), mesh.getPoints(), settings.getLogger());
 
@@ -549,7 +556,7 @@ TEST(MeshGeneration2Test, Triangle2_1)
    Paraview::Write(*vtkDataMesh);
 
    const std::vector<std::unique_ptr<Vtk::VtkData>> list = reconstructionsToVtkData(mesh, project);
-   Paraview::WriteList(list);
+   Paraview::WriteListObsolete(list);
 
    nibble(region, mesh.getReconstructions(), mesh.getTriangles(), mesh.getPoints(), settings.getLogger());
    ASSERT_EQ(mesh.getTriangles().getAllTriangles().size(), 2297);
@@ -590,7 +597,7 @@ TEST(MeshGeneration2Test, Triangle2D_2)
    Paraview::Write(*vtkDataMesh);
 
    const std::vector<std::unique_ptr<Vtk::VtkData>> list = reconstructionsToVtkData(mesh, project);
-   Paraview::WriteList(list);
+   Paraview::WriteListObsolete(list);
 
    nibble(region, mesh.getReconstructions(), mesh.getTriangles(), mesh.getPoints(), settings.getLogger());
 

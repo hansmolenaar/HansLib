@@ -1,9 +1,14 @@
 #include "IndexTreeToSimplices2.h"
 #include "IntervalTreeAdjacentDirection.h"
 #include "IntervalTreeIndex.h"
+#include "PointClose.h"
+#include "ProjectToVtk.h"
+#include "TrianglesNodes.h"
 #include "UniqueHashedPointCollection.h"
+#include "UniquePointCollectionBinning.h"
 
 using namespace Topology;
+using namespace MeshGeneration;
 
 namespace
 {
@@ -92,6 +97,23 @@ namespace
          }
       }
    }
+
+   std::pair<TrianglesNodes, UniquePointCollectionBinning<GeomDim2>> toPointCollection(const IndexTreeToSimplices2::Triangles& cells, const IGeometryPredicate<double, GeomDim2>& predicate)
+   {
+      TrianglesNodes tnodes;
+      UniquePointCollectionBinning<GeomDim2> points(predicate, std::vector<Point2>{{0, 0}, { 1,1 }});
+      for (const auto& cell : cells)
+      {
+         std::array<PointIndex, NumNodesOnTriangle> cellNodes;
+         for (size_t vertex = 0; const auto & v : cell)
+         {
+            cellNodes.at(vertex) = points.addIfNew(PointUtils::toPoint(v));
+            ++vertex;
+         }
+         tnodes.addTriangle(TriangleNodesOriented(cellNodes[0], cellNodes[1], cellNodes[2]));
+      }
+      return { tnodes, points };
+   }
 }
 
 IndexTreeToSimplices2::Triangles IndexTreeToSimplices2::Create(const IntervalTree::IndexTree<2>& tree)
@@ -101,19 +123,18 @@ IndexTreeToSimplices2::Triangles IndexTreeToSimplices2::Create(const IntervalTre
    return action.Triangles;
 }
 
-std::unique_ptr<Vtk::VtkData> IndexTreeToSimplices2::ToVtkData(const Triangles& cells, const Vtk::Name& name)
+void IndexTreeToSimplices2::toVtkData(MeshGeneration::ProjectToVtk& p2v, const Triangles& cells)
 {
-   std::unique_ptr< Vtk::VtkData> result = std::make_unique< Vtk::VtkData>(GeometryDimension, 0, name);
-   UniqueHashedPointCollection<Rational, GeometryDimension>  toNodeIndex;
+   const PointClose<double, GeomDim2> predicate;
+   auto [tnodes, points] = toPointCollection(cells, predicate);
    for (const auto& cell : cells)
    {
       std::array<PointIndex, ReferenceShapePolygon::TriangleNumCorners> cellNodes;
       for (size_t vertex = 0; const auto & v : cell)
       {
-         cellNodes.at(vertex) = toNodeIndex.addIfNew(v);
+         cellNodes.at(vertex) = points.addIfNew(PointUtils::toPoint(v));
          ++vertex;
       }
-      result->addCell(Vtk::CellType::VTK_TRIANGLE, cellNodes, toNodeIndex, {});
    }
-   return result;
+   p2v.addTriangles(tnodes, points, "IndexTree");
 }

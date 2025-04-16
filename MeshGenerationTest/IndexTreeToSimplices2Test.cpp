@@ -5,11 +5,13 @@
 #include "IntervalTreeRefinePredicate.h"
 #include "IntervalTreeVtk.h"
 #include "Paraview.h"
+#include "ProjectToVtk.h"
 #include "Triangle.h"
 #include "UniqueHashedPointCollection.h"
 
 using namespace IntervalTree;
 using namespace IndexTreeToSimplices2;
+using namespace MeshGeneration;
 
 namespace
 {
@@ -32,10 +34,12 @@ TEST(IndexTreeToSimplices2Test, RootToVtk)
    ASSERT_EQ(2, triangles.size());
    testOrientation(triangles);
 
-   const auto vtkData = IndexTreeToSimplices2::ToVtkData(triangles, { "IndexTreeToSimplices2Test_RootToVtk", "tree" });
+   ProjectToVtk p2v("IndexTreeToSimplices2Test_RootToVtk");
+   IndexTreeToSimplices2::toVtkData(p2v, triangles);
+   const auto* vtkData = p2v.get().front();
    ASSERT_EQ(2, vtkData->getNumCells());
    ASSERT_EQ(4, vtkData->getNumNodes());
-   //Paraview::Write(*vtkData);
+   //Paraview::WriteList(p2v.get());
 }
 
 TEST(IndexTreeToSimplices2Test, Level1ToVtk)
@@ -49,10 +53,12 @@ TEST(IndexTreeToSimplices2Test, Level1ToVtk)
    ASSERT_EQ(8, triangles.size());
    testOrientation(triangles);
 
-   const auto vtkData = IndexTreeToSimplices2::ToVtkData(triangles, { "IndexTreeToSimplices2Test_Level1ToVtk", "tree" });
+   ProjectToVtk p2v("IndexTreeToSimplices2Test_Level1ToVtk");
+   IndexTreeToSimplices2::toVtkData(p2v, triangles);
+   const auto* vtkData = p2v.get().front();
    ASSERT_EQ(8, vtkData->getNumCells());
    ASSERT_EQ(9, vtkData->getNumNodes());
-   //Paraview::Write(*vtkData);
+   //Paraview::WriteList(p2v.get());
 }
 
 TEST(IndexTreeToSimplices2Test, RefinedToVtk_1)
@@ -66,7 +72,7 @@ TEST(IndexTreeToSimplices2Test, RefinedToVtk_1)
    IndexTree<dim> tree;
    tree.refineUntilReady(doRefine);
    IntervalTree::Balance(tree);
-   //Paraview::Write("IndexTreeToSimplices2Test_RefinedToVtk_1_base", *IntervalTree::GetVtkData(tree));
+
    const auto triangles = IndexTreeToSimplices2::Create(tree);
    testOrientation(triangles);
    std::set<std::pair<RatPoint2, RatPoint2>> directedEdges;
@@ -90,7 +96,11 @@ TEST(IndexTreeToSimplices2Test, RefinedToVtk_1)
       }
    }
 
-   const auto vtkData = IndexTreeToSimplices2::ToVtkData(triangles, { "IndexTreeToSimplices2Test_RefinedToVtk_1" , "tree" });
+   ProjectToVtk p2v("IndexTreeToSimplices2Test_RefinedToVtk_1");
+   IndexTreeToSimplices2::toVtkData(p2v, triangles);
+   Paraview::WriteList(p2v.get());
+
+   const auto vtkData = p2v.get().front();
    ASSERT_EQ(90, vtkData->getNumCells());
    ASSERT_EQ(54, vtkData->getNumNodes());
 
@@ -119,6 +129,5 @@ TEST(IndexTreeToSimplices2Test, RefinedToVtk_1)
       }
    }
    ASSERT_EQ(4, length);
-   //Paraview::Write(*vtkData);
 }
 

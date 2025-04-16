@@ -134,6 +134,6 @@ void IndexTreeToSimplices3::cellsToVtkData(MeshGeneration::ProjectToVtk& vtk, co
    const PointClose<double, GeomDim3> predicate;
    const auto [tnodes, points] = toPointCollection(cells, predicate);
 
-   vtk.addCells(tnodes, points, std::string(Vtk::itemIndexTree3));
-   vtk.addEdges(tnodes.getAllSortedEdges(), points, std::string(Vtk::itemIndexTree3));
+   vtk.addTetrahedrons(tnodes, points, std::string(Vtk::itemIndexTree3) + "_mesh");
+   vtk.addEdges(tnodes.getAllSortedEdges(), points, std::string(Vtk::itemIndexTree3) + "_edges");
 }

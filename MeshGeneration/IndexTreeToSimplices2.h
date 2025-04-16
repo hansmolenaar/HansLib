@@ -12,11 +12,16 @@ namespace Vtk
    struct Name;
 }
 
+namespace MeshGeneration
+{
+   class ProjectToVtk;
+}
+
 namespace IndexTreeToSimplices2
 {
    using Triangles = std::vector<std::array<RatPoint2, Topology::ReferenceShapePolygon::TriangleNumCorners>>;
 
    constexpr int GeometryDimension = 2;
    Triangles Create(const IntervalTree::IndexTree<2>& tree);
-   std::unique_ptr<Vtk::VtkData> ToVtkData(const Triangles& cells, const Vtk::Name& name);
+   void toVtkData(MeshGeneration::ProjectToVtk& p2v, const Triangles& cells);
 };
