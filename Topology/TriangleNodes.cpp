@@ -33,7 +33,7 @@ bool TriangleNodes::containsNodes(NodeIndex node1, NodeIndex node2) const
    return contains(node1) && contains(node2);
 }
 
-NodeIndex TriangleNodes::oppositeNode(const EdgeNodesDirected& edge) const
+NodeIndex TriangleNodes::oppositeNode(const EdgeNodesSorted& edge) const
 {
    if (!edge.contains(m_nodes[0]))
    {

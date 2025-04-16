@@ -1,5 +1,6 @@
 #pragma once
-#include "EdgeNodesDirected.h"
+
+#include "EdgeNodesSorted.h"
 #include "StreamUtils.h"
 #include "TopologyDefines.h"
 
@@ -23,7 +24,8 @@ namespace Topology
 
       bool contains(NodeIndex node) const;
       bool containsNodes(NodeIndex node1, NodeIndex node2) const;
-      NodeIndex oppositeNode(const EdgeNodesDirected& edge) const;
+      NodeIndex oppositeNode(const EdgeNodesDirected& edge) const { return oppositeNode(EdgeNodesSorted(edge[0], edge[1])); };
+      NodeIndex oppositeNode(const EdgeNodesSorted& edge) const;
       std::array<EdgeNodesDirected, NumEdgesOnTriangle> getEdges() const;
 
    private:

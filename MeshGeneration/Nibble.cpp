@@ -32,33 +32,20 @@ namespace
       return result;
    }
 
-   std::vector<EdgeNodesDirected> getBoundaryEdges(const std::vector<const MeshGeneration::IManifoldReconstruction*>& boundaryReconstructions)
+   std::vector<EdgeNodesSorted> getBoundaryEdges(const std::vector<const MeshGeneration::IManifoldReconstruction*>& boundaryReconstructions)
    {
-      std::vector<EdgeNodesDirected> boundaryEdges;
+      std::vector<EdgeNodesSorted> boundaryEdges;
       for (const auto* br : boundaryReconstructions)
       {
          const auto* br1 = dynamic_cast<const Manifold1Reconstruction*>(br);
-         for (const auto& path : br1->getReconstruction().getPaths())
-         {
-            for (size_t n = 1; n < path.size(); ++n)
-            {
-               boundaryEdges.push_back({ path[n], path[n - 1] });
-            }
-         }
-         for (const auto& cycle : br1->getReconstruction().getCycles())
-         {
-            for (size_t n = 1; n < cycle.size(); ++n)
-            {
-               boundaryEdges.push_back({ cycle[n], cycle[n - 1] });
-            }
-            boundaryEdges.push_back({ cycle.front(), cycle.back() });
-         }
+         const auto edges = br1->getReconstruction().getEdges();
+         boundaryEdges.insert(boundaryEdges.end(), edges.begin(), edges.end());
       }
       return boundaryEdges;
    }
 
    std::pair<CellIndex, CellIndex> getInsideAndOutsideCell(
-      const EdgeNodesDirected& be,
+      const EdgeNodesSorted& be,
       const MeshGeneration::TrianglesNodes& trianglesNodes,
       const IUniquePointCollection2& pointCollection,
       const Geometry::IGeometryRegion<MeshGeneration::GeomType, GeomDim2>& region)
@@ -85,7 +72,7 @@ namespace
    }
 
    std::pair<std::set<CellIndex>, std::vector<CellIndex>> getBoundaryTriangles(
-      const std::vector<EdgeNodesDirected>& boundaryEdges,
+      const std::vector<EdgeNodesSorted>& boundaryEdges,
       const MeshGeneration::TrianglesNodes& trianglesNodes,
       const IUniquePointCollection2& pointCollection,
       const Geometry::IGeometryRegion<MeshGeneration::GeomType, GeomDim2>& region)

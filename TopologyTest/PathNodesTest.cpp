@@ -9,6 +9,7 @@ TEST(PathNodesTest, Constructor)
    ASSERT_MYEXCEPTION_MESSAGE(PathNodes(std::vector<NodeIndex>{1, 2, 1}), "PathNodes::PathNodes has duplicates: 1");
    const PathNodes path(std::vector<NodeIndex>{ 7, 1, 5 });
    ASSERT_TRUE(str::equal(path, std::vector<NodeIndex>{5, 1, 7}));
+   ASSERT_EQ(path.size(), 3);
 }
 
 

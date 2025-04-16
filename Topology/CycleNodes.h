@@ -22,6 +22,7 @@ namespace Topology
 
       bool contains(NodeIndex node) const;
       std::vector<EdgeNodesDirected> getEdges() const;
+      size_t size() const { return m_nodes.size(); }
 
    private:
       std::vector<NodeIndex> m_nodes;

@@ -31,20 +31,20 @@ TEST(TriangleNodesOrientedTest, ContainsEdge)
 TEST(TriangleNodesOrientedTest, OppositeNode)
 {
    const TriangleNodesOriented triangle{ 3, 1, 2 };
-   ASSERT_EQ(triangle.oppositeNode({ 1,2 }), 3);
-   ASSERT_EQ(triangle.oppositeNode({ 2,1 }), 3);
-   ASSERT_EQ(triangle.oppositeNode({ 1,3 }), 2);
-   ASSERT_EQ(triangle.oppositeNode({ 3,1 }), 2);
-   ASSERT_EQ(triangle.oppositeNode({ 2,3 }), 1);
-   ASSERT_EQ(triangle.oppositeNode({ 3,2 }), 1);
+   ASSERT_EQ(triangle.oppositeNode(EdgeNodesDirected{ 1,2 }), 3);
+   ASSERT_EQ(triangle.oppositeNode(EdgeNodesSorted{ 2,1 }), 3);
+   ASSERT_EQ(triangle.oppositeNode(EdgeNodesDirected{ 1,3 }), 2);
+   ASSERT_EQ(triangle.oppositeNode(EdgeNodesDirected{ 3,1 }), 2);
+   ASSERT_EQ(triangle.oppositeNode(EdgeNodesDirected{ 2,3 }), 1);
+   ASSERT_EQ(triangle.oppositeNode(EdgeNodesSorted{ 3,2 }), 1);
 
-   ASSERT_MYEXCEPTION_MESSAGE(triangle.oppositeNode({ 1,4 }), "Triangle does not contain edge");
-   ASSERT_MYEXCEPTION_MESSAGE(triangle.oppositeNode({ 4,1 }), "Triangle does not contain edge");
-   ASSERT_MYEXCEPTION_MESSAGE(triangle.oppositeNode({ 2,4 }), "Triangle does not contain edge");
-   ASSERT_MYEXCEPTION_MESSAGE(triangle.oppositeNode({ 4,2 }), "Triangle does not contain edge");
-   ASSERT_MYEXCEPTION_MESSAGE(triangle.oppositeNode({ 3,4 }), "Triangle does not contain edge");
-   ASSERT_MYEXCEPTION_MESSAGE(triangle.oppositeNode({ 4,3 }), "Triangle does not contain edge");
-   ASSERT_MYEXCEPTION_MESSAGE(triangle.oppositeNode({ 4,5 }), "Triangle does not contain edge");
+   ASSERT_MYEXCEPTION_MESSAGE(triangle.oppositeNode(EdgeNodesDirected{ 1,4 }), "Triangle does not contain edge");
+   ASSERT_MYEXCEPTION_MESSAGE(triangle.oppositeNode(EdgeNodesSorted{ 4,1 }), "Triangle does not contain edge");
+   ASSERT_MYEXCEPTION_MESSAGE(triangle.oppositeNode(EdgeNodesDirected{ 2,4 }), "Triangle does not contain edge");
+   ASSERT_MYEXCEPTION_MESSAGE(triangle.oppositeNode(EdgeNodesSorted{ 4,2 }), "Triangle does not contain edge");
+   ASSERT_MYEXCEPTION_MESSAGE(triangle.oppositeNode(EdgeNodesDirected{ 3,4 }), "Triangle does not contain edge");
+   ASSERT_MYEXCEPTION_MESSAGE(triangle.oppositeNode(EdgeNodesSorted{ 4,3 }), "Triangle does not contain edge");
+   ASSERT_MYEXCEPTION_MESSAGE(triangle.oppositeNode(EdgeNodesDirected{ 4,5 }), "Triangle does not contain edge");
 }
 
 TEST(TriangleNodesOrientedTest, Find)

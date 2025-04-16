@@ -40,3 +40,12 @@ TEST(EdgeNodesSortedTest, StreamInsertion)
    os << edge;
    ASSERT_EQ(os.str(), "(1, 2)");
 }
+
+
+TEST(EdgeNodesSortedTest, contains)
+{
+   EdgeNodesSorted edge{ 2,1 };
+   ASSERT_TRUE(edge.contains(1));
+   ASSERT_TRUE(edge.contains(2));
+   ASSERT_FALSE(edge.contains(3));
+}

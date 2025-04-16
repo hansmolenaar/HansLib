@@ -56,30 +56,6 @@ namespace
       str::transform(grapVertices, result.begin(), [&manifoldNodes](GraphVertex vertex) {return manifoldNodes[vertex]; });
       return result;
    }
-
-   std::set<Topology::EdgeNodesSorted> getEdges(const Boundary1 reconstruction)
-   {
-      std::set<Topology::EdgeNodesSorted> result;
-      for (const auto& path : reconstruction.getPaths())
-      {
-         const size_t siz = path.size();
-         for (size_t n = 1; n < siz; ++n)
-         {
-            result.emplace(path[n - 1], path[n]);
-         }
-      }
-
-      for (const auto& cycle : reconstruction.getCycles())
-      {
-         const size_t siz = cycle.size();
-         for (size_t n = 1; n <= siz; ++n)
-         {
-            result.emplace(cycle[n - 1], cycle[n % siz]);
-         }
-      }
-
-      return result;
-   }
 }
 
 MeshGeneration::Boundary1::Boundary1(const std::vector<Topology::EdgeNodesSorted>& edgeSet, std::vector<Topology::NodeIndex> activeNodes)
@@ -131,12 +107,12 @@ const std::vector<Topology::NodeIndex>& Boundary1::getSingletons() const
    return m_singletons;
 }
 
-const std::vector<std::vector<Topology::NodeIndex>>& Boundary1::getPaths() const
+const std::vector<PathNodes>& Boundary1::getPaths() const
 {
    return m_paths;
 }
 
-const std::vector<std::vector<Topology::NodeIndex>>& Boundary1::getCycles() const
+const std::vector<CycleNodes>& Boundary1::getCycles() const
 {
    return m_cycles;
 }
@@ -152,4 +128,26 @@ Boundary1 Boundary1::createFromBoundaryEdges(const TrianglesNodes& trianglesNode
    str::copy_if(trianglesNodes.getAllSortedEdges(), std::back_inserter(activeEdges), [&trianglesNodes](const auto& edge) {
       return trianglesNodes.getTrianglesContainingEdge(edge[0], edge[1]).size() == 1; });
    return Boundary1(activeEdges);
+}
+
+std::set<Topology::EdgeNodesSorted> Boundary1::getEdges() const
+{
+   std::set<Topology::EdgeNodesSorted> result;
+   for (const auto& path : getPaths())
+   {
+      for (const auto& edge : path.getEdges())
+      {
+         result.emplace(edge[0], edge[1]);
+      }
+   }
+
+   for (const auto& cycle : getCycles())
+   {
+      for (const auto& edge : cycle.getEdges())
+      {
+         result.emplace(edge[0], edge[1]);
+      }
+   }
+
+   return result;
 }
