@@ -21,9 +21,7 @@ Topology::PathNodes::PathNodes(std::span<const NodeIndex> nodes) :
    {
       str::reverse(m_nodes);
    }
-
 }
-
 
 bool PathNodes::contains(NodeIndex node) const
 {
