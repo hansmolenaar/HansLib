@@ -12,7 +12,8 @@
 
 namespace Paraview
 {
-   void WriteList(const std::vector<std::unique_ptr<Vtk::VtkData>>& data);
+   void WriteList(const std::vector<const Vtk::VtkData*>& data);
+   void WriteList(const std::vector<std::unique_ptr<Vtk::VtkData>>& data); // TODO remove me
    void Write(const Vtk::VtkData& data);
    void WritePoints(std::ostream& stream, const Vtk::VtkData& data);
    void WritePoint(std::ostream& stream, std::span<const Vtk::CoordinateType> coordinates);

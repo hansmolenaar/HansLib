@@ -101,3 +101,11 @@ void Paraview::WriteList(const std::vector<std::unique_ptr<Vtk::VtkData>>& list)
       Write(*data);
    }
 }
+
+void Paraview::WriteList(const std::vector<const Vtk::VtkData*>& list)
+{
+   for (const auto& data : list)
+   {
+      Write(*data);
+   }
+}

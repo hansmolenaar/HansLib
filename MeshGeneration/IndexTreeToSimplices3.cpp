@@ -120,28 +120,6 @@ namespace
       return { tnodes, points };
    }
 
-   std::unique_ptr<VtkData> toVtkDataCells(const TetrahedronsNodes& tnodes, const IPointCollection3& points, const Name& name)
-   {
-      std::unique_ptr< Vtk::VtkData> result = std::make_unique< Vtk::VtkData>(GeomDim3, 0, name);
-      for (const auto cellId : tnodes.getAllTetrahedrons())
-      {
-         const auto& cellNodes = tnodes.getTetrahedronNodes(cellId);
-         result->addCell(Vtk::CellType::VTK_TETRA, cellNodes, points, {});
-      }
-      return result;
-   }
-
-   std::unique_ptr<VtkData> toVtkDataEdges(const TetrahedronsNodes& tnodes, const IPointCollection3& points, const Name& name)
-   {
-      std::unique_ptr< Vtk::VtkData> result = std::make_unique< Vtk::VtkData>(GeomDim3, 0, name);
-      for (const auto& edge : tnodes.getAllSortedEdges())
-      {
-         std::array<PointIndex, NumNodesOnEdge> edgeNodes{ edge[0], edge[1] };
-         result->addCell(Vtk::CellType::VTK_LINE, edgeNodes, points, {});
-      }
-      return result;
-   }
-
 } // namespace
 
 IndexTreeToSimplices3::Tetrahedrons IndexTreeToSimplices3::Create(const IntervalTree::IndexTree<GeomDim3>& tree)
@@ -151,15 +129,11 @@ IndexTreeToSimplices3::Tetrahedrons IndexTreeToSimplices3::Create(const Interval
    return action.Tetrahedrons;
 }
 
-
-std::vector< std::unique_ptr<Vtk::VtkData>> IndexTreeToSimplices3::cellsToVtkData(const Tetrahedrons& cells, const std::string& projectName)
+void IndexTreeToSimplices3::cellsToVtkData(MeshGeneration::ProjectToVtk& vtk, const Tetrahedrons& cells)
 {
    const PointClose<double, GeomDim3> predicate;
    const auto [tnodes, points] = toPointCollection(cells, predicate);
 
-   std::vector< std::unique_ptr<Vtk::VtkData>> result;
-   result.emplace_back(toVtkDataCells(tnodes, points, { projectName, std::string(Vtk::itemIndexTree3) }));
-   result.emplace_back(toVtkDataEdges(tnodes, points, { projectName, std::string(Vtk::itemIndexTree3_edges) }));
-
-   return result;
+   vtk.addCells(tnodes, points, std::string(Vtk::itemIndexTree3));
+   vtk.addEdges(tnodes.getAllSortedEdges(), points, std::string(Vtk::itemIndexTree3));
 }

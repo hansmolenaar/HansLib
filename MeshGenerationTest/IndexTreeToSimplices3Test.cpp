@@ -6,6 +6,7 @@
 #include "IntervalTreeRefinePredicate.h"
 #include "IntervalTreeVtk.h"
 #include "Paraview.h"
+#include "ProjectToVtk.h"
 #include "ReferenceShapeCube.h"
 #include "Tetrahedron.h"
 #include "TetrahedronsNodes.h"
@@ -58,9 +59,11 @@ TEST(IndexTreeToSimplices3Test, RootToVtk)
    }
    checkMesh(allTets, points);
 
-   const auto vtkData = IndexTreeToSimplices3::cellsToVtkData(tets, "IndexTreeToSimplices3Test_RootToVtk");
-   ASSERT_EQ(ReferenceShapeCube::numTetsInStandardSplit, (vtkData.front())->getNumCells());
-   ASSERT_EQ(NumNodesOnCube, (vtkData.front())->getNumNodes());
+   ProjectToVtk toVtk("IndexTreeToSimplices3Test_RootToVtk");
+   IndexTreeToSimplices3::cellsToVtkData(toVtk, tets);
+   const auto* vtkMesh = toVtk.get().front();
+   ASSERT_EQ(ReferenceShapeCube::numTetsInStandardSplit, vtkMesh->getNumCells());
+   ASSERT_EQ(NumNodesOnCube, vtkMesh->getNumNodes());
    //Paraview::Paraview::WriteList(vtkData);
 }
 
@@ -89,10 +92,12 @@ TEST(IndexTreeToSimplices3Test, Level1ToVtk)
    }
    checkMesh(allTets, points);
 
-   auto vtkData = IndexTreeToSimplices3::cellsToVtkData(tets, "IndexTreeToSimplices3Test_Level1ToVtk");
-   ASSERT_EQ(8 * ReferenceShapeCube::numTetsInStandardSplit, (vtkData.front())->getNumCells());
-   ASSERT_EQ(27, (vtkData.front())->getNumNodes());
-   Paraview::WriteList(vtkData);
+   ProjectToVtk toVtk("IndexTreeToSimplices3Test_Level1ToVtk");
+   IndexTreeToSimplices3::cellsToVtkData(toVtk, tets);
+   const auto* vtkMesh = toVtk.get().front();
+   ASSERT_EQ(8 * ReferenceShapeCube::numTetsInStandardSplit, vtkMesh->getNumCells());
+   ASSERT_EQ(27, vtkMesh->getNumNodes());
+   Paraview::WriteList(toVtk.get());
 
    const auto boundaryFaces = allTets.getBoundaryFaces();
    ASSERT_EQ(boundaryFaces.getNumTriangles(), 48);
