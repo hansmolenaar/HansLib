@@ -29,6 +29,8 @@ namespace MeshGeneration
       std::vector<Topology::NodeIndex> getAllNodes() const;
       std::vector<Topology::EdgeNodesSorted> getAllSortedEdges() const;
 
+      std::vector<TrianglesNodes> splitInEdgeConnectedComponents() const;
+
       friend std::ostream& operator<<(std::ostream& os, const TrianglesNodes& tnodes)
       {
          const std::string sep = " ";

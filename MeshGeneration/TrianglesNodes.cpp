@@ -101,3 +101,8 @@ size_t TrianglesNodes::getNumTriangles() const
 {
    return m_cellsNodes.getNumCells();
 }
+
+std::vector<TrianglesNodes> TrianglesNodes::splitInEdgeConnectedComponents() const
+{
+   throw MyException("Not yet implemented");
+}
