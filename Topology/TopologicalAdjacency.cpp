@@ -1,6 +1,7 @@
-#include "TopologicalAdjacency.h"
+#include "FirstDuplicate.h"
 #include "Iota.h"
 #include "MyAssert.h"
+#include "TopologicalAdjacency.h"
 
 #include <algorithm>
 
@@ -12,9 +13,7 @@ namespace
    {
       for (auto& itr : from_to)
       {
-         std::vector<int> toValues = itr.second;
-         std::sort(toValues.begin(), toValues.end());
-         if (std::unique(toValues.begin(), toValues.end()) != toValues.end()) throw MyException("TopologicalAdjacency::Cleanup duplicate indices");
+         Utilities::throwOnDuplicate(itr.second);
       }
       const int lwrBound = from_to.begin()->first;
       if (lwrBound < 0) throw MyException("TopologicalAdjacency::Cleanup lower bound " + std::to_string(lwrBound));

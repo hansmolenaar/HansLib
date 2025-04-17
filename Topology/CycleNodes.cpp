@@ -11,12 +11,7 @@ Topology::CycleNodes::CycleNodes(std::span<const NodeIndex> nodes) :
    m_nodes(nodes.begin(), nodes.end())
 {
    if (m_nodes.size() < 3) throw MyException("CycleNodes::CycleNodes too small: size=" + std::to_string(m_nodes.size()));
-   const auto duplicates = Utilities::firstDuplicate(m_nodes);
-   if (duplicates)
-   {
-      throw MyException("CycleNodes::CycleNodes has duplicates: " + std::to_string(*duplicates));
-   }
-
+   Utilities::throwOnDuplicate(m_nodes);
    auto minElement = std::min_element(m_nodes.begin(), m_nodes.end());
    std::rotate(m_nodes.begin(), minElement, m_nodes.end());
 }

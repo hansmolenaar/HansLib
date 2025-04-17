@@ -11,11 +11,7 @@ Topology::PathNodes::PathNodes(std::span<const NodeIndex> nodes) :
    m_nodes(nodes.begin(), nodes.end())
 {
    if (m_nodes.size() < 2) throw MyException("PathNodes::PathNodes too small: size=" + std::to_string(m_nodes.size()));
-   const auto duplicates = Utilities::firstDuplicate(m_nodes);
-   if (duplicates)
-   {
-      throw MyException("PathNodes::PathNodes has duplicates: " + std::to_string(*duplicates));
-   }
+   Utilities::throwOnDuplicate(m_nodes);
 
    if (m_nodes.front() > m_nodes.back())
    {

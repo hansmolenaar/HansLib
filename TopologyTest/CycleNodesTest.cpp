@@ -6,7 +6,7 @@ using namespace Topology;
 TEST(CycleNodesTest, Constructor)
 {
    ASSERT_MYEXCEPTION_MESSAGE(CycleNodes(std::vector<NodeIndex>{1, 2}), "CycleNodes::CycleNodes too small: size=2");
-   ASSERT_MYEXCEPTION_MESSAGE(CycleNodes(std::vector<NodeIndex>{1, 2, 3, 2}), "CycleNodes::CycleNodes has duplicates: 2");
+   ASSERT_MYEXCEPTION_MESSAGE(CycleNodes(std::vector<NodeIndex>{1, 2, 3, 2}), "Container has duplicate: 2");
    const CycleNodes cycle(std::vector<NodeIndex>{ 7, 1, 5 });
    ASSERT_TRUE(str::equal(cycle, std::vector<NodeIndex>{1, 5, 7}));
    ASSERT_EQ(cycle.size(), 3);
