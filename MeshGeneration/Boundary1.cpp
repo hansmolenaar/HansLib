@@ -18,29 +18,6 @@ namespace
       return result;
    }
 
-   UndirectedGraph CreateGraph(const TrianglesNodes& trianglesNodes, const RenumberContiguous<NodeIndex, GraphVertex>& toVertex)
-   {
-      std::vector< EdgeNodesSorted> edges;
-
-      for (GraphVertex n = 0; n < toVertex.size(); ++n)
-      {
-         const NodeIndex node = toVertex.at(n);
-         const auto neighbors = trianglesNodes.getEdgeConnectedNodes(node);
-         if (neighbors.empty())
-         {
-            throw MyException("CreateGraph manifold node not found in triangulation");
-         }
-         for (auto ngb : neighbors)
-         {
-            if (toVertex.toContiguous(ngb))
-            {
-               edges.emplace_back(node, ngb);
-            }
-         }
-      }
-      return CreateGraph(edges, toVertex);
-   }
-
    std::vector<NodeIndex> ToNodesIndices(const std::vector<GraphVertex>& grapVertices, std::span<const NodeIndex> manifoldNodes)
    {
       std::vector<NodeIndex> result(manifoldNodes.size());

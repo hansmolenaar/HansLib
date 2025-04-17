@@ -1,5 +1,4 @@
 #include "Manifold1Reconstruction.h"
-#include "UndirectedGraph.h"
 
 using namespace MeshGeneration;
 using namespace Topology;
