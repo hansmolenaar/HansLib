@@ -3,25 +3,31 @@
 #include "Defines.h"
 #include "MyException.h"
 #include <algorithm>
+#include <optional>
 #include <sstream>
 #include <unordered_map>
 
 namespace Utilities
 {
-   template <typename Tcontiguous, typename C>
+   template <typename Tin, typename Tcontiguous>
    class RenumberContiguous
    {
    public:
-      explicit RenumberContiguous(const C& numbersIn);
-      Tcontiguous toContiguous(typename C::value_type value) const;
-      typename C::value_type operator[](Tcontiguous idx) const;
+      template<typename FwdItr>
+      explicit RenumberContiguous(FwdItr first, FwdItr last);
+
+      std::optional<Tcontiguous> toContiguous(const Tin& value) const;
+      const Tin& at(Tcontiguous idx) const;
+      Tcontiguous size() const { return m_toContiguous.size(); }
+
    private:
-      std::vector<typename C::value_type> m_original;
-      std::unordered_map<typename C::value_type, Tcontiguous> m_toContiguous;
+      std::vector<Tin> m_original;
+      std::unordered_map<Tin, Tcontiguous> m_toContiguous;
    };
 
-   template <typename Tcontiguous, typename C>
-   RenumberContiguous<Tcontiguous, C>::RenumberContiguous(const C& numbersIn) : m_original(numbersIn.begin(), numbersIn.end())
+   template <typename Tin, typename Tcontiguous>
+   template<typename FwdItr>
+   RenumberContiguous<typename Tin, typename Tcontiguous>::RenumberContiguous(FwdItr first, FwdItr last) : m_original(first, last)
    {
       for (Tcontiguous n = 0; const auto & org : m_original)
       {
@@ -36,22 +42,20 @@ namespace Utilities
       }
    }
 
-   template <typename Tcontiguous, typename C>
-   typename C::value_type RenumberContiguous<Tcontiguous, C>::operator[](Tcontiguous idx) const
+   template <typename Tin, typename Tcontiguous>
+   const Tin& RenumberContiguous<typename Tin, typename Tcontiguous>::at(Tcontiguous idx) const
    {
       return m_original.at(idx);
    }
 
-   template <typename Tcontiguous, typename C>
-   Tcontiguous RenumberContiguous<Tcontiguous, C>::toContiguous(typename C::value_type value) const
+   template <typename Tin, typename Tcontiguous>
+   std::optional<Tcontiguous> RenumberContiguous<typename Tin, typename Tcontiguous>::toContiguous(const Tin& value) const
    {
       const auto found = m_toContiguous.find(value);
-      if (found == m_toContiguous.end())
+      if (found != m_toContiguous.end())
       {
-         std::ostringstream os;
-         os << "RenumberContiguous<CTcontiguous, C>::toContiguous unknown value " << value;
-         throw MyException(os.str());
+         return { found->second };
       }
-      return found->second;
+      return {};
    }
 }

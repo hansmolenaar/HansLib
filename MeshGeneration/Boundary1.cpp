@@ -1,49 +1,40 @@
 #include "Boundary1.h"
+#include "RenumberContiguous.h"
 #include "UndirectedGraph.h"
 
 using namespace MeshGeneration;
 using namespace Topology;
+using namespace Utilities;
 
 namespace
 {
-   std::unordered_map<NodeIndex, GraphVertex> RenumberToGraph(std::span<const NodeIndex> manifoldNodes)
-   {
-      std::unordered_map<NodeIndex, GraphVertex> result;
-      for (GraphVertex v = 0; v < manifoldNodes.size(); ++v)
-      {
-         auto [itr, isnew] = result.emplace(manifoldNodes[v], v);
-         if (!isnew) throw MyException("Duplicate node in manifoldNodes");
-      }
-      return result;
-   }
-
-   UndirectedGraph CreateGraph(std::span<const Topology::EdgeNodesSorted> edges, const std::unordered_map<NodeIndex, GraphVertex>& toVertex)
+   UndirectedGraph CreateGraph(std::span<const Topology::EdgeNodesSorted> edges, const RenumberContiguous<NodeIndex, GraphVertex>& toVertex)
    {
       UndirectedGraph result(toVertex.size());
       for (const auto& edge : edges)
       {
-         result.addEdge(toVertex.at(edge[0]), toVertex.at(edge[1]));
+         result.addEdge(*toVertex.toContiguous(edge[0]), *toVertex.toContiguous(edge[1]));
       }
       return result;
    }
 
-   UndirectedGraph CreateGraph(const TrianglesNodes& trianglesNodes, const std::unordered_map<NodeIndex, GraphVertex>& toVertex)
+   UndirectedGraph CreateGraph(const TrianglesNodes& trianglesNodes, const RenumberContiguous<NodeIndex, GraphVertex>& toVertex)
    {
       std::vector< EdgeNodesSorted> edges;
 
-      for (const auto& vert : toVertex)
+      for (GraphVertex n = 0; n < toVertex.size(); ++n)
       {
-         const auto neighbors = trianglesNodes.getEdgeConnectedNodes(vert.first);
+         const NodeIndex node = toVertex.at(n);
+         const auto neighbors = trianglesNodes.getEdgeConnectedNodes(node);
          if (neighbors.empty())
          {
             throw MyException("CreateGraph manifold node not found in triangulation");
          }
          for (auto ngb : neighbors)
          {
-            const auto findNgb = toVertex.find(ngb);
-            if (findNgb != toVertex.end())
+            if (toVertex.toContiguous(ngb))
             {
-               edges.emplace_back(vert.first, ngb);
+               edges.emplace_back(node, ngb);
             }
          }
       }
@@ -68,7 +59,7 @@ MeshGeneration::Boundary1::Boundary1(const std::vector<Topology::EdgeNodesSorted
    str::sort(activeNodes);
    activeNodes.erase(std::unique(activeNodes.begin(), activeNodes.end()), activeNodes.end());
 
-   const auto toVertex = RenumberToGraph(activeNodes);
+   const RenumberContiguous<NodeIndex, GraphVertex> toVertex(activeNodes.begin(), activeNodes.end());
    const UndirectedGraph graph = CreateGraph(edgeSet, toVertex);
 
    const auto cyclesAndPaths = graph.SplitInCyclesAndPaths();
