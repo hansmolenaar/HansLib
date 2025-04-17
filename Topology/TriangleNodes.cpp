@@ -1,3 +1,4 @@
+#include "FirstDuplicate.h"
 #include "ITopologicalAdjacency.h"
 #include "MyException.h"
 #include "ReferenceShapePolygon.h"
@@ -6,16 +7,12 @@
 #include <sstream>
 
 using namespace Topology;
+using namespace Utilities;
 
 TriangleNodes::TriangleNodes(NodeIndex n0, NodeIndex n1, NodeIndex n2) :
    m_nodes{ n0, n1, n2 }
 {
-   if (n0 == n1 || n0 == n2 || n1 == n2)
-   {
-      std::ostringstream os;
-      os << *this;
-      throw MyException("TriangleNodes invalid, duplicate nodes " + os.str());
-   }
+   throwOnDuplicate(m_nodes);
 }
 
 TriangleNodes::TriangleNodes(const std::array<NodeIndex, NumNodesOnTriangle>& nodes) :

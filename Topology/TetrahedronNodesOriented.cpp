@@ -1,4 +1,5 @@
 #include "Defines.h"
+#include "FirstDuplicate.h"
 #include "ITopologicalAdjacency.h"
 #include "MyException.h"
 #include "ReferenceShapeTetrahedron.h"
@@ -8,6 +9,7 @@
 #include <sstream>
 
 using namespace Topology;
+using namespace Utilities;
 
 TetrahedronNodesOriented::TetrahedronNodesOriented(NodeIndex n0, NodeIndex n1, NodeIndex n2, NodeIndex n3) :
    m_nodes(orient(n0, n1, n2, n3))
@@ -75,14 +77,7 @@ std::array<NodeIndex, NumNodesOnTetrahedron> TetrahedronNodesOriented::orient(No
 
 std::array<NodeIndex, NumNodesOnTetrahedron> TetrahedronNodesOriented::orient(std::array<NodeIndex, NumNodesOnTetrahedron> result)
 {
-   // Check for duplicates
-   if (result[0] == result[1] || result[0] == result[2] || result[0] == result[3] || result[1] == result[2] || result[1] == result[3] || result[2] == result[3])
-   {
-      std::ostringstream os;
-      os << "TetrahedronresultOriented invalid, duplicates in ";
-      StreamUtils::insertList(os, result);
-      throw MyException(os.str());
-   }
+   throwOnDuplicate(result);
 
    int numSwaps = 0;
    auto mm = str::minmax_element(result);

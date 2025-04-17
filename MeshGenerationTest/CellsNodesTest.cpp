@@ -200,7 +200,7 @@ TEST(CellsNodesTest, GetAllEdges)
 
    const auto triangle0 = tnodes.addCell(TriangleNodesOriented(42, 999, 0));
    tnodes.getAlEdges(allEdges);
-   ASSERT_TRUE(str::equal(allEdges, std::vector<EdgeNodesSorted>{EdgeNodesSorted{ 0, 42 }, EdgeNodesSorted{ 0,999 }, EdgeNodesSorted{ 42,999 }}));
+   ASSERT_TRUE(str::equal(allEdges, std::vector<EdgeNodesSorted>{{ 0, 42 }, { 0,999 }, { 42,999 }}));
 
    const auto triangle1 = tnodes.addCell(TriangleNodesOriented(42, 0, 2));
    tnodes.getAlEdges(allEdges);
