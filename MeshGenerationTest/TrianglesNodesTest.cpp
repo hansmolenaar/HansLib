@@ -2,11 +2,12 @@
 
 #include "Defines.h"
 #include "MyException.h"
+#include "Single.h"
 #include "TrianglesNodes.h"
 
 using namespace MeshGeneration;
 using namespace Topology;
-
+using namespace Utilities;
 TEST(TrianglesNodesTest, Empty)
 {
    TrianglesNodes tnodes;
@@ -261,4 +262,75 @@ TEST(TrianglesNodesTest, AddDelete)
    tnodes.deleteTriangle(triangleId0);
    const auto triangleId1 = tnodes.addTriangle(triangle);
    ASSERT_NE(triangleId0, triangleId1);
+}
+
+TEST(TrianglesNodesTest, splitInEdgeConnectedComponents_0)
+{
+   TrianglesNodes tnodes;
+   ASSERT_TRUE(tnodes.splitInEdgeConnectedComponents().empty());
+}
+
+TEST(TrianglesNodesTest, splitInEdgeConnectedComponents_1)
+{
+   TrianglesNodes tnodes;
+   const auto triangleId0 = tnodes.addTriangle({ 1, 2, 3 });
+   ASSERT_EQ(Single(Single(tnodes.splitInEdgeConnectedComponents())), triangleId0);
+}
+
+TEST(TrianglesNodesTest, splitInEdgeConnectedComponents_2)
+{
+   TrianglesNodes tnodes;
+   tnodes.addTriangle({ 1, 2, 3 });
+   tnodes.addTriangle({ 1, 2, 5 });
+   const auto components = tnodes.splitInEdgeConnectedComponents();
+   const std::vector<CellIndex> expect{ 0, 1 };
+   ASSERT_TRUE(str::equal(Single(components), expect));
+}
+
+TEST(TrianglesNodesTest, splitInEdgeConnectedComponents_3)
+{
+   TrianglesNodes tnodes;
+   tnodes.addTriangle({ 1, 2, 3 });
+   tnodes.addTriangle({ 1, 4, 7 });
+   const auto components = tnodes.splitInEdgeConnectedComponents();
+   ASSERT_EQ(components.size(), 2);
+   ASSERT_EQ(Single(components[0]), 0);
+   ASSERT_EQ(Single(components[1]), 1);
+}
+
+TEST(TrianglesNodesTest, splitInEdgeConnectedComponents_4)
+{
+   TrianglesNodes tnodes;
+   tnodes.addTriangle({ 1, 2, 3 });
+   tnodes.addTriangle({ 1, 4, 3 });
+   tnodes.addTriangle({ 5, 4, 3 });
+   auto components = tnodes.splitInEdgeConnectedComponents();
+   const std::vector<CellIndex> expect{ 0, 1, 2 };
+   ASSERT_TRUE(str::equal(Single(components), expect));
+
+   tnodes.deleteTriangle(1);
+   components = tnodes.splitInEdgeConnectedComponents();
+   ASSERT_EQ(components.size(), 2);
+   ASSERT_EQ(Single(components[0]), 0);
+   ASSERT_EQ(Single(components[1]), 2);
+
+   tnodes.deleteTriangle(0);
+   components = tnodes.splitInEdgeConnectedComponents();
+   ASSERT_EQ(Single(Single(tnodes.splitInEdgeConnectedComponents())), 2);
+}
+
+
+TEST(TrianglesNodesTest, splitInEdgeConnectedComponents_5)
+{
+   TrianglesNodes tnodes;
+   tnodes.addTriangle({ 1, 2, 3 });
+   tnodes.addTriangle({ 4, 5, 6 });
+   tnodes.addTriangle({ 1, 7, 2 });
+   tnodes.addTriangle({ 1, 8, 3 });
+   auto components = tnodes.splitInEdgeConnectedComponents();
+   ASSERT_EQ(components.size(), 2);
+
+   tnodes.deleteTriangle(0);
+   components = tnodes.splitInEdgeConnectedComponents();
+   ASSERT_EQ(components.size(), 3);
 }

@@ -29,7 +29,7 @@ namespace MeshGeneration
       std::vector<Topology::NodeIndex> getAllNodes() const;
       std::vector<Topology::EdgeNodesSorted> getAllSortedEdges() const;
 
-      std::vector<TrianglesNodes> splitInEdgeConnectedComponents() const;
+      std::vector<std::vector<CellIndex>> splitInEdgeConnectedComponents() const;
 
       friend std::ostream& operator<<(std::ostream& os, const TrianglesNodes& tnodes)
       {

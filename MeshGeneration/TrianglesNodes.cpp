@@ -1,9 +1,13 @@
 #include "MyException.h"
+#include "RenumberContiguous.h"
 #include "TrianglesNodes.h"
+#include "UndirectedGraph.h"
+
 #include <sstream>
 
 using namespace MeshGeneration;
 using namespace Topology;
+using namespace Utilities;
 
 CellIndex TrianglesNodes::addTriangle(const TriangleNodesOriented& nodes)
 {
@@ -102,7 +106,29 @@ size_t TrianglesNodes::getNumTriangles() const
    return m_cellsNodes.getNumCells();
 }
 
-std::vector<TrianglesNodes> TrianglesNodes::splitInEdgeConnectedComponents() const
+std::vector<std::vector<CellIndex>> TrianglesNodes::splitInEdgeConnectedComponents() const
 {
-   throw MyException("Not yet implemented");
+   const auto cellIds = getAllTriangles();
+   if (cellIds.empty()) return {};
+   const RenumberContiguous <CellIndex, GraphVertex> rc(cellIds.begin(), cellIds.end());
+   UndirectedGraph graph(rc.size());
+   for (const auto& edge : getAllSortedEdges())
+   {
+      const auto ngbs = getTrianglesContainingEdge(edge[0], edge[1]);
+      if (ngbs.size() == 2)
+      {
+         graph.addEdge(*rc.toContiguous(ngbs[0]), *rc.toContiguous(ngbs[1]));
+      }
+   }
+   const auto components = graph.getConnectedComponents();
+   const auto numComponents = *str::max_element(components) + 1;
+   if (numComponents == 1) return { cellIds };
+
+   std::vector<std::vector<CellIndex>> result(numComponents);
+   for (GraphVertex v = 0; auto c : components)
+   {
+      result[c].push_back(rc.at(v));
+      ++v;
+   }
+   return result;
 }
