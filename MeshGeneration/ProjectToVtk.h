@@ -30,6 +30,9 @@ namespace MeshGeneration
       template<int N>
       void addTriangles(const TrianglesNodes& tnodes, const IPointCollection<double, N>& points, const std::string& name);
 
+      template<int N>
+      void addTrianglesAndBoundaries(const TrianglesNodes& tnodes, const IPointCollection<double, N>& points, const std::string& name);
+
       template<typename T, int N>
       void addEdges(const std::vector<T>& edges, const IPointCollection<double, N>& points, const std::string& name);
 
@@ -46,6 +49,9 @@ namespace MeshGeneration
       void addCycle(const Topology::CycleNodes& cycle, const IPointCollection<double, N >& points, const std::string& name);
 
    private:
+      template<int N>
+      void addBoundariesOfConnectedTriangles(const TrianglesNodes& tnodes, const IPointCollection<double, N>& points, const std::string& name);
+
       std::string m_projectName;
       std::vector<std::unique_ptr<Vtk::VtkData>> m_vtk;
    };

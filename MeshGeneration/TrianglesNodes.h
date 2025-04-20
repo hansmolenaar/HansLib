@@ -41,6 +41,8 @@ namespace MeshGeneration
       }
       size_t getNumTriangles() const;
 
+      TrianglesNodes createSubSet(const std::vector<CellIndex>& cellIds) const;
+
    private:
       CellsNodes<Topology::TriangleNodesOriented> m_cellsNodes;
    };

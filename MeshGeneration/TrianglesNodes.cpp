@@ -132,3 +132,13 @@ std::vector<std::vector<CellIndex>> TrianglesNodes::splitInEdgeConnectedComponen
    }
    return result;
 }
+
+TrianglesNodes TrianglesNodes::createSubSet(const std::vector<CellIndex>& cellIds) const
+{
+   TrianglesNodes result;
+   for (auto cellId : cellIds)
+   {
+      result.addTriangle(getTriangleNodes(cellId));
+   }
+   return result;
+}

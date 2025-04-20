@@ -127,3 +127,32 @@ void ProjectToVtk::addTrianglesAndReconstructions(const TrianglesNodes& tnodes, 
    addTriangles(tnodes, points, "mesh");
    addReconstructions(reconstructions, points);
 }
+
+template void ProjectToVtk::addTrianglesAndBoundaries<2>(const TrianglesNodes& tnodes, const IPointCollection<double, 2>& points, const std::string& name);
+template void ProjectToVtk::addTrianglesAndBoundaries<3>(const TrianglesNodes& tnodes, const IPointCollection<double, 3>& points, const std::string& name);
+
+template<int N>
+void ProjectToVtk::addTrianglesAndBoundaries(const TrianglesNodes& tnodesAll, const IPointCollection<double, N>& points, const std::string& name)
+{
+   const auto connectedTriangleIds = tnodesAll.splitInEdgeConnectedComponents();
+
+   for (int subSetId = 0; const auto & tnodesIds : connectedTriangleIds)
+   {
+      // get edge connected subset
+      const TrianglesNodes tnodes = tnodesAll.createSubSet(tnodesIds);
+      const std::string nameTriangles = name + "_PART_" + std::to_string(subSetId);
+      addTriangles(tnodes, points, nameTriangles);
+      addBoundariesOfConnectedTriangles(tnodes, points, nameTriangles);
+      ++subSetId;
+   }
+}
+
+template void ProjectToVtk::addBoundariesOfConnectedTriangles<2>(const TrianglesNodes& tnodes, const IPointCollection<double, 2>& points, const std::string& name);
+template void ProjectToVtk::addBoundariesOfConnectedTriangles<3>(const TrianglesNodes& tnodes, const IPointCollection<double, 3>& points, const std::string& name);
+
+template<int N>
+void ProjectToVtk::addBoundariesOfConnectedTriangles(const TrianglesNodes& tnodes, const IPointCollection<double, N>& points, const std::string& name)
+{
+   const Boundary1 bdy1 = Boundary1::createFromBoundaryEdges(tnodes);
+   addBoundary1(bdy1, points, name + "_BDY");
+}
