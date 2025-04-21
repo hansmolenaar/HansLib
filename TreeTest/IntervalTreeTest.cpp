@@ -11,6 +11,19 @@
 
 using namespace IntervalTree;
 
+namespace
+{
+   struct ActionCountNodesAndLeaves
+   {
+      void operator()(const Index<3>& index) { if (indexTree->isLeaf(index)) { numLeaves += 1; } else { numNodes += 1; } };
+
+      const IndexTree<3>* indexTree = nullptr;
+      int numNodes = 0;
+      int numLeaves = 0;
+
+   };
+}
+
 TEST(IndexTreeTest, DefaultConsturctor)
 {
    IndexTree<2> tree;
@@ -200,4 +213,40 @@ TEST(IndexTreeTest, ToString)
    std::ostringstream os;
    os << tree;
    ASSERT_EQ(os.str(), "IndexTree N=1  SIZE=7  NUMLEAVES=4  MAXLEVEL=2");
+}
+
+TEST(IndexTreeTest, ForeachNode1)
+{
+   IndexTree<3> tree;
+   RefineToMaxLevel<3> doRefine{ 1 };
+   tree.refineUntilReady(doRefine);
+
+   ActionCountNodesAndLeaves action{ &tree };
+   tree.foreachNode(action);
+   ASSERT_EQ(action.numNodes, 1);
+   ASSERT_EQ(action.numLeaves, 8);
+}
+
+TEST(IndexTreeTest, ForeachNode2)
+{
+   IndexTree<3> tree;
+   RefineToMaxLevel<3> doRefine{ 2 };
+   tree.refineUntilReady(doRefine);
+
+   ActionCountNodesAndLeaves action{ &tree };
+   tree.foreachNode(action);
+   ASSERT_EQ(action.numNodes, 9);
+   ASSERT_EQ(action.numLeaves, 64);
+}
+
+TEST(IndexTreeTest, ForeachNode3)
+{
+   IndexTree<3> tree;
+   RefineToMaxLevel<3> doRefine{ 3 };
+   tree.refineUntilReady(doRefine);
+
+   ActionCountNodesAndLeaves action{ &tree };
+   tree.foreachNode(action);
+   ASSERT_EQ(action.numNodes, 73);
+   ASSERT_EQ(action.numLeaves, 512);
 }
