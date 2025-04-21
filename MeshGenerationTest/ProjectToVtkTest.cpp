@@ -3,6 +3,9 @@
 #include "Paraview.h"
 #include "PointClose.h"
 #include "ProjectToVtk.h"
+#include "Tetrahedron.h"
+#include "TetrahedronNodesOriented.h"
+#include "TetrahedronsNodes.h"
 #include "TriangleNodesOriented.h"
 #include "TrianglesNodes.h"
 #include "UniquePointCollectionBinning.h"
@@ -23,8 +26,8 @@ TEST(ProjectToVtkTest, SingleTriangle)
    p2v.addTrianglesAndBoundaries(tnodes, points, "mesh");
 
    const std::vector<const Vtk::VtkData*> vtkDatas = p2v.get();
-   ASSERT_EQ(vtkDatas.size(), 2);
-   ASSERT_EQ(vtkDatas.at(1)->getName().item, "mesh_PART_0_BDY_cycle_1");
+   ASSERT_EQ(vtkDatas.size(), 3);
+   ASSERT_EQ(vtkDatas.at(2)->getName().item, "mesh_PART_0_BDY_cycle_1");
 }
 
 TEST(ProjectToVtkTest, TwoTriangles)
@@ -46,11 +49,12 @@ TEST(ProjectToVtkTest, TwoTriangles)
    p2v.addTrianglesAndBoundaries(tnodes, points, "mesh");
 
    const std::vector<const Vtk::VtkData*> vtkDatas = p2v.get();
-   ASSERT_EQ(vtkDatas.size(), 4);
-   ASSERT_EQ(vtkDatas.at(0)->getName().item, "mesh_PART_0");
-   ASSERT_EQ(vtkDatas.at(1)->getName().item, "mesh_PART_0_BDY_cycle_1");
-   ASSERT_EQ(vtkDatas.at(2)->getName().item, "mesh_PART_1");
-   ASSERT_EQ(vtkDatas.at(3)->getName().item, "mesh_PART_1_BDY_cycle_1");
+   ASSERT_EQ(vtkDatas.size(), 5);
+   ASSERT_EQ(vtkDatas.at(0)->getName().item, "mesh");
+   ASSERT_EQ(vtkDatas.at(1)->getName().item, "mesh_PART_0");
+   ASSERT_EQ(vtkDatas.at(2)->getName().item, "mesh_PART_0_BDY_cycle_1");
+   ASSERT_EQ(vtkDatas.at(3)->getName().item, "mesh_PART_1");
+   ASSERT_EQ(vtkDatas.at(4)->getName().item, "mesh_PART_1_BDY_cycle_1");
    //Paraview::WriteList(vtkDatas);
 }
 
@@ -73,10 +77,34 @@ TEST(ProjectToVtkTest, TwoTouchingTriangles)
 
    const std::vector<const Vtk::VtkData*> vtkDatas = p2v.get();
    Paraview::WriteList(vtkDatas);
-   ASSERT_EQ(vtkDatas.size(), 4);
-   ASSERT_EQ(vtkDatas.at(0)->getName().item, "mesh_PART_0");
-   ASSERT_EQ(vtkDatas.at(1)->getName().item, "mesh_PART_0_BDY_cycle_1");
-   ASSERT_EQ(vtkDatas.at(2)->getName().item, "mesh_PART_1");
-   ASSERT_EQ(vtkDatas.at(3)->getName().item, "mesh_PART_1_BDY_cycle_1");
+   ASSERT_EQ(vtkDatas.size(), 5);
+   ASSERT_EQ(vtkDatas.at(0)->getName().item, "mesh");
+   ASSERT_EQ(vtkDatas.at(1)->getName().item, "mesh_PART_0");
+   ASSERT_EQ(vtkDatas.at(2)->getName().item, "mesh_PART_0_BDY_cycle_1");
+   ASSERT_EQ(vtkDatas.at(3)->getName().item, "mesh_PART_1");
+   ASSERT_EQ(vtkDatas.at(4)->getName().item, "mesh_PART_1_BDY_cycle_1");
    //Paraview::WriteList(vtkDatas);
+}
+
+
+TEST(ProjectToVtkTest, AddTetrahedronsAndBoundaries)
+{
+   const PointClose<GeomType, GeomDim3> areClose;
+   UniquePointCollectionBinning<GeomDim3> points(areClose, std::vector<Point3>{{ -2, -2, -2 }, { 2,2,2 }});
+   std::array<NodeIndex, NumNodesOnTetrahedron> nodeIndices;
+   str::transform(Tetrahedron::getRegularTetrahedron(), nodeIndices.begin(), [&points](const Point3& p) {return points.addIfNew(p); });
+
+   TetrahedronsNodes tnodes;
+   tnodes.addTetrahedron(TetrahedronNodesOriented(nodeIndices));
+
+   ProjectToVtk p2v("ProjectToVtkTest_AddTetrahedronsAndBoundaries");
+   p2v.addTetrahedronsAndBoundaries(tnodes, points, "mesh");
+
+   const std::vector<const Vtk::VtkData*> vtkDatas = p2v.get();
+   Paraview::WriteList(vtkDatas);
+   ASSERT_EQ(vtkDatas.size(), 3);
+   ASSERT_EQ(vtkDatas.at(0)->getName().item, "mesh");
+   ASSERT_EQ(vtkDatas.at(1)->getName().item, "mesh_BDY");
+   ASSERT_EQ(vtkDatas.at(2)->getName().item, "mesh_BDY_PART_0");
+   Paraview::WriteList(vtkDatas);
 }

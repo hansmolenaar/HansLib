@@ -35,6 +35,12 @@ void ProjectToVtk::addTetrahedrons(const TetrahedronsNodes& tnodes, const IPoint
    m_vtk.emplace_back(std::move(vtkData));
 }
 
+void ProjectToVtk::addTetrahedronsAndBoundaries(const TetrahedronsNodes& tnodes, const IPointCollection3& points, const std::string& name)
+{
+   addTetrahedrons(tnodes, points, name);
+   addTrianglesAndBoundaries(tnodes.getBoundaryFaces(), points, name + "_BDY");
+}
+
 template void ProjectToVtk::addEdges<Topology::EdgeNodesDirected, 2>(const std::vector<EdgeNodesDirected>& edges, const IPointCollection<double, 2>& points, const std::string& name);
 template void ProjectToVtk::addEdges<Topology::EdgeNodesSorted, 2>(const std::vector<EdgeNodesSorted>& edges, const IPointCollection<double, 2>& points, const std::string& name);
 template void ProjectToVtk::addEdges<Topology::EdgeNodesDirected, 3>(const std::vector<EdgeNodesDirected>& edges, const IPointCollection<double, 3>& points, const std::string& name);
@@ -134,8 +140,9 @@ template void ProjectToVtk::addTrianglesAndBoundaries<3>(const TrianglesNodes& t
 template<int N>
 void ProjectToVtk::addTrianglesAndBoundaries(const TrianglesNodes& tnodesAll, const IPointCollection<double, N>& points, const std::string& name)
 {
-   const auto connectedTriangleIds = tnodesAll.splitInEdgeConnectedComponents();
+   addTriangles(tnodesAll, points, name);
 
+   const auto connectedTriangleIds = tnodesAll.splitInEdgeConnectedComponents();
    for (int subSetId = 0; const auto & tnodesIds : connectedTriangleIds)
    {
       // get edge connected subset
