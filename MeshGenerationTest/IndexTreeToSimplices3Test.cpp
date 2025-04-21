@@ -5,6 +5,7 @@
 #include "IntervalTreeBalance.h"
 #include "IntervalTreeRefinePredicate.h"
 #include "IntervalTreeVtk.h"
+#include "ITopologicalAdjacency.h"
 #include "Paraview.h"
 #include "ProjectToVtk.h"
 #include "ReferenceShapeCube.h"
@@ -103,6 +104,36 @@ TEST(IndexTreeToSimplices3Test, Level1ToVtk)
    ASSERT_EQ(boundaryFaces.getNumTriangles(), 48);
    const Boundary1 bnd = Boundary1::createFromBoundaryEdges(boundaryFaces);
    ASSERT_TRUE(bnd.empty());
+}
+
+TEST(IndexTreeToSimplices3Test, GetCubeFromIndex)
+{
+   const IndexTree<GeomDim3> tree;
+   const auto cube = IndexTreeToSimplices3::getCubeFromIndex(tree.getRoot());
+   const auto* adjacencyC2E = *ReferenceShapeCube::getInstance().getAdjacencies().getAdjacency(Topology::Corner, Topology::Edge);
+   for (int edge = 0; edge < Topology::NumEdgesOnCube; ++edge)
+   {
+      const auto& edgePoints = adjacencyC2E->getConnectedLowers(edge);
+      ASSERT_EQ(edgePoints.size(), 2);
+      const auto p0 = cube[edgePoints[0]];
+      const auto p1 = cube[edgePoints[1]];
+      const auto dist = std::abs(p0[0] - p1[0]) + std::abs(p0[1] - p1[1]) + std::abs(p0[2] - p1[2]);
+      ASSERT_EQ(dist, Rational(1, 1));
+   }
+}
+
+TEST(IndexTreeToSimplices3Test, GetRefinedEdges1)
+{
+   IndexTree<GeomDim3> tree;
+   RefineToMaxLevel<GeomDim3> doRefine1{ 1 };
+   tree.refineLeaves(doRefine1);
+   const std::set<IndexTreeToSimplices3::TreeEdge> refinedEdges = IndexTreeToSimplices3::getRefinedEdges(tree);
+   ASSERT_EQ(refinedEdges.size(), Topology::NumEdgesOnCube);
+   for (const auto edge : refinedEdges)
+   {
+      const auto dist = std::abs(edge[0][0] - edge[1][0]) + std::abs(edge[0][1] - edge[1][1]) + std::abs(edge[0][2] - edge[1][2]);
+      ASSERT_EQ(dist, Rational(1, 1));
+   }
 }
 
 #if false

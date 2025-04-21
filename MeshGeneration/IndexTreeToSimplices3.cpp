@@ -15,6 +15,27 @@ using namespace MeshGeneration;
 namespace
 {
 
+   struct ActionRefinedEdges
+   {
+      void operator()(const IntervalTree::Index<GeomDim3>& index);
+
+      const IntervalTree::IndexTree<GeomDim3>* Tree;
+      std::set<IndexTreeToSimplices3::TreeEdge> RefinedTreeEdges;
+   };
+
+
+   void ActionRefinedEdges::operator()(const IntervalTree::Index<GeomDim3>& index)
+   {
+      if (!Tree->isLeaf(index))
+      {
+         for (const auto& edge : IndexTreeToSimplices3::getCubeEdgesFromIndex(index))
+         {
+            RefinedTreeEdges.insert(edge);
+         }
+      }
+   }
+
+
    struct ActionSplit
    {
       void operator()(const IntervalTree::Index<GeomDim3>& index);
@@ -136,4 +157,44 @@ void IndexTreeToSimplices3::cellsToVtkData(MeshGeneration::ProjectToVtk& vtk, co
 
    vtk.addTetrahedrons(tnodes, points, std::string(Vtk::itemIndexTree3) + "_mesh");
    vtk.addEdges(tnodes.getAllSortedEdges(), points, std::string(Vtk::itemIndexTree3) + "_edges");
+}
+
+std::array<RatPoint3, Topology::NumNodesOnCube> IndexTreeToSimplices3::getCubeFromIndex(const IntervalTree::Index<GeomDim3>& index)
+{
+   const BoundingBox<Rational, GeomDim3> bb = index.getBbOfCell();
+   std::array<RatPoint3, NumNodesOnCube> result;
+   result[0] = RatPoint3{ bb.getInterval(0).getLower(), bb.getInterval(1).getLower() , bb.getInterval(2).getLower() };
+   result[1] = RatPoint3{ bb.getInterval(0).getUpper(), bb.getInterval(1).getLower() , bb.getInterval(2).getLower() };
+   result[2] = RatPoint3{ bb.getInterval(0).getLower(), bb.getInterval(1).getUpper() , bb.getInterval(2).getLower() };
+   result[3] = RatPoint3{ bb.getInterval(0).getUpper(), bb.getInterval(1).getUpper() , bb.getInterval(2).getLower() };
+
+
+   result[4] = RatPoint3{ bb.getInterval(0).getLower(), bb.getInterval(1).getLower() , bb.getInterval(2).getUpper() };
+   result[5] = RatPoint3{ bb.getInterval(0).getUpper(), bb.getInterval(1).getLower() , bb.getInterval(2).getUpper() };
+   result[6] = RatPoint3{ bb.getInterval(0).getLower(), bb.getInterval(1).getUpper() , bb.getInterval(2).getUpper() };
+   result[7] = RatPoint3{ bb.getInterval(0).getUpper(), bb.getInterval(1).getUpper() , bb.getInterval(2).getUpper() };
+   return result;
+}
+
+std::set<IndexTreeToSimplices3::TreeEdge> IndexTreeToSimplices3::getRefinedEdges(const IntervalTree::IndexTree<GeomDim3>& tree)
+{
+   ActionRefinedEdges action{ &tree };
+   tree.foreachNode(action);
+   return action.RefinedTreeEdges;
+}
+
+std::array<IndexTreeToSimplices3::TreeEdge, Topology::NumEdgesOnCube> IndexTreeToSimplices3::getCubeEdgesFromIndex(const IntervalTree::Index<GeomDim3>& index)
+{
+   std::array<TreeEdge, Topology::NumEdgesOnCube> result;
+   const auto cube = IndexTreeToSimplices3::getCubeFromIndex(index);
+   const auto* adjacencyC2E = *ReferenceShapeCube::getInstance().getAdjacencies().getAdjacency(Topology::Corner, Topology::Edge);
+   for (int edge = 0; edge < Topology::NumEdgesOnCube; ++edge)
+   {
+      const auto& edgePoints = adjacencyC2E->getConnectedLowers(edge);
+      const auto p0 = cube[edgePoints[0]];
+      const auto p1 = cube[edgePoints[1]];
+      // Edge is sorted
+      result[edge] = { std::min(p0, p1), std::max(p0,p1) };
+   }
+   return result;
 }
