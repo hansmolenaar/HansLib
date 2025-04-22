@@ -126,9 +126,9 @@ TEST(IndexTreeToSimplices3Test, GetRefinedEdges1)
    tree.refineLeaves(doRefine1);
    const std::set<IndexTreeToSimplices3::TreeEdge> refinedEdges = IndexTreeToSimplices3::getRefinedEdges(tree);
    ASSERT_EQ(refinedEdges.size(), Topology::NumEdgesOnCube);
-   for (const auto edge : refinedEdges)
+   for (const auto& edge : refinedEdges)
    {
-      ASSERT_EQ(PointUtils::GetL1Distance(edge[0], edge[1]), 1);
+      ASSERT_EQ(PointUtils::GetL1Distance(edge.point0, edge.point1), 1);
    }
 }
 

@@ -16,12 +16,20 @@ namespace Vtk
 namespace IndexTreeToSimplices3
 {
    using Tetrahedrons = std::vector<std::array<RatPoint3, Topology::NumNodesOnTetrahedron>>;
-   using TreeEdge = std::array<RatPoint3, Topology::NumNodesOnEdge>;
+
+   struct TreeEdge
+   {
+      TreeEdge() = default;
+      TreeEdge(const RatPoint3& p0, const RatPoint3 p1) : point0(std::min(p0, p1)), point1(std::max(p0, p1)) {}
+      auto operator<=>(const TreeEdge& te) const = default;
+      RatPoint3 point0;
+      RatPoint3 point1;
+   };
 
    Tetrahedrons Create(const IntervalTree::IndexTree<GeomDim3>& tree);
    void cellsToVtkData(MeshGeneration::ProjectToVtk& vtk, const Tetrahedrons& cells);
 
    std::array<RatPoint3, Topology::NumNodesOnCube> getCubeFromIndex(const IntervalTree::Index<GeomDim3>& index);
    std::array<TreeEdge, Topology::NumEdgesOnCube> getCubeEdgesFromIndex(const IntervalTree::Index<GeomDim3>& index);
-   std::set<IndexTreeToSimplices3::TreeEdge> getRefinedEdges(const IntervalTree::IndexTree<GeomDim3>& tree);
+   std::set<TreeEdge> getRefinedEdges(const IntervalTree::IndexTree<GeomDim3>& tree);
 };

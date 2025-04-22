@@ -1,3 +1,4 @@
+
 #include "IndexTreeToSimplices3.h"
 #include "IntervalTreeIndex.h"
 #include "ITopologicalAdjacency.h"
@@ -41,6 +42,7 @@ namespace
       void operator()(const IntervalTree::Index<GeomDim3>& index);
 
       const IntervalTree::IndexTree<GeomDim3>& Tree;
+      const std::set<IndexTreeToSimplices3::TreeEdge>& RefinedEdges;
       IndexTreeToSimplices3::Tetrahedrons Tetrahedrons;
    };
 #if false
@@ -67,34 +69,16 @@ namespace
 #endif
    void ActionSplit::operator()(const IntervalTree::Index<GeomDim3>& index)
    {
-      const BoundingBox<Rational, GeomDim3> bb = index.getBbOfCell();
-      const auto& neighbors = IntervalTree::GetAdjacentNeighbors3();
-      std::array<bool, 2 * GeomDim3> moreRefined{ false, false, false, false, false, false };
-      size_t pos = 0;
-      for (const auto& dir : neighbors)
-      {
-         const auto ngb = index.getAdjacentInDir(dir);
-         if (ngb)
-         {
-            const auto found = Tree.get(*ngb);
-            if (found)
-            {
-               moreRefined[pos] = !Tree.isLeaf(*found.value());
-            }
-         }
-         ++pos;
-      }
+      const std::array<RatPoint3, Topology::NumNodesOnCube>& bbNodes = IndexTreeToSimplices3::getCubeFromIndex(index);
+      std::array<IndexTreeToSimplices3::TreeEdge, Topology::NumEdgesOnCube> cellEdges = IndexTreeToSimplices3::getCubeEdgesFromIndex(index);
+      std::array<bool, Topology::NumEdgesOnCube> edgeIsRefined;
+      str::transform(cellEdges, edgeIsRefined.begin(), [this](const IndexTreeToSimplices3::TreeEdge& edge) {return RefinedEdges.contains(edge); });
 
-      const auto lwr = bb.getLower();
-      const auto upr = bb.getUpper();
-      const std::array<RatPoint3, NumNodesOnCube> p{
-         RatPoint3{ lwr[0],lwr[1],lwr[2]}, RatPoint3{upr[0],lwr[1],lwr[2]}, RatPoint3{lwr[0],upr[1],lwr[2]}, RatPoint3{upr[0],upr[1],lwr[2]},
-         RatPoint3{ lwr[0],lwr[1],upr[2]}, RatPoint3{upr[0],lwr[1],upr[2]}, RatPoint3{lwr[0],upr[1],upr[2]}, RatPoint3{upr[0],upr[1],upr[2]} };
-      if (str::none_of(moreRefined, std::identity()))
+      if (str::none_of(edgeIsRefined, std::identity()))
       {
          for (const auto& t : ReferenceShapeCube::getInstance().getStandardSplit())
          {
-            Tetrahedrons.emplace_back(std::array<RatPoint3, Topology::NumNodesOnTetrahedron >{ p[t[0]], p[t[1]], p[t[2]], p[t[3]] });
+            Tetrahedrons.emplace_back(std::array<RatPoint3, Topology::NumNodesOnTetrahedron >{ bbNodes[t[0]], bbNodes[t[1]], bbNodes[t[2]], bbNodes[t[3]] });
          }
       }
       else
@@ -145,9 +129,9 @@ namespace
 
 IndexTreeToSimplices3::Tetrahedrons IndexTreeToSimplices3::Create(const IntervalTree::IndexTree<GeomDim3>& tree)
 {
-   ActionSplit action{ tree };
-   tree.foreachLeaf(action);
-   return action.Tetrahedrons;
+   ActionSplit actionSplit{ tree, getRefinedEdges(tree) };
+   tree.foreachLeaf(actionSplit);
+   return actionSplit.Tetrahedrons;
 }
 
 void IndexTreeToSimplices3::cellsToVtkData(MeshGeneration::ProjectToVtk& vtk, const Tetrahedrons& cells)
