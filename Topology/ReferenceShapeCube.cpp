@@ -40,7 +40,7 @@ namespace
    std::vector<std::unique_ptr<ITopologicalAdjacency>> createAdjacencies()
    {
       std::vector<std::unique_ptr<ITopologicalAdjacency>> result;
-      result.emplace_back(TopologicalAdjacency::Create(Edge, NumEdgesOnCube, Corner, NumNodesOnCube,
+      result.emplace_back(TopologicalAdjacency::Create(Edge, NumEdgesOnCube, Corner, NumCornersOnCube,
          {
             { 0, { 0, 1 } },
             { 1, { 0, 2 } },
@@ -58,7 +58,7 @@ namespace
          ));
 
 
-      result.emplace_back(TopologicalAdjacency::Create(Face, NumFacesOnCube, Corner, NumNodesOnCube,
+      result.emplace_back(TopologicalAdjacency::Create(Face, NumFacesOnCube, Corner, NumCornersOnCube,
          {
            { 0, { 0, 1, 5, 4 } },
            { 1, { 2, 6, 7, 3 } },
@@ -80,7 +80,7 @@ namespace
          }
          ));
 
-      result.emplace_back(TopologicalAdjacency::CreateTrivial(Volume, Corner, NumNodesOnCube));
+      result.emplace_back(TopologicalAdjacency::CreateTrivial(Volume, Corner, NumCornersOnCube));
       result.emplace_back(TopologicalAdjacency::CreateTrivial(Volume, Edge, NumEdgesOnCube));
       result.emplace_back(TopologicalAdjacency::CreateTrivial(Volume, Face, NumFacesOnCube));
       return result;
@@ -99,7 +99,7 @@ const ReferenceShapeCube& ReferenceShapeCube::getInstance()
 
 ReferenceShapeCube::ReferenceShapeCube()
 {
-   const std::vector<int> counts{ NumNodesOnCube, NumEdgesOnCube, NumFacesOnCube, 1 };
+   const std::vector<int> counts{ NumCornersOnCube, NumEdgesOnCube, NumFacesOnCube, 1 };
    m_adjacencies = TopologicalAdjacencies::Create(counts, createAdjacencies());
 }
 

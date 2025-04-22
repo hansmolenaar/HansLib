@@ -18,7 +18,7 @@ namespace
    std::vector<std::unique_ptr<ITopologicalAdjacency>> createAdjacencies()
    {
       std::vector<std::unique_ptr<ITopologicalAdjacency>> result;
-      result.emplace_back(TopologicalAdjacency::Create(Edge, NumEdgesOnTetrahedron, Corner, NumNodesOnTetrahedron,
+      result.emplace_back(TopologicalAdjacency::Create(Edge, NumEdgesOnTetrahedron, Corner, NumCornersOnTetrahedron,
          {
             { 0, { 0, 1 } },
             { 1, { 0, 2 } },
@@ -30,7 +30,7 @@ namespace
       ));
 
 
-      result.emplace_back(TopologicalAdjacency::Create(Face, NumFacesOnTetrahedron, Corner, NumNodesOnTetrahedron,
+      result.emplace_back(TopologicalAdjacency::Create(Face, NumFacesOnTetrahedron, Corner, NumCornersOnTetrahedron,
          {
            { 0, { 0, 1, 3 } },
            { 1, { 0, 2, 1 } },
@@ -48,7 +48,7 @@ namespace
          }
       ));
 
-      result.emplace_back(TopologicalAdjacency::CreateTrivial(Volume, Corner, NumNodesOnTetrahedron));
+      result.emplace_back(TopologicalAdjacency::CreateTrivial(Volume, Corner, NumCornersOnTetrahedron));
       result.emplace_back(TopologicalAdjacency::CreateTrivial(Volume, Edge, NumEdgesOnTetrahedron));
       result.emplace_back(TopologicalAdjacency::CreateTrivial(Volume, Face, NumFacesOnTetrahedron));
       return result;
@@ -67,6 +67,6 @@ const ReferenceShapeTetrahedron& ReferenceShapeTetrahedron::getInstance()
 
 ReferenceShapeTetrahedron::ReferenceShapeTetrahedron()
 {
-   const std::vector<int> counts{ NumNodesOnTetrahedron, NumEdgesOnTetrahedron, NumFacesOnTetrahedron, 1 };
+   const std::vector<int> counts{ NumCornersOnTetrahedron, NumEdgesOnTetrahedron, NumFacesOnTetrahedron, 1 };
    m_adjacencies = TopologicalAdjacencies::Create(counts, createAdjacencies());
 }

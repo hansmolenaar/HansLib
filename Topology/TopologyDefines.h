@@ -11,12 +11,14 @@ namespace Topology
    inline constexpr TopologyDimension Face = 2;
    inline constexpr TopologyDimension Volume = 3;
 
-   inline constexpr size_t NumNodesOnEdge = 2;
-   inline constexpr size_t NumNodesOnTriangle = 3;
-   inline constexpr size_t NumNodesOnTetrahedron = 4;
-   inline constexpr size_t NumNodesOnCube = 8;
+   inline constexpr size_t NumCornersOnEdge = 2;
+   inline constexpr size_t NumCornersOnTriangle = 3;
+   inline constexpr size_t NumCornersOnSquare = 4;
+   inline constexpr size_t NumCornersOnTetrahedron = 4;
+   inline constexpr size_t NumCornersOnCube = 8;
 
    inline constexpr size_t NumEdgesOnTriangle = 3;
+   inline constexpr size_t NumEdgesOnSquare = 4;
    inline constexpr size_t NumEdgesOnTetrahedron = 6;
    inline constexpr size_t NumEdgesOnCube = 12;
 

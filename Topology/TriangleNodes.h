@@ -9,7 +9,7 @@ namespace Topology
    class TriangleNodes
    {
    public:
-      explicit TriangleNodes(const std::array<NodeIndex, NumNodesOnTriangle>& nodes);
+      explicit TriangleNodes(const std::array<NodeIndex, NumCornersOnTriangle>& nodes);
       TriangleNodes(NodeIndex n0, NodeIndex n1, NodeIndex n2);
       NodeIndex operator[](size_t n) const { return m_nodes[n]; };
       NodeIndex at(size_t n) const { return m_nodes[n]; };
@@ -29,7 +29,7 @@ namespace Topology
       std::array<EdgeNodesDirected, NumEdgesOnTriangle> getEdges() const;
 
    private:
-      std::array<NodeIndex, NumNodesOnTriangle> m_nodes;
+      std::array<NodeIndex, NumCornersOnTriangle> m_nodes;
    };
 
 

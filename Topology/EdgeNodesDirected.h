@@ -21,6 +21,6 @@ namespace Topology
       bool contains(NodeIndex node) const;
    private:
 
-      std::array<NodeIndex, NumNodesOnEdge> m_nodes;
+      std::array<NodeIndex, NumCornersOnEdge> m_nodes;
    };
 }

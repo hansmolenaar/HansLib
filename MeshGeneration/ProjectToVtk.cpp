@@ -52,7 +52,7 @@ void ProjectToVtk::addEdges(const std::vector<T>& edges, const IPointCollection<
    std::unique_ptr< Vtk::VtkData> vtkData = std::make_unique< Vtk::VtkData>(N, 0, Vtk::Name{ m_projectName, name });
    for (const auto& edge : edges)
    {
-      std::array<PointIndex, NumNodesOnEdge> edgeNodes{ edge[0], edge[1] };
+      std::array<PointIndex, NumCornersOnEdge> edgeNodes{ edge[0], edge[1] };
       vtkData->addCell(Vtk::CellType::VTK_LINE, edgeNodes, points, {});
    }
    m_vtk.emplace_back(std::move(vtkData));
@@ -123,7 +123,7 @@ void ProjectToVtk::addTriangles(const TrianglesNodes& tnodes, const IPointCollec
    for (auto cellId : tnodes.getAllTriangles())
    {
       const auto trg = tnodes.getTriangleNodes(cellId);
-      vtkData->addCell(Vtk::CellType::VTK_TRIANGLE, std::array<NodeIndex, NumNodesOnTriangle>{trg[0], trg[1], trg[2]}, points, {});
+      vtkData->addCell(Vtk::CellType::VTK_TRIANGLE, std::array<NodeIndex, NumCornersOnTriangle>{trg[0], trg[1], trg[2]}, points, {});
    }
    m_vtk.emplace_back(std::move(vtkData));
 }

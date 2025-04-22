@@ -20,7 +20,7 @@ double Triangle::SmallestAngle(const Point2& p0, const Point2& p1, const Point2&
    return minAngle;
 }
 
-std::array<Point2, Topology::NumNodesOnTriangle> Triangle::getPoints(const Topology::TriangleNodesOriented& nodes, const IPointCollection2& points)
+std::array<Point2, Topology::NumCornersOnTriangle> Triangle::getPoints(const Topology::TriangleNodesOriented& nodes, const IPointCollection2& points)
 {
    return { points.getPoint(nodes[0]),points.getPoint(nodes[1]), points.getPoint(nodes[2]) };
 }

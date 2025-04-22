@@ -23,11 +23,11 @@ namespace MeshGeneration
       void deleteTetrahedron(CellIndex tetId);
       std::vector<CellIndex> getTetrahedronsContainingNode(Topology::NodeIndex node) const;
       std::vector<CellIndex> getTetrahedronsContainingEdge(Topology::NodeIndex n0, Topology::NodeIndex n1) const;
-      //boost::container::static_vector<CellIndex, Topology::NumNodesOnTetrahedron> getEdgeConnectedTetrahedrons(CellIndex TetrahedronId) const;
-      boost::container::static_vector<CellIndex, Topology::NumNodesOnTetrahedron> getCommonNodes(CellIndex tetId1, CellIndex tetId2) const;
+      //boost::container::static_vector<CellIndex, Topology::NumCornersOnTetrahedron> getEdgeConnectedTetrahedrons(CellIndex TetrahedronId) const;
+      boost::container::static_vector<CellIndex, Topology::NumCornersOnTetrahedron> getCommonNodes(CellIndex tetId1, CellIndex tetId2) const;
       std::vector<Topology::NodeIndex> getEdgeConnectedNodes(Topology::NodeIndex node) const;
-      std::optional<CellIndex> tryGetTetrahedronFromOrientedNodes(const std::array<Topology::NodeIndex, Topology::NumNodesOnTetrahedron>& nodes) const;
-      std::optional<CellIndex> tryGetTetrahedronFromNodes(std::array<Topology::NodeIndex, Topology::NumNodesOnTetrahedron> nodes) const;
+      std::optional<CellIndex> tryGetTetrahedronFromOrientedNodes(const std::array<Topology::NodeIndex, Topology::NumCornersOnTetrahedron>& nodes) const;
+      std::optional<CellIndex> tryGetTetrahedronFromNodes(std::array<Topology::NodeIndex, Topology::NumCornersOnTetrahedron> nodes) const;
       bool tetrahedronContainsNode(CellIndex CellIndex, Topology::NodeIndex nodeId) const;
 
       Topology::TetrahedronNodesOriented getTetrahedronNodes(CellIndex tetId) const;

@@ -10,7 +10,7 @@ namespace Topology
    public:
       // Nodes are permuted such that the first node is the smallest, the last the biggest and the permutation is even
       TetrahedronNodesOriented(NodeIndex n0, NodeIndex n1, NodeIndex n2, NodeIndex n3);
-      explicit TetrahedronNodesOriented(const std::array<NodeIndex, NumNodesOnTetrahedron>& nodes);
+      explicit TetrahedronNodesOriented(const std::array<NodeIndex, NumCornersOnTetrahedron>& nodes);
 
       NodeIndex operator[](size_t n) const { return m_nodes[n]; };
       NodeIndex at(size_t n) const { return m_nodes[n]; };
@@ -37,10 +37,10 @@ namespace Topology
 
       std::array<EdgeNodesSorted, NumEdgesOnTetrahedron> getEdges() const;
 
-      static std::array<NodeIndex, NumNodesOnTetrahedron> orient(NodeIndex n0, NodeIndex n1, NodeIndex n2, NodeIndex n3);
-      static std::array<NodeIndex, NumNodesOnTetrahedron> orient(std::array<NodeIndex, NumNodesOnTetrahedron> nodes);
+      static std::array<NodeIndex, NumCornersOnTetrahedron> orient(NodeIndex n0, NodeIndex n1, NodeIndex n2, NodeIndex n3);
+      static std::array<NodeIndex, NumCornersOnTetrahedron> orient(std::array<NodeIndex, NumCornersOnTetrahedron> nodes);
    private:
-      std::array<NodeIndex, NumNodesOnTetrahedron> m_nodes;
+      std::array<NodeIndex, NumCornersOnTetrahedron> m_nodes;
    };
 
 

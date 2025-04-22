@@ -5,7 +5,7 @@ using namespace Topology;
 
 namespace
 {
-   std::array<NodeIndex, NumNodesOnTriangle> order(NodeIndex n0, NodeIndex n1, NodeIndex n2)
+   std::array<NodeIndex, NumCornersOnTriangle> order(NodeIndex n0, NodeIndex n1, NodeIndex n2)
    {
       if (n0 < n1 && n0 < n2) return { n0, n1, n2 };
       if (n1 < n0 && n1 < n2) return { n1, n2, n0 };

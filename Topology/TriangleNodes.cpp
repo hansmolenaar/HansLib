@@ -15,7 +15,7 @@ TriangleNodes::TriangleNodes(NodeIndex n0, NodeIndex n1, NodeIndex n2) :
    throwOnDuplicate(m_nodes);
 }
 
-TriangleNodes::TriangleNodes(const std::array<NodeIndex, NumNodesOnTriangle>& nodes) :
+TriangleNodes::TriangleNodes(const std::array<NodeIndex, NumCornersOnTriangle>& nodes) :
    TriangleNodes(nodes[0], nodes[1], nodes[2])
 {
 }

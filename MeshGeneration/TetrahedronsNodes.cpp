@@ -29,12 +29,12 @@ std::optional<CellIndex> TetrahedronsNodes::tryGetTetrahedronFromNodes(const Tet
 }
 #endif
 
-std::optional<CellIndex> TetrahedronsNodes::tryGetTetrahedronFromOrientedNodes(const std::array<NodeIndex, NumNodesOnTetrahedron>& nodes) const
+std::optional<CellIndex> TetrahedronsNodes::tryGetTetrahedronFromOrientedNodes(const std::array<NodeIndex, NumCornersOnTetrahedron>& nodes) const
 {
    return m_cellsNodes.tryGetCellFromOrderedNodes(nodes);
 }
 
-std::optional<CellIndex> TetrahedronsNodes::tryGetTetrahedronFromNodes(std::array<NodeIndex, NumNodesOnTetrahedron> nodes) const
+std::optional<CellIndex> TetrahedronsNodes::tryGetTetrahedronFromNodes(std::array<NodeIndex, NumCornersOnTetrahedron> nodes) const
 {
    return tryGetTetrahedronFromOrientedNodes(TetrahedronNodesOriented::orient(nodes));
 }
@@ -47,7 +47,7 @@ void TetrahedronsNodes::deleteTetrahedron(CellIndex tetId)
 std::vector<CellIndex> TetrahedronsNodes::getTetrahedronsContainingEdge(Topology::NodeIndex n0, Topology::NodeIndex n1) const
 {
    std::vector<CellIndex> result;
-   return m_cellsNodes.getCellsContainingNodes(result, std::array<NodeIndex, NumNodesOnEdge>{n0, n1});
+   return m_cellsNodes.getCellsContainingNodes(result, std::array<NodeIndex, NumCornersOnEdge>{n0, n1});
 }
 
 std::vector<CellIndex> TetrahedronsNodes::getTetrahedronsContainingNode(NodeIndex node) const
@@ -63,7 +63,7 @@ std::vector<Topology::NodeIndex> TetrahedronsNodes::getEdgeConnectedNodes(Topolo
 }
 
 #if false
-boost::container::static_vector<CellIndex, Topology::NumNodesOnTetrahedron> TetrahedronsNodes::getEdgeConnectedTetrahedrons(CellIndex tetId) const
+boost::container::static_vector<CellIndex, Topology::NumCornersOnTetrahedron> TetrahedronsNodes::getEdgeConnectedTetrahedrons(CellIndex tetId) const
 {
    boost::container::static_vector<CellIndex, 3> result;
    const auto tetrahedron = getTetrahedronNodes(tetId);
@@ -78,9 +78,9 @@ boost::container::static_vector<CellIndex, Topology::NumNodesOnTetrahedron> Tetr
 }
 #endif
 
-boost::container::static_vector<CellIndex, Topology::NumNodesOnTetrahedron>  TetrahedronsNodes::getCommonNodes(CellIndex tetId1, CellIndex tetId2) const
+boost::container::static_vector<CellIndex, Topology::NumCornersOnTetrahedron>  TetrahedronsNodes::getCommonNodes(CellIndex tetId1, CellIndex tetId2) const
 {
-   boost::container::static_vector<CellIndex, Topology::NumNodesOnTetrahedron> result;
+   boost::container::static_vector<CellIndex, Topology::NumCornersOnTetrahedron> result;
    return m_cellsNodes.getCommonNodes(tetId1, tetId2, result);
 }
 

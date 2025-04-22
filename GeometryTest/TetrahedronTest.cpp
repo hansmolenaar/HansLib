@@ -16,10 +16,10 @@ using namespace Topology;
 
 namespace
 {
-   void checkTranslationInvariance(const std::array<Point3, NumNodesOnTetrahedron>& org)
+   void checkTranslationInvariance(const std::array<Point3, NumCornersOnTetrahedron>& org)
    {
       const PointClose<double, GeomDim3> areClose;
-      std::array<Point3, NumNodesOnTetrahedron> shifted;
+      std::array<Point3, NumCornersOnTetrahedron> shifted;
       str::transform(org, shifted.begin(), [](const Point3& p) {return p + Point3{ 1,2,3 }; });
       const double volumeOrg = Tetrahedron::getSignedVolume(org[0], org[1], org[2], org[3]);
       const double volumeShifted = Tetrahedron::getSignedVolume(shifted[0], shifted[1], shifted[2], shifted[3]);
@@ -58,7 +58,7 @@ TEST(TetrahedronTest, VolumePermuted)
    const Point3 p1{ 1,0,0 };
    const Point3 p2{ 0,1,0 };
    const Point3 p3{ 0,0,1 };
-   const std::array<Point3, NumNodesOnTetrahedron> points{ p0, p1, p2, p3 };
+   const std::array<Point3, NumCornersOnTetrahedron> points{ p0, p1, p2, p3 };
    std::vector<Permutation::Entry> p{ 0,1,2,3 };
    do
    {
@@ -81,7 +81,7 @@ TEST(TetrahedronTest, RegularTetrahedron)
    const auto tet = Tetrahedron::getRegularTetrahedron();
    const double volume = Tetrahedron::getSignedVolume(tet[0], tet[1], tet[2], tet[3]);
    ASSERT_DOUBLE_EQ(volume, 8.0 / 3.0);
-   const auto centerTet = (tet[0] + tet[1] + tet[2] + tet[3]) / Topology::NumNodesOnTetrahedron;
+   const auto centerTet = (tet[0] + tet[1] + tet[2] + tet[3]) / Topology::NumCornersOnTetrahedron;
 
    for (const auto f : faceNodes)
    {
@@ -130,7 +130,7 @@ TEST(TetrahedronTest, TriRectangularTetrahedronSmallestDihedralAngle)
 
 TEST(TetrahedronTest, CubeSplit)
 {
-   const std::array<Point3, NumNodesOnCube> vertices{
+   const std::array<Point3, NumCornersOnCube> vertices{
       Point3{ 0,0,0 }, Point3{ 1,0,0 }, Point3{ 0,1,0 }, Point3{ 1,1,0 },
       Point3{ 0,0,1 },  Point3{ 1,0,1 },  Point3{ 0,1,1 }, Point3{ 1,1,1 } };
    double volume = 0;

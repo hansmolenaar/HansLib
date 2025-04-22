@@ -104,7 +104,7 @@ namespace
       UniquePointCollectionBinning<GeomDim2> points(predicate, std::vector<Point2>{{0, 0}, { 1,1 }});
       for (const auto& cell : cells)
       {
-         std::array<PointIndex, NumNodesOnTriangle> cellNodes;
+         std::array<PointIndex, NumCornersOnTriangle> cellNodes;
          for (size_t vertex = 0; const auto & v : cell)
          {
             cellNodes.at(vertex) = points.addIfNew(PointUtils::toPoint(v));

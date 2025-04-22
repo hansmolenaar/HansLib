@@ -26,9 +26,9 @@ TEST(TetrahedronNodesOrientedTest, StreamInsertion)
 TEST(TetrahedronNodesOrientedTest, Permutations)
 {
    int count = 0;
-   const std::array<NodeIndex, NumNodesOnTetrahedron> trivial{ 1,2,3,4 };
-   const std::array<NodeIndex, NumNodesOnTetrahedron> expectEven{ 1,2,3,4 };
-   const std::array<NodeIndex, NumNodesOnTetrahedron> expectOdd{ 1,3,2,4 };
+   const std::array<NodeIndex, NumCornersOnTetrahedron> trivial{ 1,2,3,4 };
+   const std::array<NodeIndex, NumCornersOnTetrahedron> expectEven{ 1,2,3,4 };
+   const std::array<NodeIndex, NumCornersOnTetrahedron> expectOdd{ 1,3,2,4 };
    std::vector<Permutation::Entry> p{ 0,1,2,3 };
    do
    {

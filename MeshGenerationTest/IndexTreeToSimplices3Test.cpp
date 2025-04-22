@@ -37,6 +37,16 @@ namespace
          testOrientation(tet, points);
       }
    }
+
+   struct ContainsPoint
+   {
+      bool operator()(const Index<GeomDim3>& indx) const
+      {
+         const auto& bbNodes = IndexTreeToSimplices3::getCubeFromIndex(indx);
+         return str::any_of(bbNodes, [this](const RatPoint3& p) {return p[0] == point[0] && p[1] == point[1] && p[2] == point[2]; });
+      }
+      RatPoint3 point;
+   };
 }
 
 TEST(IndexTreeToSimplices3Test, RootToVtk)
@@ -50,7 +60,7 @@ TEST(IndexTreeToSimplices3Test, RootToVtk)
    UniqueHashedPointCollection<double, GeomDim3> points;
    for (const auto& tet : tets)
    {
-      std::array<NodeIndex, Topology::NumNodesOnTetrahedron> nodes;
+      std::array<NodeIndex, Topology::NumCornersOnTetrahedron> nodes;
       for (size_t pos = 0; auto n : tet)
       {
          nodes[pos] = points.addIfNew(PointUtils::toPoint(n));
@@ -64,7 +74,7 @@ TEST(IndexTreeToSimplices3Test, RootToVtk)
    IndexTreeToSimplices3::cellsToVtkData(toVtk, tets);
    const auto* vtkMesh = toVtk.get().front();
    ASSERT_EQ(ReferenceShapeCube::numTetsInStandardSplit, vtkMesh->getNumCells());
-   ASSERT_EQ(NumNodesOnCube, vtkMesh->getNumNodes());
+   ASSERT_EQ(NumCornersOnCube, vtkMesh->getNumNodes());
    //Paraview::Paraview::WriteList(vtkData);
 }
 
@@ -83,7 +93,7 @@ TEST(IndexTreeToSimplices3Test, Level1ToVtk)
    UniqueHashedPointCollection<double, GeomDim3> points;
    for (const auto& tet : tets)
    {
-      std::array<NodeIndex, Topology::NumNodesOnTetrahedron> nodes;
+      std::array<NodeIndex, Topology::NumCornersOnTetrahedron> nodes;
       for (size_t pos = 0; auto n : tet)
       {
          nodes[pos] = points.addIfNew(PointUtils::toPoint(n));
@@ -132,72 +142,18 @@ TEST(IndexTreeToSimplices3Test, GetRefinedEdges1)
    }
 }
 
-#if false
-TEST(IndexTreeToSimplices3Test, RefinedToVtk_1)
+TEST(IndexTreeToSimplices3Test, SingleRefinedCell)
 {
-   constexpr auto dim = IndexTreeToSimplices2::GeometryDimension;
-   const  std::array<Rational, dim> point{ Rational{49, 100}, Rational{51, 100} };
-   RefineIfContainsPoint<dim> refinePoint{ point };
-   RefineToMaxLevel<dim> refineToLevel{ 4 };
-   auto doRefine = [&refinePoint, &refineToLevel](const Index<dim>& indx) {return refinePoint(indx) && refineToLevel(indx); };
-
-   IndexTree<dim> tree;
+   IndexTree<GeomDim3> tree;
+   ContainsPoint containsOrigin{ RatPoint3{0,0,0} };
+   auto doRefine = [&containsOrigin](const Index<GeomDim3>& indx) {return indx.getLevel() < 1 || (indx.getLevel() < 2 && containsOrigin(indx)); };
    tree.refineUntilReady(doRefine);
-   IntervalTree::Balance(tree);
-   //Paraview::Write("IndexTreeToSimplices3Test_RefinedToVtk_1_base", *IntervalTree::GetVtkData(tree));
-   const auto triangles = IndexTreeToSimplices2::Create(tree);
-   testOrientation(triangles);
-   std::set<std::pair<RatPoint2, RatPoint2>> directedEdges;
-   UniqueHashedPointCollection<Rational, IndexTreeToSimplices2::GeometryDimension>  toNodeIndex;
-   std::map<std::pair<PointIndex, PointIndex>, int> sortedEdgeCount;
-   for (const auto& triangle : triangles)
-   {
-      const auto edge0 = std::make_pair(triangle.at(0), triangle.at(1));
-      const auto edge1 = std::make_pair(triangle.at(1), triangle.at(2));
-      const auto edge2 = std::make_pair(triangle.at(2), triangle.at(0));
-      const std::array<std::pair<RatPoint2, RatPoint2>, 3> edges{ edge0, edge1, edge2 };
-      for (const auto& e : edges)
-      {
-         ASSERT_FALSE(directedEdges.contains(e));
-         directedEdges.insert(e);
+   ActionCount<GeomDim3> actionCount;
+   tree.foreachLeaf(actionCount);
+   ASSERT_EQ(actionCount(), 15);
 
-         const auto c1 = toNodeIndex.addIfNew(e.first);
-         const auto c2 = toNodeIndex.addIfNew(e.second);
-         const auto sortedEdge = std::make_pair(std::min(c1, c2), std::max(c1, c2));
-         sortedEdgeCount[sortedEdge] += 1;
-      }
-   }
-
-   const auto vtkData = IndexTreeToSimplices2::ToVtkData(triangles, { "IndexTreeToSimplices3Test_RefinedToVtk_1" , "tree" });
-   ASSERT_EQ(90, vtkData->getNumCells());
-   ASSERT_EQ(54, vtkData->getNumNodes());
-
-   Rational length(0, 1);
-   for (const auto& itr : sortedEdgeCount)
-   {
-      if (itr.second == 1)
-      {
-         const auto c1 = toNodeIndex.getPoint(itr.first.first);
-         const auto c2 = toNodeIndex.getPoint(itr.first.second);
-         Rational dif;
-         if (c1.at(0) == c2.at(0))
-         {
-            dif = c1.at(1) - c2.at(1);
-         }
-         else
-         {
-            ASSERT_EQ(c1.at(1), c2.at(1));
-            dif = c1.at(0) - c2.at(0);
-         }
-         length += std::abs(dif);
-      }
-      else
-      {
-         ASSERT_EQ(2, itr.second);
-      }
-   }
-   ASSERT_EQ(4, length);
-   //Paraview::Write(*vtkData);
+   const auto tets = IndexTreeToSimplices3::Create(tree);
+   ProjectToVtk toVtk("IndexTreeToSimplices3Test_SingleRefinedCell");
+   IndexTreeToSimplices3::cellsToVtkData(toVtk, tets);
+   Paraview::WriteList(toVtk.get());
 }
-
-#endif

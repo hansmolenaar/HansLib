@@ -30,7 +30,7 @@ namespace
 
    double getTriangleQuality(const TriangleNodesOriented& triangleNodes, const IPointCollection2& pointCollection, CellQuality2Fun* cellQuality)
    {
-      std::array<Point2, Topology::NumNodesOnTriangle> triangle;
+      std::array<Point2, Topology::NumCornersOnTriangle> triangle;
       str::transform(triangleNodes, triangle.begin(), [&pointCollection](NodeIndex node) {return pointCollection.getPoint(node); });
       return cellQuality(triangle);
    }
@@ -44,7 +44,7 @@ namespace
    TriangleNodesOriented getFlippedTriangle(const TriangleNodesOriented& org, NodeIndex oppNode, NodeIndex oppNodeNgb)
    {
       const auto pos = org.find(oppNode);
-      return { oppNode, org[(pos + 1) % NumNodesOnTriangle], oppNodeNgb };
+      return { oppNode, org[(pos + 1) % NumCornersOnTriangle], oppNodeNgb };
    }
 
    template<typename Pred>

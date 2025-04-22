@@ -8,7 +8,7 @@ namespace Triangle
 {
    double AreaSigned(const Point2& p0, const Point2& p1, const Point2& p2);
    double SmallestAngle(const Point2& p0, const Point2& p1, const Point2& p2);
-   std::array<Point2, Topology::NumNodesOnTriangle> getPoints(const Topology::TriangleNodesOriented& nodes, const IPointCollection2& points);
+   std::array<Point2, Topology::NumCornersOnTriangle> getPoints(const Topology::TriangleNodesOriented& nodes, const IPointCollection2& points);
    double getAreaSigned(const Topology::TriangleNodesOriented& nodes, const IPointCollection2& points);
 
    Point3 getCenter(const Point3& p0, const Point3& p1, const Point3& p2);

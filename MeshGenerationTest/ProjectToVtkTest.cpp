@@ -91,7 +91,7 @@ TEST(ProjectToVtkTest, AddTetrahedronsAndBoundaries)
 {
    const PointClose<GeomType, GeomDim3> areClose;
    UniquePointCollectionBinning<GeomDim3> points(areClose, std::vector<Point3>{{ -2, -2, -2 }, { 2,2,2 }});
-   std::array<NodeIndex, NumNodesOnTetrahedron> nodeIndices;
+   std::array<NodeIndex, NumCornersOnTetrahedron> nodeIndices;
    str::transform(Tetrahedron::getRegularTetrahedron(), nodeIndices.begin(), [&points](const Point3& p) {return points.addIfNew(p); });
 
    TetrahedronsNodes tnodes;

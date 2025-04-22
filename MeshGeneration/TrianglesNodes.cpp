@@ -16,7 +16,7 @@ CellIndex TrianglesNodes::addTriangle(const TriangleNodesOriented& nodes)
 
 std::optional<CellIndex> TrianglesNodes::tryGetTriangle(NodeIndex n0, NodeIndex n1, NodeIndex n2) const
 {
-   return m_cellsNodes.tryGetCellFromOrderedNodes(std::array<NodeIndex, NumNodesOnTriangle>{n0, n1, n2});
+   return m_cellsNodes.tryGetCellFromOrderedNodes(std::array<NodeIndex, NumCornersOnTriangle>{n0, n1, n2});
 }
 
 void TrianglesNodes::deleteTriangle(CellIndex triangleId)
@@ -28,10 +28,10 @@ void TrianglesNodes::deleteTriangle(CellIndex triangleId)
 boost::container::static_vector<CellIndex, 2> TrianglesNodes::getTrianglesContainingEdge(NodeIndex n0, NodeIndex n1) const
 {
    boost::container::static_vector<CellIndex, 2> result;
-   return m_cellsNodes.getCellsContainingNodes(result, std::array<NodeIndex, NumNodesOnEdge>{n0, n1});
+   return m_cellsNodes.getCellsContainingNodes(result, std::array<NodeIndex, NumCornersOnEdge>{n0, n1});
 }
 
-boost::container::static_vector<CellIndex, Topology::NumNodesOnTriangle> TrianglesNodes::getEdgeConnectedTriangles(CellIndex triangleId) const
+boost::container::static_vector<CellIndex, Topology::NumCornersOnTriangle> TrianglesNodes::getEdgeConnectedTriangles(CellIndex triangleId) const
 {
    boost::container::static_vector<CellIndex, 3> result;
    const auto triangle = getTriangleNodes(triangleId);
@@ -45,9 +45,9 @@ boost::container::static_vector<CellIndex, Topology::NumNodesOnTriangle> Triangl
    return result;
 }
 
-boost::container::static_vector<CellIndex, Topology::NumNodesOnTriangle>  TrianglesNodes::getCommonNodes(CellIndex triangle1, CellIndex triangle2) const
+boost::container::static_vector<CellIndex, Topology::NumCornersOnTriangle>  TrianglesNodes::getCommonNodes(CellIndex triangle1, CellIndex triangle2) const
 {
-   boost::container::static_vector<CellIndex, Topology::NumNodesOnTriangle> result;
+   boost::container::static_vector<CellIndex, Topology::NumCornersOnTriangle> result;
    return m_cellsNodes.getCommonNodes(triangle1, triangle2, result);
 }
 

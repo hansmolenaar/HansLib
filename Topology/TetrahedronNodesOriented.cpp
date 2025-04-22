@@ -16,7 +16,7 @@ TetrahedronNodesOriented::TetrahedronNodesOriented(NodeIndex n0, NodeIndex n1, N
 {
 }
 
-TetrahedronNodesOriented::TetrahedronNodesOriented(const std::array<NodeIndex, NumNodesOnTetrahedron>& nodes) :
+TetrahedronNodesOriented::TetrahedronNodesOriented(const std::array<NodeIndex, NumCornersOnTetrahedron>& nodes) :
    m_nodes(orient(nodes))
 {
 }
@@ -70,12 +70,12 @@ std::array<EdgeNodesSorted, NumEdgesOnTetrahedron> TetrahedronNodesOriented::get
    };
 }
 
-std::array<NodeIndex, NumNodesOnTetrahedron> TetrahedronNodesOriented::orient(NodeIndex n0, NodeIndex n1, NodeIndex n2, NodeIndex n3)
+std::array<NodeIndex, NumCornersOnTetrahedron> TetrahedronNodesOriented::orient(NodeIndex n0, NodeIndex n1, NodeIndex n2, NodeIndex n3)
 {
    return orient({ n0, n1, n2, n3 });
 }
 
-std::array<NodeIndex, NumNodesOnTetrahedron> TetrahedronNodesOriented::orient(std::array<NodeIndex, NumNodesOnTetrahedron> result)
+std::array<NodeIndex, NumCornersOnTetrahedron> TetrahedronNodesOriented::orient(std::array<NodeIndex, NumCornersOnTetrahedron> result)
 {
    throwOnDuplicate(result);
 
