@@ -213,3 +213,17 @@ TEST(PointTest, ToPoint)
    ASSERT_DOUBLE_EQ(b[0], 0.5);
    ASSERT_DOUBLE_EQ(b[1], -0.25);
 }
+
+TEST(PointTest, GetL1DistanceInt)
+{
+   const IntPoint2 p0{ -1, -2 };
+   const IntPoint2 p1{ 1, -1 };
+   ASSERT_EQ(PointUtils::GetL1Distance(p0, p1), 3);
+}
+
+TEST(PointTest, GetL1DistanceRational)
+{
+   const RatPoint2 p0{ Rational{1,2}, Rational{-1,4} };
+   const RatPoint2 p1{ Rational{1,8}, Rational{3,8} };
+   ASSERT_EQ(PointUtils::GetL1Distance(p0, p1), 1);
+}

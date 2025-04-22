@@ -104,6 +104,13 @@ namespace PointUtils
    }
 
    template<typename T, int N>
+   T GetL1Distance(const Point<T, N>& point0, const Point<T, N>& point1)
+   {
+      const Point<T, N> dif = point0 - point1;
+      return std::accumulate(dif.begin(), dif.end(), T(0), [](T sum, T val) {return sum + std::abs(val); });
+   }
+
+   template<typename T, int N>
    T Angle(const Point<T, N>& p0, const Point<T, N>& p1, const Point<T, N>& p2)
    {
       const auto d0 = p1 - p0;

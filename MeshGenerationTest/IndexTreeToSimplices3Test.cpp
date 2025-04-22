@@ -115,10 +115,7 @@ TEST(IndexTreeToSimplices3Test, GetCubeFromIndex)
    {
       const auto& edgePoints = adjacencyC2E->getConnectedLowers(edge);
       ASSERT_EQ(edgePoints.size(), 2);
-      const auto p0 = cube[edgePoints[0]];
-      const auto p1 = cube[edgePoints[1]];
-      const auto dist = std::abs(p0[0] - p1[0]) + std::abs(p0[1] - p1[1]) + std::abs(p0[2] - p1[2]);
-      ASSERT_EQ(dist, Rational(1, 1));
+      ASSERT_EQ(PointUtils::GetL1Distance(cube[edgePoints[0]], cube[edgePoints[1]]), 1);
    }
 }
 
@@ -131,8 +128,7 @@ TEST(IndexTreeToSimplices3Test, GetRefinedEdges1)
    ASSERT_EQ(refinedEdges.size(), Topology::NumEdgesOnCube);
    for (const auto edge : refinedEdges)
    {
-      const auto dist = std::abs(edge[0][0] - edge[1][0]) + std::abs(edge[0][1] - edge[1][1]) + std::abs(edge[0][2] - edge[1][2]);
-      ASSERT_EQ(dist, Rational(1, 1));
+      ASSERT_EQ(PointUtils::GetL1Distance(edge[0], edge[1]), 1);
    }
 }
 
