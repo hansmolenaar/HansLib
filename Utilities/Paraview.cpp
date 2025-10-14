@@ -74,7 +74,6 @@ void Paraview::WriteCells(std::ostream& stream, const Vtk::VtkData& data)
       stream << "\n";
    }
 
-
    stream << "\n\nCELL_TYPES " << numCells << "\n";
    for (Vtk::CellIndex c = 0; c < data.getNumCells(); ++c)
    {
