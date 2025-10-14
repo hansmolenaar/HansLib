@@ -53,8 +53,8 @@ add_subdirectory(GraphTest)
 #add_subdirectory(Groups)
 #add_subdirectory(GroupsTest)
 
-#add_subdirectory(Topology)
-#add_subdirectory(TopologyTest)
+add_subdirectory(Topology)
+add_subdirectory(TopologyTest)
 
 #add_subdirectory(Tree)
 #add_subdirectory(TreeTest)
