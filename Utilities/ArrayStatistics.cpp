@@ -5,9 +5,9 @@
 #include <numeric>
 #include <iostream>
 
-template ArrayStatistics<int>;
-template ArrayStatistics<double>;
-template ArrayStatistics<Rational>;
+template class ArrayStatistics<int>;
+template class ArrayStatistics<double>;
+template class ArrayStatistics<Rational>;
 
 template<typename T>
 ArrayStatistics<T>::ArrayStatistics(std::span<const T> values) : 

@@ -3,7 +3,7 @@
 
 std::filesystem::path Paraview::GetFileName(const std::string& baseName)
 {
-   std::filesystem::path p("C:\\Users\\Hans\\Documents\\work\\");
+   std::filesystem::path p("/home/hans/Work");
    return p / (baseName + ".vtk");
 }
 

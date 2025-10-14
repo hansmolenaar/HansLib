@@ -1,3 +1,5 @@
+#include <algorithm>
+
 #include "BoolContainer.h"
 #include "BoundsCheck.h"
 

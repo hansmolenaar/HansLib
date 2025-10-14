@@ -1,5 +1,4 @@
 #include "Plotting.h"
-#include "Assert.h"
 #include "MultiIndex.h"
 
 #include <vector>

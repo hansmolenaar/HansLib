@@ -1,7 +1,7 @@
 #include "MultiIndex.h"
 
-template MultiIndex<int>;
-template MultiIndex<size_t>;
+template class MultiIndex<int>;
+template class MultiIndex<size_t>;
 
 template <typename T>
 MultiIndex<T>::MultiIndex(boost::container::small_vector<T, MULTI_INDEX_MAX_SMALL_VECTOR>&& dimensions) :
