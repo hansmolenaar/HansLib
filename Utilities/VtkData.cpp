@@ -16,7 +16,6 @@ void VtkData::addNode(std::span<const CoordinateType> coordinates)
    m_coordinates.insert(m_coordinates.end(), coordinates.begin(), coordinates.end());
 }
 
-
 void VtkData::addCell(CellType typ, std::span<const NodeIndex> nodes, std::span<const DataType>data)
 {
    MyAssert(nodes.size() == NumNodesForType(typ));
