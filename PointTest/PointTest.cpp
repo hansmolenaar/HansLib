@@ -81,59 +81,78 @@ TEST(PointTest, Bounds)
    ASSERT_ANY_THROW(i = p.at(2));
 }
 
+template<typename T, size_t N>
+struct ArrayHasher {
+    std::size_t operator()(const std::array<T, N>& a) const {
+        std::size_t h = 0;
+
+        for (auto e : a) 
+	{
+           boost::hash_combine(h, std::hash<T>{}(e) );
+        }
+        return h;
+    }   
+};
+
 TEST(PointTest, HashIntPoint1)
 {
+   ArrayHasher<int,1> ah;
    const IntPoint1 p1{ 42 };
-   const size_t hash1 = std::hash<IntPoint1>{}(p1);
+   const size_t hash1 = ah(p1);
    const IntPoint1 p2{ 43 };
-   const size_t hash2 = std::hash<IntPoint1>{}(p2);
+   const size_t hash2 = ah(p2);
    ASSERT_NE(hash1, hash2);
 }
 
 
 TEST(PointTest, HashIntPoint2)
 {
+   ArrayHasher<int, 2> ah;
    const IntPoint2 p1{ 42, 1 };
-   const size_t hash1 = std::hash<IntPoint2>{}(p1);
+   const size_t hash1 = ah(p1);
    const IntPoint2 p2{ 1, 42 };
-   const size_t hash2 = std::hash<IntPoint2>{}(p2);
+   const size_t hash2 = ah(p2);
    ASSERT_NE(hash1, hash2);
 }
 
 TEST(PointTest, HashIntPoint3)
 {
+   ArrayHasher<int,3> ah;
    const IntPoint3 p1{ 1, 2, 3 };
-   const size_t hash1 = std::hash<IntPoint3>{}(p1);
+   const size_t hash1 = ah(p1);
    const IntPoint3 p2{ 1, 3, 2 };
-   const size_t hash2 = std::hash<IntPoint3>{}(p2);
+   const size_t hash2 = ah(p2);
    ASSERT_NE(hash1, hash2);
 }
 
 TEST(PointTest, HashRatPoint1)
 {
+   ArrayHasher<Rational,1> ah;
    const RatPoint1 p1{ Rational{1, 2} };
-   const size_t hash1 = std::hash<RatPoint1>{}(p1);
+   const size_t hash1 = ah(p1);
    const RatPoint1 p2{ Rational{2, 1} };
-   const size_t hash2 = std::hash<RatPoint1>{}(p2);
+   const size_t hash2 = ah(p2);
    ASSERT_NE(hash1, hash2);
 }
 
 
 TEST(PointTest, HashRatPoint2)
 {
+   ArrayHasher<Rational,2> ah;
    const RatPoint2 p1{ Rational{1, 2}, Rational{2,1} };
-   const size_t hash1 = std::hash<RatPoint2>{}(p1);
+   const size_t hash1 = ah(p1);
    const RatPoint2 p2{ Rational{2, 1}, Rational{1,2} };
-   const size_t hash2 = std::hash<RatPoint2>{}(p2);
+   const size_t hash2 = ah(p2);
    ASSERT_NE(hash1, hash2);
 }
 
 TEST(PointTest, HashRatPoint3)
 {
+   ArrayHasher<Rational,3> ah;
    const RatPoint3 p1{ Rational{1,1}, Rational{1, 3},Rational {2,1} };
-   const size_t hash1 = std::hash<RatPoint3>{}(p1);
+   const size_t hash1 = ah(p1);
    const RatPoint3 p2{ Rational{1,1}, Rational{2, 1}, Rational{1,3} };
-   const size_t hash2 = std::hash<RatPoint3>{}(p2);
+   const size_t hash2 = ah(p2);
    ASSERT_NE(hash1, hash2);
 }
 

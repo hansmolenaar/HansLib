@@ -6,7 +6,7 @@
 
 #include <ostream>
 
-template<typename T, int N>
+template<class T, size_t N>
 using Point = std::array<T, N>;
 
 using Point1 = Point<double, GeomDim1>;
@@ -19,21 +19,21 @@ using RatPoint1 = Point<Rational, GeomDim1>;
 using RatPoint2 = Point<Rational, GeomDim2>;
 using RatPoint3 = Point<Rational, GeomDim3>;
 
-template<typename T, int N>
+template<typename T, size_t N>
 std::array<T, N> operator+(std::array<T, N> lhs, const std::array<T, N>& rhs)
 {
    std::transform(lhs.begin(), lhs.end(), rhs.begin(), lhs.begin(), std::plus<T>());
    return lhs;
 }
 
-template<typename T, int N>
+template<typename T, size_t N>
 std::array<T, N> operator-(std::array<T, N> lhs, const std::array<T, N>& rhs)
 {
    std::transform(lhs.begin(), lhs.end(), rhs.begin(), lhs.begin(), std::minus<T>());
    return lhs;
 }
 
-template<typename T, int N>
+template<typename T, size_t N>
 std::array<T, N> operator*(std::array<T, N> result, T factor)
 {
    str::transform(result, result.begin(), [factor](T value) {return factor * value; });
@@ -46,27 +46,27 @@ std::array<T, 3> operator*(const std::array<T, 3>& a, const std::array<T, 3>& b)
    return { a[1] * b[2] - a[2] * b[1],a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0] };
 }
 
-template<typename T, int N>
+template<typename T, size_t N>
 std::array<T, N> operator/(std::array<T, N> result, int divisor)
 {
    str::transform(result, result.begin(), [divisor](T value) {return value / divisor; });
    return result;
 }
 
-template<typename T, int N>
+template<typename T, size_t N>
 std::array<T, N> operator*(T factor, std::array<T, N> result)
 {
    return result * factor;
 }
 
-template<typename T, int N>
+template<typename T, size_t N>
 std::array<T, N> operator-(std::array<T, N> result)
 {
    str::transform(result, result.begin(), [](T value) {return -value; });
    return result;
 }
 
-template<typename T, int N>
+template<typename T, size_t N>
 std::ostream& operator<< (std::ostream& stream, const Point<T, N>& point)
 {
 
@@ -90,27 +90,27 @@ std::ostream& operator<< (std::ostream& stream, const Point<T, N>& point)
 
 namespace PointUtils
 {
-   template<typename T, int N>
+   template<typename T, size_t N>
    T GetNormSquared(const Point<T, N>& point)
    {
       return std::inner_product(point.begin(), point.end(), point.begin(), T(0));
    }
 
-   template<typename T, int N>
+   template<typename T, size_t N>
    T GetDistanceSquared(const Point<T, N>& point0, const Point<T, N>& point1)
    {
       const auto dif = point0 - point1;
       return GetNormSquared(dif);
    }
 
-   template<typename T, int N>
+   template<typename T, size_t N>
    T GetL1Distance(const Point<T, N>& point0, const Point<T, N>& point1)
    {
       const Point<T, N> dif = point0 - point1;
       return std::accumulate(dif.begin(), dif.end(), T(0), [](T sum, T val) {return sum + std::abs(val); });
    }
 
-   template<typename T, int N>
+   template<typename T, size_t N>
    T Angle(const Point<T, N>& p0, const Point<T, N>& p1, const Point<T, N>& p2)
    {
       const auto d0 = p1 - p0;
@@ -124,13 +124,13 @@ namespace PointUtils
       return std::acos(inprod / norm02);
    }
 
-   template<typename T, int N>
+   template<typename T, size_t N>
    T innerProduct(const Point<T, N>& p0, const Point<T, N>& p1)
    {
       return std::inner_product(p0.begin(), p0.end(), p1.begin(), T(0));
    }
 
-   template<int N>
+   template<size_t N>
    Point<double, N> toPoint(const Point<Rational, N>& p)
    {
       Point<double, N> result;
