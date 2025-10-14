@@ -14,20 +14,7 @@ namespace Utilities
    {
    public:
       template<class FwdItr>
-      RenumberContiguous(FwdItr first, FwdItr last)
-       {
-      for (Tcontiguous n = 0; const auto & org : m_original)
-      {
-         const auto retval = m_toContiguous.emplace(org, n);
-         if (!retval.second)
-         {
-            std::ostringstream os;
-            os << "RenumberContiguous::RenumberContiguous duplicate entry " << org;
-            throw MyException(os.str());
-         }
-         ++n;
-      }
-   }
+      RenumberContiguous(FwdItr first, FwdItr last);
 
       std::optional<Tcontiguous> toContiguous(const Tin& value) const;
       const Tin& at(Tcontiguous idx) const;
@@ -38,10 +25,9 @@ namespace Utilities
       std::unordered_map<Tin, Tcontiguous> m_toContiguous;
    };
 
-#if 0
    template <class Tin, class Tcontiguous>
    template<class FwdItr>
-   RenumberContiguous<class Tin, class Tcontiguous>::RenumberContiguous(FwdItr first, FwdItr last) : m_original(first, last)
+   RenumberContiguous<Tin, Tcontiguous>::RenumberContiguous(FwdItr first, FwdItr last) : m_original(first, last)
    {
       for (Tcontiguous n = 0; const auto & org : m_original)
       {
@@ -55,8 +41,6 @@ namespace Utilities
          ++n;
       }
    }
-#endif
-
    template <class Tin,class Tcontiguous>
    const Tin& RenumberContiguous<Tin, Tcontiguous>::at(Tcontiguous idx) const
    {
