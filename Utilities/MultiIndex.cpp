@@ -72,7 +72,6 @@ void MultiIndex<T>::toMultiplet(size_t flat, std::span<T> multiplet) const
    std::reverse(multiplet.begin(), multiplet.end());
 }
 
-
 template <typename T>
 size_t MultiIndex<T>::toFlat(std::span<const T> multiplet) const
 {
