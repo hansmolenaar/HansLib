@@ -1,8 +1,8 @@
 #pragma once
 
-#include <gtest/gtest.h>
 #include "IManifold1D2.h"
 #include "IManifold1Test.h"
+#include <gtest/gtest.h>
 
 using namespace Geometry;
 
@@ -14,6 +14,6 @@ void IManifold1D2TestInterface(const IManifold1D2<T>& manifold, const IGeometryP
    const Point<T, GeomDim2> point{ 0,0 };
    const DirectedEdge<T, GeomDim2> edge(point, point);
    ASSERT_TRUE(edge.isDegenerate(predicate));
-   ASSERT_THROW(manifold.GetIntersections(edge, predicate), MyException);
+   ASSERT_THROW(manifold.getIntersections(edge, predicate), MyException);
 }
 

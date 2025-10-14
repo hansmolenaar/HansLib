@@ -1,10 +1,6 @@
 #include "GroupTable.h"
-#include "MyAssert.h"
-#include "ToString.h"
 #include "IFiniteGroupUtils.h"
-#include "IndexerRowMajor.h"
 #include "PermutationUtils.h"
-#include "MultiIndex.h"
 
 #include <cmath>
 #include <set>
@@ -37,8 +33,7 @@ std::pair<std::unique_ptr<IFiniteGroup>, std::vector<Permutation>> GroupTable::G
 
    // For permutations we don't have to check the associativity
    constexpr bool checkAssociativity = false;
-   auto compose = [](const Permutation& perm1, const Permutation& perm0) {return perm1 * perm0; };
-   return { CreateUsingBinaryOperator<Permutation, decltype(compose)>(permutations, compose, checkAssociativity), permutations };
+   return { CreateUsingBinaryOperator<Permutation, decltype(Permutation::compose)>(permutations, Permutation::compose, checkAssociativity), permutations };
 }
 
 GroupTable::GroupTable(std::unique_ptr<IIndexer<GroupElement>>& indexer, const std::vector< GroupElement>& elements) :
@@ -49,7 +44,7 @@ GroupTable::GroupTable(std::unique_ptr<IIndexer<GroupElement>>& indexer, const s
 
    if (m_order * m_order != m_table.size())
    {
-      throw MyException("GroupTable::GroupTable() size incorrect: " + ToString(m_table.size()));
+      throw MyException("GroupTable::GroupTable() size incorrect: " + std::to_string(m_table.size()));
    }
 
    for (GroupElement elm = 0; elm < m_order && m_identity == GroupElementInvalid; ++elm)

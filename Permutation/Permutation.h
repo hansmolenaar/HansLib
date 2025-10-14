@@ -29,7 +29,7 @@ public:
    std::vector<std::vector<Entry>> getCycles() const;
    Parity getParity() const;
 
-
+   static Permutation compose(const Permutation& perm1, const Permutation& perm0);
    friend Permutation operator*(const Permutation&, const Permutation&);
    friend bool operator==(const Permutation&, const Permutation&);
    friend  std::strong_ordering operator<=>(const Permutation&, const Permutation&);

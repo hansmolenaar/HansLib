@@ -1,44 +1,54 @@
 #include <gtest/gtest.h>
 
+#include "Boundary1.h"
 #include "Manifold1Reconstruction.h"
-#include "UniquePointCollectionBinning.h"
+#include "ManifoldId.h"
 #include "PointClose.h"
+#include "Single.h"
 #include "TopologyDefines.h"
 #include "TrianglesNodes.h"
-#include "Single.h"
+#include "UniquePointCollectionBinning.h"
 
 using namespace MeshGeneration;
 using namespace Topology;
 using namespace Utilities;
+using namespace Geometry;
 
 TEST(Manifold1ReconstructionTest, singleEdge)
 {
-   const PointClose<GeomType, GeomDim2> areClose;
-   const UniquePointCollectionBinning<GeomDim2> points(areClose, std::vector<Point2>{Point2{ 1,1 }, Point2{ 2,1 }, Point2{ 1,2 }});
-   const std::array<NodeIndex, 2 > nodes{ 1, 2 };
+   const std::vector<NodeIndex> nodes{ 1, 2 };
    TrianglesNodes trianglesNodes;
-   trianglesNodes.addTriangle(0, 1, 2);
-   const auto reconstruction = Manifold1Reconstruction::Generate2(nodes, trianglesNodes, points);
+   trianglesNodes.addTriangle(TriangleNodesOriented(0, 1, 2));
+   const Boundary1 reconstruction = Boundary1::createFromSubSet(nodes, trianglesNodes);
+   ASSERT_TRUE(reconstruction.getCycles().empty());
+   ASSERT_EQ(reconstruction.getPaths().size(), 1);
+   const auto& edge = reconstruction.getPaths().front();
+   ASSERT_EQ(edge.size(), 2);
+   ASSERT_EQ(edge[0], 1);
+   ASSERT_EQ(edge[1], 2);
 }
 
 
 TEST(Manifold1ReconstructionTest, twoEdges)
 {
-   const PointClose<GeomType, GeomDim2> areClose;
-   UniquePointCollectionBinning<GeomDim2> points(areClose, std::vector<Point2>{Point2{-1, -1}, Point2{5,2}});
-   const auto node0 = points.addIfNew(Point2{ 1,0 });
-   const auto node1 = points.addIfNew(Point2{ 0,0 });
-   const auto node2 = points.addIfNew(Point2{ 3,1 });
-   const auto node3 = points.addIfNew(Point2{ 2,0 });
-   const auto node4 = points.addIfNew(Point2{ 4,0 });
-   const std::array<NodeIndex, 3 > nodes{ 3, 1, 4 };
+   const NodeIndex node0 = 1;
+   const NodeIndex node1 = 10;
+   const NodeIndex node2 = 100;
+   const NodeIndex node3 = 2;
+   const NodeIndex node4 = 12;
+   const std::vector<NodeIndex> nodes{ node3, node1, node4 };
    TrianglesNodes trianglesNodes;
-   trianglesNodes.addTriangle(1, 0, 3);
-   trianglesNodes.addTriangle(3, 2, 4);
-   const auto reconstruction = Manifold1Reconstruction::Generate2(nodes, trianglesNodes, points);
-   ASSERT_TRUE(reconstruction.Singletons.empty());
-   ASSERT_TRUE(reconstruction.Cycles.empty());
-   const auto path = Single(reconstruction.Paths);
-   const std::vector<NodeIndex> expect{1, 3, 4};
-   ASSERT_TRUE(std::equal(path.begin(), path.end(), expect.begin(), expect.end()));
+   trianglesNodes.addTriangle(TriangleNodesOriented(node1, node0, node3));
+   trianglesNodes.addTriangle(TriangleNodesOriented(node3, node2, node4));
+   const Boundary1 reconstruction = Boundary1::createFromSubSet(nodes, trianglesNodes);
+   ASSERT_TRUE(reconstruction.getSingletons().empty());
+   ASSERT_TRUE(reconstruction.getCycles().empty());
+   const auto& path = Single(reconstruction.getPaths());
+   const std::vector<NodeIndex> expect{ node1, node3, node4 };
+   ASSERT_TRUE(str::equal(path, expect));
+
+   const Geometry::ManifoldId manifoldId(Topology::Edge, "Hello");
+   const Manifold1Reconstruction mr(manifoldId, reconstruction);
+   ASSERT_TRUE(mr.contains(EdgeNodesSorted(node3, node1)));
+   ASSERT_FALSE(mr.contains(EdgeNodesSorted(node1, node2)));
 }

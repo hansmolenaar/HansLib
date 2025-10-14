@@ -1,8 +1,6 @@
 #include "Combinations.h"
 
-#include <iostream>
 #include <algorithm>
-#include <string>
 
 std::vector<std::vector<bool>> Combinations::Get(int N, int K)
 {

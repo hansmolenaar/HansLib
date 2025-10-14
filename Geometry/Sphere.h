@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Ball.h"
+#include "DirectedEdgeIntersections.h"
 
 namespace Geometry
 {
@@ -23,6 +24,8 @@ namespace Geometry
       bool CouldIntersectWith(typename const BoundingBox<T, N>& bb, const IGeometryPredicate<T, N>& predicate) const;
 
       Point<T, N> getCenter() const;
+
+      DirectedEdgeIntersections<T, N> getIntersections(const DirectedEdge<T, N>& edge, const IGeometryPredicate<T, N>& predicate) const;
    private:
       Ball<T, N> m_ball;
    };

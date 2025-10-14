@@ -1,22 +1,37 @@
 #include <gtest/gtest.h>
 
 #include "IntervalTree.h"
+#include "IntervalTreeAction.h"
+#include "IntervalTreeBalance.h"
 #include "IntervalTreeRefinePredicate.h"
 #include "IntervalTreeStatistics.h"
-#include "IntervalTreeAction.h"
 #include "IntervalTreeVtk.h"
-#include "IntervalTreeBalance.h"
 #include "Paraview.h"
 #include "Point.h"
 
 using namespace IntervalTree;
+
+namespace
+{
+   struct ActionCountNodesAndLeaves
+   {
+      void operator()(const Index<3>& index) { if (indexTree->isLeaf(index)) { numLeaves += 1; } else { numNodes += 1; } };
+
+      const IndexTree<3>* indexTree = nullptr;
+      int numNodes = 0;
+      int numLeaves = 0;
+
+   };
+}
 
 TEST(IndexTreeTest, DefaultConsturctor)
 {
    IndexTree<2> tree;
    const auto& root = tree.getRoot();
    ASSERT_EQ(root.getLevel(), 0);
-   ASSERT_EQ(root.toString(), "((0, 1), (0, 1))");
+   std::ostringstream os;
+   os << root;
+   ASSERT_EQ(os.str(), "((0, 1), (0, 1))");
 
    const auto& statistics = GetStatistics<2>(tree);
    const Statistics expect{ 1, {1} };
@@ -67,11 +82,11 @@ TEST(IndexTreeTest, refineUntilReady)
 TEST(IndexTreeTest, Level0ToVtk)
 {
    const IndexTree<2> tree;
-   const auto data = GetVtkData(tree);
+   const auto data = GetVtkData(tree, { "IndexTreeTest_Level0ToVtk", "test" });
    ASSERT_EQ(data->getNumNodes(), 4);
    ASSERT_EQ(data->getNumCells(), 1);
    ASSERT_EQ(data->getNumCellData(), 0);
-   //Paraview::Write("IndexTreeTest_Level0ToVtk", *data);
+   //Paraview::Write( *data);
 }
 
 
@@ -80,11 +95,11 @@ TEST(IndexTreeTest, Level1ToVtk)
    IndexTree<2> tree;
    RefineToMaxLevel<2> doRefine{ 1 };
    tree.refineUntilReady(doRefine);
-   const auto data = GetVtkData(tree);
+   const auto data = GetVtkData(tree, { "IndexTreeTest_Level1ToVtk" , "test" });
    ASSERT_EQ(data->getNumNodes(), 9);
    ASSERT_EQ(data->getNumCells(), 4);
    ASSERT_EQ(data->getNumCellData(), 0);
-   //Paraview::Write("IndexTreeTest_Level1ToVtk", *data);
+   //Paraview::Write(*data);
 }
 
 
@@ -94,24 +109,25 @@ TEST(IndexTreeTest, Level2ToVtk)
    IndexTree<1> tree;
    RefineToMaxLevel<1> doRefine{ 2 };
    tree.refineUntilReady(doRefine);
-   const auto data = GetVtkData(tree);
+   const auto data = GetVtkData(tree, { "IndexTreeTest_Level2ToVtk" , "test" });
    ASSERT_EQ(data->getNumNodes(), 5);
    ASSERT_EQ(data->getNumCells(), 4);
    ASSERT_EQ(data->getNumCellData(), 0);
-   //Paraview::Write("IndexTreeTest_Level2ToVtk", *data);
+   //Paraview::Write(*data);
 }
 
 
 TEST(IndexTreeTest, CubeToVtk)
 {
    IndexTree<3> tree;
-   const auto data = GetVtkData(tree);
+   const auto data = GetVtkData(tree, { "IndexTreeTest_CubeToVtk", "test" });
    ASSERT_EQ(data->getNumNodes(), 8);
    ASSERT_EQ(data->getNumCells(), 1);
    ASSERT_EQ(data->getNumCellData(), 0);
-   //Paraview::Write("IndexTreeTest_CubeToVtk", *data);
-   const auto str = tree.getRoot().toString();
-   ASSERT_EQ(str, "((0, 1), (0, 1), (0, 1))");
+   //Paraview::Write(*data);
+   std::ostringstream os;
+   os << tree.getRoot();
+   ASSERT_EQ(os.str(), "((0, 1), (0, 1), (0, 1))");
 }
 TEST(IndexTreeTest, Contains)
 {
@@ -170,7 +186,6 @@ TEST(IndexTreeTest, GetExistingSelfOrAncestor)
    ASSERT_EQ(indexAtLevel2.getKey(), key);
 }
 
-
 TEST(IndexTreeTest, GetExistingSelfOrAncestor2)
 {
    IndexTree<3> tree;
@@ -179,24 +194,59 @@ TEST(IndexTreeTest, GetExistingSelfOrAncestor2)
    ASSERT_TRUE(root.isRoot());
 }
 
-
 TEST(IndexTreeTest, IsRefined1)
 {
    IndexTree<1> tree;
    ASSERT_TRUE(tree.isLeaf(tree.getRoot()));
 
    RefineToMaxLevel<1> doRefine1{ 1 };
-    tree.refineLeaves(doRefine1);
+   tree.refineLeaves(doRefine1);
 
    ASSERT_FALSE(tree.isLeaf(tree.getRoot()));
 }
-
 
 TEST(IndexTreeTest, ToString)
 {
    IndexTree<1> tree;
    RefineToMaxLevel<1> doRefine1{ 2 };
    tree.refineUntilReady(doRefine1);
-   const auto msg = tree.toString();
-   ASSERT_EQ(msg, "IndexTree N=1  SIZE=7  NUMLEAVES=4  MAXLEVEL=2");
+   std::ostringstream os;
+   os << tree;
+   ASSERT_EQ(os.str(), "IndexTree N=1  SIZE=7  NUMLEAVES=4  MAXLEVEL=2");
+}
+
+TEST(IndexTreeTest, ForeachNode1)
+{
+   IndexTree<3> tree;
+   RefineToMaxLevel<3> doRefine{ 1 };
+   tree.refineUntilReady(doRefine);
+
+   ActionCountNodesAndLeaves action{ &tree };
+   tree.foreachNode(action);
+   ASSERT_EQ(action.numNodes, 1);
+   ASSERT_EQ(action.numLeaves, 8);
+}
+
+TEST(IndexTreeTest, ForeachNode2)
+{
+   IndexTree<3> tree;
+   RefineToMaxLevel<3> doRefine{ 2 };
+   tree.refineUntilReady(doRefine);
+
+   ActionCountNodesAndLeaves action{ &tree };
+   tree.foreachNode(action);
+   ASSERT_EQ(action.numNodes, 9);
+   ASSERT_EQ(action.numLeaves, 64);
+}
+
+TEST(IndexTreeTest, ForeachNode3)
+{
+   IndexTree<3> tree;
+   RefineToMaxLevel<3> doRefine{ 3 };
+   tree.refineUntilReady(doRefine);
+
+   ActionCountNodesAndLeaves action{ &tree };
+   tree.foreachNode(action);
+   ASSERT_EQ(action.numNodes, 73);
+   ASSERT_EQ(action.numLeaves, 512);
 }

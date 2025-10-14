@@ -4,6 +4,8 @@
 #include "MyAssert.h"
 #include "Rational.h"
 
+#include <ostream>
+
 template<typename T, int N>
 using Point = std::array<T, N>;
 
@@ -38,6 +40,25 @@ std::array<T, N> operator*(std::array<T, N> result, T factor)
    return result;
 }
 
+template<typename T>
+std::array<T, 3> operator*(const std::array<T, 3>& a, const std::array<T, 3>& b)
+{
+   return { a[1] * b[2] - a[2] * b[1],a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0] };
+}
+
+template<typename T, int N>
+std::array<T, N> operator/(std::array<T, N> result, int divisor)
+{
+   str::transform(result, result.begin(), [divisor](T value) {return value / divisor; });
+   return result;
+}
+
+template<typename T, int N>
+std::array<T, N> operator*(T factor, std::array<T, N> result)
+{
+   return result * factor;
+}
+
 template<typename T, int N>
 std::array<T, N> operator-(std::array<T, N> result)
 {
@@ -45,19 +66,48 @@ std::array<T, N> operator-(std::array<T, N> result)
    return result;
 }
 
+template<typename T, int N>
+std::ostream& operator<< (std::ostream& stream, const Point<T, N>& point)
+{
+
+   bool isFirst = true;
+   for (auto c : point)
+   {
+      if (isFirst)
+      {
+         stream << "(";
+         isFirst = false;
+      }
+      else
+      {
+         stream << ", ";
+      }
+      stream << c;
+   }
+   stream << ")";
+   return stream;
+}
+
 namespace PointUtils
 {
    template<typename T, int N>
-   T GetNormSquared(typename const Point<T, N>& point)
+   T GetNormSquared(const Point<T, N>& point)
    {
       return std::inner_product(point.begin(), point.end(), point.begin(), T(0));
    }
 
    template<typename T, int N>
-   T GetDistanceSquared( const Point<T, N>& point0, const Point<T, N>& point1)
+   T GetDistanceSquared(const Point<T, N>& point0, const Point<T, N>& point1)
    {
       const auto dif = point0 - point1;
       return GetNormSquared(dif);
+   }
+
+   template<typename T, int N>
+   T GetL1Distance(const Point<T, N>& point0, const Point<T, N>& point1)
+   {
+      const Point<T, N> dif = point0 - point1;
+      return std::accumulate(dif.begin(), dif.end(), T(0), [](T sum, T val) {return sum + std::abs(val); });
    }
 
    template<typename T, int N>
@@ -72,5 +122,19 @@ namespace PointUtils
       constexpr double eps = 1.0e-12;
       if (norm02 < eps) throw MyException("Point::Angle degenerated");
       return std::acos(inprod / norm02);
+   }
+
+   template<typename T, int N>
+   T innerProduct(const Point<T, N>& p0, const Point<T, N>& p1)
+   {
+      return std::inner_product(p0.begin(), p0.end(), p1.begin(), T(0));
+   }
+
+   template<int N>
+   Point<double, N> toPoint(const Point<Rational, N>& p)
+   {
+      Point<double, N> result;
+      str::transform(p, result.begin(), [](const Rational& r) {return 1.0 * r; });
+      return result;
    }
 }

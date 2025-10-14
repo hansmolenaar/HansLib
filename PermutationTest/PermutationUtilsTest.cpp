@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
-#include "PermutationUtils.h" 
 #include "Defines.h"
+#include "PermutationUtils.h" 
 
 namespace
 {
@@ -153,11 +153,11 @@ TEST(PermutationUtilsTest, CastToEntry_0)
 TEST(PermutationUtilsTest, CastToEntry_1)
 {
    constexpr int number = -1;
-   ASSERT_THROW(PermutationUtils::SafeCastToEntry(number), MyException);
+   ASSERT_MYEXCEPTION_MESSAGE(PermutationUtils::SafeCastToEntry(number), "CastToEntry negative number -1");
 }
 
 TEST(PermutationUtilsTest, CastToEntry_2)
 {
    constexpr size_t number = std::numeric_limits<size_t>::max();
-   ASSERT_THROW(PermutationUtils::SafeCastToEntry(number), MyException);
+   ASSERT_MYEXCEPTION_MESSAGE(PermutationUtils::SafeCastToEntry(number), "CastToEntry too large number");
 }

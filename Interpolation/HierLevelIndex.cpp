@@ -1,7 +1,9 @@
 #include "HierLevelIndex.h"
+#include "MyAssert.h"
 #include "MyException.h"
 #include "Pow2.h"
-#include "MyAssert.h"
+
+#include <sstream>
 
 namespace
 {
@@ -12,12 +14,28 @@ namespace
       const auto index = li.getIndex();
       if (level == 0)
       {
-         if (index > 1) throw MyException("HierarchicalMultiIndex CheckIndex at level=0 ??: " + li.toString());
+         if (index > 1)
+         {
+            std::ostringstream os;
+            os << "HierarchicalMultiIndex CheckIndex at level=0 ??: " << li;
+            throw MyException(os.str());
+         }
          return;
       }
 
-      if (index > Pow2()(level)) throw MyException("HierarchicalMultiIndex CheckIndex index out of bounds: " + li.toString());
-      if (index % 2 == 0)throw MyException("HierarchicalMultiIndex CheckIndex index should be odd, actual=" + li.toString());
+      if (index > Pow2()(level))
+      {
+         std::ostringstream os;
+         os << "HierarchicalMultiIndex CheckIndex index out of bounds: " << li;
+         os << "HierarchicalMultiIndex CheckIndex index out of bounds: " << li;
+         throw MyException(os.str());
+      }
+      if (index % 2 == 0)
+      {
+         std::ostringstream os;
+         os << "HierarchicalMultiIndex CheckIndex index should be odd, actual=" << li;
+         throw MyException(os.str());
+      }
    }
 
    HierLevelIndex Reduce(size_t level, size_t index)
@@ -46,12 +64,6 @@ size_t HierLevelIndex::getLevel() const
 size_t HierLevelIndex::getIndex() const
 {
    return m_index;
-}
-
-
-std::string HierLevelIndex::toString() const
-{
-   return "{" + std::to_string(getLevel()) + ", " + std::to_string(getIndex()) + "}";
 }
 
 double HierLevelIndex::toDouble() const

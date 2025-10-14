@@ -24,7 +24,7 @@ TEST(ParaviewTest, WriteHeader)
 
 TEST(ParaviewTest, WritePoints)
 {
-   VtkData data(2, 0);
+   VtkData data(2, 0, { "ParaviewTest_WritePoints", "test" });
    const std::vector<std::array<CoordinateType, 2>> nodes{ { 2, 1 } };
    data.addNode(nodes.front());
 
@@ -37,7 +37,7 @@ TEST(ParaviewTest, WritePoints)
 TEST(ParaviewTest, Write)
 {
    const std::vector<std::array<CoordinateType, 2>> nodes{ {0, 0}, { 1,0 }, { 1,1 }, { 0,1 } };
-   VtkData data(2, 0);
+   VtkData data(2, 0, { "ParaviewTest_Write", "test" });
    for (const auto& node : nodes)
    {
       data.addNode(node);
@@ -46,5 +46,5 @@ TEST(ParaviewTest, Write)
    const std::vector<NodeIndex> nodeIndices{ 0, 1, 2, 3 };
    data.addCell(CellType::VTK_QUAD, nodeIndices, {});
 
-   Paraview::Write("HelloWorld", data);
+   Paraview::Write(data);
 }

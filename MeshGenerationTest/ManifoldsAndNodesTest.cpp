@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
-#include "ManifoldsAndNodes.h"
 #include "Manifold0.h"
+#include "ManifoldsAndNodes.h"
 #include "MeshGenerationDefines.h"
 #include "Single.h"
 #include "Sphere2AsManifold1.h"
@@ -9,7 +9,7 @@
 using namespace MeshGeneration;
 using namespace Geometry;
 using namespace Utilities;
-
+using namespace Topology;
 
 TEST(ManifoldsAndNodesTest, Empty)
 {
@@ -19,14 +19,14 @@ TEST(ManifoldsAndNodesTest, Empty)
    const auto nodes = man.getNodesInManifold(nullptr);
    ASSERT_TRUE(nodes.empty());
 
-   ASSERT_THROW(man.deleteNode(1), MyException);
+   ASSERT_MYEXCEPTION_MESSAGE(man.deleteNode(1), "ManifoldsAndNodes<N>::deleteNode unknown node specified");
 }
 
 
 TEST(ManifoldsAndNodesTest, Single)
 {
    const Point2 point{ 1,2 };
-   const Manifold0<GeomType, GeomDim2> pointManifold(point);
+   const Manifold0<GeomType, GeomDim2> pointManifold(point, "ManifoldsAndNodesTest_Single");
    ManifoldsAndNodes<GeomDim2>::ManifoldPtrN manifoldPtr = &pointManifold;
    ManifoldsAndNodes<GeomDim2> manifoldsAndNodes;
 
@@ -45,7 +45,7 @@ TEST(ManifoldsAndNodesTest, Single)
 TEST(ManifoldsAndNodesTest, AddTwice)
 {
    const Point2 point{ 1,2 };
-   const Manifold0<GeomType, GeomDim2> pointManifold(point);
+   const Manifold0<GeomType, GeomDim2> pointManifold(point, "ManifoldsAndNodesTest_AddTwice");
    ManifoldsAndNodes<GeomDim2>::ManifoldPtrN manifoldPtr = &pointManifold;
    ManifoldsAndNodes<GeomDim2> manifoldsAndNodes;
 
@@ -63,12 +63,12 @@ TEST(ManifoldsAndNodesTest, AddTwice)
 TEST(ManifoldsAndNodesTest, Delete)
 {
    const Point2 point{ 1,2 };
-   const Manifold0<GeomType, GeomDim2> pointManifold(point);
+   const Manifold0<GeomType, GeomDim2> pointManifold(point, "ManifoldsAndNodesTest_Delete");
    ManifoldsAndNodes<GeomDim2>::ManifoldPtrN manifoldPtr = &pointManifold;
    ManifoldsAndNodes<GeomDim2> manifoldsAndNodes;
    manifoldsAndNodes.addNodeToManifold(42, manifoldPtr);
 
-   ASSERT_THROW(manifoldsAndNodes.deleteNode(1), MyException);
+   ASSERT_MYEXCEPTION_MESSAGE(manifoldsAndNodes.deleteNode(1), "ManifoldsAndNodes<N>::deleteNode unknown node specified");
    auto nodes = manifoldsAndNodes.getNodesInManifold(manifoldPtr);
    ASSERT_EQ(Single(nodes), 42);
    auto manifolds = manifoldsAndNodes.getManifoldsContainingNode(42);
@@ -84,8 +84,8 @@ TEST(ManifoldsAndNodesTest, Delete)
 
 TEST(ManifoldsAndNodesTest, IsMobile)
 {
-   const Manifold0<GeomType, GeomDim2> pointManifold(Point2{ 1,2 });
-   const Sphere2AsManifold1<GeomType> sphereManifold(Sphere<GeomType, GeomDim2>({0,0}, 1.0));
+   const Manifold0<GeomType, GeomDim2> pointManifold(Point2{ 1,2 }, "ManifoldsAndNodesTest_IsMobile");
+   const Sphere2AsManifold1<GeomType> sphereManifold(Sphere<GeomType, GeomDim2>({ 0,0 }, 1.0));
 
    ManifoldsAndNodes<GeomDim2>::ManifoldPtrN pointManifoldPtr = &pointManifold;
    ManifoldsAndNodes<GeomDim2>::ManifoldPtrN sphereManifoldPtr = &sphereManifold;
@@ -100,11 +100,10 @@ TEST(ManifoldsAndNodesTest, IsMobile)
    ASSERT_FALSE(manifoldsAndNodes.isMobileOnManifold(node, sphereManifoldPtr));
 }
 
-
 TEST(ManifoldsAndNodesTest, IsMobileTwoCornerManifolds)
 {
-   const Manifold0<GeomType, GeomDim2> pointManifold1(Point2{ 1,2 });
-   const Manifold0<GeomType, GeomDim2> pointManifold2(Point2{ 2,1 });
+   const Manifold0<GeomType, GeomDim2> pointManifold1(Point2{ 1,2 }, "ManifoldsAndNodesTest_IsMobileTwoCornerManifolds_1");
+   const Manifold0<GeomType, GeomDim2> pointManifold2(Point2{ 2,1 }, "ManifoldsAndNodesTest_IsMobileTwoCornerManifolds_2");
 
    ManifoldsAndNodes<GeomDim2>::ManifoldPtrN pointManifold1Ptr = &pointManifold1;
    ManifoldsAndNodes<GeomDim2>::ManifoldPtrN pointManifold2Ptr = &pointManifold2;
@@ -117,4 +116,15 @@ TEST(ManifoldsAndNodesTest, IsMobileTwoCornerManifolds)
    manifoldsAndNodes.addNodeToManifold(node, pointManifold1Ptr);
    ASSERT_TRUE(manifoldsAndNodes.isMobileOnManifold(node, pointManifold1Ptr));
    ASSERT_FALSE(manifoldsAndNodes.isMobileOnManifold(node, pointManifold2Ptr));
+}
+
+TEST(ManifoldsAndNodesTest, nodeIn2Manifolds)
+{
+   const NodeIndex node = 42;
+   const Manifold0<GeomType, GeomDim2> pointManifold1(Point2{ 1,2 }, "foo");
+   const Manifold0<GeomType, GeomDim2> pointManifold2(Point2{ 2,1 }, "bar");
+   ManifoldsAndNodes<GeomDim2> manifoldsAndNodes;
+   manifoldsAndNodes.addNodeToManifold(node, &pointManifold1);
+
+   ASSERT_MYEXCEPTION_MESSAGE(manifoldsAndNodes.addNodeToManifold(node, &pointManifold2), "Try to add node 42 to manifold bar; it is already in foo");
 }

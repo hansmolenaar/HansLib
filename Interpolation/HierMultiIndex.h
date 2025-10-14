@@ -1,10 +1,11 @@
 #pragma once
 
 #include "HierLevelIndex.h"
+#include "StreamUtils.h"
 
 #include <array>
-#include <vector>
 #include <functional>
+#include <vector>
 
 class HierMultiIndex
 {
@@ -14,7 +15,11 @@ public:
    size_t getDimension() const;
    const std::vector<HierLevelIndex>& get() const;
    std::vector< double> toDoubles() const;
-   std::string toString() const;
+
+   friend std::ostream& operator<<(std::ostream& os, const HierMultiIndex& hmi)
+   {
+      return StreamUtils::insertList(os, hmi.m_levelsIndices, "", " ", "");
+   }
 
 
    std::array<HierMultiIndex, 2> refine(size_t dir) const;

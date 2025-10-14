@@ -1,8 +1,9 @@
 #pragma once
 
 #include "Interval.h"
-#include <vector>
+#include <ostream>
 #include <span>
+#include <vector>
 
 class LocalizationBins
 {
@@ -17,10 +18,15 @@ public:
    double getBinLower(size_t n) const;
    double getBinUpper(size_t n) const;
 
-   std::string toString() const;
+   friend std::ostream& operator<<(std::ostream& os, const LocalizationBins& bins)
+   {
+      os << bins.toString();
+      return os;
+   }
 
 private:
    explicit LocalizationBins(std::vector<double> vertices);
+   std::string toString() const;
 
    std::vector<double> m_vertices;
 };

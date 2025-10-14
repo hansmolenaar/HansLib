@@ -1,7 +1,14 @@
 #include "IndexTreeToSimplices2.h"
-#include "IntervalTreeIndex.h"
-#include "UniqueHashedPointCollection.h"
 #include "IntervalTreeAdjacentDirection.h"
+#include "IntervalTreeIndex.h"
+#include "PointClose.h"
+#include "ProjectToVtk.h"
+#include "TrianglesNodes.h"
+#include "UniqueHashedPointCollection.h"
+#include "UniquePointCollectionBinning.h"
+
+using namespace Topology;
+using namespace MeshGeneration;
 
 namespace
 {
@@ -55,7 +62,7 @@ namespace
          ++pos;
       }
 
-     
+
       const auto lwr = bb.getLower();
       const auto upr = bb.getUpper();
       const RatPoint2 ll(lwr[0], lwr[1]);
@@ -63,7 +70,7 @@ namespace
       const RatPoint2 uu(upr[0], upr[1]);
       const RatPoint2 lu(lwr[0], upr[1]);
 
-      if (str::none_of(moreRefined, [](bool b) {return b; }))
+      if (str::none_of(moreRefined, std::identity()))
       {
          Triangles.emplace_back(std::array<RatPoint2, ReferenceShapePolygon::TriangleNumCorners >{ ll, ul, uu });
          Triangles.emplace_back(std::array<RatPoint2, ReferenceShapePolygon::TriangleNumCorners >{ ll, uu, lu });
@@ -90,6 +97,23 @@ namespace
          }
       }
    }
+
+   std::pair<TrianglesNodes, UniquePointCollectionBinning<GeomDim2>> toPointCollection(const IndexTreeToSimplices2::Triangles& cells, const IGeometryPredicate<double, GeomDim2>& predicate)
+   {
+      TrianglesNodes tnodes;
+      UniquePointCollectionBinning<GeomDim2> points(predicate, std::vector<Point2>{{0, 0}, { 1,1 }});
+      for (const auto& cell : cells)
+      {
+         std::array<PointIndex, NumCornersOnTriangle> cellNodes;
+         for (size_t vertex = 0; const auto & v : cell)
+         {
+            cellNodes.at(vertex) = points.addIfNew(PointUtils::toPoint(v));
+            ++vertex;
+         }
+         tnodes.addTriangle(TriangleNodesOriented(cellNodes[0], cellNodes[1], cellNodes[2]));
+      }
+      return { tnodes, points };
+   }
 }
 
 IndexTreeToSimplices2::Triangles IndexTreeToSimplices2::Create(const IntervalTree::IndexTree<2>& tree)
@@ -99,29 +123,18 @@ IndexTreeToSimplices2::Triangles IndexTreeToSimplices2::Create(const IntervalTre
    return action.Triangles;
 }
 
-std::unique_ptr<Vtk::VtkData> IndexTreeToSimplices2::ToVtkData(const Triangles& cells)
+void IndexTreeToSimplices2::toVtkData(MeshGeneration::ProjectToVtk& p2v, const Triangles& cells)
 {
-   std::unique_ptr< Vtk::VtkData> result = std::make_unique< Vtk::VtkData>(GeometryDimension, 0);
-   UniqueHashedPointCollection<Rational, GeometryDimension>  toNodeIndex;
+   const PointClose<double, GeomDim2> predicate;
+   auto [tnodes, points] = toPointCollection(cells, predicate);
    for (const auto& cell : cells)
    {
-      std::array<Vtk::NodeIndex, ReferenceShapePolygon::TriangleNumCorners> cellNodes{ -1, -1, -1 };
-      size_t vertex = 0;
-      for (const auto& v : cell)
+      std::array<PointIndex, ReferenceShapePolygon::TriangleNumCorners> cellNodes;
+      for (size_t vertex = 0; const auto & v : cell)
       {
-         const auto nodeId = toNodeIndex.addIfNew(v);
-         cellNodes.at(vertex) = nodeId;
+         cellNodes.at(vertex) = points.addIfNew(PointUtils::toPoint(v));
          ++vertex;
       }
-      result->addCell(Vtk::CellType::VTK_TRIANGLE, cellNodes, {});
    }
-   for (auto n = 0; n < toNodeIndex.getNumPoints(); ++n)
-   {
-      const auto v = toNodeIndex.getPoint(n);
-      std::array<Vtk::CoordinateType, GeometryDimension> coordinates;
-      coordinates.at(0) = static_cast<Vtk::CoordinateType>(v[0].numerator()) / v[0].denominator();
-      coordinates.at(1) = static_cast<Vtk::CoordinateType>(v[1].numerator()) / v[1].denominator();
-      result->addNode(coordinates);
-   }
-   return result;
+   p2v.addTriangles(tnodes, points, "IndexTree");
 }

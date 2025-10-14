@@ -1,8 +1,9 @@
 #pragma once
 
-#include <compare>
-#include <string>
 #include <array>
+#include <compare>
+#include <ostream>
+#include <string>
 
 class HierLevelIndex
 {
@@ -11,12 +12,16 @@ public:
    size_t getLevel() const;
    size_t getIndex() const;
 
-   std::string toString() const;
    double toDouble() const;
 
    std::array<HierLevelIndex, 2> refine() const;
 
    auto operator<=>(const HierLevelIndex&) const = default;
+
+   friend std::ostream& operator<<(std::ostream& os, const HierLevelIndex& hindex)
+   {
+      return os << "{" << hindex.getLevel() << ", " << hindex.getIndex() << "}";
+   }
 private:
    size_t m_level;
    size_t m_index;

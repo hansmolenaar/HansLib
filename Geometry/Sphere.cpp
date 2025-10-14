@@ -74,3 +74,40 @@ Point<T, N> Sphere<T, N>::getCenter() const
    return m_ball.getCenter();
 }
 
+template<typename T, int N>
+Geometry::DirectedEdgeIntersections<T, N> Sphere<T, N>::getIntersections(const DirectedEdge<T, N>& edge, const IGeometryPredicate<T, N>& predicate) const
+{
+   if (edge.isDegenerate(predicate))
+   {
+      throw MyException("Sphere<T, N>::getIntersections degenerate edge");
+   }
+   std::vector<DirectedEdgePoint<T, N>> intersectionPoints;
+   const bool firstPointInside = Contains(edge.point0(), predicate);
+   const auto firstIntersection = TryGetFirstIntersectionWithDirectedEdge(edge, predicate);
+
+   if (firstPointInside)
+   {
+      intersectionPoints.emplace_back(edge.point0(), edge, predicate);
+      if (firstIntersection)
+      {
+         intersectionPoints.emplace_back(firstIntersection.value(), edge, predicate);
+      }
+   }
+   else if (firstIntersection.has_value())
+   {
+      intersectionPoints.emplace_back(firstIntersection.value(), edge, predicate);
+      const DirectedEdge<T, N> next(firstIntersection.value(), edge.point1());
+      if (!next.isDegenerate(predicate))
+      {
+         const auto secondIntersection = TryGetFirstIntersectionWithDirectedEdge(next, predicate);
+         if (secondIntersection.has_value())
+         {
+            intersectionPoints.emplace_back(secondIntersection.value(), edge, predicate);
+         }
+      }
+   }
+
+   auto containsPoint = [this, &predicate](const Point<T, N>& p) {return Contains(p, predicate); };
+   return DirectedEdgeIntersections<T, N>(intersectionPoints, containsPoint, predicate);
+}
+

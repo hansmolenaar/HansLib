@@ -1,7 +1,6 @@
 #pragma once
 #include "IPointCollection.h"
 #include "MeshGenerationDefines.h"
-//#include "Defines.h"
 
 namespace MeshGeneration
 {

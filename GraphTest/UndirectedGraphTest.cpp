@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
 
-#include "UndirectedGraphLibrary.h"
 #include "Defines.h"
 #include "Single.h"
+#include "UndirectedGraphLibrary.h"
 
 
 using namespace Utilities;
@@ -206,7 +206,6 @@ TEST(UndirectedGraphTest, AddEdgeDuplicate)
    ASSERT_EQ(ug.getNumEdges(), 1);
 }
 
-
 TEST(UndirectedGraphTest, AreAdjacent)
 {
    UndirectedGraph ug(3);
@@ -215,4 +214,15 @@ TEST(UndirectedGraphTest, AreAdjacent)
    ASSERT_TRUE(ug.areAdjacent(1, 0));
    ASSERT_FALSE(ug.areAdjacent(1, 2));
    ASSERT_ANY_THROW(ug.areAdjacent(1, 3));
+}
+
+TEST(UndirectedGraphTest, IsolatedVertices)
+{
+   UndirectedGraph ug(3);
+   ug.addEdge(0, 2);
+   auto isolated = ug.getIsolatedVertices();
+   ASSERT_EQ(Single(isolated), 1);
+   ug.addEdge(1, 2);
+   isolated = ug.getIsolatedVertices();
+   ASSERT_TRUE(isolated.empty());
 }

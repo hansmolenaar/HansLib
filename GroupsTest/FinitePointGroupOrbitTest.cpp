@@ -1,10 +1,10 @@
 #include <gtest/gtest.h>
 
-#include "FinitePointGroupOrbit.h"
-#include "ActionReflectOrigin.h"
-#include "PointClose.h"
-#include "DihedralGroup.h"
 #include "ActionDihedral.h"
+#include "ActionReflectOrigin.h"
+#include "DihedralGroup.h"
+#include "FinitePointGroupOrbit.h"
+#include "PointClose.h"
 
 TEST(FinitePointGroupOrbitTest, Basic1)
 {
@@ -14,8 +14,8 @@ TEST(FinitePointGroupOrbitTest, Basic1)
    const Point1 pr{ -2.0 };
    const FinitePointGroupOrbit<1> orbit(reflect, p, areClose);
    ASSERT_EQ(orbit.getNumPoints(), 2);
-   ASSERT_TRUE(areClose.SamePoints(orbit.getPoint(0), p));
-   ASSERT_TRUE(areClose.SamePoints(orbit.getPoint(1), pr));
+   ASSERT_TRUE(areClose.samePoints(orbit.getPoint(0), p));
+   ASSERT_TRUE(areClose.samePoints(orbit.getPoint(1), pr));
 
    auto found = orbit.tryGetClosePoint(pr);
    ASSERT_EQ(*found, 1);

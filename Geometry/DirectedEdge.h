@@ -1,9 +1,9 @@
 #pragma once
 
+#include "BoundingBox.h"
 #include "Defines.h"
-#include "Point.h"
 #include "IGeometryPredicate.h"
-#include "GeometryDefines.h"
+#include "Point.h"
 
 namespace Geometry
 {
@@ -19,13 +19,15 @@ namespace Geometry
       Point<T, N> interpolate(T lambda) const;
       bool contains(const Point<T, N>& point, const IGeometryPredicate<T, N>& predicate) const;
       bool isDegenerate(const IGeometryPredicate<T, N>& predicate) const;
-
-      // Edge *must* contain point, not checked!
-      DirectedEdgePoint<T, N> createEdgePoint(const Point<T, N>& point, const IGeometryPredicate<T, N>& predicate) const;
+      BoundingBox<T, N> getBoundingBox() const;
+      // projected point is not necessarily on the edge (line segment)
+      Point<T, N> projectPointOnLine(const Point<T, N>& point) const;
    private:
       Point<T, N> m_from;
       Point<T, N> m_to;
    };
+
+   using DirectedEdge2 = DirectedEdge<double, GeomDim2>;
 
    template<typename T, int N>
    DirectedEdge<T, N>::DirectedEdge(const Point<T, N>& from, const Point<T, N>& to) :
@@ -70,7 +72,7 @@ namespace Geometry
    template<typename T, int N>
    bool DirectedEdge<T, N>::isDegenerate(const IGeometryPredicate<T, N>& predicate) const
    {
-      return predicate.SamePoints(point0(), point1());
+      return predicate.samePoints(point0(), point1());
    }
 
    template<typename T, int N>
@@ -84,33 +86,29 @@ namespace Geometry
       if (lambda >= 0 && lambda <= 1)
       {
          const auto projected = interpolate(lambda);
-         return predicate.SamePoints(projected, point);
+         return predicate.samePoints(projected, point);
       }
       else if (lambda < 0)
       {
-         return predicate.SamePoints(point0(), point);
+         return predicate.samePoints(point0(), point);
       }
       else
       {
-         return predicate.SamePoints(point1(), point);
+         return predicate.samePoints(point1(), point);
       }
    }
 
    template<typename T, int N>
-   DirectedEdgePoint<T, N> DirectedEdge<T, N>::createEdgePoint(const Point<T, N>& point, const IGeometryPredicate<T, N>& predicate) const
+   Point<T, N> DirectedEdge<T, N>::projectPointOnLine(const Point<T, N>& point) const
    {
-      if (predicate.SamePoints(point, point0()))
-      {
-         return {point0(), DirectedEdgePointType::Point0};
-      }
-      if (predicate.SamePoints(point, point1()))
-      {
-         return { point1(), DirectedEdgePointType::Point1 };
-      }
-
-      // No check if edge contains point
-      return { point, DirectedEdgePointType::Inside };
+      const T lambda = project(point);
+      return interpolate(lambda);
    }
 
+   template<typename T, int N>
+   BoundingBox<T, N> DirectedEdge<T, N>::getBoundingBox() const
+   {
+      return BoundingBox<T, N>::CreateFrom2Points(m_from, m_to);
+   }
 
 } // namespace Geometry

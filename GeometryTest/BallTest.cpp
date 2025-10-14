@@ -1,10 +1,10 @@
 #include <gtest/gtest.h>
 
 #include "Ball.h"
+#include "DirectedEdge.h"
 #include "PointClose.h"
 #include "PointExact.h"
 #include "Rotate2D.h"
-#include "DirectedEdge.h"
 
 using namespace Geometry;
 
@@ -77,21 +77,21 @@ TEST(BallTest, FirstIntersectionFirstInside)
    {
       const DirectedEdge<double, GeomDim2> edge(Point2{ 0.1,0.2 }, Point2{ 0.9, 0.3 });
       const auto ip = circle.TryGetFirstIntersectionWithDirectedEdge(edge, areClose);
-      ASSERT_TRUE(areClose.SamePoints(*ip, edge.point1()));
+      ASSERT_TRUE(areClose.samePoints(*ip, edge.point1()));
    }
 
    // Second On
    {
       const DirectedEdge<double, GeomDim2> edge(Point2{ 0.1,0.2 }, Point2{ -0.6, 0.8 });
       const auto ip = circle.TryGetFirstIntersectionWithDirectedEdge(edge, areClose);
-      ASSERT_TRUE(areClose.SamePoints(*ip, edge.point1()));
+      ASSERT_TRUE(areClose.samePoints(*ip, edge.point1()));
    }
 
    // Second Outside
    {
       const DirectedEdge<double, GeomDim2> edge(Point2{ 0.1, 0.2 }, Point2{ 1.1, 1.4 });
       const auto ip = circle.TryGetFirstIntersectionWithDirectedEdge(edge, areClose);
-      ASSERT_TRUE(areClose.SamePoints(*ip, { 0.6, 0.8 }));
+      ASSERT_TRUE(areClose.samePoints(*ip, { 0.6, 0.8 }));
    }
 }
 
@@ -106,14 +106,14 @@ TEST(BallTest, FirstIntersectionFirstOn)
    {
       const DirectedEdge<double, GeomDim2> edge(point0, Point2{ 0.9, 0.3 });
       const auto ip = circle.TryGetFirstIntersectionWithDirectedEdge(edge, areClose);
-      ASSERT_TRUE(areClose.SamePoints(*ip, edge.point1()));
+      ASSERT_TRUE(areClose.samePoints(*ip, edge.point1()));
    }
 
    // Second On
    {
       const DirectedEdge<double, GeomDim2> edge(point0, Point2{ 1, 0 });
       const auto ip = circle.TryGetFirstIntersectionWithDirectedEdge(edge, areClose);
-      ASSERT_TRUE(areClose.SamePoints(*ip, edge.point1()));
+      ASSERT_TRUE(areClose.samePoints(*ip, edge.point1()));
    }
 
    // Second Outside, no intersection
@@ -134,7 +134,7 @@ TEST(BallTest, FirstIntersectionFirstOn)
    {
       const  DirectedEdge<double, GeomDim2> edge(point0, Point2{ 0, -2 });
       const auto ip = circle.TryGetFirstIntersectionWithDirectedEdge(edge, areClose);
-      ASSERT_TRUE(areClose.SamePoints(*ip, Point2{ 0, -1 }));
+      ASSERT_TRUE(areClose.samePoints(*ip, Point2{ 0, -1 }));
    }
 }
 
@@ -149,14 +149,14 @@ TEST(BallTest, FirstIntersectionFirstOutside)
    {
       const DirectedEdge<double, GeomDim2> edge(point0, Point2{ 0, 0 });
       const auto ip = circle.TryGetFirstIntersectionWithDirectedEdge(edge, areClose);
-      ASSERT_TRUE(areClose.SamePoints(*ip, Point2{ sqrtHalf, sqrtHalf }));
+      ASSERT_TRUE(areClose.samePoints(*ip, Point2{ sqrtHalf, sqrtHalf }));
    }
 
    // Second On
    {
       const DirectedEdge<double, GeomDim2> edge(point0, Point2{ 1, 0 });
       const auto ip = circle.TryGetFirstIntersectionWithDirectedEdge(edge, areClose);
-      ASSERT_TRUE(areClose.SamePoints(*ip, edge.point1()));
+      ASSERT_TRUE(areClose.samePoints(*ip, edge.point1()));
    }
 
    // Second Outside, no intersection
@@ -170,14 +170,14 @@ TEST(BallTest, FirstIntersectionFirstOutside)
    {
       const  DirectedEdge<double, GeomDim2> edge(point0, Point2{ -1, 1 });
       const auto  ip = circle.TryGetFirstIntersectionWithDirectedEdge(edge, areClose);
-      ASSERT_TRUE(areClose.SamePoints(*ip, Point2{ 0,1 }));
+      ASSERT_TRUE(areClose.samePoints(*ip, Point2{ 0,1 }));
    }
 
    // Second Outside, intersection
    {
       const DirectedEdge<double, GeomDim2> edge(point0, Point2{ -2, -2 });
       const auto ip = circle.TryGetFirstIntersectionWithDirectedEdge(edge, areClose);
-      ASSERT_TRUE(areClose.SamePoints(*ip, Point2{ sqrtHalf, sqrtHalf }));
+      ASSERT_TRUE(areClose.samePoints(*ip, Point2{ sqrtHalf, sqrtHalf }));
    }
 
 }

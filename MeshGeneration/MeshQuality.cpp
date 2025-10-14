@@ -1,9 +1,10 @@
 #include "MeshQuality.h"
-#include "TrianglesNodes.h"
-#include "Simplex.h"
 #include "MyAssert.h"
+#include "Simplex.h"
+#include "TrianglesNodes.h"
 
 using namespace MeshGeneration;
+using namespace Topology;
 
 namespace
 {
@@ -32,7 +33,7 @@ double MeshQuality::getQuality2(
       activeTriangles.begin(), activeTriangles.end(),
       result,
       [](double a, double b) {return std::min(a, b); },
-      [&triangles, &points, qualityFunction](CellIndex cell) {return GetCellQuality(triangles.getTriangleNodes(cell), points, qualityFunction); }
+      [&triangles, &points, qualityFunction](CellIndex cell) {return GetCellQuality(triangles.getTriangleNodes(cell).asTriangleNodes(), points, qualityFunction); }
    );
 
    return result;

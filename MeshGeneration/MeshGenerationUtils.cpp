@@ -1,22 +1,27 @@
-#include "MeshGenerationUtils.h"
 #include "IntervalTreeAction.h"
+#include "MeshGenerationUtils.h"
 
 #include <sstream>
 
 using namespace MeshGeneration;
+using namespace Topology;
 
-void MeshGeneration::LogSortedEdgeNodes(Logger& logger, const  SortedEdgeNodes& sortedEdgeNodes, std::string header)
+void MeshGeneration::LogSortedEdgeNodes(Logger& logger, const  EdgeNodesSorted& sortedEdgeNodes, std::string header)
 {
-   logger.logLine(header + std::to_string(sortedEdgeNodes.front()) + "-> " + std::to_string(sortedEdgeNodes.back()));
+   std::ostringstream os;
+   os << header << " " << sortedEdgeNodes;
+   logger.logLine(os.str());
 }
 
-void MeshGeneration::Log(Logger& logger, const std::vector<SortedEdgeNodes>& sortedEdgeNodes, std::string header)
+void MeshGeneration::Log(Logger& logger, const std::vector<EdgeNodesSorted>& sortedEdgeNodes, std::string header)
 {
    std::vector<std::string> lines;
    lines.push_back(header);
    for (const auto& e : sortedEdgeNodes)
    {
-      lines.push_back(std::to_string(e.front()) + " -> " + std::to_string(e.back()));
+      std::ostringstream os;
+      os << e;
+      lines.push_back(os.str());
    }
    logger.logLines(lines);
 }
@@ -87,16 +92,18 @@ void MeshGeneration::Log(Logger& logger, const std::vector<const IntervalTree::I
    lines.emplace_back(header);
    for (const auto& indx : cells)
    {
-      lines.push_back(indx->toString());
+      std::ostringstream os;
+      os << indx;
+      lines.push_back(os.str());
    }
    logger.logLines(lines);
 }
 
-std::array<Point<GeomType, GeomDim2>, Topology::NumNodesOnTriangle> MeshGeneration::GetTriangleGeometry(
-   const MeshGeneration::TriangleNodes& triangleNodes,
+std::array<Point<GeomType, GeomDim2>, Topology::NumCornersOnTriangle> MeshGeneration::GetTriangleGeometry(
+   const TriangleNodes& triangleNodes,
    const IPointCollection<MeshGeneration::GeomType, GeomDim2>& points)
 {
-   std::array<Point<GeomType, GeomDim2>, Topology::NumNodesOnTriangle> result;
+   std::array<Point<GeomType, GeomDim2>, Topology::NumCornersOnTriangle> result;
    str::transform(triangleNodes, result.begin(), [&points](NodeIndex node) {return points.getPoint(node); });
    return result;
 }

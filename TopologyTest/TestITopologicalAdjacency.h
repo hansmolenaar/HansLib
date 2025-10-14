@@ -1,8 +1,10 @@
 #pragma once
 
-#include <gtest/gtest.h>
 #include "ITopologicalAdjacency.h"
+#include <gtest/gtest.h>
 #include <set>
+
+using namespace Topology;
 
 namespace TopologyTest
 {

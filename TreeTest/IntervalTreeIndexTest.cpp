@@ -25,8 +25,9 @@ TEST(IntervalTreeIndexTest, Index_basics)
    ASSERT_EQ(rv1.getLower(), intv1.getLower());
    ASSERT_EQ(rv1.getUpper(), intv1.getUpper());
 
-   const std::string str = index->toString();
-   ASSERT_EQ(str, "((7/8, 1), (0, 1/8))");
+   std::ostringstream os;
+   os << *index;
+   ASSERT_EQ(os.str(), "((7/8, 1), (0, 1/8))");
 }
 
 
@@ -99,16 +100,22 @@ TEST(IntervalTreeIndexTest, GetAdjacentInDir)
    const auto* root = factory.getRoot();
    const auto kids = root->refine();
    const auto* kid = factory.addIfNew(kids[2]);
-   ASSERT_EQ(kid->toString(), "((0, 1/2), (1/2, 1))");
+   std::ostringstream os;
+   os << *kid;
+   ASSERT_EQ(os.str(), "((0, 1/2), (1/2, 1))");
 
    auto retval = kid->getAdjacentInDir(AdjacentDirection{ 0, false });
    ASSERT_FALSE(retval);
 
    retval = kid->getAdjacentInDir(AdjacentDirection{ 0, true });
-   ASSERT_EQ(Index<2>(*retval, factory1).toString(), "((1/2, 1), (1/2, 1))");
+   os.str("");
+   os << Index<2>(*retval, factory1);
+   ASSERT_EQ(os.str(), "((1/2, 1), (1/2, 1))");
 
    retval = kid->getAdjacentInDir(AdjacentDirection{ 1, false });
-   ASSERT_EQ(Index<2>(*retval, factory1).toString(), "((0, 1/2), (0, 1/2))");
+   os.str("");
+   os << Index<2>(*retval, factory1);
+   ASSERT_EQ(os.str(), "((0, 1/2), (0, 1/2))");
 
    retval = kid->getAdjacentInDir(AdjacentDirection{ 1, true });
    ASSERT_FALSE(retval);

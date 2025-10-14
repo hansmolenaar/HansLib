@@ -13,5 +13,5 @@ struct SamePointPredicate
 template<typename T, int N>
 bool SamePointPredicate<T, N>::operator()(const Point<T, N>& p) const
 {
-   return predicate.SamePoints(referencePoint, p);
+   return predicate.samePoints(referencePoint, p);
 }

@@ -12,18 +12,20 @@ namespace Geometry
    {
    public:
 
-      explicit Ball2AsRegion(Ball<T, GeomDim2> ball);
+      Ball2AsRegion(Ball<T, GeomDim2> ball, std::string name);
 
       BoundingBox<T, GeomDim2> getBoundingBox() const override;
 
-      bool Contains(const Point<T, GeomDim2>& point, const IGeometryPredicate<T, GeomDim2>& predicate) const override;
+      bool contains(const Point<T, GeomDim2>& point, const IGeometryPredicate<T, GeomDim2>& predicate) const override;
 
-      bool CouldIntersectWith(typename const BoundingBox<T, GeomDim2>& bb, const IGeometryPredicate<T, GeomDim2>& predicate) const override;
+      bool couldIntersectWith(typename const BoundingBox<T, GeomDim2>& bb, const IGeometryPredicate<T, GeomDim2>& predicate) const override;
 
       const IRegionManifolds<T, GeomDim2>& getManifolds() const override;
 
+      const std::string& getName() const override;
    private:
       Ball<T, GeomDim2> m_ball;
+      std::string m_name;
       std::unique_ptr<IRegionManifolds<T, GeomDim2>> m_sphereManifolds;
    };
 

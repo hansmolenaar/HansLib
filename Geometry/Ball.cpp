@@ -105,19 +105,19 @@ std::optional<Point<T, N>> Ball<T, N>::TryGetFirstIntersectionWithDirectedEdge(t
    {
       // Use the second root
       Utilities::MyAssert(pos1 == BallPosition::Outside);
-      Utilities::MyAssert(!predicate.SamePoints(point0, ip1));
+      Utilities::MyAssert(!predicate.samePoints(point0, ip1));
       return ip1;
    }
 
    if (pos0 == BallPosition::On)
    {
       Utilities::MyAssert(pos1 == BallPosition::Outside);
-      if (edge.contains(ip1, predicate) && !predicate.SamePoints(ip1, point0)) return ip1;
+      if (edge.contains(ip1, predicate) && !predicate.samePoints(ip1, point0)) return ip1;
       return {};
    }
 
    Utilities::MyAssert(pos0 == BallPosition::Outside);
-   if (predicate.SamePoints(point1, ip0)) return  point1;
+   if (predicate.samePoints(point1, ip0)) return  point1;
    if (edge.contains(ip0, predicate)) return ip0;
    return {};
 }

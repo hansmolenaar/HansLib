@@ -1,8 +1,8 @@
-#include <gtest/gtest.h>
-#include "ReferenceShapePolygon.h"
-#include "MyException.h"
-#include "TestIReferenceShape.h"
 #include "Defines.h"
+#include "MyException.h"
+#include "ReferenceShapePolygon.h"
+#include "TestIReferenceShape.h"
+#include <gtest/gtest.h>
 
 TEST(ReferenceShapePolygon, Triangle)
 {

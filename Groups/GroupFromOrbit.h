@@ -1,11 +1,11 @@
 #pragma once
 
 #include "Defines.h"
+#include "GroupTable.h"
 #include "IFiniteGroup.h"
-#include "IPointTransformation.h"
 #include "IGeometryPredicate.h"
 #include "IndexerRowMajor.h"
-#include "GroupTable.h"
+#include "IPointTransformation.h"
 #include "SamePointPredicate.h"
 
 namespace GroupFromOrbit
@@ -25,7 +25,7 @@ std::unique_ptr<IFiniteGroup> GroupFromOrbit::Create<N>(
    for (const auto& t : transformations)
    {
       const auto image = (*t)(trialPoint);
-      const SamePointPredicate<double, N> finder{predicate, image};
+      const SamePointPredicate<double, N> finder{ predicate, image };
       if (std::find_if(orbit.begin(), orbit.end(), finder) != orbit.end()) return {};
       orbit.push_back(image);
    }

@@ -1,10 +1,10 @@
 #include <gtest/gtest.h>
 
-#include "StdHash.h"
 #include "Point.h"
+#include "StdHash.h"
 
-#include <numeric>
 #include <numbers>
+#include <numeric>
 TEST(PointTest, PointArray)
 {
    const auto p = Point<int, 1>({ 42 });
@@ -64,13 +64,14 @@ TEST(PointTest, Subscript)
    ASSERT_EQ(p.data()[1], 2);
 }
 
-
 TEST(PointTest, Times)
 {
    IntPoint2 p{ 1,2 };
-   const IntPoint2 p2 = p * 2;
+   IntPoint2 p2 = p * 2;
    ASSERT_EQ(p2.data()[0], 2);
    ASSERT_EQ(p2.data()[1], 4);
+
+   ASSERT_TRUE(2 * p == p * 2);
 }
 
 TEST(PointTest, Bounds)
@@ -152,4 +153,77 @@ TEST(PointTest, Angle)
    ASSERT_NEAR(PointUtils::Angle(p0, p1, p2), std::numbers::pi / 3, 1.0e-12);
    ASSERT_NEAR(PointUtils::Angle(p0, p2, p1), std::numbers::pi / 6, 1.0e-12);
    ASSERT_NEAR(PointUtils::Angle(p0, p2, p0), 0.0, 1.0e-12);
+}
+
+TEST(PointTest, inner_product)
+{
+   IntPoint2 p1{ 1,2 };
+   IntPoint2 p2{ 3,4 };
+   ASSERT_EQ(PointUtils::innerProduct(p1, p2), 11);
+}
+
+TEST(PointTest, ostreamPoint)
+{
+   const IntPoint3 p{ 2, 3, -6 };
+   std::ostringstream os;
+   os << p;
+   ASSERT_EQ(os.str(), "(2, 3, -6)");
+}
+
+TEST(PointTest, IntDivide)
+{
+   IntPoint2 p0{ 2,4 };
+   p0 = p0 / 2;
+
+   ASSERT_EQ(p0, (IntPoint2{ 1,2 }));
+}
+
+TEST(PointTest, VectorProduct1)
+{
+   const IntPoint3 a{ 2,3, 4 };
+   const IntPoint3 b{ 5,6, 7 };
+   const IntPoint3 c = a * b;
+
+   ASSERT_EQ(c, (IntPoint3{ -3, 6, -3 }));
+}
+
+TEST(PointTest, VectorProduct2)
+{
+   const IntPoint3 a{ 3,-3, 1 };
+   const IntPoint3 b{ 4,9, 2 };
+   const IntPoint3 c = a * b;
+
+   ASSERT_EQ(c, (IntPoint3{ -15, -2, 39 }));
+}
+
+TEST(PointTest, VectorProduct3)
+{
+   const IntPoint3 a{ 3,4, 7 };
+   const IntPoint3 b{ 4,9, 2 };
+   const IntPoint3 c = a * b;
+
+   ASSERT_EQ(c, (IntPoint3{ -55,22,11 }));
+}
+
+TEST(PointTest, ToPoint)
+{
+   const RatPoint2 a{ Rational{1,2}, Rational{-1,4} };
+   const Point2 b = PointUtils::toPoint(a);
+
+   ASSERT_DOUBLE_EQ(b[0], 0.5);
+   ASSERT_DOUBLE_EQ(b[1], -0.25);
+}
+
+TEST(PointTest, GetL1DistanceInt)
+{
+   const IntPoint2 p0{ -1, -2 };
+   const IntPoint2 p1{ 1, -1 };
+   ASSERT_EQ(PointUtils::GetL1Distance(p0, p1), 3);
+}
+
+TEST(PointTest, GetL1DistanceRational)
+{
+   const RatPoint2 p0{ Rational{1,2}, Rational{-1,4} };
+   const RatPoint2 p1{ Rational{1,8}, Rational{3,8} };
+   ASSERT_EQ(PointUtils::GetL1Distance(p0, p1), 1);
 }

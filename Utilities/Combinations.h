@@ -1,5 +1,5 @@
 #pragma once
-#include <bitset>
+
 #include <vector>
 
 namespace Combinations

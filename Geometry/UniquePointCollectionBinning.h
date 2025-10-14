@@ -1,9 +1,9 @@
 #pragma once
 
+#include "Defines.h"
 #include "IDynamicUniquePointCollection.h"
 #include "IGeometryPredicate.h"
 #include "LocalizationBins.h"
-#include "Defines.h"
 
 #include <unordered_map>
 
@@ -24,7 +24,17 @@ public:
 
    const LocalizationBins& getBins(int direction) const;
 
-   std::string toString() const;
+   friend std::ostream& operator<<(std::ostream& os, const UniquePointCollectionBinning& bins)
+   {
+      const std::string sep = "  ";
+      os << "UniquePointCollectionBinning  NDIR=" << N
+         << sep << "NPOINTS=" << bins.getNumPoints() << '\n';
+      for (int n = 0; n < N; ++n)
+      {
+         os << "DIR=" << n << sep << "->" << sep << bins.m_bins.at(n) << '\n';
+      }
+      return os;
+   }
 
    using BinSpecifier = std::array<size_t, N>;
 private:

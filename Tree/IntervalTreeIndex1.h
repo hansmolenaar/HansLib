@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Rational.h"
+#include "Defines.h"
 #include "Interval.h"
 #include "IntervalTreeDefines.h"
-#include "Defines.h"
+#include "Rational.h"
 
 #include <optional>
 
@@ -37,7 +37,6 @@ namespace IntervalTree
       std::array<Index1, 2> refine() const;
 
       Rational getMeasure() const;
-      std::string toString() const;
 
       static bool IsRoot(Key key);
       bool isRoot() const;
@@ -50,6 +49,11 @@ namespace IntervalTree
       Index1::Key getParentKey() const;
       static Index1::Key GetParentKey(Index1::Key);
 
+      friend std::ostream& operator<<(std::ostream& os, const Index1& index1)
+      {
+         os << index1.getInterval();
+         return os;
+      }
    private:
 
       Index1(const Interval<Rational>& interval);

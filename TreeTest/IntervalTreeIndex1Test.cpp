@@ -55,8 +55,9 @@ TEST(IntervalTreeIndex1Test, Level3)
 TEST(IntervalTreeIndex1Test, Index1ToString)
 {
    const Index1 indx = Index1::Create(Interval<Rational>(Rational(0, 2), Rational(1, 4)));
-   const auto str = indx.toString();
-   ASSERT_EQ(str, "(0, 1/4)");
+   std::ostringstream os;
+   os << indx;
+   ASSERT_EQ(os.str(), "(0, 1/4)");
 }
 TEST(IntervalTreeIndex1Test, Index1Refine)
 {
@@ -288,7 +289,7 @@ TEST(IntervalTreeIndex1Test, CreateRoundTrip)
 
 TEST(IntervalTreeIndex1Test, GetParentKey)
 {
-   for (Index1::Key key = 0; key <  10; ++key)
+   for (Index1::Key key = 0; key < 10; ++key)
    {
       const auto parent = Index1::CreateFromKey(key);
       const auto kids = parent.refine();

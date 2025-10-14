@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
-#include "IntervalTreeStatistics.h"
 #include "IntervalTreeRefinePredicate.h"
+#include "IntervalTreeStatistics.h"
 
 using namespace IntervalTree;
 
@@ -22,5 +22,7 @@ TEST(IntervalTreeStatistics, Level1)
    tree.refineLeaves(doRefine);
 
    const auto& statistics = GetStatistics<3>(tree);
-   ASSERT_EQ(statistics.toString(), "9, {0, 8}");
+   std::ostringstream os;
+   os << statistics;
+   ASSERT_EQ(os.str(), "9, {0, 8}");
 }

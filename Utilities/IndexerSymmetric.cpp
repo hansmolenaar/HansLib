@@ -1,8 +1,6 @@
 #include "IndexerSymmetric.h"
 #include "MyAssert.h"
 
-#include <tuple>
-
 IndexerSymmetric::IndexerSymmetric(unsigned int dim) : m_dim(dim)
 {
    Utilities::MyAssert(dim > 0);

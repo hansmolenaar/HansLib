@@ -1,5 +1,5 @@
-#include "Paraview.h"
 #include "MyAssert.h"
+#include "Paraview.h"
 
 std::filesystem::path Paraview::GetFileName(const std::string& baseName)
 {
@@ -15,10 +15,14 @@ void Paraview::WriteHeader(std::ostream& stream)
    stream << "DATASET UNSTRUCTURED_GRID\n";
 }
 
-void Paraview::Write(const std::string& baseName, const Vtk::VtkData& data)
+void Paraview::Write(const Vtk::VtkData& data)
 {
-   const auto path = GetFileName(baseName);
-   std::ofstream stream(path.string().c_str(), std::ios::out);
+   const std::string& baseName = data.getName().project;
+   const auto directoryPath = GetFileName(baseName);
+   std::filesystem::create_directory(directoryPath);
+   const auto fileName = directoryPath / (data.getName().item + ".vtk");
+
+   std::ofstream stream(fileName.c_str(), std::ios::out);
 
    WriteHeader(stream);
    WritePoints(stream, data);
@@ -87,4 +91,12 @@ void Paraview::WriteCellData(std::ostream& stream, const Vtk::VtkData& data)
    stream << "CELL_DATA " << data.getNumCells() << "\n\n";
    // TODO not yet implemented
    Utilities::MyAssert(data.getNumCellData() == 0);
+}
+
+void Paraview::WriteList(const std::vector<const Vtk::VtkData*>& list)
+{
+   for (const auto& data : list)
+   {
+      Write(*data);
+   }
 }

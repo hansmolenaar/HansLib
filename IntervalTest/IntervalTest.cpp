@@ -1,7 +1,8 @@
 #include <gtest/gtest.h>
 
-#include "Interval.h"
 #include "Functors.h"
+#include "Interval.h"
+#include <sstream>
 
 TEST(IntervalTest, Basic1)
 {
@@ -106,11 +107,10 @@ TEST(IntervalTest, InterpolateFail)
 {
    constexpr Functors::AreClose areClose;
    Interval<double> interval(0, 0);
-   ASSERT_THROW(interval.inverseInterpolate(1.0), MyException);
+   ASSERT_MYEXCEPTION_MESSAGE(interval.inverseInterpolate(1.0), "Interval<double>::inverseInterpolate degenerate interval");
    interval = Interval<double>(0, std::numeric_limits<double>::epsilon());
-   ASSERT_THROW(interval.inverseInterpolate(std::numeric_limits<double>::max()), MyException);
+   ASSERT_MYEXCEPTION_MESSAGE(interval.inverseInterpolate(std::numeric_limits<double>::max()), "Interval<double>::inverseInterpolate degenerate interval");
 }
-
 
 TEST(IntervalTest, Equals)
 {
@@ -120,4 +120,12 @@ TEST(IntervalTest, Equals)
    ASSERT_EQ(interval1, interval1);
    ASSERT_NE(interval1, interval2);
    ASSERT_NE(interval1, interval3);
+}
+
+TEST(IntervalTest, StreamInsertion)
+{
+   const Interval<int> interval(1, 2);
+   std::ostringstream os;
+   os << interval;
+   ASSERT_EQ(os.str(), "(1, 2)");
 }

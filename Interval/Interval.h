@@ -4,6 +4,7 @@
 #include "MyException.h"
 #include "Rational.h"
 #include <cmath>
+#include <ostream>
 
 template<typename T>
 class Interval
@@ -25,6 +26,11 @@ public:
    T interpolate(T factor) const;
    T inverseInterpolate(T arg) const;
    auto operator<=>(const Interval<T>&) const = default;
+   friend std::ostream& operator<<(std::ostream& os, const Interval<T>& intv)
+   {
+      os << "(" << intv.m_lower << ", " << intv.m_upper << ")";
+      return os;
+   }
 
 private:
    T m_lower;

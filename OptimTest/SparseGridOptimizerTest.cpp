@@ -1,16 +1,18 @@
 #include <gtest/gtest.h>
 
-#include "MinimizationProblem.h"
 #include "Functors.h"
-#include "SparseGridOptimizer.h"
-#include "Single.h"
-#include "NodeRefinePredicateNever.h"
-#include "NodeRefinePredicateAlways.h"
-#include "NodeRefinePredicateAdaptive.h"
-#include "NodeRefinePredicateFactoryByLevel.h"
-#include "IterativeMinimizationConvergenceCritMaxStep.h"
 #include "IterativeMinimizationController.h"
+#include "IterativeMinimizationConvergenceCritMaxStep.h"
+#include "MinimizationProblem.h"
+#include "NodeRefinePredicateAdaptive.h"
+#include "NodeRefinePredicateAlways.h"
+#include "NodeRefinePredicateFactoryByLevel.h"
+#include "NodeRefinePredicateNever.h"
 #include "Plotting.h"
+#include "Single.h"
+#include "SparseGridOptimizer.h"
+
+#include <fstream>
 
 namespace
 {

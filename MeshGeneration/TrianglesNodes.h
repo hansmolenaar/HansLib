@@ -1,47 +1,49 @@
 #pragma once
 
-#include "MeshGenerationDefines.h"
+#include "CellsNodes.h"
+#include "EdgeNodesSorted.h"
+#include "TriangleNodesOriented.h"
 #include <boost/container/static_vector.hpp>
-#include <vector>
-#include <unordered_map>
-#include <array>
-#include <optional>
-#include <string>
 
 namespace MeshGeneration
 {
    class TrianglesNodes
    {
    public:
-
-
-      // No ordering of the nodes assumed
-      CellIndex addTriangle(PointIndex n0, PointIndex n1, PointIndex n2);
+      CellIndex addTriangle(const Topology::TriangleNodesOriented& triangle);
       void deleteTriangle(CellIndex triangleId);
-      boost::container::static_vector<CellIndex, 2> getEdgeConnectedTriangles(PointIndex n0, PointIndex n1) const;
-      std::vector<CellIndex> getNodeConnectedTriangles(PointIndex node) const;
-      std::vector<PointIndex> getEdgeConnectedNodes(PointIndex node) const;
-      std::optional<CellIndex> tryGetTriangle(PointIndex n0, PointIndex n1, PointIndex n2) const;
-      bool triangleContainsNode(CellIndex CellIndex, PointIndex nodeId) const;
+      boost::container::static_vector<CellIndex, 2> getTrianglesContainingEdge(Topology::NodeIndex n0, Topology::NodeIndex n1) const;
+      boost::container::static_vector<CellIndex, Topology::NumCornersOnTriangle> getEdgeConnectedTriangles(CellIndex triangleId) const;
+      boost::container::static_vector<CellIndex, Topology::NumCornersOnTriangle> getCommonNodes(CellIndex triangle1, CellIndex triangle2) const;
+      std::vector<CellIndex> getTrianglesContainingNode(Topology::NodeIndex node) const;
+      std::vector<Topology::NodeIndex> getEdgeConnectedNodes(Topology::NodeIndex node) const;
+      std::optional<CellIndex> tryGetTriangle(Topology::NodeIndex n0, Topology::NodeIndex n1, Topology::NodeIndex n2) const;
+      bool triangleContainsNode(CellIndex CellIndex, Topology::NodeIndex nodeId) const;
 
-      TriangleNodes getTriangleNodes(CellIndex triangle) const;
+      Topology::TriangleNodesOriented getTriangleNodes(CellIndex triangle) const;
 
-      bool isKnownNodeId(PointIndex node) const;
+      bool isKnownNodeId(Topology::NodeIndex node) const;
       bool isKnownTriangleId(CellIndex triangle) const;
 
       std::vector<CellIndex> getAllTriangles() const;
-      std::vector<PointIndex> getAllNodes() const;
-      std::vector<SortedEdgeNodes> getAllSortedEdges() const;
+      std::vector<Topology::NodeIndex> getAllNodes() const;
+      std::vector<Topology::EdgeNodesSorted> getAllSortedEdges() const;
 
-      std::string toString() const;
-      static SortedEdgeNodes CreateSortedEdge(PointIndex n0, PointIndex n1);
-      
+      std::vector<std::vector<CellIndex>> splitInEdgeConnectedComponents() const;
+
+      friend std::ostream& operator<<(std::ostream& os, const TrianglesNodes& tnodes)
+      {
+         const std::string sep = " ";
+         os << "TriangleNodes";
+         os << sep << "NUMNODES=" << tnodes.getAllNodes().size();
+         os << sep + "NUMTRIANGLES=" << tnodes.m_cellsNodes.getNumCells();
+         return os;
+      }
+      size_t getNumTriangles() const;
+
+      TrianglesNodes createSubSet(const std::vector<CellIndex>& cellIds) const;
+
    private:
-      std::optional<CellIndex> tryGetTriangleFromSortedNodes(const TriangleNodes& nodes) const;
-      void checkNodeId(PointIndex nodeId) const;
-      void checkTriangleId(CellIndex triangleId) const;
-
-      std::unordered_map<CellIndex, TriangleNodes> m_toNodes;
-      std::unordered_multimap<PointIndex, CellIndex> m_toTriangles;
+      CellsNodes<Topology::TriangleNodesOriented> m_cellsNodes;
    };
 }

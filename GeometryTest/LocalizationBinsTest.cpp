@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "LocalizationBins.h"
+#include <sstream>
 
 TEST(LocalizationBinsTest, SingleBin)
 {
@@ -31,8 +32,8 @@ TEST(LocalizationBinsTest, RangeProblem)
 {
    const Interval<double> intv(2.0, 3.0);
    const LocalizationBins bins = LocalizationBins::CreateUniform(intv, 10);
-   ASSERT_THROW(bins.find(0.0), MyException);
-   ASSERT_THROW(bins.find(4.0), MyException);
+   ASSERT_MYEXCEPTION_MESSAGE(bins.find(0.0), "LocalizationBins::find value below lower bound");
+   ASSERT_MYEXCEPTION_MESSAGE(bins.find(4.0), "LocalizationBins::find value above upper bound");
 }
 
 
@@ -48,8 +49,8 @@ TEST(LocalizationBinsTest, FromValuesStrictSingleBin)
    ASSERT_EQ(bins.find(1.4), 0);
    ASSERT_EQ(bins.find(1.6), 1);
    ASSERT_EQ(bins.find(2.0), 1);
-   ASSERT_THROW(bins.find(0.0), MyException);
-   ASSERT_THROW(bins.find(3.0), MyException);
+   ASSERT_MYEXCEPTION_MESSAGE(bins.find(0.0), "LocalizationBins::find value below lower bound");
+   ASSERT_MYEXCEPTION_MESSAGE(bins.find(3.0), "LocalizationBins::find value above upper bound");
 }
 
 
@@ -84,9 +85,9 @@ TEST(LocalizationBinsTest, FromValuesNonStrictSmallBins)
 TEST(LocalizationBinsTest, FromValuesUnHappyPath)
 {
    const LocalizationBins bins = LocalizationBins::CreateFromValues(std::vector<double> { 2.0, 1.0 }, false);
-   ASSERT_THROW(LocalizationBins::CreateFromValues(std::vector<double>{ 1.0 }, false), MyException);
-   ASSERT_THROW(LocalizationBins::CreateFromValues(std::vector<double>{ 1.0 }, false, -1.0), MyException);
-   ASSERT_THROW(LocalizationBins::CreateFromValues(std::vector<double>{ 1.0, 1.1 }, false, 1.0), MyException);
+   ASSERT_MYEXCEPTION_MESSAGE(LocalizationBins::CreateFromValues(std::vector<double>{ 1.0 }, false), "LocalizationBins::CreateFromValues need at least 2 values");
+   ASSERT_MYEXCEPTION_MESSAGE(LocalizationBins::CreateFromValues(std::vector<double>{ 1.0 }, false, -1.0), "LocalizationBins::CreateFromValues minBinSize must be positive");
+   ASSERT_MYEXCEPTION_MESSAGE(LocalizationBins::CreateFromValues(std::vector<double>{ 1.0, 1.1 }, false, 1.0), "LocalizationBins::CreateFromValues value too close");
 }
 
 
@@ -94,14 +95,16 @@ TEST(LocalizationBinsTest, ToString)
 {
    const Interval<double> intv(2.0, 3.0);
    const LocalizationBins bins = LocalizationBins::CreateUniform(intv, 2);
-   const auto str = bins.toString();
-   ASSERT_TRUE(str.contains("LWR=2  UPR=3  NUM=2  MIN=0.5  MAX=0.5  AVG=0.5"));
+   std::ostringstream os;
+   os << bins;
+   ASSERT_TRUE(os.str().contains("LWR=2  UPR=3  NUM=2  MIN=0.5  MAX=0.5  AVG=0.5"));
 }
 
 
 TEST(LocalizationBinsTest, ToStringNonStrict)
 {
    const LocalizationBins bins = LocalizationBins::CreateFromValues(std::vector<double> { 2.0, 1.0 }, false);
-   const auto str = bins.toString();
-   ASSERT_TRUE(str.contains("(-INF)  LWR=1  UPR=2  (+INF)  NUM=2  MIN=0.5  MAX=0.5  AVG=0.5"));
+   std::ostringstream os;
+   os << bins;
+   ASSERT_TRUE(os.str().contains("(-INF)  LWR=1  UPR=2  (+INF)  NUM=2  MIN=0.5  MAX=0.5  AVG=0.5"));
 }

@@ -35,7 +35,9 @@ TEST(HierLevelIndex, SpaceShip)
 
 TEST(HierLevelIndex, toString)
 {
-   ASSERT_EQ(HierLevelIndex(2, 3).toString(), "{2, 3}");
+   std::ostringstream os;
+   os << HierLevelIndex(2, 3);
+   ASSERT_EQ(os.str(), "{2, 3}");
 }
 
 

@@ -1,16 +1,15 @@
 #include "ArrayStatistics.h"
 #include "Rational.h"
 
-#include <algorithm>
-#include <numeric>
 #include <iostream>
+#include <numeric>
 
 template class ArrayStatistics<int>;
 template class ArrayStatistics<double>;
 template class ArrayStatistics<Rational>;
 
 template<typename T>
-ArrayStatistics<T>::ArrayStatistics(std::span<const T> values) : 
+ArrayStatistics<T>::ArrayStatistics(std::span<const T> values) :
    m_size(values.size())
 {
    if (m_size == 0) return;
@@ -46,6 +45,7 @@ double ArrayStatistics<T>::getAverage() const
    return m_average;
 }
 
+#if 0
 template<typename T>
 std::string ArrayStatistics<T>::toString() const
 {
@@ -59,3 +59,4 @@ std::string ArrayStatistics<T>::toString() const
        << sep << "AVG=" << getAverage();
    return oss.str();
 }
+#endif

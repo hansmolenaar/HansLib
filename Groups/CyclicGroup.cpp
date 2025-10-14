@@ -1,6 +1,4 @@
 #include "CyclicGroup.h"
-
-#include "MyAssert.h"
 #include "IFiniteGroupUtils.h"
 
 std::unique_ptr<CyclicGroup> CyclicGroup::Create(GroupElement order)

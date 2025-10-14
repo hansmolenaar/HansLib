@@ -1,6 +1,5 @@
 #include "CubeGroup.h"
 #include "GroupTable.h"
-#include "IndexerRowMajor.h"
 #include "MyException.h"
 #include "PermutationUtils.h"
 

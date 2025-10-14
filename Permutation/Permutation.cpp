@@ -193,3 +193,8 @@ Permutation::Parity Permutation::getParity() const
       [](Permutation::Entry init, const std::vector<Permutation::Entry>& perm) { return init + PermutationUtils::SafeCastToEntry(perm.size() + 1); });
    return (sum % 2 ? Parity::ODD : Parity::EVEN);
 }
+
+Permutation Permutation::compose(const Permutation& perm1, const Permutation& perm0)
+{
+   return perm1 * perm0;
+}

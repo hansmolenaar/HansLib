@@ -6,6 +6,7 @@ add_executable(${PROJECT_NAME} ${SOURCES})
 target_include_directories(${PROJECT_NAME} PRIVATE
 	${CMAKE_INCLUDE_DIR}/BoundingBox
 	${CMAKE_INCLUDE_DIR}/Geometry
+	${CMAKE_INCLUDE_DIR}/GeometryTest
 	${CMAKE_INCLUDE_DIR}/Interval
 	${CMAKE_INCLUDE_DIR}/MeshGeneration
 	${CMAKE_INCLUDE_DIR}/Topology
@@ -14,5 +15,5 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 	${Boost_INCLUDE_DIR}
 )
 
-target_link_libraries(${PROJECT_NAME}  Point Utilities Tree MeshGeneration Geometry Graph ${GTestLibs})
+target_link_libraries(${PROJECT_NAME}  Point Utilities Tree MeshGeneration Geometry Graph Topology ${GTestLibs})
 gtest_discover_tests(${PROJECT_NAME})

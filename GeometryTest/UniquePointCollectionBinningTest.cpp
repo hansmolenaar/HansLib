@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
-#include "UniquePointCollectionBinning.h"
 #include "PointClose.h"
+#include "UniquePointCollectionBinning.h"
 
 #include <numbers>
 
@@ -10,7 +10,7 @@ TEST(UniquePointCollectionBinningTest, Empty)
    const PointClose<double, GeomDim1> predicate;
    const UniquePointCollectionBinning< GeomDim1> collection(predicate, std::vector<Point1>{ Point1{ 1.0 }, Point1{ 2.0 }});
    ASSERT_EQ(collection.getNumPoints(), 2);
-   const auto found = collection.tryGetClosePoint(Point1{1.5});
+   const auto found = collection.tryGetClosePoint(Point1{ 1.5 });
    ASSERT_FALSE(found);
 }
 
@@ -28,7 +28,7 @@ TEST(UniquePointCollectionBinningTest, AddIfNew)
    const Point1 newPoint{ 1.5 };
    id = collection.addIfNew(newPoint);
    ASSERT_EQ(id, 2);
-   ASSERT_TRUE(predicate.SamePoints(newPoint, collection.getPoint(id)));
+   ASSERT_TRUE(predicate.samePoints(newPoint, collection.getPoint(id)));
 }
 
 
@@ -44,7 +44,7 @@ TEST(UniquePointCollectionBinningTest, Delete)
    collection.deletePoint(0);
    ASSERT_EQ(collection.getNumPoints(), 1);
 
-   ASSERT_TRUE(predicate.SamePoints(point1, collection.getPoint(1)));
+   ASSERT_TRUE(predicate.samePoints(point1, collection.getPoint(1)));
    ASSERT_ANY_THROW(collection.getPoint(0));
 }
 
@@ -173,7 +173,9 @@ TEST(UniquePointCollectionBinningTest, ToString)
          Point3{ 0.6, 0.7, 0.8 },
          Point3{ 0.3, 0.6, 0.2 },
    });
-   const auto str = collection.toString();
+   std::ostringstream os;
+   os << collection;
+   const auto str = os.str();
    ASSERT_TRUE(str.contains("UniquePointCollectionBinning  NDIR=3  NPOINTS=11"));
    ASSERT_TRUE(str.contains("DIR=0  ->  (-INF)  LWR=0  UPR=1  (+INF)  NUM=5  MIN=0.05  MAX=0.35  AVG=0.2"));
 }

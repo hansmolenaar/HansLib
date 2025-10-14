@@ -1,10 +1,11 @@
 #include <gtest/gtest.h>
 
 #include "IMatrixSquareUtils.h"
-#include "IMatrixUtils.h"
-#include "MatrixRotation3D.h"
 #include "IMatrixTest.h"
+#include "IMatrixUtils.h"
 #include "MathConstants.h"
+#include "MatrixRotation3D.h"
+#include "UnitVector.h"
 
 namespace {
    const double eps = 1.0e-12;
@@ -12,9 +13,9 @@ namespace {
 
 TEST(MatrixRotation3DTest, TestBase)
 {
-   const auto axisz = UnitVector3::TryCreate(std::array<double, 3>({ 0,0,1 }));
+   const auto axisz = UnitVector<double, 3>::Create(std::array<double, 3>({ 0,0,1 }));
 
-   const auto& mat = MatrixRotation3D::Create(*axisz, MathConstants::PI_4);
+   const auto& mat = MatrixRotation3D::Create(axisz, MathConstants::PI_4);
    ASSERT_EQ(3, mat.GetRowDimension());
    ASSERT_EQ(3, mat.GetColDimension());
 
@@ -28,8 +29,8 @@ TEST(MatrixRotation3DTest, TestBase)
 
 TEST(MatrixRotation3DTest, TestUnit)
 {
-   const auto axisz = UnitVector3::TryCreate(std::array<double, 3>({ 1,1,1 }));
-   const auto& mat = MatrixRotation3D::Create(*axisz, 0.0);
+   const auto axisz = UnitVector<double, 3>::Create(std::array<double, 3>({ 1,1,1 }));
+   const auto& mat = MatrixRotation3D::Create(axisz, 0.0);
 
    ASSERT_TRUE(IMatrixRotation::IsRotation(mat));
 
@@ -46,8 +47,8 @@ TEST(MatrixRotation3DTest, TestUnit)
 
 TEST(MatrixRotation3DTest, TestPermute)
 {
-   const auto axisz = UnitVector3::TryCreate(std::array<double, 3>({ 1,1,1 }));
-   const auto& mat = MatrixRotation3D::Create(*axisz, 2 * MathConstants::PI / 3);
+   const auto axisz = UnitVector<double, 3>::Create(std::array<double, 3>({ 1,1,1 }));
+   const auto& mat = MatrixRotation3D::Create(axisz, 2 * MathConstants::PI / 3);
 
    const std::array<double, 3> vecin = { 1,2,3 };
    std::vector<double> vecout(3);

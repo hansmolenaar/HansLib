@@ -1,7 +1,8 @@
-#include "UniquePointCollectionBinning.h"
 #include "MultiIndex.h"
+#include "UniquePointCollectionBinning.h"
 
 #include<boost/container/static_vector.hpp>
+#include <sstream>
 
 template UniquePointCollectionBinning<GeomDim1>;
 template UniquePointCollectionBinning<GeomDim2>;
@@ -158,7 +159,7 @@ std::optional<PointIndex> UniquePointCollectionBinning<N>::tryGetClosePointInBin
    for (auto itr = first; itr != last; ++itr)
    {
       const auto pointId = itr->second;
-      if (m_predicate.SamePoints(p, getPoint(pointId)))
+      if (m_predicate.samePoints(p, getPoint(pointId)))
       {
          return static_cast<PointIndex>(pointId);
       }
@@ -168,25 +169,11 @@ std::optional<PointIndex> UniquePointCollectionBinning<N>::tryGetClosePointInBin
 }
 
 template< int N>
-std::string UniquePointCollectionBinning<N>::toString() const
-{
-   const std::string sep = "  ";
-   std::ostringstream oss;
-   oss << "UniquePointCollectionBinning  NDIR=" << N
-      << sep << "NPOINTS=" << getNumPoints() << '\n';
-   for (int n = 0; n < N; ++n)
-   {
-      oss << "DIR=" << n << sep << "->" << sep << m_bins.at(n).toString() << '\n';
-   }
-   return oss.str();
-}
-
-template< int N>
 void UniquePointCollectionBinning<N>::movePoint(PointIndex pointId, const Point<double, N>& newCoordinates)
 {
    if (!m_points.contains(pointId))
    {
-      throw MyException("UniquePointCollectionBinning<N>::movePoint unknown point " + std::to_string(pointId) );
+      throw MyException("UniquePointCollectionBinning<N>::movePoint unknown point " + std::to_string(pointId));
    }
 
    const BinSpecifier location = locate(m_points.at(pointId));

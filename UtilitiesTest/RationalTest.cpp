@@ -38,3 +38,31 @@ TEST(RationalTest, TimesDouble)
    ASSERT_NEAR(Rational(1, 2) * 4.0, 2.0, 1.0e-12);
    ASSERT_NEAR(4.0 * Rational(1, 2), 2.0, 1.0e-12);
 }
+
+TEST(RationalTest, StreamInsertion0)
+{
+   std::ostringstream os;
+   os << Rational(0, 2);
+   ASSERT_EQ(os.str(), "0");
+}
+
+TEST(RationalTest, StreamInsertion1)
+{
+   std::ostringstream os;
+   os << Rational(2, 2);
+   ASSERT_EQ(os.str(), "1");
+}
+
+TEST(RationalTest, StreamInsertion2)
+{
+   std::ostringstream os;
+   os << Rational(1, -7);
+   ASSERT_EQ(os.str(), "-1/7");
+}
+
+TEST(RationalTest, StreamInsertion3)
+{
+   std::ostringstream os;
+   os << Rational(-9, 3);
+   ASSERT_EQ(os.str(), "-3");
+}

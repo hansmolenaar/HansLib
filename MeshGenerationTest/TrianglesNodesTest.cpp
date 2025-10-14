@@ -1,0 +1,336 @@
+#include <gtest/gtest.h>
+
+#include "Defines.h"
+#include "MyException.h"
+#include "Single.h"
+#include "TrianglesNodes.h"
+
+using namespace MeshGeneration;
+using namespace Topology;
+using namespace Utilities;
+TEST(TrianglesNodesTest, Empty)
+{
+   TrianglesNodes tnodes;
+   ASSERT_EQ(tnodes.getNumTriangles(), 0);
+   ASSERT_MYEXCEPTION_MESSAGE(tnodes.deleteTriangle(0), "CellsNodes<TCell>::checkCellId() unknown cellId 0");
+   ASSERT_MYEXCEPTION_MESSAGE(tnodes.getTrianglesContainingEdge(0, 1), "CellsNodes<TCell>::checkNodeId() unknown NodeId 0");
+   ASSERT_MYEXCEPTION_MESSAGE(tnodes.getTrianglesContainingNode(0), "CellsNodes<TCell>::checkNodeId() unknown NodeId 0");
+   ASSERT_MYEXCEPTION_MESSAGE(tnodes.getEdgeConnectedNodes(0), "CellsNodes<TCell>::checkNodeId() unknown NodeId 0");
+   ASSERT_MYEXCEPTION_MESSAGE(tnodes.tryGetTriangle(0, 1, 2), "CellsNodes<TCell>::checkNodeId() unknown NodeId 0");
+   ASSERT_MYEXCEPTION_MESSAGE(tnodes.triangleContainsNode(0, 1), "CellsNodes<TCell>::checkCellId() unknown cellId 0");
+   ASSERT_MYEXCEPTION_MESSAGE(tnodes.getTriangleNodes(0), "CellsNodes<TCell>::checkCellId() unknown cellId 0");
+}
+
+TEST(TrianglesNodesTest, SingleTriangle)
+{
+   TrianglesNodes tnodes;
+   const auto triangleId = tnodes.addTriangle(TriangleNodesOriented(42, 999, 0));
+   ASSERT_EQ(tnodes.getNumTriangles(), 1);
+
+   const auto connectedTriangles = tnodes.getTrianglesContainingEdge(0, 42);
+   ASSERT_EQ(1, connectedTriangles.size());
+   ASSERT_EQ(triangleId, connectedTriangles.at(0));
+
+   const auto nodeConnectedTriangles = tnodes.getTrianglesContainingNode(999);
+   ASSERT_EQ(1, nodeConnectedTriangles.size());
+   ASSERT_EQ(triangleId, nodeConnectedTriangles.at(0));
+
+   const auto edgeConnectedNodes = tnodes.getEdgeConnectedNodes(0);
+   ASSERT_EQ(2, edgeConnectedNodes.size());
+   ASSERT_EQ(42, edgeConnectedNodes.at(0));
+   ASSERT_EQ(999, edgeConnectedNodes.at(1));
+
+   const auto foundTriangle = tnodes.tryGetTriangle(0, 42, 999);
+   ASSERT_EQ(triangleId, *foundTriangle);
+
+   ASSERT_TRUE(tnodes.triangleContainsNode(triangleId, 999));
+   ASSERT_MYEXCEPTION_MESSAGE(tnodes.triangleContainsNode(triangleId, 1), "CellsNodes<TCell>::checkNodeId() unknown NodeId 1");
+
+   const auto triangleNodes = tnodes.getTriangleNodes(triangleId);
+   ASSERT_TRUE(str::equal(triangleNodes, std::array<PointIndex, 3>{0, 42, 999}));
+
+   tnodes.deleteTriangle(triangleId);
+   ASSERT_FALSE(tnodes.isKnownNodeId(42));
+   ASSERT_FALSE(tnodes.isKnownNodeId(999));
+   ASSERT_EQ(tnodes.getNumTriangles(), 0);
+}
+
+TEST(TrianglesNodesTest, Delete)
+{
+   TrianglesNodes tnodes;
+   const auto triangleId = tnodes.addTriangle(TriangleNodesOriented(42, 999, 0));
+   tnodes.deleteTriangle(triangleId);
+   ASSERT_FALSE(tnodes.isKnownNodeId(0));
+   ASSERT_FALSE(tnodes.isKnownNodeId(42));
+   ASSERT_FALSE(tnodes.isKnownNodeId(999));
+   ASSERT_FALSE(tnodes.isKnownTriangleId(triangleId));
+}
+
+TEST(TrianglesNodesTest, IsKnown)
+{
+   TrianglesNodes tnodes;
+   ASSERT_FALSE(tnodes.isKnownNodeId(0));
+   ASSERT_FALSE(tnodes.isKnownTriangleId(0));
+
+   const auto triangleId = tnodes.addTriangle(TriangleNodesOriented(42, 999, 6));
+
+   ASSERT_TRUE(tnodes.isKnownNodeId(999));
+   ASSERT_TRUE(tnodes.isKnownTriangleId(triangleId));
+   ASSERT_FALSE(tnodes.isKnownNodeId(0));
+   ASSERT_FALSE(tnodes.isKnownTriangleId(triangleId + 1));
+}
+
+
+TEST(TrianglesNodesTest, GetNodeConnectedTriangles)
+{
+   TrianglesNodes tnodes;
+   ASSERT_ANY_THROW(tnodes.getTrianglesContainingNode(0));
+   const auto triangle0 = tnodes.addTriangle(TriangleNodesOriented(42, 999, 0));
+   const auto triangle1 = tnodes.addTriangle(TriangleNodesOriented(43, 999, 1));
+
+   const auto found1 = tnodes.getTrianglesContainingNode(1);
+   ASSERT_TRUE(str::equal(found1, std::vector<CellIndex>{triangle1}));
+
+   const auto found999 = tnodes.getTrianglesContainingNode(999);
+   ASSERT_TRUE(str::equal(found999, std::vector<CellIndex>{triangle0, triangle1}));
+}
+
+
+TEST(TrianglesNodesTest, GetEdgeConnectedNodes)
+{
+   TrianglesNodes tnodes;
+
+   const auto triangle0 = tnodes.addTriangle(TriangleNodesOriented(42, 999, 0));
+   const auto triangle1 = tnodes.addTriangle(TriangleNodesOriented(999, 42, 1));
+
+   const auto found_1 = tnodes.getEdgeConnectedNodes(1);
+   ASSERT_TRUE(str::equal(found_1, std::vector<PointIndex>{42, 999}));
+
+   const auto found_42 = tnodes.getEdgeConnectedNodes(42);
+   ASSERT_TRUE(str::equal(found_42, std::vector<PointIndex>{0, 1, 999}));
+}
+
+TEST(TrianglesNodesTest, GetEdgeConnectedTriangles)
+{
+   TrianglesNodes tnodes;
+
+   const auto triangle0 = tnodes.addTriangle(TriangleNodesOriented(42, 999, 0));
+   const auto triangle1 = tnodes.addTriangle(TriangleNodesOriented(999, 42, 1));
+
+   const auto found_0_1 = tnodes.getTrianglesContainingEdge(1, 0);
+   ASSERT_TRUE(found_0_1.empty());
+
+   const auto found_1_42 = tnodes.getTrianglesContainingEdge(1, 42);
+   ASSERT_TRUE(str::equal(found_1_42, std::vector<CellIndex>{triangle1}));
+
+   const auto found_999_42 = tnodes.getTrianglesContainingEdge(999, 42);
+   ASSERT_TRUE(str::equal(found_999_42, std::vector<CellIndex>{triangle0, triangle1}));
+
+   const auto found_42_999 = tnodes.getTrianglesContainingEdge(42, 999);
+   ASSERT_TRUE(str::equal(found_42_999, std::vector<CellIndex>{triangle0, triangle1}));
+}
+
+
+TEST(TrianglesNodesTest, TryGetTriangle)
+{
+   TrianglesNodes tnodes;
+
+   const auto triangle0 = tnodes.addTriangle(TriangleNodesOriented(42, 999, 0));
+   const auto triangle1 = tnodes.addTriangle(TriangleNodesOriented(999, 42, 1));
+
+   const auto found_42_1_999 = tnodes.tryGetTriangle(1, 999, 42);
+   ASSERT_EQ(triangle1, *found_42_1_999);
+
+   const auto found_1_42_999 = tnodes.tryGetTriangle(1, 42, 999);
+   ASSERT_FALSE(found_1_42_999);
+
+   const auto found_0_1_42 = tnodes.tryGetTriangle(1, 42, 0);
+   ASSERT_FALSE(found_0_1_42);
+}
+
+
+TEST(TrianglesNodesTest, TriangleContainsNode)
+{
+   TrianglesNodes tnodes;
+
+   const auto triangle0 = tnodes.addTriangle(TriangleNodesOriented(42, 999, 0));
+   const auto triangle1 = tnodes.addTriangle(TriangleNodesOriented(999, 42, 1));
+
+   ASSERT_TRUE(tnodes.triangleContainsNode(triangle1, 1));
+   ASSERT_FALSE(tnodes.triangleContainsNode(triangle1, 0));
+}
+
+
+TEST(TrianglesNodesTest, GetAllTriangles)
+{
+   TrianglesNodes tnodes;
+   auto allTriangles = tnodes.getAllTriangles();
+   ASSERT_TRUE(allTriangles.empty());
+   ASSERT_EQ(tnodes.getNumTriangles(), allTriangles.size());
+
+   const auto triangle0 = tnodes.addTriangle(TriangleNodesOriented(42, 999, 0));
+   allTriangles = tnodes.getAllTriangles();
+   ASSERT_TRUE(str::equal(allTriangles, std::vector<CellIndex>{triangle0}));
+   ASSERT_EQ(tnodes.getNumTriangles(), allTriangles.size());
+
+   const auto triangle1 = tnodes.addTriangle(TriangleNodesOriented(999, 42, 1));
+   allTriangles = tnodes.getAllTriangles();
+   ASSERT_TRUE(str::equal(allTriangles, std::vector<CellIndex>{triangle0, triangle1}));
+   ASSERT_EQ(tnodes.getNumTriangles(), allTriangles.size());
+
+   tnodes.deleteTriangle(triangle0);
+   allTriangles = tnodes.getAllTriangles();
+   ASSERT_TRUE(str::equal(allTriangles, std::vector<CellIndex>{triangle1}));
+   ASSERT_EQ(tnodes.getNumTriangles(), allTriangles.size());
+
+   tnodes.deleteTriangle(triangle1);
+   allTriangles = tnodes.getAllTriangles();
+   ASSERT_TRUE(allTriangles.empty());
+   ASSERT_EQ(tnodes.getNumTriangles(), allTriangles.size());
+}
+
+
+TEST(TrianglesNodesTest, GetAllEdges)
+{
+   TrianglesNodes tnodes;
+   auto allEdges = tnodes.getAllSortedEdges();
+   ASSERT_TRUE(allEdges.empty());
+
+   const auto triangle0 = tnodes.addTriangle(TriangleNodesOriented(42, 999, 0));
+   allEdges = tnodes.getAllSortedEdges();
+   ASSERT_TRUE(str::equal(allEdges, std::vector<EdgeNodesSorted>{EdgeNodesSorted{ 0, 42 }, EdgeNodesSorted{ 0,999 }, EdgeNodesSorted{ 42,999 }}));
+
+   const auto triangle1 = tnodes.addTriangle(TriangleNodesOriented(42, 0, 2));
+   allEdges = tnodes.getAllSortedEdges();
+   ASSERT_TRUE(str::equal(allEdges, std::vector<EdgeNodesSorted>{{ 0, 2 }, { 0,42 }, { 0,999 }, { 2, 42 }, { 42, 999 }}));
+}
+TEST(TrianglesNodesTest, ToString)
+{
+   std::ostringstream os;
+   TrianglesNodes tnodes;
+   os << tnodes;
+   ASSERT_EQ(os.str(), "TriangleNodes NUMNODES=0 NUMTRIANGLES=0");
+
+   const auto triangle0 = tnodes.addTriangle(TriangleNodesOriented(42, 999, 0));
+   os.str("");
+   os << tnodes;
+   ASSERT_EQ(os.str(), "TriangleNodes NUMNODES=3 NUMTRIANGLES=1");
+
+   const auto triangle1 = tnodes.addTriangle(TriangleNodesOriented(999, 42, 1));
+   os.str("");
+   os << tnodes;
+   ASSERT_EQ(os.str(), "TriangleNodes NUMNODES=4 NUMTRIANGLES=2");
+}
+TEST(TrianglesNodesTest, GetAllNodes)
+{
+   TrianglesNodes tnodes;
+   const auto triangle0 = tnodes.addTriangle(TriangleNodesOriented(2, 1, 999));
+   const auto triangle1 = tnodes.addTriangle(TriangleNodesOriented(1, 2, 42));
+   const auto nodes = tnodes.getAllNodes();
+   ASSERT_TRUE(str::equal(nodes, std::vector<NodeIndex>{1, 2, 42, 999}));
+}
+
+TEST(TrianglesNodesTest, GetCommonNodes)
+{
+   TrianglesNodes tnodes;
+   const auto triangle0 = tnodes.addTriangle(TriangleNodesOriented(1, 2, 3));
+   const auto triangle1 = tnodes.addTriangle(TriangleNodesOriented(6, 2, 1));
+   const auto triangle2 = tnodes.addTriangle(TriangleNodesOriented(6, 5, 1));
+   const auto triangle3 = tnodes.addTriangle(TriangleNodesOriented(6, 5, 4));
+
+   auto actual = tnodes.getCommonNodes(triangle0, triangle0);
+   std::vector expect{ 1, 2, 3 };
+   ASSERT_TRUE(str::equal(actual, expect));
+
+   actual = tnodes.getCommonNodes(triangle0, triangle1);
+   expect = { 1, 2 };
+   ASSERT_TRUE(str::equal(actual, expect));
+
+   actual = tnodes.getCommonNodes(triangle0, triangle2);
+   expect = { 1 };
+   ASSERT_TRUE(str::equal(actual, expect));
+
+   actual = tnodes.getCommonNodes(triangle0, triangle3);
+   ASSERT_TRUE(actual.empty());
+}
+
+TEST(TrianglesNodesTest, AddDelete)
+{
+   TrianglesNodes tnodes;
+   const TriangleNodesOriented triangle{ 1, 2, 3 };
+   const auto triangleId0 = tnodes.addTriangle(triangle);
+   tnodes.deleteTriangle(triangleId0);
+   const auto triangleId1 = tnodes.addTriangle(triangle);
+   ASSERT_NE(triangleId0, triangleId1);
+}
+
+TEST(TrianglesNodesTest, splitInEdgeConnectedComponents_0)
+{
+   TrianglesNodes tnodes;
+   ASSERT_TRUE(tnodes.splitInEdgeConnectedComponents().empty());
+}
+
+TEST(TrianglesNodesTest, splitInEdgeConnectedComponents_1)
+{
+   TrianglesNodes tnodes;
+   const auto triangleId0 = tnodes.addTriangle({ 1, 2, 3 });
+   ASSERT_EQ(Single(Single(tnodes.splitInEdgeConnectedComponents())), triangleId0);
+}
+
+TEST(TrianglesNodesTest, splitInEdgeConnectedComponents_2)
+{
+   TrianglesNodes tnodes;
+   tnodes.addTriangle({ 1, 2, 3 });
+   tnodes.addTriangle({ 1, 2, 5 });
+   const auto components = tnodes.splitInEdgeConnectedComponents();
+   const std::vector<CellIndex> expect{ 0, 1 };
+   ASSERT_TRUE(str::equal(Single(components), expect));
+}
+
+TEST(TrianglesNodesTest, splitInEdgeConnectedComponents_3)
+{
+   TrianglesNodes tnodes;
+   tnodes.addTriangle({ 1, 2, 3 });
+   tnodes.addTriangle({ 1, 4, 7 });
+   const auto components = tnodes.splitInEdgeConnectedComponents();
+   ASSERT_EQ(components.size(), 2);
+   ASSERT_EQ(Single(components[0]), 0);
+   ASSERT_EQ(Single(components[1]), 1);
+}
+
+TEST(TrianglesNodesTest, splitInEdgeConnectedComponents_4)
+{
+   TrianglesNodes tnodes;
+   tnodes.addTriangle({ 1, 2, 3 });
+   tnodes.addTriangle({ 1, 4, 3 });
+   tnodes.addTriangle({ 5, 4, 3 });
+   auto components = tnodes.splitInEdgeConnectedComponents();
+   const std::vector<CellIndex> expect{ 0, 1, 2 };
+   ASSERT_TRUE(str::equal(Single(components), expect));
+
+   tnodes.deleteTriangle(1);
+   components = tnodes.splitInEdgeConnectedComponents();
+   ASSERT_EQ(components.size(), 2);
+   ASSERT_EQ(Single(components[0]), 0);
+   ASSERT_EQ(Single(components[1]), 2);
+
+   tnodes.deleteTriangle(0);
+   components = tnodes.splitInEdgeConnectedComponents();
+   ASSERT_EQ(Single(Single(tnodes.splitInEdgeConnectedComponents())), 2);
+}
+
+
+TEST(TrianglesNodesTest, splitInEdgeConnectedComponents_5)
+{
+   TrianglesNodes tnodes;
+   tnodes.addTriangle({ 1, 2, 3 });
+   tnodes.addTriangle({ 4, 5, 6 });
+   tnodes.addTriangle({ 1, 7, 2 });
+   tnodes.addTriangle({ 1, 8, 3 });
+   auto components = tnodes.splitInEdgeConnectedComponents();
+   ASSERT_EQ(components.size(), 2);
+
+   tnodes.deleteTriangle(0);
+   components = tnodes.splitInEdgeConnectedComponents();
+   ASSERT_EQ(components.size(), 3);
+}

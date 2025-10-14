@@ -32,7 +32,7 @@ TEST(BoundsCheckTest, OnlyUp)
 
 TEST(BoundsCheckTest, CreationFailure)
 {
-   ASSERT_THROW(BoundsCheck<int>::Create(2, 1), MyException);
+   ASSERT_MYEXCEPTION_MESSAGE(BoundsCheck<int>::Create(2, 1), "Assertion failure");
 }
 
 

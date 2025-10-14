@@ -2,11 +2,10 @@
 
 #include "MyException.h"
 
-#include <type_traits>
 #include <algorithm>
 #include <numeric>
+#include <type_traits>
 #include <vector>
-
 
 namespace Functors
 {
@@ -65,6 +64,23 @@ namespace Functors
 
          // Are equal
          return false;
+      }
+   };
+
+   struct PointerIsNull
+   {
+      bool operator()(const void* ptr) const
+      {
+         return ptr == nullptr;
+      }
+   };
+
+
+   struct PointerIsNotNull
+   {
+      bool operator()(const void* ptr) const
+      {
+         return ptr != nullptr;
       }
    };
 }

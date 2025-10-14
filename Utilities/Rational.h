@@ -1,11 +1,10 @@
 #pragma once
 
-#include <boost/rational.hpp>
 #include <boost/functional/hash.hpp>
+#include <boost/rational.hpp>
 #include  <span>
 
 using Rational = boost::rational<int>;
-
 
 namespace std
 {
@@ -39,10 +38,11 @@ inline double operator*(Rational r, double d)
    return d * r.numerator() / r.denominator();
 }
 
-inline std::ostream& operator<< (std::ostream& stream, const Rational& rat)
+inline std::ostream& operator<< (std::ostream& os, const Rational& rat)
 {
-   stream << std::to_string(rat.numerator()) << "/" << std::to_string(rat.denominator());
-   return stream;
+   if (rat == Rational(0, 1)) return os << 0;
+   if (rat.denominator() == 1)return  os << rat.numerator();
+   return os << rat.numerator() << "/" << rat.denominator();
 }
 
 

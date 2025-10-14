@@ -1,14 +1,14 @@
 #pragma once
 
+#include "Defines.h"
 #include "FieldInfoStatic.h"
 #include "MyException.h"
-#include "Defines.h"
 #include "SudokuDefines.h"
 #include <algorithm>
-#include <vector>
 #include <map>
 #include <numeric>
 #include <set>
+#include <vector>
 
 using namespace Sudoku;
 using namespace FieldInfoStatic;
@@ -175,7 +175,7 @@ const ConnectedFields& FieldInfoStatic::GetSortedConnectedFields(FieldIndex fiel
          }
          // Remove self
          sameRowColBox.erase(f);
-         if (sameRowColBox.size() != NumConnectedFields) throw MyException("FieldInfoStatic::GetConnectedFields unexepcted number of connections: " + std::to_string(sameRowColBox.size()));
+         if (sameRowColBox.size() != NumConnectedFields) throw MyException("FieldInfoStatic::getConnectedFields unexepcted number of connections: " + std::to_string(sameRowColBox.size()));
          str::copy(sameRowColBox, s_instance.at(f).begin());
       }
    }

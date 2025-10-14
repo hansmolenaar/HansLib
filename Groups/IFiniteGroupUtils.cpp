@@ -1,7 +1,6 @@
-#include "Defines.h"
-#include "MyAssert.h"
-#include "IFiniteGroupUtils.h"
 #include "IFiniteGroup.h"
+#include "IFiniteGroupUtils.h"
+#include "MyAssert.h"
 
 void IFiniteGroupUtils::CheckValid(const IFiniteGroup& group, GroupElement elm)
 {

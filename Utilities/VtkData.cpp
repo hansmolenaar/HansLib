@@ -1,12 +1,15 @@
 #include "VtkData.h"
 #include "MyAssert.h"
+#include "MyException.h"
+#include "VtkData.h"
 
 using namespace Vtk;
 using namespace Utilities;
 
-VtkData::VtkData(int geomDim, int numData) :
+VtkData::VtkData(int geomDim, int numData, Name name) :
    m_geomDim(geomDim),
-   m_numData(numData)
+   m_numData(numData),
+   m_name(name)
 {
 }
 
@@ -38,7 +41,7 @@ std::span<const CoordinateType> VtkData::getNode(NodeIndex n) const
    return std::span<const CoordinateType>(first, m_geomDim);
 }
 
-CellIndex VtkData::getNumCells() const
+Vtk::CellIndex VtkData::getNumCells() const
 {
    return static_cast<CellIndex>(m_type.size());
 }
@@ -46,6 +49,11 @@ CellIndex VtkData::getNumCells() const
 CellType VtkData::getCellType(CellIndex n) const
 {
    return m_type.at(n);
+}
+
+const Vtk::Name& VtkData::getName() const
+{
+   return m_name;
 }
 
 std::span<const NodeIndex> VtkData::getNodeIndices(CellIndex n) const

@@ -1,9 +1,12 @@
 #include "Plotting.h"
 #include "MultiIndex.h"
 
-#include <vector>
-#include <vector>
+#include "MultiIndex.h"
+#include "Plotting.h"
+
+#include <fstream>
 #include <sstream>
+#include <vector>
 
 std::string Plotting::PlotFunction(std::initializer_list< std::function<double(double)> > functions, double xmin, double xmax, int  npoints)
 {

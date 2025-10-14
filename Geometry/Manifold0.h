@@ -8,32 +8,42 @@ namespace Geometry
    class Manifold0 : public IManifold0<T, N>
    {
    public:
-      explicit Manifold0<T, N>(const Point<T, N>& point);
+      Manifold0<T, N>(const Point<T, N>& point, std::string name);
 
-      Point<T, N> GetPoint() const override;
+      Point<T, N> getPoint() const override;
       bool contains(const Point<T, N>& point, const IGeometryPredicate<T, N>& predicate) const override;
 
       BoundingBox<T, N> getBoundingBox() const override;
 
-      Topology::TopologyDimension GetTopologyDimension() const override { return Topology::Corner; };
+      Topology::TopologyDimension getTopologyDimension() const override { return Topology::Corner; };
+
+      const std::string& getName() const override;
    private:
       Point<T, N> m_point;
+      std::string m_name;
    };
 
    template<typename T, int N>
-   Manifold0<T, N>::Manifold0(const Point<T, N>& point) : m_point(point)
-   {}
+   Manifold0<T, N>::Manifold0(const Point<T, N>& point, std::string name) : m_point(point), m_name(std::move(name))
+   {
+   }
 
    template<typename T, int N>
-   Point<T, N> Manifold0<T, N>::GetPoint() const
+   Point<T, N> Manifold0<T, N>::getPoint() const
    {
       return m_point;
    }
 
    template<typename T, int N>
+   const std::string& Manifold0<T, N>::getName() const
+   {
+      return m_name;
+   }
+
+   template<typename T, int N>
    bool Manifold0<T, N>::contains(const Point<T, N>& point, const IGeometryPredicate<T, N>& predicate) const
    {
-      return predicate.SamePoints(point, m_point);
+      return predicate.samePoints(point, m_point);
    }
 
    template<typename T, int N>

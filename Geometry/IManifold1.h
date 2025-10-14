@@ -4,7 +4,6 @@
 #include "Line.h"
 #include "Point.h"
 #include "Simplex.h"
-#include "GeometryDefines.h"
 
 namespace Geometry
 {
@@ -14,9 +13,9 @@ namespace Geometry
    {
    public:
       // Throw if point is not on manifold
-      virtual Line<T, N> GetEuclideanSubspaceAt(const Point<T, N>& point, const IGeometryPredicate<T, N>& predicate) const = 0;
+      virtual Line<T, N> getEuclideanSubspaceAt(const Point<T, N>& point, const IGeometryPredicate<T, N>& predicate) const = 0;
 
-      Topology::TopologyDimension GetTopologyDimension() const override { return Topology::Edge; };
+      Topology::TopologyDimension getTopologyDimension() const override { return Topology::Edge; };
    };
 
 };

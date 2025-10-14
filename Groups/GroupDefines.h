@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Permutation.h"
-#include  "PermutationUtils.h"
+#include "PermutationUtils.h"
 
 using GroupElement = Permutation::Entry;
 static constexpr GroupElement GroupElementInvalid = Permutation::InvalidEntry;

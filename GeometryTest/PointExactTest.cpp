@@ -9,7 +9,7 @@ TEST(PointExactTest, Int)
    const IntPoint2 p0{ 1,42 };
    const IntPoint2 p1{ 1,43 };
    ASSERT_FALSE(areClose(p0, p1));
-   ASSERT_TRUE(areClose.SamePoints(p0, p0));
+   ASSERT_TRUE(areClose.samePoints(p0, p0));
 }
 
 TEST(PointExactTest, Rational)
@@ -18,5 +18,5 @@ TEST(PointExactTest, Rational)
    const Point<Rational, 1> p0{ Rational{ 1, 42} };
    const Point<Rational, 1> p1{ Rational{ 1, 43} };
    ASSERT_FALSE(areClose(p0, p1));
-   ASSERT_TRUE(areClose.SamePoints(p0, p0));
+   ASSERT_TRUE(areClose.samePoints(p0, p0));
 }

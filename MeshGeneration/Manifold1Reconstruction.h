@@ -1,16 +1,29 @@
 #pragma once
 
+#include "Boundary1.h"
+#include "EdgeNodesSorted.h"
+#include "IManifold1D2.h"
+#include "IManifoldReconstruction.h"
+#include "ManifoldsAndNodes.h"
 #include "TrianglesNodes.h"
-#include "MeshGenerationDefines.h"
 
-namespace Manifold1Reconstruction
+#include <set>
+
+namespace MeshGeneration
 {
-	struct Reconstruction
-	{
-		std::vector<MeshGeneration::NodeIndex> Singletons; // TODO remove me?
-		std::vector<std::vector<MeshGeneration::NodeIndex>> Cycles;
-		std::vector<std::vector<MeshGeneration::NodeIndex>> Paths;
-	};
 
-	Reconstruction Generate2(std::span<const MeshGeneration::NodeIndex> manifoldPoints, const MeshGeneration::TrianglesNodes& trianglesNodes, const MeshGeneration::IUniquePointCollecion2& pointCollection);
+   class Manifold1Reconstruction : public IManifoldReconstruction
+   {
+   public:
+      Manifold1Reconstruction(const Geometry::IManifoldId& manifoldId, const Boundary1& reconstruction);
+      Manifold1Reconstruction(const Geometry::IManifold1D2<GeomType>& manifold, const ManifoldsAndNodes<GeomDim2>& manifoldsAndNodes, const TrianglesNodes& trianglesNodes);
+
+      const Geometry::IManifoldId& getManifoldId() const override;
+      const Boundary1& getReconstruction() const;
+      bool contains(const Topology::EdgeNodesSorted& edge) const;
+   private:
+      const Geometry::IManifoldId& m_manifoldId;
+      Boundary1 m_reconstruction;
+      std::set<Topology::EdgeNodesSorted> m_edges;
+   };
 }

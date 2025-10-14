@@ -1,10 +1,10 @@
 #include <gtest/gtest.h>
 
+#include "CellQuality2.h"
 #include "MeshQuality.h"
-#include "UniquePointCollectionBinning.h"
 #include "PointClose.h"
 #include "TrianglesNodes.h"
-#include "CellQuality2.h"
+#include "UniquePointCollectionBinning.h"
 
 using namespace MeshGeneration;
 using namespace Topology;
@@ -20,8 +20,8 @@ TEST(MeshQualityTests, Basis)
    const auto p3 = points.addIfNew(Point2{ 0,-1 });
 
    TrianglesNodes trianglesNodes;
-   const auto c0 = trianglesNodes.addTriangle(p0, p1, p2);
-   const auto c1 = trianglesNodes.addTriangle(p0, p1, p3);
+   const auto c0 = trianglesNodes.addTriangle(TriangleNodesOriented(p0, p1, p2));
+   const auto c1 = trianglesNodes.addTriangle(TriangleNodesOriented(p0, p1, p3));
 
    CellQuality2Fun* fun = CellQuality2::MinimumAngle;
    ASSERT_NEAR(MeshQuality::getQuality2(trianglesNodes, std::array<CellIndex, 1>{c0}, points, fun), 0.5, 1.0e-10);
@@ -39,10 +39,10 @@ TEST(MeshQualityTests, Fifteen)
    UniquePointCollectionBinning<GeomDim2> points(areClose, std::vector<Point2>{Point2{ -10, -10 }, Point2{ 10, 10 }});
    const auto p0 = points.addIfNew(Point2{ 0,0 });
    const auto p1 = points.addIfNew(Point2{ 1,0 });
-   const auto p2 = points.addIfNew(Point2{ 0, std::sqrt(1/(cos15*cos15) - 1)});
+   const auto p2 = points.addIfNew(Point2{ 0, std::sqrt(1 / (cos15 * cos15) - 1) });
 
    TrianglesNodes trianglesNodes;
-   const auto c0 = trianglesNodes.addTriangle(p0, p1, p2);
+   const auto c0 = trianglesNodes.addTriangle(TriangleNodesOriented(p0, p1, p2));
 
    CellQuality2Fun* fun = CellQuality2::MinimumAngle;
    ASSERT_NEAR(MeshQuality::getQuality2(trianglesNodes, std::array<CellIndex, 1>{c0}, points, fun), 0.25, 1.0e-10);

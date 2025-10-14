@@ -1,6 +1,6 @@
-#include "UndirectedGraph.h"
 #include "Defines.h"
 #include "MyAssert.h"
+#include "UndirectedGraph.h"
 
 using namespace Utilities;
 
@@ -167,4 +167,14 @@ bool UndirectedGraph::areAdjacent(GraphVertex v1, GraphVertex v2) const
 
    auto [itr, found] = edge(vertex(v1, m_graph), vertex(v2, m_graph), m_graph);
    return found;
+}
+
+std::vector<GraphVertex> UndirectedGraph::getIsolatedVertices() const
+{
+   std::vector<GraphVertex> result;
+   for (GraphVertex v = 0; v < getNumVertices(); ++v)
+   {
+      if (getDegree(v) == 0) result.push_back(v);
+   }
+   return result;
 }

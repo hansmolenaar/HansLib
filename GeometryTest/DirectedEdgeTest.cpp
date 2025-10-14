@@ -9,10 +9,10 @@ TEST(DirectedEdgeTest, UnhappyPath)
 {
    const PointClose<double, 1> areClose;
    const std::array<double, 1> point{ 1.0 };
-   ASSERT_TRUE(areClose.SamePoints(point, point));
+   ASSERT_TRUE(areClose.samePoints(point, point));
    const DirectedEdge<double, 1> edge(point, point);
    ASSERT_TRUE(edge.isDegenerate(areClose));
-   ASSERT_THROW(edge.project(point), MyException);
+   ASSERT_MYEXCEPTION_MESSAGE(edge.project(point), "DirectedEdge<T, N>::project edge is degenerated");
 }
 
 TEST(DirectedEdgeTest, LengthSquared)
@@ -55,5 +55,20 @@ TEST(DirectedEdgeTest, Contains)
    ASSERT_TRUE(edge.contains({ 3,0 }, areClose));
    ASSERT_FALSE(edge.contains({ 3,1 }, areClose));
    ASSERT_FALSE(edge.contains({ 4,0 }, areClose));
+}
 
+TEST(DirectedEdgeTest, projectPointOnLine)
+{
+   const PointClose<double, 2> areClose;
+   const Point2 from{ 0, 0 };
+   const Point2 to{ 1, 1 };
+   const DirectedEdge<double, 2> edge(from, to);
+   ASSERT_TRUE(areClose(edge.projectPointOnLine(from), from));
+   ASSERT_TRUE(areClose(edge.projectPointOnLine(to), to));
+   Point2 p = Point2{ 0.5, 0.5 };
+   ASSERT_TRUE(areClose(edge.projectPointOnLine(p), p));
+   p = Point2{ 1.5, -0.5 };
+   ASSERT_TRUE(areClose(edge.projectPointOnLine(p), Point2{ 0.5, 0.5 }));
+   p = Point2{ 11.5, -8.5 };
+   ASSERT_TRUE(areClose(edge.projectPointOnLine(p), Point2{ 1.5, 1.5 }));
 }
