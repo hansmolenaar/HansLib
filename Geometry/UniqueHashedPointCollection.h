@@ -6,7 +6,7 @@
 
 #include <unordered_map>
 
-template<typename T, int N>
+template<typename T, size_t N>
 class UniqueHashedPointCollection : public IUniquePointCollection<T, N>
 {
 public:
@@ -21,13 +21,13 @@ private:
    std::vector< Point<T, N>> m_points;
 };
 
-template<typename T, int N>
+template<typename T, size_t N>
 const IGeometryPredicate<T, N>& UniqueHashedPointCollection<T, N>::getGeometryPredicate() const
 {
    return m_predicate;
 }
 
-template<typename T, int N>
+template<typename T, size_t N>
 std::optional<PointIndex>  UniqueHashedPointCollection<T, N>::tryGetClosePoint(const Point<T, N>& point) const
 {
    const auto found = m_toIndex.find(point);
@@ -40,7 +40,7 @@ std::optional<PointIndex>  UniqueHashedPointCollection<T, N>::tryGetClosePoint(c
 
 
 
-template<typename T, int N>
+template<typename T, size_t N>
 PointIndex UniqueHashedPointCollection<T, N>::addIfNew(const Point<T, N>& point)
 {
    auto found = m_toIndex.find(point);
@@ -53,13 +53,13 @@ PointIndex UniqueHashedPointCollection<T, N>::addIfNew(const Point<T, N>& point)
    return found->second;
 }
 
-template<typename T, int N>
+template<typename T, size_t N>
 PointIndex UniqueHashedPointCollection<T, N>::getNumPoints() const
 {
    return m_points.size();
 }
 
-template<typename T, int N>
+template<typename T, size_t N>
 Point<T, N> UniqueHashedPointCollection<T, N>::getPoint(PointIndex pi) const
 {
    return m_points.at(pi);

@@ -4,7 +4,7 @@
 #include "MyAssert.h"
 #include "Point.h"
 
-template<typename T, int N>
+template<typename T, size_t N>
 class PointExact : public IGeometryPredicate<T, N>
 {
 public:
@@ -14,19 +14,19 @@ public:
    T getSmallNormSquared() const override;
 };
 
-template<typename T, int N>
+template<typename T, size_t N>
 bool PointExact<T, N>::operator ()(const Point<T, N>& p0, const Point<T, N>& p1) const
 {
    return p0 == p1;
 }
 
-template<typename T, int N>
+template<typename T, size_t N>
 bool PointExact<T, N>::samePoints(Point<T, N> p0, Point<T, N> p1) const
 {
    return (*this)(p0, p1);
 }
 
-template<typename T, int N>
+template<typename T, size_t N>
 T PointExact<T, N>::getSmallLengthInDirection(int n) const
 {
    Utilities::MyAssert(n >= 0);
@@ -34,7 +34,7 @@ T PointExact<T, N>::getSmallLengthInDirection(int n) const
    return 0;
 }
 
-template<typename T, int N>
+template<typename T, size_t N>
 T PointExact<T, N>::getSmallNormSquared() const
 {
    return 0;

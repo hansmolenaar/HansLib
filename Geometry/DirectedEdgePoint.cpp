@@ -3,17 +3,17 @@
 
 using namespace Geometry;
 
-template DirectedEdgePoint<double, GeomDim1>;
-template DirectedEdgePoint<double, GeomDim2>;
-template DirectedEdgePoint<double, GeomDim3>;
+template class DirectedEdgePoint<double, GeomDim1>;
+template class DirectedEdgePoint<double, GeomDim2>;
+template class DirectedEdgePoint<double, GeomDim3>;
 
-template<typename T, int N>
+template<typename T, size_t N>
 DirectedEdgePoint<T, N>::DirectedEdgePoint()
 {
    std::fill_n(m_edgePoint.data(), N, std::numeric_limits<T>::max());
 }
 
-template<typename T, int N>
+template<typename T, size_t N>
 DirectedEdgePoint<T, N>::DirectedEdgePoint(const Point<T, N>& point, const DirectedEdge<T, N>& edge, const IGeometryPredicate<T, N>& predicate) :
    m_scalar(edge.project(point)),
    m_edgePoint(point),
@@ -31,19 +31,19 @@ DirectedEdgePoint<T, N>::DirectedEdgePoint(const Point<T, N>& point, const Direc
    }
 }
 
-template<typename T, int N>
+template<typename T, size_t N>
 DirectedEdgePointType DirectedEdgePoint<T, N>::getPointType() const
 {
    return m_pointType;
 }
 
-template<typename T, int N>
+template<typename T, size_t N>
 const Point<T, N>& DirectedEdgePoint<T, N>::getPoint() const
 {
    return m_edgePoint;
 }
 
-template<typename T, int N>
+template<typename T, size_t N>
 T DirectedEdgePoint<T, N>::getScalar() const
 {
    return m_scalar;

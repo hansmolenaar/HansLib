@@ -7,7 +7,7 @@
 
 #include <unordered_map>
 
-template< int N>
+template< size_t N>
 class UniquePointCollectionBinning : public IDynamicUniquePointCollection<double, N>
 {
 public:

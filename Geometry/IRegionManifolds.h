@@ -4,7 +4,7 @@
 
 namespace Geometry
 {
-   template<typename T, int N>
+   template<typename T, size_t N>
    class IRegionManifolds
    {
    public:
@@ -23,7 +23,7 @@ namespace Geometry
       std::vector<Ttarget> getManifoldsOfType() const;
    };
 
-   template<typename T, int N>
+   template<typename T, size_t N>
    template<typename Ttarget>
    std::vector<Ttarget> IRegionManifolds<T, N>::getManifoldsOfType() const
    {

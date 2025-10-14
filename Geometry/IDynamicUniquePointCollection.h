@@ -2,7 +2,7 @@
 
 #include "IUniquePointCollection.h"
 
-template<typename T, int N>
+template<typename T, size_t N>
 class IDynamicUniquePointCollection : public IUniquePointCollection<T, N>
 {
 public:

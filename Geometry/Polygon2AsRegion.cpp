@@ -8,7 +8,7 @@
 using namespace Utilities;
 using namespace Geometry;
 
-template Polygon2AsRegion<double>;
+template class Polygon2AsRegion<double>;
 
 template<typename T>
 Polygon2AsRegion<T>::Polygon2AsRegion(std::span<const Point<T, 2>> polygon, std::string name) :

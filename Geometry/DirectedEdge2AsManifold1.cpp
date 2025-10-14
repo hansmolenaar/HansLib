@@ -3,7 +3,7 @@
 
 using namespace Geometry;
 
-template DirectedEdge2AsManifold1<double>;
+template class DirectedEdge2AsManifold1<double>;
 
 template<typename T>
 DirectedEdge2AsManifold1<T>::DirectedEdge2AsManifold1(DirectedEdge<T, GeomDim2> edge, std::string name) :

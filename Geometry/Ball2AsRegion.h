@@ -18,7 +18,7 @@ namespace Geometry
 
       bool contains(const Point<T, GeomDim2>& point, const IGeometryPredicate<T, GeomDim2>& predicate) const override;
 
-      bool couldIntersectWith(typename const BoundingBox<T, GeomDim2>& bb, const IGeometryPredicate<T, GeomDim2>& predicate) const override;
+      bool couldIntersectWith(const BoundingBox<T, GeomDim2>& bb, const IGeometryPredicate<T, GeomDim2>& predicate) const override;
 
       const IRegionManifolds<T, GeomDim2>& getManifolds() const override;
 

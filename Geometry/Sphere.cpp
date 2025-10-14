@@ -2,32 +2,32 @@
 
 using namespace Geometry;
 
-template Sphere<double, 1>;
-template Sphere<double, 2>;
-template Sphere<double, 3>;
+template class Sphere<double, 1>;
+template class Sphere<double, 2>;
+template class Sphere<double, 3>;
 
 
-template<typename T, int N>
+template<typename T, size_t N>
 Sphere<T, N>::Sphere(Point<T, N> center, T radius) :
    m_ball(std::move(center), radius)
 {
 }
 
 
-template<typename T, int N>
+template<typename T, size_t N>
 BoundingBox<T, N> Sphere<T, N>::getBoundingBox() const
 {
    return m_ball.getBoundingBox();
 }
 
-template<typename T, int N>
+template<typename T, size_t N>
 bool Sphere<T, N>::Contains(const Point<T, N>& point, const IGeometryPredicate<T, N>& predicate) const
 {
    return m_ball.getPosition(point, predicate) == BallPosition::On;
 }
 
-template<typename T, int N>
-std::optional<Point<T, N>> Sphere<T, N>::TryGetFirstIntersectionWithDirectedEdge(typename const Geometry::DirectedEdge<T, N>& edge, const IGeometryPredicate<T, N>& predicate) const
+template<typename T, size_t N>
+std::optional<Point<T, N>> Sphere<T, N>::TryGetFirstIntersectionWithDirectedEdge(const Geometry::DirectedEdge<T, N>& edge, const IGeometryPredicate<T, N>& predicate) const
 {
    const auto& point0 = edge.point0();
    const auto& point1 = edge.point1();
@@ -57,8 +57,8 @@ std::optional<Point<T, N>> Sphere<T, N>::TryGetFirstIntersectionWithDirectedEdge
    return  ip;
 }
 
-template<typename T, int N>
-bool Sphere<T, N>::CouldIntersectWith(typename const BoundingBox<T, N>& bb, const IGeometryPredicate<T, N>& predicate) const
+template<typename T, size_t N>
+bool Sphere<T, N>::CouldIntersectWith(const BoundingBox<T, N>& bb, const IGeometryPredicate<T, N>& predicate) const
 {
    if (!BoundingBox<T, N>::TryGetOverlap(getBoundingBox(), bb)) return false;
 
@@ -68,13 +68,13 @@ bool Sphere<T, N>::CouldIntersectWith(typename const BoundingBox<T, N>& bb, cons
    return false;
 }
 
-template<typename T, int N>
+template<typename T, size_t N>
 Point<T, N> Sphere<T, N>::getCenter() const
 {
    return m_ball.getCenter();
 }
 
-template<typename T, int N>
+template<typename T, size_t N>
 Geometry::DirectedEdgeIntersections<T, N> Sphere<T, N>::getIntersections(const DirectedEdge<T, N>& edge, const IGeometryPredicate<T, N>& predicate) const
 {
    if (edge.isDegenerate(predicate))

@@ -5,18 +5,18 @@
 namespace Geometry
 {
    // forward declaration
-   template<typename T, int N>
+   template<typename T, size_t N>
    class DirectedEdge;
 
    enum class DirectedEdgePointType { Point0, Inside, Point1 };
 
-   template<typename T, int N>
+   template<typename T, size_t N>
    class DirectedEdgePoint
    {
    public:
-      DirectedEdgePoint<T, N>();
+      DirectedEdgePoint();
 
-      DirectedEdgePoint<T, N>(const Point<T, N>& point, const DirectedEdge<T, N>& edge, const IGeometryPredicate<T, N>& predicate);
+      DirectedEdgePoint(const Point<T, N>& point, const DirectedEdge<T, N>& edge, const IGeometryPredicate<T, N>& predicate);
       DirectedEdgePointType getPointType() const;
       const Point<T, N>& getPoint() const;
       T getScalar() const;
@@ -28,7 +28,7 @@ namespace Geometry
 
    using DirectedEdgePoint2 = DirectedEdgePoint<double, 2>;
 
-   template<typename T, int N>
+   template<typename T, size_t N>
    struct DirectedEdgePointEquals
    {
       const IGeometryPredicate<T, N>& predicate;
@@ -48,7 +48,7 @@ namespace Geometry
       }
    };
 
-   template<typename T, int N>
+   template<typename T, size_t N>
    struct DirectedEdgePointLess
    {
       const IGeometryPredicate<T, N>& predicate;

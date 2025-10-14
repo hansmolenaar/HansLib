@@ -8,7 +8,7 @@
 namespace Geometry
 {
 
-   template<typename T, int N>
+   template<typename T, size_t N>
    class IManifold1 : public IManifold<T, N>
    {
    public:

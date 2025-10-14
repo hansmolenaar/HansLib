@@ -2,41 +2,41 @@
 
 using namespace Geometry;
 
-template Ball<int, 1>;
-template Ball<int, 2>;
-template Ball<int, 3>;
-template Ball<double, 1>;
-template Ball<double, 2>;
-template Ball<double, 3>;
+template class Ball<int, 1>;
+template class Ball<int, 2>;
+template class Ball<int, 3>;
+template class Ball<double, 1>;
+template class Ball<double, 2>;
+template class Ball<double, 3>;
 
 
-template<typename T, int N>
+template<typename T, size_t N>
 Ball<T, N>::Ball(Point<T, N> center, T radius) :
    m_center(std::move(center)), m_radius(radius), m_radiusSquared(radius* radius)
 {
    Utilities::MyAssert(m_radius > 0);
 }
 
-template<typename T, int N>
+template<typename T, size_t N>
 Point<T, N> Ball<T, N>::getCenter() const
 {
    return m_center;
 }
 
-template<typename T, int N>
+template<typename T, size_t N>
 T Ball<T, N>::getRadius() const
 {
    return m_radius;
 }
 
-template<typename T, int N>
+template<typename T, size_t N>
 T Ball<T, N>::getRadiusSquared() const
 {
    return m_radiusSquared;
 }
 
 
-template<typename T, int N>
+template<typename T, size_t N>
 BallPosition Ball<T, N>::getPosition(const Point<T, N>& point, const IGeometryPredicate<T, N>& predicate) const
 {
    const T distToCenter2 = PointUtils::GetNormSquared(point - m_center);
@@ -45,13 +45,13 @@ BallPosition Ball<T, N>::getPosition(const Point<T, N>& point, const IGeometryPr
    else return Outside;
 }
 
-template<typename T, int N>
+template<typename T, size_t N>
 std::pair<BallPosition, BallPosition> Ball<T, N>::getPositions(const DirectedEdge<T, N>& edge, const IGeometryPredicate<T, N>& predicate) const
 {
    return { getPosition(edge.point0(), predicate), getPosition(edge.point1(), predicate) };
 }
 
-template<typename T, int N>
+template<typename T, size_t N>
 BoundingBox<T, N> Ball<T, N>::getBoundingBox() const
 {
    std::array<T, N> lwr;
@@ -61,14 +61,14 @@ BoundingBox<T, N> Ball<T, N>::getBoundingBox() const
    return BoundingBox<T, N>::CreateFromList(std::array<std::array<T, N>, 2> {lwr, upr});
 }
 
-template<typename T, int N>
+template<typename T, size_t N>
 bool Ball<T, N>::Contains(const Point<T, N>& point, const IGeometryPredicate<T, N>& predicate) const
 {
    return getPosition(point, predicate) <= On;
 }
 
-template<typename T, int N>
-std::optional<Point<T, N>> Ball<T, N>::TryGetFirstIntersectionWithDirectedEdge(typename const Geometry::DirectedEdge<T, N>& edge, const IGeometryPredicate<T, N>& predicate) const
+template<typename T, size_t N>
+std::optional<Point<T, N>> Ball<T, N>::TryGetFirstIntersectionWithDirectedEdge(const Geometry::DirectedEdge<T, N>& edge, const IGeometryPredicate<T, N>& predicate) const
 {
    const auto [pos0, pos1] = getPositions(edge, predicate);
    if (std::max(pos0, pos1) <= BallPosition::On)
@@ -122,8 +122,8 @@ std::optional<Point<T, N>> Ball<T, N>::TryGetFirstIntersectionWithDirectedEdge(t
    return {};
 }
 
-template<typename T, int N>
-bool Ball<T, N>::CouldIntersectWith(typename const BoundingBox<T, N>& bb, const IGeometryPredicate<T, N>& predicate) const
+template<typename T, size_t N>
+bool Ball<T, N>::CouldIntersectWith(const BoundingBox<T, N>& bb, const IGeometryPredicate<T, N>& predicate) const
 {
    if (!BoundingBox<T, N>::TryGetOverlap(getBoundingBox(), bb)) return false;
 

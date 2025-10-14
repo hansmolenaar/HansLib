@@ -6,7 +6,7 @@
 namespace Geometry
 {
 
-   template<typename T, int N>
+   template<typename T, size_t N>
    class Sphere : public IGeometryObject<T, N>
    {
    public:
@@ -19,9 +19,9 @@ namespace Geometry
       // First **after** start point
       // If the edge is contained in the region, then return the exit point or the end point of the edge
       // If only the first point of the edge is in the region return false
-      std::optional<Point<T, N>> TryGetFirstIntersectionWithDirectedEdge(typename const Geometry::DirectedEdge<T, N>& edge, const IGeometryPredicate<T, N>& predicate) const;
+      std::optional<Point<T, N>> TryGetFirstIntersectionWithDirectedEdge(const Geometry::DirectedEdge<T, N>& edge, const IGeometryPredicate<T, N>& predicate) const;
 
-      bool CouldIntersectWith(typename const BoundingBox<T, N>& bb, const IGeometryPredicate<T, N>& predicate) const;
+      bool CouldIntersectWith(const BoundingBox<T, N>& bb, const IGeometryPredicate<T, N>& predicate) const;
 
       Point<T, N> getCenter() const;
 

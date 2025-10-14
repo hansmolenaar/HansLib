@@ -6,7 +6,7 @@
 
 namespace Geometry
 {
-   template<typename T, int N>
+   template<typename T, size_t N>
    class Line
    {
 
@@ -23,20 +23,20 @@ namespace Geometry
       UnitVector<T, N> m_direction;
    };
 
-   template<typename T, int N>
+   template<typename T, size_t N>
    Line<T, N>::Line(Point<T, N> refPoint, UnitVector<T, N> direction) :
       m_referencePoint(std::move(refPoint)), m_direction(std::move(direction))
    {
       if (!m_direction.isValid()) throw MyException("Line<T, N>::Line invalid direction");
    }
 
-   template<typename T, int N>
+   template<typename T, size_t N>
    Line<T, N>::Line(const Point<T, N>& p0, const Point<T, N>& p1) :
       Line<T, N>::Line(p0, UnitVector<T, N>::Create(p0, p1))
    {
    }
 
-   template<typename T, int N>
+   template<typename T, size_t N>
    Point<T, N> Line<T, N>::project(const Point<T, N>& point) const
    {
       const auto dif = point - m_referencePoint;
@@ -44,7 +44,7 @@ namespace Geometry
       return  m_referencePoint + inprod * m_direction;
    }
 
-   template<typename T, int N>
+   template<typename T, size_t N>
    bool Line<T, N>::contains(const Point<T, N>& point, const IGeometryPredicate<T, N>& predicate) const
    {
       // Project the point on the line

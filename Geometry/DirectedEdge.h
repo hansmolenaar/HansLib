@@ -7,7 +7,7 @@
 
 namespace Geometry
 {
-   template<typename T, int N>
+   template<typename T, size_t N>
    class DirectedEdge
    {
    public:
@@ -29,13 +29,13 @@ namespace Geometry
 
    using DirectedEdge2 = DirectedEdge<double, GeomDim2>;
 
-   template<typename T, int N>
+   template<typename T, size_t N>
    DirectedEdge<T, N>::DirectedEdge(const Point<T, N>& from, const Point<T, N>& to) :
       m_from(from), m_to(to)
    {
    }
 
-   template<typename T, int N>
+   template<typename T, size_t N>
    T DirectedEdge<T, N>::lengthSquared() const
    {
       return PointUtils::GetNormSquared(m_to - m_from);
@@ -43,13 +43,13 @@ namespace Geometry
 
    // 0 => point0
    // 1 => point1
-   template<typename T, int N>
+   template<typename T, size_t N>
    Point<T, N> DirectedEdge<T, N>::interpolate(T lambda) const
    {
       return point0() * (1 - lambda) + point1() * lambda;
    }
 
-   template<typename T, int N>
+   template<typename T, size_t N>
    T DirectedEdge<T, N>::project(const Point<T, N>& point) const
    {
       T inprod = 0;
@@ -61,7 +61,7 @@ namespace Geometry
          norm2 += dif * dif;
       }
       const double norm2inv = 1.0 / norm2;
-      if (!std::isfinite<double>(norm2inv))
+      if (!std::isfinite(norm2inv))
       {
          throw MyException("DirectedEdge<T, N>::project edge is degenerated");
       }
@@ -69,13 +69,13 @@ namespace Geometry
       return inprod / norm2;
    }
 
-   template<typename T, int N>
+   template<typename T, size_t N>
    bool DirectedEdge<T, N>::isDegenerate(const IGeometryPredicate<T, N>& predicate) const
    {
       return predicate.samePoints(point0(), point1());
    }
 
-   template<typename T, int N>
+   template<typename T, size_t N>
    bool DirectedEdge<T, N>::contains(const Point<T, N>& point, const IGeometryPredicate<T, N>& predicate) const
    {
       // Project the point on the line
@@ -98,14 +98,14 @@ namespace Geometry
       }
    }
 
-   template<typename T, int N>
+   template<typename T, size_t N>
    Point<T, N> DirectedEdge<T, N>::projectPointOnLine(const Point<T, N>& point) const
    {
       const T lambda = project(point);
       return interpolate(lambda);
    }
 
-   template<typename T, int N>
+   template<typename T, size_t N>
    BoundingBox<T, N> DirectedEdge<T, N>::getBoundingBox() const
    {
       return BoundingBox<T, N>::CreateFrom2Points(m_from, m_to);

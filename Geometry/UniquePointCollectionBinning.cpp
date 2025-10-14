@@ -4,9 +4,9 @@
 #include<boost/container/static_vector.hpp>
 #include <sstream>
 
-template UniquePointCollectionBinning<GeomDim1>;
-template UniquePointCollectionBinning<GeomDim2>;
-template UniquePointCollectionBinning<GeomDim3>;
+template class UniquePointCollectionBinning<GeomDim1>;
+template class UniquePointCollectionBinning<GeomDim2>;
+template class UniquePointCollectionBinning<GeomDim3>;
 
 using TrialBinsInDir = boost::container::static_vector<size_t, 3>;
 
@@ -35,7 +35,7 @@ namespace
 
 }
 
-template< int N>
+template< size_t N>
 UniquePointCollectionBinning<N>::UniquePointCollectionBinning(const IGeometryPredicate<double, N>& predicate, const std::vector<Point<double, N>>& points) :
    m_predicate(predicate)
 {
@@ -52,19 +52,19 @@ UniquePointCollectionBinning<N>::UniquePointCollectionBinning(const IGeometryPre
    }
 }
 
-template< int N>
+template< size_t N>
 Point<double, N> UniquePointCollectionBinning<N>::getPoint(PointIndex n) const
 {
    return m_points.at(n);
 }
 
-template< int N>
+template< size_t N>
 PointIndex UniquePointCollectionBinning<N>::getNumPoints() const
 {
    return m_points.size();
 }
 
-template< int N>
+template< size_t N>
 std::optional<PointIndex>  UniquePointCollectionBinning<N>::tryGetClosePoint(const Point<double, N>& p) const
 {
    std::array<TrialBinsInDir, N> candidatesInDir;
@@ -93,13 +93,13 @@ std::optional<PointIndex>  UniquePointCollectionBinning<N>::tryGetClosePoint(con
 }
 
 
-template< int N>
+template< size_t N>
 const IGeometryPredicate<double, N>& UniquePointCollectionBinning<N>::getGeometryPredicate() const
 {
    return m_predicate;
 }
 
-template< int N>
+template< size_t N>
 void UniquePointCollectionBinning<N>::deletePoint(PointIndex pointId)
 {
    const auto point = getPoint(pointId);
@@ -120,7 +120,7 @@ void UniquePointCollectionBinning<N>::deletePoint(PointIndex pointId)
    m_points.erase(pointId);
 }
 
-template< int N>
+template< size_t N>
 UniquePointCollectionBinning<N>::BinSpecifier UniquePointCollectionBinning<N>::locate(const Point<double, N>& point) const
 {
    std::array<size_t, N> bins;
@@ -131,7 +131,7 @@ UniquePointCollectionBinning<N>::BinSpecifier UniquePointCollectionBinning<N>::l
    return bins;
 }
 
-template< int N>
+template< size_t N>
 PointIndex UniquePointCollectionBinning<N>::addIfNew(const Point<double, N>& point)
 {
    const auto found = tryGetClosePoint(point);
@@ -146,13 +146,13 @@ PointIndex UniquePointCollectionBinning<N>::addIfNew(const Point<double, N>& poi
    return result;
 }
 
-template< int N>
+template< size_t N>
 const LocalizationBins& UniquePointCollectionBinning<N>::getBins(int direction) const
 {
    return m_bins.at(direction);
 }
 
-template< int N>
+template< size_t N>
 std::optional<PointIndex> UniquePointCollectionBinning<N>::tryGetClosePointInBin(const Point<double, N>& p, const BinSpecifier& bins) const
 {
    const auto [first, last] = m_pointsInBin.equal_range(bins);
@@ -168,7 +168,7 @@ std::optional<PointIndex> UniquePointCollectionBinning<N>::tryGetClosePointInBin
    return {};
 }
 
-template< int N>
+template< size_t N>
 void UniquePointCollectionBinning<N>::movePoint(PointIndex pointId, const Point<double, N>& newCoordinates)
 {
    if (!m_points.contains(pointId))

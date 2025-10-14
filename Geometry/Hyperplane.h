@@ -4,7 +4,7 @@
 #include "UnitVector.h"
 #include "IPointTransformation.h"
 
-template<typename T, int N>
+template<typename T, size_t N>
 class Hyperplane : public IPointTransformation<T, N>
 {
 public:
@@ -21,19 +21,19 @@ private:
    UnitVector<T,N> m_normal;
 };
 
-template<typename T, int N>
+template<typename T, size_t N>
 Hyperplane<T, N>::Hyperplane(const Point<T, N>& refPont,  UnitVector<T,N>&& normal) :
    m_referencePoint(refPont), m_normal(std::move(normal))
 {
 }
 
-template<typename T, int N>
+template<typename T, size_t N>
 T Hyperplane<T, N>::getSignedDistance(Point<T, N> point) const
 {
    return m_normal.innerProduct(point - m_referencePoint);
 }
 
-template<typename T, int N>
+template<typename T, size_t N>
 Point<T, N> Hyperplane<T, N>::reflect(Point<T, N> point) const
 {
    const T dist = getSignedDistance(point);

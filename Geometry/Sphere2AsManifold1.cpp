@@ -2,7 +2,7 @@
 
 using namespace Geometry;
 
-template Sphere2AsManifold1<double>;
+template class Sphere2AsManifold1<double>;
 
 template<typename T>
 Sphere2AsManifold1<T>::Sphere2AsManifold1(Sphere<T, GeomDim2> sphere, std::string name) :

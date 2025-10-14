@@ -4,7 +4,7 @@
 #include "MyAssert.h"
 #include "Point.h"
 
-template<typename T, int N>
+template<typename T, size_t N>
 class PointClose : public IGeometryPredicate<T, N>
 {
 public:
@@ -17,7 +17,7 @@ private:
    static constexpr T m_smallInDirection = static_cast<T>(eps);
 };
 
-template<typename T, int N>
+template<typename T, size_t N>
 bool PointClose<T, N>::operator ()(const Point<T, N>& p0, const Point<T, N>& p1) const
 {
    const auto dif = p0 - p1;
@@ -25,13 +25,13 @@ bool PointClose<T, N>::operator ()(const Point<T, N>& p0, const Point<T, N>& p1)
 }
 
 
-template<typename T, int N>
+template<typename T, size_t N>
 bool PointClose<T, N>::samePoints(Point<T, N> p0, Point<T, N> p1) const
 {
    return (*this)(p0, p1);
 }
 
-template<typename T, int N>
+template<typename T, size_t N>
 T PointClose<T, N>::getSmallLengthInDirection(int n) const
 {
    Utilities::MyAssert(n >= 0);
@@ -39,7 +39,7 @@ T PointClose<T, N>::getSmallLengthInDirection(int n) const
    return m_smallInDirection;
 }
 
-template<typename T, int N>
+template<typename T, size_t N>
 T PointClose<T, N>::getSmallNormSquared() const
 {
    constexpr T result = N * m_smallInDirection;

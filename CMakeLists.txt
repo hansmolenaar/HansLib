@@ -44,7 +44,7 @@ add_subdirectory(IntervalTest)
 add_subdirectory(BoundingBox)
 add_subdirectory(BoundingBoxTest)
 
-#add_subdirectory(Geometry)
+add_subdirectory(Geometry)
 #add_subdirectory(GeometryTest)
 
 add_subdirectory(Graph)

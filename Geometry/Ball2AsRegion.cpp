@@ -3,7 +3,7 @@
 
 using namespace Geometry;
 
-template Ball2AsRegion<double>;
+template class Ball2AsRegion<double>;
 
 namespace
 {
