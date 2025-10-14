@@ -36,7 +36,6 @@ std::span<const CoordinateType> VtkData::getNode(NodeIndex n) const
 {
    const auto& first = m_coordinates.begin() + n * m_geomDim;
    return std::span<const CoordinateType>(first, m_geomDim);
-
 }
 
 CellIndex VtkData::getNumCells() const
