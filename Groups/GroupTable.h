@@ -31,7 +31,7 @@ private:
 };
 
 template<typename T, typename BinOp>
-static std::unique_ptr<IFiniteGroup> GroupTable::CreateUsingBinaryOperator(const std::vector<T>& elements, BinOp binop, bool checkAssociativity)
+std::unique_ptr<IFiniteGroup> GroupTable::CreateUsingBinaryOperator(const std::vector<T>& elements, BinOp binop, bool checkAssociativity)
 {
    std::unique_ptr<IIndexer<GroupElement>> indexer;
    if (elements.empty()) return  Create(indexer, std::vector<GroupElement>{});

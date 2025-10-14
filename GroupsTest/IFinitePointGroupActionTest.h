@@ -6,7 +6,7 @@
 
 #include <numbers>
 
-template <int N>
+template <size_t N>
 Point<double, N> GetRandomPoint()
 {
    static std::array<double, 4> values{ std::numbers::pi, std::numbers::e, std::numbers::ln10, std::numbers::sqrt2 };
@@ -17,7 +17,7 @@ Point<double, N> GetRandomPoint()
    return Point<double, N>(data);
 }
 
-template<int N>
+template<size_t N>
 void Test_IFinitePointGroupAction(const IFinitePointGroupAction<N>& groupAction, const Point<double, N>& pointInSet)
 {
    const PointClose<double, N> areClose;

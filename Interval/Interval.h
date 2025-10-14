@@ -38,7 +38,7 @@ private:
 };
 
 template<typename T>
-bool operator==(typename const Interval<T>& lhs, typename const Interval<T>& rhs)
+bool operator==(const Interval<T>& lhs, const Interval<T>& rhs)
 {
    return lhs.getLower() == rhs.getLower() && lhs.getUpper() == rhs.getUpper();
 }

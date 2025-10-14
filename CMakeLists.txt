@@ -38,17 +38,17 @@ add_subdirectory(UtilitiesTest)
 add_subdirectory(Point)
 add_subdirectory(PointTest)
 
-#add_subdirectory(Interval)
-#add_subdirectory(IntervalTest)
+add_subdirectory(Interval)
+add_subdirectory(IntervalTest)
 
-#add_subdirectory(BoundingBox)
-#add_subdirectory(BoundingBoxTest)
+add_subdirectory(BoundingBox)
+add_subdirectory(BoundingBoxTest)
 
 #add_subdirectory(Geometry)
 #add_subdirectory(GeometryTest)
 
-#add_subdirectory(Graph)
-#add_subdirectory(GraphTest)
+add_subdirectory(Graph)
+add_subdirectory(GraphTest)
 
 #add_subdirectory(Groups)
 #add_subdirectory(GroupsTest)
@@ -59,8 +59,8 @@ add_subdirectory(PointTest)
 #add_subdirectory(Tree)
 #add_subdirectory(TreeTest)
 
-#add_subdirectory(Permutation)
-#add_subdirectory(PermutationTest)
+add_subdirectory(Permutation)
+add_subdirectory(PermutationTest)
 
 #add_subdirectory(Functions)
 #add_subdirectory(FunctionsTest)

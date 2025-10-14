@@ -3,7 +3,7 @@
 #include "IFiniteGroup.h"
 #include "Point.h"
 
-template<int N>
+template<size_t N>
 class IFinitePointGroupAction
 {
 public:

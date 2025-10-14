@@ -11,11 +11,11 @@
 namespace GroupFromOrbit
 {
    // return empty result on failure
-   template<int N>
+   template<size_t N>
    std::unique_ptr<IFiniteGroup> Create(const IGeometryPredicate<double, N>&, const std::vector<const IPointTransformation<double, N>*>&, const Point<double, N>&);
 }
 
-template<int N>
+template<size_t N>
 std::unique_ptr<IFiniteGroup> GroupFromOrbit::Create<N>(
    const IGeometryPredicate<double, N>& predicate,
    const std::vector<const IPointTransformation<double, N>*>& transformations,

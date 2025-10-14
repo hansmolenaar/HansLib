@@ -71,7 +71,11 @@ std::set<Permutation> PermutationUtils::generateAllPowerCombinations(std::span<c
          }
       }
       const size_t oldSize = result.size();
-      result.insert_range(trials);
+      // TODO result.insert_range(trials);
+      for (const auto& t : trials)
+      {
+         result.insert(t);
+      }
       ready = result.size() == oldSize;
    }
 

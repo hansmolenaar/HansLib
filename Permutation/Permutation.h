@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <span>
+#include <limits>
 
 class Permutation
 {

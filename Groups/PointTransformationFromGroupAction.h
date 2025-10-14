@@ -3,7 +3,7 @@
 #include "IFinitePointGroupAction.h"
 #include "IPointTransformation.h"
 
-template<int N>
+template<size_t N>
 class PointTransformationFromGroupAction : public IPointTransformation<double, N>
 {
 public:
@@ -15,7 +15,7 @@ private:
 };
 
 
-template<int N>
+template<size_t N>
 Point<double, N> PointTransformationFromGroupAction<N>::operator()(const Point<double, N>& p) const
 {
    return m_action(m_element, p);
