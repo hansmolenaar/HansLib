@@ -50,8 +50,8 @@ add_subdirectory(GeometryTest)
 add_subdirectory(Graph)
 add_subdirectory(GraphTest)
 
-#add_subdirectory(Groups)
-#add_subdirectory(GroupsTest)
+add_subdirectory(Groups)
+add_subdirectory(GroupsTest)
 
 add_subdirectory(Topology)
 add_subdirectory(TopologyTest)

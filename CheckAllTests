@@ -6,3 +6,4 @@
 ./bin/PointTest
 ./bin/TopologyTest
 ./bin/UtilitiesTest
+./bin/GroupsTest
