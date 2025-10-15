@@ -1,0 +1,8 @@
+./bin/BoundingBoxTest
+./bin/GeometryTest
+./bin/GraphTest
+./bin/IntervalTest
+./bin/PermutationTest
+./bin/PointTest
+./bin/TopologyTest
+./bin/UtilitiesTest

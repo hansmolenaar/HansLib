@@ -9,7 +9,7 @@
 using namespace Geometry;
 using namespace Topology;
 
-template<typename T, int N>
+template<typename T, size_t N>
 void IRegionManifoldsTestInterface(const IRegionManifolds<T, N>& manifolds, const IGeometryPredicate<T, N>& predicate)
 {
    const auto allManifolds = manifolds.getAllManifolds();
@@ -40,13 +40,13 @@ void IRegionManifoldsTestInterface(const IRegionManifolds<T, N>& manifolds, cons
       ASSERT_TRUE(std::find(allManifolds.begin(), allManifolds.end(), b) != allManifolds.end());
    }
 
-   const auto manifolds0 = manifolds.getManifoldsOfType<const IManifold0<T, N>*>();
+   const auto manifolds0 = manifolds.template getManifoldsOfType<const IManifold0<T, N>* >();
    for (const auto* manifold0 : manifolds0)
    {
       IManifold0TestInterface(*manifold0, predicate);
    }
 
-   const auto manifolds1 = manifolds.getManifoldsOfType<const IManifold1<T, N>*>();
+   const auto manifolds1 = manifolds.template getManifoldsOfType<const IManifold1<T, N>*>();
    for (const auto* manifold1 : manifolds1)
    {
       IManifold1TestInterface(*manifold1, predicate);

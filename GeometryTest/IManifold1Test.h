@@ -12,7 +12,7 @@ using namespace Geometry;
 
 namespace
 {
-   template<typename T, int N>
+   template<typename T, size_t N>
    std::vector < Point<T, N>> GenerateSomePoints(int numPointToGenerate)
    {
       std::vector < Point<T, N>> result;
@@ -39,7 +39,7 @@ namespace
    }
 }
 
-template<typename T, int N>
+template<typename T, size_t N>
 void IManifold1TestInterface(const IManifold1<T, N>& manifold, const IGeometryPredicate<T, N>& predicate)
 {
    IManifoldTestInterface(manifold, predicate);
