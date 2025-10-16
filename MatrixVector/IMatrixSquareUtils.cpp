@@ -53,7 +53,7 @@ double GetDeterminant(const IMatrixSquare& m)
 			m(1, 0)*GetSubDeterminant3x3(m, 1, 0) +
 			m(2, 0)*GetSubDeterminant3x3(m, 2, 0);
 	default:
-		throw std::exception("Not implemented");
+		throw std::runtime_error("Not implemented");
 	}
 }
 
@@ -79,7 +79,7 @@ double GetDeterminantDerivative(const IMatrixSquare& m, int row, int col)
 		return factor * GetSubDeterminant3x3(m, row, col);
 	}
 	default:
-		throw std::exception("Not implemented");
+		throw std::runtime_error("Not implemented");
 	}
 }
 

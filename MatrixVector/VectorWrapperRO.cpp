@@ -1,7 +1,7 @@
 
 #include "VectorWrapperRO.h"
 
-#include <exception>
+#include  <stdexcept>
 
 VectorWrapperRO::VectorWrapperRO(std::span<const double> data) :
    m_data(data)
@@ -22,5 +22,5 @@ double VectorWrapperRO::operator() (int n)  const
 
 double& VectorWrapperRO::operator() (int n)
 {
-   throw std::exception("Come on, I am ReadOnly");
+   throw std::runtime_error("Come on, I am ReadOnly");
 }

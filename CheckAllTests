@@ -9,3 +9,4 @@
 ./bin/GroupsTest
 ./bin/TreeTest
 ./bin/SudokuTest
+./bin/MatrixVectorTest

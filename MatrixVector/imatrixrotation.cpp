@@ -5,7 +5,7 @@
 
 double& IMatrixRotation::operator() (int, int)
 {
-   throw std::exception("Don't call me, use const version instead");
+   throw std::runtime_error("Don't call me, use const version instead");
 }
 
 

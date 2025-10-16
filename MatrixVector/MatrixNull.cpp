@@ -1,6 +1,6 @@
 #include "MatrixNull.h"
 
-#include <exception>
+#include  <stdexcept>
 
 int MatrixNull::GetRowDimension() const
 {
@@ -16,10 +16,10 @@ int MatrixNull::GetColDimension() const
 
 double MatrixNull::operator() (int row, int col)  const
 {
-	throw std::exception("Do not call me");
+	throw std::runtime_error("Do not call me");
 }
 
 double& MatrixNull::operator() (int row, int col)
 {
-	throw std::exception("Do not call me");
+	throw std::runtime_error("Do not call me");
 }

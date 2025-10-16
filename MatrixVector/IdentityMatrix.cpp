@@ -49,6 +49,6 @@ double IdentityMatrix::operator() (int row, int col)  const
 
 double& IdentityMatrix::operator() (int row, int col)
 {
-	throw std::exception("Don't call me");
+	throw std::runtime_error("Don't call me");
 }
 
