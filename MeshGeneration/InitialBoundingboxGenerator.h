@@ -4,7 +4,7 @@
 #include "BoundingBox.h"
 #include <memory>
 
-template<int N>
+template<size_t N>
 class InitialBoundingboxGenerator : public IInitialBoundingboxGenerator<N>
 {
 public:

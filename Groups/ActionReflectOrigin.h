@@ -5,7 +5,7 @@
 #include "IFinitePointGroupAction.h"
 #include "PointReflection.h"
 
-template<int N>
+template<size_t N>
 class ActionReflectOrigin : public IFinitePointGroupAction<N>
 {
 public:
@@ -17,19 +17,19 @@ private:
    std::unique_ptr<IFiniteGroup> m_group;
 };
 
-template<int N>
+template<size_t N>
 ActionReflectOrigin<N>::ActionReflectOrigin() :
    m_group(DihedralGroup::Create(1))
 {
 }
 
-template<int N>
+template<size_t N>
 const IFiniteGroup& ActionReflectOrigin<N>::getGroup() const
 {
    return *m_group;
 }
 
-template<int N>
+template<size_t N>
 Point<double, N> ActionReflectOrigin<N>::operator()(int n, const Point<double, N>& p) const
 {
    if (n == 0) return p;

@@ -2,7 +2,7 @@
 
 #include "Point.h"
 
-template<typename T, int N>
+template<typename T, size_t N>
 class IPointCollection
 {
 public:

@@ -46,7 +46,7 @@ template void ProjectToVtk::addEdges<Topology::EdgeNodesSorted, 2>(const std::ve
 template void ProjectToVtk::addEdges<Topology::EdgeNodesDirected, 3>(const std::vector<EdgeNodesDirected>& edges, const IPointCollection<double, 3>& points, const std::string& name);
 template void ProjectToVtk::addEdges<Topology::EdgeNodesSorted, 3>(const std::vector<EdgeNodesSorted>& edges, const IPointCollection<double, 3>& points, const std::string& name);
 
-template<typename T, int N>
+template<typename T, size_t N>
 void ProjectToVtk::addEdges(const std::vector<T>& edges, const IPointCollection<double, N>& points, const std::string& name)
 {
    std::unique_ptr< Vtk::VtkData> vtkData = std::make_unique< Vtk::VtkData>(N, 0, Vtk::Name{ m_projectName, name });
@@ -61,7 +61,7 @@ void ProjectToVtk::addEdges(const std::vector<T>& edges, const IPointCollection<
 template void ProjectToVtk::addReconstructions<2>(const std::vector<const IManifoldReconstruction*>& reconstructions, const IPointCollection<double, 2>& points);
 template void ProjectToVtk::addReconstructions<3>(const std::vector<const IManifoldReconstruction*>& reconstructions, const IPointCollection<double, 3>& points);
 
-template<int N>
+template<size_t N>
 void ProjectToVtk::addReconstructions(const std::vector<const IManifoldReconstruction*>& reconstructions, const IPointCollection<double, N>& points)
 {
    auto cast = [](const IManifoldReconstruction* reconstruction) { return dynamic_cast<const Manifold1Reconstruction*>(reconstruction); };
@@ -75,7 +75,7 @@ void ProjectToVtk::addReconstructions(const std::vector<const IManifoldReconstru
 template void ProjectToVtk::addBoundary1<2>(const Boundary1& reconstruction, const IPointCollection<double, 2>& points, const std::string& manifoldName);
 template void ProjectToVtk::addBoundary1<3>(const Boundary1& reconstruction, const IPointCollection<double, 3>& points, const std::string& manifoldName);
 
-template<int N>
+template<size_t N>
 void ProjectToVtk::addBoundary1(const Boundary1& reconstruction, const IPointCollection<double, N>& points, const std::string& manifoldName)
 {
    std::vector<std::unique_ptr<Vtk::VtkData>> result;
@@ -98,7 +98,7 @@ void ProjectToVtk::addBoundary1(const Boundary1& reconstruction, const IPointCol
 template void ProjectToVtk::addPath<2>(const PathNodes& path, const IPointCollection<double, 2>& points, const std::string& name);
 template void ProjectToVtk::addPath<3>(const PathNodes& path, const IPointCollection<double, 3>& points, const std::string& name);
 
-template<int N>
+template<size_t N>
 void ProjectToVtk::addPath(const PathNodes& path, const IPointCollection<double, N>& points, const std::string& name)
 {
    addEdges(path.getEdges(), points, name);
@@ -107,7 +107,7 @@ void ProjectToVtk::addPath(const PathNodes& path, const IPointCollection<double,
 template void ProjectToVtk::addCycle<2>(const CycleNodes& cycle, const IPointCollection<double, 2>& points, const std::string& name);
 template void ProjectToVtk::addCycle<3>(const CycleNodes& cycle, const IPointCollection<double, 3>& points, const std::string& name);
 
-template<int N>
+template<size_t N>
 void ProjectToVtk::addCycle(const CycleNodes& cycle, const IPointCollection<double, N>& points, const std::string& name)
 {
    addEdges(cycle.getEdges(), points, name);
@@ -116,7 +116,7 @@ void ProjectToVtk::addCycle(const CycleNodes& cycle, const IPointCollection<doub
 template void ProjectToVtk::addTriangles<2>(const TrianglesNodes& tnodes, const IPointCollection<double, 2>& points, const std::string& name);
 template void ProjectToVtk::addTriangles<3>(const TrianglesNodes& tnodes, const IPointCollection<double, 3>& points, const std::string& name);
 
-template<int N>
+template<size_t N>
 void ProjectToVtk::addTriangles(const TrianglesNodes& tnodes, const IPointCollection<double, N>& points, const std::string& name)
 {
    std::unique_ptr< Vtk::VtkData> vtkData = std::make_unique< Vtk::VtkData>(N, 0, Vtk::Name{ m_projectName, name });
@@ -137,7 +137,7 @@ void ProjectToVtk::addTrianglesAndReconstructions(const TrianglesNodes& tnodes, 
 template void ProjectToVtk::addTrianglesAndBoundaries<2>(const TrianglesNodes& tnodes, const IPointCollection<double, 2>& points, const std::string& name);
 template void ProjectToVtk::addTrianglesAndBoundaries<3>(const TrianglesNodes& tnodes, const IPointCollection<double, 3>& points, const std::string& name);
 
-template<int N>
+template<size_t N>
 void ProjectToVtk::addTrianglesAndBoundaries(const TrianglesNodes& tnodesAll, const IPointCollection<double, N>& points, const std::string& name)
 {
    addTriangles(tnodesAll, points, name);
@@ -157,7 +157,7 @@ void ProjectToVtk::addTrianglesAndBoundaries(const TrianglesNodes& tnodesAll, co
 template void ProjectToVtk::addBoundariesOfConnectedTriangles<2>(const TrianglesNodes& tnodes, const IPointCollection<double, 2>& points, const std::string& name);
 template void ProjectToVtk::addBoundariesOfConnectedTriangles<3>(const TrianglesNodes& tnodes, const IPointCollection<double, 3>& points, const std::string& name);
 
-template<int N>
+template<size_t N>
 void ProjectToVtk::addBoundariesOfConnectedTriangles(const TrianglesNodes& tnodes, const IPointCollection<double, N>& points, const std::string& name)
 {
    const Boundary1 bdy1 = Boundary1::createFromBoundaryEdges(tnodes);

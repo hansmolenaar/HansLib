@@ -7,7 +7,7 @@
 
 #include <span>
 
-template<typename T, int N>
+template<typename T, size_t N>
 class TartanGrid : public IMesh<T, N>, IPointCollection<T, N>
 {
 public:
@@ -38,7 +38,7 @@ private:
 
 };
 
-template<typename T, int N>
+template<typename T, size_t N>
 MultiIndex<PointIndex> TartanGrid<T, N>::CreateMultiIndex(const std::vector<std::vector<T>>& coordinates)
 {
    if (coordinates.size() != N) throw MyException("TartanGrid<T, N>::CreateMultiIndex inconsistent dimensions");
@@ -47,16 +47,16 @@ MultiIndex<PointIndex> TartanGrid<T, N>::CreateMultiIndex(const std::vector<std:
    return MultiIndex<PointIndex>::Create(std::move(dimensions));
 }
 
-template<typename T, int N>
+template<typename T, size_t N>
 MultiIndex<CellIndex> TartanGrid<T, N>::CreateCellIndexer(const MultiIndex<PointIndex>& pointIndexer)
 {
    std::vector<size_t> cellDimensions;
-   str::transform(std::views::iota(0, N), std::back_inserter(cellDimensions), [&pointIndexer](auto n) {return pointIndexer.at(n) - 1; });
+   str::transform(std::views::iota(0UZ, N), std::back_inserter(cellDimensions), [&pointIndexer](auto n) {return pointIndexer.at(n) - 1; });
    return MultiIndex<CellIndex>::Create(std::move(cellDimensions));
 }
 
 
-template<typename T, int N>
+template<typename T, size_t N>
 std::unique_ptr<Topology::GridTopology> TartanGrid<T, N>::CreateTopology(const std::vector<std::vector<T>>& coordinates)
 {
    std::vector<int> dimensions(coordinates.size());
@@ -65,7 +65,7 @@ std::unique_ptr<Topology::GridTopology> TartanGrid<T, N>::CreateTopology(const s
 }
 
 
-template<typename T, int N>
+template<typename T, size_t N>
 TartanGrid<T, N>::TartanGrid(std::vector<std::vector<T>>&& coordinates) :
    m_coordinates(std::move(coordinates)),
    m_topology(CreateTopology(m_coordinates)),
@@ -75,19 +75,19 @@ TartanGrid<T, N>::TartanGrid(std::vector<std::vector<T>>&& coordinates) :
 {
 }
 
-template<typename T, int N>
+template<typename T, size_t N>
 const Topology::ITopologicalAdjacencies& TartanGrid<T, N>::getTopology() const
 {
    return m_topology->getAdjacencies();
 }
 
-template<typename T, int N>
+template<typename T, size_t N>
 const IPointCollection<T, N>& TartanGrid<T, N>::getGeometry() const
 {
    return *this;
 }
 
-template<typename T, int N>
+template<typename T, size_t N>
 Point<T, N> TartanGrid<T, N>::getPoint(PointIndex pointIndex) const
 {
    std::array<PointIndex, N> mp;
@@ -100,25 +100,25 @@ Point<T, N> TartanGrid<T, N>::getPoint(PointIndex pointIndex) const
    return result;
 }
 
-template<typename T, int N>
+template<typename T, size_t N>
 PointIndex TartanGrid<T, N>::getNumPoints() const
 {
    return m_multiIndexPoint.getFlatSize();
 }
 
-template<typename T, int N>
+template<typename T, size_t N>
 const MultiIndex<PointIndex>& TartanGrid<T, N>::getPointIndexer() const
 {
    return m_multiIndexPoint;
 }
 
-template<typename T, int N>
+template<typename T, size_t N>
 const MultiIndex<CellIndex>& TartanGrid<T, N>::getCellIndexer() const
 {
    return m_multiIndexCell;
 }
 
-template<typename T, int N>
+template<typename T, size_t N>
 CellIndex TartanGrid<T, N>::locatePointInCell(const Point<T, N>& point) const
 {
    std::array<PointIndex, N> position;

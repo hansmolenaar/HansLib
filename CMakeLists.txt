@@ -85,8 +85,8 @@ add_subdirectory(MeshTest)
 add_subdirectory(Optim)
 add_subdirectory(OptimTest)
 
-#add_subdirectory(MeshGeneration)
-#add_subdirectory(MeshGenerationTest)
+add_subdirectory(MeshGeneration)
+add_subdirectory(MeshGenerationTest)
 
 add_subdirectory(Sudoku)
 add_subdirectory(SudokuTest)

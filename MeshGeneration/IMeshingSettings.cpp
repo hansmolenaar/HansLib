@@ -3,9 +3,9 @@
 using namespace Geometry;
 using namespace MeshGeneration;
 
-template IMeshingSettings<2>;
+template class IMeshingSettings<2>;
 
-template<int N>
+template<size_t N>
 BoundingBox<GeomType, N> IMeshingSettings<N>::getInitialBb(const Geometry::IGeometryRegion<GeomType, N>& region)
 {
    return getInitialBbGenerator().generate(region);

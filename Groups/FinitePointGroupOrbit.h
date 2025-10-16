@@ -4,7 +4,7 @@
 #include "IFinitePointGroupAction.h"
 #include "IUniquePointCollection.h"
 
-template<int N>
+template<size_t N>
 class FinitePointGroupOrbit : public IUniquePointCollection<double, N>
 {
 public:
@@ -19,7 +19,7 @@ private:
    std::vector<Point<double, N>>  m_uniquePoints;
 };
 
-template<int N>
+template<size_t N>
 FinitePointGroupOrbit<N>::FinitePointGroupOrbit(const IFinitePointGroupAction<N>& action, const Point<double, N>& point, const IGeometryPredicate<double, N>& predicate) :
    m_predicate(predicate), m_action(action)
 {
@@ -34,26 +34,26 @@ FinitePointGroupOrbit<N>::FinitePointGroupOrbit(const IFinitePointGroupAction<N>
    }
 }
 
-template<int N>
+template<size_t N>
 const IGeometryPredicate<double, N>& FinitePointGroupOrbit<N>::getGeometryPredicate() const
 {
    return m_predicate;
 }
 
-template<int N>
+template<size_t N>
 Point<double, N> FinitePointGroupOrbit<N>::getPoint(PointIndex n) const
 {
    return m_uniquePoints.at(n);
 }
 
 
-template<int N>
+template<size_t N>
 PointIndex FinitePointGroupOrbit<N>::getNumPoints() const
 {
    return static_cast<PointIndex>(m_uniquePoints.size());
 }
 
-template<int N>
+template<size_t N>
 std::optional<PointIndex>  FinitePointGroupOrbit<N>::tryGetClosePoint(const Point<double, N>& p) const
 {
    PointIndex result = PointIndexInvalid;

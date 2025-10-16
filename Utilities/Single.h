@@ -13,7 +13,7 @@ namespace Utilities
    template<typename T>
    T& Single(std::vector<T>&);
 
-   template<typename T, int N>
+   template<typename T, size_t N>
    const T& Single(const boost::container::static_vector<T, N>&);
 
    template<typename T>
@@ -36,7 +36,7 @@ T& Utilities::Single(std::vector<T>& container)
 }
 
 
-template<typename T, int N>
+template<typename T, size_t N>
 const T& Utilities::Single(const boost::container::static_vector<T, N>& container)
 {
    MyAssert(container.size() == 1);

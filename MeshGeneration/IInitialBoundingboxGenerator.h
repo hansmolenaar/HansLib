@@ -3,7 +3,7 @@
 #include "BoundingBox.h"
 #include "IGeometryRegion.h"
 
-template<int N>
+template<size_t N>
 class IInitialBoundingboxGenerator
 {
 public:

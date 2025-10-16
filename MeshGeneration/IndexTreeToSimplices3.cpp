@@ -250,8 +250,8 @@ void IndexTreeToSimplices3::cellsToVtkData(MeshGeneration::ProjectToVtk& vtk, co
    const PointClose<double, GeomDim3> predicate;
    const auto [tnodes, points] = toPointCollection(cells, predicate);
 
-   vtk.addTetrahedronsAndBoundaries(tnodes, points, std::string(Vtk::itemIndexTree3) + "_mesh");
-   vtk.addEdges(tnodes.getAllSortedEdges(), points, std::string(Vtk::itemIndexTree3) + "_edges");
+   vtk.addTetrahedronsAndBoundaries(tnodes, points, std::string("IndexTree3_mesh"));
+   vtk.addEdges(tnodes.getAllSortedEdges(), points, std::string("IndexTree3_edges"));
 }
 
 std::array<RatPoint3, Topology::NumCornersOnCube> IndexTreeToSimplices3::getCubeFromIndex(const IntervalTree::Index<GeomDim3>& index)

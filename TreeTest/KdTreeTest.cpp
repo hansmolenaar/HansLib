@@ -7,7 +7,7 @@
 #include "KdTreeTraversorPointsInRange.h"
 #include <random>
 
-template<int N>
+template<size_t N>
 static void TestIntKdTree(std::span<const Point<int, N>> points)
 {
    if (points.empty()) return;

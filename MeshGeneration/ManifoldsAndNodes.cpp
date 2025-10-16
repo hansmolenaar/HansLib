@@ -5,12 +5,12 @@ using namespace MeshGeneration;
 using namespace Geometry;
 using namespace Topology;
 
-template ManifoldsAndNodes<GeomDim2>;
-template ManifoldsAndNodes<GeomDim3>;
+template class ManifoldsAndNodes<GeomDim2>;
+template class ManifoldsAndNodes<GeomDim3>;
 
 namespace
 {
-   template<int N>
+   template<size_t N>
    std::string ManifoldsWithNodeToString(const typename ManifoldsAndNodes<N>::ManifoldsWithNode& manifoldsWithNode)
    {
       std::string result;
@@ -28,7 +28,7 @@ namespace
    }
 }
 
-template<int N>
+template<size_t N>
 ManifoldsAndNodes<N>::ManifoldsWithNode ManifoldsAndNodes<N>::getManifoldsContainingNode(NodeIndex node) const
 {
    const auto found = m_node2manifolds.find(node);
@@ -39,7 +39,7 @@ ManifoldsAndNodes<N>::ManifoldsWithNode ManifoldsAndNodes<N>::getManifoldsContai
    return {};
 }
 
-template<int N>
+template<size_t N>
 void ManifoldsAndNodes<N>::deleteNode(NodeIndex node)
 {
    const auto found = m_node2manifolds.find(node);
@@ -58,7 +58,7 @@ void ManifoldsAndNodes<N>::deleteNode(NodeIndex node)
    m_node2manifolds.erase(node);
 }
 
-template<int N>
+template<size_t N>
 void ManifoldsAndNodes<N>::addNodeToManifold(NodeIndex node, ManifoldPtrN manifoldPtr)
 {
    if (!m_node2manifolds.contains(node))
@@ -93,7 +93,7 @@ void ManifoldsAndNodes<N>::addNodeToManifold(NodeIndex node, ManifoldPtrN manifo
    m_manifold2node[manifoldPtr].insert(node);
 }
 
-template<int N>
+template<size_t N>
 std::vector<NodeIndex> ManifoldsAndNodes<N>::getNodesInManifold(ManifoldPtrN manifoldPtr) const
 {
    const auto found = m_manifold2node.find(manifoldPtr);
@@ -104,7 +104,7 @@ std::vector<NodeIndex> ManifoldsAndNodes<N>::getNodesInManifold(ManifoldPtrN man
    return {};
 }
 
-template<int N>
+template<size_t N>
 bool ManifoldsAndNodes<N>::isMobileOnManifold(NodeIndex node, ManifoldPtrN manifoldPtr) const
 {
    const auto found = m_node2manifolds.find(node);

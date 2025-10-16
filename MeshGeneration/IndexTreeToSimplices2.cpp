@@ -65,10 +65,10 @@ namespace
 
       const auto lwr = bb.getLower();
       const auto upr = bb.getUpper();
-      const RatPoint2 ll(lwr[0], lwr[1]);
-      const RatPoint2 ul(upr[0], lwr[1]);
-      const RatPoint2 uu(upr[0], upr[1]);
-      const RatPoint2 lu(lwr[0], upr[1]);
+      const RatPoint2 ll{lwr[0], lwr[1]};
+      const RatPoint2 ul{upr[0], lwr[1]};
+      const RatPoint2 uu{upr[0], upr[1]};
+      const RatPoint2 lu{lwr[0], upr[1]};
 
       if (str::none_of(moreRefined, std::identity()))
       {
