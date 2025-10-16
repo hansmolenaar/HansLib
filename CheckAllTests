@@ -16,3 +16,4 @@
 ./bin/InterpolationTest
 ./bin/MLTest
 ./bin/OptimTest
+./bin/MeshTest

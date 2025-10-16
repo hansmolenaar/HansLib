@@ -79,8 +79,8 @@ add_subdirectory(EigenValue)
 add_subdirectory(Interpolation)
 add_subdirectory(InterpolationTest)
 
-#add_subdirectory(Mesh)
-#add_subdirectory(MeshTest)
+add_subdirectory(Mesh)
+add_subdirectory(MeshTest)
 
 add_subdirectory(Optim)
 add_subdirectory(OptimTest)
