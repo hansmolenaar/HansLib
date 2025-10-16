@@ -71,8 +71,8 @@ add_subdirectory(MatrixVectorTest)
 add_subdirectory(NonLinearSolver)
 add_subdirectory(NonLinearSolverTest)
 
-#add_subdirectory(KelvinRepr)
-#add_subdirectory(KelvinReprTest)
+add_subdirectory(KelvinRepr)
+add_subdirectory(KelvinReprTest)
 
 #add_subdirectory(EigenValue)
 

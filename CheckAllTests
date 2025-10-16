@@ -12,3 +12,4 @@
 ./bin/MatrixVectorTest
 ./bin/FunctionsTest
 ./bin/NonLinearSolverTest
+./bin/KelvinReprTest
