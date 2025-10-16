@@ -19,6 +19,7 @@
 
 #include <numeric>
 #include <algorithm>
+#include <cmath>
 
 namespace {
    constexpr std::array<double, 3> c_angles = { 0.0, 2 * MathConstants::PI / 3, 4 * MathConstants::PI / 3 };

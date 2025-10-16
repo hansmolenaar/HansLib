@@ -1,7 +1,8 @@
 #include <gtest/gtest.h>
 
 #include "ChebyshevPoints.h"
-//#include "MathConstants.h"
+
+#include <cmath>
 
 TEST(ChebyshevPointsTest, Case1)
 {

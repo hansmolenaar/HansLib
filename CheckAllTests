@@ -13,3 +13,4 @@
 ./bin/FunctionsTest
 ./bin/NonLinearSolverTest
 ./bin/KelvinReprTest
+./bin/InterpolationTest
