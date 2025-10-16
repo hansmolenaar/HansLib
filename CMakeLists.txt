@@ -91,5 +91,5 @@ add_subdirectory(InterpolationTest)
 add_subdirectory(Sudoku)
 add_subdirectory(SudokuTest)
 
-#add_subdirectory(ML)
-#add_subdirectory(MLTest)
+add_subdirectory(ML)
+add_subdirectory(MLTest)

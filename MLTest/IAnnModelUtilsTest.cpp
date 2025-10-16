@@ -18,7 +18,9 @@
 #include "MyAssert.h"
 #include "ISingleVariableRealValuedFunction.h"
 #include "ISingleVariableRealValuedFunctionUtils.h"
+
 #include <numbers>
+#include <cmath>
 
 namespace
 {
