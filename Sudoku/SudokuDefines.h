@@ -35,6 +35,6 @@ namespace Sudoku
    struct FieldValue
    {
       FieldIndex Field;
-      Value  Value;
+      Value  CurrentValue;
    };
 }

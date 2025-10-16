@@ -13,7 +13,7 @@ namespace Sudoku
    struct FieldColor
    {
       FieldIndex Field;
-      Color  Color;
+      Color  CurrentColor;
    };
    using ColorInComponent = boost::container::static_vector<FieldColor, NumFields>;
    using ColorInAllComponents = boost::container::static_vector<ColorInComponent, NumFields>;

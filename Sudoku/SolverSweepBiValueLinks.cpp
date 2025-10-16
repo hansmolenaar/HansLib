@@ -124,7 +124,7 @@ SolverSweepResult SolverSweepBiValueLinksSingleValue::operator()(Potentials& pot
       {
          for (size_t n2 = n1 + 1; n2 < coloredComponent.size(); ++n2)
          {
-            const bool sameColor = coloredComponent.at(n1).Color == coloredComponent.at(n2).Color;
+            const bool sameColor = coloredComponent.at(n1).CurrentColor == coloredComponent.at(n2).CurrentColor;
             if (!sameColor) continue;
             const FieldIndex field1 = coloredComponent.at(n1).Field;
             const FieldIndex field2 = coloredComponent.at(n2).Field;

@@ -85,8 +85,8 @@ add_subdirectory(PermutationTest)
 #add_subdirectory(MeshGeneration)
 #add_subdirectory(MeshGenerationTest)
 
-#add_subdirectory(Sudoku)
-#add_subdirectory(SudokuTest)
+add_subdirectory(Sudoku)
+add_subdirectory(SudokuTest)
 
 #add_subdirectory(ML)
 #add_subdirectory(MLTest)
