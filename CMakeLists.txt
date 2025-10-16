@@ -82,8 +82,8 @@ add_subdirectory(InterpolationTest)
 #add_subdirectory(Mesh)
 #add_subdirectory(MeshTest)
 
-#add_subdirectory(Optim)
-#add_subdirectory(OptimTest)
+add_subdirectory(Optim)
+add_subdirectory(OptimTest)
 
 #add_subdirectory(MeshGeneration)
 #add_subdirectory(MeshGenerationTest)

@@ -14,3 +14,5 @@
 ./bin/NonLinearSolverTest
 ./bin/KelvinReprTest
 ./bin/InterpolationTest
+./bin/MLTest
+./bin/OptimTest
