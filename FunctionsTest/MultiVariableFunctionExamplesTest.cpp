@@ -56,5 +56,5 @@ TEST(MultiVariableFunctionExamplesTest, SumOfSquares2)
    Functors::AreClose areClose;
    const double eval = (*fie)(std::vector<double>{ 1.0 / 2.0, 1.0 / 3.0});
    ASSERT_TRUE(areClose(eval, 13.0/36.0));
-   Plotting::MdFunctionsOnUnityToFile("SumOfSquares2", 2, { [&fie](std::vector<double> x) {return (*fie)(x); } }, 64, std::vector<std::string>{"x", "y", "approx"});
+   //Plotting::MdFunctionsOnUnityToFile("SumOfSquares2", 2, { [&fie](std::vector<double> x) {return (*fie)(x); } }, 64, std::vector<std::string>{"x", "y", "approx"});
 }

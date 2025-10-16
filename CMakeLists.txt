@@ -62,14 +62,17 @@ add_subdirectory(TreeTest)
 add_subdirectory(Permutation)
 add_subdirectory(PermutationTest)
 
-#add_subdirectory(Functions)
-#add_subdirectory(FunctionsTest)
+add_subdirectory(Functions)
+add_subdirectory(FunctionsTest)
 
 add_subdirectory(MatrixVector)
 add_subdirectory(MatrixVectorTest)
 
-#add_subdirectory(NonLinearSolver)
+add_subdirectory(NonLinearSolver)
 #add_subdirectory(NonLinearSolverTest)
+
+#add_subdirectory(KelvinRepr)
+#add_subdirectory(KelvinReprTest)
 
 #add_subdirectory(EigenValue)
 

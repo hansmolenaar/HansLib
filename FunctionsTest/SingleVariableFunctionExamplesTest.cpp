@@ -3,6 +3,7 @@
 #include "SingleVariableFunctionExamples.h"
 #include "Functors.h"
 
+#include <cmath>
 
 TEST(SingleVariableFunctionExamplesTest, SkewedHat)
 {

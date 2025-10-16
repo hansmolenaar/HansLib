@@ -10,3 +10,4 @@
 ./bin/TreeTest
 ./bin/SudokuTest
 ./bin/MatrixVectorTest
+./bin/FunctionsTest

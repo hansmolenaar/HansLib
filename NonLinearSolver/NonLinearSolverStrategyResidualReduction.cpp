@@ -5,6 +5,7 @@
 #include <numeric>
 #include <cmath>
 #include <string>
+#include <stdexcept>
 
 NonLinearSolverStrategyResidualReduction::NonLinearSolverStrategyResidualReduction(const NonLinearSolverConvergenceCriteria& crit) :
    m_convergenceCrit(crit)

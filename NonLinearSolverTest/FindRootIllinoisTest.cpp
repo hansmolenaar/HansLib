@@ -6,6 +6,8 @@
 #include "SingleVariablePolynomial.h"
 #include "NonLinearSolverStrategyResidualReduction.h"
 
+#include <cmath>
+
 const double c_eps = 1.0e-10;
 
 
