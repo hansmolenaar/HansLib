@@ -16,11 +16,19 @@
 namespace IntervalTree
 {
 
-   template<int N>
+   template<size_t N>
    class Index
    {
    public:
       using Key = std::array<Index1::Key, N>;
+
+      struct KeyHasher 
+      {
+          std::size_t operator()(const Index<N>::Key& key) const 
+          {
+	      return ArrayHasher<Index1::Key, N>{}(key);
+          }   
+      };
 
       Index(Key keys, Index1Factory& factory);
 
@@ -60,7 +68,7 @@ namespace IntervalTree
       Key m_keys;
    };
 
-   template<int N>
+   template<size_t N>
    struct ComparePointer
    {
       bool operator()(const Index<N>* lhs, const Index<N>* rhs)
@@ -79,7 +87,7 @@ namespace IntervalTree
 
    // Implementation
 
-   template<int N>
+   template<size_t N>
    Index<N>::Index(Key keys, Index1Factory& factory) :
       m_factory1(factory), m_keys(std::move(keys))
    {
@@ -98,13 +106,13 @@ namespace IntervalTree
    }
 
 
-   template<int N>
+   template<size_t N>
    const Interval<Rational>& Index<N>::getInterval(int n) const
    {
       return m_factory1(m_keys.at(n))->getInterval();
    }
 
-   template<int N>
+   template<size_t N>
    Level Index<N>::getLevel() const
    {
       Level result = 0;
@@ -116,14 +124,14 @@ namespace IntervalTree
       return result;
    }
 
-   template<int N>
+   template<size_t N>
    Index<N>::Key Index<N>::getKey() const
    {
       return m_keys;
    }
 
 
-   template<int N>
+   template<size_t N>
    Rational Index<N>::getMeasure() const
    {
       return std::accumulate(m_keys.begin(), m_keys.end(), Rational(1, 1),
@@ -133,7 +141,7 @@ namespace IntervalTree
       );
    }
 
-   template<int N>
+   template<size_t N>
    std::array<typename Index<N>::Key, NumKids<N>> Index<N>::refine() const
    {
       std::array<typename Index<N>::Key, NumKids<N>> result;
@@ -170,19 +178,19 @@ namespace IntervalTree
       return result;
    }
 
-   template<int N>
+   template<size_t N>
    bool Index<N>::IsRoot(const Index<N>::Key& key)
    {
       return str::all_of(key, Index1::IsRoot);
    }
 
-   template<int N>
+   template<size_t N>
    bool Index<N>::isRoot() const
    {
       return getLevel() == 0;
    }
 
-   template<int N>
+   template<size_t N>
    Index<N>::Key Index<N>::GetParent(const Index<N>::Key& key)
    {
       Utilities::MyAssert(!Index<N>::IsRoot(key));
@@ -191,7 +199,7 @@ namespace IntervalTree
       return result;
    }
 
-   template<int N>
+   template<size_t N>
    Index<N> Index<N>::getParent() const
    {
       std::array<Index1::Key, N> parent;
@@ -199,7 +207,7 @@ namespace IntervalTree
       return Index<N>(parent, m_factory1);
    }
 
-   template<int N>
+   template<size_t N>
    std::optional<typename Index<N>::Key> Index<N>::getAdjacentInDir(AdjacentDirection direction) const
    {
       Index<N>::Key result = getKey();
@@ -210,7 +218,7 @@ namespace IntervalTree
       return result;
    }
 
-   template<int N>
+   template<size_t N>
    std::array<Rational, N> Index<N>::getCenter() const
    {
       std::array<Rational, N> result;
@@ -218,7 +226,7 @@ namespace IntervalTree
       return result;
    }
 
-   template<int N>
+   template<size_t N>
    std::array<std::array<Rational, N>, NumKids<N>> Index<N>::getVerticesInVtkOrder() const
    {
       throw MyException("Index<N>::getVerticesInVtkOrder() not implemented");

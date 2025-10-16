@@ -4,7 +4,7 @@
 #include "IGeometryRegion.h"
 #include "IInitialBoundingboxGenerator.h"
 
-template<int N>
+template<size_t N>
 class IRefinementPredicate
 {
 public:
@@ -13,7 +13,7 @@ public:
 };
 
 
-template<int N>
+template<size_t N>
 class IRefinementPredicateFactory
 {
 public:

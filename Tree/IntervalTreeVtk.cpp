@@ -1,5 +1,3 @@
-#pragma once
-
 #include "IntervalTreeAction.h"
 #include "IntervalTreeVtk.h"
 #include "UniqueHashedPointCollection.h"
@@ -8,7 +6,7 @@ using namespace IntervalTree;
 
 namespace
 {
-   template<int N>
+   template<size_t N>
    std::unique_ptr<Vtk::VtkData> getVtkData(const IndexTree<N>& tree, Vtk::CellType cellType, const Vtk::Name& name)
    {
       std::unique_ptr< Vtk::VtkData> result = std::make_unique< Vtk::VtkData>(N, 0, name);

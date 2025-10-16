@@ -8,23 +8,23 @@
 namespace IntervalTree
 {
 
-   template<int N>
+   template<size_t N>
    struct RefineToMaxLevel
    {
       bool operator()(const Index<N>& indx) const { return indx.getLevel() < MaxLevel; };
       int MaxLevel;
    };
 
-   template<int N>
+   template<size_t N>
    struct RefineIfContainsPoint
    {
       bool operator()(const Index<N>& indx) const {
-         return str::all_of(stv::iota(0, N), [this, &indx](int n) {return indx.getInterval(n).contains(Point[n]); });
+         return str::all_of(stv::iota(0UZ, N), [this, &indx](int n) {return indx.getInterval(n).contains(Point[n]); });
       };
       std::array<Rational, N> Point;
    };
 
-   template<int N>
+   template<size_t N>
    struct RefineIfOverlaps
    {
       bool operator()(const Index<N>& indx) const;

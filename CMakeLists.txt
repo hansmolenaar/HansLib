@@ -56,8 +56,8 @@ add_subdirectory(GroupsTest)
 add_subdirectory(Topology)
 add_subdirectory(TopologyTest)
 
-#add_subdirectory(Tree)
-#add_subdirectory(TreeTest)
+add_subdirectory(Tree)
+add_subdirectory(TreeTest)
 
 add_subdirectory(Permutation)
 add_subdirectory(PermutationTest)
@@ -67,9 +67,6 @@ add_subdirectory(PermutationTest)
 
 #add_subdirectory(MatrixVector)
 #add_subdirectory(MatrixVectorTest)
-
-#add_subdirectory(KelvinRepr)
-#add_subdirectory(KelvinReprTest)
 
 #add_subdirectory(NonLinearSolver)
 #add_subdirectory(NonLinearSolverTest)

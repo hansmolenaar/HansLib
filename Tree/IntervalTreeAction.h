@@ -8,7 +8,7 @@
 namespace IntervalTree
 {
 
-   template<int N>
+   template<size_t N>
    struct ActionCount
    {
       void operator()(const Index<N>&) { ++m_count; };
@@ -18,21 +18,21 @@ namespace IntervalTree
       int m_count = 0;
    };
 
-   template<int N>
+   template<size_t N>
    struct ActionCountPerLevel
    {
       void operator()(const Index<N>& index) { Count[index.getLevel()] += 1; };
       std::map<int, int> Count;
    };
 
-   template<int N>
+   template<size_t N>
    struct ActionCollectLeaves
    {
       void operator()(const Index<N>& index) { Leaves.push_back(&index); };
       std::vector<const Index<N>*> Leaves;
    };
 
-   template<int N>
+   template<size_t N>
    struct ActionMaxLevel
    {
       void operator()(const Index<N>& index) { MaxLevel = std::max(MaxLevel, index.getLevel()); };
@@ -40,7 +40,7 @@ namespace IntervalTree
    };
 
 
-   template<int N>
+   template<size_t N>
    struct ActionLogLeaves
    {
       void operator()(const Index<N>& index) {

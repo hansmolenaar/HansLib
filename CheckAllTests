@@ -7,3 +7,4 @@
 ./bin/TopologyTest
 ./bin/UtilitiesTest
 ./bin/GroupsTest
+./bin/TreeTest

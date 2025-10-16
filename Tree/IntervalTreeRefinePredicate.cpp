@@ -6,7 +6,7 @@
 
 using namespace IntervalTree;
 
-template<int N>
+template<size_t N>
 bool RefineIfOverlaps<N>::operator()(const Index<N>& indx) const
 {
    const BoundingBox<Rational, N> cellBbScaled = indx.getBbOfCell();
@@ -15,6 +15,6 @@ bool RefineIfOverlaps<N>::operator()(const Index<N>& indx) const
    return overlap.has_value();
 }
 
-template RefineIfOverlaps<1>;
-template RefineIfOverlaps<2>;
-template RefineIfOverlaps<3>;
+template class RefineIfOverlaps<1>;
+template class RefineIfOverlaps<2>;
+template class RefineIfOverlaps<3>;

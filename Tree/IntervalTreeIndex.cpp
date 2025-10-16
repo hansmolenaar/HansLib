@@ -46,7 +46,7 @@ std::array<std::array<Rational, 3>, 8> Index<3>::getVerticesInVtkOrder() const
 }
 
 
-template<int N>
+template<size_t N>
 BoundingBox<Rational, N>  Index<N>::getBbOfCell() const
 {
    std::array<Rational, N> pointLwr;

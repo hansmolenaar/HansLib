@@ -10,7 +10,7 @@ constexpr KdTreePosition KdTreePositionInvalid = std::numeric_limits<KdTreePosit
 
 enum class KdTreeOverlap { NoOverlap, Overlap, Contains };
 
-template<typename T, int N>
+template<typename T, size_t N>
 class IKdTreeTraversor
 {
 public:

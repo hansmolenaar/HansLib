@@ -23,7 +23,7 @@ namespace IntervalTree
 
    };
 
-   template<int N>
+   template<size_t N>
    Statistics GetStatistics(const IndexTree<N>& tree)
    {
       Statistics result;
