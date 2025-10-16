@@ -11,3 +11,4 @@
 ./bin/SudokuTest
 ./bin/MatrixVectorTest
 ./bin/FunctionsTest
+./bin/NonLinearSolverTest
