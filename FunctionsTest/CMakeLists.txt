@@ -8,7 +8,8 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 	${CMAKE_INCLUDE_DIR}/Utilities
 	${CMAKE_INCLUDE_DIR}/MatrixVector
 	${CMAKE_INCLUDE_DIR}/Interval
+	${CMAKE_INCLUDE_DIR}/NonLinearSolver
 )
 
-target_link_libraries(${PROJECT_NAME} Functions Utilities MatrixVector NonLinearSolver ${GTestLibs})
+target_link_libraries(${PROJECT_NAME} Functions NonLinearSolver Utilities MatrixVector ${GTestLibs})
 gtest_discover_tests(${PROJECT_NAME})

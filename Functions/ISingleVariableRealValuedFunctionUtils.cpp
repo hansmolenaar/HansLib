@@ -1,7 +1,7 @@
 #include "ISingleVariableRealValuedFunctionUtils.h"
 #include "ISingleVariableRealValuedFunction.h"
-#include "NonLinearSolverStrategyResidualReduction.h"
-#include "NonLinearSolver.h"
+//#include "NonLinearSolverStrategyResidualReduction.h"
+//#include "NonLinearSolver.h"
 #include "MyAssert.h"
 #include "MyException.h"
 #include "Plotting.h"
@@ -19,34 +19,6 @@ double ISingleVariableRealValuedFunctionUtils::Evaluate(ISingleVariableRealValue
    return result;
 }
 
-
-void ISingleVariableRealValuedFunctionUtils::CheckDerivative(ISingleVariableRealValuedFunction& fie, double x, double delx, bool isLinear)
-{
-#if 0
-   static int callCount;
-   ++callCount;
-   if (callCount == 172)
-   {
-      int hello = 1;
-   }
-#endif
-   const double minDeriv = 1.0e-10;
-   const  std::array<double, 1> rhs = { fie.Evaluate(x) };
-   const double deriv = fie.Derivative(x);
-   if (std::abs(deriv) > minDeriv)
-   {
-      const int maxIter = isLinear ? 1 : 6;
-      const double reduction = 1.0e-10;
-      NonLinearSolverStrategyResidualReduction strategy(NonLinearSolverConvergenceCriteria(reduction, maxIter));
-      std::array<double, 1> sol = { x + delx };
-      NonLinearSolverStatus status = NonLinearSolver(fie).Solve(rhs, sol, strategy);
-      Utilities::MyAssert(status == NonLinearSolverStatus::Converged, "Problem with derivative! ");
-   }
-   else
-   {
-      Utilities::MyAssert(false, "Degenerate derivative in starting point");
-   }
-}
 
 void ISingleVariableRealValuedFunctionUtils::ToFile(const ISingleVariableRealValuedFunction& fie, double xmin, double xmax, int nPoints, const std::string& functionName)
 {

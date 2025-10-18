@@ -14,5 +14,5 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 	${CMAKE_INCLUDE_DIR}/Topology
 )
 
-target_link_libraries(${PROJECT_NAME} Interpolation Utilities Functions MatrixVector NonLinearSolver Topology ${GTestLibs})
+target_link_libraries(${PROJECT_NAME} Interpolation NonLinearSolver Utilities Functions MatrixVector Topology ${GTestLibs})
 gtest_discover_tests(${PROJECT_NAME})

@@ -14,5 +14,5 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 	${Boost_INCLUDE_DIRS}
 )
 
-target_link_libraries(${PROJECT_NAME} Point Utilities Geometry Topology Permutation ${GTestLibs})
+target_link_libraries(${PROJECT_NAME} Geometry Point Utilities Topology Permutation ${GTestLibs})
 gtest_discover_tests(${PROJECT_NAME})
