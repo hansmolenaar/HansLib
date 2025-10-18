@@ -13,5 +13,6 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 	${CMAKE_INCLUDE_DIR}/Geometry
 	${CMAKE_INCLUDE_DIR}/Graph
 	${CMAKE_INCLUDE_DIR}/Tree
+	${CMAKE_INCLUDE_DIR}/Paraview
 	${Boost_INCLUDE_DIRS}
 )

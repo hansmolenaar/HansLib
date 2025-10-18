@@ -12,8 +12,9 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 	${CMAKE_INCLUDE_DIR}/Topology
 	${CMAKE_INCLUDE_DIR}/Utilities
 	${CMAKE_INCLUDE_DIR}/Tree
+	${CMAKE_INCLUDE_DIR}/Paraview
 	${Boost_INCLUDE_DIR}
 )
 
-target_link_libraries(${PROJECT_NAME}  MeshGeneration Point Utilities Tree  BoundingBox Geometry Graph Topology ${GTestLibs})
+target_link_libraries(${PROJECT_NAME}  MeshGeneration Geometry Point Utilities Paraview Tree  BoundingBox Graph Topology ${GTestLibs})
 gtest_discover_tests(${PROJECT_NAME})

@@ -62,7 +62,6 @@ void CheckDerivatives(const IRealFunction& system, std::span< const double> x, s
 				std::function<double(double)> evaluate = [&](double xx) {vals[var] = xx;   system.Evaluate(vals, y); return y[eqn]; };
 				std::function<double(double)> derivative = [&](double xx) {vals[var] = xx; system.Derivative(vals, jacobian); return jacobian(eqn, var); };
 				SingleVariableRealValuedFunction fie(evaluate, derivative);
-				ISingleVariableRealValuedFunctionUtils::CheckDerivative(fie, x[var], delx[var]);
 			}
 
 		}

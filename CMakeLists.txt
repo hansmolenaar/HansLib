@@ -93,3 +93,7 @@ add_subdirectory(SudokuTest)
 
 add_subdirectory(ML)
 add_subdirectory(MLTest)
+
+add_subdirectory(Paraview)
+add_subdirectory(ParaviewTest)
+

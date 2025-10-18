@@ -6,8 +6,9 @@ add_executable(${PROJECT_NAME} ${SOURCES})
 target_include_directories(${PROJECT_NAME} PRIVATE
 	${CMAKE_INCLUDE_DIR}/ML
 	${CMAKE_INCLUDE_DIR}/Functions
+	${CMAKE_INCLUDE_DIR}/NonLinearSolver
 	${CMAKE_INCLUDE_DIR}/MatrixVector
 )
 
-target_link_libraries(${PROJECT_NAME} ML Utilities NonLinearSolver Functions ML Utilities Functions NonLinearSolver Functions MatrixVector  ${GTestLibs})
+target_link_libraries(${PROJECT_NAME} ML Utilities NonLinearSolver Functions MatrixVector  ${GTestLibs})
 gtest_discover_tests(${PROJECT_NAME})

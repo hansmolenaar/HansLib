@@ -9,6 +9,3 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 	${CMAKE_INCLUDE_DIR}/Utilities
 	${CMAKE_INCLUDE_DIR}/Functions
 )
-
-target_link_libraries(${PROJECT_NAME} MatrixVector )
-

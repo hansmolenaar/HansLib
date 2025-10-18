@@ -3,19 +3,20 @@
 #include "Ball.h"
 #include "Ball2AsRegion.h"
 #include "EdgeFlip.h"
+#include "IRegionManifoldsTest.h"
 #include "IndexTreeScaled.h"
 #include "InitialBoundingboxGenerator.h"
 #include "IntervalTreeIndexFactory.h"
-#include "IRegionManifoldsTest.h"
 #include "Manifold0.h"
 #include "Manifold1Reconstruction.h"
 #include "Mesh2.h"
 #include "MeshGeneration2.h"
 #include "MeshGenerationUtils.h"
-#include "MeshingSettingsStandard.h"
 #include "MeshStatistics.h"
+#include "MeshingSettingsStandard.h"
 #include "Nibble.h"
 #include "Paraview.h"
+#include "Plotting.h"
 #include "PointClose.h"
 #include "Polygon2AsRegion.h"
 #include "ProjectToVtk.h"
@@ -394,7 +395,7 @@ TEST(MeshGeneration2Test, Sphere2_intersect_4)
    stats = MeshStatistics::Create2(mesh.getTriangles(), mesh.getPoints(), settings.getCellQuality());
    expect = { 281, 504, 0.37443649960593806 };
 
-   settings.getLogger().toFile("C:\\Users\\Hans\\Documents\\work\\logger.txt");
+   settings.getLogger().toFile(Plotting::GenerateFullFilePath("logger.txt"));
    ASSERT_EQ(expect, stats);
 
    const auto nodesOnManifold = mesh.getManifoldsAndNodes().getNodesInManifold(manifoldPtr);

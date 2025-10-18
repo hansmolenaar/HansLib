@@ -4,6 +4,7 @@
 #include "ISingleVariableRealValuedFunctionUtils.h"
 #include "ISingleVariableRealValuedFunction.h"
 #include "SingleVariableMonomial.h"
+#include "SingleVariableCheckDerivative.h"
 
 TEST(SingleVariableMonomialTest, Test0)
 {
@@ -22,7 +23,7 @@ TEST(SingleVariableMonomialTest, Test1)
    ASSERT_TRUE(fie.IsNonConstant());
    ASSERT_EQ(fie.Evaluate(2.0), 2.0);
    ASSERT_EQ(fie.Derivative(2.0), 1.0);
-   ISingleVariableRealValuedFunctionUtils::CheckDerivative(fie, 1.0, 0.1, true);
+   NonlinearSolver::SingleVariableCheckDerivative(fie, 1.0, 0.1, true);
 }
 
 
@@ -33,19 +34,15 @@ TEST(SingleVariableMonomialTest, Test2)
    ASSERT_EQ(fie.GetPower(), 2);
    ASSERT_EQ(fie.Evaluate(3.0), 9.0);
    ASSERT_EQ(fie.Derivative(3.0), 6.0);
-   ISingleVariableRealValuedFunctionUtils::CheckDerivative(fie, 1.0, 0.1);
+   NonlinearSolver::SingleVariableCheckDerivative(fie, 1.0, 0.1);
 }
 TEST(SingleVariableMonomialTest, Test3)
 {
    auto fie = SingleVariableMonomial(2);
-   ASSERT_THROW( ISingleVariableRealValuedFunctionUtils::CheckDerivative(fie, 0.0, 0.1), MyException);
+   ASSERT_THROW( NonlinearSolver::SingleVariableCheckDerivative(fie, 0.0, 0.1), MyException);
 }
 
 TEST(SingleVariableMonomialTest, TestError)
 {
    ASSERT_ANY_THROW(SingleVariableMonomial(-1));
 }
-
-
-
-
