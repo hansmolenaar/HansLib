@@ -10,5 +10,5 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 	${CMAKE_INCLUDE_DIR}/MatrixVector
 )
 
-target_link_libraries(${PROJECT_NAME} NonLinearSolver Functions Utilities MatrixVector ${GTestLibs})
+target_link_libraries(${PROJECT_NAME} NonLinearSolver Functions NonLinearSolver Functions Utilities MatrixVector ${GTestLibs})
 gtest_discover_tests(${PROJECT_NAME})

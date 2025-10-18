@@ -9,7 +9,7 @@
 
 namespace MeshGeneration
 {
-   template<int N>
+   template<size_t N>
    class ManifoldsAndNodes
    {
    public:

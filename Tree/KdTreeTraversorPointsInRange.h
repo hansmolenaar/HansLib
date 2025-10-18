@@ -5,11 +5,11 @@
 
 #include <vector>
 
-template<typename T, int N>
+template<typename T, size_t N>
 class KdTree;
 
 
-template<typename T, int N>
+template<typename T, size_t N>
 class KdTreeTraversorPointsInRange : public IKdTreeTraversor<T, N>
 {
 public:
@@ -23,7 +23,7 @@ private:
    BoundingBox<T, N> m_bb;
 };
 
-template<typename T, int N>
+template<typename T, size_t N>
 void KdTreeTraversorPointsInRange<T, N>::HandleLeaf(KdTreePosition position, const  Point<T, N>& point)
 {
    if (m_bb.contains(point))
@@ -32,7 +32,7 @@ void KdTreeTraversorPointsInRange<T, N>::HandleLeaf(KdTreePosition position, con
    }
 }
 
-template<typename T, int N>
+template<typename T, size_t N>
 KdTreeOverlap KdTreeTraversorPointsInRange<T, N>::DeterminOverlap(const Point<T, N>& lwrBound, const Point<T, N>& uprBound) const
 {
    auto result = KdTreeOverlap::Contains;

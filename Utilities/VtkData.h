@@ -57,7 +57,7 @@ namespace Vtk
       size_t getNumCellData() const;
       const Name& getName() const;
 
-      template<typename T, int N>
+      template<typename T, size_t N>
       void addCell(CellType typ, std::span<const PointIndex> points, const IPointCollection<T, N>& pointCollection, std::span<const DataType>data);
 
       // Do not use, only exposed for testing
@@ -79,7 +79,7 @@ namespace Vtk
       std::unordered_map<PointIndex, NodeIndex> m_pointToNodeIndex;
    };
 
-   template<typename T, int N>
+   template<typename T, size_t N>
    void VtkData::addCell(CellType typ, std::span<const PointIndex> points, const IPointCollection<T, N>& pointCollection, std::span<const DataType>data)
    {
       std::vector<NodeIndex> nodeIndices;

@@ -9,7 +9,7 @@
 #include <optional>
 #include <span>
 
-template<typename T, int N>
+template<typename T, size_t N>
 class UnitVector
 {
 public:
@@ -36,31 +36,31 @@ private:
 using UnitVector2 = UnitVector<double, GeomDim2>;
 using UnitVector3 = UnitVector<double, GeomDim3>;
 
-template<typename T, int N>
+template<typename T, size_t N>
 UnitVector<T, N>::UnitVector(std::array<T, N>&& unitVector) :
    m_vector(unitVector)
 {
 }
 
-template<typename T, int N>
+template<typename T, size_t N>
 T UnitVector<T, N>::operator[](int d) const
 {
    return m_vector->at(d);
 }
 
-template<typename T, int N>
+template<typename T, size_t N>
 UnitVector<T, N> UnitVector<T, N>::Create(const Point<T, N>& from, const Point<T, N>& to)
 {
    return Create(to - from);
 }
 
-template<typename T, int N>
+template<typename T, size_t N>
 UnitVector<T, N>  UnitVector<T, N>::Create(const Point<T, N>& point)
 {
    return Create(std::span<const T>(point.begin(), point.end()));
 }
 
-template<typename T, int N>
+template<typename T, size_t N>
 UnitVector<T, N>  UnitVector<T, N>::Create(std::span<const T> cors)
 {
    Utilities::MyAssert(cors.size() == N, "UnitVector<N>::Create span dimension incorrect");
@@ -76,7 +76,7 @@ UnitVector<T, N>  UnitVector<T, N>::Create(std::span<const T> cors)
    return UnitVector<T, N>(std::move(values));
 }
 
-template<typename T, int N>
+template<typename T, size_t N>
 Point<T, N> operator*(const UnitVector<T, N>& uv, T factor)
 {
    std::array<T, N> result;
@@ -85,19 +85,19 @@ Point<T, N> operator*(const UnitVector<T, N>& uv, T factor)
 }
 
 
-template<typename T, int N>
+template<typename T, size_t N>
 Point<T, N> operator*(T factor, const UnitVector<T, N>& uv)
 {
    return uv * factor;
 }
 
-template<typename T, int N>
+template<typename T, size_t N>
 T UnitVector<T, N>::innerProduct(const Point<T, N>& p) const
 {
    return std::inner_product(m_vector->begin(), m_vector->end(), p.begin(), 0.0);
 }
 
-template<typename T, int N>
+template<typename T, size_t N>
 UnitVector<T, N> UnitVector<T, N>::getNormalTo(Point<T, N> v)
 {
    static_assert(N == 2);

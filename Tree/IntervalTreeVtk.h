@@ -7,7 +7,7 @@
 
 namespace IntervalTree
 {
-   template<int N>
+   template<size_t N>
    std::unique_ptr<Vtk::VtkData> GetVtkData(const IndexTree<N>& tree, const Vtk::Name& name);
 
    template<>

@@ -48,7 +48,7 @@ TEST(UniquePointCollectionBinningTest, Delete)
    ASSERT_ANY_THROW(collection.getPoint(0));
 }
 
-template<int N>
+template<size_t N>
 static void TestTryGetClosePoints(const std::vector<Point<double, N>> closePoints, const UniquePointCollectionBinning<N> collection)
 {
    // Check pairs

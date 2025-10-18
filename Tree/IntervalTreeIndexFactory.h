@@ -6,35 +6,35 @@
 
 namespace IntervalTree
 {
-   template<int N>
+   template<size_t N>
    class IndexFactory
    {
    public:
       IndexFactory();
-      std::optional<const Index<N>*> get(typename const Index<N>::Key& key) const;
+      std::optional<const Index<N>*> get(const Index<N>::Key& key) const;
 
-      const Index<N>* addIfNew(typename const Index<N>::Key& key);
+      const Index<N>* addIfNew(const Index<N>::Key& key);
       std::array<const Index<N>*, NumKids<N>> refine(const Index<N>& toRefine);
       const Index<N>* getRoot() const;
 
       // throws if non-existing
-      const Index<N>* operator()(typename const Index<N>::Key& key) const;
+      const Index<N>* operator()(const Index<N>::Key& key) const;
 
       const Index1Factory& getFactory1() const;
       Index1Factory& getFactory1();
    private:
 
       Index1Factory m_factory;
-      std::unordered_map<typename Index<N>::Key, Index<N>> m_cache;
+      std::unordered_map<typename Index<N>::Key, Index<N>, typename Index<N>::KeyHasher> m_cache;
    };
 
-   template<int N>
-   const Index<N>* IndexFactory<N>::operator()(typename const Index<N>::Key& key) const
+   template<size_t N>
+   const Index<N>* IndexFactory<N>::operator()(const Index<N>::Key& key) const
    {
       return &m_cache.at(key);
    }
 
-   template<int N>
+   template<size_t N>
    IndexFactory<N>::IndexFactory()
    {
       typename Index<N>::Key key;
@@ -42,7 +42,7 @@ namespace IntervalTree
       addIfNew(key);
    }
 
-   template<int N>
+   template<size_t N>
    const Index<N>* IndexFactory<N>::getRoot() const
    {
       typename Index<N>::Key key;
@@ -50,8 +50,8 @@ namespace IntervalTree
       return (*this)(key);
    }
 
-   template<int N>
-   const Index<N>* IndexFactory<N>::addIfNew(typename const Index<N>::Key& key)
+   template<size_t N>
+   const Index<N>* IndexFactory<N>::addIfNew(const Index<N>::Key& key)
    {
       if (!m_cache.contains(key))
       {
@@ -60,7 +60,7 @@ namespace IntervalTree
       return &m_cache.at(key);
    }
 
-   template<int N>
+   template<size_t N>
    std::array<const Index<N>*, NumKids<N>> IndexFactory<N>::refine(const Index<N>& toRefine)
    {
       if (!m_cache.contains(toRefine.getKey()))
@@ -79,20 +79,20 @@ namespace IntervalTree
       return result;
    }
 
-   template<int N>
+   template<size_t N>
    const Index1Factory& IndexFactory<N>::getFactory1() const
    {
       return m_factory;
    }
 
-   template<int N>
+   template<size_t N>
    Index1Factory& IndexFactory<N>::getFactory1()
    {
       return m_factory;
    }
 
-   template<int N>
-   std::optional<typename const Index<N>*> IndexFactory<N>::get(typename const Index<N>::Key& key) const
+   template<size_t N>
+   std::optional<const Index<N>*> IndexFactory<N>::get(const Index<N>::Key& key) const
    {
       const auto found = m_cache.find(key);
       if (found != m_cache.end())

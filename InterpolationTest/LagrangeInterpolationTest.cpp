@@ -5,7 +5,9 @@
 #include "SingleVariableFunctionExamples.h"
 #include "Plotting.h"
 #include "ISingleVariableRealValuedFunctionUtils.h"
-#include <ChebyshevPoints.h>
+#include "ChebyshevPoints.h"
+
+#include <cmath>
 
 TEST(LagrangeInterpolationTest, Basics)
 {

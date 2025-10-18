@@ -12,14 +12,14 @@
 #include <deque>
 #include <limits>
 
-template<typename T, int N>
+template<typename T, size_t N>
 class KdTreeVertex;
 
-template<typename T, int N>
+template<typename T, size_t N>
 class KdTreeLeaf;
 
 
-template<typename T, int N>
+template<typename T, size_t N>
 class KdTree
 {
 public:
@@ -44,7 +44,7 @@ private:
 
 // Forget the rest...
 
-template<typename T, int N>
+template<typename T, size_t N>
 class KdTreeVertex
 {
 public:
@@ -65,7 +65,7 @@ private:
    KdTreePosition     m_position = KdTreePositionInvalid;
 };
 
-template<typename T, int N>
+template<typename T, size_t N>
 KdTreePosition  KdTreeVertex<T, N>::getPosition() const
 {
    Utilities::MyAssert(isLeaf(), "KdTreeVertex<T, N>::getPosition() not a leaf");
@@ -73,7 +73,7 @@ KdTreePosition  KdTreeVertex<T, N>::getPosition() const
    return m_position;
 }
 
-template<typename T, int N>
+template<typename T, size_t N>
 class PreSorting
 {
 public:
@@ -86,7 +86,7 @@ private:
 
 namespace
 {
-   template<typename T, int N>
+   template<typename T, size_t N>
    void HandleLeaf(const KdTree<T, N>& tree, IKdTreeTraversor<T, N>& traversor, const KdTreeVertex<T, N>& vertex)
    {
       const auto pos = vertex.getPosition();
@@ -96,18 +96,18 @@ namespace
 }
 
 // KdTreeVertex
-template<typename T, int N>
+template<typename T, size_t N>
 KdTreeVertex<T, N>::KdTreeVertex(KdTreeVertex<T, N>* left, KdTreeVertex<T, N>* right, T median, T nxt) :
    m_left(left), m_right(right), m_median(median), m_firstAfterMedian(nxt)
 {}
 
-template<typename T, int N>
+template<typename T, size_t N>
 KdTreeVertex<T, N>::KdTreeVertex(KdTreePosition pos) :
    m_position(pos)
 {}
 
 
-template<typename T, int N>
+template<typename T, size_t N>
 void KdTreeVertex<T, N>::HandleAllLeavesInSubTree(const KdTree<T, N>& tree, IKdTreeTraversor<T, N>& traversor) const
 {
    if (isLeaf())
@@ -128,13 +128,13 @@ void KdTreeVertex<T, N>::HandleAllLeavesInSubTree(const KdTree<T, N>& tree, IKdT
 }
 
 
-template<typename T, int N>
+template<typename T, size_t N>
 void KdTreeVertex<T, N>::Traverse(const KdTree<T, N>& tree, IKdTreeTraversor<T, N>& traversor, int level, Point<T, N>& lbound, Point<T, N>& ubound) const
 {
    TraverseRecur(tree, traversor, level, lbound, ubound);
 }
 
-template<typename T, int N>
+template<typename T, size_t N>
 void KdTreeVertex<T, N>::TraverseRecur(const KdTree<T, N>& tree, IKdTreeTraversor<T, N>& traversor, int level, std::array<T, N>& lbound, std::array<T, N>& ubound) const
 {
    if (isLeaf())
@@ -167,7 +167,7 @@ void KdTreeVertex<T, N>::TraverseRecur(const KdTree<T, N>& tree, IKdTreeTraverso
    }
 }
 
-template<typename T, int N>
+template<typename T, size_t N>
 std::vector<KdTreePosition> KdTree<T, N>::FindInRange(const BoundingBox<T, N>& searchRange)
 {
    KdTreeTraversorPointsInRange<T, N> traversor(searchRange);
@@ -177,13 +177,13 @@ std::vector<KdTreePosition> KdTree<T, N>::FindInRange(const BoundingBox<T, N>& s
 
 // PreSorting
 
-template<typename T, int N>
+template<typename T, size_t N>
 PreSorting<T, N>::PreSorting(int skipDim, std::span<const Point<T, N>> points) :
    m_currentDim(skipDim), m_points(points)
 {
 }
 
-template<typename T, int N>
+template<typename T, size_t N>
 bool PreSorting<T, N>::less(KdTreePosition n0, KdTreePosition n1) const
 {
    if (m_points[n0].data()[m_currentDim] < m_points[n1].data()[m_currentDim]) return true;
@@ -198,7 +198,7 @@ bool PreSorting<T, N>::less(KdTreePosition n0, KdTreePosition n1) const
 // KdTree
 
 
-template<typename T, int N>
+template<typename T, size_t N>
 std::vector<KdTreePosition> KdTree<T, N>::SortPerDimension(int thisDim, const std::span<const Point<T, N>> points)
 {
    auto preSorting = std::make_unique< PreSorting<T, N>>(thisDim, points);
@@ -209,7 +209,7 @@ std::vector<KdTreePosition> KdTree<T, N>::SortPerDimension(int thisDim, const st
    return result;
 }
 
-template<typename T, int N>
+template<typename T, size_t N>
 KdTree<T, N>::KdTree(std::span<const Point<T, N>> points) : m_points(points)
 {
    if (!m_points.empty())
@@ -234,7 +234,7 @@ KdTree<T, N>::KdTree(std::span<const Point<T, N>> points) : m_points(points)
    }
 }
 
-template<typename T, int N>
+template<typename T, size_t N>
 KdTreeVertex<T, N>* KdTree<T, N>::BuildTree(std::array< std::span< KdTreePosition>, N>& orders, int depth, const std::span<const Point<T, N>>& points,
    std::vector< bool>& goRight, std::span<KdTreePosition> work, std::deque<KdTreeVertex<T, N>>& buffer)
 {
@@ -307,13 +307,13 @@ KdTreeVertex<T, N>* KdTree<T, N>::BuildTree(std::array< std::span< KdTreePositio
    }
 }
 
-template<typename T, int N>
+template<typename T, size_t N>
 std::unique_ptr< KdTree<T, N>> KdTree<T, N>::Create(const std::span<const Point<T, N>>& points)
 {
    return std::unique_ptr< KdTree<T, N>>(new KdTree(points));
 }
 
-template<typename T, int N>
+template<typename T, size_t N>
 std::vector<KdTreePosition> KdTree<T, N>::GetAllLeavesInOrder() const
 {
    if (m_root != nullptr)
@@ -325,7 +325,7 @@ std::vector<KdTreePosition> KdTree<T, N>::GetAllLeavesInOrder() const
    return {};
 }
 
-template<typename T, int N>
+template<typename T, size_t N>
 void KdTree<T, N>::Traverse(IKdTreeTraversor<T, N>& traversor)
 {
    if (m_root != nullptr)
@@ -340,7 +340,7 @@ void KdTree<T, N>::Traverse(IKdTreeTraversor<T, N>& traversor)
    }
 }
 
-template<typename T, int N>
+template<typename T, size_t N>
 Point<T, N> KdTree<T, N>::GetPoint(KdTreePosition pos) const
 {
    return m_points[pos];

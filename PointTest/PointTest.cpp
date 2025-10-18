@@ -81,19 +81,6 @@ TEST(PointTest, Bounds)
    ASSERT_ANY_THROW(i = p.at(2));
 }
 
-template<typename T, size_t N>
-struct ArrayHasher {
-    std::size_t operator()(const std::array<T, N>& a) const {
-        std::size_t h = 0;
-
-        for (auto e : a) 
-	{
-           boost::hash_combine(h, std::hash<T>{}(e) );
-        }
-        return h;
-    }   
-};
-
 TEST(PointTest, HashIntPoint1)
 {
    ArrayHasher<int,1> ah;

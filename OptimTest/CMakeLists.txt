@@ -12,5 +12,5 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 	${CMAKE_INCLUDE_DIR}/Interpolation
 )
 
-target_link_libraries(${PROJECT_NAME} Optim Utilities MatrixVector NonLinearSolver Functions Interpolation ${GTestLibs})
+target_link_libraries(${PROJECT_NAME} Optim  MatrixVector NonLinearSolver Functions Interpolation Utilities NonLinearSolver Functions ${GTestLibs})
 gtest_discover_tests(${PROJECT_NAME})

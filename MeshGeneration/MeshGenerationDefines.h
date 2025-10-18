@@ -13,7 +13,7 @@ namespace MeshGeneration
    using GeomType = double;
 
    // Should be GE 0 and 0 means degenerate
-   template<int N>
+   template<size_t N>
    using CellQualityFun = double(const Geometry::Simplex<GeomType, N>&);
 
    using CellQuality2Fun = double(const Geometry::Simplex<GeomType, GeomDim2>&);

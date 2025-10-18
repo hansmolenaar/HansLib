@@ -21,7 +21,7 @@ std::array<T, N> MakeArray(Args&&... args) {
       std::forward<Args>(args)...);
 }
 
-template<typename T, int N>
+template<typename T, size_t N>
 class BoundingBox
 {
 public:
@@ -75,14 +75,14 @@ private:
 };
 
 
-template<typename T, int N>
+template<typename T, size_t N>
 BoundingBox<T, N> BoundingBox<T, N>::Create(const std::span<const T>& values)
 
 {
    return BoundingBox<T, N>(values);
 };
 
-template<typename T, int N>
+template<typename T, size_t N>
 BoundingBox<T, N>::BoundingBox(const std::span<const T>& values) :
    m_intervals(MakeArray<Interval<T>, N>(Interval<T>(T{})))
 {
@@ -94,7 +94,7 @@ BoundingBox<T, N>::BoundingBox(const std::span<const T>& values) :
 };
 
 
-template<typename T, int N>
+template<typename T, size_t N>
 void BoundingBox<T, N>::Add(const std::span<const T>& values)
 
 {
@@ -104,7 +104,7 @@ void BoundingBox<T, N>::Add(const std::span<const T>& values)
    }
 };
 
-template<typename T, int N >
+template<typename T, size_t N >
 template<typename Container>
 BoundingBox<T, N> BoundingBox<T, N>::CreateFromList(const Container& container)
 {
@@ -118,7 +118,7 @@ BoundingBox<T, N> BoundingBox<T, N>::CreateFromList(const Container& container)
    return result;
 }
 
-template<typename T, int N>
+template<typename T, size_t N>
 BoundingBox<T, N> BoundingBox<T, N>::CreateFrom2Points(const Point<T, N>& point1, const Point<T, N>& point2)
 {
    BoundingBox<T, N> result = BoundingBox<T, N>::Create(point1);
@@ -127,7 +127,7 @@ BoundingBox<T, N> BoundingBox<T, N>::CreateFrom2Points(const Point<T, N>& point1
 }
 
 
-template<typename T, int N >
+template<typename T, size_t N >
 template<typename Container, typename F>
 BoundingBox<T, N> BoundingBox<T, N>::CreateFromListTransformed(const Container& container, F fun)
 {
@@ -143,7 +143,7 @@ BoundingBox<T, N> BoundingBox<T, N>::CreateFromListTransformed(const Container& 
 }
 
 
-template<typename T, int N >
+template<typename T, size_t N >
 template<typename TScale>
 BoundingBox<T, N> BoundingBox<T, N>::scaleFrom01(const BoundingBox<TScale, N>& scale) const
 {
@@ -153,7 +153,7 @@ BoundingBox<T, N> BoundingBox<T, N>::scaleFrom01(const BoundingBox<TScale, N>& s
 }
 
 
-template<typename T, int N >
+template<typename T, size_t N >
 template<typename TScale>
 Point<T, N> BoundingBox<T, N>::scaleFromPoint01(const Point<TScale, N>& scale) const
 {
@@ -167,7 +167,7 @@ Point<T, N> BoundingBox<T, N>::scaleFromPoint01(const Point<TScale, N>& scale) c
    return point;
 }
 
-template<typename T, int N >
+template<typename T, size_t N >
 Point<T, N> BoundingBox<T, N>::getLower() const
 {
    std::array<T, N> values;
@@ -175,7 +175,7 @@ Point<T, N> BoundingBox<T, N>::getLower() const
    return Point<T, N>(values);
 }
 
-template<typename T, int N >
+template<typename T, size_t N >
 Point<T, N> BoundingBox<T, N>::getUpper() const
 {
    std::array<T, N> values;
@@ -184,19 +184,19 @@ Point<T, N> BoundingBox<T, N>::getUpper() const
 }
 
 
-template<typename T, int N >
+template<typename T, size_t N >
 T BoundingBox<T, N>::getLower(int d) const
 {
    return m_intervals.at(d).getLower();
 }
 
-template<typename T, int N >
+template<typename T, size_t N >
 T BoundingBox<T, N>::getUpper(int d) const
 {
    return m_intervals.at(d).getUpper();
 }
 
-template<typename T, int N >
+template<typename T, size_t N >
 bool BoundingBox<T, N>::contains(const Point<T, N>& point) const
 {
    for (int d = 0; d < N; ++d)
@@ -206,7 +206,7 @@ bool BoundingBox<T, N>::contains(const Point<T, N>& point) const
    return true;
 }
 
-template<typename T, int N >
+template<typename T, size_t N >
 std::optional<BoundingBox<T, N>> BoundingBox<T, N>::TryGetOverlap(const BoundingBox<T, N>& bb1, const BoundingBox<T, N>& bb2)
 {
    std::array<T, N> lwr;
@@ -221,7 +221,7 @@ std::optional<BoundingBox<T, N>> BoundingBox<T, N>::TryGetOverlap(const Bounding
    return CreateFromList(std::array < std::array<T, N>, 2> {lwr, upr});
 }
 
-template<typename T, int N >
+template<typename T, size_t N >
 Point<T, N> BoundingBox<T, N>::getCenter() const
 {
    Point<T, N> result;
@@ -229,14 +229,14 @@ Point<T, N> BoundingBox<T, N>::getCenter() const
    return result;
 }
 
-template<typename T, int N >
+template<typename T, size_t N >
 T BoundingBox<T, N>::getLengthDiagonalSquared() const
 {
    const auto dif = getUpper() - getLower();
    return  PointUtils::GetNormSquared(dif);
 }
 
-template<typename T, int N >
+template<typename T, size_t N >
 T BoundingBox<T, N>::getMeasure() const
 {
    T result = 1;

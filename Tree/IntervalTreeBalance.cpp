@@ -1,14 +1,16 @@
-#pragma once
-
 #include "IntervalTreeBalance.h"
+
 #include <unordered_set>
 
 using namespace IntervalTree;
 
 namespace
 {
-   template<int N>
-   void markUnbalancedLeaves(const IndexTree<N>& tree, const Index<N>& indx, std::unordered_set<typename Index<N>::Key>& toRefine)
+   template<size_t N>
+   using IndexSet = std::unordered_set<typename Index<N>::Key, typename Index<N>::KeyHasher>;
+
+   template<size_t N>
+   void markUnbalancedLeaves(const IndexTree<N>& tree, const Index<N>& indx, IndexSet<N>& toRefine)
    {
       for (const auto adjDir : GetAdjacentNeighbors<N>())
       {
@@ -24,16 +26,16 @@ namespace
       }
    }
 
-   template<int N>
-   std::unordered_set<typename Index<N>::Key> RefineToBalance(const IndexTree<N>& tree)
+   template<size_t N>
+   IndexSet<N> RefineToBalance(const IndexTree<N>& tree)
    {
-      std::unordered_set<typename Index<N>::Key> result;
+      IndexSet<N>  result;
       auto action = [&result, &tree](const Index<N>& indx) {markUnbalancedLeaves(tree, indx, result); };
       tree.foreachLeaf(action);
       return result;
    }
 
-   template<int N>
+   template<size_t N>
    void DoBalance(IndexTree<N>& tree)
    {
       auto toRefine = RefineToBalance<N>(tree);

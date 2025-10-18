@@ -1,5 +1,6 @@
 #pragma once
 #include <array>
+#include <cstddef>
 
 namespace IntervalTree
 {
@@ -10,7 +11,7 @@ namespace IntervalTree
       auto operator<=>(const AdjacentDirection&) const = default;
    };
 
-   template<int N>
+   template<size_t N>
    const std::array<AdjacentDirection, 2 * N>& GetAdjacentNeighbors();
 
    template<>

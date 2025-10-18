@@ -2,11 +2,12 @@
 #include "IGeometryRegion.h"
 #include "IntervalTreeIndex.h"
 #include "IRefinementPredicate.h"
+#include "IRefinementPredicateFactory.h"
 #include "IInitialBoundingboxGenerator.h"
 
 namespace MeshGeneration
 {
-   template<int N>
+   template<size_t N>
    class RefineRegionToMaxLevel : public IRefinementPredicate<N>
    {
    public:
@@ -22,7 +23,7 @@ namespace MeshGeneration
    };
 
 
-   template<int N>
+   template<size_t N>
    class RefineRegionToMaxLevelFactory : public IRefinementPredicateFactory<N>
    {
    public:

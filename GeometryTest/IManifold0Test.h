@@ -10,7 +10,7 @@
 
 using namespace Geometry;
 
-template<typename T, int N>
+template<typename T, size_t N>
 void IManifold0TestInterface(const IManifold0<T, N>& manifold, const IGeometryPredicate<T, N>& predicate)
 {
    IManifoldTestInterface(manifold, predicate);

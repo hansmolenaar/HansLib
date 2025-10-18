@@ -12,7 +12,7 @@
 namespace IntervalTree
 {
 
-   template<int N>
+   template<size_t N>
    class IndexTree
    {
    public:
@@ -31,11 +31,11 @@ namespace IntervalTree
       template<typename A>
       void foreachNode(A& action) const;
 
-      bool contains(typename const Index<N>::Key& key) const;
+      bool contains(const Index<N>::Key& key) const;
 
-      const Index<N>& getExistingSelfOrAncestor(typename  Index<N>::Key key) const;
-      std::optional<const Index<N>*> get(typename const Index<N>::Key& key) const;
-      bool isLeaf(typename const Index<N>& index) const;
+      const Index<N>& getExistingSelfOrAncestor(Index<N>::Key key) const;
+      std::optional<const Index<N>*> get(const Index<N>::Key& key) const;
+      bool isLeaf(const Index<N>& index) const;
 
       size_t size() const;
 
@@ -62,13 +62,13 @@ namespace IntervalTree
       const Index<N>* m_root;
    };
 
-   template<int N>
+   template<size_t N>
    IndexTree<N>::IndexTree() : m_root(m_factory.getRoot())
    {
       m_leaves.insert(m_root);
    }
 
-   template<int N>
+   template<size_t N>
    std::vector<const Index<N>*> IndexTree<N>::getNodesInFixedOrder() const
    {
       std::vector<const Index<N>*> result(m_leaves.begin(), m_leaves.end());
@@ -77,7 +77,7 @@ namespace IntervalTree
       return result;
    }
 
-   template<int N>
+   template<size_t N>
    std::vector<const Index<N>*> IndexTree<N>::getLeavesInFixedOrder() const
    {
       std::vector<const Index<N>*> result(m_leaves.begin(), m_leaves.end());
@@ -85,19 +85,19 @@ namespace IntervalTree
       return result;
    }
 
-   template<int N>
+   template<size_t N>
    const Index<N>& IndexTree<N>::getRoot() const
    {
       return *m_root;
    }
 
-   template<int N>
+   template<size_t N>
    size_t IndexTree<N>::size() const
    {
       return m_tree.size() + m_leaves.size();
    }
 
-   template<int N>
+   template<size_t N>
    template<typename A>
    void IndexTree<N>::foreachLeaf(A& action) const
    {
@@ -107,7 +107,7 @@ namespace IntervalTree
       }
    }
 
-   template<int N>
+   template<size_t N>
    template<typename A>
    void IndexTree<N>::foreachNode(A& action) const
    {
@@ -117,7 +117,7 @@ namespace IntervalTree
       }
    }
 
-   template<int N>
+   template<size_t N>
    template<typename P>
    int IndexTree<N>::refineLeaves(P& predicate)
    {
@@ -145,7 +145,7 @@ namespace IntervalTree
       return static_cast<int>(toRefine.size());
    }
 
-   template<int N>
+   template<size_t N>
    template<typename P>
    void IndexTree<N>::refineUntilReady(P& predicate)
    {
@@ -154,8 +154,8 @@ namespace IntervalTree
       }
    }
 
-   template<int N>
-   std::optional<const Index<N>*> IndexTree<N>::get(typename const Index<N>::Key& key) const
+   template<size_t N>
+   std::optional<const Index<N>*> IndexTree<N>::get(const Index<N>::Key& key) const
    {
       const auto  ptr = m_factory.get(key);
       if (!ptr) return {};
@@ -165,14 +165,14 @@ namespace IntervalTree
       return {};
    }
 
-   template<int N>
-   bool IndexTree<N>::contains(typename const Index<N>::Key& key) const
+   template<size_t N>
+   bool IndexTree<N>::contains(const Index<N>::Key& key) const
    {
       return get(key).has_value();
    }
 
-   template<int N>
-   bool IndexTree<N>::isLeaf(typename const Index<N>& index) const
+   template<size_t N>
+   bool IndexTree<N>::isLeaf(const Index<N>& index) const
    {
       if (!contains(index.getKey()))
       {
@@ -183,8 +183,8 @@ namespace IntervalTree
       return m_leaves.contains(&index);
    }
 
-   template<int N>
-   const Index<N>& IndexTree<N>::getExistingSelfOrAncestor(typename  Index<N>::Key key) const
+   template<size_t N>
+   const Index<N>& IndexTree<N>::getExistingSelfOrAncestor(Index<N>::Key key) const
    {
       while (true)
       {

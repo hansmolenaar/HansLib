@@ -1,5 +1,3 @@
-#pragma once
-
 #include "Defines.h"
 #include "Diagram.h"
 #include "FieldInfoStatic.h"

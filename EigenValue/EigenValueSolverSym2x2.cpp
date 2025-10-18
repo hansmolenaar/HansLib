@@ -3,27 +3,9 @@
 #include "IMatrixUtils.h"
 #include "MyAssert.h"
 
-#if 0
-#include "MathConstants.h"
-#include "IMatrixSymmetric.h"
-#include "IMatrixSquareUtils.h"
-#include "MatrixKelvinRepr3.h"
-#include "IMatrixKelvinReprUtils.h"
-#include "IRealFunctionUtils.h"
-#include "MultiVariableVectorComponentFunction.h"
-#include "MultiVariableRealValuedFunction.h"
-#include "MultiVariableVectorValuedFunction.h"
-#include "MultiVariableMultiplicativeInverseFunction.h"
-#include "MultiVariableProductFunction.h"
-
-
-#include "MatrixDense.h"
-#endif
-
 #include <numeric>
 #include <algorithm>
-
-
+#include <cmath>
 
 
 int EigenValueSolverSym2x2Utils::Det::GetDomainDimension() const

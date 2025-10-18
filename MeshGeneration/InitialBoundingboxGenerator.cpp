@@ -2,11 +2,11 @@
 #include "MyException.h"
 #include "Defines.h"
 
-template InitialBoundingboxGenerator<1>;
-template InitialBoundingboxGenerator<2>;
-template InitialBoundingboxGenerator<3>;
+template class InitialBoundingboxGenerator<1>;
+template class InitialBoundingboxGenerator<2>;
+template class InitialBoundingboxGenerator<3>;
 
-template<int N>
+template<size_t N>
 std::unique_ptr<IInitialBoundingboxGenerator<N>> InitialBoundingboxGenerator<N>::Create(double factor)
 {
    if (factor < 1.0) throw MyException("InitialboundingboxGenerator<N>::Create factor should at least be 1");
@@ -14,13 +14,13 @@ std::unique_ptr<IInitialBoundingboxGenerator<N>> InitialBoundingboxGenerator<N>:
 }
 
 
-template<int N>
+template<size_t N>
 InitialBoundingboxGenerator<N>::InitialBoundingboxGenerator(double factor) : m_factor(factor)
 {}
 
 
 
-template<int N>
+template<size_t N>
 BoundingBox<double, N> InitialBoundingboxGenerator<N>::generate(const Geometry::IGeometryRegion<double, N>& region) const
 {
    const auto bb = region.getBoundingBox();

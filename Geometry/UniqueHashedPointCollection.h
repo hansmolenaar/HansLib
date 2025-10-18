@@ -3,6 +3,7 @@
 #include "IGeometryPredicate.h"
 #include "IUniquePointCollection.h"
 #include "PointExact.h" 
+#include "StdHash.h"
 
 #include <unordered_map>
 
@@ -17,7 +18,7 @@ public:
    PointIndex getNumPoints() const override;
 private:
    PointExact<T, N > m_predicate;
-   std::unordered_map<Point<T, N>, int> m_toIndex;
+   std::unordered_map<Point<T, N>, int, ArrayHasher<T, N>> m_toIndex;
    std::vector< Point<T, N>> m_points;
 };
 

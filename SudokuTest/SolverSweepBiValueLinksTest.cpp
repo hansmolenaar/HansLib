@@ -106,7 +106,7 @@ TEST(SolverSweepBiValueLinksTest, BiValueFieldGraphColored)
    ASSERT_EQ(colors.size(), 1);
    const ColorInComponent& colorsCmp = colors.at(0);
    ASSERT_EQ(colorsCmp.size(), 2);
-   ASSERT_NE(colorsCmp.front().Color, colorsCmp.back().Color);
+   ASSERT_NE(colorsCmp.front().CurrentColor, colorsCmp.back().CurrentColor);
 }
 
 TEST(SolverSweepBiValueLinksTest, GetBiValueFields)

@@ -6,7 +6,7 @@
 
 using namespace Geometry;
 
-template<typename T, int N>
+template<typename T, size_t N>
 void IGeometryRegionTestInterface(const IGeometryRegion<T, N>& region, const IGeometryPredicate<T, N>& predicate)
 {
    const BoundingBox<T, N> bb = region.getBoundingBox();

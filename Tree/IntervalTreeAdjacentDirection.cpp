@@ -1,5 +1,3 @@
-#pragma once
-
 #include "IntervalTreeAdjacentDirection.h"
 
 using namespace IntervalTree;

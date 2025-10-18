@@ -5,7 +5,7 @@ namespace IntervalTree
 {
    using Level = int;
 
-   template<int N>
+   template<size_t N>
    constexpr int NumKids = 1 << N;
 }
 

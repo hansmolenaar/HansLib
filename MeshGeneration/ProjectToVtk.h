@@ -29,29 +29,29 @@ namespace MeshGeneration
 
       void addTrianglesAndReconstructions(const TrianglesNodes& tnodes, const std::vector<const IManifoldReconstruction*>& reconstructions, const IPointCollection2& points);
 
-      template<int N>
+      template<size_t N>
       void addTriangles(const TrianglesNodes& tnodes, const IPointCollection<double, N>& points, const std::string& name);
 
-      template<int N>
+      template<size_t N>
       void addTrianglesAndBoundaries(const TrianglesNodes& tnodes, const IPointCollection<double, N>& points, const std::string& name);
 
-      template<typename T, int N>
+      template<typename T, size_t N>
       void addEdges(const std::vector<T>& edges, const IPointCollection<double, N>& points, const std::string& name);
 
-      template<int N>
+      template<size_t N>
       void addReconstructions(const std::vector<const IManifoldReconstruction*>& reconstructions, const IPointCollection<double, N>& points);
 
-      template<int N>
+      template<size_t N>
       void addBoundary1(const Boundary1& reconstruction, const IPointCollection<double, N>& points, const std::string& manifoldName);
 
-      template<int N>
+      template<size_t N>
       void addPath(const Topology::PathNodes& path, const IPointCollection<double, N>& points, const std::string& name);
 
-      template<int N>
+      template<size_t N>
       void addCycle(const Topology::CycleNodes& cycle, const IPointCollection<double, N >& points, const std::string& name);
 
    private:
-      template<int N>
+      template<size_t N>
       void addBoundariesOfConnectedTriangles(const TrianglesNodes& tnodes, const IPointCollection<double, N>& points, const std::string& name);
 
       std::string m_projectName;

@@ -11,7 +11,7 @@ using namespace Geometry;
 TEST(Manifold0Test, Basics)
 {
    PointExact<Rational, 1> predicate;
-   const Point<Rational, 1> point(Rational(1, 2));
+   const Point<Rational, 1> point{Rational(1, 2)};
    const Manifold0<Rational, 1> manifold(point, "Manifold0Test_Basics");
    ASSERT_EQ(manifold.getTopologyDimension(), Topology::Corner);
    ASSERT_TRUE(manifold.contains(point, predicate));

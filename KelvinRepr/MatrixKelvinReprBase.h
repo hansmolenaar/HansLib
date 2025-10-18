@@ -6,6 +6,7 @@
 #include "MathConstants.h"
 
 #include <array>
+#include <stdexcept>
 
 template<int Dimension>
 class MatrixKelvinReprBase : public IMatrixKelvinRepr
@@ -40,7 +41,7 @@ MatrixKelvinReprBase< Dimension>::MatrixKelvinReprBase(const IIndexer<int>& inde
 template<int Dimension>
 double& MatrixKelvinReprBase<Dimension>::operator() (int, int)
 {
-   throw std::exception("Don't call me, use Get(int,int) instead");
+   throw std::runtime_error("Don't call me, use Get(int,int) instead");
 }
 
 

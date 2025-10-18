@@ -10,6 +10,7 @@
 #include "Polygon2D.h"
 #include "Triangle.h"
 #include "UniquePointCollectionBinning.h"
+#include "StdHash.h"
 
 #include <set>
 
@@ -137,7 +138,7 @@ void MeshGeneration2::BaseTriangulationToWorld(
    }
 
    // Collect unique points
-   std::unordered_map<RatPoint2, Point2> uniquePoints;
+   std::unordered_map<RatPoint2, Point2, ArrayHasher<Rational, 2>> uniquePoints;
    std::vector<Point2> uniqueWorldPoints;
    for (auto& triangle : baseTriangles)
    {
@@ -163,7 +164,7 @@ void MeshGeneration2::BaseTriangulationToWorld(
 
    pointGeometry.reset(binnedCollection.release());
 
-   std::unordered_map<RatPoint2, PointIndex> toWorld;
+   std::unordered_map<RatPoint2, PointIndex, ArrayHasher<Rational, 2>> toWorld;
 
    // Get IDs for the points
    for (auto& up : uniquePoints)
@@ -177,9 +178,9 @@ void MeshGeneration2::BaseTriangulationToWorld(
    // Create the triangles
    for (auto& triangle : baseTriangles)
    {
-      const auto n0 = static_cast<PointIndex>(toWorld.at(triangle.at(0)));
-      const auto n1 = static_cast<PointIndex>(toWorld.at(triangle.at(1)));
-      const auto n2 = static_cast<PointIndex>(toWorld.at(triangle.at(2)));
+      const auto n0 = toWorld.at(triangle.at(0));
+      const auto n1 = toWorld.at(triangle.at(1));
+      const auto n2 = toWorld.at(triangle.at(2));
       triangleNodes.addTriangle(TriangleNodesOriented(n0, n1, n2));
    }
 

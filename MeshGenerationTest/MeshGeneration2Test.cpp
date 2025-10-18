@@ -140,9 +140,9 @@ TEST(MeshGeneration2Test, SingleTriangleToWorld)
 {
    Logger logger;
    IndexTreeToSimplices2::Triangles baseTriangles;
-   const RatPoint2 rp0(Rational(0, 1), Rational(0, 1));
-   const RatPoint2 rp1(Rational(1, 1), Rational(0, 1));
-   const RatPoint2 rp2(Rational(0, 1), Rational(1, 1));
+   const RatPoint2 rp0{Rational(0, 1), Rational(0, 1)};
+   const RatPoint2 rp1{Rational(1, 1), Rational(0, 1)};
+   const RatPoint2 rp2{Rational(0, 1), Rational(1, 1)};
    baseTriangles.push_back({ rp0, rp1, rp2 });
    const auto bb = BoundingBox<GeomType, GeomDim2>::CreateFrom2Points(Point2{ 1,1 }, Point2{ 2,3 });
    const PointClose<GeomType, GeomDim2> areClose;

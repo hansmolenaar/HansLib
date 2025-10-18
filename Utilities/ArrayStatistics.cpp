@@ -44,19 +44,3 @@ double ArrayStatistics<T>::getAverage() const
 {
    return m_average;
 }
-
-#if 0
-template<typename T>
-std::string ArrayStatistics<T>::toString() const
-{
-   if (m_size == 0) return "EMPTY";
-
-   const std::string sep = "  ";
-   std::ostringstream oss;
-   oss        << "NUM=" << getSize()
-       << sep << "MIN=" << getMinimum()
-       << sep << "MAX=" << getMaximum()
-       << sep << "AVG=" << getAverage();
-   return oss.str();
-}
-#endif
