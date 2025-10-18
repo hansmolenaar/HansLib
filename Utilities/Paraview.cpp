@@ -1,10 +1,10 @@
 #include "MyAssert.h"
 #include "Paraview.h"
+#include "Plotting.h"
 
 std::filesystem::path Paraview::GetFileName(const std::string& baseName)
 {
-   std::filesystem::path p("/home/hans/Work");
-   return p / (baseName + ".vtk");
+   return Plotting::GenerateFullFilePath(baseName + ".vtk");
 }
 
 void Paraview::WriteHeader(std::ostream& stream)

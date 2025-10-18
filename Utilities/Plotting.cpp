@@ -8,6 +8,15 @@
 #include <sstream>
 #include <vector>
 
+namespace
+{
+   std::filesystem::path getOutputDir()
+   {
+      return std::filesystem::path("/home/hans/Work");
+   }
+}
+
+
 std::string Plotting::PlotFunction(std::initializer_list< std::function<double(double)> > functions, double xmin, double xmax, int  npoints)
 {
    const std::vector<std::vector<double>> values = EvaluateFunctions(functions, xmin, xmax, npoints);
@@ -63,15 +72,15 @@ void Plotting::ToStream(std::ostream& stream, const std::vector<std::vector<doub
    ToStream(stream, headers, values);
 }
 
-std::filesystem::path Plotting::GenerateFullFilePath(const std::string& name, std::string folderName)
+std::filesystem::path Plotting::GenerateFullFilePath(const std::string& name)
 {
-   std::filesystem::path path{ folderName };
+   std::filesystem::path path{ getOutputDir() };
    const auto fileName = name + ".txt";
    path /= fileName;
    return path;
 }
 
-std::ofstream Plotting::GetFile(const std::string& name, std::string folderName)
+std::ofstream Plotting::GetFile(const std::string& name )
 {
    const auto& fullPath = Plotting::GenerateFullFilePath(name);
    std::ofstream ofs(fullPath);
@@ -156,9 +165,9 @@ void Plotting::MdFunctionsOnUnityToFile(const std::string& name, size_t dim, std
    file.close();
 }
 
-void Plotting::ToFile(const std::vector<std::string>& headers, const std::vector<std::vector<double>>& values, const std::string& name, std::string folderName)
+void Plotting::ToFile(const std::vector<std::string>& headers, const std::vector<std::vector<double>>& values, const std::string& name )
 {
-   std::ofstream file = GetFile(name, folderName);
+   std::ofstream file = GetFile(name );
    ToStream(file, headers, values);
    file.close();
 }
