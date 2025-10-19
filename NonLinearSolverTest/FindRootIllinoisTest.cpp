@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "FindRootIllinois .h"
+#include "FindRootIllinois.h"
 
 #include "SingleVariableMonomial.h"
 #include "SingleVariablePolynomial.h"

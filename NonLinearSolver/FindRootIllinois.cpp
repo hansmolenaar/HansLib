@@ -1,4 +1,4 @@
-#include "FindRootIllinois .h"
+#include "FindRootIllinois.h"
 
 #include "ISingleVariableRealValuedFunction.h"
 #include "INonLinearSolverStrategy.h"
