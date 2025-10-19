@@ -15,6 +15,7 @@
 #include "MatrixKelvinRepr3.h"
 #include "IMatrixUtils.h"
 #include "MatrixDense.h"
+#include "Defines.h"
 
 
 #include <numeric>
@@ -174,14 +175,7 @@ void EigenValueSolverSym3x3Utils::AuxilaryEquationRoots::Evaluate(std::span<cons
    const double detB = ClipDetB(x[0]);
    const double theta = std::acos(detB / 2) / 3;
 
-   /// TODO do something nice with ranges
-   //str::transform(c_angles, y.begin(), [theta](auto x){ return 2*std::cos(theta + x);});
-
-   for (int n = 0; n < 3; ++n)
-   {
-      y[n] = 2 * std::cos(theta + c_angles[n]);
-   }
-
+   str::transform(c_angles, y.begin(), [theta](auto x){ return 2*std::cos(theta + x);});
 }
 void EigenValueSolverSym3x3Utils::AuxilaryEquationRoots::Derivative(std::span<const double> x, IMatrix& derivs) const
 {

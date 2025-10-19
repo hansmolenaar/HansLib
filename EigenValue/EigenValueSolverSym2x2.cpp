@@ -87,8 +87,8 @@ void EigenValueSolverSym2x2::Derivative(std::span<const double>x, IMatrix& dfdx)
 
    const double det = EigenValueSolverSym2x2Utils::Det().Evaluate(x);
    const double sqrtDet = std::sqrt(det);
-   Utilities::MyAssert(sqrtDet != 0.0); // TODO better test
    const double sqrtDetDeriv = 0.5 / sqrtDet;
+   Utilities::MyAssert(std::isfinite(sqrtDetDeriv));
 
    std::array<double, 3> detDeriv;
    EigenValueSolverSym2x2Utils::Det().Derivative(x, detDeriv);
