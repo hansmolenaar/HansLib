@@ -46,8 +46,6 @@ TEST(UnitVectorTest, InnerProduct)
    ASSERT_DOUBLE_EQ(uv * uv, 1.0);
 }
 
-// TODO
-#if 0
 TEST(UnitVectorTest, TimesFactor)
 {
    const auto uv = UnitVector<double, GeomDim2>::Create(Point2{ 3,4 });
@@ -55,7 +53,6 @@ TEST(UnitVectorTest, TimesFactor)
    ASSERT_TRUE(areClose(uv * 2.0, Point2{ 1.2, 1.6 }));
    ASSERT_TRUE(areClose(2.0 * uv, Point2{ 1.2, 1.6 }));
 }
-#endif
 
 TEST(UnitVectorTest, CreateUnhappyPath)
 {
