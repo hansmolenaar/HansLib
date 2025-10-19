@@ -38,6 +38,7 @@ void  Derivative(const IRealFunction& fie, std::span< const double> x, std::span
 	}
 }
 
+#if true
 void CheckDerivatives(const IRealFunction& system, std::span< const double> x, std::span< const double> delx)
 {
 	const int numEqn = system.GetRangeDimension();
@@ -67,6 +68,7 @@ void CheckDerivatives(const IRealFunction& system, std::span< const double> x, s
 		}
 	}
 }
+#endif
 
 
 void CheckIndices(const IRealFunction& fie, int eqn, int var)

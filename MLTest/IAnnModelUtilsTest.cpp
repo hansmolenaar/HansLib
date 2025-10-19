@@ -18,7 +18,7 @@
 #include "MyAssert.h"
 #include "ISingleVariableRealValuedFunction.h"
 #include "ISingleVariableRealValuedFunctionUtils.h"
-#include "SingleVariableCheckDerivative.h"
+#include "RealFunctionCheckDerivative.h"
 
 #include <numbers>
 #include <cmath>
@@ -91,7 +91,7 @@ namespace
          for (size_t param = 0; param < parameterLayer.size(); ++param)
          {
             NumericalCheck nc(model, dataSet, layer, param, parameterSet);
-            NsNonLinearSolver::SingleVariableCheckDerivative(nc, parameterLayer[param], 0.1);
+            RealFunctionCheckDerivative::Check(nc, parameterLayer[param], 0.1);
          }
       }
    }
@@ -437,7 +437,7 @@ TEST(IAnnModelUtilsTest, NumericalCheckSingleParameter)
 
    const ML::AnnDataSet anotherDataSet(std::vector<double>{2.0}, std::vector<double>{3.0});
    NumericalCheck nc2(model, anotherDataSet, c_layer, c_param, parameterSet);
-   NsNonLinearSolver::SingleVariableCheckDerivative(nc2, singleParameter, 0.01);
+   RealFunctionCheckDerivative::Check(nc2, singleParameter, 0.01);
 }
 
 

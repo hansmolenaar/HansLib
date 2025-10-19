@@ -2,7 +2,7 @@
 
 #include "IMatrixSquareUtils.h"
 #include "SingleVariableRealValuedFunction.h"
-#include "SingleVariableCheckDerivative.h"
+#include "RealFunctionCheckDerivative.h"
 #include "MatrixSquare.h"
 #include "IdentityMatrix.h"
 
@@ -96,7 +96,7 @@ TEST(IMatrixSquareUtilsTest, TestDeterminantDerivs2)
 			SingleVariableRealValuedFunction fie(
 				[&](double x) {matrix(row,col)=x; return GetDeterminant(matrix); },
 				[&](double x) {matrix(row, col) = x; return GetDeterminantDerivative(matrix, row, col); });
-			NsNonLinearSolver::SingleVariableCheckDerivative(fie, 0.5, 0.1, false);
+			RealFunctionCheckDerivative::Check(fie, 0.5, 0.1, false);
 		}
 	}
 }
