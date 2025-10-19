@@ -12,5 +12,5 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 	${CMAKE_INCLUDE_DIR}/KelvinRepr
 )
 
-target_link_libraries(${PROJECT_NAME} EigenValue Functions NonLinearSolver KelvinRepr MatrixVector Utilities ${GTestLibs})
+target_link_libraries(${PROJECT_NAME} EigenValue NonLinearSolver Functions KelvinRepr MatrixVector Utilities ${GTestLibs})
 gtest_discover_tests(${PROJECT_NAME})

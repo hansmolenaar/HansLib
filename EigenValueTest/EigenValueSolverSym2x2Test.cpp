@@ -20,7 +20,7 @@ namespace
       RealFunctionCheckDerivative::Check(fieDet, x, delx);
 
       EigenValueSolverSym2x2 solver;
-      CheckDerivatives(solver, x, delx);
+      RealFunctionCheckDerivative::Check(solver, x, delx);
    }
 }
 

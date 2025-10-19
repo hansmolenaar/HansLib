@@ -38,39 +38,6 @@ void  Derivative(const IRealFunction& fie, std::span< const double> x, std::span
 	}
 }
 
-#if true
-void CheckDerivatives(const IRealFunction& system, std::span< const double> x, std::span< const double> delx)
-{
-	const int numEqn = system.GetRangeDimension();
-	const int numVar = system.GetDomainDimension();
-	Utilities::MyAssert(x.size() == numVar);
-	Utilities::MyAssert(delx.size() == numVar);
-	std::vector<double> y(numEqn);
-	MatrixDense jacobian(numEqn, numVar);
-	for (int eqn = 0; eqn < numEqn; ++eqn)
-	{
-		for (int var = 0; var < numVar; ++var)
-		{
-			std::vector<double> vals(x.begin(), x.end());
-			if (system.DerivativeAlwaysZero(eqn, var))
-			{
-				SetAll(jacobian, 1.0);
-				system.Derivative(vals, jacobian);
-				Utilities::MyAssert(jacobian(eqn, var) == 0.0);
-			}
-			else
-			{
-				std::function<double(double)> evaluate = [&](double xx) {vals[var] = xx;   system.Evaluate(vals, y); return y[eqn]; };
-				std::function<double(double)> derivative = [&](double xx) {vals[var] = xx; system.Derivative(vals, jacobian); return jacobian(eqn, var); };
-				SingleVariableRealValuedFunction fie(evaluate, derivative);
-			}
-
-		}
-	}
-}
-#endif
-
-
 void CheckIndices(const IRealFunction& fie, int eqn, int var)
 {
 	Utilities::MyAssert(eqn >= 0 && eqn < fie.GetRangeDimension());
