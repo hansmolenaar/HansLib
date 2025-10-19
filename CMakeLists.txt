@@ -75,6 +75,7 @@ add_subdirectory(KelvinRepr)
 add_subdirectory(KelvinReprTest)
 
 add_subdirectory(EigenValue)
+add_subdirectory(EigenValueTest)
 
 add_subdirectory(Interpolation)
 add_subdirectory(InterpolationTest)

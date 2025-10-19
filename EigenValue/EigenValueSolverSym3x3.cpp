@@ -175,6 +175,7 @@ void EigenValueSolverSym3x3Utils::AuxilaryEquationRoots::Evaluate(std::span<cons
    const double theta = std::acos(detB / 2) / 3;
 
    /// TODO do something nice with ranges
+   //str::transform(c_angles, y.begin(), [theta](auto x){ return 2*std::cos(theta + x);});
 
    for (int n = 0; n < 3; ++n)
    {
