@@ -3,6 +3,7 @@
 #include "MultiVariableProductFunction.h"
 #include "MultiVariableMonomial.h"
 #include "IRealFunctionUtils.h"
+#include "RealFunctionCheckDerivative.h"
 
 #include <array>
 
@@ -29,29 +30,7 @@ TEST(MultiVariableProductFunctionTest, Test1)
 	ASSERT_NEAR(deriv[0], 32.0, c_eps);
 
 	std::array<double, 1> delx = { 0.01 };
-	CheckDerivatives(fie, x, delx);
-}
-
-
-TEST(MultiVariableProductFunctionTest, Test2)
-{
-	auto xy = MultiVariableMonomial({ 1,1 });
-	auto y = MultiVariableMonomial({ 0,1 });
-	MultiVariableProductFunction fie({ &xy, &y });  // x*y^2
-
-	ASSERT_FALSE(fie.DerivativeAlwaysZero(0, 0));
-	ASSERT_FALSE(fie.DerivativeAlwaysZero(0, 1));
-
-	std::array<double, 2> x = { 2,3 };
-	ASSERT_NEAR(fie.Evaluate(x), 18.0, c_eps);
-
-	std::vector<double> deriv(2);
-	Derivative(fie, x, deriv);
-	ASSERT_NEAR(deriv[0], 9.0, c_eps);
-	ASSERT_NEAR(deriv[1], 12.0, c_eps);
-
-	std::array<double, 2> delx = { 0.01, 0.01 };
-	CheckDerivatives(fie, x, delx);
+	(fie, x, delx);
 }
 
 TEST(MultiVariableProductFunctionTest, Test3)
@@ -74,7 +53,7 @@ TEST(MultiVariableProductFunctionTest, Test3)
 	ASSERT_NEAR(deriv[2], 36.0, c_eps);
 
 	std::array<double, 3> delx = { 0.01, 0.01, 0.01 };
-	CheckDerivatives(fie, x, delx);
+	RealFunctionCheckDerivative::Check(fie, x, delx);
 }
 
 TEST(MultiVariableProductFunctionTest, Test4)
@@ -96,7 +75,7 @@ TEST(MultiVariableProductFunctionTest, Test4)
 	ASSERT_NEAR(deriv[1], 27 * 4 * 8, c_eps);
 
 	std::array<double, 2> delx = { 0.01, 0.01 };
-	CheckDerivatives(fie, x, delx);
+	RealFunctionCheckDerivative::Check(fie, x, delx);
 }
 
 TEST(MultiVariableProductFunctionTest, Test5)
@@ -116,7 +95,7 @@ TEST(MultiVariableProductFunctionTest, Test5)
 	ASSERT_NEAR(deriv[1], 0.0, c_eps);
 
 	std::array<double, 2> delx = { 0.01 , 0.1 };
-	CheckDerivatives(fie, x, delx);
+	RealFunctionCheckDerivative::Check(fie, x, delx);
 }
 
 

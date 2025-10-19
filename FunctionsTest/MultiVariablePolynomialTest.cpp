@@ -3,6 +3,7 @@
 #include "ISingleVariableRealValuedFunction.h"
 #include "MultiVariablePolynomial.h"
 #include "IRealFunctionUtils.h"
+#include "RealFunctionCheckDerivative.h"
 
 #include <array>
 
@@ -23,7 +24,7 @@ TEST(MultiVariablePolynomialTest, Test0)
 	ASSERT_EQ(deriv[0], 0.0);
 	ASSERT_EQ(deriv[1], 0.0);
 
-	CheckDerivatives(fie, x, x);
+	RealFunctionCheckDerivative::Check(fie, x, x);
 }
 
 
@@ -46,7 +47,7 @@ TEST(MultiVariablePolynomialTest, Test1)
 	ASSERT_EQ(deriv[1], 12.0);
 
 	std::array<double, 2> delx = { 0.01, 0.01 };
-	CheckDerivatives(fie, x, delx);
+	RealFunctionCheckDerivative::Check(fie, x, delx);
 }
 
 
@@ -71,7 +72,7 @@ TEST(MultiVariablePolynomialTest, Test2)
 	ASSERT_EQ(deriv[0], 10.0);
 	ASSERT_EQ(deriv[1], 4.0);
 
-	CheckDerivatives(fie, x, x);
+	RealFunctionCheckDerivative::Check(fie, x, x);
 }
 
 

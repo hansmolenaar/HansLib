@@ -3,6 +3,7 @@
 #include "MultiVariableRealValuedFunction.h"
 #include "IRealFunctionUtils.h"
 #include "MultiVariableMonomial.h"
+#include "RealFunctionCheckDerivative.h"
 
 #include <array>
 
@@ -28,7 +29,7 @@ TEST(MultiVariableRealValuedFunctionTest, TestNull)
 	ASSERT_EQ(deriv[1], 0.0);
 
 	std::array<double, 2> delx = { 0.01, 0.01 };
-	CheckDerivatives(fie, x, delx);
+	RealFunctionCheckDerivative::Check(fie, x, delx);
 }
 
 

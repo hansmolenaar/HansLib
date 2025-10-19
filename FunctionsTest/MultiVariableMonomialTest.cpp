@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "MultiVariableMonomial.h"
+#include "RealFunctionCheckDerivative.h"
 #include "IRealFunctionUtils.h"
 
 #include <array>
@@ -24,7 +25,7 @@ TEST(MultiVariableMonomialTest, Test1)
 	ASSERT_EQ(deriv[1], 6.0);
 
 	std::array<double, 2> delx = { 0.01, 0.01 };
-	CheckDerivatives(fie, x, delx);
+	RealFunctionCheckDerivative::Check(fie, x, delx);
 }
 
 

@@ -9,6 +9,7 @@
 #include "SingleVariableMonomial.h"
 #include "SingleVariableRealValuedFunction.h"
 #include "MatrixDense.h"
+#include "RealFunctionCheckDerivative.h"
 
 #include <array>
 #include <memory>
@@ -63,7 +64,7 @@ TEST(RealFunctionComposeTest, Test1)
 	ASSERT_EQ(jac(2, 1), 0.0);
 
 	double delx[] = { 0.01, 0.01 };
-	CheckDerivatives(fie, x, delx);
+	RealFunctionCheckDerivative::Check(fie, x, delx);
 }
 
 
@@ -99,7 +100,7 @@ TEST(RealFunctionComposeTest, Test2)
 	ASSERT_EQ(jac(1, 0), 96.0);
 
 	double delx[] = { 0.01 };
-	CheckDerivatives(fie, x, delx);
+	RealFunctionCheckDerivative::Check(fie, x, delx);
 }
 
 
@@ -141,7 +142,7 @@ TEST(RealFunctionComposeTest, Test3)
 	ASSERT_EQ(jac(0, 1), 12.0);
 
 	double delx[] = { 0.1, 0.1 };
-	CheckDerivatives(fie, x, delx);
+	RealFunctionCheckDerivative::Check(fie, x, delx);
 }
 
 

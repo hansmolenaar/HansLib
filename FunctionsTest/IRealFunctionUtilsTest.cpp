@@ -7,6 +7,7 @@
 #include "MultiVariableRealValuedFunction.h"
 #include "MultiVariableVectorValuedFunction.h"
 #include "MatrixDense.h"
+#include "RealFunctionCheckDerivative.h"
 
 #include <array>
 #include <memory>
@@ -50,7 +51,7 @@ TEST(IRealFunctionUtilsTest, TestAdd)
 	ASSERT_EQ(deriv(0, 2), 27.0);
 
 	double delx[] = { 0.01, 0.01, 0.01 };
-	CheckDerivatives(fie, x, delx);
+	RealFunctionCheckDerivative::Check(fie, x, delx);
 }
 
 
