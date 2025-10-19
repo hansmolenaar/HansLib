@@ -1,7 +1,6 @@
 #include "ISingleVariableRealValuedFunction.h"
 
-namespace NonlinearSolver
+namespace NsNonLinearSolver // Namespace NonLinearSolver
 {
    void SingleVariableCheckDerivative(ISingleVariableRealValuedFunction& fie, double x, double delx, bool isLinear = false);
-
 }

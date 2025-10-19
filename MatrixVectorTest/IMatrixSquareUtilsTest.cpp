@@ -96,7 +96,7 @@ TEST(IMatrixSquareUtilsTest, TestDeterminantDerivs2)
 			SingleVariableRealValuedFunction fie(
 				[&](double x) {matrix(row,col)=x; return GetDeterminant(matrix); },
 				[&](double x) {matrix(row, col) = x; return GetDeterminantDerivative(matrix, row, col); });
-			NonlinearSolver::SingleVariableCheckDerivative(fie, 0.5, 0.1, false);
+			NsNonLinearSolver::SingleVariableCheckDerivative(fie, 0.5, 0.1, false);
 		}
 	}
 }

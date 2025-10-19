@@ -2,7 +2,7 @@
 #include "NonLinearSolverStrategyResidualReduction.h"
 #include "NonLinearSolver.h"
 
-void NonlinearSolver::SingleVariableCheckDerivative(ISingleVariableRealValuedFunction& fie, double x, double delx, bool isLinear)
+void NsNonLinearSolver::SingleVariableCheckDerivative(ISingleVariableRealValuedFunction& fie, double x, double delx, bool isLinear)
 {
    const double minDeriv = 1.0e-10;
    const  std::array<double, 1> rhs = { fie.Evaluate(x) };
