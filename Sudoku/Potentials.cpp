@@ -175,11 +175,6 @@ void Potentials::setForTesting(FieldIndex field, std::initializer_list<Value> va
 
 int Potentials::getTotalCount() const
 {
-   int result = 0;
-   // TODO use std::accumulate
-   for (const auto& pot : m_potentials)
-   {
-      result += pot.count();
-   }
-   return result;
+   RowColBoxIndex result = 0;
+   return std::accumulate(m_potentials.begin(), m_potentials.end(), result, [](auto sum, const auto& pot){return sum + pot.count();});
 }

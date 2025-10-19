@@ -1,6 +1,8 @@
 #include <gtest/gtest.h>
 
 #include "IMatrixSquareUtils.h"
+#include "SingleVariableRealValuedFunction.h"
+#include "SingleVariableCheckDerivative.h"
 #include "MatrixSquare.h"
 #include "IdentityMatrix.h"
 
@@ -64,7 +66,6 @@ TEST(IMatrixSquareUtilsTest, Test4)
 	ASSERT_NEAR(GetDeterminant(matrix), -60.0, c_eps);
 }
 
-#if false // TODO
 TEST(IMatrixSquareUtilsTest, TestDeterminantDerivs2)
 {
 	MatrixSquare matrix(2);
@@ -95,11 +96,10 @@ TEST(IMatrixSquareUtilsTest, TestDeterminantDerivs2)
 			SingleVariableRealValuedFunction fie(
 				[&](double x) {matrix(row,col)=x; return GetDeterminant(matrix); },
 				[&](double x) {matrix(row, col) = x; return GetDeterminantDerivative(matrix, row, col); });
-			CheckDerivative(fie, 0.5, 0.1, true);
+			NonlinearSolver::SingleVariableCheckDerivative(fie, 0.5, 0.1, false);
 		}
 	}
 }
-#endif
 
 TEST(IMatrixSquareUtilsTest, TestTrace)
 {
