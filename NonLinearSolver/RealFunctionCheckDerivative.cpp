@@ -67,12 +67,13 @@ void RealFunctionCheckDerivative::Check(const IRealFunction &system, std::span<c
     }
 }
 
-void RealFunctionCheckDerivative::CheckExtrapolation(ISingleVariableRealValuedFunction &fie, double x, double deriv,
-                                                     double delx, std::span<double> residuals)
+void RealFunctionCheckDerivative::CheckExtrapolation(ISingleVariableRealValuedFunction &fie, double x, double delx,
+                                                     std::span<double> residuals)
 {
     const auto siz = residuals.size();
     Utilities::MyAssert(siz > 1);
     const double val0 = fie(x);
+    const double deriv = fie.Derivative(x);
     for (size_t n = 0; n < siz; ++n)
     {
         const double val = fie(x + delx);
@@ -86,5 +87,39 @@ void RealFunctionCheckDerivative::CheckExtrapolation(ISingleVariableRealValuedFu
         msg << "CheckExtrapolation not converged, last residuals: " << residuals[siz - 2] << " " << residuals[siz - 1];
         msg << " fraction: " << residuals[siz - 1] / residuals[siz - 2];
         Utilities::MyAssert(isConverged, msg.str());
+    }
+}
+
+void RealFunctionCheckDerivative::CheckExtrapolation(const IRealFunction &system, std::span<const double> x,
+                                                     std::span<const double> delx, int nSteps)
+{
+    Utilities::MyAssert(nSteps > 1);
+    Utilities::MyAssert(x.size() == delx.size());
+
+    const int numEqn = system.GetRangeDimension();
+    const int numVar = system.GetDomainDimension();
+    Utilities::MyAssert(x.size() == numVar);
+    std::vector<double> residuals(nSteps);
+    std::vector<double> y(numEqn);
+    MatrixDense jacobian(numEqn, numVar);
+
+    for (int eqn = 0; eqn < numEqn; ++eqn)
+    {
+        for (int var = 0; var < numVar; ++var)
+        {
+            std::vector<double> vals(x.begin(), x.end());
+            std::function<double(double)> evaluate = [&](double xx) {
+                vals[var] = xx;
+                system.Evaluate(vals, y);
+                return y[eqn];
+            };
+            std::function<double(double)> derivative = [&](double xx) {
+                vals[var] = xx;
+                system.Derivative(vals, jacobian);
+                return jacobian(eqn, var);
+            };
+            SingleVariableRealValuedFunction fie(evaluate, derivative);
+            CheckExtrapolation(fie, x[var], delx[var], residuals);
+        }
     }
 }

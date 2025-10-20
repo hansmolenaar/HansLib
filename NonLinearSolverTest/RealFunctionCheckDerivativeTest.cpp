@@ -114,21 +114,48 @@ TEST(RealFunctionCheckDerivativeTest, CheckExtrapolationSingleSucces)
 {
     SingleVariableMonomial fie(2);
     std::vector<double> residuals(4);
-    RealFunctionCheckDerivative::CheckExtrapolation(fie, 2.0, 4.0, 0.1, residuals);
+    RealFunctionCheckDerivative::CheckExtrapolation(fie, 2.0, 0.1, residuals);
 }
 
 TEST(RealFunctionCheckDerivativeTest, CheckExtrapolationSingleFailure)
 {
-    SingleVariableMonomial fie(2);
+    WrongDerivative fie;
     std::vector<double> residuals(4);
-    constexpr double deriv2 = 5.0;
 
     // this tests _that_ the expected exception is thrown
     EXPECT_THROW(
         {
             try
             {
-                RealFunctionCheckDerivative::CheckExtrapolation(fie, 2.0, deriv2, 0.1, residuals);
+                RealFunctionCheckDerivative::CheckExtrapolation(fie, 2.0, 0.1, residuals);
+            }
+            catch (const MyException &e)
+            {
+                // and this tests that it has the correct message
+                EXPECT_THAT(e.what(), HasSubstr("CheckExtrapolation not converged, last residuals:"));
+                throw;
+            }
+        },
+        MyException);
+}
+
+TEST(RealFunctionCheckDerivativeTest, CheckExtrapolationMultipleSucces)
+{
+    auto fie = MultiVariableMonomial({3, 2});
+    RealFunctionCheckDerivative::CheckExtrapolation(fie, std::vector<double>{4, 2},
+                                                    std::vector<double>{1.0e-3, 1.0e-3});
+}
+
+TEST(RealFunctionCheckDerivativeTest, CheckExtrapolationMultipleFailure)
+{
+    WrongDerivatives fie;
+    // this tests _that_ the expected exception is thrown
+    EXPECT_THROW(
+        {
+            try
+            {
+                RealFunctionCheckDerivative::CheckExtrapolation(fie, std::vector<double>{8, 9},
+                                                                std::vector<double>{1.0e-2, 1.0e-2});
             }
             catch (const MyException &e)
             {
