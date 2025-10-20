@@ -43,7 +43,7 @@ void CheckCalculationSingleMatrix(const MatrixKelvinRepr3 &matrix,
     if (checkDerivatives)
     {
         EigenValueSolverSym3x3 solver;
-        RealFunctionCheckDerivative::Check(solver, matrix.Vector(), std::vector<double>(6, del));
+        RealFunctionCheckDerivative::CheckExtrapolation(solver, matrix.Vector(), std::vector<double>(6, del));
     }
 }
 
@@ -399,8 +399,8 @@ TEST(EigenValueSolverSym3x3Test, TestFunctionDetB)
     const double eval = fie.Evaluate(matrix.Vector());
     ASSERT_NEAR(eval, 2.0, eps);
 
-    // std::vector<double> delx(6, 0.5);
-    // RealFunctionCheckDerivative::Check(fie, matrix.Vector(), delx);
+    std::vector<double> delx(6, 1.0e-3);
+    RealFunctionCheckDerivative::CheckExtrapolation(fie, matrix.Vector(), delx);
 }
 
 TEST(EigenValueSolverSym3x3Test, TestFunctionP3Inv)
@@ -535,26 +535,24 @@ TEST(EigenValueSolverSym3x3Test, CheckDerivsDetAMinQI)
     }
 }
 
-#if false
 TEST(EigenValueSolverSym3x3Test, CheckDerivsFunctionDetB)
 {
-   std::array<double, 6> matrix;
-   std::vector<double> delx(6, 0.01);
-   EigenValueSolverSym3x3Utils::FunctionP fieP;
-   EigenValueSolverSym3x3Utils::FunctionDetB fieDetB(fieP);
-   std::srand(0);
-   const int maxIter = 10;
-   for (int iter = 0; iter < maxIter; ++iter)
-   {
-      for (int flat = 0; flat < 6; ++flat)
-      {
-         matrix[flat] = RandomNumber();
-      }
+    std::array<double, 6> matrix;
+    std::vector<double> delx(6, 1.0e-3);
+    EigenValueSolverSym3x3Utils::FunctionP fieP;
+    EigenValueSolverSym3x3Utils::FunctionDetB fieDetB(fieP);
+    std::srand(0);
+    const int maxIter = 10;
+    for (int iter = 0; iter < maxIter; ++iter)
+    {
+        for (int flat = 0; flat < 6; ++flat)
+        {
+            matrix[flat] = RandomNumber();
+        }
 
-      RealFunctionCheckDerivative::Check(fieDetB, matrix, delx);
-   }
+        RealFunctionCheckDerivative::CheckExtrapolation(fieDetB, matrix, delx);
+    }
 }
-#endif
 
 TEST(EigenValueSolverSym3x3Test, CheckDerivsEigenValueSolverSym3x3)
 {
