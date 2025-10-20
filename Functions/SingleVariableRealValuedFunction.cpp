@@ -1,33 +1,32 @@
 #include "SingleVariableRealValuedFunction.h"
 
-SingleVariableRealValuedFunction::SingleVariableRealValuedFunction(
-	std::function<double(double)> function,
-	std::function<double(double)> derivative) :
-	m_function(function), m_derivative(derivative)
+SingleVariableRealValuedFunction::SingleVariableRealValuedFunction(std::function<double(double)> function,
+                                                                   std::function<double(double)> derivative)
+    : m_function(function), m_derivative(derivative)
 {
 }
 
-SingleVariableRealValuedFunction::SingleVariableRealValuedFunction(std::function<double(double)> function) :
-	m_function(function)
+SingleVariableRealValuedFunction::SingleVariableRealValuedFunction(std::function<double(double)> function)
+    : m_function(function)
 {
 }
 
-double SingleVariableRealValuedFunction::Evaluate(double x)const
+double SingleVariableRealValuedFunction::Evaluate(double x) const
 {
-	return m_function(x);
+    return m_function(x);
 }
 
-double SingleVariableRealValuedFunction::Derivative(double x)const
+double SingleVariableRealValuedFunction::Derivative(double x) const
 {
-	return m_derivative(x);
+    return m_derivative(x);
 }
 
 bool SingleVariableRealValuedFunction::IsNonConstant() const
 {
-	return true;
+    return true;
 }
 
 bool SingleVariableRealValuedFunction::HasDerivative() const
 {
-	return m_derivative != nullptr;
+    return m_derivative != nullptr;
 }

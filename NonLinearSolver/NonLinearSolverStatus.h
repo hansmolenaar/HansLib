@@ -1,3 +1,9 @@
 #pragma once
 
-enum class NonLinearSolverStatus { Converged, NotConverged, MaxIterExceeded, Diverged };
+enum class NonLinearSolverStatus
+{
+    Converged,
+    NotConverged,
+    MaxIterExceeded,
+    Diverged
+};

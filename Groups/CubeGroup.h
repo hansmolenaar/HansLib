@@ -7,7 +7,7 @@
 //                   6 ------ 7
 //                  /        /
 //                 4 ------ 5
-//                  
+//
 //                   2 ------ 3
 //                  /        /
 //                 0 ------ 1
@@ -16,25 +16,25 @@
 
 class CubeGroup : public IFiniteGroup
 {
-public:
-   using Vertex = Permutation::Entry;
-   static constexpr Vertex numVertices = 8;
+  public:
+    using Vertex = Permutation::Entry;
+    static constexpr Vertex numVertices = 8;
 
-   static std::pair<std::unique_ptr<IFiniteGroup>, std::vector<Permutation>> Create();
+    static std::pair<std::unique_ptr<IFiniteGroup>, std::vector<Permutation>> Create();
 
-   GroupElement getOrder() const override;
-   GroupElement getIdentity() const override;
-   GroupElement getInverse(GroupElement) const override;
-   GroupElement operator()(GroupElement, GroupElement) const override;
+    GroupElement getOrder() const override;
+    GroupElement getIdentity() const override;
+    GroupElement getInverse(GroupElement) const override;
+    GroupElement operator()(GroupElement, GroupElement) const override;
 
-   static int getDistance(Vertex v1, Vertex v2);
-   static std::vector<Permutation> getRotations();
-   static std::vector<Permutation> getReflections();
-   static std::vector<Permutation> getReflectionsIjk();
-   static std::vector<Permutation> getSymmetries();
-   static std::vector<Permutation> getGroupSymmetries();
-   static bool isIsometry(const Permutation& permutation);
+    static int getDistance(Vertex v1, Vertex v2);
+    static std::vector<Permutation> getRotations();
+    static std::vector<Permutation> getReflections();
+    static std::vector<Permutation> getReflectionsIjk();
+    static std::vector<Permutation> getSymmetries();
+    static std::vector<Permutation> getGroupSymmetries();
+    static bool isIsometry(const Permutation &permutation);
 
-private:
-   std::unique_ptr<IFiniteGroup> m_groupTable;
+  private:
+    std::unique_ptr<IFiniteGroup> m_groupTable;
 };

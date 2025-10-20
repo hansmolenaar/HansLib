@@ -14,13 +14,13 @@ using namespace Geometry;
 
 TEST(RefinementPredicatesTest, RefineRegionToMaxLevel_2)
 {
-   const Ball<double, 2> ball(Point2{ 5.0, 2.0 }, 1.0);
-   const Ball2AsRegion ballAsRegion(ball, "RefinementPredicatesTest, RefineRegionToMaxLevel_2");
-   IndexFactory<2> factory;
-   const auto initialBbGenerator = InitialBoundingboxGenerator<2>::Create(1.0);
-   const PointClose<double, 2> areClose;
-   const RefineRegionToMaxLevel<2> predicate(1, ballAsRegion, areClose, *initialBbGenerator);
-   const auto* indexRoot = factory.getRoot();
+    const Ball<double, 2> ball(Point2{5.0, 2.0}, 1.0);
+    const Ball2AsRegion ballAsRegion(ball, "RefinementPredicatesTest, RefineRegionToMaxLevel_2");
+    IndexFactory<2> factory;
+    const auto initialBbGenerator = InitialBoundingboxGenerator<2>::Create(1.0);
+    const PointClose<double, 2> areClose;
+    const RefineRegionToMaxLevel<2> predicate(1, ballAsRegion, areClose, *initialBbGenerator);
+    const auto *indexRoot = factory.getRoot();
 
-   ASSERT_TRUE(predicate(*indexRoot));
+    ASSERT_TRUE(predicate(*indexRoot));
 }

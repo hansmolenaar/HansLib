@@ -7,43 +7,47 @@
 
 namespace MeshGeneration
 {
-   class TrianglesNodes
-   {
-   public:
-      CellIndex addTriangle(const Topology::TriangleNodesOriented& triangle);
-      void deleteTriangle(CellIndex triangleId);
-      boost::container::static_vector<CellIndex, 2> getTrianglesContainingEdge(Topology::NodeIndex n0, Topology::NodeIndex n1) const;
-      boost::container::static_vector<CellIndex, Topology::NumCornersOnTriangle> getEdgeConnectedTriangles(CellIndex triangleId) const;
-      boost::container::static_vector<CellIndex, Topology::NumCornersOnTriangle> getCommonNodes(CellIndex triangle1, CellIndex triangle2) const;
-      std::vector<CellIndex> getTrianglesContainingNode(Topology::NodeIndex node) const;
-      std::vector<Topology::NodeIndex> getEdgeConnectedNodes(Topology::NodeIndex node) const;
-      std::optional<CellIndex> tryGetTriangle(Topology::NodeIndex n0, Topology::NodeIndex n1, Topology::NodeIndex n2) const;
-      bool triangleContainsNode(CellIndex CellIndex, Topology::NodeIndex nodeId) const;
+class TrianglesNodes
+{
+  public:
+    CellIndex addTriangle(const Topology::TriangleNodesOriented &triangle);
+    void deleteTriangle(CellIndex triangleId);
+    boost::container::static_vector<CellIndex, 2> getTrianglesContainingEdge(Topology::NodeIndex n0,
+                                                                             Topology::NodeIndex n1) const;
+    boost::container::static_vector<CellIndex, Topology::NumCornersOnTriangle> getEdgeConnectedTriangles(
+        CellIndex triangleId) const;
+    boost::container::static_vector<CellIndex, Topology::NumCornersOnTriangle> getCommonNodes(
+        CellIndex triangle1, CellIndex triangle2) const;
+    std::vector<CellIndex> getTrianglesContainingNode(Topology::NodeIndex node) const;
+    std::vector<Topology::NodeIndex> getEdgeConnectedNodes(Topology::NodeIndex node) const;
+    std::optional<CellIndex> tryGetTriangle(Topology::NodeIndex n0, Topology::NodeIndex n1,
+                                            Topology::NodeIndex n2) const;
+    bool triangleContainsNode(CellIndex CellIndex, Topology::NodeIndex nodeId) const;
 
-      Topology::TriangleNodesOriented getTriangleNodes(CellIndex triangle) const;
+    Topology::TriangleNodesOriented getTriangleNodes(CellIndex triangle) const;
 
-      bool isKnownNodeId(Topology::NodeIndex node) const;
-      bool isKnownTriangleId(CellIndex triangle) const;
+    bool isKnownNodeId(Topology::NodeIndex node) const;
+    bool isKnownTriangleId(CellIndex triangle) const;
 
-      std::vector<CellIndex> getAllTriangles() const;
-      std::vector<Topology::NodeIndex> getAllNodes() const;
-      std::vector<Topology::EdgeNodesSorted> getAllSortedEdges() const;
+    std::vector<CellIndex> getAllTriangles() const;
+    std::vector<Topology::NodeIndex> getAllNodes() const;
+    std::vector<Topology::EdgeNodesSorted> getAllSortedEdges() const;
 
-      std::vector<std::vector<CellIndex>> splitInEdgeConnectedComponents() const;
+    std::vector<std::vector<CellIndex>> splitInEdgeConnectedComponents() const;
 
-      friend std::ostream& operator<<(std::ostream& os, const TrianglesNodes& tnodes)
-      {
-         const std::string sep = " ";
-         os << "TriangleNodes";
-         os << sep << "NUMNODES=" << tnodes.getAllNodes().size();
-         os << sep + "NUMTRIANGLES=" << tnodes.m_cellsNodes.getNumCells();
-         return os;
-      }
-      size_t getNumTriangles() const;
+    friend std::ostream &operator<<(std::ostream &os, const TrianglesNodes &tnodes)
+    {
+        const std::string sep = " ";
+        os << "TriangleNodes";
+        os << sep << "NUMNODES=" << tnodes.getAllNodes().size();
+        os << sep + "NUMTRIANGLES=" << tnodes.m_cellsNodes.getNumCells();
+        return os;
+    }
+    size_t getNumTriangles() const;
 
-      TrianglesNodes createSubSet(const std::vector<CellIndex>& cellIds) const;
+    TrianglesNodes createSubSet(const std::vector<CellIndex> &cellIds) const;
 
-   private:
-      CellsNodes<Topology::TriangleNodesOriented> m_cellsNodes;
-   };
-}
+  private:
+    CellsNodes<Topology::TriangleNodesOriented> m_cellsNodes;
+};
+} // namespace MeshGeneration

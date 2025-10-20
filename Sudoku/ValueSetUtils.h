@@ -5,10 +5,10 @@
 
 namespace Sudoku
 {
-   class ValueSetUtils
-   {
-   public:
-      static bool IsSolved(const ValueSet& valueSet);
-   };
-   
-}
+class ValueSetUtils
+{
+  public:
+    static bool IsSolved(const ValueSet &valueSet);
+};
+
+} // namespace Sudoku

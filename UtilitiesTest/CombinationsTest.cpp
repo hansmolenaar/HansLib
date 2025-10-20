@@ -7,16 +7,15 @@
 
 TEST(CombinationsTest, Test53)
 {
-   const auto allCombinations = Combinations::Get(5, 3);
-   ASSERT_EQ(allCombinations.size(), 10);
+    const auto allCombinations = Combinations::Get(5, 3);
+    ASSERT_EQ(allCombinations.size(), 10);
 
-   ASSERT_TRUE(str::all_of(allCombinations, [](const auto& cmb) { return cmb.size() == 5; }));
+    ASSERT_TRUE(str::all_of(allCombinations, [](const auto &cmb) { return cmb.size() == 5; }));
 
-   std::set<std::vector<bool>> unique;
-   for (const auto& bv : allCombinations)
-   {
-      unique.insert(bv);
-   }
-   ASSERT_EQ(unique.size(), 10);
+    std::set<std::vector<bool>> unique;
+    for (const auto &bv : allCombinations)
+    {
+        unique.insert(bv);
+    }
+    ASSERT_EQ(unique.size(), 10);
 }
-

@@ -6,6 +6,6 @@
 
 class AlternatingGroup
 {
-public:
-   static std::unique_ptr<IFiniteGroup> Create(GroupElement size);
+  public:
+    static std::unique_ptr<IFiniteGroup> Create(GroupElement size);
 };

@@ -2,7 +2,7 @@
 
 #include "MeshGenerationDefines.h"
 
-namespace  CellQuality3
+namespace CellQuality3
 {
-   MeshGeneration::CellQuality3Fun SmallestDihedralAngle;
+MeshGeneration::CellQuality3Fun SmallestDihedralAngle;
 };

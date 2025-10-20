@@ -6,15 +6,14 @@
 
 namespace Topology
 {
-   class ReferenceShapeTetrahedron : public IReferenceShape
-   {
-   public:
+class ReferenceShapeTetrahedron : public IReferenceShape
+{
+  public:
+    static const ReferenceShapeTetrahedron &getInstance();
+    const ITopologicalAdjacencies &getAdjacencies() const override;
 
-      static const ReferenceShapeTetrahedron& getInstance();
-      const ITopologicalAdjacencies& getAdjacencies() const override;
-
-   private:
-      ReferenceShapeTetrahedron();
-      std::unique_ptr<TopologicalAdjacencies> m_adjacencies;
-   };
-}
+  private:
+    ReferenceShapeTetrahedron();
+    std::unique_ptr<TopologicalAdjacencies> m_adjacencies;
+};
+} // namespace Topology

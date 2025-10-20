@@ -2,72 +2,69 @@
 
 #include "IMatrixKelvinRepr.h"
 #include "IndexerSymmetric.h"
-#include "MyAssert.h"
 #include "MathConstants.h"
+#include "MyAssert.h"
 
 #include <array>
 #include <stdexcept>
 
-template<int Dimension>
-class MatrixKelvinReprBase : public IMatrixKelvinRepr
+template <int Dimension> class MatrixKelvinReprBase : public IMatrixKelvinRepr
 {
-public:
-   int GetDimension() const override { return Dimension; }
-   double operator() (int row, int col)  const override { return Get(row, col); }
-   double& operator() (int, int) override;
-   double Get(int, int) const override;
-   void Set(int, int, double) override;
+  public:
+    int GetDimension() const override
+    {
+        return Dimension;
+    }
+    double operator()(int row, int col) const override
+    {
+        return Get(row, col);
+    }
+    double &operator()(int, int) override;
+    double Get(int, int) const override;
+    void Set(int, int, double) override;
 
-   virtual ~MatrixKelvinReprBase() {};
-   static const  int VectorLength = Dimension * (Dimension + 1) / 2;
-   std::span<const double> Vector() const override;
+    virtual ~MatrixKelvinReprBase(){};
+    static const int VectorLength = Dimension * (Dimension + 1) / 2;
+    std::span<const double> Vector() const override;
 
-   void CopyFrom(const MatrixKelvinReprBase<Dimension>&);
-protected:
-   explicit MatrixKelvinReprBase(const IIndexer<int>&);
+    void CopyFrom(const MatrixKelvinReprBase<Dimension> &);
 
-   const IIndexer<int>& m_indexer;
-   std::array<double, VectorLength> m_data;
+  protected:
+    explicit MatrixKelvinReprBase(const IIndexer<int> &);
+
+    const IIndexer<int> &m_indexer;
+    std::array<double, VectorLength> m_data;
 };
 
-
-template<int Dimension>
-MatrixKelvinReprBase< Dimension>::MatrixKelvinReprBase(const IIndexer<int>& indexer) : m_indexer(indexer)
+template <int Dimension>
+MatrixKelvinReprBase<Dimension>::MatrixKelvinReprBase(const IIndexer<int> &indexer) : m_indexer(indexer)
 {
-   std::fill_n(m_data.begin(), VectorLength, 0.0);
+    std::fill_n(m_data.begin(), VectorLength, 0.0);
 }
 
-
-template<int Dimension>
-double& MatrixKelvinReprBase<Dimension>::operator() (int, int)
+template <int Dimension> double &MatrixKelvinReprBase<Dimension>::operator()(int, int)
 {
-   throw std::runtime_error("Don't call me, use Get(int,int) instead");
+    throw std::runtime_error("Don't call me, use Get(int,int) instead");
 }
 
-
-template<int Dimension>
-std::span<const double> MatrixKelvinReprBase<Dimension>::Vector() const
+template <int Dimension> std::span<const double> MatrixKelvinReprBase<Dimension>::Vector() const
 {
-   return m_data;
+    return m_data;
 }
 
-template<int Dimension>
-double MatrixKelvinReprBase< Dimension>::Get(int row, int col) const
+template <int Dimension> double MatrixKelvinReprBase<Dimension>::Get(int row, int col) const
 {
-   const double factor = (row == col ? 1 : MathConstants::SQRT1_2);
-   return factor * m_data[m_indexer.ToFlat({ row, col })];
+    const double factor = (row == col ? 1 : MathConstants::SQRT1_2);
+    return factor * m_data[m_indexer.ToFlat({row, col})];
 }
 
-template<int Dimension>
-void MatrixKelvinReprBase< Dimension>::Set(int row, int col, double val)
+template <int Dimension> void MatrixKelvinReprBase<Dimension>::Set(int row, int col, double val)
 {
-   const double factor = (row == col ? 1 : MathConstants::SQRT2);
-   m_data[m_indexer.ToFlat({ row, col })] = factor * val;
+    const double factor = (row == col ? 1 : MathConstants::SQRT2);
+    m_data[m_indexer.ToFlat({row, col})] = factor * val;
 }
 
-template<int Dimension>
-void MatrixKelvinReprBase< Dimension>::CopyFrom(const MatrixKelvinReprBase<Dimension>& source)
+template <int Dimension> void MatrixKelvinReprBase<Dimension>::CopyFrom(const MatrixKelvinReprBase<Dimension> &source)
 {
-   std::copy(source.m_data.begin(), source.m_data.end(), m_data.begin());
+    std::copy(source.m_data.begin(), source.m_data.end(), m_data.begin());
 }
-

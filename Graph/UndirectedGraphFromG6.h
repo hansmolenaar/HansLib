@@ -7,5 +7,5 @@
 
 namespace UndirectedGraphFromG6
 {
-   std::unique_ptr<UndirectedGraph> Create(std::string);
+std::unique_ptr<UndirectedGraph> Create(std::string);
 }

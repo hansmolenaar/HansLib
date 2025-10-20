@@ -10,60 +10,59 @@ using namespace Utilities;
 
 TEST(Boundary1Test, singleEdge)
 {
-   TrianglesNodes trianglesNodes;
-   trianglesNodes.addTriangle(TriangleNodesOriented(0, 1, 2));
+    TrianglesNodes trianglesNodes;
+    trianglesNodes.addTriangle(TriangleNodesOriented(0, 1, 2));
 
-   const Boundary1 boundary1 = Boundary1::createFromSubSet(std::vector<NodeIndex>{2, 1}, trianglesNodes);
-   ASSERT_TRUE(boundary1.getSingletons().empty());
-   ASSERT_TRUE(boundary1.getCycles().empty());
-   ASSERT_EQ(boundary1.getPaths().size(), 1);
-   ASSERT_TRUE(str::equal(boundary1.getPaths().front(), std::vector<NodeIndex>{1, 2}));
+    const Boundary1 boundary1 = Boundary1::createFromSubSet(std::vector<NodeIndex>{2, 1}, trianglesNodes);
+    ASSERT_TRUE(boundary1.getSingletons().empty());
+    ASSERT_TRUE(boundary1.getCycles().empty());
+    ASSERT_EQ(boundary1.getPaths().size(), 1);
+    ASSERT_TRUE(str::equal(boundary1.getPaths().front(), std::vector<NodeIndex>{1, 2}));
 }
 
 TEST(Boundary1Test, singleCycle)
 {
-   TrianglesNodes trianglesNodes;
-   trianglesNodes.addTriangle(TriangleNodesOriented(0, 1, 2));
+    TrianglesNodes trianglesNodes;
+    trianglesNodes.addTriangle(TriangleNodesOriented(0, 1, 2));
 
-   const Boundary1 boundary1 = Boundary1::createFromSubSet(std::vector<NodeIndex>{1, 0, 2}, trianglesNodes);
-   ASSERT_TRUE(boundary1.getSingletons().empty());
-   ASSERT_TRUE(boundary1.getPaths().empty());
-   ASSERT_EQ(boundary1.getCycles().size(), 1);
-   ASSERT_TRUE(str::equal(boundary1.getCycles().front(), std::vector<NodeIndex>{0, 1, 2}));
+    const Boundary1 boundary1 = Boundary1::createFromSubSet(std::vector<NodeIndex>{1, 0, 2}, trianglesNodes);
+    ASSERT_TRUE(boundary1.getSingletons().empty());
+    ASSERT_TRUE(boundary1.getPaths().empty());
+    ASSERT_EQ(boundary1.getCycles().size(), 1);
+    ASSERT_TRUE(str::equal(boundary1.getCycles().front(), std::vector<NodeIndex>{0, 1, 2}));
 }
 
 TEST(Boundary1Test, singleNode)
 {
-   TrianglesNodes trianglesNodes;
-   trianglesNodes.addTriangle(TriangleNodesOriented(0, 1, 2));
+    TrianglesNodes trianglesNodes;
+    trianglesNodes.addTriangle(TriangleNodesOriented(0, 1, 2));
 
-   const Boundary1 boundary1 = Boundary1::createFromSubSet(std::vector<NodeIndex>{1}, trianglesNodes);
-   ASSERT_EQ(Single(boundary1.getSingletons()), 1);
-   ASSERT_TRUE(boundary1.getPaths().empty());
-   ASSERT_TRUE(boundary1.getCycles().empty());
+    const Boundary1 boundary1 = Boundary1::createFromSubSet(std::vector<NodeIndex>{1}, trianglesNodes);
+    ASSERT_EQ(Single(boundary1.getSingletons()), 1);
+    ASSERT_TRUE(boundary1.getPaths().empty());
+    ASSERT_TRUE(boundary1.getCycles().empty());
 }
 
 TEST(Boundary1Test, empty)
 {
-   TrianglesNodes trianglesNodes;
-   auto boundary = Boundary1::createFromBoundaryEdges(trianglesNodes);
-   ASSERT_TRUE(boundary.empty());
+    TrianglesNodes trianglesNodes;
+    auto boundary = Boundary1::createFromBoundaryEdges(trianglesNodes);
+    ASSERT_TRUE(boundary.empty());
 
-   trianglesNodes.addTriangle(TriangleNodesOriented(0, 1, 2));
-   boundary = Boundary1::createFromBoundaryEdges(trianglesNodes);
-   ASSERT_FALSE(boundary.empty());
+    trianglesNodes.addTriangle(TriangleNodesOriented(0, 1, 2));
+    boundary = Boundary1::createFromBoundaryEdges(trianglesNodes);
+    ASSERT_FALSE(boundary.empty());
 }
-
 
 TEST(Boundary1Test, OuterBoundary)
 {
-   TrianglesNodes trianglesNodes;
-   trianglesNodes.addTriangle(TriangleNodesOriented(0, 1, 2));
-   trianglesNodes.addTriangle(TriangleNodesOriented(2, 1, 3));
+    TrianglesNodes trianglesNodes;
+    trianglesNodes.addTriangle(TriangleNodesOriented(0, 1, 2));
+    trianglesNodes.addTriangle(TriangleNodesOriented(2, 1, 3));
 
-   const auto boundary1 = Boundary1::createFromBoundaryEdges(trianglesNodes);
-   ASSERT_TRUE(boundary1.getSingletons().empty());
-   ASSERT_TRUE(boundary1.getPaths().empty());
-   ASSERT_EQ(boundary1.getCycles().size(), 1);
-   ASSERT_TRUE(str::equal(boundary1.getCycles().front(), std::vector<NodeIndex>{0, 1, 3, 2}));
+    const auto boundary1 = Boundary1::createFromBoundaryEdges(trianglesNodes);
+    ASSERT_TRUE(boundary1.getSingletons().empty());
+    ASSERT_TRUE(boundary1.getPaths().empty());
+    ASSERT_EQ(boundary1.getCycles().size(), 1);
+    ASSERT_TRUE(str::equal(boundary1.getCycles().front(), std::vector<NodeIndex>{0, 1, 3, 2}));
 }

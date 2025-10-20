@@ -4,9 +4,5 @@ class IMatrixKelvinRepr;
 
 namespace IMatrixKelvinReprTest
 {
-	void TestInterface(IMatrixKelvinRepr&);
+void TestInterface(IMatrixKelvinRepr &);
 };
-
-
-
-

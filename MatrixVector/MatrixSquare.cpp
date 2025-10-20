@@ -1,34 +1,31 @@
 #include "MatrixSquare.h"
-#include "MyAssert.h"
 #include "IMatrixUtils.h"
+#include "MyAssert.h"
 
-
-MatrixSquare::MatrixSquare(int dim) : m_matrix(dim*dim), m_inverse(dim*dim), m_pivot(dim), m_indexer(dim, dim), m_dim(dim), m_dirty(true)
+MatrixSquare::MatrixSquare(int dim)
+    : m_matrix(dim * dim), m_inverse(dim * dim), m_pivot(dim), m_indexer(dim, dim), m_dim(dim), m_dirty(true)
 {
-	CheckDimensions(*this);
-	std::fill(m_matrix.begin(), m_matrix.end(), 0.0);
+    CheckDimensions(*this);
+    std::fill(m_matrix.begin(), m_matrix.end(), 0.0);
 }
 
-
-double MatrixSquare::operator() (int row, int col)  const
+double MatrixSquare::operator()(int row, int col) const
 {
-	CheckRowCol(*this, row, col);
-	return m_matrix[row*m_dim + col];
+    CheckRowCol(*this, row, col);
+    return m_matrix[row * m_dim + col];
 }
 
-double& MatrixSquare::operator() (int row, int col)
+double &MatrixSquare::operator()(int row, int col)
 {
-	CheckRowCol(*this, row, col);
-	m_dirty = true;
-	return m_matrix[row*m_dim + col];
+    CheckRowCol(*this, row, col);
+    m_dirty = true;
+    return m_matrix[row * m_dim + col];
 }
-
 
 int MatrixSquare::GetDimension() const
 {
-	return m_dim;
+    return m_dim;
 }
-
 
 // Found on the internet
 
@@ -96,56 +93,60 @@ int MatrixSquare::GetDimension() const
 
 static int Crout_LU_Decomposition_with_Pivoting(double *A, int pivot[], int n)
 {
-	int i, j, k;
-	double *p_k, *p_row, *p_col = nullptr;
-	double max;
+    int i, j, k;
+    double *p_k, *p_row, *p_col = nullptr;
+    double max;
 
-	//         For each row and column, k = 0, ..., n-1,
+    //         For each row and column, k = 0, ..., n-1,
 
-	for (k = 0, p_k = A; k < n; p_k += n, k++) {
+    for (k = 0, p_k = A; k < n; p_k += n, k++)
+    {
 
-		//            find the pivot row
+        //            find the pivot row
 
-		pivot[k] = k;
-		max = std::abs(*(p_k + k));
-		for (j = k + 1, p_row = p_k + n; j < n; j++, p_row += n) {
-			if (max < std::abs(*(p_row + k))) {
-				max = std::abs(*(p_row + k));
-				pivot[k] = j;
-				p_col = p_row;
-			}
-		}
+        pivot[k] = k;
+        max = std::abs(*(p_k + k));
+        for (j = k + 1, p_row = p_k + n; j < n; j++, p_row += n)
+        {
+            if (max < std::abs(*(p_row + k)))
+            {
+                max = std::abs(*(p_row + k));
+                pivot[k] = j;
+                p_col = p_row;
+            }
+        }
 
-		//     and if the pivot row differs from the current row, then
-		//     interchange the two rows.
+        //     and if the pivot row differs from the current row, then
+        //     interchange the two rows.
 
-		if (pivot[k] != k)
-			for (j = 0; j < n; j++) {
-				max = *(p_k + j);
-				*(p_k + j) = *(p_col + j);
-				*(p_col + j) = max;
-			}
+        if (pivot[k] != k)
+            for (j = 0; j < n; j++)
+            {
+                max = *(p_k + j);
+                *(p_k + j) = *(p_col + j);
+                *(p_col + j) = max;
+            }
 
-		//                and if the matrix is singular, return error
+        //                and if the matrix is singular, return error
 
-		if (*(p_k + k) == 0.0) return -1;
+        if (*(p_k + k) == 0.0)
+            return -1;
 
-		//      otherwise find the upper triangular matrix elements for row k. 
+        //      otherwise find the upper triangular matrix elements for row k.
 
-		for (j = k + 1; j < n; j++) {
-			*(p_k + j) /= *(p_k + k);
-		}
+        for (j = k + 1; j < n; j++)
+        {
+            *(p_k + j) /= *(p_k + k);
+        }
 
-		//            update remaining matrix
+        //            update remaining matrix
 
-		for (i = k + 1, p_row = p_k + n; i < n; p_row += n, i++)
-			for (j = k + 1; j < n; j++)
-				*(p_row + j) -= *(p_row + k) * *(p_k + j);
-
-	}
-	return 0;
+        for (i = k + 1, p_row = p_k + n; i < n; p_row += n, i++)
+            for (j = k + 1; j < n; j++)
+                *(p_row + j) -= *(p_row + k) * *(p_k + j);
+    }
+    return 0;
 }
-
 
 ////////////////////////////////////////////////////////////////////////////////
 //  int Crout_LU_with_Pivoting_Solve(double *LU, double B[], int pivot[],     //
@@ -192,66 +193,77 @@ static int Crout_LU_Decomposition_with_Pivoting(double *A, int pivot[], int n)
 //     }                                                                      //
 ////////////////////////////////////////////////////////////////////////////////
 //                                                                            //
-static int Crout_LU_with_Pivoting_Solve(double *LU, double B[], const int pivot[],
-	double x[], int n)
+static int Crout_LU_with_Pivoting_Solve(double *LU, double B[], const int pivot[], double x[], int n)
 {
-	int i, k;
-	double *p_k;
-	double dum;
+    int i, k;
+    double *p_k;
+    double dum;
 
-	//         Solve the linear equation Lx = B for x, where L is a lower
-	//         triangular matrix.                                      
+    //         Solve the linear equation Lx = B for x, where L is a lower
+    //         triangular matrix.
 
-	for (k = 0, p_k = LU; k < n; p_k += n, k++) {
-		if (pivot[k] != k) { dum = B[k]; B[k] = B[pivot[k]]; B[pivot[k]] = dum; }
-		x[k] = B[k];
-		for (i = 0; i < k; i++) x[k] -= x[i] * *(p_k + i);
-		x[k] /= *(p_k + k);
-	}
+    for (k = 0, p_k = LU; k < n; p_k += n, k++)
+    {
+        if (pivot[k] != k)
+        {
+            dum = B[k];
+            B[k] = B[pivot[k]];
+            B[pivot[k]] = dum;
+        }
+        x[k] = B[k];
+        for (i = 0; i < k; i++)
+            x[k] -= x[i] * *(p_k + i);
+        x[k] /= *(p_k + k);
+    }
 
-	//         Solve the linear equation Ux = y, where y is the solution
-	//         obtained above of Lx = B and U is an upper triangular matrix.
-	//         The diagonal part of the upper triangular part of the matrix is
-	//         assumed to be 1.0.
+    //         Solve the linear equation Ux = y, where y is the solution
+    //         obtained above of Lx = B and U is an upper triangular matrix.
+    //         The diagonal part of the upper triangular part of the matrix is
+    //         assumed to be 1.0.
 
-	for (k = n - 1, p_k = LU + n * (n - 1); k >= 0; k--, p_k -= n) {
-		if (pivot[k] != k) { dum = B[k]; B[k] = B[pivot[k]]; B[pivot[k]] = dum; }
-		for (i = k + 1; i < n; i++) x[k] -= x[i] * *(p_k + i);
-		if (*(p_k + k) == 0.0) return -1;
-	}
+    for (k = n - 1, p_k = LU + n * (n - 1); k >= 0; k--, p_k -= n)
+    {
+        if (pivot[k] != k)
+        {
+            dum = B[k];
+            B[k] = B[pivot[k]];
+            B[pivot[k]] = dum;
+        }
+        for (i = k + 1; i < n; i++)
+            x[k] -= x[i] * *(p_k + i);
+        if (*(p_k + k) == 0.0)
+            return -1;
+    }
 
-	return 0;
+    return 0;
 }
 
-bool MatrixSquare::Solve(std::span<const double> rhs, std::span< double> sol)
+bool MatrixSquare::Solve(std::span<const double> rhs, std::span<double> sol)
 {
-	Utilities::MyAssert(rhs.size() == m_dim);
-	Utilities::MyAssert(sol.size() == m_dim);
-	int status = 0;
-	if (m_dirty)
-	{
-		std::copy(m_matrix.begin(), m_matrix.end(), m_inverse.begin());
-		status = Crout_LU_Decomposition_with_Pivoting(m_inverse.data(), m_pivot.data(), m_dim);
-		if (status != 0)
-		{
-			return false;
-		}
-		m_dirty = false;
-	}
-	// Make copy of rhs, it will get reordered
-	std::vector<double> b(rhs.begin(), rhs.end());
-	status = Crout_LU_with_Pivoting_Solve(m_inverse.data(), b.data(), m_pivot.data(), sol.data(), m_dim);
-	if (status != 0)
-	{
-		return false;
-	}
-	return true;
+    Utilities::MyAssert(rhs.size() == m_dim);
+    Utilities::MyAssert(sol.size() == m_dim);
+    int status = 0;
+    if (m_dirty)
+    {
+        std::copy(m_matrix.begin(), m_matrix.end(), m_inverse.begin());
+        status = Crout_LU_Decomposition_with_Pivoting(m_inverse.data(), m_pivot.data(), m_dim);
+        if (status != 0)
+        {
+            return false;
+        }
+        m_dirty = false;
+    }
+    // Make copy of rhs, it will get reordered
+    std::vector<double> b(rhs.begin(), rhs.end());
+    status = Crout_LU_with_Pivoting_Solve(m_inverse.data(), b.data(), m_pivot.data(), sol.data(), m_dim);
+    if (status != 0)
+    {
+        return false;
+    }
+    return true;
 }
 
-
-const IIndexer<int>& MatrixSquare::GetIndexer()
+const IIndexer<int> &MatrixSquare::GetIndexer()
 {
-	return m_indexer;
+    return m_indexer;
 }
-
-

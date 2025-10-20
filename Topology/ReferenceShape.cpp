@@ -2,12 +2,12 @@
 
 using namespace Topology;
 
-ReferenceShape::ReferenceShape(std::unique_ptr<ITopologicalAdjacencies>&& adjacencies) :
-   m_adjacencies(std::move(adjacencies))
+ReferenceShape::ReferenceShape(std::unique_ptr<ITopologicalAdjacencies> &&adjacencies)
+    : m_adjacencies(std::move(adjacencies))
 {
 }
 
-const ITopologicalAdjacencies& ReferenceShape::getAdjacencies() const
+const ITopologicalAdjacencies &ReferenceShape::getAdjacencies() const
 {
-   return *m_adjacencies;
+    return *m_adjacencies;
 }

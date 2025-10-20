@@ -2,7 +2,7 @@
 
 #include "MeshGenerationDefines.h"
 
-namespace  CellQuality2
+namespace CellQuality2
 {
-   MeshGeneration::CellQuality2Fun MinimumAngle;
+MeshGeneration::CellQuality2Fun MinimumAngle;
 };

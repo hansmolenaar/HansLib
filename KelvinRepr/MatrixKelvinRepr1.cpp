@@ -5,7 +5,7 @@
 
 namespace
 {
-	static const IndexerKelvinRepr1 indexer;
+static const IndexerKelvinRepr1 indexer;
 }
 
 MatrixKelvinRepr1::MatrixKelvinRepr1() : MatrixKelvinReprBase(indexer)

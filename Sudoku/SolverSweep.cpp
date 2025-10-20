@@ -1,126 +1,117 @@
 #include "SolverSweep.h"
-#include "SudokuDefines.h"
 #include "FieldInfoStatic.h"
 #include "SubSetPotentialsSweep.h"
+#include "SudokuDefines.h"
 
-#include<boost/container/static_vector.hpp>
+#include <boost/container/static_vector.hpp>
 
 using namespace Sudoku;
 
-
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-SolverSweepSubSet::SolverSweepSubSet(RowColBoxType type, ISubSetPotentialsSweep& sweep) : m_type(type), m_subSetSweep(sweep)
-{}
-
-SolverSweepResult SolverSweepSubSet::operator()(Potentials& potentials)
-{
-   bool anyChange = false;
-   for (auto index : RowColBoxAll)
-   {
-      auto subSetPotentials = potentials.getSubSetPotentials(m_type, index);
-      if (m_subSetSweep(subSetPotentials))
-      {
-         anyChange = true;
-      }
-   }
-
-   if (potentials.isSolved()) return SolverSweepResult::Solved;
-   if (!anyChange) return SolverSweepResult::NoChange;
-   return SolverSweepResult::Change;
-}
-
-
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-SolverSweepClusters::SolverSweepClusters() :
-   m_sweepCluster(),
-   m_allTypes(m_sweepCluster)
+SolverSweepSubSet::SolverSweepSubSet(RowColBoxType type, ISubSetPotentialsSweep &sweep)
+    : m_type(type), m_subSetSweep(sweep)
 {
 }
 
-SolverSweepResult SolverSweepClusters::operator()(Potentials& potentials)
+SolverSweepResult SolverSweepSubSet::operator()(Potentials &potentials)
 {
-   return m_allTypes(potentials);
+    bool anyChange = false;
+    for (auto index : RowColBoxAll)
+    {
+        auto subSetPotentials = potentials.getSubSetPotentials(m_type, index);
+        if (m_subSetSweep(subSetPotentials))
+        {
+            anyChange = true;
+        }
+    }
+
+    if (potentials.isSolved())
+        return SolverSweepResult::Solved;
+    if (!anyChange)
+        return SolverSweepResult::NoChange;
+    return SolverSweepResult::Change;
 }
 
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-
-SolverSweepIterate::SolverSweepIterate(ISolverSweep& sweep) : m_sweep(sweep)
-{}
-
-SolverSweepResult SolverSweepIterate::operator()(Potentials& potentials)
+SolverSweepClusters::SolverSweepClusters() : m_sweepCluster(), m_allTypes(m_sweepCluster)
 {
-   SolverSweepResult result = SolverSweepResult::NoChange;
-   SolverSweepResult resultSweep = SolverSweepResult::NoChange;
-   do
-   {
-      resultSweep = m_sweep(potentials);
-      result = std::max(result, resultSweep);
-   } while (resultSweep == SolverSweepResult::Change);
-   return result;
+}
 
+SolverSweepResult SolverSweepClusters::operator()(Potentials &potentials)
+{
+    return m_allTypes(potentials);
+}
+
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+SolverSweepIterate::SolverSweepIterate(ISolverSweep &sweep) : m_sweep(sweep)
+{
+}
+
+SolverSweepResult SolverSweepIterate::operator()(Potentials &potentials)
+{
+    SolverSweepResult result = SolverSweepResult::NoChange;
+    SolverSweepResult resultSweep = SolverSweepResult::NoChange;
+    do
+    {
+        resultSweep = m_sweep(potentials);
+        result = std::max(result, resultSweep);
+    } while (resultSweep == SolverSweepResult::Change);
+    return result;
 };
 
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-SolverSweepComposite::SolverSweepComposite(std::initializer_list<ISolverSweep*> sweeps) :
-   m_sweeps(sweeps)
-{}
-
-SolverSweepResult SolverSweepComposite::operator()(Potentials& potentials)
+SolverSweepComposite::SolverSweepComposite(std::initializer_list<ISolverSweep *> sweeps) : m_sweeps(sweeps)
 {
-   SolverSweepResult result = SolverSweepResult::NoChange;
-   for (auto* sweep : m_sweeps)
-   {
-      result = std::max(result, (*sweep)(potentials));
-      if (result == SolverSweepResult::Solved) break;
-   }
-   return result;
 }
 
+SolverSweepResult SolverSweepComposite::operator()(Potentials &potentials)
+{
+    SolverSweepResult result = SolverSweepResult::NoChange;
+    for (auto *sweep : m_sweeps)
+    {
+        result = std::max(result, (*sweep)(potentials));
+        if (result == SolverSweepResult::Solved)
+            break;
+    }
+    return result;
+}
 
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-SolverSweepSubSetTypeAll::SolverSweepSubSetTypeAll(ISubSetPotentialsSweep& sweep) :
-   m_row(RowColBoxType::Row, sweep),
-   m_col(RowColBoxType::Col, sweep),
-   m_box(RowColBoxType::Box, sweep),
-   m_composite({ &m_row, &m_col, &m_box })
-{}
-
-
-SolverSweepResult SolverSweepSubSetTypeAll::operator()(Potentials& potentials)
+SolverSweepSubSetTypeAll::SolverSweepSubSetTypeAll(ISubSetPotentialsSweep &sweep)
+    : m_row(RowColBoxType::Row, sweep), m_col(RowColBoxType::Col, sweep), m_box(RowColBoxType::Box, sweep),
+      m_composite({&m_row, &m_col, &m_box})
 {
-   return m_composite(potentials);
+}
+
+SolverSweepResult SolverSweepSubSetTypeAll::operator()(Potentials &potentials)
+{
+    return m_composite(potentials);
 }
 
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-SolverSweepTrivial::SolverSweepTrivial() :
-   m_sweepSingles(),
-   m_allTypes(m_sweepSingles),
-   m_iterate(m_allTypes)
+SolverSweepTrivial::SolverSweepTrivial() : m_sweepSingles(), m_allTypes(m_sweepSingles), m_iterate(m_allTypes)
 {
 }
 
-SolverSweepResult SolverSweepTrivial::operator()(Potentials& potentials)
+SolverSweepResult SolverSweepTrivial::operator()(Potentials &potentials)
 {
-   return m_iterate(potentials);
+    return m_iterate(potentials);
 }
 
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-SolverSweep::SolverSweep() :
-   m_sweepTrival(),
-   m_sweepCluster(),
-   m_composite({&m_sweepTrival, &m_sweepCluster}),
-   m_iterate(m_composite)
+SolverSweep::SolverSweep()
+    : m_sweepTrival(), m_sweepCluster(), m_composite({&m_sweepTrival, &m_sweepCluster}), m_iterate(m_composite)
 {
 }
 
-SolverSweepResult SolverSweep::operator()(Potentials& potentials)
+SolverSweepResult SolverSweep::operator()(Potentials &potentials)
 {
-   return m_iterate(potentials);
+    return m_iterate(potentials);
 }

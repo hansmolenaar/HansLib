@@ -4,11 +4,12 @@
 
 namespace ML
 {
-   class AnnLayerLinear : public ML::AnnLayerUniform
-   {
-   public:
-      AnnLayerLinear(size_t dim);
-   private:
-      size_t m_size;
-   };
-}
+class AnnLayerLinear : public ML::AnnLayerUniform
+{
+  public:
+    AnnLayerLinear(size_t dim);
+
+  private:
+    size_t m_size;
+};
+} // namespace ML

@@ -5,43 +5,62 @@
 
 namespace Topology
 {
-   class TetrahedronNodesOriented
-   {
-   public:
-      // Nodes are permuted such that the first node is the smallest, the last the biggest and the permutation is even
-      TetrahedronNodesOriented(NodeIndex n0, NodeIndex n1, NodeIndex n2, NodeIndex n3);
-      explicit TetrahedronNodesOriented(const std::array<NodeIndex, NumCornersOnTetrahedron>& nodes);
+class TetrahedronNodesOriented
+{
+  public:
+    // Nodes are permuted such that the first node is the smallest, the last the biggest and the permutation is even
+    TetrahedronNodesOriented(NodeIndex n0, NodeIndex n1, NodeIndex n2, NodeIndex n3);
+    explicit TetrahedronNodesOriented(const std::array<NodeIndex, NumCornersOnTetrahedron> &nodes);
 
-      NodeIndex operator[](size_t n) const { return m_nodes[n]; };
-      NodeIndex at(size_t n) const { return m_nodes[n]; };
-      auto begin() const { return m_nodes.begin(); }
-      auto end() const { return m_nodes.end(); }
-      auto operator<=>(const TetrahedronNodesOriented& other) const { return m_nodes <=> other.m_nodes; };
-      auto operator==(const TetrahedronNodesOriented& other) const { return m_nodes == other.m_nodes; };
+    NodeIndex operator[](size_t n) const
+    {
+        return m_nodes[n];
+    };
+    NodeIndex at(size_t n) const
+    {
+        return m_nodes[n];
+    };
+    auto begin() const
+    {
+        return m_nodes.begin();
+    }
+    auto end() const
+    {
+        return m_nodes.end();
+    }
+    auto operator<=>(const TetrahedronNodesOriented &other) const
+    {
+        return m_nodes <=> other.m_nodes;
+    };
+    auto operator==(const TetrahedronNodesOriented &other) const
+    {
+        return m_nodes == other.m_nodes;
+    };
 
-      friend std::ostream& operator<<(std::ostream& os, const TetrahedronNodesOriented tet)
-      {
-         return StreamUtils::insertList(os, tet);
-      }
+    friend std::ostream &operator<<(std::ostream &os, const TetrahedronNodesOriented tet)
+    {
+        return StreamUtils::insertList(os, tet);
+    }
 
-      bool contains(NodeIndex node) const;
-      //bool contains(const EdgeNodesDirected& edge) const { return m_triangle.contains(edge); };
-      //NodeIndex oppositeNode(const EdgeNodesDirected& edge) const { return m_triangle.oppositeNode(edge); }
-      //const TriangleNodes& asTriangleNodes() const { return m_triangle; }
+    bool contains(NodeIndex node) const;
+    // bool contains(const EdgeNodesDirected& edge) const { return m_triangle.contains(edge); };
+    // NodeIndex oppositeNode(const EdgeNodesDirected& edge) const { return m_triangle.oppositeNode(edge); }
+    // const TriangleNodes& asTriangleNodes() const { return m_triangle; }
 
-      // returns std::numeric_limtis<size_t>::max() if not found
-      size_t find(NodeIndex node) const;
+    // returns std::numeric_limtis<size_t>::max() if not found
+    size_t find(NodeIndex node) const;
 
-      // If the tetrahedron has positive volume, the normals to the faces are outward pointing.
-      std::array<TriangleNodesOriented, NumFacesOnTetrahedron> getFaces() const;
+    // If the tetrahedron has positive volume, the normals to the faces are outward pointing.
+    std::array<TriangleNodesOriented, NumFacesOnTetrahedron> getFaces() const;
 
-      std::array<EdgeNodesSorted, NumEdgesOnTetrahedron> getEdges() const;
+    std::array<EdgeNodesSorted, NumEdgesOnTetrahedron> getEdges() const;
 
-      static std::array<NodeIndex, NumCornersOnTetrahedron> orient(NodeIndex n0, NodeIndex n1, NodeIndex n2, NodeIndex n3);
-      static std::array<NodeIndex, NumCornersOnTetrahedron> orient(std::array<NodeIndex, NumCornersOnTetrahedron> nodes);
-   private:
-      std::array<NodeIndex, NumCornersOnTetrahedron> m_nodes;
-   };
+    static std::array<NodeIndex, NumCornersOnTetrahedron> orient(NodeIndex n0, NodeIndex n1, NodeIndex n2,
+                                                                 NodeIndex n3);
+    static std::array<NodeIndex, NumCornersOnTetrahedron> orient(std::array<NodeIndex, NumCornersOnTetrahedron> nodes);
 
+  private:
+    std::array<NodeIndex, NumCornersOnTetrahedron> m_nodes;
+};
 
-}
+} // namespace Topology

@@ -5,13 +5,12 @@
 
 TEST(ActionReflectOriginTest, Basic1)
 {
-   const ActionReflectOrigin<1> groupAction;
-   Test_IFinitePointGroupAction(groupAction, GetRandomPoint<1>());
+    const ActionReflectOrigin<1> groupAction;
+    Test_IFinitePointGroupAction(groupAction, GetRandomPoint<1>());
 }
-
 
 TEST(ActionReflectOriginTest, Reflect3D)
 {
-   const ActionReflectOrigin<3> groupAction;
-   Test_IFinitePointGroupAction(groupAction, GetRandomPoint<3>());
+    const ActionReflectOrigin<3> groupAction;
+    Test_IFinitePointGroupAction(groupAction, GetRandomPoint<3>());
 }
