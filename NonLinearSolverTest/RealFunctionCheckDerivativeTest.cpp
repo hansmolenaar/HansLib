@@ -5,6 +5,10 @@
 #include "MultiVariableMonomial.h"
 #include "SingleVariableMonomial.h"
 
+#include <gmock/gmock.h>
+
+using ::testing::HasSubstr;
+
 const double c_eps = 1.0e-10;
 
 TEST(RealFunctionCheckDerivativeTest, CheckSingleSucces)
@@ -100,6 +104,36 @@ TEST(RealFunctionCheckDerivativeTest, CheckMultipleFailure)
             {
                 // and this tests that it has the correct message
                 EXPECT_STREQ("Problem with derivative!", e.what());
+                throw;
+            }
+        },
+        MyException);
+}
+
+TEST(RealFunctionCheckDerivativeTest, CheckExtrapolationSingleSucces)
+{
+    SingleVariableMonomial fie(2);
+    std::vector<double> residuals(4);
+    RealFunctionCheckDerivative::CheckExtrapolation(fie, 2.0, 4.0, 0.1, residuals);
+}
+
+TEST(RealFunctionCheckDerivativeTest, CheckExtrapolationSingleFailure)
+{
+    SingleVariableMonomial fie(2);
+    std::vector<double> residuals(4);
+    constexpr double deriv2 = 5.0;
+
+    // this tests _that_ the expected exception is thrown
+    EXPECT_THROW(
+        {
+            try
+            {
+                RealFunctionCheckDerivative::CheckExtrapolation(fie, 2.0, deriv2, 0.1, residuals);
+            }
+            catch (const MyException &e)
+            {
+                // and this tests that it has the correct message
+                EXPECT_THAT(e.what(), HasSubstr("CheckExtrapolation not converged, last residuals:"));
                 throw;
             }
         },

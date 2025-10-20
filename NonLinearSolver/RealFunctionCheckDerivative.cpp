@@ -6,6 +6,7 @@
 #include "SingleVariableRealValuedFunction.h"
 
 #include <functional>
+#include <sstream>
 
 void RealFunctionCheckDerivative::Check(ISingleVariableRealValuedFunction &fie, double x, double delx, bool isLinear)
 {
@@ -63,5 +64,27 @@ void RealFunctionCheckDerivative::Check(const IRealFunction &system, std::span<c
                 Check(fie, vals[var], delx[var], false);
             }
         }
+    }
+}
+
+void RealFunctionCheckDerivative::CheckExtrapolation(ISingleVariableRealValuedFunction &fie, double x, double deriv,
+                                                     double delx, std::span<double> residuals)
+{
+    const auto siz = residuals.size();
+    Utilities::MyAssert(siz > 1);
+    const double val0 = fie(x);
+    for (size_t n = 0; n < siz; ++n)
+    {
+        const double val = fie(x + delx);
+        residuals[n] = std::abs(val0 + deriv * delx - val);
+        delx /= 2.0;
+    }
+    const bool isConverged = residuals[siz - 1] <= residuals[siz - 2] / 3.0;
+    if (!isConverged)
+    {
+        std::stringstream msg;
+        msg << "CheckExtrapolation not converged, last residuals: " << residuals[siz - 2] << " " << residuals[siz - 1];
+        msg << " fraction: " << residuals[siz - 1] / residuals[siz - 2];
+        Utilities::MyAssert(isConverged, msg.str());
     }
 }
