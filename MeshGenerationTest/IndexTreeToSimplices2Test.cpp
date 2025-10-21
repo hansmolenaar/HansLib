@@ -101,7 +101,7 @@ TEST(IndexTreeToSimplices2Test, RefinedToVtk_1)
 
     ProjectToVtk p2v("IndexTreeToSimplices2Test_RefinedToVtk_1");
     IndexTreeToSimplices2::toVtkData(p2v, triangles);
-    //Paraview::WriteList(p2v.get());
+    // Paraview::WriteList(p2v.get());
 
     const auto vtkData = p2v.get().front();
     ASSERT_EQ(90, vtkData->getNumCells());

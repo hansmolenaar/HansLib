@@ -107,7 +107,7 @@ TEST(IndexTreeToSimplices3Test, Level1ToVtk)
     const auto *vtkMesh = toVtk.get().front();
     ASSERT_EQ(8 * ReferenceShapeCube::numTetsInStandardSplit, vtkMesh->getNumCells());
     ASSERT_EQ(27, vtkMesh->getNumNodes());
-    //Paraview::WriteList(toVtk.get());
+    // Paraview::WriteList(toVtk.get());
 
     const auto boundaryFaces = allTets.getBoundaryFaces();
     ASSERT_EQ(boundaryFaces.getNumTriangles(), 48);
@@ -157,5 +157,5 @@ TEST(IndexTreeToSimplices3Test, SingleRefinedCell)
     const auto tets = IndexTreeToSimplices3::Create(tree);
     ProjectToVtk toVtk("IndexTreeToSimplices3Test_SingleRefinedCell");
     IndexTreeToSimplices3::cellsToVtkData(toVtk, tets);
-    //Paraview::WriteList(toVtk.get());
+    // Paraview::WriteList(toVtk.get());
 }
