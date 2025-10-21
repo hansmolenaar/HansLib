@@ -33,7 +33,7 @@ void TestCollocationPoints(const ISingleVariableRealValuedFunction &expect, cons
 
 void CollocationPointsToFile(std::string functionName, const HierApproximation &approx)
 {
-    std::ofstream ofs(Plotting::GetFile(functionName));
+    std::ofstream ofs(Plotting::GetTextFile(functionName));
     ofs << "x" << " , " << "y" << "\n";
     for (const auto &xvec : approx.getCollocationPoints())
     {

@@ -62,5 +62,5 @@ TEST(HierBasisFunctionTest, Factory_plot)
     const auto *fiePtr = factory.get(HierMultiIndex(std::vector<HierLevelIndex>{{2, 1}, {2, 3}}));
     ASSERT_NEAR((*fiePtr)(std::array<double, 2>{0.25, 0.75}), 1.0, Epsilon);
     const auto fie = [&fiePtr](const std::vector<double> &x) { return (*fiePtr)(x); };
-    Plotting::MdFunctionsOnUnityToFile("Testje", 2, {fie}, 100);
+    Plotting::MdFunctionsOnUnityToFile("Testje.txt", 2, {fie}, 100);
 }

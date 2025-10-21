@@ -8,7 +8,8 @@
 namespace Plotting
 {
 std::filesystem::path GenerateFullFilePath(const std::string &name);
-std::ofstream GetFile(const std::string &name);
+std::ofstream GetFile(const std::string& nameWithExtension);
+std::ofstream GetTextFile(const std::string& nameWithoutTxtExtension);
 std::string PlotFunction(std::initializer_list<std::function<double(double)>> functions, double xmin, double xmax,
                          int npoints);
 std::vector<std::vector<double>> EvaluateFunctions(std::initializer_list<std::function<double(double)>> functions,

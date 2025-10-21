@@ -20,7 +20,7 @@ namespace
 void CollocationPointsToFile(std::string functionName, const HierApproximation &approx)
 {
     const size_t dim = approx.getFactory().getDimension();
-    std::ofstream ofs(Plotting::GetFile(functionName));
+    std::ofstream ofs(Plotting::GetTextFile(functionName));
     for (auto d = 0; d < dim; ++d)
     {
         if (d > 0)
@@ -156,9 +156,6 @@ TEST(SparseGridOptimizerTest, Square2D_AlphaHalf)
     const auto result = IterativeMinimizationController::Iterate(optimizer, maxStep);
     const auto &approx = optimizer.getApproximation();
 
-    // TODO
-    // ASSERT_EQ(optimizer.getApproximation().getAllTreeNodesRO().size(), 118);
-    // ASSERT_EQ(problem.getOriginalProblem().Function->getNumEvaluations(), 118);
     ASSERT_EQ(optimizer.getApproximation().getAllTreeNodesRO().size(), 117);
     ASSERT_EQ(problem.getOriginalProblem().Function->getNumEvaluations(), 117);
 

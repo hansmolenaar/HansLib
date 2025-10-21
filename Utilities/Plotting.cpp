@@ -76,19 +76,32 @@ void Plotting::ToStream(std::ostream &stream, const std::vector<std::vector<doub
 std::filesystem::path Plotting::GenerateFullFilePath(const std::string &name)
 {
     std::filesystem::path path{getOutputDir()};
-    const auto fileName = name + ".txt";
-    path /= fileName;
+    path /= name;
     return path;
 }
 
-std::ofstream Plotting::GetFile(const std::string &name)
+std::ofstream Plotting::GetFile(const std::string& nameWithExtension )
 {
-    const auto &fullPath = Plotting::GenerateFullFilePath(name);
+    const auto fullPath = Plotting::GenerateFullFilePath(nameWithExtension);
     std::ofstream ofs(fullPath);
     if (!ofs.is_open())
+    {
         throw MyException(std::string("Unable to create file ") + fullPath.string());
+    }
     return ofs;
 }
+
+std::ofstream Plotting::GetTextFile(const std::string& nameWithoutTxtExtension)
+{
+    const auto fullPath = Plotting::GenerateFullFilePath(nameWithoutTxtExtension + ".txt");
+    std::ofstream ofs(fullPath);
+    if (!ofs.is_open())
+    {
+        throw MyException(std::string("Unable to create file ") + fullPath.string());
+    }
+    return ofs;
+}
+
 
 void Plotting::ToStream(std::ostream &stream, const std::vector<std::string> &headers,
                         const std::vector<std::vector<double>> &values)

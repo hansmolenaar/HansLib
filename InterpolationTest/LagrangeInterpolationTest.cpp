@@ -66,7 +66,7 @@ TEST(LagrangeInterpolationTest, SkewedHat)
                                      [&lagrangeChebyshev](double x) { return lagrangeChebyshev.Evaluate(x); }},
                                     0.0, 1.0, 100);
     Plotting::ToFile(std::vector<std::string>{"x", "Exact", "Lagrange-Equidistant", "Lagrange-Chebyshev"}, values,
-                     "SkewedHatFunction");
+                     "SkewedHatFunction.txt");
 }
 
 TEST(LagrangeInterpolationTest, Step)
@@ -90,5 +90,5 @@ TEST(LagrangeInterpolationTest, Step)
                                      [&lagrangeChebyshev](double x) { return lagrangeChebyshev.Evaluate(x); }},
                                     0.0, 1.0, 200);
     Plotting::ToFile(std::vector<std::string>{"x", "Exact", "Lagrange-Equidistant", "Lagrange-Chebyshev"}, values,
-                     "Stepfunction");
+                     "Stepfunction.txt");
 }

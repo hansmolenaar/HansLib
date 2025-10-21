@@ -76,7 +76,7 @@ TEST(ProjectToVtkTest, TwoTouchingTriangles)
     p2v.addTrianglesAndBoundaries(tnodes, points, "mesh");
 
     const std::vector<const Vtk::VtkData *> vtkDatas = p2v.get();
-    Paraview::WriteList(vtkDatas);
+    //Paraview::WriteList(vtkDatas);
     ASSERT_EQ(vtkDatas.size(), 5);
     ASSERT_EQ(vtkDatas.at(0)->getName().item, "mesh");
     ASSERT_EQ(vtkDatas.at(1)->getName().item, "mesh_PART_0");
@@ -101,10 +101,10 @@ TEST(ProjectToVtkTest, AddTetrahedronsAndBoundaries)
     p2v.addTetrahedronsAndBoundaries(tnodes, points, "mesh");
 
     const std::vector<const Vtk::VtkData *> vtkDatas = p2v.get();
-    Paraview::WriteList(vtkDatas);
+    //Paraview::WriteList(vtkDatas);
     ASSERT_EQ(vtkDatas.size(), 3);
     ASSERT_EQ(vtkDatas.at(0)->getName().item, "mesh");
     ASSERT_EQ(vtkDatas.at(1)->getName().item, "mesh_BDY");
     ASSERT_EQ(vtkDatas.at(2)->getName().item, "mesh_BDY_PART_0");
-    Paraview::WriteList(vtkDatas);
+    //Paraview::WriteList(vtkDatas);
 }

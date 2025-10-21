@@ -129,7 +129,7 @@ TEST(MeshGeneration2Test, Ball)
 
     ProjectToVtk p2v("MeshGeneration2Test_Ball");
     IndexTreeToSimplices2::toVtkData(p2v, mesh.getBaseTriangles());
-    Paraview::WriteList(p2v.get());
+    //Paraview::WriteList(p2v.get());
 
     const auto vtkData = p2v.get().front();
     ASSERT_EQ(1016, vtkData->getNumCells());
@@ -530,7 +530,7 @@ TEST(MeshGeneration2Test, Sphere2_intersect_5)
 TEST(MeshGeneration2Test, Triangle2_1)
 {
     const std::string project = "MeshGeneration2Test_Triangle2_1";
-    const auto polygonPoints = generateRegularPolygon(3, 0.1); // TODO 0
+    const auto polygonPoints = generateRegularPolygon(3, 0.1);
     const Polygon2AsRegion<double> region(polygonPoints, "triangle");
 
     MeshingSettingsStandard<2> settings(6, 1.25);
@@ -566,6 +566,49 @@ TEST(MeshGeneration2Test, Triangle2_1)
     p2v.addTrianglesAndReconstructions(mesh.getTriangles(), mesh.getReconstructions(), mesh.getPoints());
     // Paraview::WriteList(p2v.get());
 }
+
+
+TEST(MeshGeneration2Test, Triangle2_1_0)
+{
+    const std::string project = "MeshGeneration2Test_Triangle2_1_0";
+    constexpr double angle = 0;
+    const auto polygonPoints = generateRegularPolygon(3, angle);
+    const Polygon2AsRegion<double> region(polygonPoints, "triangle");
+
+    MeshingSettingsStandard<2> settings(4, 1.25);
+    Mesh2 mesh;
+    mesh.setBaseTriangles(MeshGeneration2::GenerateBaseTriangulation(region, settings));
+
+    const auto bbInitial = settings.getInitialBb(region);
+    MeshGeneration2::BaseTriangulationToWorld(mesh.getBaseTriangles(), settings.getGeometryPredicate(), bbInitial,
+                                              mesh.createPoints(), mesh.getTriangles(), settings.getLogger());
+
+    std::vector<const IManifold0D2 *> manifolds0 = region.getManifoldsOfType<const IManifold0D2 *>();
+    MeshGeneration2::AddAllManifolds0(manifolds0, mesh.getTriangles(), mesh.setManifoldsAndNodes(), mesh.getSetPoints(),
+                                      settings.getLogger());
+
+    for (const auto *manifold1 : region.getManifoldsOfType<const IManifold1D2<GeomType> *>())
+    {
+        MeshGeneration2::AddManifold1Intersections(*manifold1, mesh.getTriangles(), mesh.setManifoldsAndNodes(),
+                                                   mesh.getSetPoints(), settings.getLogger());
+    }
+
+    mesh.addReconstructions(MeshGeneration2::createReconstructions(region, mesh.getTriangles(),
+                                                                   mesh.getManifoldsAndNodes(), mesh.getPoints()));
+
+    nibble(region, mesh.getReconstructions(), mesh.getTriangles(), mesh.getPoints(), settings.getLogger());
+    ASSERT_EQ(mesh.getTriangles().getAllTriangles().size(), 154);
+    checkMesh(region, mesh.getTriangles(), mesh.getReconstructions(), mesh.getPoints(), settings);
+
+    const auto stats = MeshStatistics::Create2(mesh.getTriangles(), mesh.getPoints(), settings.getCellQuality());
+    const MeshStatistics expect = {99, 154,0.191979808 };
+    ASSERT_EQ(expect, stats);
+
+    ProjectToVtk p2v(project);
+    p2v.addTrianglesAndReconstructions(mesh.getTriangles(), mesh.getReconstructions(), mesh.getPoints());
+     Paraview::WriteList(p2v.get());
+}
+
 
 TEST(MeshGeneration2Test, Triangle2D_2)
 {
@@ -609,5 +652,5 @@ TEST(MeshGeneration2Test, Triangle2D_2)
 
     ProjectToVtk p2v(project);
     p2v.addTrianglesAndReconstructions(mesh.getTriangles(), mesh.getReconstructions(), mesh.getPoints());
-    Paraview::WriteList(p2v.get());
+    //Paraview::WriteList(p2v.get());
 }
