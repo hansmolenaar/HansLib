@@ -18,7 +18,7 @@ std::unique_ptr<IFiniteGroup> Create(const IGeometryPredicate<double, N> &,
 } // namespace GroupFromOrbit
 
 template <size_t N>
-std::unique_ptr<IFiniteGroup> GroupFromOrbit::Create<N>(
+std::unique_ptr<IFiniteGroup> GroupFromOrbit::Create(
     const IGeometryPredicate<double, N> &predicate,
     const std::vector<const IPointTransformation<double, N> *> &transformations, const Point<double, N> &trialPoint)
 {
