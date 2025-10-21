@@ -4,5 +4,5 @@
 
 namespace EquidistantPoints
 {
-   std::vector<double>Generate(double, double, int);
+std::vector<double> Generate(double, double, int);
 }

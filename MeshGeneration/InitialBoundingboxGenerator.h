@@ -1,21 +1,20 @@
 #pragma once
 
-#include "IInitialBoundingboxGenerator.h"
 #include "BoundingBox.h"
+#include "IInitialBoundingboxGenerator.h"
 #include <memory>
 
-template<size_t N>
-class InitialBoundingboxGenerator : public IInitialBoundingboxGenerator<N>
+template <size_t N> class InitialBoundingboxGenerator : public IInitialBoundingboxGenerator<N>
 {
-public:
-   InitialBoundingboxGenerator(InitialBoundingboxGenerator&& other) = default;
-   InitialBoundingboxGenerator& operator=(InitialBoundingboxGenerator&& other) = default;
+  public:
+    InitialBoundingboxGenerator(InitialBoundingboxGenerator &&other) = default;
+    InitialBoundingboxGenerator &operator=(InitialBoundingboxGenerator &&other) = default;
 
-   static std::unique_ptr<IInitialBoundingboxGenerator<N>> Create(double factor);
-   BoundingBox<double, N> generate(const Geometry::IGeometryRegion<double, N>& region) const override;
+    static std::unique_ptr<IInitialBoundingboxGenerator<N>> Create(double factor);
+    BoundingBox<double, N> generate(const Geometry::IGeometryRegion<double, N> &region) const override;
 
-private:
-   InitialBoundingboxGenerator(double factor);
+  private:
+    InitialBoundingboxGenerator(double factor);
 
-   double m_factor;
+    double m_factor;
 };

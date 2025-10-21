@@ -3,25 +3,24 @@
 
 Vector::Vector(int dim) : m_data(dim)
 {
-
 }
 
 int Vector::GetDimension() const
 {
-   return static_cast<int>(m_data.size());
+    return static_cast<int>(m_data.size());
 }
 
-double Vector::operator() (int n)  const
+double Vector::operator()(int n) const
 {
-   return m_data.at(n);
+    return m_data.at(n);
 }
 
-double& Vector::operator() (int n)
+double &Vector::operator()(int n)
 {
-   return m_data.at(n);
+    return m_data.at(n);
 }
 
-double* Vector::data()
+double *Vector::data()
 {
-   return m_data.data();
+    return m_data.data();
 }

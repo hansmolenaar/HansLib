@@ -3,51 +3,49 @@
 #include "IMatrixKelvinRepr.h"
 #include "MyAssert.h"
 
-
-void SetAll(IMatrixKelvinRepr& matrix, double value)
+void SetAll(IMatrixKelvinRepr &matrix, double value)
 {
-	const int dim = matrix.GetDimension();
-	for (int row = 0; row < dim; ++row)
-	{
-		for (int col = row; col < dim; ++col)
-		{
-			matrix.Set(row, col, value);
-		}
-	}
+    const int dim = matrix.GetDimension();
+    for (int row = 0; row < dim; ++row)
+    {
+        for (int col = row; col < dim; ++col)
+        {
+            matrix.Set(row, col, value);
+        }
+    }
 }
 
-
-void Clear(IMatrixKelvinRepr& matrix)
+void Clear(IMatrixKelvinRepr &matrix)
 {
-	SetAll(matrix, 0.0);
+    SetAll(matrix, 0.0);
 }
 
-IMatrixKelvinRepr& operator*=(IMatrixKelvinRepr& matrix, double factor)
+IMatrixKelvinRepr &operator*=(IMatrixKelvinRepr &matrix, double factor)
 {
-	const int dim = matrix.GetDimension();
-	for (int row = 0; row < dim; ++row)
-	{
-		for (int col = row; col < dim; ++col)
-		{
-			const double val = matrix.Get(row, col);
-			matrix.Set(row, col, factor*val);
-		}
-	}
-	return matrix;
+    const int dim = matrix.GetDimension();
+    for (int row = 0; row < dim; ++row)
+    {
+        for (int col = row; col < dim; ++col)
+        {
+            const double val = matrix.Get(row, col);
+            matrix.Set(row, col, factor * val);
+        }
+    }
+    return matrix;
 }
 
-IMatrixKelvinRepr& operator+=(IMatrixKelvinRepr& matrix, const IMatrixKelvinRepr& matrixAdd)
+IMatrixKelvinRepr &operator+=(IMatrixKelvinRepr &matrix, const IMatrixKelvinRepr &matrixAdd)
 {
-	const int dim = matrix.GetDimension();
-	for (int row = 0; row < dim; ++row)
-	{
-		for (int col = row; col < dim; ++col)
-		{
-			const double val = matrix.Get(row, col) + matrixAdd.Get(row, col);
-			matrix.Set(row, col, val);
-		}
-	}
-	return matrix;
+    const int dim = matrix.GetDimension();
+    for (int row = 0; row < dim; ++row)
+    {
+        for (int col = row; col < dim; ++col)
+        {
+            const double val = matrix.Get(row, col) + matrixAdd.Get(row, col);
+            matrix.Set(row, col, val);
+        }
+    }
+    return matrix;
 }
 
 #if false

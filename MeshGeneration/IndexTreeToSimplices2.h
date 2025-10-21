@@ -9,19 +9,19 @@
 
 namespace Vtk
 {
-   struct Name;
+struct Name;
 }
 
 namespace MeshGeneration
 {
-   class ProjectToVtk;
+class ProjectToVtk;
 }
 
 namespace IndexTreeToSimplices2
 {
-   using Triangles = std::vector<std::array<RatPoint2, Topology::ReferenceShapePolygon::TriangleNumCorners>>;
+using Triangles = std::vector<std::array<RatPoint2, Topology::ReferenceShapePolygon::TriangleNumCorners>>;
 
-   constexpr int GeometryDimension = 2;
-   Triangles Create(const IntervalTree::IndexTree<2>& tree);
-   void toVtkData(MeshGeneration::ProjectToVtk& p2v, const Triangles& cells);
-};
+constexpr int GeometryDimension = 2;
+Triangles Create(const IntervalTree::IndexTree<2> &tree);
+void toVtkData(MeshGeneration::ProjectToVtk &p2v, const Triangles &cells);
+}; // namespace IndexTreeToSimplices2

@@ -4,6 +4,6 @@
 
 struct SameFiniteGroupPredicate
 {
-   const IFiniteGroup& group;
-   bool operator()(const IFiniteGroup&) const;
+    const IFiniteGroup &group;
+    bool operator()(const IFiniteGroup &) const;
 };

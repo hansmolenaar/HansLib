@@ -11,13 +11,11 @@ class Logger;
 
 namespace MeshGeneration
 {
-   class TrianglesNodes;
+class TrianglesNodes;
 
-   void nibble(
-      const Geometry::IGeometryRegion<MeshGeneration::GeomType, GeomDim2>& region,
-      const std::vector<const MeshGeneration::IManifoldReconstruction*>& reconstructions,
-      MeshGeneration::TrianglesNodes& trianglesNodes,
-      const IUniquePointCollection2& pointCollection,
-      Logger& logger);
+void nibble(const Geometry::IGeometryRegion<MeshGeneration::GeomType, GeomDim2> &region,
+            const std::vector<const MeshGeneration::IManifoldReconstruction *> &reconstructions,
+            MeshGeneration::TrianglesNodes &trianglesNodes, const IUniquePointCollection2 &pointCollection,
+            Logger &logger);
 
-}
+} // namespace MeshGeneration

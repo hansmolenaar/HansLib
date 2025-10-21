@@ -2,15 +2,13 @@
 
 #include "IMultiVariableFunctionEvaluate.h"
 #include "IterativeMinimizationStep.h"
-#include <vector>
 #include <limits>
 #include <memory>
+#include <vector>
 
-
-
-class IIterativeMinimization 
+class IIterativeMinimization
 {
-public:
-	virtual IterativeMinimizationStep iterate() = 0;
-	virtual const IMultiVariableFunctionEvaluate& getObjectiveFunction() const = 0;
+  public:
+    virtual IterativeMinimizationStep iterate() = 0;
+    virtual const IMultiVariableFunctionEvaluate &getObjectiveFunction() const = 0;
 };

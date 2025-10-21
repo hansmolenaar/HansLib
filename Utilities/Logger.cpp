@@ -1,5 +1,5 @@
-#include "ArrayStatistics.h"
 #include "Logger.h"
+#include "ArrayStatistics.h"
 
 #include <chrono>
 #include <format>
@@ -8,53 +8,53 @@
 
 namespace
 {
-   std::string GetDateTime()
-   {
-      const auto now = std::chrono::system_clock::now();
-      std::ostringstream oss;
-      oss << std::format("{:%Y-%m-%d %H:%M:%OS}", now);
-      return oss.str();
-   }
-
-   std::string GetHeaderLine()
-   {
-      return GetDateTime();
-   }
+std::string GetDateTime()
+{
+    const auto now = std::chrono::system_clock::now();
+    std::ostringstream oss;
+    oss << std::format("{:%Y-%m-%d %H:%M:%OS}", now);
+    return oss.str();
 }
 
-void Logger::logLine(const std::string& line)
+std::string GetHeaderLine()
 {
-   logLines(std::vector<std::string>{line});
+    return GetDateTime();
+}
+} // namespace
+
+void Logger::logLine(const std::string &line)
+{
+    logLines(std::vector<std::string>{line});
 }
 
-void Logger::logLine(const std::ostringstream& os)
+void Logger::logLine(const std::ostringstream &os)
 {
-   logLine(os.str());
+    logLine(os.str());
 }
 
-void Logger::logLines(const std::vector<std::string>& lines)
+void Logger::logLines(const std::vector<std::string> &lines)
 {
-   std::ostringstream oss;
-   oss << GetHeaderLine() << '\n';
+    std::ostringstream oss;
+    oss << GetHeaderLine() << '\n';
 
-   for (const auto& line : lines)
-   {
-      oss << line << '\n';
-   }
-   m_lines.push_back(oss.str());
+    for (const auto &line : lines)
+    {
+        oss << line << '\n';
+    }
+    m_lines.push_back(oss.str());
 }
 
-const std::vector<std::string>& Logger::get() const
+const std::vector<std::string> &Logger::get() const
 {
-   return m_lines;
+    return m_lines;
 }
 
-void Logger::toFile(std::filesystem::path filePath)const
+void Logger::toFile(std::filesystem::path filePath) const
 {
-   std::ofstream stream(filePath.string().c_str(), std::ios::out);
-   for (const auto& line : m_lines)
-   {
-      stream << line;
-   }
-   stream.close();
+    std::ofstream stream(filePath.string().c_str(), std::ios::out);
+    for (const auto &line : m_lines)
+    {
+        stream << line;
+    }
+    stream.close();
 }

@@ -7,134 +7,126 @@
 
 #include <span>
 
-template<typename T, size_t N>
-class TartanGrid : public IMesh<T, N>, IPointCollection<T, N>
+template <typename T, size_t N> class TartanGrid : public IMesh<T, N>, IPointCollection<T, N>
 {
-public:
-   explicit TartanGrid(std::vector<std::vector<T>>&& coordinates);
+  public:
+    explicit TartanGrid(std::vector<std::vector<T>> &&coordinates);
 
-   const Topology::ITopologicalAdjacencies& getTopology() const override;
-   const IPointCollection<T, N>& getGeometry() const override;
+    const Topology::ITopologicalAdjacencies &getTopology() const override;
+    const IPointCollection<T, N> &getGeometry() const override;
 
-   Point<T, N> getPoint(PointIndex) const override;
-   PointIndex getNumPoints() const override;
+    Point<T, N> getPoint(PointIndex) const override;
+    PointIndex getNumPoints() const override;
 
-   const MultiIndex<PointIndex>& getPointIndexer() const;
-   const MultiIndex<CellIndex>& getCellIndexer() const;
+    const MultiIndex<PointIndex> &getPointIndexer() const;
+    const MultiIndex<CellIndex> &getCellIndexer() const;
 
-   // Return CellIndexInvalied if not found
-   // Return first in lexicographical order if multiple matches
-   CellIndex locatePointInCell(const Point<T, N>&) const;
+    // Return CellIndexInvalied if not found
+    // Return first in lexicographical order if multiple matches
+    CellIndex locatePointInCell(const Point<T, N> &) const;
 
-private:
-   static MultiIndex<CellIndex> CreateCellIndexer(const MultiIndex<PointIndex>&);
-   static MultiIndex<PointIndex> CreateMultiIndex(const std::vector<std::vector<T>>& coordinates);
-   static std::unique_ptr<Topology::GridTopology> CreateTopology(const std::vector<std::vector<T>>& coordinates);
+  private:
+    static MultiIndex<CellIndex> CreateCellIndexer(const MultiIndex<PointIndex> &);
+    static MultiIndex<PointIndex> CreateMultiIndex(const std::vector<std::vector<T>> &coordinates);
+    static std::unique_ptr<Topology::GridTopology> CreateTopology(const std::vector<std::vector<T>> &coordinates);
 
-   std::vector<std::vector<T>> m_coordinates;
-   std::unique_ptr<Topology::GridTopology> m_topology;
-   MultiIndex<PointIndex> m_multiIndexPoint;
-   MultiIndex<CellIndex> m_multiIndexCell;
-
+    std::vector<std::vector<T>> m_coordinates;
+    std::unique_ptr<Topology::GridTopology> m_topology;
+    MultiIndex<PointIndex> m_multiIndexPoint;
+    MultiIndex<CellIndex> m_multiIndexCell;
 };
 
-template<typename T, size_t N>
-MultiIndex<PointIndex> TartanGrid<T, N>::CreateMultiIndex(const std::vector<std::vector<T>>& coordinates)
+template <typename T, size_t N>
+MultiIndex<PointIndex> TartanGrid<T, N>::CreateMultiIndex(const std::vector<std::vector<T>> &coordinates)
 {
-   if (coordinates.size() != N) throw MyException("TartanGrid<T, N>::CreateMultiIndex inconsistent dimensions");
-   std::vector<PointIndex> dimensions(coordinates.size());
-   str::transform(coordinates, dimensions.begin(), [](const auto& d) {return d.size(); });
-   return MultiIndex<PointIndex>::Create(std::move(dimensions));
+    if (coordinates.size() != N)
+        throw MyException("TartanGrid<T, N>::CreateMultiIndex inconsistent dimensions");
+    std::vector<PointIndex> dimensions(coordinates.size());
+    str::transform(coordinates, dimensions.begin(), [](const auto &d) { return d.size(); });
+    return MultiIndex<PointIndex>::Create(std::move(dimensions));
 }
 
-template<typename T, size_t N>
-MultiIndex<CellIndex> TartanGrid<T, N>::CreateCellIndexer(const MultiIndex<PointIndex>& pointIndexer)
+template <typename T, size_t N>
+MultiIndex<CellIndex> TartanGrid<T, N>::CreateCellIndexer(const MultiIndex<PointIndex> &pointIndexer)
 {
-   std::vector<size_t> cellDimensions;
-   str::transform(std::views::iota(0UZ, N), std::back_inserter(cellDimensions), [&pointIndexer](auto n) {return pointIndexer.at(n) - 1; });
-   return MultiIndex<CellIndex>::Create(std::move(cellDimensions));
+    std::vector<size_t> cellDimensions;
+    str::transform(std::views::iota(0UZ, N), std::back_inserter(cellDimensions),
+                   [&pointIndexer](auto n) { return pointIndexer.at(n) - 1; });
+    return MultiIndex<CellIndex>::Create(std::move(cellDimensions));
 }
 
-
-template<typename T, size_t N>
-std::unique_ptr<Topology::GridTopology> TartanGrid<T, N>::CreateTopology(const std::vector<std::vector<T>>& coordinates)
+template <typename T, size_t N>
+std::unique_ptr<Topology::GridTopology> TartanGrid<T, N>::CreateTopology(const std::vector<std::vector<T>> &coordinates)
 {
-   std::vector<int> dimensions(coordinates.size());
-   str::transform(coordinates, dimensions.begin(), [](const auto& d) {return static_cast<int>(d.size() - 1); });
-   return std::make_unique<Topology::GridTopology>(dimensions);
+    std::vector<int> dimensions(coordinates.size());
+    str::transform(coordinates, dimensions.begin(), [](const auto &d) { return static_cast<int>(d.size() - 1); });
+    return std::make_unique<Topology::GridTopology>(dimensions);
 }
 
-
-template<typename T, size_t N>
-TartanGrid<T, N>::TartanGrid(std::vector<std::vector<T>>&& coordinates) :
-   m_coordinates(std::move(coordinates)),
-   m_topology(CreateTopology(m_coordinates)),
-   m_multiIndexPoint(CreateMultiIndex(m_coordinates)),
-   m_multiIndexCell(CreateCellIndexer(m_multiIndexPoint))
+template <typename T, size_t N>
+TartanGrid<T, N>::TartanGrid(std::vector<std::vector<T>> &&coordinates)
+    : m_coordinates(std::move(coordinates)), m_topology(CreateTopology(m_coordinates)),
+      m_multiIndexPoint(CreateMultiIndex(m_coordinates)), m_multiIndexCell(CreateCellIndexer(m_multiIndexPoint))
 
 {
 }
 
-template<typename T, size_t N>
-const Topology::ITopologicalAdjacencies& TartanGrid<T, N>::getTopology() const
+template <typename T, size_t N> const Topology::ITopologicalAdjacencies &TartanGrid<T, N>::getTopology() const
 {
-   return m_topology->getAdjacencies();
+    return m_topology->getAdjacencies();
 }
 
-template<typename T, size_t N>
-const IPointCollection<T, N>& TartanGrid<T, N>::getGeometry() const
+template <typename T, size_t N> const IPointCollection<T, N> &TartanGrid<T, N>::getGeometry() const
 {
-   return *this;
+    return *this;
 }
 
-template<typename T, size_t N>
-Point<T, N> TartanGrid<T, N>::getPoint(PointIndex pointIndex) const
+template <typename T, size_t N> Point<T, N> TartanGrid<T, N>::getPoint(PointIndex pointIndex) const
 {
-   std::array<PointIndex, N> mp;
-   m_multiIndexPoint.toMultiplet(pointIndex, mp);
-   std::array<T, N> result;
-   for (int n = 0; n < N; ++n)
-   {
-      result[n] = m_coordinates.at(n).at(mp.at(n));
-   }
-   return result;
+    std::array<PointIndex, N> mp;
+    m_multiIndexPoint.toMultiplet(pointIndex, mp);
+    std::array<T, N> result;
+    for (int n = 0; n < N; ++n)
+    {
+        result[n] = m_coordinates.at(n).at(mp.at(n));
+    }
+    return result;
 }
 
-template<typename T, size_t N>
-PointIndex TartanGrid<T, N>::getNumPoints() const
+template <typename T, size_t N> PointIndex TartanGrid<T, N>::getNumPoints() const
 {
-   return m_multiIndexPoint.getFlatSize();
+    return m_multiIndexPoint.getFlatSize();
 }
 
-template<typename T, size_t N>
-const MultiIndex<PointIndex>& TartanGrid<T, N>::getPointIndexer() const
+template <typename T, size_t N> const MultiIndex<PointIndex> &TartanGrid<T, N>::getPointIndexer() const
 {
-   return m_multiIndexPoint;
+    return m_multiIndexPoint;
 }
 
-template<typename T, size_t N>
-const MultiIndex<CellIndex>& TartanGrid<T, N>::getCellIndexer() const
+template <typename T, size_t N> const MultiIndex<CellIndex> &TartanGrid<T, N>::getCellIndexer() const
 {
-   return m_multiIndexCell;
+    return m_multiIndexCell;
 }
 
-template<typename T, size_t N>
-CellIndex TartanGrid<T, N>::locatePointInCell(const Point<T, N>& point) const
+template <typename T, size_t N> CellIndex TartanGrid<T, N>::locatePointInCell(const Point<T, N> &point) const
 {
-   std::array<PointIndex, N> position;
-   for (int n = 0; n < N; ++n)
-   {
-      if (point.data()[n] < m_coordinates.at(n).front()) return PointIndexInvalid;
-      if (point.data()[n] > m_coordinates.at(n).back()) return PointIndexInvalid;
-      if (point.data()[n] == m_coordinates.at(n).front())
-      {
-         position[n] = 0;
-      }
-      else
-      {
-         const auto found = std::lower_bound(m_coordinates.at(n).begin(), m_coordinates.at(n).end(), point.data()[n]);
-         position[n] = std::distance(m_coordinates.at(n).begin(), found) - 1;
-      }
-   }
-   return m_multiIndexCell.toFlat(position);
+    std::array<PointIndex, N> position;
+    for (int n = 0; n < N; ++n)
+    {
+        if (point.data()[n] < m_coordinates.at(n).front())
+            return PointIndexInvalid;
+        if (point.data()[n] > m_coordinates.at(n).back())
+            return PointIndexInvalid;
+        if (point.data()[n] == m_coordinates.at(n).front())
+        {
+            position[n] = 0;
+        }
+        else
+        {
+            const auto found =
+                std::lower_bound(m_coordinates.at(n).begin(), m_coordinates.at(n).end(), point.data()[n]);
+            position[n] = std::distance(m_coordinates.at(n).begin(), found) - 1;
+        }
+    }
+    return m_multiIndexCell.toFlat(position);
 }

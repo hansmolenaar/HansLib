@@ -1,109 +1,110 @@
-#include "IntervalTreeAction.h"
 #include "MeshGenerationUtils.h"
+#include "IntervalTreeAction.h"
 
 #include <sstream>
 
 using namespace MeshGeneration;
 using namespace Topology;
 
-void MeshGeneration::LogSortedEdgeNodes(Logger& logger, const  EdgeNodesSorted& sortedEdgeNodes, std::string header)
+void MeshGeneration::LogSortedEdgeNodes(Logger &logger, const EdgeNodesSorted &sortedEdgeNodes, std::string header)
 {
-   std::ostringstream os;
-   os << header << " " << sortedEdgeNodes;
-   logger.logLine(os.str());
+    std::ostringstream os;
+    os << header << " " << sortedEdgeNodes;
+    logger.logLine(os.str());
 }
 
-void MeshGeneration::Log(Logger& logger, const std::vector<EdgeNodesSorted>& sortedEdgeNodes, std::string header)
+void MeshGeneration::Log(Logger &logger, const std::vector<EdgeNodesSorted> &sortedEdgeNodes, std::string header)
 {
-   std::vector<std::string> lines;
-   lines.push_back(header);
-   for (const auto& e : sortedEdgeNodes)
-   {
-      std::ostringstream os;
-      os << e;
-      lines.push_back(os.str());
-   }
-   logger.logLines(lines);
+    std::vector<std::string> lines;
+    lines.push_back(header);
+    for (const auto &e : sortedEdgeNodes)
+    {
+        std::ostringstream os;
+        os << e;
+        lines.push_back(os.str());
+    }
+    logger.logLines(lines);
 }
 
-void MeshGeneration::Log(Logger& logger, std::span<const size_t> indices, std::string header)
+void MeshGeneration::Log(Logger &logger, std::span<const size_t> indices, std::string header)
 {
-   std::vector<std::string> lines;
-   lines.push_back(header);
-   for (const auto& i : indices)
-   {
-      lines.push_back(std::to_string(i));
-   }
-   logger.logLines(lines);
+    std::vector<std::string> lines;
+    lines.push_back(header);
+    for (const auto &i : indices)
+    {
+        lines.push_back(std::to_string(i));
+    }
+    logger.logLines(lines);
 }
 
-void MeshGeneration::LogTriangles(Logger& logger, const TrianglesNodes& trianglesNodes, std::string header)
+void MeshGeneration::LogTriangles(Logger &logger, const TrianglesNodes &trianglesNodes, std::string header)
 {
-   std::vector<std::string> lines;
-   lines.emplace_back(header);
-   for (auto cellId : trianglesNodes.getAllTriangles())
-   {
-      const auto triangle = trianglesNodes.getTriangleNodes(cellId);
-      lines.emplace_back(std::to_string(cellId) + " -> " + std::to_string(triangle[0]) + "  " + std::to_string(triangle[1]) + "  " + std::to_string(triangle[2]));
-   }
-   logger.logLines(lines);
+    std::vector<std::string> lines;
+    lines.emplace_back(header);
+    for (auto cellId : trianglesNodes.getAllTriangles())
+    {
+        const auto triangle = trianglesNodes.getTriangleNodes(cellId);
+        lines.emplace_back(std::to_string(cellId) + " -> " + std::to_string(triangle[0]) + "  " +
+                           std::to_string(triangle[1]) + "  " + std::to_string(triangle[2]));
+    }
+    logger.logLines(lines);
 }
 
-void MeshGeneration::Log(Logger& logger, const IndexTreeToSimplices2::Triangles& triangles, std::string header)
+void MeshGeneration::Log(Logger &logger, const IndexTreeToSimplices2::Triangles &triangles, std::string header)
 {
-   const std::string sep = "  ";
-   std::vector<std::string> lines;
-   lines.emplace_back(header);
+    const std::string sep = "  ";
+    std::vector<std::string> lines;
+    lines.emplace_back(header);
 
-   for (const auto& t : triangles)
-   {
-      std::ostringstream buffer;
-      buffer << t.at(0) << sep << t.at(1) << sep << t.at(2);
-      lines.push_back(buffer.str());
-   }
-   logger.logLines(lines);
+    for (const auto &t : triangles)
+    {
+        std::ostringstream buffer;
+        buffer << t.at(0) << sep << t.at(1) << sep << t.at(2);
+        lines.push_back(buffer.str());
+    }
+    logger.logLines(lines);
 }
 
-void MeshGeneration::LogBb2(Logger& logger, const BoundingBox<GeomType, GeomDim2>& bb, std::string header)
+void MeshGeneration::LogBb2(Logger &logger, const BoundingBox<GeomType, GeomDim2> &bb, std::string header)
 {
-   std::vector<std::string> lines;
-   lines.emplace_back(header);
-   bool first = true;
-   for (const auto& i : bb.getIntervals())
-   {
-      std::ostringstream buffer;
-      buffer << "  ( " << i.getLower() << " , " << i.getUpper() << " )";
-      lines.push_back(buffer.str());
-   }
-   logger.logLines(lines);
+    std::vector<std::string> lines;
+    lines.emplace_back(header);
+    bool first = true;
+    for (const auto &i : bb.getIntervals())
+    {
+        std::ostringstream buffer;
+        buffer << "  ( " << i.getLower() << " , " << i.getUpper() << " )";
+        lines.push_back(buffer.str());
+    }
+    logger.logLines(lines);
 }
 
-void MeshGeneration::Log(Logger& logger, IntervalTree::IndexTree<GeomDim2> tree, std::string header)
+void MeshGeneration::Log(Logger &logger, IntervalTree::IndexTree<GeomDim2> tree, std::string header)
 {
-   std::vector<std::string> lines;
-   lines.emplace_back(header);
-   IntervalTree::ActionLogLeaves<2> actionLog{ logger };
-   tree.foreachLeaf(actionLog);
+    std::vector<std::string> lines;
+    lines.emplace_back(header);
+    IntervalTree::ActionLogLeaves<2> actionLog{logger};
+    tree.foreachLeaf(actionLog);
 }
 
-void MeshGeneration::Log(Logger& logger, const std::vector<const IntervalTree::Index<GeomDim2>*>& cells, std::string header)
+void MeshGeneration::Log(Logger &logger, const std::vector<const IntervalTree::Index<GeomDim2> *> &cells,
+                         std::string header)
 {
-   std::vector<std::string> lines;
-   lines.emplace_back(header);
-   for (const auto& indx : cells)
-   {
-      std::ostringstream os;
-      os << indx;
-      lines.push_back(os.str());
-   }
-   logger.logLines(lines);
+    std::vector<std::string> lines;
+    lines.emplace_back(header);
+    for (const auto &indx : cells)
+    {
+        std::ostringstream os;
+        os << indx;
+        lines.push_back(os.str());
+    }
+    logger.logLines(lines);
 }
 
 std::array<Point<GeomType, GeomDim2>, Topology::NumCornersOnTriangle> MeshGeneration::GetTriangleGeometry(
-   const TriangleNodes& triangleNodes,
-   const IPointCollection<MeshGeneration::GeomType, GeomDim2>& points)
+    const TriangleNodes &triangleNodes, const IPointCollection<MeshGeneration::GeomType, GeomDim2> &points)
 {
-   std::array<Point<GeomType, GeomDim2>, Topology::NumCornersOnTriangle> result;
-   str::transform(triangleNodes, result.begin(), [&points](NodeIndex node) {return points.getPoint(node); });
-   return result;
+    std::array<Point<GeomType, GeomDim2>, Topology::NumCornersOnTriangle> result;
+    str::transform(triangleNodes, result.begin(), [&points](NodeIndex node) { return points.getPoint(node); });
+    return result;
 }

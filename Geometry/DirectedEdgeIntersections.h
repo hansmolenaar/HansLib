@@ -7,25 +7,23 @@
 
 namespace Geometry
 {
-   template<typename T, size_t N>
-   class DirectedEdgeIntersections
-   {
-   public:
-      DirectedEdgeIntersections() = default;
-      DirectedEdgeIntersections(
-         std::span<const DirectedEdgePoint<T, N>> intersectionPoints,
-         const std::function<bool(const Point<T, N>&)>& isContained,
-         const IGeometryPredicate<T, N>& predicate);
-      DirectedEdgeIntersections(const DirectedEdgeIntersection<T, N>& intersection);
+template <typename T, size_t N> class DirectedEdgeIntersections
+{
+  public:
+    DirectedEdgeIntersections() = default;
+    DirectedEdgeIntersections(std::span<const DirectedEdgePoint<T, N>> intersectionPoints,
+                              const std::function<bool(const Point<T, N> &)> &isContained,
+                              const IGeometryPredicate<T, N> &predicate);
+    DirectedEdgeIntersections(const DirectedEdgeIntersection<T, N> &intersection);
 
-      const DirectedEdgeIntersection<T, N>& operator[](size_t n) const;
+    const DirectedEdgeIntersection<T, N> &operator[](size_t n) const;
 
-      std::span<const DirectedEdgeIntersection<T, N>> get() const;
+    std::span<const DirectedEdgeIntersection<T, N>> get() const;
 
-      void erase(size_t n);
+    void erase(size_t n);
 
-   private:
-      std::vector<DirectedEdgeIntersection<T, N>> m_data;
-   };
+  private:
+    std::vector<DirectedEdgeIntersection<T, N>> m_data;
+};
 
-}
+} // namespace Geometry

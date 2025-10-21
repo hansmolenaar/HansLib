@@ -2,61 +2,62 @@
 
 #include <boost/functional/hash.hpp>
 #include <boost/rational.hpp>
-#include  <span>
+#include <span>
 
 using Rational = boost::rational<int>;
 
 namespace std
 {
-   template<>
-   struct hash< Rational >
-   {
-      size_t operator()(const Rational& r) const noexcept
-      {
-         size_t result = 0;
-         boost::hash_combine(result, static_cast<size_t>(r.numerator()));
-         boost::hash_combine(result, static_cast<size_t>(r.denominator()));
-         return result;
-      }
-   };
+template <> struct hash<Rational>
+{
+    size_t operator()(const Rational &r) const noexcept
+    {
+        size_t result = 0;
+        boost::hash_combine(result, static_cast<size_t>(r.numerator()));
+        boost::hash_combine(result, static_cast<size_t>(r.denominator()));
+        return result;
+    }
+};
 
-   inline Rational abs(const Rational& rat)
-   {
-      if (rat > 0) return rat;
-      return -rat;
-   }
+inline Rational abs(const Rational &rat)
+{
+    if (rat > 0)
+        return rat;
+    return -rat;
 }
+} // namespace std
 
 inline double operator*(double d, Rational r)
 {
-   return d * r.numerator() / r.denominator();
+    return d * r.numerator() / r.denominator();
 }
-
 
 inline double operator*(Rational r, double d)
 {
-   return d * r.numerator() / r.denominator();
+    return d * r.numerator() / r.denominator();
 }
 
-inline std::ostream& operator<< (std::ostream& os, const Rational& rat)
+inline std::ostream &operator<<(std::ostream &os, const Rational &rat)
 {
-   if (rat == Rational(0, 1)) return os << 0;
-   if (rat.denominator() == 1)return  os << rat.numerator();
-   return os << rat.numerator() << "/" << rat.denominator();
+    if (rat == Rational(0, 1))
+        return os << 0;
+    if (rat.denominator() == 1)
+        return os << rat.numerator();
+    return os << rat.numerator() << "/" << rat.denominator();
 }
 
-
-inline std::ostream& operator<< (std::ostream& stream, std::span<const Rational> rat)
+inline std::ostream &operator<<(std::ostream &stream, std::span<const Rational> rat)
 {
-   stream << "(";
-   bool first = true;
-   for (auto r : rat)
-   {
-      if (!first) stream << ", ";
-      first = false;
+    stream << "(";
+    bool first = true;
+    for (auto r : rat)
+    {
+        if (!first)
+            stream << ", ";
+        first = false;
 
-      stream << r;
-   }
-   stream << ")";
-   return stream;
+        stream << r;
+    }
+    stream << ")";
+    return stream;
 }

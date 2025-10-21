@@ -5,16 +5,14 @@ Rotate2D::Rotate2D(double angle) : m_angle(angle), m_cos(std::cos(m_angle)), m_s
 {
 }
 
-Point2 Rotate2D::operator()(const Point2& point) const
+Point2 Rotate2D::operator()(const Point2 &point) const
 {
-   return Point2{
-      m_cos * point.data()[0] - m_sin * point.data()[1],
-      m_sin * point.data()[0] + m_cos * point.data()[1] };
+    return Point2{m_cos * point.data()[0] - m_sin * point.data()[1], m_sin * point.data()[0] + m_cos * point.data()[1]};
 }
 
-UnitVector<double, 2> Rotate2D::operator()(const UnitVector<double, 2>& uv) const
+UnitVector<double, 2> Rotate2D::operator()(const UnitVector<double, 2> &uv) const
 {
-   const Point2 point{ uv[0], uv[1] };
-   const Point2 rotated = (*this)(point);
-   return UnitVector<double, 2>::Create(rotated);
+    const Point2 point{uv[0], uv[1]};
+    const Point2 rotated = (*this)(point);
+    return UnitVector<double, 2>::Create(rotated);
 }

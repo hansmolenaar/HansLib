@@ -1,15 +1,15 @@
+#include "TetrahedronsNodes.h"
 #include "Defines.h"
 #include "MyException.h"
-#include "TetrahedronsNodes.h"
 #include <limits>
 #include <set>
 
 using namespace MeshGeneration;
 using namespace Topology;
 
-CellIndex TetrahedronsNodes::addTetrahedron(const TetrahedronNodesOriented& nodes)
+CellIndex TetrahedronsNodes::addTetrahedron(const TetrahedronNodesOriented &nodes)
 {
-   return m_cellsNodes.addCell(nodes);
+    return m_cellsNodes.addCell(nodes);
 }
 #if false
 std::optional<CellIndex> TetrahedronsNodes::tryGetTetrahedronFromNodes(const TetrahedronNodesOriented& nodes) const
@@ -29,37 +29,40 @@ std::optional<CellIndex> TetrahedronsNodes::tryGetTetrahedronFromNodes(const Tet
 }
 #endif
 
-std::optional<CellIndex> TetrahedronsNodes::tryGetTetrahedronFromOrientedNodes(const std::array<NodeIndex, NumCornersOnTetrahedron>& nodes) const
+std::optional<CellIndex> TetrahedronsNodes::tryGetTetrahedronFromOrientedNodes(
+    const std::array<NodeIndex, NumCornersOnTetrahedron> &nodes) const
 {
-   return m_cellsNodes.tryGetCellFromOrderedNodes(nodes);
+    return m_cellsNodes.tryGetCellFromOrderedNodes(nodes);
 }
 
-std::optional<CellIndex> TetrahedronsNodes::tryGetTetrahedronFromNodes(std::array<NodeIndex, NumCornersOnTetrahedron> nodes) const
+std::optional<CellIndex> TetrahedronsNodes::tryGetTetrahedronFromNodes(
+    std::array<NodeIndex, NumCornersOnTetrahedron> nodes) const
 {
-   return tryGetTetrahedronFromOrientedNodes(TetrahedronNodesOriented::orient(nodes));
+    return tryGetTetrahedronFromOrientedNodes(TetrahedronNodesOriented::orient(nodes));
 }
 
 void TetrahedronsNodes::deleteTetrahedron(CellIndex tetId)
 {
-   m_cellsNodes.deleteCell(tetId);
+    m_cellsNodes.deleteCell(tetId);
 }
 
-std::vector<CellIndex> TetrahedronsNodes::getTetrahedronsContainingEdge(Topology::NodeIndex n0, Topology::NodeIndex n1) const
+std::vector<CellIndex> TetrahedronsNodes::getTetrahedronsContainingEdge(Topology::NodeIndex n0,
+                                                                        Topology::NodeIndex n1) const
 {
-   std::vector<CellIndex> result;
-   return m_cellsNodes.getCellsContainingNodes(result, std::array<NodeIndex, NumCornersOnEdge>{n0, n1});
+    std::vector<CellIndex> result;
+    return m_cellsNodes.getCellsContainingNodes(result, std::array<NodeIndex, NumCornersOnEdge>{n0, n1});
 }
 
 std::vector<CellIndex> TetrahedronsNodes::getTetrahedronsContainingNode(NodeIndex node) const
 {
-   std::vector<CellIndex> result;
-   return m_cellsNodes.getCellsContainingNodes(result, std::array<NodeIndex, 1>{node});
+    std::vector<CellIndex> result;
+    return m_cellsNodes.getCellsContainingNodes(result, std::array<NodeIndex, 1>{node});
 }
 
 std::vector<Topology::NodeIndex> TetrahedronsNodes::getEdgeConnectedNodes(Topology::NodeIndex node) const
 {
-   std::vector<Topology::NodeIndex> result;
-   return m_cellsNodes.getEdgeConnectedNodes(result, node);
+    std::vector<Topology::NodeIndex> result;
+    return m_cellsNodes.getEdgeConnectedNodes(result, node);
 }
 
 #if false
@@ -78,15 +81,16 @@ boost::container::static_vector<CellIndex, Topology::NumCornersOnTetrahedron> Te
 }
 #endif
 
-boost::container::static_vector<CellIndex, Topology::NumCornersOnTetrahedron>  TetrahedronsNodes::getCommonNodes(CellIndex tetId1, CellIndex tetId2) const
+boost::container::static_vector<CellIndex, Topology::NumCornersOnTetrahedron> TetrahedronsNodes::getCommonNodes(
+    CellIndex tetId1, CellIndex tetId2) const
 {
-   boost::container::static_vector<CellIndex, Topology::NumCornersOnTetrahedron> result;
-   return m_cellsNodes.getCommonNodes(tetId1, tetId2, result);
+    boost::container::static_vector<CellIndex, Topology::NumCornersOnTetrahedron> result;
+    return m_cellsNodes.getCommonNodes(tetId1, tetId2, result);
 }
 
 bool TetrahedronsNodes::tetrahedronContainsNode(CellIndex tetId, NodeIndex nodeId) const
 {
-   return m_cellsNodes.cellContainsNode(tetId, nodeId);
+    return m_cellsNodes.cellContainsNode(tetId, nodeId);
 }
 #if false
 std::vector<CellIndex> TetrahedronsNodes::getNodeConnectedTetrahedrons(NodeIndex node) const
@@ -127,64 +131,63 @@ std::vector<NodeIndex> TetrahedronsNodes::getEdgeConnectedNodes(NodeIndex node) 
 
 TetrahedronNodesOriented TetrahedronsNodes::getTetrahedronNodes(CellIndex tetId) const
 {
-   return m_cellsNodes.getCellNodes(tetId);
+    return m_cellsNodes.getCellNodes(tetId);
 }
 
 bool TetrahedronsNodes::isKnownNodeId(NodeIndex node) const
 {
-   return m_cellsNodes.isKnownNodeId(node);
+    return m_cellsNodes.isKnownNodeId(node);
 }
 
 bool TetrahedronsNodes::isKnownTetId(CellIndex tetId) const
 {
-   return m_cellsNodes.isKnownCellId(tetId);
+    return m_cellsNodes.isKnownCellId(tetId);
 }
 
 std::vector<CellIndex> TetrahedronsNodes::getAllTetrahedrons() const
 {
-   return m_cellsNodes.getAllCellIds();
+    return m_cellsNodes.getAllCellIds();
 }
 
 std::vector<EdgeNodesSorted> TetrahedronsNodes::getAllSortedEdges() const
 {
-   std::vector<EdgeNodesSorted> result;
-   return m_cellsNodes.getAlEdges(result);
+    std::vector<EdgeNodesSorted> result;
+    return m_cellsNodes.getAlEdges(result);
 }
 
 std::vector<NodeIndex> TetrahedronsNodes::getAllNodes() const
 {
-   return m_cellsNodes.getAllNodes();
+    return m_cellsNodes.getAllNodes();
 }
 
 size_t TetrahedronsNodes::getNumTetrahedrons() const
 {
-   return m_cellsNodes.getNumCells();
+    return m_cellsNodes.getNumCells();
 }
-
 
 TrianglesNodes TetrahedronsNodes::getBoundaryFaces() const
 {
-   std::set<TriangleNodesOriented> uniqueFaces;
-   for (CellIndex tetId : getAllTetrahedrons())
-   {
-      const auto tet = getTetrahedronNodes(tetId);
-      for (auto face : tet.getFaces())
-      {
-         const auto retval = uniqueFaces.insert(face);
-         if (!retval.second)
-         {
-            throw MyException("getBoundaryFaces overconnected face: ");
-         }
-      }
-   }
+    std::set<TriangleNodesOriented> uniqueFaces;
+    for (CellIndex tetId : getAllTetrahedrons())
+    {
+        const auto tet = getTetrahedronNodes(tetId);
+        for (auto face : tet.getFaces())
+        {
+            const auto retval = uniqueFaces.insert(face);
+            if (!retval.second)
+            {
+                throw MyException("getBoundaryFaces overconnected face: ");
+            }
+        }
+    }
 
-   TrianglesNodes result;
-   for (const auto& face : uniqueFaces)
-   {
-      if (!uniqueFaces.contains(TriangleNodesOriented(face[1], face[0], face[2])))
-      {
-         result.addTriangle(face);
-      }
-   }
-   return result;
+    TrianglesNodes result;
+    for (const auto &face : uniqueFaces)
+    {
+        if (!uniqueFaces.contains(TriangleNodesOriented(face[1], face[0], face[2])))
+        {
+            result.addTriangle(face);
+        }
+    }
+    return result;
 }

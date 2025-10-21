@@ -1,13 +1,18 @@
 #pragma once
 
-#include <vector>
 #include <limits>
+#include <vector>
 
-enum IIterativeMinimizationStepStatus { StepSucces, StepStuck, StepDivergence };
+enum IIterativeMinimizationStepStatus
+{
+    StepSucces,
+    StepStuck,
+    StepDivergence
+};
 
 struct IterativeMinimizationStep
 {
-   IIterativeMinimizationStepStatus Status = StepDivergence;
-   std::vector<double> ArgMinimum;
-   double EvalMinimum = std::numeric_limits<double>::max();
+    IIterativeMinimizationStepStatus Status = StepDivergence;
+    std::vector<double> ArgMinimum;
+    double EvalMinimum = std::numeric_limits<double>::max();
 };

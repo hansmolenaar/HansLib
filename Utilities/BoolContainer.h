@@ -6,6 +6,6 @@ using BoolContainer = std::deque<bool>;
 
 namespace BoolContainerUtils
 {
-   BoolContainer FromNumber(int);
-   int ToNumber(const BoolContainer&);
-}
+BoolContainer FromNumber(int);
+int ToNumber(const BoolContainer &);
+} // namespace BoolContainerUtils

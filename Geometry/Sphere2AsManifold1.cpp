@@ -4,46 +4,45 @@ using namespace Geometry;
 
 template class Sphere2AsManifold1<double>;
 
-template<typename T>
-Sphere2AsManifold1<T>::Sphere2AsManifold1(Sphere<T, GeomDim2> sphere, std::string name) :
-   m_sphere(std::move(sphere)),
-   m_name(std::move(name))
+template <typename T>
+Sphere2AsManifold1<T>::Sphere2AsManifold1(Sphere<T, GeomDim2> sphere, std::string name)
+    : m_sphere(std::move(sphere)), m_name(std::move(name))
 {
 }
 
-template<typename T>
-bool Sphere2AsManifold1<T>::contains(const Point<T, GeomDim2>& point, const IGeometryPredicate<T, GeomDim2>& predicate) const
+template <typename T>
+bool Sphere2AsManifold1<T>::contains(const Point<T, GeomDim2> &point,
+                                     const IGeometryPredicate<T, GeomDim2> &predicate) const
 {
-   return m_sphere.Contains(point, predicate);
+    return m_sphere.Contains(point, predicate);
 }
 
-
-template<typename T>
-Line<T, GeomDim2> Sphere2AsManifold1<T>::getEuclideanSubspaceAt(const Point<T, GeomDim2>& point, const IGeometryPredicate<T, GeomDim2>& predicate) const
+template <typename T>
+Line<T, GeomDim2> Sphere2AsManifold1<T>::getEuclideanSubspaceAt(const Point<T, GeomDim2> &point,
+                                                                const IGeometryPredicate<T, GeomDim2> &predicate) const
 {
-   if (!contains(point, predicate))
-   {
-      throw MyException("Sphere2AsManifold1<T>::GetEuclideanSubspaceAt, point not on manifold");
-   }
-   const auto radial = point - m_sphere.getCenter();
-   const auto uv = UnitVector<T, GeomDim2>::getNormalTo(radial);
-   return { point, uv };
+    if (!contains(point, predicate))
+    {
+        throw MyException("Sphere2AsManifold1<T>::GetEuclideanSubspaceAt, point not on manifold");
+    }
+    const auto radial = point - m_sphere.getCenter();
+    const auto uv = UnitVector<T, GeomDim2>::getNormalTo(radial);
+    return {point, uv};
 }
 
-template<typename T>
-BoundingBox<T, GeomDim2> Sphere2AsManifold1<T>::getBoundingBox() const
+template <typename T> BoundingBox<T, GeomDim2> Sphere2AsManifold1<T>::getBoundingBox() const
 {
-   return m_sphere.getBoundingBox();
+    return m_sphere.getBoundingBox();
 }
 
-template<typename T>
-DirectedEdgeIntersections<T, GeomDim2> Sphere2AsManifold1<T>::getIntersections(const DirectedEdge<T, GeomDim2>& edge, const IGeometryPredicate<T, GeomDim2>& predicate) const
+template <typename T>
+DirectedEdgeIntersections<T, GeomDim2> Sphere2AsManifold1<T>::getIntersections(
+    const DirectedEdge<T, GeomDim2> &edge, const IGeometryPredicate<T, GeomDim2> &predicate) const
 {
-   return m_sphere.getIntersections(edge, predicate);
+    return m_sphere.getIntersections(edge, predicate);
 }
 
-template<typename T>
-const std::string& Sphere2AsManifold1<T>::getName() const
+template <typename T> const std::string &Sphere2AsManifold1<T>::getName() const
 {
-   return m_name;
+    return m_name;
 }

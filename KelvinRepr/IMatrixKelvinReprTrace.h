@@ -6,6 +6,6 @@ class IMatrixKelvinRepr;
 
 class IMatrixKelvinReprTrace : public MultiVariableRealValuedFunction
 {
-public:
-	explicit IMatrixKelvinReprTrace(int geomdim);
+  public:
+    explicit IMatrixKelvinReprTrace(int geomdim);
 };

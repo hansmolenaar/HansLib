@@ -1,80 +1,78 @@
 #include "MultiVariablePolynomial.h"
 
-#include "MyAssert.h"
 #include "IMatrix.h"
 #include "IMatrixUtils.h"
 #include "IRealFunctionUtils.h"
+#include "MyAssert.h"
 
 #include <algorithm>
 #include <numeric>
 #include <ranges>
 
-MultiVariablePolynomial::MultiVariablePolynomial(int dim) :
-	m_dim(dim)
+MultiVariablePolynomial::MultiVariablePolynomial(int dim) : m_dim(dim)
 {
-	Utilities::MyAssert(dim > 0);
+    Utilities::MyAssert(dim > 0);
 }
-
 
 void MultiVariablePolynomial::Add(double coef, std::span<const int> monomial)
 {
-	Utilities::MyAssert(monomial.size() == m_dim);
-	m_terms.push_back(std::make_pair(coef, MultiVariableMonomial(monomial)));
+    Utilities::MyAssert(monomial.size() == m_dim);
+    m_terms.push_back(std::make_pair(coef, MultiVariableMonomial(monomial)));
 }
 
-void MultiVariablePolynomial::Add(double coef, std::initializer_list< int> monomial)
+void MultiVariablePolynomial::Add(double coef, std::initializer_list<int> monomial)
 {
-	Utilities::MyAssert(monomial.size() == m_dim);
-	m_terms.push_back(std::make_pair(coef, MultiVariableMonomial(monomial)));
+    Utilities::MyAssert(monomial.size() == m_dim);
+    m_terms.push_back(std::make_pair(coef, MultiVariableMonomial(monomial)));
 }
 
 int MultiVariablePolynomial::GetDomainDimension() const
 {
-	return m_dim;
+    return m_dim;
 }
-
 
 bool MultiVariablePolynomial::HasDerivative() const
 {
-	return true;
+    return true;
 }
 
 bool MultiVariablePolynomial::DerivativeAlwaysZero(int var) const
 {
-	return std::all_of(m_terms.begin(), m_terms.end(), [&](const auto& term) {return term.second.DerivativeAlwaysZero(var); });
+    return std::all_of(m_terms.begin(), m_terms.end(),
+                       [&](const auto &term) { return term.second.DerivativeAlwaysZero(var); });
 }
 
-double MultiVariablePolynomial::Evaluate(std::span<const double>x)const
+double MultiVariablePolynomial::Evaluate(std::span<const double> x) const
 {
-	Utilities::MyAssert(x.size() == GetDomainDimension());
-	double result = 0;
-	for (const auto& term : m_terms)
-	{
-		const double eval = term.second.MultiVariableMonomial::Evaluate(x);
-		result += term.first * eval;
-	}
-	return result;
-	//return std::ranges::accumulate(m_terms | std::ranges::view::transform([&](auto& term) {const double eval = term.second.MultiVariableMonomial::Evaluate(x); return term.first*eval; }), 0.0);
+    Utilities::MyAssert(x.size() == GetDomainDimension());
+    double result = 0;
+    for (const auto &term : m_terms)
+    {
+        const double eval = term.second.MultiVariableMonomial::Evaluate(x);
+        result += term.first * eval;
+    }
+    return result;
+    // return std::ranges::accumulate(m_terms | std::ranges::view::transform([&](auto& term) {const double eval =
+    // term.second.MultiVariableMonomial::Evaluate(x); return term.first*eval; }), 0.0);
 }
 
-void MultiVariablePolynomial::Derivative(std::span<const double> x, std::span<double> dfdx)const
+void MultiVariablePolynomial::Derivative(std::span<const double> x, std::span<double> dfdx) const
 {
-	const int dim = GetDomainDimension();
+    const int dim = GetDomainDimension();
 
-	Utilities::MyAssert(x.size() == GetDomainDimension());
-	Utilities::MyAssert(dfdx.size() == dim);
+    Utilities::MyAssert(x.size() == GetDomainDimension());
+    Utilities::MyAssert(dfdx.size() == dim);
 
+    std::fill(dfdx.begin(), dfdx.end(), 0.0);
 
-	std::fill(dfdx.begin(), dfdx.end(), 0.0);
+    std::vector<double> deriv(dim);
 
-	std::vector<double> deriv(dim);
-
-	for (auto& term : m_terms)
-	{
-		::Derivative(term.second, x, deriv);
-		for (int v = 0; v < dim; ++v)
-		{
-			dfdx[v] += term.first*deriv[v];
-		}
-	}
+    for (auto &term : m_terms)
+    {
+        ::Derivative(term.second, x, deriv);
+        for (int v = 0; v < dim; ++v)
+        {
+            dfdx[v] += term.first * deriv[v];
+        }
+    }
 }

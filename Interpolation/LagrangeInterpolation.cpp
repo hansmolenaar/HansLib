@@ -1,48 +1,48 @@
 #include "LagrangeInterpolation.h"
 #include "MyAssert.h"
 
-LagrangeInterpolation::LagrangeInterpolation(std::span<const double>x, std::span<const double>y) :
-   m_xvals(x.begin(), x.end()), m_yvals(y.begin(), y.end())
+LagrangeInterpolation::LagrangeInterpolation(std::span<const double> x, std::span<const double> y)
+    : m_xvals(x.begin(), x.end()), m_yvals(y.begin(), y.end())
 {
-   Utilities::MyAssert(m_xvals.size() == m_yvals.size());
-   Utilities::MyAssert(m_xvals.size() > 1);
+    Utilities::MyAssert(m_xvals.size() == m_yvals.size());
+    Utilities::MyAssert(m_xvals.size() > 1);
 }
 
-bool  LagrangeInterpolation::HasDerivative() const
+bool LagrangeInterpolation::HasDerivative() const
 {
-   return false;
+    return false;
 }
 
 bool LagrangeInterpolation::DerivativeAlwaysZero(int eqn, int var) const
 {
-   return false;
+    return false;
 }
 
-double  LagrangeInterpolation::Evaluate(double x) const
+double LagrangeInterpolation::Evaluate(double x) const
 {
-   double result = 0;
-   for (size_t i = 0; i < m_xvals.size(); ++i)
-   {
-      double coef = 1;
-      for (size_t j = 0; j < m_yvals.size(); ++j)
-      {
-         if (i != j)
-         {
-            coef *= (x - m_xvals.at(j)) / (m_xvals.at(i) - m_xvals.at(j));
-         }
-      }
-      result += coef * m_yvals.at(i);
-   }
-   return result;
+    double result = 0;
+    for (size_t i = 0; i < m_xvals.size(); ++i)
+    {
+        double coef = 1;
+        for (size_t j = 0; j < m_yvals.size(); ++j)
+        {
+            if (i != j)
+            {
+                coef *= (x - m_xvals.at(j)) / (m_xvals.at(i) - m_xvals.at(j));
+            }
+        }
+        result += coef * m_yvals.at(i);
+    }
+    return result;
 }
 
 double LagrangeInterpolation::Derivative(double x) const
 {
-   Utilities::MyAssert(false, " LagrangeInterpolation::Derivative not implemented");
-   return {};
+    Utilities::MyAssert(false, " LagrangeInterpolation::Derivative not implemented");
+    return {};
 }
 
 bool LagrangeInterpolation::IsNonConstant() const
 {
-   return true;
+    return true;
 }

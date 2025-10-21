@@ -7,21 +7,20 @@
 
 namespace MeshGeneration
 {
-   template<size_t N>
-   class IMeshingSettings
-   {
-   public:
-      virtual ~IMeshingSettings() = default;
+template <size_t N> class IMeshingSettings
+{
+  public:
+    virtual ~IMeshingSettings() = default;
 
-      virtual MeshGeneration::CellQualityFun<N>* getCellQuality() = 0;
-      virtual IRefinementPredicateFactory<N>& getRefinementPredicateFactory() = 0;
-      virtual const IGeometryPredicate<double, N>& getGeometryPredicate() = 0;
-      virtual const IInitialBoundingboxGenerator<N >& getInitialBbGenerator() = 0;
-      virtual Logger& getLogger() = 0;
+    virtual MeshGeneration::CellQualityFun<N> *getCellQuality() = 0;
+    virtual IRefinementPredicateFactory<N> &getRefinementPredicateFactory() = 0;
+    virtual const IGeometryPredicate<double, N> &getGeometryPredicate() = 0;
+    virtual const IInitialBoundingboxGenerator<N> &getInitialBbGenerator() = 0;
+    virtual Logger &getLogger() = 0;
 
-      BoundingBox<GeomType, N> getInitialBb(const Geometry::IGeometryRegion<GeomType, N>& region);
-   };
+    BoundingBox<GeomType, N> getInitialBb(const Geometry::IGeometryRegion<GeomType, N> &region);
+};
 
-   using IMeshingSettings2 = IMeshingSettings<GeomDim2>;
-   using IMeshingSettings3 = IMeshingSettings<GeomDim3>;
-}
+using IMeshingSettings2 = IMeshingSettings<GeomDim2>;
+using IMeshingSettings3 = IMeshingSettings<GeomDim3>;
+} // namespace MeshGeneration

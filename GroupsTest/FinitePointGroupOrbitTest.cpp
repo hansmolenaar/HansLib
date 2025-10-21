@@ -8,28 +8,28 @@
 
 TEST(FinitePointGroupOrbitTest, Basic1)
 {
-   const ActionReflectOrigin<1> reflect;
-   const PointClose<double, 1> areClose;
-   const Point1 p{ 2.0 };
-   const Point1 pr{ -2.0 };
-   const FinitePointGroupOrbit<1> orbit(reflect, p, areClose);
-   ASSERT_EQ(orbit.getNumPoints(), 2);
-   ASSERT_TRUE(areClose.samePoints(orbit.getPoint(0), p));
-   ASSERT_TRUE(areClose.samePoints(orbit.getPoint(1), pr));
+    const ActionReflectOrigin<1> reflect;
+    const PointClose<double, 1> areClose;
+    const Point1 p{2.0};
+    const Point1 pr{-2.0};
+    const FinitePointGroupOrbit<1> orbit(reflect, p, areClose);
+    ASSERT_EQ(orbit.getNumPoints(), 2);
+    ASSERT_TRUE(areClose.samePoints(orbit.getPoint(0), p));
+    ASSERT_TRUE(areClose.samePoints(orbit.getPoint(1), pr));
 
-   auto found = orbit.tryGetClosePoint(pr);
-   ASSERT_EQ(*found, 1);
+    auto found = orbit.tryGetClosePoint(pr);
+    ASSERT_EQ(*found, 1);
 
-   found = orbit.tryGetClosePoint(Point1{ 1 });
-   ASSERT_FALSE(found);
+    found = orbit.tryGetClosePoint(Point1{1});
+    ASSERT_FALSE(found);
 }
 
 TEST(FinitePointGroupOrbitTest, Di3)
 {
-   const ActionDihedral di(4);
-   const PointClose<double, 2> areClose;
-   const Point2 p{ 2, 1 };
-   const FinitePointGroupOrbit<2> orbit(di, p, areClose);
+    const ActionDihedral di(4);
+    const PointClose<double, 2> areClose;
+    const Point2 p{2, 1};
+    const FinitePointGroupOrbit<2> orbit(di, p, areClose);
 
-   ASSERT_EQ(orbit.getNumPoints(), 8);
+    ASSERT_EQ(orbit.getNumPoints(), 8);
 }

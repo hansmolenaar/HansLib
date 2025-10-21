@@ -4,8 +4,8 @@
 
 namespace Topology
 {
-   namespace ReferenceShapeHyperCube
-   {
-      const IReferenceShapeHyperCube& Get(TopologyDimension dim);
-   }
+namespace ReferenceShapeHyperCube
+{
+const IReferenceShapeHyperCube &Get(TopologyDimension dim);
 }
+} // namespace Topology

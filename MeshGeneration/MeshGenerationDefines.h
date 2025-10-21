@@ -10,13 +10,11 @@
 
 namespace MeshGeneration
 {
-   using GeomType = double;
+using GeomType = double;
 
-   // Should be GE 0 and 0 means degenerate
-   template<size_t N>
-   using CellQualityFun = double(const Geometry::Simplex<GeomType, N>&);
+// Should be GE 0 and 0 means degenerate
+template <size_t N> using CellQualityFun = double(const Geometry::Simplex<GeomType, N> &);
 
-   using CellQuality2Fun = double(const Geometry::Simplex<GeomType, GeomDim2>&);
-   using CellQuality3Fun = double(const Geometry::Simplex<GeomType, GeomDim3>&);
-}
-
+using CellQuality2Fun = double(const Geometry::Simplex<GeomType, GeomDim2> &);
+using CellQuality3Fun = double(const Geometry::Simplex<GeomType, GeomDim3> &);
+} // namespace MeshGeneration

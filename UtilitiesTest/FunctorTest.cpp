@@ -5,58 +5,57 @@
 
 TEST(FunctorTest, IsEqualTo)
 {
-   const Functors::IsEqualTo isEqualTo42{ 42 };
-   ASSERT_FALSE(isEqualTo42(1));
-   ASSERT_TRUE(isEqualTo42(42));
+    const Functors::IsEqualTo isEqualTo42{42};
+    ASSERT_FALSE(isEqualTo42(1));
+    ASSERT_TRUE(isEqualTo42(42));
 }
 
 struct Base
 {
-   virtual ~Base() = default;
+    virtual ~Base() = default;
 };
-struct Derived_1 : public Base {};
-struct Derived_2 : public Base {};
-
+struct Derived_1 : public Base
+{
+};
+struct Derived_2 : public Base
+{
+};
 
 struct AnotherBase
 {
-   virtual ~AnotherBase() = default;
+    virtual ~AnotherBase() = default;
 };
 
 TEST(FunctorTest, PointerIsOfType)
 {
-   //const Functors::PointerIsOfType<int> isIntPointer;
+    // const Functors::PointerIsOfType<int> isIntPointer;
 
-   const Derived_1 d1;
-   const Derived_2 d2;
-   const Base* b1 = &d1;
-   const Base* b2 = &d2;
+    const Derived_1 d1;
+    const Derived_2 d2;
+    const Base *b1 = &d1;
+    const Base *b2 = &d2;
 
-   const AnotherBase ab;
-   ASSERT_TRUE(Functors::IsOfDerivedType<Derived_1>()(b1));
-   ASSERT_FALSE(Functors::IsOfDerivedType<Derived_1>()(b2));
-   ASSERT_FALSE(Functors::IsOfDerivedType<Derived_1>()(&ab));
+    const AnotherBase ab;
+    ASSERT_TRUE(Functors::IsOfDerivedType<Derived_1>()(b1));
+    ASSERT_FALSE(Functors::IsOfDerivedType<Derived_1>()(b2));
+    ASSERT_FALSE(Functors::IsOfDerivedType<Derived_1>()(&ab));
 }
 
 TEST(FunctorTest, AreClose)
 {
-   constexpr Functors::AreClose areClose;
-   ASSERT_TRUE(areClose(0, 0));
-   ASSERT_TRUE(areClose(0, std::numeric_limits<double>::min()));
-   ASSERT_FALSE(areClose(0, 1.0));
-   ASSERT_FALSE(areClose(-1.0, 1.0));
+    constexpr Functors::AreClose areClose;
+    ASSERT_TRUE(areClose(0, 0));
+    ASSERT_TRUE(areClose(0, std::numeric_limits<double>::min()));
+    ASSERT_FALSE(areClose(0, 1.0));
+    ASSERT_FALSE(areClose(-1.0, 1.0));
 }
-
 
 TEST(FunctorTest, AreCloseVectors)
 {
-   constexpr Functors::VectorDoubleLess less;
-   const std::vector<double> x{ 1.0, 2.0 };
-   const std::vector<double> y{ 1.0, 3.0 };
-   ASSERT_TRUE(less(x, y));
-   ASSERT_FALSE(less(y, x));
-   ASSERT_FALSE(less(x, x));
-
+    constexpr Functors::VectorDoubleLess less;
+    const std::vector<double> x{1.0, 2.0};
+    const std::vector<double> y{1.0, 3.0};
+    ASSERT_TRUE(less(x, y));
+    ASSERT_FALSE(less(y, x));
+    ASSERT_FALSE(less(x, x));
 }
-
-

@@ -1,16 +1,13 @@
 #include "IntervalTree.h"
-#include "MyException.h"
 #include "IntervalTreeAdjacentDirection.h"
+#include "MyException.h"
 
-#include <sstream>
 #include <cmath>
+#include <sstream>
 
 using namespace IntervalTree;
 
 namespace
 {
-  
+
 }
-
-
-

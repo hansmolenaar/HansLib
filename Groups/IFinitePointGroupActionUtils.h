@@ -5,17 +5,17 @@
 
 namespace IFinitePointGroupActionUtils
 {
-   template<size_t N>
-   std::vector<Point<double, N>> GetOrbit(const IFinitePointGroupAction<N>&, const Point<double, N>&);
+template <size_t N>
+std::vector<Point<double, N>> GetOrbit(const IFinitePointGroupAction<N> &, const Point<double, N> &);
 }
 
-
-template<size_t N>
-std::vector<Point<double, N>> IFinitePointGroupActionUtils::GetOrbit(const IFinitePointGroupAction<N>& groupAction, const Point<double, N>& point)
+template <size_t N>
+std::vector<Point<double, N>> IFinitePointGroupActionUtils::GetOrbit(const IFinitePointGroupAction<N> &groupAction,
+                                                                     const Point<double, N> &point)
 {
-   std::vector<Point<double, N>> result;
-   result.reserve(groupAction.getGroup().getOrder());
-   str::transform(IFiniteGroupUtils::GetElements(groupAction.getGroup()), std::back_inserter(result),
-      [&groupAction, &point](const auto& elm) { return groupAction(elm, point); });
-   return result;
+    std::vector<Point<double, N>> result;
+    result.reserve(groupAction.getGroup().getOrder());
+    str::transform(IFiniteGroupUtils::GetElements(groupAction.getGroup()), std::back_inserter(result),
+                   [&groupAction, &point](const auto &elm) { return groupAction(elm, point); });
+    return result;
 }

@@ -3,15 +3,14 @@
 #include "IManifoldId.h"
 #include "MeshGenerationDefines.h"
 
-namespace  MeshGeneration
+namespace MeshGeneration
 {
-   class IManifoldReconstruction
-   {
-   public:
-      virtual ~IManifoldReconstruction() = default;
+class IManifoldReconstruction
+{
+  public:
+    virtual ~IManifoldReconstruction() = default;
 
-      virtual const Geometry::IManifoldId& getManifoldId() const = 0;
-   };
+    virtual const Geometry::IManifoldId &getManifoldId() const = 0;
+};
 
-
-}
+} // namespace MeshGeneration

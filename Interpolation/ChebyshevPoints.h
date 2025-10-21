@@ -4,5 +4,5 @@
 
 namespace ChebyshevPoints
 {
-   std::vector<double>Generate(double, double, int);
+std::vector<double> Generate(double, double, int);
 }

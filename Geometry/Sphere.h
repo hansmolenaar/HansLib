@@ -6,29 +6,30 @@
 namespace Geometry
 {
 
-   template<typename T, size_t N>
-   class Sphere : public IGeometryObject<T, N>
-   {
-   public:
-      Sphere(Point<T, N> center, T radius);
+template <typename T, size_t N> class Sphere : public IGeometryObject<T, N>
+{
+  public:
+    Sphere(Point<T, N> center, T radius);
 
-      BoundingBox<T, N> getBoundingBox() const override;
+    BoundingBox<T, N> getBoundingBox() const override;
 
-      bool Contains(const Point<T, N>& point, const IGeometryPredicate<T, N>& predicate) const;
+    bool Contains(const Point<T, N> &point, const IGeometryPredicate<T, N> &predicate) const;
 
-      // First **after** start point
-      // If the edge is contained in the region, then return the exit point or the end point of the edge
-      // If only the first point of the edge is in the region return false
-      std::optional<Point<T, N>> TryGetFirstIntersectionWithDirectedEdge(const Geometry::DirectedEdge<T, N>& edge, const IGeometryPredicate<T, N>& predicate) const;
+    // First **after** start point
+    // If the edge is contained in the region, then return the exit point or the end point of the edge
+    // If only the first point of the edge is in the region return false
+    std::optional<Point<T, N>> TryGetFirstIntersectionWithDirectedEdge(const Geometry::DirectedEdge<T, N> &edge,
+                                                                       const IGeometryPredicate<T, N> &predicate) const;
 
-      bool CouldIntersectWith(const BoundingBox<T, N>& bb, const IGeometryPredicate<T, N>& predicate) const;
+    bool CouldIntersectWith(const BoundingBox<T, N> &bb, const IGeometryPredicate<T, N> &predicate) const;
 
-      Point<T, N> getCenter() const;
+    Point<T, N> getCenter() const;
 
-      DirectedEdgeIntersections<T, N> getIntersections(const DirectedEdge<T, N>& edge, const IGeometryPredicate<T, N>& predicate) const;
-   private:
-      Ball<T, N> m_ball;
-   };
+    DirectedEdgeIntersections<T, N> getIntersections(const DirectedEdge<T, N> &edge,
+                                                     const IGeometryPredicate<T, N> &predicate) const;
 
+  private:
+    Ball<T, N> m_ball;
+};
 
 } // namespace Geometry
