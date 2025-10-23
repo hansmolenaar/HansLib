@@ -179,3 +179,26 @@ std::vector<GraphVertex> UndirectedGraph::getIsolatedVertices() const
     }
     return result;
 }
+
+UndirectedGraph UndirectedGraph::CreatePermuted(const UndirectedGraph &graph, const Permutation &permut)
+{
+    const auto nVertices = graph.getNumVertices();
+    MyAssert(nVertices == permut.getOrder());
+    UndirectedGraph result(nVertices);
+    std::vector<GraphVertex> ngbs;
+    for (GraphVertex v0 = 0; v0 < nVertices; ++v0)
+    {
+        const auto v1 = permut(v0);
+        graph.setAdjacentVertices(v0, ngbs);
+        for (auto n0 : ngbs)
+        {
+            const auto n1 = permut(n0);
+            if (n1 > v1) // add once
+            {
+                result.addEdge(n1, v1);
+            }
+        }
+    }
+
+    return result;
+}

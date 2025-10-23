@@ -240,3 +240,22 @@ TEST(UndirectedGraphTest, Star123)
     const auto components = graph->getConnectedComponents();
     ASSERT_EQ(*str::max_element(components), 0);
 }
+
+TEST(UndirectedGraphTest, Permut)
+{
+    const auto graph = UndirectedGraphLibrary::Get_Star({1, 2, 3});
+    const auto permutation = Permutation::Create(std::vector<Permutation::Entry>{1, 2, 3, 4, 5, 6, 0});
+    const auto permuted = UndirectedGraph::CreatePermuted(*graph, permutation);
+    ASSERT_EQ(permuted.getNumVertices(), 7);
+    ASSERT_EQ(permuted.getNumEdges(), 6);
+    const auto components = permuted.getConnectedComponents();
+    ASSERT_EQ(*str::max_element(components), 0);
+
+    std::vector<GraphVertex> degreeSequenceOrg = graph->getDegreeSequence();
+    str::sort(degreeSequenceOrg);
+
+    std::vector<GraphVertex> degreeSequencePrm = permuted.getDegreeSequence();
+    str::sort(degreeSequencePrm);
+
+    ASSERT_TRUE(str::equal(degreeSequenceOrg, degreeSequencePrm));
+}

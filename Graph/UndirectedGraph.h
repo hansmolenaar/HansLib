@@ -1,6 +1,7 @@
 #pragma once
 
 #include "GraphDefines.h"
+#include "Permutation.h"
 
 class UndirectedGraph
 {
@@ -15,6 +16,8 @@ class UndirectedGraph
     GraphVertex getDegree(GraphVertex vertex) const;
     std::vector<GraphVertex> getDegreeSequence() const;
     std::vector<GraphVertex> getIsolatedVertices() const;
+
+    static UndirectedGraph CreatePermuted(const UndirectedGraph &graph, const Permutation &permut);
 
     struct CyclesAndPaths
     {

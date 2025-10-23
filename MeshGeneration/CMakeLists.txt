@@ -14,5 +14,6 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 	${CMAKE_INCLUDE_DIR}/Graph
 	${CMAKE_INCLUDE_DIR}/Tree
 	${CMAKE_INCLUDE_DIR}/Paraview
+	${CMAKE_INCLUDE_DIR}/Permutation
 	${Boost_INCLUDE_DIRS}
 )
