@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GraphIsomorphismStatus.h"
+#include "GraphIsomorphismDefines.h"
 #include "UndirectedGraph.h"
 
 namespace GraphIsomorphism
