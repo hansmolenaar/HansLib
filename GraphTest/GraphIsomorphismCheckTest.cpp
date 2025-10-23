@@ -9,7 +9,7 @@ namespace
 {
 } // namespace
 
-TEST(GraphIsomorphismCheckTest, Check)
+TEST(GraphIsomorphismCheckTest, Check1)
 {
     const auto graph = UndirectedGraphLibrary::Get_Star({1, 2, 3});
 
@@ -37,4 +37,20 @@ TEST(GraphIsomorphismCheckTest, Check)
     {
         ASSERT_EQ(Check{}(*graph, *graph), Status::Isomorphic);
     }
+}
+
+TEST(GraphIsomorphismCheckTest, Check2)
+{
+    const auto graph = UndirectedGraphLibrary::Get_Cycle(3);
+    const auto permutation = Permutation::Create(std::vector<Permutation::Entry>{1, 0, 2});
+    const auto permuted = UndirectedGraph::CreatePermuted(*graph, permutation);
+    ASSERT_EQ(Check{}(*graph, permuted), Status::Isomorphic);
+}
+
+TEST(GraphIsomorphismCheckTest, Check3)
+{
+    const auto graph = UndirectedGraphLibrary::Get_Cycle(4);
+    const auto permutation = Permutation::Create(std::vector<Permutation::Entry>{1, 0, 2, 3});
+    const auto permuted = UndirectedGraph::CreatePermuted(*graph, permutation);
+    ASSERT_EQ(Check{}(*graph, permuted), Status::Undecided);
 }

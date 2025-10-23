@@ -183,7 +183,7 @@ std::vector<GraphVertex> UndirectedGraph::getIsolatedVertices() const
 UndirectedGraph UndirectedGraph::CreatePermuted(const UndirectedGraph &graph, const Permutation &permut)
 {
     const auto nVertices = graph.getNumVertices();
-    MyAssert(nVertices == permut.getOrder());
+    MyAssert(nVertices == permut.getCardinality());
     UndirectedGraph result(nVertices);
     std::vector<GraphVertex> ngbs;
     for (GraphVertex v0 = 0; v0 < nVertices; ++v0)
