@@ -202,3 +202,10 @@ UndirectedGraph UndirectedGraph::CreatePermuted(const UndirectedGraph &graph, co
 
     return result;
 }
+
+std::vector<GraphVertex> UndirectedGraph::getSortedDegreeSequence() const
+{
+    auto result = getDegreeSequence();
+    str::sort(result);
+    return result;
+}
