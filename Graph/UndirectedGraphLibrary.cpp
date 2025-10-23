@@ -1,6 +1,9 @@
 #include "UndirectedGraphLibrary.h"
+#include "Defines.h"
 #include "MyAssert.h"
 #include "UndirectedGraphFromG6.h"
+
+#include <numeric>
 
 using namespace Utilities;
 
@@ -69,6 +72,26 @@ std::unique_ptr<UndirectedGraph> UndirectedGraphLibrary::Get_CompleteGraph(Graph
         }
     }
 
+    return result;
+}
+
+std::unique_ptr<UndirectedGraph> UndirectedGraphLibrary::Get_Star(std::initializer_list<GraphVertex> sizes)
+{
+    MyAssert(sizes.size() > 2);
+    MyAssert(str::all_of(sizes, [](auto v) { return v > 0; }));
+    const auto numVertices = str::fold_left(sizes, static_cast<GraphVertex>(1), std::plus<GraphVertex>());
+    auto result = std::make_unique<UndirectedGraph>(numVertices);
+    GraphVertex cur = 1;
+    for (auto s : sizes)
+    {
+        result->addEdge(0, cur);
+        for (GraphVertex v = 0; v < s - 1; ++v)
+        {
+            result->addEdge(cur + v, cur + v + 1);
+        }
+        cur += s;
+    }
+    MyAssert(cur == numVertices);
     return result;
 }
 

@@ -222,3 +222,21 @@ TEST(UndirectedGraphTest, IsolatedVertices)
     isolated = ug.getIsolatedVertices();
     ASSERT_TRUE(isolated.empty());
 }
+
+TEST(UndirectedGraphTest, Star111)
+{
+    const auto graph = UndirectedGraphLibrary::Get_Star({1, 1, 2});
+    ASSERT_EQ(graph->getNumVertices(), 5);
+    ASSERT_EQ(graph->getNumEdges(), 4);
+    const auto components = graph->getConnectedComponents();
+    ASSERT_EQ(*str::max_element(components), 0);
+}
+
+TEST(UndirectedGraphTest, Star123)
+{
+    const auto graph = UndirectedGraphLibrary::Get_Star({1, 2, 3});
+    ASSERT_EQ(graph->getNumVertices(), 7);
+    ASSERT_EQ(graph->getNumEdges(), 6);
+    const auto components = graph->getConnectedComponents();
+    ASSERT_EQ(*str::max_element(components), 0);
+}
