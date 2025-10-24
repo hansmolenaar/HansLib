@@ -10,8 +10,9 @@ class UndirectedGraphDistance
     using AtDistance = std::vector<std::vector<GraphVertex>>;
 
     explicit UndirectedGraphDistance(const UndirectedGraph &);
-    AtDistance operator()(GraphVertex) const;
+    const AtDistance &operator()(GraphVertex) const;
 
   private:
     const UndirectedGraph &m_graph;
+    std::vector<AtDistance> m_distances;
 };

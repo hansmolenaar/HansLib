@@ -32,7 +32,7 @@ TEST(UndirectedGraphDistanceTest, Cycle4)
     const auto graph = UndirectedGraphLibrary::Get_Cycle(4);
     const UndirectedGraphDistance distances(*graph);
 
-    const auto d = distances(static_cast<GraphVertex>(1));
+    const auto &d = distances(static_cast<GraphVertex>(1));
     ASSERT_EQ(d.size(), 3);
     ASSERT_TRUE(str::equal(d.at(0), std::vector<GraphVertex>{1}));
     ASSERT_TRUE(str::equal(d.at(1), std::vector<GraphVertex>{0, 2}));

@@ -5,16 +5,14 @@
 
 using namespace Utilities;
 
-UndirectedGraphDistance::UndirectedGraphDistance(const UndirectedGraph &graph) : m_graph(graph)
+namespace
 {
-}
-
-UndirectedGraphDistance::AtDistance UndirectedGraphDistance::operator()(GraphVertex vertex) const
+UndirectedGraphDistance::AtDistance Generate(const UndirectedGraph &graph, const GraphVertex vertex)
 {
-    const auto nVertices = m_graph.getNumVertices();
+    const auto nVertices = graph.getNumVertices();
     std::vector<bool> done(nVertices, false);
 
-    AtDistance result;
+    UndirectedGraphDistance::AtDistance result;
 
     std::vector<GraphVertex> ngbs;
     std::vector<GraphVertex> current(1, vertex);
@@ -29,7 +27,7 @@ UndirectedGraphDistance::AtDistance UndirectedGraphDistance::operator()(GraphVer
         std::set<GraphVertex> todo;
         for (auto c : current)
         {
-            m_graph.setAdjacentVertices(c, ngbs);
+            graph.setAdjacentVertices(c, ngbs);
             for (auto n : ngbs)
             {
                 if (!done.at(n))
@@ -44,4 +42,20 @@ UndirectedGraphDistance::AtDistance UndirectedGraphDistance::operator()(GraphVer
     }
 
     return result;
+}
+} // namespace
+
+UndirectedGraphDistance::UndirectedGraphDistance(const UndirectedGraph &graph) : m_graph(graph)
+{
+    const auto nVertices = graph.getNumVertices();
+    m_distances.reserve(nVertices);
+    for (GraphVertex v = 0; v < nVertices; ++v)
+    {
+        m_distances.emplace_back(Generate(m_graph, v));
+    }
+}
+
+const UndirectedGraphDistance::AtDistance &UndirectedGraphDistance::operator()(GraphVertex vertex) const
+{
+    return m_distances.at(vertex);
 }
