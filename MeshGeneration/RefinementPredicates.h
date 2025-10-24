@@ -25,7 +25,7 @@ template <size_t N> class RefineRegionToMaxLevel : public IRefinementPredicate<N
 template <size_t N> class RefineRegionToMaxLevelFactory : public IRefinementPredicateFactory<N>
 {
   public:
-    explicit RefineRegionToMaxLevelFactory<N>(int maxLevel);
+    explicit RefineRegionToMaxLevelFactory(int maxLevel);
     std::unique_ptr<IRefinementPredicate<N>> Create(const Geometry::IGeometryRegion<double, N> &region,
                                                     const IInitialBoundingboxGenerator<N> &generator,
                                                     const IGeometryPredicate<double, N> &geometryPredicate) override;

@@ -2,6 +2,8 @@
 #include "Defines.h"
 #include "UndirectedGraph.h"
 
+#include <map>
+
 using namespace GraphIsomorphism;
 
 namespace
@@ -19,13 +21,35 @@ struct Tag2Group
 };
 } // namespace
 
-GraphGroup Grouper::operator()(const IGraphIsomorphismTagger &tagger)
+Grouper::Grouper(const IGraphIsomorphismTagger &tagger) : m_graph(tagger.getGraph())
 {
-    const auto &graph = tagger.getGraph();
-    const auto nVertices = tagger.getGraph().getNumVertices();
+    const auto nVertices = m_graph.getNumVertices();
 
-    Tag2Group t2g{tagger};
-    GraphGroup result(nVertices);
-    str::transform(stv::iota(static_cast<GraphVertex>(0), nVertices), result.begin(), t2g);
-    return result;
+    std::map<VertexTag, std::vector<GraphVertex>> groups;
+    for (GraphVertex v = 0; v < nVertices; ++v)
+    {
+        groups[tagger.getTag(v)].push_back(v);
+    }
+
+    for (const auto &itr : groups)
+    {
+        m_tags.emplace_back(itr.first);
+        m_groups.emplace_back(itr.second);
+    }
+}
+
+const std::vector<VertexTag> &Grouper::getTags() const
+{
+    return m_tags;
+}
+
+const std::vector<GraphVertex> *Grouper::getGroupMembers(const VertexTag &tag) const
+{
+    const auto found = str::find(m_tags, tag);
+    if (found != m_tags.end())
+    {
+        const auto pos = std::distance(m_tags.begin(), found);
+        return m_groups.data() + pos;
+    }
+    return {};
 }

@@ -11,7 +11,16 @@ namespace GraphIsomorphism
 class Grouper
 {
   public:
-    GraphGroup operator()(const IGraphIsomorphismTagger &tagger);
+    explicit Grouper(const IGraphIsomorphismTagger &tagger);
+    const std::vector<VertexTag> &getTags() const;
+    // Returns nullptr if not found
+    const std::vector<GraphVertex> *getGroupMembers(const VertexTag &) const;
+
+  private:
+    const UndirectedGraph &m_graph;
+    std::vector<VertexTag> m_tags;
+    // Same order as m_tags
+    std::vector<std::vector<GraphVertex>> m_groups;
 };
 
 } // namespace GraphIsomorphism
