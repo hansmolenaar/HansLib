@@ -12,7 +12,7 @@ UndirectedGraphDistance::UndirectedGraphDistance(const UndirectedGraph &graph) :
 UndirectedGraphDistance::AtDistance UndirectedGraphDistance::operator()(GraphVertex vertex) const
 {
     const auto nVertices = m_graph.getNumVertices();
-    std::set<GraphVertex> done;
+   std::vector<bool> done(nVertices, false);
 
     AtDistance result;
 
@@ -24,7 +24,7 @@ UndirectedGraphDistance::AtDistance UndirectedGraphDistance::operator()(GraphVer
         result.push_back(current);
         for (auto c : current)
         {
-            done.insert(c);
+           done[c]  = true;
         }
         std::set<GraphVertex> todo;
         for (auto c : current)
@@ -32,19 +32,15 @@ UndirectedGraphDistance::AtDistance UndirectedGraphDistance::operator()(GraphVer
             m_graph.setAdjacentVertices(c, ngbs);
             for (auto n : ngbs)
             {
-                if (!done.contains(n))
+                if (!done.at(n))
                 {
                     todo.insert(n);
                 }
             }
         }
-        current.clear();
+        current = std::vector<GraphVertex>(todo.begin(), todo.end());
         // TODO use c++23
-        // current.append_range(current.begin(), todo);
-        for (auto v : todo)
-        {
-            current.push_back(v);
-        }
+        //current = std::vector<GraphVertex>(todo);
     }
 
     return result;

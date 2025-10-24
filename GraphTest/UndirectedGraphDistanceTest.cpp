@@ -87,5 +87,4 @@ TEST(UndirectedGraphDistanceTest, Star111)
     ASSERT_TRUE(str::equal(d.at(0), std::vector<GraphVertex>{3}));
     ASSERT_TRUE(str::equal(d.at(1), std::vector<GraphVertex>{0}));
     ASSERT_TRUE(str::equal(d.at(2), std::vector<GraphVertex>{1, 2}));
-
 }
