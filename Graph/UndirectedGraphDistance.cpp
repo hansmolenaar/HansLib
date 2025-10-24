@@ -1,7 +1,7 @@
+#include "UndirectedGraphDistance.h"
 #include "Defines.h"
 #include "MyAssert.h"
 #include "UndirectedGraph.h"
-#include "UndirectedGraphDistance.h"
 
 using namespace Utilities;
 
@@ -12,7 +12,7 @@ UndirectedGraphDistance::UndirectedGraphDistance(const UndirectedGraph &graph) :
 UndirectedGraphDistance::AtDistance UndirectedGraphDistance::operator()(GraphVertex vertex) const
 {
     const auto nVertices = m_graph.getNumVertices();
-   std::vector<bool> done(nVertices, false);
+    std::vector<bool> done(nVertices, false);
 
     AtDistance result;
 
@@ -24,7 +24,7 @@ UndirectedGraphDistance::AtDistance UndirectedGraphDistance::operator()(GraphVer
         result.push_back(current);
         for (auto c : current)
         {
-           done[c]  = true;
+            done[c] = true;
         }
         std::set<GraphVertex> todo;
         for (auto c : current)
@@ -40,7 +40,7 @@ UndirectedGraphDistance::AtDistance UndirectedGraphDistance::operator()(GraphVer
         }
         current = std::vector<GraphVertex>(todo.begin(), todo.end());
         // TODO use c++23
-        //current = std::vector<GraphVertex>(todo);
+        // current = std::vector<GraphVertex>(todo);
     }
 
     return result;

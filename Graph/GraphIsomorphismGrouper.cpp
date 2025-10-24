@@ -1,5 +1,5 @@
-#include "Defines.h"
 #include "GraphIsomorphismGrouper.h"
+#include "Defines.h"
 #include "UndirectedGraph.h"
 
 using namespace GraphIsomorphism;
