@@ -12,12 +12,12 @@ class TagCompare
   public:
     struct Result
     {
-        enum Status
+        enum TagStatus
         {
             NotEquivalent,
             Equivalent
         };
-        Status CompareStatus;
+        TagStatus TagCompareStatus;
         std::vector<VertexPair> VertexPairs;
     };
     Result operator()(std::pair<const ITagger &, const ITagger &>) const;

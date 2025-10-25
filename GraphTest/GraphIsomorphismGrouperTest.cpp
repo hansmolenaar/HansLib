@@ -69,4 +69,19 @@ TEST(GraphIsomorphismGrouperTest, Star321)
     ASSERT_TRUE(str::equal(grouper.getGroupMembers(tags.at(0)), std::vector<GraphVertex>{3, 5, 6}));
     ASSERT_TRUE(str::equal(grouper.getGroupMembers(tags.at(1)), std::vector<GraphVertex>{1, 2, 4}));
     ASSERT_TRUE(str::equal(grouper.getGroupMembers(tags.at(2)), std::vector<GraphVertex>{0}));
+
 }
+TEST(GraphIsomorphismGrouperTest, Path4)
+{
+    const auto graph = UndirectedGraphLibrary::Get_Path(4);
+    const auto taggerDegree = TaggerDegree(*graph);
+    const Grouper grouper(taggerDegree);
+
+    const auto &tags = grouper.getTags();
+    ASSERT_EQ(tags.size(), 2);
+
+    ASSERT_TRUE(str::equal(grouper.getGroupMembers(tags.at(0)), std::vector<GraphVertex>{0, 3}));
+    ASSERT_TRUE(str::equal(grouper.getGroupMembers(tags.at(1)), std::vector<GraphVertex>{1, 2}));
+}
+
+

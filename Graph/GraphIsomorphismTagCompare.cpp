@@ -34,5 +34,5 @@ TagCompare::Result TagCompare::operator()(std::pair<const ITagger &, const ITagg
         }
     }
 
-    return {Result::Status::Equivalent, vertexPairs};
+    return {Result::TagStatus::Equivalent, vertexPairs};
 }
