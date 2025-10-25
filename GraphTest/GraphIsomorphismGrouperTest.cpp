@@ -21,11 +21,11 @@ TEST(GraphIsomorphismGrouperTest, DegreePath3)
     const auto &tags = grouper.getTags();
     ASSERT_EQ(tags.size(), 2);
 
-    ASSERT_TRUE(str::equal(*grouper.getGroupMembers(tags.at(0)), std::vector<GraphVertex>{0, 2}));
-    ASSERT_TRUE(str::equal(*grouper.getGroupMembers(tags.at(1)), std::vector<GraphVertex>{1}));
+    ASSERT_TRUE(str::equal(grouper.getGroupMembers(tags.at(0)), std::vector<GraphVertex>{0, 2}));
+    ASSERT_TRUE(str::equal(grouper.getGroupMembers(tags.at(1)), std::vector<GraphVertex>{1}));
 
     const VertexTag dummy{42};
-    ASSERT_EQ(grouper.getGroupMembers(dummy), nullptr);
+    ASSERT_TRUE(grouper.getGroupMembers(dummy).empty());
 }
 
 TEST(GraphIsomorphismGrouperTest, DegreeCycle3)
@@ -38,7 +38,7 @@ TEST(GraphIsomorphismGrouperTest, DegreeCycle3)
     const auto &tags = grouper.getTags();
     ASSERT_EQ(tags.size(), 1);
 
-    ASSERT_TRUE(str::equal(*grouper.getGroupMembers(tags.at(0)), std::vector<GraphVertex>{0, 1, 2}));
+    ASSERT_TRUE(str::equal(grouper.getGroupMembers(tags.at(0)), std::vector<GraphVertex>{0, 1, 2}));
 }
 
 TEST(GraphIsomorphismGrouperTest, Star112)
@@ -51,9 +51,9 @@ TEST(GraphIsomorphismGrouperTest, Star112)
     const auto &tags = grouper.getTags();
     ASSERT_EQ(tags.size(), 3);
 
-    ASSERT_TRUE(str::equal(*grouper.getGroupMembers(tags.at(0)), std::vector<GraphVertex>{1, 2, 4}));
-    ASSERT_TRUE(str::equal(*grouper.getGroupMembers(tags.at(1)), std::vector<GraphVertex>{3}));
-    ASSERT_TRUE(str::equal(*grouper.getGroupMembers(tags.at(2)), std::vector<GraphVertex>{0}));
+    ASSERT_TRUE(str::equal(grouper.getGroupMembers(tags.at(0)), std::vector<GraphVertex>{1, 2, 4}));
+    ASSERT_TRUE(str::equal(grouper.getGroupMembers(tags.at(1)), std::vector<GraphVertex>{3}));
+    ASSERT_TRUE(str::equal(grouper.getGroupMembers(tags.at(2)), std::vector<GraphVertex>{0}));
 }
 
 TEST(GraphIsomorphismGrouperTest, Star321)
@@ -66,7 +66,7 @@ TEST(GraphIsomorphismGrouperTest, Star321)
     const auto &tags = grouper.getTags();
     ASSERT_EQ(tags.size(), 3);
 
-    ASSERT_TRUE(str::equal(*grouper.getGroupMembers(tags.at(0)), std::vector<GraphVertex>{3, 5, 6}));
-    ASSERT_TRUE(str::equal(*grouper.getGroupMembers(tags.at(1)), std::vector<GraphVertex>{1, 2, 4}));
-    ASSERT_TRUE(str::equal(*grouper.getGroupMembers(tags.at(2)), std::vector<GraphVertex>{0}));
+    ASSERT_TRUE(str::equal(grouper.getGroupMembers(tags.at(0)), std::vector<GraphVertex>{3, 5, 6}));
+    ASSERT_TRUE(str::equal(grouper.getGroupMembers(tags.at(1)), std::vector<GraphVertex>{1, 2, 4}));
+    ASSERT_TRUE(str::equal(grouper.getGroupMembers(tags.at(2)), std::vector<GraphVertex>{0}));
 }

@@ -7,10 +7,10 @@ class UndirectedGraph;
 namespace GraphIsomorphism
 {
 
-class IGraphIsomorphismTagger
+class ITagger
 {
   public:
-    virtual ~IGraphIsomorphismTagger() = default;
+    virtual ~ITagger() = default;
     virtual VertexTag getTag(GraphVertex) const = 0;
     virtual const UndirectedGraph &getGraph() const = 0;
 };

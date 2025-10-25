@@ -8,7 +8,7 @@ class UndirectedGraph;
 namespace GraphIsomorphism
 {
 
-class TaggerDegree : public IGraphIsomorphismTagger
+class TaggerDegree : public ITagger
 {
   public:
     explicit TaggerDegree(const UndirectedGraph &);
