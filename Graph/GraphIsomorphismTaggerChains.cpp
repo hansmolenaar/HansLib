@@ -1,5 +1,5 @@
-#include "Defines.h"
 #include "GraphIsomorphismTaggerChains.h"
+#include "Defines.h"
 #include "MyAssert.h"
 #include "UndirectedGraph.h"
 
@@ -17,15 +17,14 @@ enum ChainId : TagEntry
     AttachedPathSingle,
     AttachedPathDouble
 };
-using ChainTag = std::pair<ChainId, size_t>;
 
 std::vector<VertexTag> GenerateTags(const UndirectedGraph &graph)
 {
     const auto nVertices = graph.getNumVertices();
     std::vector<VertexTag> retval(nVertices);
-    std::vector<std::vector<ChainTag>> attachedChainTags(nVertices);
     std::vector<std::map<size_t, TagEntry>> attachedCycles(nVertices);
     std::vector<std::map<size_t, TagEntry>> attachedPathsSingle(nVertices);
+    std::map<VertexPair, std::map<size_t, TagEntry>> attachedPathDouble;
 
     const auto cap = graph.SplitInCyclesAndPaths();
     std::map<size_t, TagEntry> pureCycleCount;
@@ -49,8 +48,6 @@ std::vector<VertexTag> GenerateTags(const UndirectedGraph &graph)
             const auto siz = cycle.size();
 
             // Relate to the attachment vertices
-            const ChainTag chainTag{AttachedCycle, siz};
-            attachedChainTags[cycle.front()].push_back(chainTag);
             attachedCycles[cycle.front()][siz] += 1;
             const auto cycleId = attachedCycles[cycle.front()][siz];
 
@@ -58,8 +55,8 @@ std::vector<VertexTag> GenerateTags(const UndirectedGraph &graph)
             for (size_t n = 1; n < siz; ++n)
             {
                 // ( ChainId, cycle size, number of cycle with this size, position in cycle )
-                retval[cycle.at(n)] =
-                    std::vector<TagEntry>{ChainId::AttachedCycle, static_cast<TagEntry>(siz), cycleId, static_cast<TagEntry>(n)};
+                retval[cycle.at(n)] = std::vector<TagEntry>{ChainId::AttachedCycle, static_cast<TagEntry>(siz), cycleId,
+                                                            static_cast<TagEntry>(n)};
             }
         }
     }
@@ -82,64 +79,83 @@ std::vector<VertexTag> GenerateTags(const UndirectedGraph &graph)
         else if (graph.getDegree(path.front()) > 2 && graph.getDegree(path.back()) == 1)
         {
             // Front attached path
-           attachedPathsSingle[path.front()][siz] += 1;
+            attachedPathsSingle[path.front()][siz] += 1;
             const auto pathId = attachedPathsSingle[path.front()][siz];
 
             for (size_t n = 1; n < siz; ++n)
             {
                 retval[path.at(n)] = std::vector<TagEntry>{ChainId::AttachedPathSingle, static_cast<TagEntry>(siz),
-                                                       pathId,    static_cast<TagEntry>(n)};
+                                                           pathId, static_cast<TagEntry>(n)};
             }
-            const ChainTag chainTag{AttachedPathSingle, siz};
-            attachedChainTags[path.front()].push_back(chainTag);
         }
         else if (graph.getDegree(path.front()) == 1 && graph.getDegree(path.back()) > 2)
         {
             // back attached path
-           attachedPathsSingle[path.back()][siz] += 1;
+            attachedPathsSingle[path.back()][siz] += 1;
             const auto pathId = attachedPathsSingle[path.back()][siz];
             for (size_t n = 1; n < siz; ++n)
             {
                 const size_t pos = siz - n - 1;
                 retval[path.at(pos)] = std::vector<TagEntry>{ChainId::AttachedPathSingle, static_cast<TagEntry>(siz),
-                                                           pathId,  static_cast<TagEntry>(n)};
+                                                             pathId, static_cast<TagEntry>(n)};
             }
-            const ChainTag chainTag{AttachedPathSingle, siz};
-            attachedChainTags[path.back()].push_back(chainTag);
         }
         else
         {
             MyAssert(graph.getDegree(path.front()) > 2 && graph.getDegree(path.back() > 2));
-
+            const VertexPair orderedEndPoints{std::min(path.front(), path.back()), std::max(path.front(), path.back())};
+            attachedPathDouble[orderedEndPoints][siz] += 1;
+            const auto pathId = attachedPathDouble[orderedEndPoints][siz];
             // double attached path, number it symmetrically
             for (size_t n = 1; n < siz - 1; ++n)
             {
                 const auto possym = std::min(n, siz - n - 1);
                 retval[path.at(n)] = std::vector<TagEntry>{ChainId::AttachedPathDouble, static_cast<TagEntry>(siz),
-                                                           static_cast<TagEntry>(possym)};
+                                                           pathId, static_cast<TagEntry>(possym)};
             }
-            const ChainTag chainTag{AttachedPathDouble, siz};
-            attachedChainTags[path.front()].push_back(chainTag);
-            attachedChainTags[path.back()].push_back(chainTag);
         }
     }
 
     for (size_t n = 0; n < nVertices; ++n)
     {
-        if (attachedChainTags.at(n).empty())
-        {
+        // std::vector<std::map<size_t, TagEntry>> attachedCycles(nVertices);
+        if (attachedCycles.at(n).empty())
             continue;
-        }
-
-        str::sort(attachedChainTags.at(n));
-        VertexTag tag;
-        for (const auto ct : attachedChainTags.at(n))
+        for (const auto &itr : attachedCycles.at(n))
         {
-            tag.push_back(ct.first);
-            tag.push_back(ct.second);
+            retval.at(n).push_back(ChainId::AttachedCycle);
+            retval.at(n).push_back(itr.first);
+            retval.at(n).push_back(itr.second);
         }
-        retval.at(n) = tag;
     }
+
+    for (size_t n = 0; n < nVertices; ++n)
+    {
+        // std::vector<std::map<size_t, TagEntry>> attachedPathsSingle(nVertices);
+        if (attachedPathsSingle.at(n).empty())
+            continue;
+        for (const auto &itr : attachedPathsSingle.at(n))
+        {
+            retval.at(n).push_back(ChainId::AttachedPathSingle);
+            retval.at(n).push_back(itr.first);
+            retval.at(n).push_back(itr.second);
+        }
+    }
+
+    // std::map<VertexPair, std::map<size_t, TagEntry>> attachedPathDouble;
+    for (const auto &itrVerticesMap : attachedPathDouble)
+    {
+        for (GraphVertex v : {itrVerticesMap.first.first, itrVerticesMap.first.second})
+        {
+            for (const auto &itr : itrVerticesMap.second)
+            {
+                retval.at(v).push_back(ChainId::AttachedPathDouble);
+                retval.at(v).push_back(itr.first);
+                retval.at(v).push_back(itr.second);
+            }
+        }
+    }
+
     return retval;
 }
 

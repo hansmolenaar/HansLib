@@ -4,8 +4,8 @@
 #include "GraphIsomorphismGrouper.h"
 #include "GraphIsomorphismTaggerDegree.h"
 #include "GraphIsomorphismTaggerDistance.h"
-#include "UndirectedGraphLibrary.h"
 #include "UndirectedGraphDistance.h"
+#include "UndirectedGraphLibrary.h"
 
 using namespace GraphIsomorphism;
 
