@@ -24,6 +24,7 @@ std::vector<VertexTag> GenerateTags(const UndirectedGraph &graph)
     const auto nVertices = graph.getNumVertices();
     std::vector<VertexTag> retval(nVertices);
     std::vector<std::vector<ChainTag>> attachedChainTags(nVertices);
+    std::vector<std::map<size_t, TagEntry>> attachedCycles(nVertices);
 
     const auto cap = graph.SplitInCyclesAndPaths();
     std::map<size_t, TagEntry> pureCycleCount;
@@ -44,17 +45,21 @@ std::vector<VertexTag> GenerateTags(const UndirectedGraph &graph)
         else
         {
             MyAssert(graph.getDegree(cycle.front()) > 2);
-            // Attached cycle, number it
             const auto siz = cycle.size();
+
+            // Relate to the attachment vertices
+            const ChainTag chainTag{AttachedCycle, siz};
+            attachedChainTags[cycle.front()].push_back(chainTag);
+            attachedCycles[cycle.front()][siz] += 1;
+            const auto cycleId = attachedCycles[cycle.front()][siz];
+
+            // cycle, number it
             for (size_t n = 1; n < siz; ++n)
             {
                 // ( ChainId, cycle size, number of cycle with this size, position in cycle )
                 retval[cycle.at(n)] =
-                    std::vector<TagEntry>{ChainId::AttachedCycle, static_cast<TagEntry>(siz), static_cast<TagEntry>(n)};
+                    std::vector<TagEntry>{ChainId::AttachedCycle, static_cast<TagEntry>(siz), cycleId, static_cast<TagEntry>(n)};
             }
-            // and relate to the attachment vertices
-            const ChainTag chainTag{AttachedCycle, siz};
-            attachedChainTags[cycle.front()].push_back(chainTag);
         }
     }
 
