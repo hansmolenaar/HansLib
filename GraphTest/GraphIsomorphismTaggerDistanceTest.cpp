@@ -17,7 +17,6 @@ TEST(GraphIsomorphismTaggerDistanceTest, Path3)
     const UndirectedGraphDistance distancer(*graph);
     const auto tagger = TaggerDistance(distancer);
     ASSERT_EQ(tagger.getGraph().getNumVertices(), 3);
-    const auto tmp = tagger.getTag(1);
     ASSERT_TRUE(str::equal(tagger.getTag(0), VertexTag{1, 1}));
     ASSERT_TRUE(str::equal(tagger.getTag(1), VertexTag{2}));
     ASSERT_TRUE(str::equal(tagger.getTag(2), VertexTag{1, 1}));

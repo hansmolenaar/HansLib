@@ -3,7 +3,9 @@
 #include "Defines.h"
 #include "GraphIsomorphismGrouper.h"
 #include "GraphIsomorphismTaggerDegree.h"
+#include "GraphIsomorphismTaggerDistance.h"
 #include "UndirectedGraphLibrary.h"
+#include "UndirectedGraphDistance.h"
 
 using namespace GraphIsomorphism;
 
@@ -56,7 +58,7 @@ TEST(GraphIsomorphismGrouperTest, Star112)
     ASSERT_TRUE(str::equal(grouper.getGroupMembers(tags.at(2)), std::vector<GraphVertex>{0}));
 }
 
-TEST(GraphIsomorphismGrouperTest, Star321)
+TEST(GraphIsomorphismGrouperTest, DegreeStar321)
 {
     const auto graph = UndirectedGraphLibrary::Get_Star({3, 2, 1});
 
@@ -70,6 +72,19 @@ TEST(GraphIsomorphismGrouperTest, Star321)
     ASSERT_TRUE(str::equal(grouper.getGroupMembers(tags.at(1)), std::vector<GraphVertex>{1, 2, 4}));
     ASSERT_TRUE(str::equal(grouper.getGroupMembers(tags.at(2)), std::vector<GraphVertex>{0}));
 }
+
+TEST(GraphIsomorphismGrouperTest, DistanceStar321)
+{
+    const auto graph = UndirectedGraphLibrary::Get_Star({3, 2, 1});
+
+    const UndirectedGraphDistance distancer(*graph);
+    const auto tagger = TaggerDistance(distancer);
+    const Grouper grouper(tagger);
+
+    const auto &tags = grouper.getTags();
+    ASSERT_EQ(tags.size(), graph->getNumVertices());
+}
+
 TEST(GraphIsomorphismGrouperTest, Path4)
 {
     const auto graph = UndirectedGraphLibrary::Get_Path(4);
