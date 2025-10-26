@@ -59,3 +59,8 @@ const UndirectedGraphDistance::AtDistance &UndirectedGraphDistance::operator()(G
 {
     return m_distances.at(vertex);
 }
+
+const UndirectedGraph &UndirectedGraphDistance::getGraph() const
+{
+    return m_graph;
+}

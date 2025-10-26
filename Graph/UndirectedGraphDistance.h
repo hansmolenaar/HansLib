@@ -11,6 +11,7 @@ class UndirectedGraphDistance
 
     explicit UndirectedGraphDistance(const UndirectedGraph &);
     const AtDistance &operator()(GraphVertex) const;
+    const UndirectedGraph &getGraph() const;
 
   private:
     const UndirectedGraph &m_graph;
