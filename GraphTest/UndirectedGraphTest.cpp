@@ -2,6 +2,7 @@
 
 #include "Defines.h"
 #include "Single.h"
+#include "UndirectedGraphFromG6.h"
 #include "UndirectedGraphLibrary.h"
 
 using namespace Utilities;
@@ -189,6 +190,19 @@ TEST(UndirectedGraphTest, SplitInCyclesAndPaths)
 
     graph = UndirectedGraphLibrary::Get_CompleteBipartite(3, 3);
     CheckCyclesPaths(*graph, std::vector<GraphVertex>{}, std::vector<GraphVertex>(9, 2));
+}
+
+TEST(UndirectedGraphTest, SplitInCyclesAndPathsPan3)
+{
+    const std::string pan3 = "Cx";
+    const auto graph = UndirectedGraphFromG6::Create(pan3);
+    const auto cap = graph->SplitInCyclesAndPaths();
+    ASSERT_TRUE(str::equal(Single(cap.Cycles), std::vector<GraphVertex>{2, 0, 1}));
+    ASSERT_TRUE(str::equal(Single(cap.Paths), std::vector<GraphVertex>{2, 3}));
+    ASSERT_EQ(graph->getDegree(0), 2);
+    ASSERT_EQ(graph->getDegree(1), 2);
+    ASSERT_EQ(graph->getDegree(2), 3);
+    ASSERT_EQ(graph->getDegree(3), 1);
 }
 
 TEST(UndirectedGraphTest, AddEdgeDuplicate)

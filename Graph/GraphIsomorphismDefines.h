@@ -9,7 +9,8 @@ class UndirectedGraph;
 namespace GraphIsomorphism
 {
 
-using VertexTag = std::vector<int>;
+using TagEntry = int;
+using VertexTag = std::vector<TagEntry>;
 using GraphGroup = std::vector<int>;
 using GraphPair = std::pair<const UndirectedGraph &, const UndirectedGraph &>;
 using VertexPair = std::pair<GraphVertex, GraphVertex>;
