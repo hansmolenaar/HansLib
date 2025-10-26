@@ -49,7 +49,7 @@ TEST(GraphIsomorphismTaggerChainsTest, Pan3)
     ASSERT_TRUE(str::equal(tagger.getTag(0), VertexTag{2, 3, 1, 1}));
     ASSERT_TRUE(str::equal(tagger.getTag(1), VertexTag{2, 3, 1, 2}));
     ASSERT_TRUE(str::equal(tagger.getTag(2), VertexTag{2, 3, 3, 2}));
-    ASSERT_TRUE(str::equal(tagger.getTag(3), VertexTag{3, 2, 1}));
+    ASSERT_TRUE(str::equal(tagger.getTag(3), VertexTag{3, 2, 1, 1}));
 }
 
 TEST(GraphIsomorphismTaggerChainsTest, Pan3Parmuted)
@@ -67,7 +67,7 @@ TEST(GraphIsomorphismTaggerChainsTest, Pan3Parmuted)
     const auto tagger = TaggerChains(permuted);
 
     ASSERT_TRUE(str::equal(tagger.getTag(0), VertexTag{2, 3, 1, 1}));
-    ASSERT_TRUE(str::equal(tagger.getTag(1), VertexTag{3, 2, 1}));
+    ASSERT_TRUE(str::equal(tagger.getTag(1), VertexTag{3, 2, 1, 1}));
     ASSERT_TRUE(str::equal(tagger.getTag(2), VertexTag{2, 3, 1, 2}));
     ASSERT_TRUE(str::equal(tagger.getTag(3), VertexTag{2, 3, 3, 2}));
 }

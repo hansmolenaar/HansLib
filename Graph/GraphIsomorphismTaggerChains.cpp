@@ -25,6 +25,7 @@ std::vector<VertexTag> GenerateTags(const UndirectedGraph &graph)
     std::vector<VertexTag> retval(nVertices);
     std::vector<std::vector<ChainTag>> attachedChainTags(nVertices);
     std::vector<std::map<size_t, TagEntry>> attachedCycles(nVertices);
+    std::vector<std::map<size_t, TagEntry>> attachedPathsSingle(nVertices);
 
     const auto cap = graph.SplitInCyclesAndPaths();
     std::map<size_t, TagEntry> pureCycleCount;
@@ -80,23 +81,28 @@ std::vector<VertexTag> GenerateTags(const UndirectedGraph &graph)
         }
         else if (graph.getDegree(path.front()) > 2 && graph.getDegree(path.back()) == 1)
         {
-            // Front attached path, number it
+            // Front attached path
+           attachedPathsSingle[path.front()][siz] += 1;
+            const auto pathId = attachedPathsSingle[path.front()][siz];
+
             for (size_t n = 1; n < siz; ++n)
             {
                 retval[path.at(n)] = std::vector<TagEntry>{ChainId::AttachedPathSingle, static_cast<TagEntry>(siz),
-                                                           static_cast<TagEntry>(n)};
+                                                       pathId,    static_cast<TagEntry>(n)};
             }
             const ChainTag chainTag{AttachedPathSingle, siz};
             attachedChainTags[path.front()].push_back(chainTag);
         }
         else if (graph.getDegree(path.front()) == 1 && graph.getDegree(path.back()) > 2)
         {
-            // back attached path, number it
+            // back attached path
+           attachedPathsSingle[path.back()][siz] += 1;
+            const auto pathId = attachedPathsSingle[path.back()][siz];
             for (size_t n = 1; n < siz; ++n)
             {
                 const size_t pos = siz - n - 1;
                 retval[path.at(pos)] = std::vector<TagEntry>{ChainId::AttachedPathSingle, static_cast<TagEntry>(siz),
-                                                             static_cast<TagEntry>(n)};
+                                                           pathId,  static_cast<TagEntry>(n)};
             }
             const ChainTag chainTag{AttachedPathSingle, siz};
             attachedChainTags[path.back()].push_back(chainTag);
