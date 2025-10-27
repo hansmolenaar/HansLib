@@ -194,8 +194,7 @@ TEST(UndirectedGraphTest, SplitInCyclesAndPaths)
 
 TEST(UndirectedGraphTest, SplitInCyclesAndPathsPan3)
 {
-    const std::string pan3 = "Cx";
-    const auto graph = UndirectedGraphFromG6::Create(pan3);
+    const auto graph = UndirectedGraphFromG6::Create(UndirectedGraphFromG6::pan3);
     const auto cap = graph->SplitInCyclesAndPaths();
     ASSERT_TRUE(str::equal(Single(cap.Cycles), std::vector<GraphVertex>{2, 0, 1}));
     ASSERT_TRUE(str::equal(Single(cap.Paths), std::vector<GraphVertex>{2, 3}));

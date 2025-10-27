@@ -61,8 +61,7 @@ TEST(GraphIsomorphismTagCompareTest, DegreeStar123)
 
 TEST(GraphIsomorphismTagCompareTest, DegreePan3)
 {
-    const std::string pan3 = "Cx";
-    const auto graph = UndirectedGraphFromG6::Create(pan3);
+    const auto graph = UndirectedGraphFromG6::Create(UndirectedGraphFromG6::pan3);
     const auto permuted =
         UndirectedGraph::CreatePermuted(*graph, Permutation::Create(std::vector<Permutation::Entry>{2, 1, 0, 3}));
     const auto graphs = std::make_pair(*graph, permuted);

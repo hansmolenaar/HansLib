@@ -25,4 +25,14 @@ static constexpr char house[] = "Dd[";
 //    |        |
 //    0 ------ 1
 
+static constexpr char X84[] = "ElD?";
+//
+//
+//          0
+//        /  \
+//   5 - 1    3 - 4
+//        \  /
+//          2
+//
+
 } // namespace UndirectedGraphFromG6
