@@ -131,22 +131,6 @@ std::pair<ChainId, Chain> GetChain(const UndirectedGraph &graph, GraphVertex ver
     return ConstrutcChain(graph, part1, part2);
 }
 
-bool less(const ChainTag &lhs, const ChainTag &rhs)
-{
-    MyAssert(lhs.id == ChainId::AttachedPathDouble);
-    MyAssert(rhs.id == ChainId::AttachedPathDouble);
-
-    const GraphVertex otherLhs = (lhs.attacheFirst == attachedTo ? lhs.attachedLast : lhs.attacheFirst);
-    const GraphVertex otherRhs = (rhs.attacheFirst == attachedTo ? rhs.attachedLast : rhs.attacheFirst);
-
-    if (otherLhs != otherRhs)
-    {
-        return otherLhs != otherRhs;
-    }
-    return
-}
-}
-
 std::vector<std::pair<ChainTag, Chain>> GetChains(const UndirectedGraph &graph)
 {
     std::vector<std::pair<ChainTag, Chain>> retval;
@@ -177,9 +161,6 @@ std::vector<VertexTag> GenerateTags(const UndirectedGraph &graph)
 {
     const auto nVertices = graph.getNumVertices();
     std::vector<VertexTag> retval(nVertices);
-
-    std::vector<ChainTag> attachmentSingleTags;
-    std::map<GraphPair, std::vector<ChainTag>> attachmentDoubleTags;
 
     const auto chains = GetChains(graph);
     auto currentItr = chains.begin();
@@ -240,15 +221,15 @@ std::vector<VertexTag> GenerateTags(const UndirectedGraph &graph)
             TagEntry count = 1;
             for (; currentItr != itrSameSize; ++currentItr, ++count)
             {
-                const auto &tag = currentItr->first;
-                attachmentSingleTags.push_back(tag);
-
                 for (TagEntry n = 1; n < currentSize; ++n)
                 {
                     // ( ChainId, cycle size, number of cycle with this size, position in cycle )
                     retval[currentItr->second.at(n)] =
                         std::vector<TagEntry>{ChainId::AttachedCycle, currentSize, count, n};
                 }
+                const GraphVertex root = currentItr->first.attacheFirst;
+                retval[root].push_back(ChainId::AttachedCycle);
+                retval[root].push_back(currentSize);
             }
         }
     }
@@ -272,18 +253,20 @@ std::vector<VertexTag> GenerateTags(const UndirectedGraph &graph)
             TagEntry count = 1;
             for (; currentItr != itrSameSize; ++currentItr, ++count)
             {
-                const auto &tag = currentItr->first;
-                attachmentSingleTags.push_back(tag);
                 for (TagEntry n = 1; n < currentSize; ++n)
                 {
                     // ( ChainId, path size, number of paths with this size, position in path )
                     retval[currentItr->second.at(n)] =
                         std::vector<TagEntry>{ChainId::AttachedPathSingle, currentSize, count, n};
                 }
+                const GraphVertex root = currentItr->first.attacheFirst;
+                retval[root].push_back(ChainId::AttachedPathSingle);
+                retval[root].push_back(currentSize);
             }
         }
     }
 
+    std::map<VertexPair, std::vector<TagEntry>> pairTags;
     const auto itrAttachedPathDouble = std::find_if_not(currentItr, chains.end(), [](const auto &tagChain) {
         return tagChain.first.id == ChainId::AttachedPathDouble;
     });
@@ -309,24 +292,41 @@ std::vector<VertexTag> GenerateTags(const UndirectedGraph &graph)
                 TagEntry count = 1;
                 for (; currentItr != itrSameAttachedOther; ++currentItr, ++count)
                 {
-                    const auto &tag = currentItr->first;
-                    attachmentDoubleTags[tag.attacheFirst].push_back(tag);
-                    attachmentDoubleTags[tag.attacheLast].push_back(tag);
                     for (TagEntry n = 1; n < currentSize - 1; ++n)
                     {
                         const auto possym = std::min(n, currentSize - n - 1);
                         retval[currentItr->second.at(n)] =
                             std::vector<TagEntry>{ChainId::AttachedPathDouble, currentSize, count, possym};
                     }
+                    pairTags[std::make_pair(currentItr->first.attacheFirst, currentItr->first.attacheLast)].push_back(
+                        currentSize);
                 }
             }
         }
     }
 
-    for (auto &itr : attachmentTags)
+    std::map<GraphVertex, std::multiset<VertexTag>> perVertex;
+    for (const auto &itrPair : pairTags)
     {
-        const GraphVertex attachedTo = itr.fist;
-        str::sort(itr.second);
+        VertexTag tag;
+        for (const auto siz : itrPair.second)
+        {
+            tag.push_back(siz);
+        }
+        str::sort(tag);
+        tag.insert(tag.begin(), ChainId::AttachedPathDouble);
+
+        perVertex[itrPair.first.first].insert(tag);
+        perVertex[itrPair.first.second].insert(tag);
+    }
+
+    for (const auto &itr : perVertex)
+    {
+        const GraphVertex v = itr.first;
+        for (const auto &itrTag : itr.second)
+        {
+            retval[v].insert(retval[v].end(), itrTag.begin(), itrTag.end());
+        }
     }
     return retval;
 }
