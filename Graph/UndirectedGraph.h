@@ -3,6 +3,8 @@
 #include "GraphDefines.h"
 #include "Permutation.h"
 
+#include <string>
+
 class UndirectedGraph
 {
   public:
@@ -17,6 +19,7 @@ class UndirectedGraph
     std::vector<GraphVertex> getDegreeSequence() const;
     std::vector<GraphVertex> getSortedDegreeSequence() const;
     std::vector<GraphVertex> getIsolatedVertices() const;
+    std::string toString() const;
 
     static UndirectedGraph CreatePermuted(const UndirectedGraph &graph, const Permutation &permut);
 

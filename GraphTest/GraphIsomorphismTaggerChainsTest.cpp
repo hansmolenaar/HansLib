@@ -42,8 +42,7 @@ TEST(GraphIsomorphismTaggerChainsTest, PurePath3)
 
 TEST(GraphIsomorphismTaggerChainsTest, Pan3)
 {
-    const std::string pan3 = "Cx";
-    const auto graph = UndirectedGraphFromG6::Create(pan3);
+    const auto graph = UndirectedGraphFromG6::Create(UndirectedGraphFromG6::pan3);
     const auto tagger = TaggerChains(*graph);
 
     ASSERT_TRUE(str::equal(tagger.getTag(0), VertexTag{2, 3, 1, 1}));
@@ -54,8 +53,7 @@ TEST(GraphIsomorphismTaggerChainsTest, Pan3)
 
 TEST(GraphIsomorphismTaggerChainsTest, Pan3Parmuted)
 {
-    const std::string pan3 = "Cx";
-    const auto graph = UndirectedGraphFromG6::Create(pan3);
+    const auto graph = UndirectedGraphFromG6::Create(UndirectedGraphFromG6::pan3);
     const auto permutation = Permutation::Create(std::vector<Permutation::Entry>{
         2,
         0,
@@ -81,4 +79,29 @@ TEST(GraphIsomorphismTaggerChainsTest, Diamond)
     ASSERT_TRUE(str::equal(tagger.getTag(2), VertexTag{4, 3, 3}));
     ASSERT_TRUE(str::equal(tagger.getTag(3), VertexTag{4, 3, 2, 1}));
 }
+
+TEST(GraphIsomorphismTaggerChainsTest, Star311)
+{
+    const auto graph = UndirectedGraphLibrary::Get_Star({3,1,1});
+    const auto tagger = TaggerChains(*graph);
+    ASSERT_TRUE(str::equal(tagger.getTag(0), VertexTag{3, 2, 3, 2, 3, 4}));
+    ASSERT_TRUE(str::equal(tagger.getTag(1), VertexTag{3, 4, 1, 1}));
+    ASSERT_TRUE(str::equal(tagger.getTag(2), VertexTag{3, 4, 1, 2}));
+    ASSERT_TRUE(str::equal(tagger.getTag(3), VertexTag{3, 4, 1, 3}));
+    ASSERT_TRUE(str::equal(tagger.getTag(4), VertexTag{3, 2, 1, 1}));
+    ASSERT_TRUE(str::equal(tagger.getTag(5), VertexTag{3, 2, 2, 1}));
+}
+
+TEST(GraphIsomorphismTaggerChainsTest, House)
+{
+    const auto graph = UndirectedGraphFromG6::Create(UndirectedGraphFromG6::house);
+auto tmp = graph->toString();
+    const auto tagger = TaggerChains(*graph);
+    ASSERT_TRUE(str::equal(tagger.getTag(0), VertexTag{4, 4, 1, 1}));
+    ASSERT_TRUE(str::equal(tagger.getTag(1), VertexTag{4, 4, 1, 1}));
+    ASSERT_TRUE(str::equal(tagger.getTag(2), VertexTag{4, 3, 1, 1}));
+    ASSERT_TRUE(str::equal(tagger.getTag(3), VertexTag{4, 3, 4}));
+    ASSERT_TRUE(str::equal(tagger.getTag(4), VertexTag{4, 3, 4}));
+}
+
 

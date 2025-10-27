@@ -1,5 +1,5 @@
-#include "Defines.h"
 #include "GraphIsomorphismTaggerChains.h"
+#include "Defines.h"
 #include "MyAssert.h"
 #include "UndirectedGraph.h"
 

@@ -2,6 +2,8 @@
 #include "Defines.h"
 #include "MyAssert.h"
 
+#include <sstream>
+
 using namespace Utilities;
 
 namespace
@@ -208,4 +210,24 @@ std::vector<GraphVertex> UndirectedGraph::getSortedDegreeSequence() const
     auto result = getDegreeSequence();
     str::sort(result);
     return result;
+}
+
+std::string UndirectedGraph::toString() const
+{
+    const auto nVertices = getNumVertices();
+    std::stringstream retval;
+    retval << "#vertices " << nVertices << "\n";
+    std::vector<GraphVertex> ngbs;
+    for (GraphVertex v = 0; v < nVertices - 1; ++v)
+    {
+        setAdjacentVertices(v, ngbs);
+        for (auto ngb : ngbs)
+        {
+            if (v < ngb)
+            {
+                retval << v << " <-> " << ngb << "\n";
+            }
+        }
+    }
+    return retval.str();
 }
