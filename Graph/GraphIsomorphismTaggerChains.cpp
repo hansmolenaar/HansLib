@@ -15,8 +15,7 @@ enum ChainId : TagEntry
     PurePath,
     AttachedCycle,
     AttachedPathSingle,
-    AttachedPathDouble,
-    Ignore
+    AttachedPathDouble
 };
 
 std::pair<ChainId, Chain> ConstrutcChain(const UndirectedGraph &graph, const Chain &part1, Chain part2)
@@ -25,7 +24,56 @@ std::pair<ChainId, Chain> ConstrutcChain(const UndirectedGraph &graph, const Cha
     str::reverse(retval);
     retval.insert(retval.end(), part2.begin(), part2.end());
     retval.erase(std::unique(retval.begin(), retval.end()), retval.end());
-    return {Ignore, retval};
+
+    if (retval.front() == retval.back())
+    {
+        // This is a cycle
+        retval.pop_back();
+        ChainId id = ChainId::AttachedCycle;
+        if (graph.getDegree(retval.front()) == 2)
+        {
+            id = ChainId::PureCycle;
+            std::rotate(retval.begin(), str::min_element(retval), retval.end());
+        }
+        // Orient
+        if (retval.at(1) > retval.back())
+        {
+            std::reverse(retval.begin() + 1, retval.end());
+        }
+        return {id, retval};
+    }
+    else
+    {
+        // This is a path
+        const auto degreeF = graph.getDegree(retval.front());
+        const auto degreeB = graph.getDegree(retval.back());
+        if (degreeF == 1 && degreeB == 1)
+        {
+            if (retval.front() > retval.back())
+            {
+                str::reverse(retval);
+            }
+            return {ChainId::PurePath, retval};
+        }
+        else if (degreeF == 1)
+        {
+            str::reverse(retval);
+            return {ChainId::AttachedPathSingle, retval};
+        }
+        else if (degreeB == 1)
+        {
+            return {ChainId::AttachedPathSingle, retval};
+        }
+        else
+        {
+            if (retval.front() > retval.back())
+            {
+                str::reverse(retval);
+            }
+            return {ChainId::AttachedPathDouble, retval};
+        }
+    }
+    throw MyException("Should not come here");
 }
 
 Chain GetChainPart(const UndirectedGraph &graph, GraphVertex vertex, GraphVertex current, std::set<GraphVertex> &done)
@@ -62,10 +110,6 @@ std::pair<ChainId, Chain> GetChain(const UndirectedGraph &graph, GraphVertex ver
 {
     std::vector<GraphVertex> ngbs;
     graph.setAdjacentVertices(vertex, ngbs);
-    if (ngbs.empty())
-    {
-        return {ChainId::Ignore, {}};
-    }
     const Chain part1 = GetChainPart(graph, vertex, ngbs.front(), done);
 
     Chain part2{vertex};
@@ -74,7 +118,6 @@ std::pair<ChainId, Chain> GetChain(const UndirectedGraph &graph, GraphVertex ver
         part2 = GetChainPart(graph, vertex, ngbs.back(), done);
     }
 
-    done.insert(vertex);
     return ConstrutcChain(graph, part1, part2);
 }
 
@@ -86,11 +129,17 @@ std::map<TagEntry, std::vector<Chain>> GetChains(const UndirectedGraph &graph)
     std::set<GraphVertex> done;
     for (GraphVertex v = 0; v < nVertices; ++v)
     {
-        if (!done.contains(v) && graph.getDegree(v) <= 2)
+        const auto degree = graph.getDegree(v);
+        if (degree == 0)
+        {
+            // Do nothing
+        }
+        else if (!done.contains(v) && degree <= 2)
         {
             const auto idAndChain = GetChain(graph, v, done);
             retval[idAndChain.first].push_back(idAndChain.second);
         }
+        done.insert(v);
     }
     return retval;
 }
