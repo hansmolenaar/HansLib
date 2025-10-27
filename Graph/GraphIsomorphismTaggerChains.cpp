@@ -1,5 +1,5 @@
-#include "GraphIsomorphismTaggerChains.h"
 #include "Defines.h"
+#include "GraphIsomorphismTaggerChains.h"
 #include "MyAssert.h"
 #include "UndirectedGraph.h"
 
@@ -15,11 +15,90 @@ enum ChainId : TagEntry
     PurePath,
     AttachedCycle,
     AttachedPathSingle,
-    AttachedPathDouble
+    AttachedPathDouble,
+    Ignore
 };
+
+std::pair<ChainId, Chain> ConstrutcChain(const UndirectedGraph &graph, const Chain &part1, Chain part2)
+{
+    auto retval = part1;
+    str::reverse(retval);
+    retval.insert(retval.end(), part2.begin(), part2.end());
+    retval.erase(std::unique(retval.begin(), retval.end()), retval.end());
+    return {Ignore, retval};
+}
+
+Chain GetChainPart(const UndirectedGraph &graph, GraphVertex vertex, GraphVertex current, std::set<GraphVertex> &done)
+{
+    Chain result{vertex};
+    std::vector<GraphVertex> ngbs;
+    while (graph.getDegree(current) == 2)
+    {
+        graph.setAdjacentVertices(current, ngbs);
+        if (ngbs.front() != vertex && !done.contains(ngbs.front()))
+        {
+            result.push_back(current);
+            done.insert(current);
+            current = ngbs.front();
+            continue;
+        }
+        else if (ngbs.back() != vertex && !done.contains(ngbs.back()))
+        {
+            result.push_back(current);
+            done.insert(current);
+            current = ngbs.back();
+        }
+        else
+        {
+            break;
+        }
+    }
+    result.push_back(current);
+    done.insert(current);
+    return result;
+}
+
+std::pair<ChainId, Chain> GetChain(const UndirectedGraph &graph, GraphVertex vertex, std::set<GraphVertex> &done)
+{
+    std::vector<GraphVertex> ngbs;
+    graph.setAdjacentVertices(vertex, ngbs);
+    if (ngbs.empty())
+    {
+        return {ChainId::Ignore, {}};
+    }
+    const Chain part1 = GetChainPart(graph, vertex, ngbs.front(), done);
+
+    Chain part2{vertex};
+    if (ngbs.size() == 2)
+    {
+        part2 = GetChainPart(graph, vertex, ngbs.back(), done);
+    }
+
+    done.insert(vertex);
+    return ConstrutcChain(graph, part1, part2);
+}
+
+std::map<TagEntry, std::vector<Chain>> GetChains(const UndirectedGraph &graph)
+{
+    std::map<TagEntry, std::vector<Chain>> retval;
+    const auto nVertices = graph.getNumVertices();
+    std::vector<GraphVertex> ngbs;
+    std::set<GraphVertex> done;
+    for (GraphVertex v = 0; v < nVertices; ++v)
+    {
+        if (!done.contains(v) && graph.getDegree(v) <= 2)
+        {
+            const auto idAndChain = GetChain(graph, v, done);
+            retval[idAndChain.first].push_back(idAndChain.second);
+        }
+    }
+    return retval;
+}
 
 std::vector<VertexTag> GenerateTags(const UndirectedGraph &graph)
 {
+    GetChains(graph);
+
     const auto nVertices = graph.getNumVertices();
     std::vector<VertexTag> retval(nVertices);
     std::vector<std::map<size_t, TagEntry>> attachedCycles(nVertices);
