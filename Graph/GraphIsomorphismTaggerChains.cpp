@@ -260,6 +260,42 @@ std::vector<VertexTag> GenerateTags(const UndirectedGraph &graph)
         }
     }
 
+    const auto itrAttachedPathDouble = std::find_if_not(currentItr, chains.end(), [](const auto &tagChain) {
+        return tagChain.first.id == ChainId::AttachedPathDouble;
+    });
+    while (currentItr != itrAttachedPathDouble)
+    {
+        const GraphVertex attachedTo = currentItr->first.attacheFirst;
+        const auto itrSameAttachedTo =
+            std::find_if_not(currentItr, itrAttachedPathDouble,
+                             [attachedTo](const auto &tagChain) { return tagChain.first.attacheFirst == attachedTo; });
+        while (currentItr != itrSameAttachedTo)
+        {
+            const TagEntry currentSize = currentItr->first.size;
+            const auto itrSameSize =
+                std::find_if_not(currentItr, itrSameAttachedTo,
+                                 [currentSize](const auto &tagChain) { return tagChain.first.size == currentSize; });
+            while (currentItr != itrSameSize)
+            {
+                const GraphVertex attachedOther = currentItr->first.attacheLast;
+                const auto itrSameAttachedOther =
+                    std::find_if_not(currentItr, itrSameSize, [attachedOther](const auto &tagChain) {
+                        return tagChain.first.attacheLast == attachedOther;
+                    });
+                TagEntry count = 1;
+                for (; currentItr != itrSameAttachedOther; ++currentItr, ++count)
+                {
+                    for (TagEntry n = 1; n < currentSize - 1; ++n)
+                    {
+                        const auto possym = std::min(n, currentSize - n - 1);
+                        retval[currentItr->second.at(n)] =
+                            std::vector<TagEntry>{ChainId::AttachedPathDouble, currentSize, count, possym};
+                    }
+                }
+            }
+        }
+    }
+
 #if 0
 
     std::vector<std::map<size_t, TagEntry>> attachedCycles(nVertices);
