@@ -15,4 +15,11 @@ class ITagger
     virtual const UndirectedGraph &getGraph() const = 0;
 };
 
+class ITaggerFactory
+{
+  public:
+    virtual ~ITaggerFactory() = default;
+    virtual std::unique_ptr<ITagger> create(const UndirectedGraph &) = 0;
+};
+
 } // namespace GraphIsomorphism

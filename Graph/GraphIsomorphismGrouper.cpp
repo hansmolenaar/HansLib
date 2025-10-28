@@ -55,3 +55,8 @@ const std::vector<GraphVertex> &Grouper::getGroupMembers(const VertexTag &tag) c
     }
     return s_emptyMemberList;
 }
+
+int Grouper::countUnique() const
+{
+    return str::count_if(m_groups, [](const auto &g) { return g.size() == 1; });
+}

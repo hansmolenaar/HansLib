@@ -16,3 +16,10 @@ VertexTag TaggerDegree::getTag(GraphVertex v) const
 {
     return {static_cast<int>(m_graph.getDegree(v))};
 }
+
+// !!!!!!!!!!!!! FACTORY
+
+std::unique_ptr<ITagger> TaggerDegreeFactory::create(const UndirectedGraph &graph)
+{
+    return std::make_unique<TaggerDegree>(graph);
+}
