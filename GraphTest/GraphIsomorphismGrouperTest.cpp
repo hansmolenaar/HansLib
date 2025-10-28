@@ -76,10 +76,8 @@ TEST(GraphIsomorphismGrouperTest, DegreeStar321)
 TEST(GraphIsomorphismGrouperTest, DistanceStar321)
 {
     const auto graph = UndirectedGraphLibrary::Get_Star({3, 2, 1});
-
-    const UndirectedGraphDistance distancer(*graph);
-    const auto tagger = TaggerDistance(distancer);
-    const Grouper grouper(tagger);
+    const auto tagger = TaggerDistanceFactory{}.create(*graph);
+    const Grouper grouper(*tagger);
 
     const auto &tags = grouper.getTags();
     ASSERT_EQ(tags.size(), graph->getNumVertices());
