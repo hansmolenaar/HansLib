@@ -42,10 +42,32 @@ TEST(GraphIsomorphismTaggerDistanceTest, Star121)
 
 TEST(GraphIsomorphismTaggerDistanceTest, NumVertices5)
 {
-    for (const auto &g5 : UndirectedGraphFromG6::getListNumVertices_5())
+    for (const auto &g6 : UndirectedGraphFromG6::getListNumVertices_5())
     {
-        const auto graph = UndirectedGraphFromG6::Create(g5);
+        const auto graph = UndirectedGraphFromG6::Create(g6);
         ASSERT_EQ(graph->getNumVertices(), 5);
+        TaggerDistanceFactory factory;
+        GraphTest::CheckTaggerConsistency(*graph, factory);
+    }
+}
+
+TEST(GraphIsomorphismTaggerDistanceTest, NumVertices6)
+{
+    for (const auto &g6 : UndirectedGraphFromG6::getListNumVertices_6())
+    {
+        const auto graph = UndirectedGraphFromG6::Create(g6);
+        ASSERT_EQ(graph->getNumVertices(), 6);
+        TaggerDistanceFactory factory;
+        GraphTest::CheckTaggerConsistency(*graph, factory);
+    }
+}
+
+TEST(GraphIsomorphismTaggerDistanceTest, NumVertices7)
+{
+    for (const auto &g6 : UndirectedGraphFromG6::getListNumVertices_7())
+    {
+        const auto graph = UndirectedGraphFromG6::Create(g6);
+        ASSERT_EQ(graph->getNumVertices(), 7);
         TaggerDistanceFactory factory;
         GraphTest::CheckTaggerConsistency(*graph, factory);
     }

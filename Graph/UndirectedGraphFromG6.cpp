@@ -23,6 +23,35 @@ std::vector<std::string> ListNumVertices_6 = {
     "EBzo",  "EAMw", "EPTw", "EAlw",  "EPVW",  "Er\\w", "ED^w", "E`^w", "Ed\\w", "ED\\w", "E`lw",  "E@lw", "EC\\w",
     "EIMw",  "E@^o", "E@vo", "E?^w",  "E@NW",  "E`LW",  "E?Fw", "E?NW",
 };
+
+std::vector<std::string> ListNumVertices_7 = {
+    "FqN~w",  "FJ\\~w", "F}lzw",  "F}l~w", "F^~~w",  "F~~~w",  "F?C^w",  "F?O|_",  "F??Ng", "F?Sv?",  "F?dXw",
+    "F??^G",  "F??^o",  "F?~v_",  "F?~~w", "F@IQO",  "FCOpW",  "F?AZO",  "FoDPO",  "FCS~?", "F@MYw",  "F?B~w",
+    "F@K~w",  "F?GUW",  "F??Fw",  "F?G]_", "FWEYo",  "FF~vW",  "FF~~w",  "F`N@w",  "F`o~_", "F}hXw",  "FJ\\|w",
+    "F?_ZG",  "FJ^~w",  "FJ~~w",  "FN~~w", "Fj]|w",  "Fr~~w",  "F?Ddo",  "F?C^G",  "F?C~?", "F??Nw",  "F?db_",
+    "F?KuG",  "F?org",  "F@IYo",  "Fo@Xo", "F?S~w",  "F??^O",  "F?\\v_", "FIQ|o",  "FIQ|w", "F?~vg",  "FCO_w",
+    "F_GZ_",  "F@OsW",  "F@`J_",  "FCDHW", "F`BHo",  "F`BHw",  "F??}w",  "F?Azo",  "F_Oxo", "F`GZw",  "FI_xo",
+    "F?B~o",  "F`IYw",  "FYCXW",  "F_K~_", "F_K~w",  "FoDzo",  "F@pHg",  "FWCYw",  "FqOxo", "F@~vg",  "F@~v_",
+    "Fs\\vw", "F}oxw",  "F?G^w",  "FTPHw", "FwCZw",  "FwC^w",  "F`o~w",  "F`Kyw",  "F`Kzw", "F`K~w",  "F`N~w",
+    "F?HSo",  "F{dzw",  "F`~~w",  "FAL~o", "F_GZw",  "FAN\\w", "FwdXw",  "FBqng",  "FsXXw", "F`AZO",  "FqN~o",
+    "FJz\\w", "FEl~w",  "F`luW",  "FQl~_", "FqhXw",  "FdlrW",  "Ft\\~w", "FQMiw",  "FIiZw", "F@pro",  "FGE^w",
+    "F`N^w",  "FTX^w",  "F`lvw",  "FhN^w", "FQl~w",  "F`~vw",  "FqL~w",  "F{S~w",  "Fql~w", "FMl~w",  "FR~vw",
+    "F@?Nw",  "F?Dfw",  "F?O~w",  "F?Ffw", "F?`~w",  "F@G^w",  "F?Svw",  "F?dfw",  "F?Lvw", "F@FNw",  "F?dnw",
+    "F?Nvw",  "F?\\vw", "F?lvw",  "F?^vw", "F?~vw",  "F`?Nw",  "F_G^w",  "FAI^w",  "F@hVw", "F@h^w",  "F`G^w",
+    "F_Lvw",  "FC\\vw", "FoSvw",  "F`dnw", "FS\\vw", "F@IQW",  "F?StW",  "F_G^_",  "F?ur_", "Fhuzw",  "FSXPw",
+    "F?O|o",  "FqL~o",  "F?df_",  "FAG[w", "F`dn_",  "F_Azw",  "F?Lvo",  "F?S~_",  "F?o~g", "F@Fmw",  "FAIZw",
+    "FD^vO",  "FAG^G",  "F@IYw",  "FBFLW", "F?luW",  "F?luw",  "F?l~_",  "F?l~g",  "F?uzw", "F?~rw",  "F`AZW",
+    "FAI^o",  "FALcw",  "FIG\\w", "FIG^w", "FANLg",  "F@h^g",  "FAYto",  "FANfo",  "FANcw", "FCS~W",  "FIJ\\o",
+    "FIJ\\w", "FCXvo",  "F_}rg",  "FCx~g", "FGuzw",  "F@U~O",  "FC~rw",  "FBZ\\w", "FQMZW", "FQo~g",  "FEhzo",
+    "FDhzo",  "FBzvo",  "Fqdhw",  "FMhXw", "FDxZg",  "FXd]w",  "FFhmw",  "FD^fw",  "Fdhzo", "FqLzo",  "FCS~w",
+    "FEl~W",  "FqSpW",  "FKl~g",  "FKuzw", "FR~~w",  "FCUj_",  "F?Mzo",  "F_Lpw",  "F@Miw", "FDLiw",  "F`XXw",
+    "FDlrW",  "FJW{w",  "FoS~_",  "FANTW", "FDZ^w",  "FAl~w",  "F?dn_",  "F?AZW",  "FoDPW", "FK`Xo",  "FQG]W",
+    "FDZ~w",  "F?L~w",  "F@v~w",  "FGdtw", "FCLmw",  "F?qzw",  "FAJ\\w", "F@NMw",  "Fq?gw", "F@rvw",  "F@Nmo",
+    "FwDXo",  "Folqw",  "FQluW",  "FIm~w", "FHu~w",  "F@~vw",  "FiM~w",  "Fs\\zw", "Fqlzw", "FT\\}w", "FD^~o",
+    "Fimzw",  "F`~rw",  "F@J]o",  "F?lv_", "F@O\\G", "F@oZG",  "FRh]w",  "FgEzo",  "FqHXw", "F`NJg",  "F@RHw",
+    "F\\^]w", "Fr^~w",  "F?SsW",
+};
+
 }; // namespace
 
 namespace
@@ -561,4 +590,9 @@ const std::vector<std::string> &UndirectedGraphFromG6::getListNumVertices_5()
 const std::vector<std::string> &UndirectedGraphFromG6::getListNumVertices_6()
 {
     return ListNumVertices_6;
+}
+
+const std::vector<std::string> &UndirectedGraphFromG6::getListNumVertices_7()
+{
+    return ListNumVertices_7;
 }

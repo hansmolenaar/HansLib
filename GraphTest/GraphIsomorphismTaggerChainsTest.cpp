@@ -125,3 +125,33 @@ TEST(GraphIsomorphismTaggerChainsTest, X84)
     ASSERT_TRUE(str::equal(tagger.getTag(4), VertexTag{3, 2, 1, 1}));
     ASSERT_TRUE(str::equal(tagger.getTag(4), VertexTag{3, 2, 1, 1}));
 }
+
+TEST(GraphIsomorphismTaggerChainsTest, NumVertices5)
+{
+    for (const auto &g6 : UndirectedGraphFromG6::getListNumVertices_5())
+    {
+        const auto graph = UndirectedGraphFromG6::Create(g6);
+        ASSERT_EQ(graph->getNumVertices(), 5);
+        GraphTest::CheckTaggerConsistency(*graph, factoryChains);
+    }
+}
+
+TEST(GraphIsomorphismTaggerChainsTest, NumVertices6)
+{
+    for (const auto &g6 : UndirectedGraphFromG6::getListNumVertices_6())
+    {
+        const auto graph = UndirectedGraphFromG6::Create(g6);
+        ASSERT_EQ(graph->getNumVertices(), 6);
+        GraphTest::CheckTaggerConsistency(*graph, factoryChains);
+    }
+}
+
+TEST(GraphIsomorphismTaggerChainsTest, NumVertices7)
+{
+    for (const auto &g6 : UndirectedGraphFromG6::getListNumVertices_7())
+    {
+        const auto graph = UndirectedGraphFromG6::Create(g6);
+        ASSERT_EQ(graph->getNumVertices(), 7);
+        GraphTest::CheckTaggerConsistency(*graph, factoryChains);
+    }
+}
