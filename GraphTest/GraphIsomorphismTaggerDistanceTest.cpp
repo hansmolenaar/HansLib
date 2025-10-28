@@ -4,6 +4,7 @@
 #include "GraphIsomorphismITaggerTest.h"
 #include "GraphIsomorphismTaggerDistance.h"
 #include "UndirectedGraphDistance.h"
+#include "UndirectedGraphFromG6.h"
 #include "UndirectedGraphLibrary.h"
 
 using namespace GraphIsomorphism;
@@ -37,4 +38,15 @@ TEST(GraphIsomorphismTaggerDistanceTest, Star121)
     ASSERT_TRUE(str::equal(tagger->getTag(2), VertexTag{2, 2}));
     ASSERT_TRUE(str::equal(tagger->getTag(3), VertexTag{1, 1, 2}));
     ASSERT_TRUE(str::equal(tagger->getTag(4), VertexTag{1, 2, 1}));
+}
+
+TEST(GraphIsomorphismTaggerDistanceTest, NumVertices5)
+{
+    for (const auto &g5 : UndirectedGraphFromG6::getListNumVertices_5())
+    {
+        const auto graph = UndirectedGraphFromG6::Create(g5);
+        ASSERT_EQ(graph->getNumVertices(), 5);
+        TaggerDistanceFactory factory;
+        GraphTest::CheckTaggerConsistency(*graph, factory);
+    }
 }

@@ -7,6 +7,26 @@ using SortedEdge = std::pair<GraphVertex, GraphVertex>;
 
 namespace
 {
+std::vector<std::string> ListNumVertices_5 = {
+    "D@s", "DBw", "DD[", "DFw", "DF{", "DDW", "D`[", "DqK", "DJ{", "Dr[", "Dr{",
+    "D^{", "D~{", "D?{", "D`{", "DJk", "DN{", "D@{", "DB{", "DR{", "Dd[",
+};
+
+std::vector<std::string> ListNumVertices_6 = {
+    "Es\\o", "EF~w", "E`ow", "EqNw",  "E?Fg",  "EJ^w",  "E}lw", "E^~w", "E~~w",  "E?NO",  "E?dg",  "E?No", "E?lo",
+    "E?~w",  "EAIW", "EAN_", "ECSw",  "E@hO",  "E@po",  "E?Bw", "E@Nw", "EoSo",  "EiKw",  "Es\\w", "EFzw", "E`NW",
+    "E`Lw",  "E`Nw", "E`~o", "E`~w",  "E{Sw",  "ER~w",  "EJ]w", "EJ~w", "EN~w",  "Et\\w", "Er~w",  "E?^o", "E?lw",
+    "E?~o",  "EGEw", "EANw", "ECXo",  "E@ow",  "E@ro",  "E_Lw", "E_lo", "EC\\o", "E@lo",  "ES\\o", "E@hW", "EKSw",
+    "E`dg",  "E?Nw", "E`lo", "EQlw",  "E`\\w", "E@rw",  "EGFw", "EC^w", "EINw",  "EDZw",  "EBzw",  "EELg", "EElw",
+    "EMlw",  "ER~o", "EqLw", "ET\\w", "Ed^w",  "EB^w",  "EB~w", "EFxw", "ER^w",  "E@~w",  "Er^w",  "E_lw", "Eqlw",
+    "EGcw",  "EBxw", "EDZW", "ETXW",  "EANg",  "EoSw",  "ED^_", "E@pw", "E@^w",  "EImw",  "EHuw",  "E@~o", "E`^o",
+    "EBzo",  "EAMw", "EPTw", "EAlw",  "EPVW",  "Er\\w", "ED^w", "E`^w", "Ed\\w", "ED\\w", "E`lw",  "E@lw", "EC\\w",
+    "EIMw",  "E@^o", "E@vo", "E?^w",  "E@NW",  "E`LW",  "E?Fw", "E?NW",
+};
+}; // namespace
+
+namespace
+{
 
 #define BIAS6 63
 #define MAXBYTE 126
@@ -531,4 +551,14 @@ std::unique_ptr<UndirectedGraph> UndirectedGraphFromG6::Create(std::string line)
         result->addEdge(e.first, e.second);
     }
     return result;
+}
+
+const std::vector<std::string> &UndirectedGraphFromG6::getListNumVertices_5()
+{
+    return ListNumVertices_5;
+}
+
+const std::vector<std::string> &UndirectedGraphFromG6::getListNumVertices_6()
+{
+    return ListNumVertices_6;
 }

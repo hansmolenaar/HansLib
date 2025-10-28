@@ -4,5 +4,5 @@
 
 namespace GraphTest
 {
-void CheckTaggerConsistency(const UndirectedGraph &, GraphIsomorphism::ITaggerFactory &, int, int = 10);
+void CheckTaggerConsistency(const UndirectedGraph &, GraphIsomorphism::ITaggerFactory &, int = -1, int = 10);
 }

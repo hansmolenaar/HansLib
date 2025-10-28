@@ -20,7 +20,14 @@ void GraphTest::CheckTaggerConsistency(const UndirectedGraph &graph, GraphIsomor
 {
     const auto tagger = factory.create(graph);
     const Grouper grouper(*tagger);
-    ASSERT_EQ(grouper.countUnique(), expectNumAssociatedvertices);
+    if (expectNumAssociatedvertices >= 0)
+    {
+        ASSERT_EQ(grouper.countUnique(), expectNumAssociatedvertices);
+    }
+    else
+    {
+        expectNumAssociatedvertices = grouper.countUnique();
+    }
 
     std::random_device rd;
     std::mt19937 g(rd());
