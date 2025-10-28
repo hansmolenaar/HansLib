@@ -1,10 +1,10 @@
 #include <gtest/gtest.h>
 
 #include "Defines.h"
+#include "GraphIsomorphismITaggerTest.h"
 #include "GraphIsomorphismTaggerDistance.h"
 #include "UndirectedGraphDistance.h"
 #include "UndirectedGraphLibrary.h"
-#include "GraphIsomorphismITaggerTest.h"
 
 using namespace GraphIsomorphism;
 

@@ -24,6 +24,7 @@ void GraphTest::CheckTaggerConsistency(const UndirectedGraph &graph, GraphIsomor
 
     std::random_device rd;
     std::mt19937 g(rd());
+    g.seed(42);
 
     std::vector<Permutation::Entry> permut(graph.getNumVertices());
     str::iota(permut, 0);

@@ -26,5 +26,4 @@ class TaggerChainsFactory : public ITaggerFactory
     std::unique_ptr<ITagger> create(const UndirectedGraph &) override;
 };
 
-
 } // namespace GraphIsomorphism

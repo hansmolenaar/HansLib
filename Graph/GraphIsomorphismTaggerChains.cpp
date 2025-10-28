@@ -93,14 +93,14 @@ Chain GetChainPart(const UndirectedGraph &graph, GraphVertex vertex, GraphVertex
     while (graph.getDegree(current) == 2)
     {
         graph.setAdjacentVertices(current, ngbs);
-        if (ngbs.front() != vertex && !done.contains(ngbs.front()))
+        if (ngbs.front() != vertex && (graph.getDegree(ngbs.front()) > 2 || !done.contains(ngbs.front())))
         {
             result.push_back(current);
             done.insert(current);
             current = ngbs.front();
             continue;
         }
-        else if (ngbs.back() != vertex && !done.contains(ngbs.back()))
+        else if (ngbs.back() != vertex && (graph.getDegree(ngbs.back()) > 2 || !done.contains(ngbs.back())))
         {
             result.push_back(current);
             done.insert(current);
@@ -346,8 +346,6 @@ VertexTag TaggerChains::getTag(GraphVertex v) const
 {
     return m_tags.at(v);
 }
-
-
 
 // !!!!!!!!!!!!! FACTORY
 

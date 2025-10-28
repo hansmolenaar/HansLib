@@ -4,7 +4,8 @@
 
 using namespace GraphIsomorphism;
 
-GraphIsomorphism::TaggerDistance::TaggerDistance(std::shared_ptr< UndirectedGraphDistance> distances) : m_distances(std::move(distances))
+GraphIsomorphism::TaggerDistance::TaggerDistance(std::shared_ptr<UndirectedGraphDistance> distances)
+    : m_distances(std::move(distances))
 {
 }
 
@@ -26,6 +27,6 @@ VertexTag TaggerDistance::getTag(GraphVertex v) const
 
 std::unique_ptr<ITagger> TaggerDistanceFactory::create(const UndirectedGraph &graph)
 {
-auto distances = std::make_shared<UndirectedGraphDistance>(graph);
+    auto distances = std::make_shared<UndirectedGraphDistance>(graph);
     return std::make_unique<TaggerDistance>(distances);
 }
