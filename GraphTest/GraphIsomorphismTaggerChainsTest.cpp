@@ -155,3 +155,13 @@ TEST(GraphIsomorphismTaggerChainsTest, NumVertices7)
         GraphTest::CheckTaggerConsistency(*graph, factoryChains);
     }
 }
+
+TEST(GraphIsomorphismTaggerChainsTest, NumVertices8)
+{
+    for (const auto &g6 : UndirectedGraphFromG6::getListNumVertices_8())
+    {
+        const auto graph = UndirectedGraphFromG6::Create(g6);
+        ASSERT_EQ(graph->getNumVertices(), 8);
+        GraphTest::CheckTaggerConsistency(*graph, factoryChains);
+    }
+}
