@@ -4,16 +4,20 @@
 #include "GraphIsomorphismTaggerChains.h"
 #include "UndirectedGraphFromG6.h"
 #include "UndirectedGraphLibrary.h"
+#include "GraphIsomorphismITaggerTest.h"
 
 using namespace GraphIsomorphism;
 
 namespace
 {
+   TaggerChainsFactory factoryChains;
 } // namespace
 
 TEST(GraphIsomorphismTaggerChainsTest, PureCycle3)
 {
     const auto graph = UndirectedGraphLibrary::Get_Cycle(3);
+    GraphTest::CheckTaggerConsistency(*graph, factoryChains, 3);
+
     const auto tagger = TaggerChains(*graph);
     ASSERT_EQ(tagger.getGraph().getNumVertices(), 3);
     ASSERT_TRUE(str::equal(tagger.getTag(0), VertexTag{0, 3, 1, 0}));
@@ -24,15 +28,17 @@ TEST(GraphIsomorphismTaggerChainsTest, PureCycle3)
 TEST(GraphIsomorphismTaggerChainsTest, PurePath2)
 {
     const auto graph = UndirectedGraphLibrary::Get_Path(2);
-    const auto tagger = TaggerChains(*graph);
-    ASSERT_EQ(tagger.getGraph().getNumVertices(), 2);
-    ASSERT_TRUE(str::equal(tagger.getTag(0), VertexTag{1, 2, 1, 0}));
-    ASSERT_TRUE(str::equal(tagger.getTag(1), VertexTag{1, 2, 1, 1}));
+    GraphTest::CheckTaggerConsistency(*graph, factoryChains, 2);
+    const auto tagger = factoryChains.create(*graph);
+    ASSERT_EQ(tagger->getGraph().getNumVertices(), 2);
+    ASSERT_TRUE(str::equal(tagger->getTag(0), VertexTag{1, 2, 1, 0}));
+    ASSERT_TRUE(str::equal(tagger->getTag(1), VertexTag{1, 2, 1, 1}));
 }
 
 TEST(GraphIsomorphismTaggerChainsTest, PurePath3)
 {
     const auto graph = UndirectedGraphLibrary::Get_Path(3);
+    GraphTest::CheckTaggerConsistency(*graph, factoryChains, 3);
     const auto tagger = TaggerChains(*graph);
     ASSERT_EQ(tagger.getGraph().getNumVertices(), 3);
     ASSERT_TRUE(str::equal(tagger.getTag(0), VertexTag{1, 3, 1, 0}));
@@ -43,6 +49,7 @@ TEST(GraphIsomorphismTaggerChainsTest, PurePath3)
 TEST(GraphIsomorphismTaggerChainsTest, Pan3)
 {
     const auto graph = UndirectedGraphFromG6::Create(UndirectedGraphFromG6::pan3);
+    GraphTest::CheckTaggerConsistency(*graph, factoryChains, 4);
     const auto tagger = TaggerChains(*graph);
 
     ASSERT_TRUE(str::equal(tagger.getTag(0), VertexTag{2, 3, 1, 1}));

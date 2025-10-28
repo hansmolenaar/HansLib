@@ -20,4 +20,11 @@ class TaggerChains : public ITagger
     std::vector<VertexTag> m_tags;
 };
 
+class TaggerChainsFactory : public ITaggerFactory
+{
+  public:
+    std::unique_ptr<ITagger> create(const UndirectedGraph &) override;
+};
+
+
 } // namespace GraphIsomorphism
