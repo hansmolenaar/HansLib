@@ -42,14 +42,11 @@ Status Check::operator()(const UndirectedGraph &g0, const std::vector<VertexPair
 {
     const auto nVertices = g0.getNumVertices();
     std::vector<Permutation::Entry> perm0(nVertices);
-    std::vector<Permutation::Entry> perm1(nVertices);
     for (size_t n = 0; n < nVertices; ++n)
     {
-        perm0.at(n) = perm01.at(n).first;
-        perm1.at(n) = perm01.at(n).second;
+        perm0.at(perm01.at(n).first) = perm01.at(n).second;
     }
     const auto g0Permuted = UndirectedGraph::CreatePermuted(g0, Permutation::Create(perm0));
-    const auto g1Permuted = UndirectedGraph::CreatePermuted(g1, Permutation::Create(perm1));
 
-    return Check{}(g0Permuted, g1Permuted);
+    return Check{}(g0Permuted, g1);
 }

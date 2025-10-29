@@ -1,6 +1,8 @@
 #include <gtest/gtest.h>
 
 #include "Defines.h"
+#include "GraphIsomorphismCheck.h"
+#include "GraphIsomorphismDefines.h"
 #include "GraphIsomorphismGrouper.h"
 #include "GraphIsomorphismITaggerTest.h"
 #include "GraphIsomorphismTagCompare.h"
@@ -18,6 +20,7 @@ namespace
 void GraphTest::CheckTaggerConsistency(const UndirectedGraph &graph, GraphIsomorphism::ITaggerFactory &factory,
                                        int expectNumAssociatedvertices, int numPermutations)
 {
+    const auto nVertices = graph.getNumVertices();
     const auto tagger = factory.create(graph);
     const Grouper grouper(*tagger);
     if (expectNumAssociatedvertices >= 0)
@@ -33,7 +36,7 @@ void GraphTest::CheckTaggerConsistency(const UndirectedGraph &graph, GraphIsomor
     std::mt19937 g(rd());
     g.seed(42);
 
-    std::vector<Permutation::Entry> permut(graph.getNumVertices());
+    std::vector<Permutation::Entry> permut(nVertices);
     str::iota(permut, 0);
     for (auto n = 0; n < numPermutations; ++n)
     {
@@ -46,5 +49,10 @@ void GraphTest::CheckTaggerConsistency(const UndirectedGraph &graph, GraphIsomor
 
         const auto resultCompare = GraphIsomorphism::TagCompare{}({*tagger, *taggerPermuted});
         ASSERT_EQ(resultCompare.TagCompareStatus, TagCompare::Result::TagStatus::Equivalent);
+        if (expectNumAssociatedvertices == nVertices)
+        {
+            const auto checkIsomorphism = Check{}(graph, resultCompare.VertexPairs, graphPermuted);
+            ASSERT_EQ(checkIsomorphism, Status::Isomorphic);
+        }
     }
 }
