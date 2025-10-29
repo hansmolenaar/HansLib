@@ -7,6 +7,7 @@ namespace GraphIsomorphism
 {
 struct Check
 {
-    Status operator()(const UndirectedGraph &g0, const UndirectedGraph &g1);
+    Status operator()(const UndirectedGraph &, const UndirectedGraph &) const;
+    Status operator()(const UndirectedGraph &, const std::vector<VertexPair> &, const UndirectedGraph &) const;
 };
 } // namespace GraphIsomorphism
