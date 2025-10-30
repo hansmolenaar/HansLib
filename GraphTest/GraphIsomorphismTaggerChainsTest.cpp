@@ -126,6 +126,13 @@ TEST(GraphIsomorphismTaggerChainsTest, X84)
     ASSERT_TRUE(str::equal(tagger.getTag(4), VertexTag{3, 2, 1, 1}));
 }
 
+TEST(GraphIsomorphismTaggerChainsTest, Fish)
+{
+    const auto graph = UndirectedGraphFromG6::Create(UndirectedGraphFromG6::fish);
+    auto tmp = graph->toString();
+    GraphTest::CheckTaggerConsistency(*graph, factoryChains, 6);
+}
+
 TEST(GraphIsomorphismTaggerChainsTest, NumVertices5)
 {
     GraphTest::TaggerCheckListG6(UndirectedGraphFromG6::getListNumVertices_5(), factoryChains, 9);

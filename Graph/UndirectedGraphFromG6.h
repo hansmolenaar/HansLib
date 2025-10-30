@@ -25,6 +25,15 @@ static constexpr char house[] = "Dd[";
 //    |        |
 //    0 ------ 1
 
+static constexpr char fish[] = "ErCW";
+//
+//
+//          1    4
+//        /  \  /|
+//       0    3  |
+//        \  / \ |
+//          2    5
+
 static constexpr char X84[] = "ElD?";
 //
 //
