@@ -128,40 +128,20 @@ TEST(GraphIsomorphismTaggerChainsTest, X84)
 
 TEST(GraphIsomorphismTaggerChainsTest, NumVertices5)
 {
-    for (const auto &g6 : UndirectedGraphFromG6::getListNumVertices_5())
-    {
-        const auto graph = UndirectedGraphFromG6::Create(g6);
-        ASSERT_EQ(graph->getNumVertices(), 5);
-        GraphTest::CheckTaggerConsistency(*graph, factoryChains);
-    }
+    GraphTest::TaggerCheckListG6(UndirectedGraphFromG6::getListNumVertices_5(), factoryChains, 9);
 }
 
 TEST(GraphIsomorphismTaggerChainsTest, NumVertices6)
 {
-    for (const auto &g6 : UndirectedGraphFromG6::getListNumVertices_6())
-    {
-        const auto graph = UndirectedGraphFromG6::Create(g6);
-        ASSERT_EQ(graph->getNumVertices(), 6);
-        GraphTest::CheckTaggerConsistency(*graph, factoryChains);
-    }
+    GraphTest::TaggerCheckListG6(UndirectedGraphFromG6::getListNumVertices_6(), factoryChains, 22);
 }
 
 TEST(GraphIsomorphismTaggerChainsTest, NumVertices7)
 {
-    for (const auto &g6 : UndirectedGraphFromG6::getListNumVertices_7())
-    {
-        const auto graph = UndirectedGraphFromG6::Create(g6);
-        ASSERT_EQ(graph->getNumVertices(), 7);
-        GraphTest::CheckTaggerConsistency(*graph, factoryChains);
-    }
+    GraphTest::TaggerCheckListG6(UndirectedGraphFromG6::getListNumVertices_7(), factoryChains, 30);
 }
 
 TEST(GraphIsomorphismTaggerChainsTest, NumVertices8)
 {
-    for (const auto &g6 : UndirectedGraphFromG6::getListNumVertices_8())
-    {
-        const auto graph = UndirectedGraphFromG6::Create(g6);
-        ASSERT_EQ(graph->getNumVertices(), 8);
-        GraphTest::CheckTaggerConsistency(*graph, factoryChains);
-    }
+    GraphTest::TaggerCheckListG6(UndirectedGraphFromG6::getListNumVertices_8(), factoryChains, 27);
 }

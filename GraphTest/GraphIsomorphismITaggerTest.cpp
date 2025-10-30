@@ -7,6 +7,7 @@
 #include "GraphIsomorphismITaggerTest.h"
 #include "GraphIsomorphismTagCompare.h"
 #include "Permutation.h"
+#include "UndirectedGraphFromG6.h"
 
 #include <random>
 
@@ -55,4 +56,22 @@ void GraphTest::CheckTaggerConsistency(const UndirectedGraph &graph, GraphIsomor
             ASSERT_EQ(checkIsomorphism, Status::Isomorphic);
         }
     }
+};
+
+void GraphTest::TaggerCheckListG6(const std::vector<std::string> &stringsG6, GraphIsomorphism::ITaggerFactory &factory,
+                                  int expectResolved, int numPermutations)
+{
+    int numResolved = 0;
+    for (const auto &g6 : stringsG6)
+    {
+        const auto graph = UndirectedGraphFromG6::Create(g6);
+        GraphTest::CheckTaggerConsistency(*graph, factory, -1, numPermutations);
+        const auto tagger = factory.create(*graph);
+        const Grouper grouper(*tagger);
+        if (grouper.isResolved())
+        {
+            numResolved += 1;
+        }
+    }
+    ASSERT_EQ(numResolved, expectResolved);
 }
