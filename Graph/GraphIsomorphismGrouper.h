@@ -17,6 +17,7 @@ class Grouper
     // Returns empty list if not found
     const std::vector<GraphVertex> &getGroupMembers(const VertexTag &) const;
     int countUnique() const;
+    bool isResolved() const;
 
   private:
     const UndirectedGraph &m_graph;

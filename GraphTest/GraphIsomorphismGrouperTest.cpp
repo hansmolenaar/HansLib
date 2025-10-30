@@ -71,6 +71,7 @@ TEST(GraphIsomorphismGrouperTest, DegreeStar321)
     ASSERT_TRUE(str::equal(grouper.getGroupMembers(tags.at(0)), std::vector<GraphVertex>{3, 5, 6}));
     ASSERT_TRUE(str::equal(grouper.getGroupMembers(tags.at(1)), std::vector<GraphVertex>{1, 2, 4}));
     ASSERT_TRUE(str::equal(grouper.getGroupMembers(tags.at(2)), std::vector<GraphVertex>{0}));
+    ASSERT_FALSE(grouper.isResolved());
 }
 
 TEST(GraphIsomorphismGrouperTest, DistanceStar321)
@@ -81,6 +82,7 @@ TEST(GraphIsomorphismGrouperTest, DistanceStar321)
 
     const auto &tags = grouper.getTags();
     ASSERT_EQ(tags.size(), graph->getNumVertices());
+    ASSERT_TRUE(grouper.isResolved());
 }
 
 TEST(GraphIsomorphismGrouperTest, Path4)
