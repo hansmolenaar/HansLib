@@ -129,7 +129,6 @@ TEST(GraphIsomorphismTaggerChainsTest, X84)
 TEST(GraphIsomorphismTaggerChainsTest, Fish)
 {
     const auto graph = UndirectedGraphFromG6::Create(UndirectedGraphFromG6::fish);
-    auto tmp = graph->toString();
     GraphTest::CheckTaggerConsistency(*graph, factoryChains, 6);
 }
 

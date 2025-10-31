@@ -1,21 +1,23 @@
 #pragma once
 
-#include "GraphDefines.h"
+#include "IGraphUS.h"
 #include "Permutation.h"
 
 #include <string>
 
-class UndirectedGraph
+class UndirectedGraph : public Graph::IGraphUS
 {
   public:
     explicit UndirectedGraph(GraphVertex numVertices);
     void addEdge(GraphVertex vertex1, GraphVertex vertex2);
-    GraphVertex getNumVertices() const;
-    GraphEdge getNumEdges() const;
+
+    GraphVertex getNumVertices() const override;
+    GraphEdge getNumEdges() const override;
+    void setAdjacentVertices(GraphVertex vertex, std::vector<GraphVertex> &result) const override;
+    bool areAdjacent(GraphVertex v1, GraphVertex v2) const override;
+    GraphVertex getDegree(GraphVertex vertex) const override;
+
     std::vector<GraphVertex> getConnectedComponents() const;
-    void setAdjacentVertices(GraphVertex vertex, std::vector<GraphVertex> &result) const;
-    bool areAdjacent(GraphVertex v1, GraphVertex v2) const;
-    GraphVertex getDegree(GraphVertex vertex) const;
     std::vector<GraphVertex> getDegreeSequence() const;
     std::vector<GraphVertex> getSortedDegreeSequence() const;
     std::vector<GraphVertex> getIsolatedVertices() const;

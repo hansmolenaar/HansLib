@@ -72,6 +72,10 @@ void GraphTest::TaggerCheckListG6(const std::vector<std::string> &stringsG6, Gra
         {
             numResolved += 1;
         }
+        else
+        {
+            //auto tmp = graph->toString();
+        }
     }
     ASSERT_EQ(numResolved, expectResolved);
 }

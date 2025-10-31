@@ -7,9 +7,6 @@
 using GraphVertex = size_t;
 using GraphEdge = size_t;
 
-template <typename Vertex, typename Edge>
-using Graph = boost::adjacency_list<boost::listS, boost::vecS, boost::undirectedS, Vertex, Edge>;
-
 // Undirected graph, no data
 using UGraph = boost::adjacency_list<boost::listS, boost::vecS, boost::undirectedS>;
 
