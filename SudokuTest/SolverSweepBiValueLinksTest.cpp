@@ -19,7 +19,8 @@ TEST(SolverSweepBiValueLinksTest, MyFirstBoostGraph)
     struct Edge
     {
     };
-    using SudokuGraph = Graph<Vertex, Edge>;
+
+    using SudokuGraph = boost::adjacency_list<boost::listS, boost::vecS, boost::undirectedS, Vertex, Edge>;
 
     constexpr int numVertices = 4;
     SudokuGraph g;
@@ -77,7 +78,7 @@ TEST(SolverSweepBiValueLinksTest, ColoringAndMultipleComponents)
     struct Edge
     {
     };
-    using SudokuGraph = Graph<Vertex, Edge>;
+    using SudokuGraph = boost::adjacency_list<boost::listS, boost::vecS, boost::undirectedS, Vertex, Edge>;
 
     constexpr int numVertices = 5;
     SudokuGraph g;

@@ -19,5 +19,6 @@ class IGraphUS
     virtual void setAdjacentVertices(GraphVertex vertex, std::vector<GraphVertex> &result) const = 0;
     virtual bool areAdjacent(GraphVertex v1, GraphVertex v2) const = 0;
     virtual GraphVertex getDegree(GraphVertex vertex) const = 0;
+    virtual std::vector<GraphVertex> getConnectedComponents() const = 0;
 };
 }; // namespace Graph

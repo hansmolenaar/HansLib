@@ -16,8 +16,8 @@ class UndirectedGraph : public Graph::IGraphUS
     void setAdjacentVertices(GraphVertex vertex, std::vector<GraphVertex> &result) const override;
     bool areAdjacent(GraphVertex v1, GraphVertex v2) const override;
     GraphVertex getDegree(GraphVertex vertex) const override;
+    std::vector<GraphVertex> getConnectedComponents() const override;
 
-    std::vector<GraphVertex> getConnectedComponents() const;
     std::vector<GraphVertex> getDegreeSequence() const;
     std::vector<GraphVertex> getSortedDegreeSequence() const;
     std::vector<GraphVertex> getIsolatedVertices() const;
