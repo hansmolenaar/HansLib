@@ -44,7 +44,6 @@ class IGraphTaggerFactory
 {
   public:
     virtual ~IGraphTaggerFactory() = default;
-    // May return nullptr, e.g. if matrix is disconnected but expect a connected matrix
     virtual std::unique_ptr<IGraphTagger> create(const Graph::IGraphUS &) = 0;
 };
 
@@ -52,8 +51,7 @@ class IVertexTaggerFactory
 {
   public:
     virtual ~IVertexTaggerFactory() = default;
-    // May return nullptr, e.g. if matrix is disconnected but expect a connected matrix
-    virtual std::unique_ptr<IVertexTagger> create(const Graph::IGraphUS &) = 0;
+    virtual std::unique_ptr<IVertexTagger> create(const Graph::IGraphUSC &) = 0;
 };
 
 } // namespace GraphIsomorphism
