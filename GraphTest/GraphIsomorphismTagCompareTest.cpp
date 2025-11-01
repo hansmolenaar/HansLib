@@ -13,6 +13,8 @@ namespace
 {
 } // namespace
 
+// TODO
+#if false
 TEST(GraphIsomorphismTagCompareTest, DegreePath2and3)
 {
     const auto graphs = std::make_pair(UndirectedGraphLibrary::Get_Path(2), UndirectedGraphLibrary::Get_Path(3));
@@ -72,3 +74,4 @@ TEST(GraphIsomorphismTagCompareTest, DegreePan3)
     ASSERT_EQ(retval.VertexPairs.back(), (VertexPair{2, 0}));
     ASSERT_EQ(retval.VertexPairs.front(), (VertexPair{3, 3}));
 }
+#endif

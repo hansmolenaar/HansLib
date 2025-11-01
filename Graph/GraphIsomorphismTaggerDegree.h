@@ -2,27 +2,31 @@
 
 #include "GraphIsomorphismDefines.h"
 #include "IGraphIsomorphismTagger.h"
-
-class UndirectedGraph;
+#include "IGraphUS.h"
 
 namespace GraphIsomorphism
 {
 
-class TaggerDegree : public ITagger
+class TaggerDegree : public ITaggeR
 {
   public:
-    explicit TaggerDegree(const UndirectedGraph &);
-    const UndirectedGraph &getGraph() const override;
-    Tag getTag(GraphVertex) const override;
+    explicit TaggerDegree(const Graph::IGraphUS &);
+
+    bool isGraphTagger() const override;
+    const Tag &getGraphTag() const override;
+
+    bool isVertexTagger() const override;
+    const Tag &getVertexTag(GraphVertex) const override;
 
   private:
-    const UndirectedGraph &m_graph;
+    const Graph::IGraphUS &m_graph;
+    Tag m_degreeSequenceTag;
 };
 
-class TaggerDegreeFactory : public ITaggerFactory
+class TaggerDegreeFactory : public ITaggerUSFactory
 {
   public:
-    std::unique_ptr<ITagger> create(const UndirectedGraph &) override;
+    std::unique_ptr<ITaggeR> create(const Graph::IGraphUS &) override;
 };
 
 } // namespace GraphIsomorphism

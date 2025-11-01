@@ -2,7 +2,11 @@
 
 #include "GraphIsomorphismDefines.h"
 
-class UndirectedGraph;
+namespace Graph
+{
+class IGraphUS;
+class IGraphUSC;
+} // namespace Graph
 
 namespace GraphIsomorphism
 {
@@ -26,18 +30,25 @@ class ITaggeR
 {
   public:
     virtual ~ITaggeR() = default;
+    virtual bool isGraphTagger() const = 0;
+    virtual const Tag &getGraphTag() const = 0; // UB if not a graph tagger
+
+    virtual bool isVertexTagger() const = 0;
+    virtual const Tag &getVertexTag(GraphVertex) const = 0; // UB if not a vertex tagger
 };
 
-class IGraphTagger : public ITaggeR
+class ITaggerUSFactory
 {
   public:
-    virtual const Tag &getGraphTag() const = 0;
+    virtual ~ITaggerUSFactory() = default;
+    virtual std::unique_ptr<ITaggeR> create(const Graph::IGraphUS &) = 0;
 };
 
-class IVertexTagger : public ITaggeR
+class ITaggerUSCFactory
 {
   public:
-    virtual const Tag &getVertexTag(GraphVertex) const = 0;
+    virtual ~ITaggerUSCFactory() = default;
+    virtual std::unique_ptr<ITaggeR> create(const Graph::IGraphUSC &) = 0;
 };
 
 } // namespace GraphIsomorphism
