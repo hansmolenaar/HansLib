@@ -23,7 +23,7 @@ class UndirectedGraph : public Graph::IGraphUS
     std::vector<GraphVertex> getIsolatedVertices() const;
     std::string toString() const;
 
-    static UndirectedGraph CreatePermuted(const UndirectedGraph &graph, const Permutation &permut);
+    static UndirectedGraph CreatePermuted(const IGraphUS &graph, const Permutation &permut);
 
     struct CyclesAndPaths
     {
