@@ -22,4 +22,10 @@ enum Flag
     NotIsomorphic
 };
 
+struct Status
+{
+    Flag StatusFlag;
+    std::vector<VertexPair> VertexPairs;
+};
+
 } // namespace GraphIsomorphism

@@ -38,7 +38,7 @@ Flag Check::operator()(const UndirectedGraph &g0, const UndirectedGraph &g1) con
 }
 
 Flag Check::operator()(const UndirectedGraph &g0, const std::vector<VertexPair> &perm01,
-                         const UndirectedGraph &g1) const
+                       const UndirectedGraph &g1) const
 {
     const auto nVertices = g0.getNumVertices();
     std::vector<Permutation::Entry> perm0(nVertices);
