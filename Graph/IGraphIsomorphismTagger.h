@@ -26,29 +26,34 @@ class ITaggerFactory
     virtual std::unique_ptr<ITagger> create(const UndirectedGraph &) = 0;
 };
 
-class ITaggeR
+class IGraphTagger
 {
   public:
-    virtual ~ITaggeR() = default;
-    virtual bool isGraphTagger() const = 0;
-    virtual const Tag &getGraphTag() const = 0; // UB if not a graph tagger
-
-    virtual bool isVertexTagger() const = 0;
-    virtual const Tag &getVertexTag(GraphVertex) const = 0; // UB if not a vertex tagger
+    virtual ~IGraphTagger() = default;
+    virtual const Tag& getTag() const = 0;
 };
 
-class ITaggerUSFactory
+class IVertexTagger
 {
   public:
-    virtual ~ITaggerUSFactory() = default;
-    virtual std::unique_ptr<ITaggeR> create(const Graph::IGraphUS &) = 0;
+    virtual ~IVertexTagger() = default;
+    virtual const Tag& getTag(GraphVertex) const = 0;
 };
 
-class ITaggerUSCFactory
+class IGraphTaggerFactory
 {
   public:
-    virtual ~ITaggerUSCFactory() = default;
-    virtual std::unique_ptr<ITaggeR> create(const Graph::IGraphUSC &) = 0;
+    virtual ~IGraphTaggerFactory() = default;
+    // May return nullptr, e.g. if matrix is disconnected but expect a connected matrix
+    virtual std::unique_ptr<IGraphTagger> create(const Graph::IGraphUS &) = 0;
+};
+
+class IVertexTaggerFactory
+{
+  public:
+    virtual ~IVertexTaggerFactory() = default;
+    // May return nullptr, e.g. if matrix is disconnected but expect a connected matrix
+    virtual std::unique_ptr<IVertexTagger> create(const Graph::IGraphUS &) = 0;
 };
 
 } // namespace GraphIsomorphism

@@ -7,26 +7,22 @@
 namespace GraphIsomorphism
 {
 
-class TaggerDegree : public ITaggeR
+class TaggerDegree : public IGraphTagger
 {
   public:
     explicit TaggerDegree(const Graph::IGraphUS &);
 
-    bool isGraphTagger() const override;
-    const Tag &getGraphTag() const override;
-
-    bool isVertexTagger() const override;
-    const Tag &getVertexTag(GraphVertex) const override;
+    const Tag &getTag() const override;
 
   private:
     const Graph::IGraphUS &m_graph;
     Tag m_degreeSequenceTag;
 };
 
-class TaggerDegreeFactory : public ITaggerUSFactory
+class TaggerDegreeFactory : public IGraphTaggerFactory
 {
   public:
-    std::unique_ptr<ITaggeR> create(const Graph::IGraphUS &) override;
+    std::unique_ptr<IGraphTagger> create(const Graph::IGraphUS &) override;
 };
 
 } // namespace GraphIsomorphism

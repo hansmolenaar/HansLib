@@ -15,30 +15,15 @@ GraphIsomorphism::TaggerDegree::TaggerDegree(const Graph::IGraphUS &graph)
     str::sort(m_degreeSequenceTag);
 }
 
-bool TaggerDegree::isVertexTagger() const
-{
-    return true;
-}
-
-const Tag &TaggerDegree::getVertexTag(GraphVertex vertex) const
-{
-    return TagFlyweight::getSingleEntryTag(m_graph.getDegree(vertex));
-}
-
-bool TaggerDegree::isGraphTagger() const
-{
-    return true;
-}
-
-const Tag &TaggerDegree::getGraphTag() const
+const Tag &TaggerDegree::getTag() const
 {
     return m_degreeSequenceTag;
 }
 
 // !!!!!!!!!!!!! FACTORY
 
-std::unique_ptr<ITaggeR> TaggerDegreeFactory::create(const Graph::IGraphUS &graph)
+std::unique_ptr<IGraphTagger> TaggerDegreeFactory::create(const Graph::IGraphUS &graph)
 {
-    std::unique_ptr<ITaggeR> retval = std::make_unique<TaggerDegree>(graph);
+    std::unique_ptr<IGraphTagger> retval = std::make_unique<TaggerDegree>(graph);
     return retval;
 }

@@ -14,16 +14,11 @@ namespace
 TEST(GraphIsomorphismTaggerDegreeTest, Path3)
 {
     const auto graph = UndirectedGraphLibrary::Get_Path(3);
-    // TaggerDegreeFactory factory;
-    // GraphTest::CheckTaggerConsistency(*graph, factory, 1);
+    TaggerDegreeFactory factory;
+    GraphTest::CheckTaggerConsistency(*graph, factory, 1);
 
     const TaggerDegree tagger(*graph);
-    ASSERT_TRUE(tagger.isGraphTagger());
-    ASSERT_TRUE(str::equal(tagger.getGraphTag(), Tag{1, 1, 2}));
-    ASSERT_TRUE(tagger.isVertexTagger());
-    ASSERT_TRUE(str::equal(tagger.getVertexTag(0), Tag{1}));
-    ASSERT_TRUE(str::equal(tagger.getVertexTag(1), Tag{2}));
-    ASSERT_TRUE(str::equal(tagger.getVertexTag(2), Tag{1}));
+    ASSERT_TRUE(str::equal(tagger.getTag(), Tag{1, 1, 2}));
 }
 
 // TODO

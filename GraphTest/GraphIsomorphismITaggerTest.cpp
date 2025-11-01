@@ -58,6 +58,42 @@ void GraphTest::CheckTaggerConsistency(const UndirectedGraph &graph, GraphIsomor
     }
 };
 
+void GraphTest::CheckTaggerConsistency(const Graph::IGraphUS &graph, IGraphTaggerFactory &factory,
+                                       int expectNumAssociatedvertices, int numPermutations)
+{
+
+    const auto nVertices = graph.getNumVertices();
+    const auto tagger = factory.create(graph);
+    const auto &tag = tagger->getTag();
+
+// TODO
+#if false
+    std::random_device rd;
+    std::mt19937 g(rd());
+    g.seed(42);
+
+    std::vector<Permutation::Entry> permut(nVertices);
+    str::iota(permut, 0);
+    for (auto n = 0; n < numPermutations; ++n)
+    {
+        std::shuffle(permut.begin(), permut.end(), g);
+        const auto permutation = Permutation::Create(permut);
+        const UndirectedGraph graphPermuted = UndirectedGraph::CreatePermuted(graph, permutation);
+        const auto taggerPermuted = factory.create(graphPermuted);
+        const Grouper grouperPermuted(*taggerPermuted);
+        ASSERT_EQ(grouperPermuted.countUnique(), expectNumAssociatedvertices);
+
+        const auto resultCompare = GraphIsomorphism::TagCompare{}({*tagger, *taggerPermuted});
+        ASSERT_EQ(resultCompare.TagCompareStatus, TagCompare::Result::TagStatus::Equivalent);
+        if (expectNumAssociatedvertices == nVertices)
+        {
+            const auto checkIsomorphism = Check{}(graph, resultCompare.VertexPairs, graphPermuted);
+            ASSERT_EQ(checkIsomorphism, Flag::Isomorphic);
+        }
+    }
+#endif
+};
+
 void GraphTest::TaggerCheckListG6(const std::vector<std::string> &stringsG6, GraphIsomorphism::ITaggerFactory &factory,
                                   int expectResolved, int numPermutations)
 {
