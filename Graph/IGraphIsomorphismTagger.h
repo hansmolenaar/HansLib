@@ -30,14 +30,14 @@ class IGraphTagger
 {
   public:
     virtual ~IGraphTagger() = default;
-    virtual const Tag& getTag() const = 0;
+    virtual const Tag &getTag() const = 0;
 };
 
 class IVertexTagger
 {
   public:
     virtual ~IVertexTagger() = default;
-    virtual const Tag& getTag(GraphVertex) const = 0;
+    virtual const Tag &getTag(GraphVertex) const = 0;
 };
 
 class IGraphTaggerFactory
