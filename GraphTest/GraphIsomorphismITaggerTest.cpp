@@ -53,7 +53,7 @@ void GraphTest::CheckTaggerConsistency(const UndirectedGraph &graph, GraphIsomor
         if (expectNumAssociatedvertices == nVertices)
         {
             const auto checkIsomorphism = Check{}(graph, resultCompare.VertexPairs, graphPermuted);
-            ASSERT_EQ(checkIsomorphism, Status::Isomorphic);
+            ASSERT_EQ(checkIsomorphism, Flag::Isomorphic);
         }
     }
 };

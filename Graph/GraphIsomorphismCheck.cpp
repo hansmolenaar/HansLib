@@ -3,7 +3,7 @@
 
 using namespace GraphIsomorphism;
 
-Status Check::operator()(const UndirectedGraph &g0, const UndirectedGraph &g1) const
+Flag Check::operator()(const UndirectedGraph &g0, const UndirectedGraph &g1) const
 {
     if (g0.getNumVertices() != g1.getNumVertices())
     {
@@ -37,7 +37,7 @@ Status Check::operator()(const UndirectedGraph &g0, const UndirectedGraph &g1) c
     return Isomorphic;
 }
 
-Status Check::operator()(const UndirectedGraph &g0, const std::vector<VertexPair> &perm01,
+Flag Check::operator()(const UndirectedGraph &g0, const std::vector<VertexPair> &perm01,
                          const UndirectedGraph &g1) const
 {
     const auto nVertices = g0.getNumVertices();
