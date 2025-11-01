@@ -11,7 +11,7 @@ class ITagger
 {
   public:
     virtual ~ITagger() = default;
-    virtual VertexTag getTag(GraphVertex) const = 0;
+    virtual Tag getTag(GraphVertex) const = 0;
     virtual const UndirectedGraph &getGraph() const = 0;
 };
 

@@ -12,7 +12,7 @@ const UndirectedGraph &TaggerDegree::getGraph() const
     return m_graph;
 }
 
-VertexTag TaggerDegree::getTag(GraphVertex v) const
+Tag TaggerDegree::getTag(GraphVertex v) const
 {
     return {static_cast<int>(m_graph.getDegree(v))};
 }

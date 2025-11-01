@@ -13,11 +13,11 @@ class TaggerChains : public ITagger
   public:
     explicit TaggerChains(const UndirectedGraph &);
     const UndirectedGraph &getGraph() const override;
-    VertexTag getTag(GraphVertex) const override;
+    Tag getTag(GraphVertex) const override;
 
   private:
     const UndirectedGraph &m_graph;
-    std::vector<VertexTag> m_tags;
+    std::vector<Tag> m_tags;
 };
 
 class TaggerChainsFactory : public ITaggerFactory

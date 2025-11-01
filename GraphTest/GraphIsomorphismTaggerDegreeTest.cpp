@@ -19,9 +19,9 @@ TEST(GraphIsomorphismTaggerDegreeTest, Path3)
 
     const auto tagger = TaggerDegree(*graph);
     ASSERT_EQ(tagger.getGraph().getNumVertices(), 3);
-    ASSERT_TRUE(str::equal(tagger.getTag(0), VertexTag{1}));
-    ASSERT_TRUE(str::equal(tagger.getTag(1), VertexTag{2}));
-    ASSERT_TRUE(str::equal(tagger.getTag(2), VertexTag{1}));
+    ASSERT_TRUE(str::equal(tagger.getTag(0), Tag{1}));
+    ASSERT_TRUE(str::equal(tagger.getTag(1), Tag{2}));
+    ASSERT_TRUE(str::equal(tagger.getTag(2), Tag{1}));
 }
 
 TEST(GraphIsomorphismTaggerDegreeTest, Star111)
@@ -32,8 +32,8 @@ TEST(GraphIsomorphismTaggerDegreeTest, Star111)
 
     const auto tagger = TaggerDegree(*graph);
     ASSERT_EQ(tagger.getGraph().getNumVertices(), 4);
-    ASSERT_TRUE(str::equal(tagger.getTag(0), VertexTag{3}));
-    ASSERT_TRUE(str::equal(tagger.getTag(1), VertexTag{1}));
-    ASSERT_TRUE(str::equal(tagger.getTag(2), VertexTag{1}));
-    ASSERT_TRUE(str::equal(tagger.getTag(3), VertexTag{1}));
+    ASSERT_TRUE(str::equal(tagger.getTag(0), Tag{3}));
+    ASSERT_TRUE(str::equal(tagger.getTag(1), Tag{1}));
+    ASSERT_TRUE(str::equal(tagger.getTag(2), Tag{1}));
+    ASSERT_TRUE(str::equal(tagger.getTag(3), Tag{1}));
 }

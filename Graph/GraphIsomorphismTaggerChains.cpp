@@ -157,10 +157,10 @@ std::vector<std::pair<ChainTag, Chain>> GetChains(const UndirectedGraph &graph)
     return retval;
 }
 
-std::vector<VertexTag> GenerateTags(const UndirectedGraph &graph)
+std::vector<Tag> GenerateTags(const UndirectedGraph &graph)
 {
     const auto nVertices = graph.getNumVertices();
-    std::vector<VertexTag> retval(nVertices);
+    std::vector<Tag> retval(nVertices);
 
     const auto chains = GetChains(graph);
     auto currentItr = chains.begin();
@@ -305,10 +305,10 @@ std::vector<VertexTag> GenerateTags(const UndirectedGraph &graph)
         }
     }
 
-    std::map<GraphVertex, std::multiset<VertexTag>> perVertex;
+    std::map<GraphVertex, std::multiset<Tag>> perVertex;
     for (const auto &itrPair : pairTags)
     {
-        VertexTag tag;
+        Tag tag;
         for (const auto siz : itrPair.second)
         {
             tag.push_back(siz);
@@ -342,7 +342,7 @@ const UndirectedGraph &TaggerChains::getGraph() const
     return m_graph;
 }
 
-VertexTag TaggerChains::getTag(GraphVertex v) const
+Tag TaggerChains::getTag(GraphVertex v) const
 {
     return m_tags.at(v);
 }

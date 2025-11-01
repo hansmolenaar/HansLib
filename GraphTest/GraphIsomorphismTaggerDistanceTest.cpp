@@ -21,9 +21,9 @@ TEST(GraphIsomorphismTaggerDistanceTest, Path3)
 
     const auto tagger = factory.create(*graph);
     ASSERT_EQ(tagger->getGraph().getNumVertices(), 3);
-    ASSERT_TRUE(str::equal(tagger->getTag(0), VertexTag{1, 1}));
-    ASSERT_TRUE(str::equal(tagger->getTag(1), VertexTag{2}));
-    ASSERT_TRUE(str::equal(tagger->getTag(2), VertexTag{1, 1}));
+    ASSERT_TRUE(str::equal(tagger->getTag(0), Tag{1, 1}));
+    ASSERT_TRUE(str::equal(tagger->getTag(1), Tag{2}));
+    ASSERT_TRUE(str::equal(tagger->getTag(2), Tag{1, 1}));
 }
 
 TEST(GraphIsomorphismTaggerDistanceTest, Star121)
@@ -33,11 +33,11 @@ TEST(GraphIsomorphismTaggerDistanceTest, Star121)
     GraphTest::CheckTaggerConsistency(*graph, factory, 3);
 
     const auto tagger = factory.create(*graph);
-    ASSERT_TRUE(str::equal(tagger->getTag(0), VertexTag{3, 1}));
-    ASSERT_TRUE(str::equal(tagger->getTag(1), VertexTag{1, 2, 1}));
-    ASSERT_TRUE(str::equal(tagger->getTag(2), VertexTag{2, 2}));
-    ASSERT_TRUE(str::equal(tagger->getTag(3), VertexTag{1, 1, 2}));
-    ASSERT_TRUE(str::equal(tagger->getTag(4), VertexTag{1, 2, 1}));
+    ASSERT_TRUE(str::equal(tagger->getTag(0), Tag{3, 1}));
+    ASSERT_TRUE(str::equal(tagger->getTag(1), Tag{1, 2, 1}));
+    ASSERT_TRUE(str::equal(tagger->getTag(2), Tag{2, 2}));
+    ASSERT_TRUE(str::equal(tagger->getTag(3), Tag{1, 1, 2}));
+    ASSERT_TRUE(str::equal(tagger->getTag(4), Tag{1, 2, 1}));
 }
 
 TEST(GraphIsomorphismTaggerDistanceTest, NumVertices5)

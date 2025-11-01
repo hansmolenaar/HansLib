@@ -26,7 +26,7 @@ TEST(GraphIsomorphismGrouperTest, DegreePath3)
     ASSERT_TRUE(str::equal(grouper.getGroupMembers(tags.at(0)), std::vector<GraphVertex>{0, 2}));
     ASSERT_TRUE(str::equal(grouper.getGroupMembers(tags.at(1)), std::vector<GraphVertex>{1}));
 
-    const VertexTag dummy{42};
+    const Tag dummy{42};
     ASSERT_TRUE(grouper.getGroupMembers(dummy).empty());
 }
 

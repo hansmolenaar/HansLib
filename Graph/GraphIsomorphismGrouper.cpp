@@ -19,7 +19,7 @@ struct Tag2Group
     }
 
     const ITagger &tagger;
-    std::map<VertexTag, int> tag2group;
+    std::map<Tag, int> tag2group;
 };
 } // namespace
 
@@ -27,7 +27,7 @@ Grouper::Grouper(const ITagger &tagger) : m_graph(tagger.getGraph())
 {
     const auto nVertices = m_graph.getNumVertices();
 
-    std::map<VertexTag, std::vector<GraphVertex>> groups;
+    std::map<Tag, std::vector<GraphVertex>> groups;
     for (GraphVertex v = 0; v < nVertices; ++v)
     {
         groups[tagger.getTag(v)].push_back(v);
@@ -40,12 +40,12 @@ Grouper::Grouper(const ITagger &tagger) : m_graph(tagger.getGraph())
     }
 }
 
-const std::vector<VertexTag> &Grouper::getTags() const
+const std::vector<Tag> &Grouper::getTags() const
 {
     return m_tags;
 }
 
-const std::vector<GraphVertex> &Grouper::getGroupMembers(const VertexTag &tag) const
+const std::vector<GraphVertex> &Grouper::getGroupMembers(const Tag &tag) const
 {
     const auto found = str::find(m_tags, tag);
     if (found != m_tags.end())
