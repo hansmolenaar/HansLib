@@ -9,18 +9,6 @@ using namespace GraphIsomorphism;
 namespace
 {
 const std::vector<GraphVertex> s_emptyMemberList;
-
-struct Tag2Group
-{
-    int operator()(GraphVertex v)
-    {
-        const auto retval = tag2group.try_emplace(tagger.getTag(v), tag2group.size());
-        return (retval.first)->second;
-    }
-
-    const ITagger &tagger;
-    std::map<Tag, int> tag2group;
-};
 } // namespace
 
 Grouper::Grouper(const IVertexTagger &tagger)

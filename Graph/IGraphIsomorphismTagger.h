@@ -11,14 +11,6 @@ class IGraphUSC;
 namespace GraphIsomorphism
 {
 
-class ITagger
-{
-  public:
-    virtual ~ITagger() = default;
-    virtual Tag getTag(GraphVertex) const = 0;
-    virtual const UndirectedGraph &getGraph() const = 0;
-};
-
 class IGraphTagger
 {
   public:
