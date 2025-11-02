@@ -22,7 +22,7 @@ class TaggerDegree : public IGraphTagger
 class TaggerDegreeFactory : public IGraphTaggerFactory
 {
   public:
-    std::unique_ptr<IGraphTagger> create(const Graph::IGraphUS &) override;
+    std::unique_ptr<IGraphTagger> createGraphTagger(const Graph::IGraphUS &) override;
 };
 
 } // namespace GraphIsomorphism

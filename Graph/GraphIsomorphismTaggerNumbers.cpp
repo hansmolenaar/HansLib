@@ -42,7 +42,7 @@ Status TaggerNumbers::compare(const Graph::IGraphUS &graph0, const Graph::IGraph
 
 // !!!!!!!!!!!!! FACTORY
 
-std::unique_ptr<IGraphTagger> TaggerNumbersFactory::create(const Graph::IGraphUS &graph)
+std::unique_ptr<IGraphTagger> TaggerNumbersFactory::createGraphTagger(const Graph::IGraphUS &graph)
 {
     std::unique_ptr<IGraphTagger> retval = std::make_unique<TaggerNumbers>(graph);
     return retval;

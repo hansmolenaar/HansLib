@@ -23,9 +23,9 @@ struct Tag2Group
 };
 } // namespace
 
-Grouper::Grouper(const ITagger &tagger) : m_graph(tagger.getGraph())
+Grouper::Grouper(const ITagger &tagger)
 {
-    const auto nVertices = m_graph.getNumVertices();
+    const auto nVertices = tagger.getGraph().getNumVertices();
 
     std::map<Tag, std::vector<GraphVertex>> groups;
     for (GraphVertex v = 0; v < nVertices; ++v)
@@ -63,5 +63,5 @@ int Grouper::countUnique() const
 
 bool Grouper::isResolved() const
 {
-    return countUnique() == m_graph.getNumVertices();
+    return countUnique() == m_tags.size();
 }

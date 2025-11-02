@@ -1,8 +1,8 @@
 #include "GraphIsomorphismTaggerChains.h"
 #include "Defines.h"
 #include "MyAssert.h"
-#include "UndirectedGraph.h"
 
+using namespace Graph;
 using namespace GraphIsomorphism;
 using namespace Utilities;
 
@@ -28,7 +28,7 @@ struct ChainTag
     bool operator==(const ChainTag &) const = default;
 };
 
-std::pair<ChainId, Chain> ConstrutcChain(const UndirectedGraph &graph, const Chain &part1, Chain part2)
+std::pair<ChainId, Chain> ConstrutcChain(const IGraphUSC &graph, const Chain &part1, Chain part2)
 {
     auto retval = part1;
     str::reverse(retval);
@@ -86,7 +86,7 @@ std::pair<ChainId, Chain> ConstrutcChain(const UndirectedGraph &graph, const Cha
     throw MyException("Should not come here");
 }
 
-Chain GetChainPart(const UndirectedGraph &graph, GraphVertex vertex, GraphVertex current, std::set<GraphVertex> &done)
+Chain GetChainPart(const IGraphUSC &graph, GraphVertex vertex, GraphVertex current, std::set<GraphVertex> &done)
 {
     Chain result{vertex};
     std::vector<GraphVertex> ngbs;
@@ -116,7 +116,7 @@ Chain GetChainPart(const UndirectedGraph &graph, GraphVertex vertex, GraphVertex
     return result;
 }
 
-std::pair<ChainId, Chain> GetChain(const UndirectedGraph &graph, GraphVertex vertex, std::set<GraphVertex> &done)
+std::pair<ChainId, Chain> GetChain(const IGraphUSC &graph, GraphVertex vertex, std::set<GraphVertex> &done)
 {
     std::vector<GraphVertex> ngbs;
     graph.setAdjacentVertices(vertex, ngbs);
@@ -131,7 +131,7 @@ std::pair<ChainId, Chain> GetChain(const UndirectedGraph &graph, GraphVertex ver
     return ConstrutcChain(graph, part1, part2);
 }
 
-std::vector<std::pair<ChainTag, Chain>> GetChains(const UndirectedGraph &graph)
+std::vector<std::pair<ChainTag, Chain>> GetChains(const IGraphUSC &graph)
 {
     std::vector<std::pair<ChainTag, Chain>> retval;
     const auto nVertices = graph.getNumVertices();
@@ -157,7 +157,7 @@ std::vector<std::pair<ChainTag, Chain>> GetChains(const UndirectedGraph &graph)
     return retval;
 }
 
-std::vector<Tag> GenerateTags(const UndirectedGraph &graph)
+std::vector<Tag> GenerateTags(const IGraphUSC &graph)
 {
     const auto nVertices = graph.getNumVertices();
     std::vector<Tag> retval(nVertices);
@@ -333,18 +333,8 @@ std::vector<Tag> GenerateTags(const UndirectedGraph &graph)
 
 } // namespace
 
-TaggerChains::TaggerChains(const UndirectedGraph &graph) : m_graph(graph), m_tags(GenerateTags(graph))
+TaggerChains::TaggerChains(const IGraphUSC &graph) : m_tags(GenerateTags(graph))
 {
-}
-
-const UndirectedGraph &TaggerChains::getGraph() const
-{
-    return m_graph;
-}
-
-Tag TaggerChains::getTag(GraphVertex v) const
-{
-    return m_tags.at(v);
 }
 
 const Tag &TaggerChains::getVertexTag(GraphVertex v) const
@@ -354,7 +344,7 @@ const Tag &TaggerChains::getVertexTag(GraphVertex v) const
 
 // !!!!!!!!!!!!! FACTORY
 
-std::unique_ptr<ITagger> TaggerChainsFactory::create(const UndirectedGraph &graph)
+std::unique_ptr<IVertexTagger> TaggerChainsFactory::createVertexTagger(const IGraphUSC &graph)
 {
     return std::make_unique<TaggerChains>(graph);
 }

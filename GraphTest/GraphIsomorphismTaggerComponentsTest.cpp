@@ -24,6 +24,6 @@ TEST(GraphIsomorphismTaggerCoomponentsTest, Disconneted)
 {
     const auto graph = UndirectedGraphFromG6::Create("Eh?G");
     TaggerComponentFactory factory;
-    const auto tagger = factory.create(*graph);
+    const auto tagger = factory.createGraphTagger(*graph);
     ASSERT_EQ(tagger->getGraphTag(), (Tag{2, 4}));
 }

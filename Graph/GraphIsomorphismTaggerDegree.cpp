@@ -22,7 +22,7 @@ const Tag &TaggerDegree::getGraphTag() const
 
 // !!!!!!!!!!!!! FACTORY
 
-std::unique_ptr<IGraphTagger> TaggerDegreeFactory::create(const Graph::IGraphUS &graph)
+std::unique_ptr<IGraphTagger> TaggerDegreeFactory::createGraphTagger(const Graph::IGraphUS &graph)
 {
     std::unique_ptr<IGraphTagger> retval = std::make_unique<TaggerDegree>(graph);
     return retval;

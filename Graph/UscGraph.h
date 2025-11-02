@@ -1,6 +1,7 @@
 #pragma once
 
 #include "IGraphUSC.h"
+#include "UndirectedGraph.h"
 
 class UndirectedGraph;
 
@@ -20,6 +21,6 @@ class UscGraph : public IGraphUSC
 
     //static UndirectedGraph CreatePermuted(const IGraphUS &graph, const Permutation &permut);
   private:
-    const UndirectedGraph& m_graph;
+    UndirectedGraph m_graph; // TODO avoid copying?
 };
 }

@@ -33,7 +33,7 @@ const Tag &TaggerComponents::getGraphTag() const
 
 // !!!!!!!!!!!!!
 
-std::unique_ptr<IGraphTagger> TaggerComponentFactory::create(const Graph::IGraphUS &graph)
+std::unique_ptr<IGraphTagger> TaggerComponentFactory::createGraphTagger(const Graph::IGraphUS &graph)
 {
     return std::make_unique<TaggerComponents>(graph);
 }

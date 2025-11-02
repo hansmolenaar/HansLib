@@ -20,7 +20,6 @@ class Grouper
     bool isResolved() const;
 
   private:
-    const UndirectedGraph &m_graph;
     std::vector<Tag> m_tags;
     // Same order as m_tags
     std::vector<std::vector<GraphVertex>> m_groups;

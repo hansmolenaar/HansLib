@@ -44,14 +44,14 @@ class IGraphTaggerFactory
 {
   public:
     virtual ~IGraphTaggerFactory() = default;
-    virtual std::unique_ptr<IGraphTagger> create(const Graph::IGraphUS &) = 0;
+    virtual std::unique_ptr<IGraphTagger> createGraphTagger(const Graph::IGraphUS &) = 0;
 };
 
 class IVertexTaggerFactory
 {
   public:
     virtual ~IVertexTaggerFactory() = default;
-    virtual std::unique_ptr<IVertexTagger> create(const Graph::IGraphUSC &) = 0;
+    virtual std::unique_ptr<IVertexTagger> createVertexTagger(const Graph::IGraphUSC &) = 0;
 };
 
 } // namespace GraphIsomorphism
