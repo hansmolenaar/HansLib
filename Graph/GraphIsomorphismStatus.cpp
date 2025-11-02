@@ -1,4 +1,5 @@
 #include "GraphIsomorphismStatus.h"
+#include "Defines.h"
 #include "MyAssert.h"
 
 using namespace GraphIsomorphism;
@@ -14,15 +15,25 @@ Flag Status::getFlag() const
 
 void Status::addPair(VertexPair vp)
 {
-    VertexPairs.push_back(vp);
+    MyAssert(str::find(m_vertexFirst, vp.first) == m_vertexFirst.end());
+    MyAssert(str::find(m_vertexSecond, vp.second) == m_vertexSecond.end());
+
+    m_vertexFirst.push_back(vp.first);
+    m_vertexSecond.push_back(vp.second);
+
     MyAssert(getFlag() == Flag::Undecided);
-    if (VertexPairs.size() == m_numVertices)
+    if (m_vertexFirst.size() == m_numVertices)
     {
         m_flag = Flag::Isomorphic;
     }
 }
 
-const std::vector<VertexPair> &Status::getVertexPairs() const
+std::vector<VertexPair> Status::getVertexPairs() const
 {
-    return VertexPairs;
+    std::vector<VertexPair> result;
+    for (size_t n = 0; n < m_vertexFirst.size(); ++n)
+    {
+        result.push_back({m_vertexFirst.at(n), m_vertexSecond.at(n)});
+    }
+    return result;
 }
