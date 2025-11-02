@@ -133,22 +133,20 @@ TEST(GraphIsomorphismTaggerChainsTest, Fish)
 
 TEST(GraphIsomorphismTaggerChainsTest, NumVertices5)
 {
-    // TODO GraphTest::TaggerCheckListG6(UndirectedGraphFromG6::getListNumVertices_5(), factoryChains, 9);
+    GraphTest::TaggerCheckListG6(UndirectedGraphFromG6::getListNumVertices_5(), factoryChains, 9);
 }
 
-#if false // TODO
 TEST(GraphIsomorphismTaggerChainsTest, NumVertices6)
 {
-    // TODO GraphTest::TaggerCheckListG6(UndirectedGraphFromG6::getListNumVertices_6(), factoryChains, 22);
+    GraphTest::TaggerCheckListG6(UndirectedGraphFromG6::getListNumVertices_6(), factoryChains, 22);
 }
 
 TEST(GraphIsomorphismTaggerChainsTest, NumVertices7)
 {
-    // TODO GraphTest::TaggerCheckListG6(UndirectedGraphFromG6::getListNumVertices_7(), factoryChains, 30);
+    GraphTest::TaggerCheckListG6(UndirectedGraphFromG6::getListNumVertices_7(), factoryChains, 30);
 }
 
 TEST(GraphIsomorphismTaggerChainsTest, NumVertices8)
 {
-    // TODO GraphTest::TaggerCheckListG6(UndirectedGraphFromG6::getListNumVertices_8(), factoryChains, 27);
+    GraphTest::TaggerCheckListG6(UndirectedGraphFromG6::getListNumVertices_8(), factoryChains, 27);
 }
-#endif

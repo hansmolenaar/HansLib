@@ -7,13 +7,7 @@ using namespace GraphIsomorphism;
 GraphIsomorphism::TaggerDegree::TaggerDegree(const Graph::IGraphUS &graph)
     : m_graph(graph), m_degreeSequenceTag(graph.getNumVertices())
 {
-    // TODO getSortedDe...
-    const auto nVertices = m_graph.getNumVertices();
-    for (GraphVertex v = 0; v < nVertices; ++v)
-    {
-        m_degreeSequenceTag[v] = m_graph.getDegree(v);
-    }
-    str::sort(m_degreeSequenceTag);
+    str::copy(graph.getSortedDegreeSequence(), m_degreeSequenceTag.begin());
 }
 
 const Tag &TaggerDegree::getGraphTag() const
