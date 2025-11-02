@@ -19,11 +19,12 @@ TEST(GraphIsomorphismTaggerDistanceTest, Path3)
     TaggerDistanceFactory factory;
     GraphTest::CheckTaggerConsistency(*graph, factory, 1);
 
-    const auto tagger = factory.create(*graph);
-    ASSERT_EQ(tagger->getGraph().getNumVertices(), 3);
-    ASSERT_TRUE(str::equal(tagger->getTag(0), Tag{1, 1}));
-    ASSERT_TRUE(str::equal(tagger->getTag(1), Tag{2}));
-    ASSERT_TRUE(str::equal(tagger->getTag(2), Tag{1, 1}));
+    auto distances = std::make_shared<UndirectedGraphDistance>(*graph);
+    const TaggerDistance tagger(distances);
+    ASSERT_EQ(tagger.getGraph().getNumVertices(), 3);
+    ASSERT_TRUE(str::equal(tagger.getVertexTag(0), Tag{1, 1}));
+    ASSERT_TRUE(str::equal(tagger.getVertexTag(1), Tag{2}));
+    ASSERT_TRUE(str::equal(tagger.getVertexTag(2), Tag{1, 1}));
 }
 
 TEST(GraphIsomorphismTaggerDistanceTest, Star121)

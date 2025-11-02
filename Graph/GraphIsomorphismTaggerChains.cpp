@@ -347,7 +347,7 @@ Tag TaggerChains::getTag(GraphVertex v) const
     return m_tags.at(v);
 }
 
-const Tag& TaggerChains::getVertexTag(GraphVertex v) const 
+const Tag &TaggerChains::getVertexTag(GraphVertex v) const
 {
     return m_tags.at(v);
 }
