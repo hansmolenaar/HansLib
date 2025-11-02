@@ -8,7 +8,7 @@
 #include "GraphIsomorphismTagCompare.h"
 #include "Permutation.h"
 #include "UndirectedGraphFromG6.h"
-#include "UscGraph.h"
+#include "GraphUsc.h"
 
 #include <random>
 

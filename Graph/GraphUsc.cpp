@@ -1,4 +1,4 @@
-#include "UscGraph.h"
+#include "GraphUsc.h"
 #include "Defines.h"
 #include "MyAssert.h"
 #include "UndirectedGraph.h"

@@ -6,7 +6,7 @@
 #include "GraphIsomorphismTaggerDistance.h"
 #include "UndirectedGraphDistance.h"
 #include "UndirectedGraphLibrary.h"
-#include "UscGraph.h"
+#include "GraphUsc.h"
 
 using namespace GraphIsomorphism;
 using namespace Graph;

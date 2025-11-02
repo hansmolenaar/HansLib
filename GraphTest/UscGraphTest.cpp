@@ -3,7 +3,7 @@
 #include "MyException.h"
 #include "UndirectedGraphFromG6.h"
 #include "UndirectedGraphLibrary.h"
-#include "UscGraph.h"
+#include "GraphUsc.h"
 
 using namespace Graph;
 

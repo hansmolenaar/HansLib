@@ -1,7 +1,7 @@
 #pragma once
 
 #include "UndirectedGraph.h"
-#include "UscGraph.h"
+#include "GraphUsc.h"
 
 namespace UndirectedGraphLibrary
 {
