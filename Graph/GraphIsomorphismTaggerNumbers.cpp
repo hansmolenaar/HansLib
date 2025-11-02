@@ -29,12 +29,13 @@ Status TaggerNumbers::compare(const Graph::IGraphUS &graph0, const Graph::IGraph
 
     if (nEdges == 0 || nEdges == (nVertices * (nVertices - 1) / 2))
     {
-        std::vector<VertexPair> pairs;
+        Status result(nVertices);
         for (GraphVertex v = 0; v < nVertices; ++v)
         {
-            pairs.push_back({v, v});
+            result.VertexPairs.push_back({v, v});
         }
-        return {Isomorphic, pairs};
+        result.StatusFlag = Isomorphic;
+        return result;
     }
 
     return {};

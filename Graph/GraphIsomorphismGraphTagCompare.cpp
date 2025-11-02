@@ -1,7 +1,9 @@
 #include "GraphIsomorphismGraphTagCompare.h"
 #include "Defines.h"
+#include "MyAssert.h"
 
 using namespace GraphIsomorphism;
+using namespace Utilities;
 
 GraphTagCompare::GraphTagCompare(const TaggerNumbersFactory &numbersFactory,
                                  const std::vector<const IGraphTaggerFactory *> &others)
@@ -12,6 +14,6 @@ GraphTagCompare::GraphTagCompare(const TaggerNumbersFactory &numbersFactory,
 
 Status GraphTagCompare::compare(const Graph::IGraphUS &graph0, const Graph::IGraphUS &graph1) const
 {
-
+    MyAssert(false);
     return {};
 }

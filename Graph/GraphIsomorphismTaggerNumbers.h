@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GraphIsomorphismDefines.h"
+#include "GraphIsomorphismStatus.h"
 #include "IGraphIsomorphismTagger.h"
 #include "IGraphUS.h"
 
