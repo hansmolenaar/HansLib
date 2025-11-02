@@ -2,6 +2,7 @@
 
 #include "Defines.h"
 #include "GraphIsomorphismITaggerTest.h"
+#include "GraphIsomorphismStatus.h"
 #include "GraphIsomorphismTaggerNumbers.h"
 #include "UndirectedGraphLibrary.h"
 
@@ -21,7 +22,7 @@ TEST(GraphIsomorphismTaggerNumbersTest, Path3)
     ASSERT_TRUE(str::equal(tagger.getGraphTag(), Tag{3, 2}));
 
     const auto status = TaggerNumbers::compare(*graph, *graph);
-    ASSERT_EQ(status.StatusFlag, Flag::Undecided);
+    ASSERT_EQ(status.getFlag(), Flag::Undecided);
 }
 
 TEST(GraphIsomorphismTaggerNumbersTest, Cycle3)
@@ -34,6 +35,6 @@ TEST(GraphIsomorphismTaggerNumbersTest, Cycle3)
     ASSERT_TRUE(str::equal(tagger.getGraphTag(), Tag{3, 3}));
 
     const auto status = TaggerNumbers::compare(*graph, *graph);
-    ASSERT_EQ(status.StatusFlag, Flag::Isomorphic);
-    ASSERT_EQ(status.VertexPairs.size(), 3);
+    ASSERT_EQ(status.getFlag(), Flag::Isomorphic);
+    ASSERT_EQ(status.getVertexPairs().size(), 3);
 }

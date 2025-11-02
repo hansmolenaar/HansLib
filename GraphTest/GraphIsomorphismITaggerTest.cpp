@@ -56,7 +56,7 @@ void GraphTest::CheckTaggerConsistency(const IGraphUSC &graph, GraphIsomorphism:
         if (expectNumAssociatedvertices == nVertices)
         {
             const auto checkIsomorphism = Check{}(graph, resultCompare.VertexPairs, uscGraphPermuted);
-            ASSERT_EQ(checkIsomorphism, Flag::Isomorphic);
+            ASSERT_TRUE(checkIsomorphism);
         }
     }
 };

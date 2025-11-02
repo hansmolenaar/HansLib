@@ -1,6 +1,8 @@
 #include "GraphIsomorphismTaggerNumbers.h"
+#include "MyAssert.h"
 
 using namespace GraphIsomorphism;
+using namespace Utilities;
 
 GraphIsomorphism::TaggerNumbers::TaggerNumbers(const Graph::IGraphUS &graph) : m_graph(graph)
 {
@@ -32,9 +34,9 @@ Status TaggerNumbers::compare(const Graph::IGraphUS &graph0, const Graph::IGraph
         Status result(nVertices);
         for (GraphVertex v = 0; v < nVertices; ++v)
         {
-            result.VertexPairs.push_back({v, v});
+            result.addPair({v, v});
         }
-        result.StatusFlag = Isomorphic;
+        MyAssert(result.getFlag() == Flag::Isomorphic);
         return result;
     }
 

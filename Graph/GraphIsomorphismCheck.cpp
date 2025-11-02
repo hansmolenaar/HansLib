@@ -10,7 +10,7 @@ using namespace GraphIsomorphism;
 bool Check::operator()(const IGraphUS &g0, const IGraphUS &g1) const
 {
     const auto status = TaggerNumbers::compare(g0, g1);
-    if (status.StatusFlag == NotIsomorphic)
+    if (status.getFlag() == NotIsomorphic)
     {
         return false;
     }
