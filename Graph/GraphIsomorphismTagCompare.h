@@ -20,7 +20,7 @@ class TagCompare
         TagStatus TagCompareStatus;
         std::vector<VertexPair> VertexPairs;
     };
-    Result operator()(std::pair<const ITagger &, const ITagger &>) const;
+
     Result compare(std::pair<const IVertexTagger &, const IVertexTagger &>) const;
 };
 
