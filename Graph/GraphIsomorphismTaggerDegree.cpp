@@ -7,6 +7,7 @@ using namespace GraphIsomorphism;
 GraphIsomorphism::TaggerDegree::TaggerDegree(const Graph::IGraphUS &graph)
     : m_graph(graph), m_degreeSequenceTag(graph.getNumVertices())
 {
+    // TODO getSortedDe...
     const auto nVertices = m_graph.getNumVertices();
     for (GraphVertex v = 0; v < nVertices; ++v)
     {
@@ -20,6 +21,15 @@ const Tag &TaggerDegree::getGraphTag() const
     return m_degreeSequenceTag;
 }
 
+const Tag &TaggerDegree::getVertexTag(GraphVertex v) const
+{
+    return TagFlyweight::getSingleEntryTag(m_graph.getDegree(v));
+}
+
+GraphVertex TaggerDegree::getNumVertices() const
+{
+    return m_graph.getNumVertices();
+}
 // !!!!!!!!!!!!! FACTORY
 
 std::unique_ptr<IGraphTagger> TaggerDegreeFactory::createGraphTagger(const Graph::IGraphUS &graph)
