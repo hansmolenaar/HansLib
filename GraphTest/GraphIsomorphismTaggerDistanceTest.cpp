@@ -3,10 +3,10 @@
 #include "Defines.h"
 #include "GraphIsomorphismITaggerTest.h"
 #include "GraphIsomorphismTaggerDistance.h"
+#include "GraphUsc.h"
 #include "UndirectedGraphDistance.h"
 #include "UndirectedGraphFromG6.h"
 #include "UndirectedGraphLibrary.h"
-#include "GraphUsc.h"
 
 using namespace GraphIsomorphism;
 using namespace Graph;

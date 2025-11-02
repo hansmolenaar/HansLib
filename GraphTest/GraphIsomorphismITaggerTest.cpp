@@ -6,9 +6,9 @@
 #include "GraphIsomorphismGrouper.h"
 #include "GraphIsomorphismITaggerTest.h"
 #include "GraphIsomorphismTagCompare.h"
+#include "GraphUsc.h"
 #include "Permutation.h"
 #include "UndirectedGraphFromG6.h"
-#include "GraphUsc.h"
 
 #include <random>
 

@@ -1,9 +1,9 @@
 #include <gtest/gtest.h>
 
+#include "GraphUsc.h"
 #include "MyException.h"
 #include "UndirectedGraphFromG6.h"
 #include "UndirectedGraphLibrary.h"
-#include "GraphUsc.h"
 
 using namespace Graph;
 
