@@ -6,7 +6,7 @@
 using namespace Graph;
 using namespace Utilities;
 
-UscGraph::UscGraph(const UndirectedGraph &graph) : m_graph(graph)
+GraphUsc::GraphUsc(const UndirectedGraph &graph) : m_graph(graph)
 {
     if (m_graph.getNumVertices() > 0)
     {
@@ -14,37 +14,37 @@ UscGraph::UscGraph(const UndirectedGraph &graph) : m_graph(graph)
     }
 }
 
-GraphVertex UscGraph::getNumVertices() const
+GraphVertex GraphUsc::getNumVertices() const
 {
     return m_graph.getNumVertices();
 }
 
-std::vector<GraphVertex> UscGraph::getConnectedComponents() const
+std::vector<GraphVertex> GraphUsc::getConnectedComponents() const
 {
     return m_graph.getConnectedComponents();
 }
 
-void UscGraph::setAdjacentVertices(GraphVertex vertex, std::vector<GraphVertex> &result) const
+void GraphUsc::setAdjacentVertices(GraphVertex vertex, std::vector<GraphVertex> &result) const
 {
     return m_graph.setAdjacentVertices(vertex, result);
 }
 
-GraphEdge UscGraph::getNumEdges() const
+GraphEdge GraphUsc::getNumEdges() const
 {
     return m_graph.getNumEdges();
 }
 
-GraphVertex UscGraph::getDegree(GraphVertex vertex) const
+GraphVertex GraphUsc::getDegree(GraphVertex vertex) const
 {
     return m_graph.getDegree(vertex);
 }
 
-bool UscGraph::areAdjacent(GraphVertex v1, GraphVertex v2) const
+bool GraphUsc::areAdjacent(GraphVertex v1, GraphVertex v2) const
 {
     return m_graph.areAdjacent(v1, v2);
 }
 
-UscGraph UscGraph::CreatePermuted(const IGraphUSC &graph, const Permutation &permut)
+GraphUsc GraphUsc::CreatePermuted(const IGraphUSC &graph, const Permutation &permut)
 {
     const auto nVertices = graph.getNumVertices();
     MyAssert(nVertices == permut.getCardinality());
@@ -64,5 +64,5 @@ UscGraph UscGraph::CreatePermuted(const IGraphUSC &graph, const Permutation &per
         }
     }
 
-    return UscGraph(result);
+    return GraphUsc(result);
 }

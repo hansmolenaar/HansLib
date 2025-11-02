@@ -8,10 +8,10 @@ class UndirectedGraph;
 namespace Graph
 {
 
-class UscGraph : public IGraphUSC
+class GraphUsc : public IGraphUSC
 {
   public:
-    explicit UscGraph(const UndirectedGraph &);
+    explicit GraphUsc(const UndirectedGraph &);
     GraphVertex getNumVertices() const override;
     GraphEdge getNumEdges() const override;
     void setAdjacentVertices(GraphVertex vertex, std::vector<GraphVertex> &result) const override;
@@ -19,7 +19,7 @@ class UscGraph : public IGraphUSC
     GraphVertex getDegree(GraphVertex vertex) const override;
     std::vector<GraphVertex> getConnectedComponents() const override;
 
-    static UscGraph CreatePermuted(const IGraphUSC &, const Permutation &);
+    static GraphUsc CreatePermuted(const IGraphUSC &, const Permutation &);
 
   private:
     UndirectedGraph m_graph; // TODO avoid copying?

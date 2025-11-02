@@ -46,7 +46,7 @@ void GraphTest::CheckTaggerConsistency(const IGraphUSC &graph, GraphIsomorphism:
         std::shuffle(permut.begin(), permut.end(), g);
         const auto permutation = Permutation::Create(permut);
         const UndirectedGraph graphPermuted = UndirectedGraph::CreatePermuted(graph, permutation);
-        const UscGraph uscGraphPermuted(graphPermuted);
+        const GraphUsc uscGraphPermuted(graphPermuted);
         const auto taggerPermuted = factory.createVertexTagger(uscGraphPermuted);
         const Grouper grouperPermuted(*taggerPermuted);
         ASSERT_EQ(grouperPermuted.countUnique(), expectNumAssociatedvertices);
@@ -92,7 +92,7 @@ void GraphTest::TaggerCheckListG6(const std::vector<std::string> &stringsG6, IVe
         const auto ugraph = UndirectedGraphFromG6::Create(g6);
         if (!ugraph->isConnected())
             continue;
-        const UscGraph graph(*ugraph);
+        const GraphUsc graph(*ugraph);
 
         GraphTest::CheckTaggerConsistency(graph, factory, -1, numPermutations);
         const auto tagger = factory.createVertexTagger(graph);

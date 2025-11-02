@@ -80,7 +80,7 @@ TEST(GraphIsomorphismGrouperTest, DegreeStar321)
 TEST(GraphIsomorphismGrouperTest, DistanceStar321)
 {
     const auto graph = UndirectedGraphLibrary::Get_Star({3, 2, 1});
-    const UscGraph uscGraph(*graph);
+    const GraphUsc uscGraph(*graph);
     const auto tagger = TaggerDistanceFactory{}.createVertexTagger(uscGraph);
     const Grouper grouper(*tagger);
 

@@ -19,9 +19,9 @@ TEST(GraphIsomorphismTaggerDistanceTest, Path3)
 {
     const auto graph = UndirectedGraphLibrary::Get_Path(3);
     TaggerDistanceFactory factory;
-    GraphTest::CheckTaggerConsistency(UscGraph(*graph), factory, 1);
+    GraphTest::CheckTaggerConsistency(GraphUsc(*graph), factory, 1);
 
-    auto distances = std::make_shared<UndirectedGraphDistance>(UscGraph(*graph));
+    auto distances = std::make_shared<UndirectedGraphDistance>(GraphUsc(*graph));
     const TaggerDistance tagger(distances);
     ASSERT_TRUE(str::equal(tagger.getVertexTag(0), Tag{1, 1}));
     ASSERT_TRUE(str::equal(tagger.getVertexTag(1), Tag{2}));
@@ -30,7 +30,7 @@ TEST(GraphIsomorphismTaggerDistanceTest, Path3)
 
 TEST(GraphIsomorphismTaggerDistanceTest, Star121)
 {
-    const UscGraph graph(*UndirectedGraphLibrary::Get_Star({1, 2, 1}));
+    const GraphUsc graph(*UndirectedGraphLibrary::Get_Star({1, 2, 1}));
     TaggerDistanceFactory factory;
     GraphTest::CheckTaggerConsistency(graph, factory, 3);
 

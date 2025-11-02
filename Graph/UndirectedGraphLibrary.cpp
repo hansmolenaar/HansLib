@@ -42,25 +42,25 @@ static std::unique_ptr<UndirectedGraph> Create(std::initializer_list<std::pair<G
 
 } // namespace
 
-std::unique_ptr<UscGraph> UndirectedGraphLibrary::Get_Path(GraphVertex numVertices)
+std::unique_ptr<GraphUsc> UndirectedGraphLibrary::Get_Path(GraphVertex numVertices)
 {
     MyAssert(numVertices > 1);
     auto ug = std::make_unique<UndirectedGraph>(numVertices);
     SetEdgesOfPath(*ug, numVertices - 1);
-    return std::make_unique<UscGraph>(*ug);
+    return std::make_unique<GraphUsc>(*ug);
 }
 
-std::unique_ptr<UscGraph> UndirectedGraphLibrary::Get_Cycle(GraphVertex numVertices)
+std::unique_ptr<GraphUsc> UndirectedGraphLibrary::Get_Cycle(GraphVertex numVertices)
 {
     MyAssert(numVertices > 2);
     auto ug = std::make_unique<UndirectedGraph>(numVertices);
     // add edge connecting first and last
     ug->addEdge(0, numVertices - 1);
     SetEdgesOfPath(*ug, numVertices - 1);
-    return std::make_unique<UscGraph>(*ug);
+    return std::make_unique<GraphUsc>(*ug);
 }
 
-std::unique_ptr<UscGraph> UndirectedGraphLibrary::Get_CompleteGraph(GraphVertex numVertices)
+std::unique_ptr<GraphUsc> UndirectedGraphLibrary::Get_CompleteGraph(GraphVertex numVertices)
 {
     MyAssert(numVertices > 0);
     auto ug = std::make_unique<UndirectedGraph>(numVertices);
@@ -73,10 +73,10 @@ std::unique_ptr<UscGraph> UndirectedGraphLibrary::Get_CompleteGraph(GraphVertex 
         }
     }
 
-    return std::make_unique<UscGraph>(*ug);
+    return std::make_unique<GraphUsc>(*ug);
 }
 
-std::unique_ptr<UscGraph> UndirectedGraphLibrary::Get_Star(std::initializer_list<GraphVertex> sizes)
+std::unique_ptr<GraphUsc> UndirectedGraphLibrary::Get_Star(std::initializer_list<GraphVertex> sizes)
 {
     MyAssert(sizes.size() > 2);
     MyAssert(str::all_of(sizes, [](auto v) { return v > 0; }));
@@ -93,7 +93,7 @@ std::unique_ptr<UscGraph> UndirectedGraphLibrary::Get_Star(std::initializer_list
         cur += s;
     }
     MyAssert(cur == numVertices);
-    return std::make_unique<UscGraph>(*ug);
+    return std::make_unique<GraphUsc>(*ug);
 }
 
 //      2
@@ -101,7 +101,7 @@ std::unique_ptr<UscGraph> UndirectedGraphLibrary::Get_Star(std::initializer_list
 //   0 ----  3
 //     \    /
 //       1
-std::unique_ptr<UscGraph> UndirectedGraphLibrary::Get_Diamond()
+std::unique_ptr<GraphUsc> UndirectedGraphLibrary::Get_Diamond()
 {
     return UndirectedGraphFromG6::CreateConnected("Cz");
 }
@@ -109,7 +109,7 @@ std::unique_ptr<UscGraph> UndirectedGraphLibrary::Get_Diamond()
 //    0 -- 2 -- 1
 //         |
 //         3
-std::unique_ptr<UscGraph> UndirectedGraphLibrary::Get_Claw()
+std::unique_ptr<GraphUsc> UndirectedGraphLibrary::Get_Claw()
 {
     return UndirectedGraphFromG6::CreateConnected("Cs");
 }
@@ -119,17 +119,17 @@ std::unique_ptr<UscGraph> UndirectedGraphLibrary::Get_Claw()
 //  0  |
 //   \ |
 //      2 -- 4
-std::unique_ptr<UscGraph> UndirectedGraphLibrary::Get_Bull()
+std::unique_ptr<GraphUsc> UndirectedGraphLibrary::Get_Bull()
 {
     return UndirectedGraphFromG6::CreateConnected("D{O");
 }
 
-std::unique_ptr<UscGraph> UndirectedGraphLibrary::Get_Butterfly()
+std::unique_ptr<GraphUsc> UndirectedGraphLibrary::Get_Butterfly()
 {
     return UndirectedGraphFromG6::CreateConnected("D{c");
 }
 
-std::unique_ptr<UscGraph> UndirectedGraphLibrary::Get_Paw()
+std::unique_ptr<GraphUsc> UndirectedGraphLibrary::Get_Paw()
 {
     return UndirectedGraphFromG6::CreateConnected("Cx");
 }
@@ -139,7 +139,7 @@ std::unique_ptr<UndirectedGraph> UndirectedGraphLibrary::Get_DisconnectedGraph(G
     return std::make_unique<UndirectedGraph>(numVertices);
 }
 
-std::unique_ptr<UscGraph> UndirectedGraphLibrary::Get_CompleteBipartite(GraphVertex size0, GraphVertex size1)
+std::unique_ptr<GraphUsc> UndirectedGraphLibrary::Get_CompleteBipartite(GraphVertex size0, GraphVertex size1)
 {
     if (std::min(size0, size1) < 1)
     {
@@ -153,5 +153,5 @@ std::unique_ptr<UscGraph> UndirectedGraphLibrary::Get_CompleteBipartite(GraphVer
             ug.addEdge(n0, n1 + size0);
         }
     }
-    return std::make_unique<UscGraph>(ug);
+    return std::make_unique<GraphUsc>(ug);
 }

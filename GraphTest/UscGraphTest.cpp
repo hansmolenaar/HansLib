@@ -7,10 +7,10 @@
 
 using namespace Graph;
 
-TEST(UscGraphTest, ConnectedComponents)
+TEST(GraphUscTest, ConnectedComponents)
 {
     const auto graph = UndirectedGraphLibrary::Get_Path(3);
-    const UscGraph uscGraph(*graph);
+    const GraphUsc uscGraph(*graph);
 
     ASSERT_EQ(uscGraph.getNumVertices(), 3);
     ASSERT_EQ(uscGraph.getNumEdges(), 2);
@@ -26,8 +26,8 @@ TEST(UscGraphTest, ConnectedComponents)
     ASSERT_EQ(components, (std::vector<GraphVertex>{0, 0, 0}));
 }
 
-TEST(UscGraphTest, Disconnected)
+TEST(GraphUscTest, Disconnected)
 {
     const auto graph = UndirectedGraphFromG6::Create("Eh?G");
-    ASSERT_THROW(UscGraph tmp(*graph), MyException);
+    ASSERT_THROW(GraphUsc tmp(*graph), MyException);
 }
