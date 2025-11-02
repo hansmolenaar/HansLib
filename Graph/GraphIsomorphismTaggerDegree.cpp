@@ -15,7 +15,7 @@ GraphIsomorphism::TaggerDegree::TaggerDegree(const Graph::IGraphUS &graph)
     str::sort(m_degreeSequenceTag);
 }
 
-const Tag &TaggerDegree::getTag() const
+const Tag &TaggerDegree::getGraphTag() const
 {
     return m_degreeSequenceTag;
 }

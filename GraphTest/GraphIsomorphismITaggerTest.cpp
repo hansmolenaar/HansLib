@@ -63,7 +63,7 @@ void GraphTest::CheckTaggerConsistency(const Graph::IGraphUS &graph, IGraphTagge
 
     const auto nVertices = graph.getNumVertices();
     const auto tagger = factory.create(graph);
-    const auto &tag = tagger->getTag();
+    const auto &tag = tagger->getGraphTag();
 
     std::random_device rd;
     std::mt19937 g(rd());
@@ -77,7 +77,7 @@ void GraphTest::CheckTaggerConsistency(const Graph::IGraphUS &graph, IGraphTagge
         const auto permutation = Permutation::Create(permut);
         const UndirectedGraph graphPermuted = UndirectedGraph::CreatePermuted(graph, permutation);
         const auto taggerPermuted = factory.create(graphPermuted);
-        ASSERT_EQ(tag, taggerPermuted->getTag());
+        ASSERT_EQ(tag, taggerPermuted->getGraphTag());
     }
 };
 

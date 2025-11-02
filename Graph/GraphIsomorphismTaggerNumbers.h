@@ -12,7 +12,7 @@ class TaggerNumbers : public IGraphTagger
   public:
     explicit TaggerNumbers(const Graph::IGraphUS &);
 
-    const Tag &getTag() const override;
+    const Tag &getGraphTag() const override;
 
     static Status compare(const Graph::IGraphUS &, const Graph::IGraphUS &);
 

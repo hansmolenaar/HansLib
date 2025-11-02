@@ -8,7 +8,7 @@ GraphIsomorphism::TaggerNumbers::TaggerNumbers(const Graph::IGraphUS &graph) : m
     m_numbers.push_back(graph.getNumEdges());
 }
 
-const Tag &TaggerNumbers::getTag() const
+const Tag &TaggerNumbers::getGraphTag() const
 {
     return m_numbers;
 }
@@ -18,7 +18,7 @@ Status TaggerNumbers::compare(const Graph::IGraphUS &graph0, const Graph::IGraph
     const TaggerNumbers tagger0(graph0);
     const TaggerNumbers tagger1(graph1);
 
-    if (tagger0.getTag() != tagger1.getTag())
+    if (tagger0.getGraphTag() != tagger1.getGraphTag())
     {
         return {};
     }

@@ -18,7 +18,7 @@ TEST(GraphIsomorphismTaggerDegreeTest, Path3)
     GraphTest::CheckTaggerConsistency(*graph, factory);
 
     const TaggerDegree tagger(*graph);
-    ASSERT_TRUE(str::equal(tagger.getTag(), Tag{1, 1, 2}));
+    ASSERT_TRUE(str::equal(tagger.getGraphTag(), Tag{1, 1, 2}));
 }
 
 TEST(GraphIsomorphismTaggerDegreeTest, Star111)
@@ -28,5 +28,5 @@ TEST(GraphIsomorphismTaggerDegreeTest, Star111)
     GraphTest::CheckTaggerConsistency(*graph, factory);
 
     const auto tagger = TaggerDegree(*graph);
-    ASSERT_TRUE(str::equal(tagger.getTag(), Tag{1, 1, 1, 2, 3}));
+    ASSERT_TRUE(str::equal(tagger.getGraphTag(), Tag{1, 1, 1, 2, 3}));
 }

@@ -18,7 +18,7 @@ TEST(GraphIsomorphismTaggerNumbersTest, Path3)
     GraphTest::CheckTaggerConsistency(*graph, factory);
 
     const TaggerNumbers tagger(*graph);
-    ASSERT_TRUE(str::equal(tagger.getTag(), Tag{3, 2}));
+    ASSERT_TRUE(str::equal(tagger.getGraphTag(), Tag{3, 2}));
 
     const auto status = TaggerNumbers::compare(*graph, *graph);
     ASSERT_EQ(status.StatusFlag, Flag::Undecided);
@@ -31,7 +31,7 @@ TEST(GraphIsomorphismTaggerNumbersTest, Cycle3)
     GraphTest::CheckTaggerConsistency(*graph, factory);
 
     const TaggerNumbers tagger(*graph);
-    ASSERT_TRUE(str::equal(tagger.getTag(), Tag{3, 3}));
+    ASSERT_TRUE(str::equal(tagger.getGraphTag(), Tag{3, 3}));
 
     const auto status = TaggerNumbers::compare(*graph, *graph);
     ASSERT_EQ(status.StatusFlag, Flag::Isomorphic);

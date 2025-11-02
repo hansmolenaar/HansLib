@@ -12,7 +12,7 @@ class TaggerDegree : public IGraphTagger
   public:
     explicit TaggerDegree(const Graph::IGraphUS &);
 
-    const Tag &getTag() const override;
+    const Tag &getGraphTag() const override;
 
   private:
     const Graph::IGraphUS &m_graph;
