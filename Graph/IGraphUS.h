@@ -22,5 +22,6 @@ class IGraphUS
     virtual std::vector<GraphVertex> getConnectedComponents() const = 0;
 
     std::vector<GraphVertex> getSortedDegreeSequence() const;
+    bool isConnected() const;
 };
 }; // namespace Graph

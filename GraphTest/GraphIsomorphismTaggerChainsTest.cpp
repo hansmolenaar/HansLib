@@ -17,32 +17,29 @@ TaggerChainsFactory factoryChains;
 
 TEST(GraphIsomorphismTaggerChainsTest, PureCycle3)
 {
-    const auto graph = UndirectedGraphLibrary::Get_Cycle(3);
-    // TODO GraphTest::CheckTaggerConsistency(*graph, factoryChains, 3);
+    const UscGraph graph(*UndirectedGraphLibrary::Get_Cycle(3));
+    GraphTest::CheckTaggerConsistency(graph, factoryChains, 3);
 
-    const auto tagger = TaggerChains(UscGraph(*graph));
+    const auto tagger = TaggerChains(UscGraph(graph));
     ASSERT_TRUE(str::equal(tagger.getVertexTag(0), Tag{0, 3, 1, 0}));
     ASSERT_TRUE(str::equal(tagger.getVertexTag(1), Tag{0, 3, 1, 1}));
     ASSERT_TRUE(str::equal(tagger.getVertexTag(2), Tag{0, 3, 1, 2}));
 }
 
-#if false // TODO
 TEST(GraphIsomorphismTaggerChainsTest, PurePath2)
 {
-    const auto graph = UndirectedGraphLibrary::Get_Path(2);
-    // TODO GraphTest::CheckTaggerConsistency(*graph, factoryChains, 2);
-    const auto tagger = factoryChains.create(*graph);
-    ASSERT_EQ(tagger->getGraph().getNumVertices(), 2);
-    ASSERT_TRUE(str::equal(tagger->getTag(0), Tag{1, 2, 1, 0}));
-    ASSERT_TRUE(str::equal(tagger->getTag(1), Tag{1, 2, 1, 1}));
+    const UscGraph graph(*UndirectedGraphLibrary::Get_Path(2));
+    GraphTest::CheckTaggerConsistency(graph, factoryChains, 2);
+    const auto tagger = factoryChains.createVertexTagger(graph);
+    ASSERT_TRUE(str::equal(tagger->getVertexTag(0), Tag{1, 2, 1, 0}));
+    ASSERT_TRUE(str::equal(tagger->getVertexTag(1), Tag{1, 2, 1, 1}));
 }
 
 TEST(GraphIsomorphismTaggerChainsTest, PurePath3)
 {
-    const auto graph = UndirectedGraphLibrary::Get_Path(3);
-    // TODO GraphTest::CheckTaggerConsistency(*graph, factoryChains, 3);
-    const auto tagger = TaggerChains(*graph);
-    ASSERT_EQ(tagger.getGraph().getNumVertices(), 3);
+    const UscGraph graph(*UndirectedGraphLibrary::Get_Path(3));
+    GraphTest::CheckTaggerConsistency(graph, factoryChains, 3);
+    const auto tagger = TaggerChains(graph);
     ASSERT_TRUE(str::equal(tagger.getVertexTag(0), Tag{1, 3, 1, 0}));
     ASSERT_TRUE(str::equal(tagger.getVertexTag(1), Tag{1, 3, 1, 1}));
     ASSERT_TRUE(str::equal(tagger.getVertexTag(2), Tag{1, 3, 1, 2}));
@@ -50,8 +47,8 @@ TEST(GraphIsomorphismTaggerChainsTest, PurePath3)
 
 TEST(GraphIsomorphismTaggerChainsTest, Pan3)
 {
-    const auto graph = UndirectedGraphFromG6::Create(UndirectedGraphFromG6::pan3);
-    // TODO GraphTest::CheckTaggerConsistency(*graph, factoryChains, 4);
+    const auto graph = UndirectedGraphFromG6::CreateConnected(UndirectedGraphFromG6::pan3);
+    GraphTest::CheckTaggerConsistency(*graph, factoryChains, 4);
     const auto tagger = TaggerChains(*graph);
 
     ASSERT_TRUE(str::equal(tagger.getVertexTag(0), Tag{2, 3, 1, 1}));
@@ -62,14 +59,14 @@ TEST(GraphIsomorphismTaggerChainsTest, Pan3)
 
 TEST(GraphIsomorphismTaggerChainsTest, Pan3Parmuted)
 {
-    const auto graph = UndirectedGraphFromG6::Create(UndirectedGraphFromG6::pan3);
+    const auto graph = UndirectedGraphFromG6::CreateConnected(UndirectedGraphFromG6::pan3);
     const auto permutation = Permutation::Create(std::vector<Permutation::Entry>{
         2,
         0,
         3,
         1,
     });
-    const auto permuted = UndirectedGraph::CreatePermuted(*graph, permutation);
+    const auto permuted = UscGraph::CreatePermuted(*graph, permutation);
     const auto tagger = TaggerChains(permuted);
 
     ASSERT_TRUE(str::equal(tagger.getVertexTag(0), Tag{2, 3, 1, 1}));
@@ -80,9 +77,9 @@ TEST(GraphIsomorphismTaggerChainsTest, Pan3Parmuted)
 
 TEST(GraphIsomorphismTaggerChainsTest, Diamond)
 {
-    const auto graph = UndirectedGraphLibrary::Get_Diamond();
-    // TODO GraphTest::CheckTaggerConsistency(*graph, factoryChains, 2);
-    const auto tagger = TaggerChains(*graph);
+    const UscGraph graph(*UndirectedGraphLibrary::Get_Diamond());
+    GraphTest::CheckTaggerConsistency(graph, factoryChains, 2);
+    const auto tagger = TaggerChains(graph);
     ASSERT_TRUE(str::equal(tagger.getVertexTag(0), Tag{4, 3, 1, 1}));
     ASSERT_TRUE(str::equal(tagger.getVertexTag(1), Tag{4, 3, 3}));
     ASSERT_TRUE(str::equal(tagger.getVertexTag(2), Tag{4, 3, 3}));
@@ -91,9 +88,9 @@ TEST(GraphIsomorphismTaggerChainsTest, Diamond)
 
 TEST(GraphIsomorphismTaggerChainsTest, Star311)
 {
-    const auto graph = UndirectedGraphLibrary::Get_Star({3, 1, 1});
-    // TODO GraphTest::CheckTaggerConsistency(*graph, factoryChains, 6);
-    const auto tagger = TaggerChains(*graph);
+    const UscGraph graph(*UndirectedGraphLibrary::Get_Star({3, 1, 1}));
+    GraphTest::CheckTaggerConsistency(graph, factoryChains, 6);
+    const auto tagger = TaggerChains(graph);
     ASSERT_TRUE(str::equal(tagger.getVertexTag(0), Tag{3, 2, 3, 2, 3, 4}));
     ASSERT_TRUE(str::equal(tagger.getVertexTag(1), Tag{3, 4, 1, 1}));
     ASSERT_TRUE(str::equal(tagger.getVertexTag(2), Tag{3, 4, 1, 2}));
@@ -104,8 +101,8 @@ TEST(GraphIsomorphismTaggerChainsTest, Star311)
 
 TEST(GraphIsomorphismTaggerChainsTest, House)
 {
-    const auto graph = UndirectedGraphFromG6::Create(UndirectedGraphFromG6::house);
-    // TODO GraphTest::CheckTaggerConsistency(*graph, factoryChains, 1);
+    const auto graph = UndirectedGraphFromG6::CreateConnected(UndirectedGraphFromG6::house);
+    GraphTest::CheckTaggerConsistency(*graph, factoryChains, 1);
     const auto tagger = TaggerChains(*graph);
     ASSERT_TRUE(str::equal(tagger.getVertexTag(0), Tag{4, 4, 1, 1}));
     ASSERT_TRUE(str::equal(tagger.getVertexTag(1), Tag{4, 4, 1, 1}));
@@ -116,8 +113,8 @@ TEST(GraphIsomorphismTaggerChainsTest, House)
 
 TEST(GraphIsomorphismTaggerChainsTest, X84)
 {
-    const auto graph = UndirectedGraphFromG6::Create(UndirectedGraphFromG6::X84);
-    // TODO GraphTest::CheckTaggerConsistency(*graph, factoryChains, 2);
+    const auto graph = UndirectedGraphFromG6::CreateConnected(UndirectedGraphFromG6::X84);
+    GraphTest::CheckTaggerConsistency(*graph, factoryChains, 2);
 
     const auto tagger = TaggerChains(*graph);
     ASSERT_TRUE(str::equal(tagger.getVertexTag(0), Tag{4, 3, 1, 1}));
@@ -130,8 +127,8 @@ TEST(GraphIsomorphismTaggerChainsTest, X84)
 
 TEST(GraphIsomorphismTaggerChainsTest, Fish)
 {
-    const auto graph = UndirectedGraphFromG6::Create(UndirectedGraphFromG6::fish);
-    // TODO GraphTest::CheckTaggerConsistency(*graph, factoryChains, 6);
+    const auto graph = UndirectedGraphFromG6::CreateConnected(UndirectedGraphFromG6::fish);
+    GraphTest::CheckTaggerConsistency(*graph, factoryChains, 6);
 }
 
 TEST(GraphIsomorphismTaggerChainsTest, NumVertices5)
@@ -139,6 +136,7 @@ TEST(GraphIsomorphismTaggerChainsTest, NumVertices5)
     // TODO GraphTest::TaggerCheckListG6(UndirectedGraphFromG6::getListNumVertices_5(), factoryChains, 9);
 }
 
+#if false // TODO
 TEST(GraphIsomorphismTaggerChainsTest, NumVertices6)
 {
     // TODO GraphTest::TaggerCheckListG6(UndirectedGraphFromG6::getListNumVertices_6(), factoryChains, 22);

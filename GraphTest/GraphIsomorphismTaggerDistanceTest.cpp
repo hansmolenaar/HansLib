@@ -30,7 +30,7 @@ TEST(GraphIsomorphismTaggerDistanceTest, Path3)
 
 TEST(GraphIsomorphismTaggerDistanceTest, Star121)
 {
-    const UscGraph graph(* UndirectedGraphLibrary::Get_Star({1, 2, 1}));
+    const UscGraph graph(*UndirectedGraphLibrary::Get_Star({1, 2, 1}));
     TaggerDistanceFactory factory;
     GraphTest::CheckTaggerConsistency(graph, factory, 3);
 

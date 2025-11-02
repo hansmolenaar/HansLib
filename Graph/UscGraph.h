@@ -19,7 +19,8 @@ class UscGraph : public IGraphUSC
     GraphVertex getDegree(GraphVertex vertex) const override;
     std::vector<GraphVertex> getConnectedComponents() const override;
 
-    // static UndirectedGraph CreatePermuted(const IGraphUS &graph, const Permutation &permut);
+    static UscGraph CreatePermuted(const IGraphUSC &, const Permutation &);
+
   private:
     UndirectedGraph m_graph; // TODO avoid copying?
 };

@@ -15,3 +15,9 @@ std::vector<GraphVertex> IGraphUS ::getSortedDegreeSequence() const
     str::sort(result);
     return result;
 }
+
+bool IGraphUS ::isConnected() const
+{
+    const auto components = getConnectedComponents();
+    return str::all_of(components, [](auto c) { return c == 0; });
+}

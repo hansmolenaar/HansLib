@@ -124,15 +124,19 @@ void GraphTest::CheckTaggerConsistency(const Graph::IGraphUS &graph, IGraphTagge
     }
 };
 
-void GraphTest::TaggerCheckListG6(const std::vector<std::string> &stringsG6, GraphIsomorphism::ITaggerFactory &factory,
+void GraphTest::TaggerCheckListG6(const std::vector<std::string> &stringsG6, IVertexTaggerFactory &factory,
                                   int expectResolved, int numPermutations)
 {
     int numResolved = 0;
     for (const auto &g6 : stringsG6)
     {
-        const auto graph = UndirectedGraphFromG6::Create(g6);
-        GraphTest::CheckTaggerConsistency(*graph, factory, -1, numPermutations);
-        const auto tagger = factory.create(*graph);
+        const auto ugraph = UndirectedGraphFromG6::Create(g6);
+        if (!ugraph->isConnected())
+            continue;
+        const UscGraph graph(*ugraph);
+
+        GraphTest::CheckTaggerConsistency(graph, factory, -1, numPermutations);
+        const auto tagger = factory.createVertexTagger(graph);
         const Grouper grouper(*tagger);
         if (grouper.isResolved())
         {

@@ -4,6 +4,7 @@
 #include "UndirectedGraph.h"
 
 using namespace Graph;
+using namespace Utilities;
 
 UscGraph::UscGraph(const UndirectedGraph &graph) : m_graph(graph)
 {
@@ -43,8 +44,7 @@ bool UscGraph::areAdjacent(GraphVertex v1, GraphVertex v2) const
     return m_graph.areAdjacent(v1, v2);
 }
 
-#if false
-UscGraph UscGraph::CreatePermuted(const IGraphUS &graph, const Permutation &permut)
+UscGraph UscGraph::CreatePermuted(const IGraphUSC &graph, const Permutation &permut)
 {
     const auto nVertices = graph.getNumVertices();
     MyAssert(nVertices == permut.getCardinality());
@@ -64,6 +64,5 @@ UscGraph UscGraph::CreatePermuted(const IGraphUS &graph, const Permutation &perm
         }
     }
 
-    return result;
+    return UscGraph(result);
 }
-#endif
