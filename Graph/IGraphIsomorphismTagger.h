@@ -19,10 +19,10 @@ class ITagger
     virtual const UndirectedGraph &getGraph() const = 0;
 };
 
-class ITaggerFactory
+class ITaggerFactorY
 {
   public:
-    virtual ~ITaggerFactory() = default;
+    virtual ~ITaggerFactorY() = default;
     virtual std::unique_ptr<ITagger> create(const UndirectedGraph &) = 0;
 };
 
