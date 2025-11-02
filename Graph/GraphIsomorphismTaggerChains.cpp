@@ -347,6 +347,11 @@ Tag TaggerChains::getTag(GraphVertex v) const
     return m_tags.at(v);
 }
 
+const Tag& TaggerChains::getVertexTag(GraphVertex v) const 
+{
+    return m_tags.at(v);
+}
+
 // !!!!!!!!!!!!! FACTORY
 
 std::unique_ptr<ITagger> TaggerChainsFactory::create(const UndirectedGraph &graph)
