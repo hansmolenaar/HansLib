@@ -23,23 +23,6 @@ struct Tag2Group
 };
 } // namespace
 
-Grouper::Grouper(const ITagger &tagger)
-{
-    const auto nVertices = tagger.getGraph().getNumVertices();
-
-    std::map<Tag, std::vector<GraphVertex>> groups;
-    for (GraphVertex v = 0; v < nVertices; ++v)
-    {
-        groups[tagger.getTag(v)].push_back(v);
-    }
-
-    for (const auto &itr : groups)
-    {
-        m_tags.emplace_back(itr.first);
-        m_groups.emplace_back(itr.second);
-    }
-}
-
 Grouper::Grouper(const IVertexTagger &tagger)
 {
     const auto nVertices = tagger.getNumVertices();

@@ -12,7 +12,6 @@ namespace GraphIsomorphism
 class Grouper
 {
   public:
-    explicit Grouper(const ITagger &tagger);
     explicit Grouper(const IVertexTagger &tagger);
     const std::vector<Tag> &getTags() const;
     // Returns empty list if not found
