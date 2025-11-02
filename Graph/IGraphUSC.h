@@ -8,3 +8,5 @@ namespace Graph
 class IGraphUSC : public IGraphUS
 {
 };
+
+}
