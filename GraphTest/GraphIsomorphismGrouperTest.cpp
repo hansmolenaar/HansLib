@@ -6,8 +6,10 @@
 #include "GraphIsomorphismTaggerDistance.h"
 #include "UndirectedGraphDistance.h"
 #include "UndirectedGraphLibrary.h"
+#include "UscGraph.h"
 
 using namespace GraphIsomorphism;
+using namespace Graph;
 
 namespace
 {
@@ -80,7 +82,8 @@ TEST(GraphIsomorphismGrouperTest, DegreeStar321)
 TEST(GraphIsomorphismGrouperTest, DistanceStar321)
 {
     const auto graph = UndirectedGraphLibrary::Get_Star({3, 2, 1});
-    const auto tagger = TaggerDistanceFactory{}.create(*graph);
+    const UscGraph uscGraph(*graph);
+    const auto tagger = TaggerDistanceFactory{}.createVertexTagger(uscGraph);
     const Grouper grouper(*tagger);
 
     const auto &tags = grouper.getTags();

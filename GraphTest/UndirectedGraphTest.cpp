@@ -1,11 +1,13 @@
 #include <gtest/gtest.h>
 
 #include "Defines.h"
+#include "IGraphUS.h"
 #include "Single.h"
 #include "UndirectedGraphFromG6.h"
 #include "UndirectedGraphLibrary.h"
 
 using namespace Utilities;
+using namespace Graph;
 
 namespace
 {
@@ -20,12 +22,12 @@ void CheckSequenceAfterSorting(std::span<const GraphVertex> actual, std::span<co
     ASSERT_TRUE(std::equal(actualSorted.begin(), actualSorted.end(), expectSorted.begin(), expectSorted.end()));
 }
 
-void CheckDegreeSequence(const UndirectedGraph &graph, GraphVertex numVertices,
+void CheckDegreeSequence(const Graph::IGraphUS &graph, GraphVertex numVertices,
                          std::span<const GraphVertex> degreeSequenceSorted)
 {
     ASSERT_EQ(graph.getNumVertices(), numVertices);
     ASSERT_EQ(degreeSequenceSorted.size(), numVertices);
-    const auto degrees = graph.getDegreeSequence();
+    const auto degrees = graph.getSortedDegreeSequence();
     CheckSequenceAfterSorting(degrees, degreeSequenceSorted);
 }
 
@@ -155,41 +157,41 @@ TEST(UndirectedGraphTest, SplitInCyclesAndPaths)
     std::vector<std::vector<GraphVertex>> cycles;
     std::vector<std::vector<GraphVertex>> paths;
 
-    auto graph = UndirectedGraphLibrary::Get_Path(2);
-    CheckCyclesPaths(*graph, std::vector<GraphVertex>{}, std::vector<GraphVertex>{2});
+    UndirectedGraph graph(*UndirectedGraphLibrary::Get_Path(2));
+    CheckCyclesPaths(graph, std::vector<GraphVertex>{}, std::vector<GraphVertex>{2});
 
-    graph = UndirectedGraphLibrary::Get_Path(3);
-    CheckCyclesPaths(*graph, std::vector<GraphVertex>{}, std::vector<GraphVertex>{3});
+    graph = UndirectedGraph(*UndirectedGraphLibrary::Get_Path(3));
+    CheckCyclesPaths(graph, std::vector<GraphVertex>{}, std::vector<GraphVertex>{3});
 
-    graph = UndirectedGraphLibrary::Get_Cycle(3);
-    CheckCyclesPaths(*graph, std::vector<GraphVertex>{3}, std::vector<GraphVertex>{});
+    graph = UndirectedGraph(*UndirectedGraphLibrary::Get_Cycle(3));
+    CheckCyclesPaths(graph, std::vector<GraphVertex>{3}, std::vector<GraphVertex>{});
 
-    graph = UndirectedGraphLibrary::Get_Cycle(4);
-    CheckCyclesPaths(*graph, std::vector<GraphVertex>{4}, std::vector<GraphVertex>{});
+    graph = UndirectedGraph(*UndirectedGraphLibrary::Get_Cycle(4));
+    CheckCyclesPaths(graph, std::vector<GraphVertex>{4}, std::vector<GraphVertex>{});
 
-    graph = UndirectedGraphLibrary::Get_Claw();
-    CheckCyclesPaths(*graph, std::vector<GraphVertex>{}, std::vector<GraphVertex>{2, 2, 2});
+    graph = UndirectedGraph(*UndirectedGraphLibrary::Get_Claw());
+    CheckCyclesPaths(graph, std::vector<GraphVertex>{}, std::vector<GraphVertex>{2, 2, 2});
 
-    graph = UndirectedGraphLibrary::Get_Diamond();
-    CheckCyclesPaths(*graph, std::vector<GraphVertex>{}, std::vector<GraphVertex>{2, 3, 3});
+    graph = UndirectedGraph(*UndirectedGraphLibrary::Get_Diamond());
+    CheckCyclesPaths(graph, std::vector<GraphVertex>{}, std::vector<GraphVertex>{2, 3, 3});
 
-    graph = UndirectedGraphLibrary::Get_Bull();
-    CheckCyclesPaths(*graph, std::vector<GraphVertex>{}, std::vector<GraphVertex>{2, 2, 2, 3});
+    graph = UndirectedGraph(*UndirectedGraphLibrary::Get_Bull());
+    CheckCyclesPaths(graph, std::vector<GraphVertex>{}, std::vector<GraphVertex>{2, 2, 2, 3});
 
-    graph = UndirectedGraphLibrary::Get_Paw();
-    CheckCyclesPaths(*graph, std::vector<GraphVertex>{3}, std::vector<GraphVertex>{2});
+    graph = UndirectedGraph(*UndirectedGraphLibrary::Get_Paw());
+    CheckCyclesPaths(graph, std::vector<GraphVertex>{3}, std::vector<GraphVertex>{2});
 
-    graph = UndirectedGraphLibrary::Get_Butterfly();
-    CheckCyclesPaths(*graph, std::vector<GraphVertex>{3, 3}, std::vector<GraphVertex>{});
+    graph = UndirectedGraph(*UndirectedGraphLibrary::Get_Butterfly());
+    CheckCyclesPaths(graph, std::vector<GraphVertex>{3, 3}, std::vector<GraphVertex>{});
 
     for (GraphVertex numVertices = 0; numVertices < 4; ++numVertices)
     {
-        graph = UndirectedGraphLibrary::Get_DisconnectedGraph(numVertices);
-        CheckCyclesPaths(*graph, std::vector<GraphVertex>{}, std::vector<GraphVertex>{});
+        graph = UndirectedGraph(*UndirectedGraphLibrary::Get_DisconnectedGraph(numVertices));
+        CheckCyclesPaths(graph, std::vector<GraphVertex>{}, std::vector<GraphVertex>{});
     }
 
-    graph = UndirectedGraphLibrary::Get_CompleteBipartite(3, 3);
-    CheckCyclesPaths(*graph, std::vector<GraphVertex>{}, std::vector<GraphVertex>(9, 2));
+    graph = UndirectedGraph(*UndirectedGraphLibrary::Get_CompleteBipartite(3, 3));
+    CheckCyclesPaths(graph, std::vector<GraphVertex>{}, std::vector<GraphVertex>(9, 2));
 }
 
 TEST(UndirectedGraphTest, SplitInCyclesAndPathsPan3)
@@ -264,11 +266,9 @@ TEST(UndirectedGraphTest, Permut)
     const auto components = permuted.getConnectedComponents();
     ASSERT_EQ(*str::max_element(components), 0);
 
-    std::vector<GraphVertex> degreeSequenceOrg = graph->getDegreeSequence();
-    str::sort(degreeSequenceOrg);
+    std::vector<GraphVertex> degreeSequenceOrg = graph->getSortedDegreeSequence();
 
-    std::vector<GraphVertex> degreeSequencePrm = permuted.getDegreeSequence();
-    str::sort(degreeSequencePrm);
+    std::vector<GraphVertex> degreeSequencePrm = permuted.getSortedDegreeSequence();
 
     ASSERT_TRUE(str::equal(degreeSequenceOrg, degreeSequencePrm));
 }

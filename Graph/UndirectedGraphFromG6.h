@@ -1,6 +1,7 @@
 #pragma once
 
 #include "UndirectedGraph.h"
+#include "UscGraph.h"
 
 #include <memory>
 #include <string>
@@ -10,6 +11,7 @@
 namespace UndirectedGraphFromG6
 {
 std::unique_ptr<UndirectedGraph> Create(std::string);
+std::unique_ptr<Graph::UscGraph> CreateConnected(std::string);
 
 static constexpr char pan3[] = "Cx";
 //      1

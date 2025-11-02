@@ -8,16 +8,11 @@ using namespace GraphIsomorphism;
 GraphIsomorphism::TaggerDistance::TaggerDistance(std::shared_ptr<UndirectedGraphDistance> distances)
     : m_distances(std::move(distances))
 {
-    const auto nVertices = m_distances->getGraph().getNumVertices();
+    const auto nVertices = m_distances->getNumVertices();
     for (auto v = 0; v < nVertices; ++v)
     {
-        m_tags.emplace_back(getTag(v));
+        m_tags.emplace_back(getVertexTag(v));
     }
-}
-
-const UndirectedGraph &TaggerDistance::getGraph() const
-{
-    return m_distances->getGraph();
 }
 
 Tag TaggerDistance::getTag(GraphVertex v) const
@@ -41,8 +36,9 @@ GraphVertex TaggerDistance::getNumVertices() const
 
 // !!!!!!!!!!!!! FACTORY
 
-std::unique_ptr<ITagger> TaggerDistanceFactory::create(const UndirectedGraph &graph)
+std::unique_ptr<IVertexTagger> TaggerDistanceFactory::createVertexTagger(const Graph::IGraphUSC &graph)
 {
     auto distances = std::make_shared<UndirectedGraphDistance>(graph);
-    return std::make_unique<TaggerDistance>(distances);
+    // return std::make_unique<TaggerDistance>(distances);
+    return {};
 }

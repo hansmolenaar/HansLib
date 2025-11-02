@@ -20,8 +20,8 @@ namespace
 {
 };
 
-void CheckTaggerConsistency(const IGraphUSC &graph, GraphIsomorphism::IVertexTaggerFactory &factory,
-                            int expectNumAssociatedvertices, int numPermutations)
+void GraphTest::CheckTaggerConsistency(const IGraphUSC &graph, GraphIsomorphism::IVertexTaggerFactory &factory,
+                                       int expectNumAssociatedvertices, int numPermutations)
 {
     const auto nVertices = graph.getNumVertices();
     const auto tagger = factory.createVertexTagger(graph);

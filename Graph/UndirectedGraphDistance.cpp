@@ -4,10 +4,11 @@
 #include "UndirectedGraph.h"
 
 using namespace Utilities;
+using namespace Graph;
 
 namespace
 {
-UndirectedGraphDistance::AtDistance Generate(const UndirectedGraph &graph, const GraphVertex vertex)
+UndirectedGraphDistance::AtDistance Generate(const IGraphUSC &graph, const GraphVertex vertex)
 {
     const auto nVertices = graph.getNumVertices();
     std::vector<bool> done(nVertices, false);
@@ -45,13 +46,13 @@ UndirectedGraphDistance::AtDistance Generate(const UndirectedGraph &graph, const
 }
 } // namespace
 
-UndirectedGraphDistance::UndirectedGraphDistance(const UndirectedGraph &graph) : m_graph(graph)
+UndirectedGraphDistance::UndirectedGraphDistance(const IGraphUSC &graph)
 {
     const auto nVertices = graph.getNumVertices();
     m_distances.reserve(nVertices);
     for (GraphVertex v = 0; v < nVertices; ++v)
     {
-        m_distances.emplace_back(Generate(m_graph, v));
+        m_distances.emplace_back(Generate(graph, v));
     }
 }
 
@@ -60,7 +61,7 @@ const UndirectedGraphDistance::AtDistance &UndirectedGraphDistance::operator()(G
     return m_distances.at(vertex);
 }
 
-const UndirectedGraph &UndirectedGraphDistance::getGraph() const
+GraphVertex UndirectedGraphDistance::getNumVertices() const
 {
-    return m_graph;
+    return m_distances.size();
 }

@@ -657,6 +657,12 @@ std::unique_ptr<UndirectedGraph> UndirectedGraphFromG6::Create(std::string line)
     return result;
 }
 
+std::unique_ptr<Graph::UscGraph> UndirectedGraphFromG6::CreateConnected(std::string g6)
+{
+    const auto undirected = Create(g6);
+    return std::make_unique<Graph::UscGraph>(*undirected);
+}
+
 const std::vector<std::string> &UndirectedGraphFromG6::getListNumVertices_5()
 {
     return ListNumVertices_5;

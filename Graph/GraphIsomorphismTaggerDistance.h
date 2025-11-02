@@ -8,24 +8,23 @@ class UndirectedGraphDistance;
 namespace GraphIsomorphism
 {
 
-class TaggerDistance : public ITagger, public IVertexTagger
+class TaggerDistance : public IVertexTagger
 {
   public:
     explicit TaggerDistance(std::shared_ptr<UndirectedGraphDistance>);
-    const UndirectedGraph &getGraph() const override;
-    Tag getTag(GraphVertex) const override;
     const Tag &getVertexTag(GraphVertex) const override;
     GraphVertex getNumVertices() const override;
 
   private:
+    Tag getTag(GraphVertex v) const;
     std::shared_ptr<UndirectedGraphDistance> m_distances;
     std::vector<Tag> m_tags;
 };
 
-class TaggerDistanceFactory : public ITaggerFactory
+class TaggerDistanceFactory : public IVertexTaggerFactory
 {
   public:
-    std::unique_ptr<ITagger> create(const UndirectedGraph &) override;
+    std::unique_ptr<IVertexTagger> createVertexTagger(const Graph::IGraphUSC &) override;
 };
 
 } // namespace GraphIsomorphism

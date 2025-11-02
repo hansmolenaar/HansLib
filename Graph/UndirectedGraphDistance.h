@@ -1,19 +1,17 @@
 #pragma once
 
 #include "GraphDefines.h"
-
-class UndirectedGraph;
+#include "IGraphUSC.h"
 
 class UndirectedGraphDistance
 {
   public:
     using AtDistance = std::vector<std::vector<GraphVertex>>;
 
-    explicit UndirectedGraphDistance(const UndirectedGraph &);
+    explicit UndirectedGraphDistance(const Graph::IGraphUSC &);
     const AtDistance &operator()(GraphVertex) const;
-    const UndirectedGraph &getGraph() const;
+    GraphVertex getNumVertices() const;
 
   private:
-    const UndirectedGraph &m_graph;
     std::vector<AtDistance> m_distances;
 };

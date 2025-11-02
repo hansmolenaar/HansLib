@@ -51,6 +51,23 @@ UndirectedGraph::UndirectedGraph(GraphVertex numVertices) : m_graph(numVertices)
 {
 }
 
+UndirectedGraph::UndirectedGraph(const Graph::IGraphUS &graph) : m_graph(graph.getNumVertices())
+{
+    const auto numVertices = graph.getNumVertices();
+    std::vector<GraphVertex> ngbs;
+    for (GraphVertex v = 0; v < numVertices; ++v)
+    {
+        graph.setAdjacentVertices(v, ngbs);
+        for (GraphVertex n : ngbs)
+        {
+            if (v < n)
+            {
+                addEdge(v, n);
+            }
+        }
+    }
+}
+
 void UndirectedGraph::addEdge(GraphVertex vertex1, GraphVertex vertex2)
 {
     if (!areAdjacent(vertex1, vertex2))

@@ -2,6 +2,7 @@
 #include "GraphIsomorphismTaggerDegree.h"
 #include "GraphIsomorphismTaggerNumbers.h"
 #include "Permutation.h"
+#include "UndirectedGraph.h"
 
 using namespace Graph;
 using namespace GraphIsomorphism;
@@ -30,21 +31,7 @@ bool Check::operator()(const IGraphUS &g0, const IGraphUS &g1) const
     return true;
 }
 
-bool Check::operator()(const UndirectedGraph &g0, const std::vector<VertexPair> &perm01,
-                       const UndirectedGraph &g1) const
-{
-    const auto nVertices = g0.getNumVertices();
-    std::vector<Permutation::Entry> perm0(nVertices);
-    for (size_t n = 0; n < nVertices; ++n)
-    {
-        perm0.at(perm01.at(n).first) = perm01.at(n).second;
-    }
-    const auto g0Permuted = UndirectedGraph::CreatePermuted(g0, Permutation::Create(perm0));
-
-    return Check{}(g0Permuted, g1);
-}
-
-bool Check::operator()(const IGraphUSC &g0, const std::vector<VertexPair> &perm01, const IGraphUSC &g1) const
+bool Check::operator()(const IGraphUS &g0, const std::vector<VertexPair> &perm01, const IGraphUS &g1) const
 {
     const auto nVertices = g0.getNumVertices();
     std::vector<Permutation::Entry> perm0(nVertices);

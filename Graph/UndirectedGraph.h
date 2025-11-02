@@ -8,6 +8,7 @@
 class UndirectedGraph : public Graph::IGraphUS
 {
   public:
+    explicit UndirectedGraph(const Graph::IGraphUS &);
     explicit UndirectedGraph(GraphVertex numVertices);
     void addEdge(GraphVertex vertex1, GraphVertex vertex2);
 
