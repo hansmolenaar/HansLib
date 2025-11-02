@@ -13,7 +13,8 @@ class TaggerChains : public IVertexTagger
 {
   public:
     explicit TaggerChains(const Graph::IGraphUSC &);
-    const Tag& getVertexTag(GraphVertex) const override;
+    const Tag &getVertexTag(GraphVertex) const override;
+    GraphVertex getNumVertices() const override;
 
   private:
     std::vector<Tag> m_tags;

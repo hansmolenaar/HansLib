@@ -5,12 +5,12 @@
 
 using namespace Graph;
 
-UscGraph::UscGraph(const UndirectedGraph& graph) : m_graph(graph)
+UscGraph::UscGraph(const UndirectedGraph &graph) : m_graph(graph)
 {
-if (m_graph.getNumVertices() > 0)
-{
- Utilities::MyAssert(str::max(m_graph.getConnectedComponents()) == 0);
-}
+    if (m_graph.getNumVertices() > 0)
+    {
+        Utilities::MyAssert(str::max(m_graph.getConnectedComponents()) == 0);
+    }
 }
 
 GraphVertex UscGraph::getNumVertices() const
@@ -25,7 +25,7 @@ std::vector<GraphVertex> UscGraph::getConnectedComponents() const
 
 void UscGraph::setAdjacentVertices(GraphVertex vertex, std::vector<GraphVertex> &result) const
 {
-   return m_graph.setAdjacentVertices(vertex, result);
+    return m_graph.setAdjacentVertices(vertex, result);
 }
 
 GraphEdge UscGraph::getNumEdges() const
@@ -35,12 +35,12 @@ GraphEdge UscGraph::getNumEdges() const
 
 GraphVertex UscGraph::getDegree(GraphVertex vertex) const
 {
-return m_graph.getDegree(vertex);
+    return m_graph.getDegree(vertex);
 }
 
 bool UscGraph::areAdjacent(GraphVertex v1, GraphVertex v2) const
 {
-return m_graph.areAdjacent(v1, v2);
+    return m_graph.areAdjacent(v1, v2);
 }
 
 #if false

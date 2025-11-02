@@ -342,6 +342,11 @@ const Tag &TaggerChains::getVertexTag(GraphVertex v) const
     return m_tags.at(v);
 }
 
+GraphVertex TaggerChains::getNumVertices() const
+{
+    return m_tags.size();
+}
+
 // !!!!!!!!!!!!! FACTORY
 
 std::unique_ptr<IVertexTagger> TaggerChainsFactory::createVertexTagger(const IGraphUSC &graph)

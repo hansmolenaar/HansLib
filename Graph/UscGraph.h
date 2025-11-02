@@ -11,7 +11,7 @@ namespace Graph
 class UscGraph : public IGraphUSC
 {
   public:
-    explicit UscGraph(const UndirectedGraph& );
+    explicit UscGraph(const UndirectedGraph &);
     GraphVertex getNumVertices() const override;
     GraphEdge getNumEdges() const override;
     void setAdjacentVertices(GraphVertex vertex, std::vector<GraphVertex> &result) const override;
@@ -19,8 +19,8 @@ class UscGraph : public IGraphUSC
     GraphVertex getDegree(GraphVertex vertex) const override;
     std::vector<GraphVertex> getConnectedComponents() const override;
 
-    //static UndirectedGraph CreatePermuted(const IGraphUS &graph, const Permutation &permut);
+    // static UndirectedGraph CreatePermuted(const IGraphUS &graph, const Permutation &permut);
   private:
     UndirectedGraph m_graph; // TODO avoid copying?
 };
-}
+} // namespace Graph

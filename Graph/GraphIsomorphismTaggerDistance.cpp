@@ -1,7 +1,7 @@
 #include "GraphIsomorphismTaggerDistance.h"
 #include "Defines.h"
-#include "UndirectedGraphDistance.h"
 #include "UndirectedGraph.h"
+#include "UndirectedGraphDistance.h"
 
 using namespace GraphIsomorphism;
 
@@ -32,6 +32,11 @@ Tag TaggerDistance::getTag(GraphVertex v) const
 const Tag &TaggerDistance::getVertexTag(GraphVertex v) const
 {
     return m_tags.at(v);
+}
+
+GraphVertex TaggerDistance::getNumVertices() const
+{
+    return m_tags.size();
 }
 
 // !!!!!!!!!!!!! FACTORY

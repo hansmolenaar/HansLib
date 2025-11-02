@@ -1,24 +1,17 @@
 #include "GraphIsomorphismCheck.h"
+#include "GraphIsomorphismTaggerDegree.h"
+#include "GraphIsomorphismTaggerNumbers.h"
 #include "Permutation.h"
 
+using namespace Graph;
 using namespace GraphIsomorphism;
 
-Flag Check::operator()(const UndirectedGraph &g0, const UndirectedGraph &g1) const
+bool Check::operator()(const IGraphUS &g0, const IGraphUS &g1) const
 {
-    if (g0.getNumVertices() != g1.getNumVertices())
+    const auto status = TaggerNumbers::compare(g0, g1);
+    if (status.StatusFlag == NotIsomorphic)
     {
-        return NotIsomorphic;
-    }
-    if (g0.getNumEdges() != g1.getNumEdges())
-    {
-        return NotIsomorphic;
-    }
-
-    const auto degreeSequence0 = g0.getSortedDegreeSequence();
-    const auto degreeSequence1 = g1.getSortedDegreeSequence();
-    if (degreeSequence0 != degreeSequence1)
-    {
-        return NotIsomorphic;
+        return false;
     }
 
     std::vector<GraphVertex> adjacent0;
@@ -30,15 +23,28 @@ Flag Check::operator()(const UndirectedGraph &g0, const UndirectedGraph &g1) con
         g1.setAdjacentVertices(v, adjacent1);
         if (adjacent0 != adjacent1)
         {
-            return Undecided;
+            return false;
         }
     }
 
-    return Isomorphic;
+    return true;
 }
 
-Flag Check::operator()(const UndirectedGraph &g0, const std::vector<VertexPair> &perm01,
+bool Check::operator()(const UndirectedGraph &g0, const std::vector<VertexPair> &perm01,
                        const UndirectedGraph &g1) const
+{
+    const auto nVertices = g0.getNumVertices();
+    std::vector<Permutation::Entry> perm0(nVertices);
+    for (size_t n = 0; n < nVertices; ++n)
+    {
+        perm0.at(perm01.at(n).first) = perm01.at(n).second;
+    }
+    const auto g0Permuted = UndirectedGraph::CreatePermuted(g0, Permutation::Create(perm0));
+
+    return Check{}(g0Permuted, g1);
+}
+
+bool Check::operator()(const IGraphUSC &g0, const std::vector<VertexPair> &perm01, const IGraphUSC &g1) const
 {
     const auto nVertices = g0.getNumVertices();
     std::vector<Permutation::Entry> perm0(nVertices);

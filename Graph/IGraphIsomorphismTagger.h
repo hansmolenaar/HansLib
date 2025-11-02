@@ -38,6 +38,7 @@ class IVertexTagger
   public:
     virtual ~IVertexTagger() = default;
     virtual const Tag &getVertexTag(GraphVertex) const = 0;
+    virtual GraphVertex getNumVertices() const = 0;
 };
 
 class IGraphTaggerFactory

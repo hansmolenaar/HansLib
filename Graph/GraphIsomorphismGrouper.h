@@ -13,6 +13,7 @@ class Grouper
 {
   public:
     explicit Grouper(const ITagger &tagger);
+    explicit Grouper(const IVertexTagger &tagger);
     const std::vector<Tag> &getTags() const;
     // Returns empty list if not found
     const std::vector<GraphVertex> &getGroupMembers(const Tag &) const;

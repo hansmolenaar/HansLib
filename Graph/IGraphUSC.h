@@ -9,4 +9,4 @@ class IGraphUSC : public IGraphUS
 {
 };
 
-}
+} // namespace Graph

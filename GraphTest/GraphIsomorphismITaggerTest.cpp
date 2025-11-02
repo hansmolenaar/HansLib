@@ -8,6 +8,7 @@
 #include "GraphIsomorphismTagCompare.h"
 #include "Permutation.h"
 #include "UndirectedGraphFromG6.h"
+#include "UscGraph.h"
 
 #include <random>
 
@@ -19,8 +20,8 @@ namespace
 {
 };
 
-#if false // TODO
-void CheckTaggerConsistency(const IGraphUSC & graph, GraphIsomorphism::IVertexTaggerFactory & factory, int  expectNumAssociatedvertices, int numPermutations)
+void CheckTaggerConsistency(const IGraphUSC &graph, GraphIsomorphism::IVertexTaggerFactory &factory,
+                            int expectNumAssociatedvertices, int numPermutations)
 {
     const auto nVertices = graph.getNumVertices();
     const auto tagger = factory.createVertexTagger(graph);
@@ -45,20 +46,20 @@ void CheckTaggerConsistency(const IGraphUSC & graph, GraphIsomorphism::IVertexTa
         std::shuffle(permut.begin(), permut.end(), g);
         const auto permutation = Permutation::Create(permut);
         const UndirectedGraph graphPermuted = UndirectedGraph::CreatePermuted(graph, permutation);
-        const auto taggerPermuted = factory.create(graphPermuted);
+        const UscGraph uscGraphPermuted(uscGraphPermuted);
+        const auto taggerPermuted = factory.createVertexTagger(uscGraphPermuted);
         const Grouper grouperPermuted(*taggerPermuted);
         ASSERT_EQ(grouperPermuted.countUnique(), expectNumAssociatedvertices);
 
-        const auto resultCompare = GraphIsomorphism::TagCompare{}({*tagger, *taggerPermuted});
+        const auto resultCompare = GraphIsomorphism::TagCompare{}.compare({*tagger, *taggerPermuted});
         ASSERT_EQ(resultCompare.TagCompareStatus, TagCompare::Result::TagStatus::Equivalent);
         if (expectNumAssociatedvertices == nVertices)
         {
-            const auto checkIsomorphism = Check{}(graph, resultCompare.VertexPairs, graphPermuted);
+            const auto checkIsomorphism = Check{}(graph, resultCompare.VertexPairs, uscGraphPermuted);
             ASSERT_EQ(checkIsomorphism, Flag::Isomorphic);
         }
     }
 };
-#endif
 
 void GraphTest::CheckTaggerConsistency(const UndirectedGraph &graph, GraphIsomorphism::ITaggerFactory &factory,
                                        int expectNumAssociatedvertices, int numPermutations)

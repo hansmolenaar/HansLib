@@ -40,6 +40,23 @@ Grouper::Grouper(const ITagger &tagger)
     }
 }
 
+Grouper::Grouper(const IVertexTagger &tagger)
+{
+    const auto nVertices = tagger.getNumVertices();
+
+    std::map<Tag, std::vector<GraphVertex>> groups;
+    for (GraphVertex v = 0; v < nVertices; ++v)
+    {
+        groups[tagger.getVertexTag(v)].push_back(v);
+    }
+
+    for (const auto &itr : groups)
+    {
+        m_tags.emplace_back(itr.first);
+        m_groups.emplace_back(itr.second);
+    }
+}
+
 const std::vector<Tag> &Grouper::getTags() const
 {
     return m_tags;
