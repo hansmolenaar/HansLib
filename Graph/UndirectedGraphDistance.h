@@ -19,4 +19,4 @@ class UndirectedGraphDistance
     std::vector<AtDistance> m_distances;
 };
 
-}
+} // namespace Graph

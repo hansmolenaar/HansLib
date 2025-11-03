@@ -40,4 +40,4 @@ class UndirectedGraph : public Graph::IGraphUS
     boost::adjacency_list<boost::listS, boost::vecS, boost::undirectedS, GraphVertex, GraphEdge> m_graph;
 };
 
-}
+} // namespace Graph

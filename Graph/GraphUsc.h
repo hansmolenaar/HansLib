@@ -3,7 +3,6 @@
 #include "IGraphUSC.h"
 #include "UndirectedGraph.h"
 
-
 namespace Graph
 {
 
