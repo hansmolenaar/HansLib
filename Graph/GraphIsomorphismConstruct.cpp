@@ -22,6 +22,25 @@ TaggerDistanceFactory factoryDistance;
 const std::vector<IGraphTaggerFactory *> factoriesGraph{&factoryNumbers, &factoryDegree};
 const std::vector<IVertexTaggerFactory *> factoriesVertex{&factoryChains, &factoryMaxDegree, &factoryDistance};
 
+class CombinedTagger : public IVertexTagger
+{
+  public:
+    explicit CombinedTagger(const std::vector<Tag> &tags) : m_tags(tags)
+    {
+    }
+    const Tag &getVertexTag(GraphVertex v) const override
+    {
+        return m_tags.at(v);
+    };
+    GraphVertex getNumVertices() const override
+    {
+        return m_tags.size();
+    };
+
+  private:
+    const std::vector<Tag> &m_tags;
+};
+
 } // namespace
 
 Status Construct::actionConnected(const Graph::IGraphUSC &graph0, const Graph::IGraphUSC &graph1) const
@@ -53,6 +72,19 @@ Status Construct::actionConnected(const Graph::IGraphUSC &graph0, const Graph::I
         if (!Grouper::areEquivalent(grouper0, grouper1))
         {
             result.setFlag(Flag::NotIsomorphic);
+            return result;
+        }
+        grouper0.updateVertexGroupTags(groups0);
+        grouper1.updateVertexGroupTags(groups1);
+
+        const CombinedTagger ctagger0{groups0};
+        const CombinedTagger ctagger1{groups1};
+        const Grouper cgrouper0(ctagger0);
+        const Grouper cgrouper1(ctagger1);
+
+        result = Grouper::compare(cgrouper0, cgrouper1);
+        if (result.getFlag() != Flag::Undecided)
+        {
             return result;
         }
     }

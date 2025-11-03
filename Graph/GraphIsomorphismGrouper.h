@@ -1,6 +1,7 @@
 #pragma once
 
 #include "GraphIsomorphismDefines.h"
+#include "GraphIsomorphismStatus.h"
 #include "IGraphIsomorphismTagger.h"
 #include "UndirectedGraph.h"
 
@@ -22,7 +23,11 @@ class Grouper
 
     void updateVertexGroupTags(std::vector<Tag> &) const;
 
+    static Status compare(const Grouper &, const Grouper &);
+    GraphVertex getNumVertices() const;
+
   private:
+    GraphVertex m_numVertices;
     std::vector<Tag> m_tags;
     // Same order as m_tags
     std::vector<std::vector<GraphVertex>> m_groups;

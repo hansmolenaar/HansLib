@@ -27,29 +27,23 @@ TEST(GraphIsomorphismConstructTest, DegreePathAndStar4)
     ASSERT_EQ(status.getFlag(), Flag::NotIsomorphic);
 }
 
-// TODO
-#if false
-
 TEST(GraphIsomorphismConstructTest, DegreePath3)
 {
     const auto graphs = std::make_pair(UndirectedGraphLibrary::Get_Path(3), UndirectedGraphLibrary::Get_Path(3));
-    const auto taggers = std::make_pair(TaggerDegree(*graphs.first), TaggerDegree(*graphs.second));
-    const auto retval = TagCompare{}(taggers);
-    ASSERT_EQ(retval.TagCompareStatus, TagCompare::Result::TagStatus::Equivalent);
-    ASSERT_EQ(retval.VertexPairs.size(), 1);
-    ASSERT_EQ(retval.VertexPairs.front(), (VertexPair{1, 1}));
+    const auto status = Construct{}.actionConnected(*graphs.first, *graphs.second);
+    ASSERT_EQ(status.getFlag(), Flag::Isomorphic);
 }
 
 TEST(GraphIsomorphismConstructTest, DegreeStar123)
 {
     const auto graphs =
         std::make_pair(UndirectedGraphLibrary::Get_Star({1, 2, 3}), UndirectedGraphLibrary::Get_Star({3, 1, 2}));
-    const auto taggers = std::make_pair(TaggerDegree(*graphs.first), TaggerDegree(*graphs.second));
-    const auto retval = TagCompare{}(taggers);
-    ASSERT_EQ(retval.TagCompareStatus, TagCompare::Result::TagStatus::Equivalent);
-    ASSERT_EQ(retval.VertexPairs.size(), 1);
-    ASSERT_EQ(retval.VertexPairs.front(), (VertexPair{0, 0}));
+    const auto status = Construct{}.actionConnected(*graphs.first, *graphs.second);
+    ASSERT_EQ(status.getFlag(), Flag::Isomorphic);
 }
+
+// TODO
+#if false
 
 TEST(GraphIsomorphismConstructTest, DegreePan3)
 {

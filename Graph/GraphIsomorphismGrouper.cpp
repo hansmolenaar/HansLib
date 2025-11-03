@@ -1,22 +1,22 @@
 #include "GraphIsomorphismGrouper.h"
 #include "Defines.h"
+#include "Single.h"
 #include "UndirectedGraph.h"
 
 #include <map>
 
 using namespace GraphIsomorphism;
+using namespace Utilities;
 
 namespace
 {
 const std::vector<GraphVertex> s_emptyMemberList;
 } // namespace
 
-Grouper::Grouper(const IVertexTagger &tagger)
+Grouper::Grouper(const IVertexTagger &tagger) : m_numVertices(tagger.getNumVertices())
 {
-    const auto nVertices = tagger.getNumVertices();
-
     std::map<Tag, std::vector<GraphVertex>> groups;
-    for (GraphVertex v = 0; v < nVertices; ++v)
+    for (GraphVertex v = 0; v < m_numVertices; ++v)
     {
         groups[tagger.getVertexTag(v)].push_back(v);
     }
@@ -54,6 +54,11 @@ bool Grouper::isResolved() const
     return countUnique() == m_tags.size();
 }
 
+GraphVertex Grouper::getNumVertices() const
+{
+    return m_numVertices;
+}
+
 bool Grouper::areEquivalent(const Grouper &grouper0, const Grouper &grouper1)
 {
     const auto &tags0 = grouper0.getTags();
@@ -86,4 +91,29 @@ void Grouper::updateVertexGroupTags(std::vector<Tag> &groupTags) const
             groupTags.at(v).push_back(groupEntry);
         }
     }
+}
+
+Status Grouper::compare(const Grouper &grouper0, const Grouper &grouper1)
+{
+    MyAssert(grouper0.getNumVertices() == grouper1.getNumVertices());
+    Status result(grouper0.getNumVertices());
+
+    if (!areEquivalent(grouper0, grouper1))
+    {
+        result.setFlag(Flag::NotIsomorphic);
+        return result;
+    }
+
+    const auto &tags = grouper0.getTags();
+    for (const auto &tag : tags)
+    {
+        const auto &members0 = grouper0.getGroupMembers(tag);
+        if (members0.size() == 1)
+        {
+            const auto &members1 = grouper1.getGroupMembers(tag);
+            result.addPair(VertexPair{Single(members0), Single(members1)});
+        }
+    }
+
+    return result;
 }
