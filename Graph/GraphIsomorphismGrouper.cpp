@@ -74,3 +74,16 @@ bool Grouper::areEquivalent(const Grouper &grouper0, const Grouper &grouper1)
 
     return true;
 }
+
+void Grouper::updateVertexGroupTags(std::vector<Tag> &groupTags) const
+{
+    TagEntry groupEntry = 0;
+    for (const auto &tag : getTags())
+    {
+        ++groupEntry;
+        for (GraphVertex v : getGroupMembers(tag))
+        {
+            groupTags.at(v).push_back(groupEntry);
+        }
+    }
+}

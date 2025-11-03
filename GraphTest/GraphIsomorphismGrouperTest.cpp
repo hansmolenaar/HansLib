@@ -6,11 +6,13 @@
 #include "GraphIsomorphismTaggerDistance.h"
 #include "GraphUsc.h"
 #include "Permutation.h"
+#include "Single.h"
 #include "UndirectedGraphDistance.h"
 #include "UndirectedGraphLibrary.h"
 
 using namespace GraphIsomorphism;
 using namespace Graph;
+using namespace Utilities;
 
 namespace
 {
@@ -32,6 +34,12 @@ TEST(GraphIsomorphismGrouperTest, DegreePath3)
 
     const Tag dummy{42};
     ASSERT_TRUE(grouper.getGroupMembers(dummy).empty());
+
+    std::vector<Tag> groupTags(3);
+    grouper.updateVertexGroupTags(groupTags);
+    ASSERT_EQ(Single(groupTags.at(0)), 1);
+    ASSERT_EQ(Single(groupTags.at(1)), 2);
+    ASSERT_EQ(Single(groupTags.at(2)), 1);
 }
 
 TEST(GraphIsomorphismGrouperTest, DegreeCycle3)
