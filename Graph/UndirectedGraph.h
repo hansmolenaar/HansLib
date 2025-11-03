@@ -5,6 +5,9 @@
 
 #include <string>
 
+namespace Graph
+{
+
 class UndirectedGraph : public Graph::IGraphUS
 {
   public:
@@ -36,3 +39,5 @@ class UndirectedGraph : public Graph::IGraphUS
   private:
     boost::adjacency_list<boost::listS, boost::vecS, boost::undirectedS, GraphVertex, GraphEdge> m_graph;
 };
+
+}

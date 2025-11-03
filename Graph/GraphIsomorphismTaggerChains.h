@@ -4,8 +4,6 @@
 #include "IGraphIsomorphismTagger.h"
 #include "IGraphUSC.h"
 
-class UndirectedGraph;
-
 namespace GraphIsomorphism
 {
 

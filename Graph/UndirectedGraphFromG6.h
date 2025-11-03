@@ -10,7 +10,7 @@
 
 namespace UndirectedGraphFromG6
 {
-std::unique_ptr<UndirectedGraph> Create(std::string);
+std::unique_ptr<Graph::UndirectedGraph> Create(std::string);
 std::unique_ptr<Graph::GraphUsc> CreateConnected(std::string);
 
 static constexpr char pan3[] = "Cx";

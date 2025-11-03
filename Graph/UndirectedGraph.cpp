@@ -4,6 +4,7 @@
 
 #include <sstream>
 
+using namespace Graph;
 using namespace Utilities;
 
 namespace

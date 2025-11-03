@@ -3,6 +3,8 @@
 #include <iostream>
 #include <set>
 
+using namespace Graph;
+
 using SortedEdge = std::pair<GraphVertex, GraphVertex>;
 
 namespace

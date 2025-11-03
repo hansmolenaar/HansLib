@@ -3,6 +3,7 @@
 #include "GraphIsomorphismCheck.h"
 #include "UndirectedGraphLibrary.h"
 
+using namespace Graph;
 using namespace GraphIsomorphism;
 
 namespace
