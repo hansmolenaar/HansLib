@@ -3,6 +3,7 @@
 #include "UndirectedGraph.h"
 #include "UndirectedGraphDistance.h"
 
+using namespace Graph;
 using namespace GraphIsomorphism;
 
 GraphIsomorphism::TaggerDistance::TaggerDistance(std::shared_ptr<UndirectedGraphDistance> distances)

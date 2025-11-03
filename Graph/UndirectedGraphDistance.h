@@ -3,6 +3,9 @@
 #include "GraphDefines.h"
 #include "IGraphUSC.h"
 
+namespace Graph
+{
+
 class UndirectedGraphDistance
 {
   public:
@@ -15,3 +18,5 @@ class UndirectedGraphDistance
   private:
     std::vector<AtDistance> m_distances;
 };
+
+}

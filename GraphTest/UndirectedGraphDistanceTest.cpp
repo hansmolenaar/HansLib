@@ -4,6 +4,8 @@
 #include "UndirectedGraphDistance.h"
 #include "UndirectedGraphLibrary.h"
 
+using namespace Graph;
+
 TEST(UndirectedGraphDistanceTest, Path3)
 {
     const auto graph = UndirectedGraphLibrary::Get_Path(3);
