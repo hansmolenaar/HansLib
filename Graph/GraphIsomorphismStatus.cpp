@@ -13,6 +13,12 @@ Flag Status::getFlag() const
     return m_flag;
 }
 
+void Status::setFlag(Flag flag)
+{
+    MyAssert(flag == m_flag || m_flag == Flag::Undecided);
+    m_flag = flag;
+}
+
 void Status::addPair(VertexPair vp)
 {
     MyAssert(str::find(m_vertexFirst, vp.first) == m_vertexFirst.end());

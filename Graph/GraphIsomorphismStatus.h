@@ -13,6 +13,7 @@ class Status
     Status() = default;
     explicit Status(GraphVertex);
     Flag getFlag() const;
+    void setFlag(Flag);
     void addPair(VertexPair);
     std::vector<VertexPair> getVertexPairs() const;
 

@@ -17,6 +17,9 @@ class Grouper
     int countUnique() const;
     bool isResolved() const;
 
+    // Equivalent if same tags, and same number of vertices per tag
+    static bool areEquivalent(const Grouper &, const Grouper &);
+
   private:
     std::vector<Tag> m_tags;
     // Same order as m_tags

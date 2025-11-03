@@ -53,3 +53,24 @@ bool Grouper::isResolved() const
 {
     return countUnique() == m_tags.size();
 }
+
+bool Grouper::areEquivalent(const Grouper &grouper0, const Grouper &grouper1)
+{
+    const auto &tags0 = grouper0.getTags();
+    const auto &tags1 = grouper1.getTags();
+    if (!str::equal(tags0, tags1))
+    {
+        return false;
+    }
+    for (const auto &tag : tags0)
+    {
+        const auto &members0 = grouper0.getGroupMembers(tag);
+        const auto &members1 = grouper1.getGroupMembers(tag);
+        if (members0.size() != members1.size())
+        {
+            return false;
+        }
+    }
+
+    return true;
+}

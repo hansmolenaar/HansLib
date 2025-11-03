@@ -5,6 +5,7 @@
 #include "GraphIsomorphismTaggerDegree.h"
 #include "GraphIsomorphismTaggerDistance.h"
 #include "GraphUsc.h"
+#include "Permutation.h"
 #include "UndirectedGraphDistance.h"
 #include "UndirectedGraphLibrary.h"
 
@@ -100,4 +101,24 @@ TEST(GraphIsomorphismGrouperTest, Path4)
 
     ASSERT_TRUE(str::equal(grouper.getGroupMembers(tags.at(0)), std::vector<GraphVertex>{0, 3}));
     ASSERT_TRUE(str::equal(grouper.getGroupMembers(tags.at(1)), std::vector<GraphVertex>{1, 2}));
+
+    const std::vector<Permutation::Entry> perm{1, 0, 2, 3};
+    const auto graphPermuted = GraphUsc::CreatePermuted(*graph, Permutation::Create(perm));
+    const auto taggerDegreePermuted = TaggerDegree(graphPermuted);
+    const Grouper grouperPermuted(taggerDegreePermuted);
+
+    ASSERT_TRUE(Grouper::areEquivalent(grouper, grouperPermuted));
+}
+
+TEST(GraphIsomorphismGrouperTest, Path4and5)
+{
+    const auto graph4 = UndirectedGraphLibrary::Get_Path(4);
+    const auto taggerDegree4 = TaggerDegree(*graph4);
+    const Grouper grouper4(taggerDegree4);
+
+    const auto graph5 = UndirectedGraphLibrary::Get_Path(5);
+    const auto taggerDegree5 = TaggerDegree(*graph5);
+    const Grouper grouper5(taggerDegree5);
+
+    ASSERT_FALSE(Grouper::areEquivalent(grouper4, grouper5));
 }
