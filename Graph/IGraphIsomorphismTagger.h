@@ -31,6 +31,8 @@ class IGraphTaggerFactory
   public:
     virtual ~IGraphTaggerFactory() = default;
     virtual std::unique_ptr<IGraphTagger> createGraphTagger(const Graph::IGraphUS &) = 0;
+
+    bool haveSameTags(const Graph::IGraphUS &, const Graph::IGraphUS &);
 };
 
 class IVertexTaggerFactory

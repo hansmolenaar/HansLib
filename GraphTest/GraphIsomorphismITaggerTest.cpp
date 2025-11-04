@@ -114,9 +114,5 @@ void GraphTest::CheckGraphTagger(GraphIsomorphism::IGraphTaggerFactory &factory)
 {
     auto graph0 = UndirectedGraphLibrary::Get_Null();
     auto graph1 = UndirectedGraphLibrary::Get_Singleton();
-    auto tagger0 = factory.createGraphTagger(*graph0);
-    auto tagger1 = factory.createGraphTagger(*graph1);
-    auto tag0 = tagger0->getGraphTag();
-    auto tag1 = tagger1->getGraphTag();
-    ASSERT_NE(tag0, tag1);
+    ASSERT_FALSE(factory.haveSameTags(*graph0, *graph1));
 }

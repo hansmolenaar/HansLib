@@ -14,8 +14,6 @@ class TaggerNumbers : public IGraphTagger
 
     const Tag &getGraphTag() const override;
 
-    static Status compare(const Graph::IGraphUS &, const Graph::IGraphUS &);
-
   private:
     const Graph::IGraphUS &m_graph;
     Tag m_numbers;
