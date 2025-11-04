@@ -11,4 +11,5 @@ void CheckTaggerConsistency(const Graph::IGraphUSC &, GraphIsomorphism::IVertexT
 void TaggerCheckListG6(const std::vector<std::string> &, GraphIsomorphism::IVertexTaggerFactory &, int, int = 5);
 
 void CheckTaggerConsistency(const Graph::IGraphUS &, GraphIsomorphism::IGraphTaggerFactory &, int = 5);
+void CheckGraphTagger(GraphIsomorphism::IGraphTaggerFactory &);
 } // namespace GraphTest

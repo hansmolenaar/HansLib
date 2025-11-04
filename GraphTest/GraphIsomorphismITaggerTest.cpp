@@ -9,6 +9,7 @@
 #include "GraphUsc.h"
 #include "Permutation.h"
 #include "UndirectedGraphFromG6.h"
+#include "UndirectedGraphLibrary.h"
 
 #include <random>
 
@@ -107,4 +108,15 @@ void GraphTest::TaggerCheckListG6(const std::vector<std::string> &stringsG6, IVe
         }
     }
     ASSERT_EQ(numResolved, expectResolved);
+}
+
+void GraphTest::CheckGraphTagger(GraphIsomorphism::IGraphTaggerFactory &factory)
+{
+    auto graph0 = UndirectedGraphLibrary::Get_Null();
+    auto graph1 = UndirectedGraphLibrary::Get_Singleton();
+    auto tagger0 = factory.createGraphTagger(*graph0);
+    auto tagger1 = factory.createGraphTagger(*graph1);
+    auto tag0 = tagger0->getGraphTag();
+    auto tag1 = tagger1->getGraphTag();
+    ASSERT_NE(tag0, tag1);
 }

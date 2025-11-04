@@ -12,7 +12,13 @@ namespace
 {
 } // namespace
 
-TEST(GraphIsomorphismTaggerCoomponentsTest, Path3)
+TEST(GraphIsomorphismTaggerComponentsTest, CheckGraphTagger)
+{
+    TaggerComponentFactory factory;
+    GraphTest::CheckGraphTagger(factory);
+}
+
+TEST(GraphIsomorphismTaggerComponentsTest, Path3)
 {
     const auto graph = UndirectedGraphLibrary::Get_Path(3);
     const TaggerComponents tagger(*graph);
@@ -20,7 +26,7 @@ TEST(GraphIsomorphismTaggerCoomponentsTest, Path3)
     ASSERT_EQ(tagger.getGraphTag(), Tag{3});
 }
 
-TEST(GraphIsomorphismTaggerCoomponentsTest, Disconneted)
+TEST(GraphIsomorphismTaggerComponentsTest, Disconneted)
 {
     const auto graph = UndirectedGraphFromG6::Create("Eh?G");
     TaggerComponentFactory factory;

@@ -17,4 +17,7 @@ std::unique_ptr<Graph::GraphUsc> Get_Claw();
 std::unique_ptr<Graph::GraphUsc> Get_Bull();
 std::unique_ptr<Graph::GraphUsc> Get_Butterfly();
 std::unique_ptr<Graph::GraphUsc> Get_Paw();
+
+std::unique_ptr<Graph::IGraphUSC> Get_Null();
+std::unique_ptr<Graph::IGraphUSC> Get_Singleton();
 } // namespace UndirectedGraphLibrary

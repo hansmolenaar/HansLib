@@ -11,6 +11,12 @@ namespace
 {
 } // namespace
 
+TEST(GraphIsomorphismTaggerDegreeTest, CheckGraphTagger)
+{
+    TaggerDegreeFactory factory;
+    GraphTest::CheckGraphTagger(factory);
+}
+
 TEST(GraphIsomorphismTaggerDegreeTest, Path3)
 {
     const auto graph = UndirectedGraphLibrary::Get_Path(3);

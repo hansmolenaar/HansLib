@@ -62,7 +62,7 @@ std::unique_ptr<GraphUsc> UndirectedGraphLibrary::Get_Cycle(GraphVertex numVerti
 
 std::unique_ptr<GraphUsc> UndirectedGraphLibrary::Get_CompleteGraph(GraphVertex numVertices)
 {
-    MyAssert(numVertices > 0);
+    MyAssert(numVertices >= 0); // Used to generate empty graph
     auto ug = std::make_unique<UndirectedGraph>(numVertices);
 
     for (GraphVertex n0 = 0; n0 < numVertices; ++n0)
@@ -154,4 +154,14 @@ std::unique_ptr<GraphUsc> UndirectedGraphLibrary::Get_CompleteBipartite(GraphVer
         }
     }
     return std::make_unique<GraphUsc>(ug);
+}
+
+std::unique_ptr<Graph::IGraphUSC> UndirectedGraphLibrary::Get_Null()
+{
+    return Get_CompleteGraph(0);
+}
+
+std::unique_ptr<Graph::IGraphUSC> UndirectedGraphLibrary::Get_Singleton()
+{
+    return Get_CompleteGraph(1);
 }
