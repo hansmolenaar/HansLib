@@ -112,7 +112,20 @@ void GraphTest::TaggerCheckListG6(const std::vector<std::string> &stringsG6, IVe
 
 void GraphTest::CheckGraphTagger(GraphIsomorphism::IGraphTaggerFactory &factory)
 {
-    auto graph0 = UndirectedGraphLibrary::Get_Null();
-    auto graph1 = UndirectedGraphLibrary::Get_Singleton();
+    const auto graph0 = UndirectedGraphLibrary::Get_Null();
+    const auto graph1 = UndirectedGraphLibrary::Get_Singleton();
     ASSERT_FALSE(factory.haveSameTags(*graph0, *graph1));
+}
+
+void GraphTest::CheckVertexTagger(GraphIsomorphism::IVertexTaggerFactory &factory)
+{
+    const auto graph0 = UndirectedGraphLibrary::Get_Null();
+    const auto tagger0 = factory.createVertexTagger(*graph0);
+    ASSERT_EQ(tagger0->getNumVertices(), 0);
+
+    const auto graph1 = UndirectedGraphLibrary::Get_Singleton();
+    const auto tagger1 = factory.createVertexTagger(*graph1);
+    ASSERT_EQ(tagger1->getNumVertices(), 1);
+    Tag tag;
+    EXPECT_NO_THROW(tag = tagger1->getVertexTag(0));
 }

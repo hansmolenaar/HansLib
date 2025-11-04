@@ -15,6 +15,11 @@ namespace
 TaggerChainsFactory factoryChains;
 } // namespace
 
+TEST(GraphIsomorphismTaggerChainsTest, CheckVertexTagger)
+{
+    GraphTest::CheckVertexTagger(factoryChains);
+}
+
 TEST(GraphIsomorphismTaggerChainsTest, PureCycle3)
 {
     const GraphUsc graph(*UndirectedGraphLibrary::Get_Cycle(3));

@@ -15,6 +15,12 @@ namespace
 {
 } // namespace
 
+TEST(GraphIsomorphismTaggerDistanceTest, CheckVertexTagger)
+{
+    TaggerDistanceFactory factory;
+    GraphTest::CheckVertexTagger(factory);
+}
+
 TEST(GraphIsomorphismTaggerDistanceTest, Path3)
 {
     const auto graph = UndirectedGraphLibrary::Get_Path(3);

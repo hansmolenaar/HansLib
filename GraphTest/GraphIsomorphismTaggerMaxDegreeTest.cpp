@@ -14,6 +14,12 @@ namespace
 {
 } // namespace
 
+TEST(GraphIsomorphismTaggerMaxDegreeTest, CheckVertexTagger)
+{
+    TaggerMaxDegreeFactory factory;
+    GraphTest::CheckVertexTagger(factory);
+}
+
 TEST(GraphIsomorphismTaggerMaxDegreeTest, Path3)
 {
     const auto graph = UndirectedGraphLibrary::Get_Path(3);
