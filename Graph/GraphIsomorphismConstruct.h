@@ -1,7 +1,7 @@
 #pragma once
 
 #include "GraphIsomorphismStatus.h"
-#include "IGraphUSC.h"
+#include "IGraphUsc.h"
 
 namespace GraphIsomorphism
 {
@@ -9,7 +9,7 @@ namespace GraphIsomorphism
 class Construct
 {
   public:
-    Status actionConnected(const Graph::IGraphUSC &, const Graph::IGraphUSC &) const;
+    Status actionConnected(const Graph::IGraphUsc &, const Graph::IGraphUsc &) const;
 };
 
 } // namespace GraphIsomorphism

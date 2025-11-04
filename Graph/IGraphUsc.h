@@ -1,11 +1,11 @@
 #pragma once
 
-#include "IGraphUS.h"
+#include "IGraphUs.h"
 
 namespace Graph
 {
 // Undirected, Simple, Connected Graph
-class IGraphUSC : public IGraphUS
+class IGraphUsc : public IGraphUs
 {
 };
 

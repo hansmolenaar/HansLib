@@ -9,10 +9,10 @@ namespace Graph
 
 // Undirected, Simple Graph
 // Simple -> no self connections, no 'double' connections
-class IGraphUS
+class IGraphUs
 {
   public:
-    virtual ~IGraphUS() = default;
+    virtual ~IGraphUs() = default;
 
     virtual GraphVertex getNumVertices() const = 0;
     virtual GraphEdge getNumEdges() const = 0;

@@ -4,7 +4,7 @@
 
 using namespace GraphIsomorphism;
 
-GraphIsomorphism::TaggerDegree::TaggerDegree(const Graph::IGraphUS &graph)
+GraphIsomorphism::TaggerDegree::TaggerDegree(const Graph::IGraphUs &graph)
     : m_graph(graph), m_degreeSequenceTag(graph.getNumVertices())
 {
     str::copy(graph.getSortedDegreeSequence(), m_degreeSequenceTag.begin());
@@ -26,7 +26,7 @@ GraphVertex TaggerDegree::getNumVertices() const
 }
 // !!!!!!!!!!!!! FACTORY
 
-std::unique_ptr<IGraphTagger> TaggerDegreeFactory::createGraphTagger(const Graph::IGraphUS &graph)
+std::unique_ptr<IGraphTagger> TaggerDegreeFactory::createGraphTagger(const Graph::IGraphUs &graph)
 {
     std::unique_ptr<IGraphTagger> retval = std::make_unique<TaggerDegree>(graph);
     return retval;

@@ -3,7 +3,7 @@
 
 using namespace GraphIsomorphism;
 
-TaggerMaxDegree::TaggerMaxDegree(const Graph::IGraphUSC &graph) : m_numVertices(graph.getNumVertices())
+TaggerMaxDegree::TaggerMaxDegree(const Graph::IGraphUsc &graph) : m_numVertices(graph.getNumVertices())
 {
     const auto maxDegree = m_numVertices - 1;
     for (GraphVertex v = 0; v < m_numVertices; ++v)
@@ -31,7 +31,7 @@ GraphVertex TaggerMaxDegree ::getNumVertices() const
 
 // !!!!!!!!!!!!!!!!!
 
-std::unique_ptr<IVertexTagger> TaggerMaxDegreeFactory::createVertexTagger(const Graph::IGraphUSC &graph)
+std::unique_ptr<IVertexTagger> TaggerMaxDegreeFactory::createVertexTagger(const Graph::IGraphUsc &graph)
 {
     return std::make_unique<TaggerMaxDegree>(graph);
 }

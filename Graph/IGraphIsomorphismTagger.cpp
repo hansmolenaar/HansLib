@@ -2,7 +2,7 @@
 
 using namespace GraphIsomorphism;
 
-bool IGraphTaggerFactory::haveSameTags(const Graph::IGraphUS &graph0, const Graph::IGraphUS &graph1)
+bool IGraphTaggerFactory::haveSameTags(const Graph::IGraphUs &graph0, const Graph::IGraphUs &graph1)
 {
     auto tagger0 = createGraphTagger(graph0);
     auto tagger1 = createGraphTagger(graph1);

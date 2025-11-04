@@ -1,9 +1,9 @@
-#include "IGraphUS.h"
+#include "IGraphUs.h"
 #include "Defines.h"
 
 using namespace Graph;
 
-std::vector<GraphVertex> IGraphUS ::getSortedDegreeSequence() const
+std::vector<GraphVertex> IGraphUs ::getSortedDegreeSequence() const
 {
     const auto numVertices = getNumVertices();
     std::vector<GraphVertex> result(numVertices);
@@ -16,7 +16,7 @@ std::vector<GraphVertex> IGraphUS ::getSortedDegreeSequence() const
     return result;
 }
 
-bool IGraphUS ::isConnected() const
+bool IGraphUs ::isConnected() const
 {
     const auto components = getConnectedComponents();
     return str::all_of(components, [](auto c) { return c == 0; });

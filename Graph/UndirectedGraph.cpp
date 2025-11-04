@@ -52,7 +52,7 @@ UndirectedGraph::UndirectedGraph(GraphVertex numVertices) : m_graph(numVertices)
 {
 }
 
-UndirectedGraph::UndirectedGraph(const Graph::IGraphUS &graph) : m_graph(graph.getNumVertices())
+UndirectedGraph::UndirectedGraph(const Graph::IGraphUs &graph) : m_graph(graph.getNumVertices())
 {
     const auto numVertices = graph.getNumVertices();
     std::vector<GraphVertex> ngbs;
@@ -200,7 +200,7 @@ std::vector<GraphVertex> UndirectedGraph::getIsolatedVertices() const
     return result;
 }
 
-UndirectedGraph UndirectedGraph::CreatePermuted(const IGraphUS &graph, const Permutation &permut)
+UndirectedGraph UndirectedGraph::CreatePermuted(const IGraphUs &graph, const Permutation &permut)
 {
     const auto nVertices = graph.getNumVertices();
     MyAssert(nVertices == permut.getCardinality());

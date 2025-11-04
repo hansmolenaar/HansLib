@@ -43,7 +43,7 @@ class CombinedTagger : public IVertexTagger
 
 } // namespace
 
-Status Construct::actionConnected(const Graph::IGraphUSC &graph0, const Graph::IGraphUSC &graph1) const
+Status Construct::actionConnected(const Graph::IGraphUsc &graph0, const Graph::IGraphUsc &graph1) const
 {
     const auto numVertices = graph0.getNumVertices();
     Status result(numVertices);

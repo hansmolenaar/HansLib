@@ -28,7 +28,7 @@ struct ChainTag
     bool operator==(const ChainTag &) const = default;
 };
 
-std::pair<ChainId, Chain> ConstrutcChain(const IGraphUSC &graph, const Chain &part1, Chain part2)
+std::pair<ChainId, Chain> ConstrutcChain(const IGraphUsc &graph, const Chain &part1, Chain part2)
 {
     auto retval = part1;
     str::reverse(retval);
@@ -86,7 +86,7 @@ std::pair<ChainId, Chain> ConstrutcChain(const IGraphUSC &graph, const Chain &pa
     throw MyException("Should not come here");
 }
 
-Chain GetChainPart(const IGraphUSC &graph, GraphVertex vertex, GraphVertex current, std::set<GraphVertex> &done)
+Chain GetChainPart(const IGraphUsc &graph, GraphVertex vertex, GraphVertex current, std::set<GraphVertex> &done)
 {
     Chain result{vertex};
     std::vector<GraphVertex> ngbs;
@@ -116,7 +116,7 @@ Chain GetChainPart(const IGraphUSC &graph, GraphVertex vertex, GraphVertex curre
     return result;
 }
 
-std::pair<ChainId, Chain> GetChain(const IGraphUSC &graph, GraphVertex vertex, std::set<GraphVertex> &done)
+std::pair<ChainId, Chain> GetChain(const IGraphUsc &graph, GraphVertex vertex, std::set<GraphVertex> &done)
 {
     std::vector<GraphVertex> ngbs;
     graph.setAdjacentVertices(vertex, ngbs);
@@ -131,7 +131,7 @@ std::pair<ChainId, Chain> GetChain(const IGraphUSC &graph, GraphVertex vertex, s
     return ConstrutcChain(graph, part1, part2);
 }
 
-std::vector<std::pair<ChainTag, Chain>> GetChains(const IGraphUSC &graph)
+std::vector<std::pair<ChainTag, Chain>> GetChains(const IGraphUsc &graph)
 {
     std::vector<std::pair<ChainTag, Chain>> retval;
     const auto nVertices = graph.getNumVertices();
@@ -157,7 +157,7 @@ std::vector<std::pair<ChainTag, Chain>> GetChains(const IGraphUSC &graph)
     return retval;
 }
 
-std::vector<Tag> GenerateTags(const IGraphUSC &graph)
+std::vector<Tag> GenerateTags(const IGraphUsc &graph)
 {
     const auto nVertices = graph.getNumVertices();
     std::vector<Tag> retval(nVertices);
@@ -333,7 +333,7 @@ std::vector<Tag> GenerateTags(const IGraphUSC &graph)
 
 } // namespace
 
-TaggerChains::TaggerChains(const IGraphUSC &graph) : m_tags(GenerateTags(graph))
+TaggerChains::TaggerChains(const IGraphUsc &graph) : m_tags(GenerateTags(graph))
 {
 }
 
@@ -349,7 +349,7 @@ GraphVertex TaggerChains::getNumVertices() const
 
 // !!!!!!!!!!!!! FACTORY
 
-std::unique_ptr<IVertexTagger> TaggerChainsFactory::createVertexTagger(const IGraphUSC &graph)
+std::unique_ptr<IVertexTagger> TaggerChainsFactory::createVertexTagger(const IGraphUsc &graph)
 {
     return std::make_unique<TaggerChains>(graph);
 }

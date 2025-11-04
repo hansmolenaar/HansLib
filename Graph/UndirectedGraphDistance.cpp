@@ -8,7 +8,7 @@ using namespace Graph;
 
 namespace
 {
-UndirectedGraphDistance::AtDistance Generate(const IGraphUSC &graph, const GraphVertex vertex)
+UndirectedGraphDistance::AtDistance Generate(const IGraphUsc &graph, const GraphVertex vertex)
 {
     const auto nVertices = graph.getNumVertices();
     std::vector<bool> done(nVertices, false);
@@ -46,7 +46,7 @@ UndirectedGraphDistance::AtDistance Generate(const IGraphUSC &graph, const Graph
 }
 } // namespace
 
-UndirectedGraphDistance::UndirectedGraphDistance(const IGraphUSC &graph)
+UndirectedGraphDistance::UndirectedGraphDistance(const IGraphUsc &graph)
 {
     const auto nVertices = graph.getNumVertices();
     m_distances.reserve(nVertices);

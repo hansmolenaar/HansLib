@@ -2,7 +2,7 @@
 
 #include "GraphIsomorphismDefines.h"
 #include "IGraphIsomorphismTagger.h"
-#include "IGraphUS.h"
+#include "IGraphUs.h"
 
 namespace GraphIsomorphism
 {
@@ -10,21 +10,21 @@ namespace GraphIsomorphism
 class TaggerDegree : public IGraphTagger, public IVertexTagger
 {
   public:
-    explicit TaggerDegree(const Graph::IGraphUS &);
+    explicit TaggerDegree(const Graph::IGraphUs &);
 
     const Tag &getGraphTag() const override;
     const Tag &getVertexTag(GraphVertex) const override;
     GraphVertex getNumVertices() const override;
 
   private:
-    const Graph::IGraphUS &m_graph;
+    const Graph::IGraphUs &m_graph;
     Tag m_degreeSequenceTag;
 };
 
 class TaggerDegreeFactory : public IGraphTaggerFactory
 {
   public:
-    std::unique_ptr<IGraphTagger> createGraphTagger(const Graph::IGraphUS &) override;
+    std::unique_ptr<IGraphTagger> createGraphTagger(const Graph::IGraphUs &) override;
 };
 
 } // namespace GraphIsomorphism

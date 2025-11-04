@@ -44,7 +44,7 @@ bool GraphUsc::areAdjacent(GraphVertex v1, GraphVertex v2) const
     return m_graph.areAdjacent(v1, v2);
 }
 
-GraphUsc GraphUsc::CreatePermuted(const IGraphUSC &graph, const Permutation &permut)
+GraphUsc GraphUsc::CreatePermuted(const IGraphUsc &graph, const Permutation &permut)
 {
     const auto nVertices = graph.getNumVertices();
     MyAssert(nVertices == permut.getCardinality());

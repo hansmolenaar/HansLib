@@ -21,7 +21,7 @@ namespace
 {
 };
 
-void GraphTest::CheckTaggerConsistency(const IGraphUSC &graph, GraphIsomorphism::IVertexTaggerFactory &factory,
+void GraphTest::CheckTaggerConsistency(const IGraphUsc &graph, GraphIsomorphism::IVertexTaggerFactory &factory,
                                        int expectNumAssociatedvertices, int numPermutations)
 {
     const auto nVertices = graph.getNumVertices();
@@ -61,7 +61,7 @@ void GraphTest::CheckTaggerConsistency(const IGraphUSC &graph, GraphIsomorphism:
         }
     }
 };
-void GraphTest::CheckTaggerConsistency(const Graph::IGraphUS &graph, IGraphTaggerFactory &factory, int numPermutations)
+void GraphTest::CheckTaggerConsistency(const Graph::IGraphUs &graph, IGraphTaggerFactory &factory, int numPermutations)
 {
 
     const auto nVertices = graph.getNumVertices();

@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "Defines.h"
-#include "IGraphUS.h"
+#include "IGraphUs.h"
 #include "Single.h"
 #include "UndirectedGraphFromG6.h"
 #include "UndirectedGraphLibrary.h"
@@ -22,7 +22,7 @@ void CheckSequenceAfterSorting(std::span<const GraphVertex> actual, std::span<co
     ASSERT_TRUE(std::equal(actualSorted.begin(), actualSorted.end(), expectSorted.begin(), expectSorted.end()));
 }
 
-void CheckDegreeSequence(const Graph::IGraphUS &graph, GraphVertex numVertices,
+void CheckDegreeSequence(const Graph::IGraphUs &graph, GraphVertex numVertices,
                          std::span<const GraphVertex> degreeSequenceSorted)
 {
     ASSERT_EQ(graph.getNumVertices(), numVertices);

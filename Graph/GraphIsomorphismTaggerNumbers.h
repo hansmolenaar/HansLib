@@ -2,7 +2,7 @@
 
 #include "GraphIsomorphismStatus.h"
 #include "IGraphIsomorphismTagger.h"
-#include "IGraphUS.h"
+#include "IGraphUs.h"
 
 namespace GraphIsomorphism
 {
@@ -10,19 +10,19 @@ namespace GraphIsomorphism
 class TaggerNumbers : public IGraphTagger
 {
   public:
-    explicit TaggerNumbers(const Graph::IGraphUS &);
+    explicit TaggerNumbers(const Graph::IGraphUs &);
 
     const Tag &getGraphTag() const override;
 
   private:
-    const Graph::IGraphUS &m_graph;
+    const Graph::IGraphUs &m_graph;
     Tag m_numbers;
 };
 
 class TaggerNumbersFactory : public IGraphTaggerFactory
 {
   public:
-    std::unique_ptr<IGraphTagger> createGraphTagger(const Graph::IGraphUS &) override;
+    std::unique_ptr<IGraphTagger> createGraphTagger(const Graph::IGraphUs &) override;
 };
 
 } // namespace GraphIsomorphism

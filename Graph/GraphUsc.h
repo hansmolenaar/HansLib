@@ -1,12 +1,12 @@
 #pragma once
 
-#include "IGraphUSC.h"
+#include "IGraphUsc.h"
 #include "UndirectedGraph.h"
 
 namespace Graph
 {
 
-class GraphUsc : public IGraphUSC
+class GraphUsc : public IGraphUsc
 {
   public:
     explicit GraphUsc(const UndirectedGraph &);
@@ -17,7 +17,7 @@ class GraphUsc : public IGraphUSC
     GraphVertex getDegree(GraphVertex vertex) const override;
     std::vector<GraphVertex> getConnectedComponents() const override;
 
-    static GraphUsc CreatePermuted(const IGraphUSC &, const Permutation &);
+    static GraphUsc CreatePermuted(const IGraphUsc &, const Permutation &);
 
   private:
     UndirectedGraph m_graph; // TODO avoid copying?

@@ -3,7 +3,7 @@
 
 using namespace GraphIsomorphism;
 
-GraphIsomorphism::TaggerComponents::TaggerComponents(const Graph::IGraphUS &graph)
+GraphIsomorphism::TaggerComponents::TaggerComponents(const Graph::IGraphUs &graph)
 {
     const auto components = graph.getConnectedComponents();
     std::map<GraphVertex, TagEntry> componentSize;
@@ -33,7 +33,7 @@ const Tag &TaggerComponents::getGraphTag() const
 
 // !!!!!!!!!!!!!
 
-std::unique_ptr<IGraphTagger> TaggerComponentFactory::createGraphTagger(const Graph::IGraphUS &graph)
+std::unique_ptr<IGraphTagger> TaggerComponentFactory::createGraphTagger(const Graph::IGraphUs &graph)
 {
     return std::make_unique<TaggerComponents>(graph);
 }

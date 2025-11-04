@@ -1,6 +1,6 @@
 #pragma once
 
-#include "IGraphUS.h"
+#include "IGraphUs.h"
 #include "Permutation.h"
 
 #include <string>
@@ -8,10 +8,10 @@
 namespace Graph
 {
 
-class UndirectedGraph : public Graph::IGraphUS
+class UndirectedGraph : public Graph::IGraphUs
 {
   public:
-    explicit UndirectedGraph(const Graph::IGraphUS &);
+    explicit UndirectedGraph(const Graph::IGraphUs &);
     explicit UndirectedGraph(GraphVertex numVertices);
     void addEdge(GraphVertex vertex1, GraphVertex vertex2);
 
@@ -27,7 +27,7 @@ class UndirectedGraph : public Graph::IGraphUS
     std::vector<GraphVertex> getIsolatedVertices() const;
     std::string toString() const;
 
-    static UndirectedGraph CreatePermuted(const IGraphUS &graph, const Permutation &permut);
+    static UndirectedGraph CreatePermuted(const IGraphUs &graph, const Permutation &permut);
 
     struct CyclesAndPaths
     {

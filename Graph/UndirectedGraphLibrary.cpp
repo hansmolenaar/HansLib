@@ -156,12 +156,12 @@ std::unique_ptr<GraphUsc> UndirectedGraphLibrary::Get_CompleteBipartite(GraphVer
     return std::make_unique<GraphUsc>(ug);
 }
 
-std::unique_ptr<Graph::IGraphUSC> UndirectedGraphLibrary::Get_Null()
+std::unique_ptr<Graph::IGraphUsc> UndirectedGraphLibrary::Get_Null()
 {
     return Get_CompleteGraph(0);
 }
 
-std::unique_ptr<Graph::IGraphUSC> UndirectedGraphLibrary::Get_Singleton()
+std::unique_ptr<Graph::IGraphUsc> UndirectedGraphLibrary::Get_Singleton()
 {
     return Get_CompleteGraph(1);
 }

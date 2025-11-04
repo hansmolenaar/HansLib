@@ -7,7 +7,7 @@
 using namespace Graph;
 using namespace GraphIsomorphism;
 
-bool Check::operator()(const IGraphUS &g0, const IGraphUS &g1) const
+bool Check::operator()(const IGraphUs &g0, const IGraphUs &g1) const
 {
     if (!TaggerNumbersFactory{}.haveSameTags(g0, g1))
     {
@@ -30,7 +30,7 @@ bool Check::operator()(const IGraphUS &g0, const IGraphUS &g1) const
     return true;
 }
 
-bool Check::operator()(const IGraphUS &g0, const std::vector<VertexPair> &perm01, const IGraphUS &g1) const
+bool Check::operator()(const IGraphUs &g0, const std::vector<VertexPair> &perm01, const IGraphUs &g1) const
 {
     const auto nVertices = g0.getNumVertices();
     std::vector<Permutation::Entry> perm0(nVertices);

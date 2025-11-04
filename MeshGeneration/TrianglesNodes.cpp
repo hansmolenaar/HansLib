@@ -8,6 +8,7 @@
 using namespace MeshGeneration;
 using namespace Topology;
 using namespace Utilities;
+using namespace Graph;
 
 CellIndex TrianglesNodes::addTriangle(const TriangleNodesOriented &nodes)
 {

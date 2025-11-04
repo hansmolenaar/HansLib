@@ -27,7 +27,7 @@ class TaggerDistance : public IVertexTagger
 class TaggerDistanceFactory : public IVertexTaggerFactory
 {
   public:
-    std::unique_ptr<IVertexTagger> createVertexTagger(const Graph::IGraphUSC &) override;
+    std::unique_ptr<IVertexTagger> createVertexTagger(const Graph::IGraphUsc &) override;
 };
 
 } // namespace GraphIsomorphism
