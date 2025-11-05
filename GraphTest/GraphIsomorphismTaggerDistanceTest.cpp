@@ -50,7 +50,7 @@ TEST(GraphIsomorphismTaggerDistanceTest, Star121)
 
 TEST(GraphIsomorphismTaggerDistanceTest, NumVertices5)
 {
-    for (const auto &g6 : UndirectedGraphFromG6::getListNumVertices_5())
+    for (const auto &g6 : UndirectedGraphFromG6::getListNumVertices_5_connected())
     {
         const auto graph = UndirectedGraphFromG6::CreateConnected(g6);
         ASSERT_EQ(graph->getNumVertices(), 5);
@@ -61,7 +61,7 @@ TEST(GraphIsomorphismTaggerDistanceTest, NumVertices5)
 
 TEST(GraphIsomorphismTaggerDistanceTest, NumVertices6)
 {
-    for (const auto &g6 : UndirectedGraphFromG6::getListNumVertices_6())
+    for (const auto &g6 : UndirectedGraphFromG6::getListNumVertices_6_connected())
     {
         const auto graph = UndirectedGraphFromG6::CreateConnected(g6);
         ASSERT_EQ(graph->getNumVertices(), 6);
@@ -72,7 +72,7 @@ TEST(GraphIsomorphismTaggerDistanceTest, NumVertices6)
 
 TEST(GraphIsomorphismTaggerDistanceTest, NumVertices7)
 {
-    for (const auto &g6 : UndirectedGraphFromG6::getListNumVertices_7())
+    for (const auto &g6 : UndirectedGraphFromG6::getListNumVertices_7_connected())
     {
         const auto graph = UndirectedGraphFromG6::CreateConnected(g6);
         ASSERT_EQ(graph->getNumVertices(), 7);

@@ -665,22 +665,22 @@ std::unique_ptr<Graph::GraphUsc> UndirectedGraphFromG6::CreateConnected(std::str
     return std::make_unique<Graph::GraphUsc>(*undirected);
 }
 
-const std::vector<std::string> &UndirectedGraphFromG6::getListNumVertices_5()
+const std::vector<std::string> &UndirectedGraphFromG6::getListNumVertices_5_connected()
 {
     return ListNumVertices_5;
 }
 
-const std::vector<std::string> &UndirectedGraphFromG6::getListNumVertices_6()
+const std::vector<std::string> &UndirectedGraphFromG6::getListNumVertices_6_connected()
 {
     return ListNumVertices_6;
 }
 
-const std::vector<std::string> &UndirectedGraphFromG6::getListNumVertices_7()
+const std::vector<std::string> &UndirectedGraphFromG6::getListNumVertices_7_connected()
 {
     return ListNumVertices_7;
 }
 
-const std::vector<std::string> &UndirectedGraphFromG6::getListNumVertices_8()
+const std::vector<std::string> &UndirectedGraphFromG6::getListNumVertices_8_connected()
 {
     return ListNumVertices_8;
 }

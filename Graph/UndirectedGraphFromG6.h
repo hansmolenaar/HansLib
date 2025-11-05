@@ -46,9 +46,9 @@ static constexpr char X84[] = "ElD?";
 //          2
 //
 
-const std::vector<std::string> &getListNumVertices_5();
-const std::vector<std::string> &getListNumVertices_6();
-const std::vector<std::string> &getListNumVertices_7();
-const std::vector<std::string> &getListNumVertices_8();
+const std::vector<std::string> &getListNumVertices_5_connected();
+const std::vector<std::string> &getListNumVertices_6_connected();
+const std::vector<std::string> &getListNumVertices_7_connected();
+const std::vector<std::string> &getListNumVertices_8_connected();
 
 } // namespace UndirectedGraphFromG6
