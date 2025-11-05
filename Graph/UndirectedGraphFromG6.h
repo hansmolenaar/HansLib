@@ -54,6 +54,8 @@ const std::vector<std::string> &getListNumVertices_8_connected();
 // Mix of connected and disconnected matrices
 const std::vector<std::string> &getListNumVertices_5();
 const std::vector<std::string> &getListNumVertices_6();
+const std::vector<std::string> &getListNumVertices_7();
+const std::vector<std::string> &getListNumVertices_9();
 
 std::vector<std::unique_ptr<Graph::IGraphUs>> getDisconnectedGraphs(const std::vector<std::string> &);
 std::vector<std::unique_ptr<Graph::IGraphUs>> getGraphs(const std::vector<std::string> &);

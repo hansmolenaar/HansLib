@@ -73,6 +73,35 @@ std::vector<std::string> ListNumVertices_7_connected = {
     "F\\^]w", "Fr^~w",  "F?SsW",
 };
 
+std::vector<std::string> ListNumVertices_7 = {
+    "FqN~w",  "FJ\\zw", "FJ\\~w", "F}lzw",  "F}l~w",  "F^~~w",  "F~~~w",  "F????",  "F??GW", "F?CWw", "F?C^w", "F?O|_",
+    "F??Ng",  "FI?go",  "F?Sv?",  "F???G",  "F?COW",  "F?dXw",  "F??^G",  "F??^o",  "F?~v_", "F?~~w", "F`?GW", "F@IQO",
+    "FCOpW",  "F?AZO",  "FoDPO",  "FCS~?",  "F@MYw",  "F?B~w",  "FGC?G",  "F@Kxw",  "F@K~w", "F?GUW", "F??Fw", "F?G]_",
+    "FWEYo",  "FF~vW",  "FF~~w",  "FwCWw",  "F`N@w",  "F`o~_",  "F}hXw",  "FJ\\|w", "F?_ZG", "FJ^~w", "FJ~~w", "FN~~w",
+    "Fj]|w",  "Fr~~w",  "F?Ddo",  "F?C^?",  "F?C^G",  "F?C~?",  "F??Nw",  "F@G]?",  "F?db_", "F?KuG", "F?org", "F@IYo",
+    "Fo@Xo",  "F??^?",  "F?S~w",  "F??^O",  "F???W",  "FIOxo",  "F?\\v_", "FIQ|o",  "FIQ|w", "F?~vg", "FCO_w", "F_GZ_",
+    "F@OsW",  "F@`J_",  "FCDHW",  "FJ?GW",  "F??xo",  "F?@Xo",  "F???w",  "F`BHo",  "F`BHw", "FGDzo", "F??}w", "F?@zo",
+    "F??@w",  "F?Azo",  "F_Oxo",  "F`GZw",  "FI_xo",  "F?B~o",  "F`IYw",  "FYCXW",  "F??Bw", "F_K~_", "F_K~w", "FoDzo",
+    "FwCOW",  "F@pHg",  "FWCYw",  "FqOxo",  "F@~vg",  "F?C?G",  "F@~v_",  "Fs\\vw", "F}oxw", "F?G^w", "FTPHw", "FwCZw",
+    "FwC^w",  "F`o~w",  "F`Kyw",  "F`Kzw",  "F`K~w",  "F`N~w",  "F?HSo",  "F{dzw",  "F`~~w", "FAL~o", "F_GZw", "FAN\\w",
+    "FwdXw",  "FBqng",  "FsXXw",  "F`AZO",  "FqN~o",  "FJz\\w", "FEl~w",  "F@?M?",  "F`luW", "FQl~_", "FqhXw", "FdlrW",
+    "Ft\\~w", "FQMiw",  "FIiZw",  "F@pro",  "FGE^w",  "F`N^w",  "FTX^w",  "F`lvw",  "FhN^w", "FQl~w", "F`~vw", "FqL~w",
+    "F{S~w",  "Fql~w",  "FMl~w",  "FR~vw",  "F@?Nw",  "F?Dfw",  "F?O~w",  "F?Ffw",  "F?`~w", "F@G^w", "F?Svw", "F?dfw",
+    "F?Lvw",  "F@FNw",  "F?dnw",  "F?Nvw",  "F?\\vw", "F?lvw",  "F?^vw",  "F?~vw",  "F`?Nw", "F_G^w", "FAI^w", "F@hVw",
+    "F@h^w",  "F`G^w",  "F_Lvw",  "FC\\vw", "FoSvw",  "F`dnw",  "FS\\vw", "F@IQW",  "F?StW", "F_G^_", "F?ur_", "F??H_",
+    "F`?Gw",  "Fhuzw",  "FSXPw",  "F?O|o",  "FqL~o",  "F?df_",  "FAG[w",  "F`dn_",  "F_Azw", "F?Lvo", "F?S~_", "F?o~g",
+    "F@Fmw",  "FAIZw",  "FD^vO",  "FAG^G",  "F@IYw",  "FBFLW",  "F?luW",  "F?luw",  "F?l~_", "F?l~g", "F?uzw", "F?~rw",
+    "F`AZW",  "FAI^o",  "FALcw",  "FIG\\w", "FIG^w",  "FANLg",  "F@h^g",  "FAYto",  "FANfo", "FANcw", "FCS~W", "FIJ\\o",
+    "FIJ\\w", "FCXvo",  "F_}rg",  "FCx~g",  "FGuzw",  "F@U~O",  "FC~rw",  "FBZ\\w", "FQMZW", "FQo~g", "FEhzo", "FDhzo",
+    "FBzvo",  "Fqdhw",  "FMhXw",  "FDxZg",  "FXd]w",  "FFhmw",  "FD^fw",  "Fdhzo",  "FqLzo", "FCS~w", "FEl~W", "FqSpW",
+    "FKl~g",  "FKuzw",  "FR~~w",  "FCUj_",  "F??OW",  "F?Mzo",  "F_Lpw",  "F@Miw",  "FDLiw", "F`XXw", "FDlrW", "FJW{w",
+    "FoS~_",  "FANTW",  "FDZ^w",  "FAl~w",  "F?dn_",  "F?AZW",  "FoDPW",  "FK`Xo",  "FQG]W", "FDZ~w", "F?Czw", "F?L~w",
+    "F@v~w",  "FGdtw",  "FCLmw",  "F?qzw",  "FAJ\\w", "F@NMw",  "Fq?gw",  "F@rvw",  "F@Nmo", "FwDXo", "Folqw", "FQluW",
+    "FIm~w",  "FHu~w",  "F@~vw",  "FiM~w",  "Fs\\zw", "Fqlzw",  "FT\\}w", "FD^~o",  "Fimzw", "F`~rw", "F@J]o", "F?lv_",
+    "F@O\\G", "F@oZG",  "FRh]w",  "F@@Gw",  "FgEzo",  "FqHXw",  "F`NJg",  "F?CeG",  "FG?[o", "FGC[w", "F@RHw", "F\\^]w",
+    "Fr^~w",  "F?SsW",
+};
+
 std::vector<std::string> ListNumVertices_8_connected = {
     "G@Kx~{",  "G?_gqK",  "Gs\\v~w", "GF~~~{",  "GwC^?{",  "G}hPW{",  "GqN~~{",  "GJ\\z~{", "G~z\\z{", "G^~~~{",
     "G~~~~{",  "G?DPV?",  "G?DPTC",  "G?`HW{",  "G@GQSG",  "G??MPg",  "G???Ns",  "G?CW~{",  "GoCQPG",  "G?CHM_",
@@ -147,6 +176,62 @@ std::vector<std::string> ListNumVertices_8_connected = {
     "G?D@\\g", "GdW}z{",  "G?CrUW",  "GhqXz{",  "G??O^O",  "G??PUW",  "G?ClQk",  "G?G\\Qk", "G_Jqps",  "G}lz~{",
     "G`N~~{",  "GwCW~{",  "G@?MFw",  "G?SsZ[",  "G@CJK{",  "G?_OzK",  "G?D@K{",  "G??Jc[",  "G@B?Ws",  "G\\YY}{",
     "G`rHx{",  "G?B~vo",  "G?Mi~{",  "GS`zro",  "GqOxs{",  "GGlVK{",  "G``HW{"};
+
+std::vector<std::string> ListNumVertices_9 = {
+    "H??????",  "HqGOOKF",  "HI?GPGQ",  "H?CQPJ_",  "H??[Aci",  "H???F~~",  "H????CB",  "H?~~~~~",   "HwCW?CB",
+    "H`B@_WJ",  "H???ONs",  "H?????@",  "H??F~~~",  "HGC?G?@",  "H??__RF",  "H{_yqgj",  "H?aFbx{",   "H???GKF",
+    "H@Kxx{~",  "H@Kxx~~",  "H????F|",  "H}q|r|}",  "H???GN~",  "HF~~vnn",  "HF~~~~~",  "H~?GW[N",   "HwCW~?^",
+    "HwC^?~{",  "HqN~~~~",  "HJ\\zz|~", "HJ\\zz~~", "H~z\\z|~", "H~z\\z~~", "H^~~~~~",  "H~~~~~~",   "H?B~vrw",
+    "H?B~~~~",  "H`?G?CB",  "H@GOQIA",  "H?DCP_d",  "H???GGB",  "H@G?GgI",  "H??IPio",  "HoCOPHA",   "H?G?iIW",
+    "H?A?ISq",  "H@GSY^o",  "H?C[Y[n",  "H????N}",  "H??GW[N",  "H??GW^~",  "H????^p",  "H?CWw{^",   "H?CWw~~",
+    "H???C\\q", "H????B~",  "HEutZhj",  "HCHCp\\V", "HqH}dS^",  "HoCOOL_",  "HwCO?SE",  "H{dQXgj",   "HoDPV~}",
+    "HIISZ~}",  "H?MzvNV",  "H?S}tnn",  "H?`jm}~",  "H?h[bFr",  "H@IQ]re",  "H`?guNw",  "H`AkrT[",   "H_GouNy",
+    "H@`M@~u",  "HR?MC|m",  "HR?M@~M",  "HR`HGvN",  "HCSp]Nw",  "H@iRI~w",  "HPSRK^[",  "HANLbNw",   "H?ManrM",
+    "H@hZSno",  "H{`Ypgj",  "HQ?g}Rp",  "HQ?{QVr",  "H``@_^{",  "HR?G]Nw",  "HPp?g~e",  "H`Y?g~e",   "H_?|Qrr",
+    "H[CGYNp",  "H`GO]Nw",  "H`IQO~e",  "HqGOW~e",  "HDYAG~e",  "Ha?{PVr",  "Ho@PW~w",  "Hq?HWzr",   "H`?L?lJ",
+    "HCd@Igi",  "H?z\\z~~", "H_K~]~~",  "HCZ\\z~~", "H@zTz~~",  "H@l~]~~",  "HIiZ|~~",  "HBqj|~~",   "HHr\\z~~",
+    "HDYz}~~",  "Higx}~~",  "HFXm|~~",  "HiK|[~~",  "HsXXz~~",  "HiiXz~~",  "HsSz~^~",  "HDxuz~~",   "HFZm|~~",
+    "HBu~Z~~",  "HEl~~z~",  "H~?GW^~",  "HwC^?~~",  "HwCW~N~",  "HwCW~^~",  "H`rHpn~",  "HKeZb^~",   "HwC[zz~",
+    "H`ouX~~",  "H`K~E~~",  "HeGh}~~",  "HTPLzz~",  "H`NDzz~",  "HwCZ~z~",  "HTPLz~~",  "HwC^~z~",   "HcKz]~~",
+    "HHe^Z~~",  "HTlai^~",  "HRhTY~~",  "HwDX~r~",  "H`NUX~~",  "HwDX~v~",  "HTPi|~~",  "H}CXZ^~",   "H`^@|n~",
+    "HtPHx~~",  "H`NH~f~",  "H`o~fz~",  "H{CZZ~~",  "HwD\\r~~", "H`K~Mr~",  "H`K~Mv~",  "H`rHx~~",   "H`K~M~~",
+    "HKeZZ~~",  "H`NNjz~",  "HtPLzz~",  "HwC}~z~",  "H`Nez~~",  "HtPLz~~",  "HQh\\zz~", "H`Mzu^~",   "HwFXzv~",
+    "H`px~v~",  "HQh\\z~~", "H`o~~z~",  "H`K~]z~",  "H`K~]~~",  "HpNay~~",  "H{dax~~",  "HjbH|~~",   "H`qzr~~",
+    "H`zPz~~",  "H`qzvn~",  "HKd~vz~",  "HKd~r~~",  "HKfzrv~",  "Hfphx~~",  "HbK~]~~",  "H`}rm^~",   "HKd~v^~",
+    "H`Nmz~~",  "H`N~u~~",  "HxFHy~~",  "HRiiy~~",  "Hhox}~~",  "HRhY|~~",  "H`tp~^~",  "HdKz]^~",   "H`Mzu~~",
+    "H~`HW~~",  "HrhTY~~",  "HtPix~~",  "HhNUX~~",  "H{DX~^~",  "HJqkz~~",  "H`uvZz~",  "HKuzrn~",   "Hwuqx~~",
+    "HqltY~~",  "HKnZvn~",  "HQlu~^~",  "HKttz~~",  "Hqh\\z~~", "HTlrY~~",  "HTXZ~z~",  "HTX\\z~~",  "HTX^~z~",
+    "HqK|Y~~",  "HqKy~^~",  "H}hPW~~",  "H}GZ[~~",  "HrotY~~",  "HqNax~~",  "HtOy~^~",  "Hqgyz~~",   "HRqi~n~",
+    "HhqXz~~",  "HqzPx~~",  "HuSxz^~",  "HkurX~~",  "HYU\\~z~", "HqK~]~~",  "Hktpx~~",  "Hdthzn~",   "H`mzrn~",
+    "HpLy~v~",  "H`zTzz~",  "HKur~z~",  "HqL\\~^~", "HdW}z~~",  "H`lv]~~",  "H`lv~z~",  "H\\TZ\\~~", "H}Ky~^~",
+    "HR]~Mv~",  "HJnL~n~",  "HhN~u~~",  "HjK~]~~",  "HRVlz~~",  "H[Uzu~~",  "HLrZt~~",  "H\\diz~~",  "HKl~e~~",
+    "HRlu~Z~",  "HKnr~v~",  "HRlu~^~",  "HQl~~z~",  "H{dXz^~",  "HrrHx~~",  "HYU}t~~",  "HKu~b~~",   "H`l~vj~",
+    "H`l~vn~",  "HbNl}~~",  "H`z\\z~~", "H~rHx~~",  "H^rLz~~",  "H`~~vn~",  "Hrqix~~",  "HYd}t~~",   "HtXXz~~",
+    "HMutZ~~",  "HvSzZ^~",  "HvSz^^~",  "HqL~r~~",  "HRl~Mv~",  "HLnJ~n~",  "HdYz~r~",  "Hbiz~v~",   "HdYz}~~",
+    "HqN~r~~",  "HtlrY~~",  "H{Sz~z~",  "HRvdz~~",  "HtX\\z~~", "H{S~~z~",  "H}hXz~~",  "H}nax~~",   "Hrvdz~~",
+    "Hp^uz~~",  "HRl}~^~",  "Hq~tz~~",  "HjNm|~~",  "HJz\\z~~", "HMn~r~~",  "Hru~Z~~",  "HR~~vn~",   "H???XjA",
+    "H?qahro",  "H??@GrD",  "H???]Os",  "H``?@cM",  "H?D_Sfa",  "HCD@z^~",  "H`?Ha]{",  "H`?N~z{",   "HgGqsy]",
+    "HqOpS|}",  "HR?M[xk",  "HWLKm_^",  "H?LE`YT",  "H@CI?M`",  "H`?H_ZB",  "H??E@KZ",  "H@`?OKr",   "H?AA`O[",
+    "H{db?{]",  "HoDczp{",  "Hqopc|m",  "Hqcxq\\f", "Hr?GOKF",  "HQQ?@KY",  "H?C@IQD",  "H??HIaW",   "H????^q",
+    "HAA?PKy",  "H@BQPS^",  "HPVBG}z",  "HELZTMN",  "HDpch\\Z", "H??@GrB",  "H?CAHM^",  "HINT^~~",   "H@lv]~~",
+    "H{~va{~",  "HINLn~~",  "HJaJY{~",  "H@IYvN~",  "H?B~~rx",  "H{dahWZ",  "H@Kp]jJ",  "H`?HW~r",   "H@Kp]fL",
+    "HoCOZB~",  "H?BMXwz",  "H?CWvNf",  "H@GZQmN",  "H@GZIuN",  "H??Kz^{",  "H??E\\lz", "H?CWtHb",   "HoStIv{",
+    "HhEJG~w",  "H?hSzZr",  "HEhcqkn",  "H}nna{~",  "HQYPOnN",  "H??P?VD",  "HoDPX`H",  "H{Sz]}~",   "HoDPXPP",
+    "H~?G[|m",  "H{dbG{^",  "Hd^@|ln",  "H{S}tln",  "H}lah[^",  "H`zPpnN",  "HdYr]o~",  "HLnBj]^",   "H[UY|ln",
+    "HRiiqnN",  "Htlai[~",  "HwDX}yz",  "H`o}Pnr",  "H`opc\\N", "HThQQK~",  "H_hP_^o",  "HC`PX`H",   "HC[QHNb",
+    "HiGgomN",  "HwCx}zY",  "HxGW}nN",  "HwDX}yy",  "H`o~f~~",  "Hs`yppb",  "H}l?XKV",  "H_?{aOb",   "H`?M@cN",
+    "H?So]Mj",  "H?KLIns",  "H?qipno",  "H?qa`_N",  "HAGOSLe",  "H?COZIa",  "H{dX`TF",  "H?qipn~",   "H?CGHFO",
+    "H?O_cC[",  "H?o@Gho",  "H??OPNW",  "H??M?kw",  "H`lu^~~",  "H??WvJa",  "HwCWqGb",  "H???F~}",   "HoSsaKj",
+    "H?@HeYr",  "HHqGhdN",  "HpO]@cN",  "HoCQPJ~",  "HCO__SF",  "Hr?GW^~",  "HWCW~~~",  "H@?GjEL",   "H@?OZEL",
+    "H_Bbowx",  "H{dbGwZ",  "H{`rOwZ",  "H}hPOkN",  "H|pGpKV",  "H|ogqKV",  "H}gWqKf",  "H{`Xqgj",   "H{`XrOV",
+    "H~zUX{~",  "HqGO?KJ",  "HWEA?WR",  "HK`@?WR",  "HqG??kM",  "H``??se",  "HQ`?@KY",  "Ho?OQoe",   "H?ChUjQ",
+    "H?CKZhn",  "H?AHQkz",  "HXUQ|zM",  "H??F~z{",  "HqN~~zz",  "H`deX~{",  "HoDXvnm",  "H}hX~~~",   "H????Nx",
+    "H??OONg",  "H??OPFK",  "H??@OjK",  "H??OZAH",  "H???jQK",  "H?C?JEK",  "H??_aYI",  "H????Ny",   "H???ONp",
+    "H???Gva",  "H??C?\\p", "H???_Zb",  "H???OJr",  "H?`@?_N",  "H??ORAF",  "H??OON`",  "H???Oje",   "H???gZ`",
+    "H???_^c",  "H???Gvc",  "H??G@fE",  "H?AAGSp",  "H?C@M?L",  "H??_aQM",  "H?GQCCL",  "H??_eOM",   "H`?G?F~",
+    "H??E\\hw", "HQG[IVr",  "HCDlAVr",  "H`GIkze",  "HBIEB]]",  "HQD_[Vp",  "Hs`rY{~",  "HXNUS|^",   "HxU_w~N",
+    "HoFvQ{~",  "HqGTY~~",  "HRAZU^~",  "HWNVS|^",  "HoDPV~~",  "HsOax~~",  "HqJTY{~",  "HyGW}mn",   "H{O_w~~",
+    "HqddY{~",  "Hk`rX}^",  "H`GO\\|}", "H@?tY~N"};
 
 }; // namespace
 
@@ -709,9 +794,19 @@ const std::vector<std::string> &UndirectedGraphFromG6::getListNumVertices_7_conn
     return ListNumVertices_7_connected;
 }
 
+const std::vector<std::string> &UndirectedGraphFromG6::getListNumVertices_7()
+{
+    return ListNumVertices_7;
+}
+
 const std::vector<std::string> &UndirectedGraphFromG6::getListNumVertices_8_connected()
 {
     return ListNumVertices_8_connected;
+}
+
+const std::vector<std::string> &UndirectedGraphFromG6::getListNumVertices_9()
+{
+    return ListNumVertices_9;
 }
 
 std::vector<std::unique_ptr<Graph::IGraphUs>> UndirectedGraphFromG6::getDisconnectedGraphs(

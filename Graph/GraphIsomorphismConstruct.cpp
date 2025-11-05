@@ -47,7 +47,7 @@ Status Construct::actionConnected(const Graph::IGraphUsc &graph0, const Graph::I
 {
     const auto numVertices = graph0.getNumVertices();
     Status result(numVertices);
-    for (auto *factory : factoriesGraph)
+    for (auto *factory : getGraphTaggerFactories())
     {
         const auto tagger0 = factory->createGraphTagger(graph0);
         const auto tagger1 = factory->createGraphTagger(graph1);
