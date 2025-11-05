@@ -1,0 +1,30 @@
+#include <gtest/gtest.h>
+
+#include "Defines.h"
+#include "Single.h"
+#include "SubGraphConnected.h"
+#include "UndirectedGraphLibrary.h"
+
+using namespace Graph;
+using namespace Utilities;
+
+TEST(SubGraphConnected, Basics)
+{
+    const auto graph = UndirectedGraphLibrary::Get_Path(3);
+    const std::set<GraphVertex> indices{1, 2};
+    SubGraphConnected subGraph(*graph, indices);
+
+    ASSERT_EQ(subGraph.getNumVertices(), 2);
+    ASSERT_EQ(subGraph.getNumEdges(), 1);
+
+    std::vector<GraphVertex> ngbs;
+    subGraph.setAdjacentVertices(1, ngbs);
+    ASSERT_EQ(Single(ngbs), 0);
+
+    ASSERT_TRUE(subGraph.areAdjacent(1, 0));
+    ASSERT_EQ(subGraph.getDegree(1), 1);
+    ASSERT_TRUE(str::equal(subGraph.getConnectedComponents(), std::vector<GraphVertex>{0, 0}));
+
+    ASSERT_EQ(subGraph.getVertexInMaster(0), 1);
+    ASSERT_EQ(subGraph.getVertexInMaster(1), 2);
+}
