@@ -51,4 +51,10 @@ const std::vector<std::string> &getListNumVertices_6_connected();
 const std::vector<std::string> &getListNumVertices_7_connected();
 const std::vector<std::string> &getListNumVertices_8_connected();
 
+// Mix of connected and disconnected matrices
+const std::vector<std::string> &getListNumVertices_5();
+const std::vector<std::string> &getListNumVertices_6();
+
+std::vector<std::unique_ptr<Graph::UndirectedGraph>> getDisconnectedGraphs(const std::vector<std::string> &);
+
 } // namespace UndirectedGraphFromG6

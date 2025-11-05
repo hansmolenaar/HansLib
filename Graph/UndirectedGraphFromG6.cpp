@@ -9,12 +9,18 @@ using SortedEdge = std::pair<GraphVertex, GraphVertex>;
 
 namespace
 {
-std::vector<std::string> ListNumVertices_5 = {
+std::vector<std::string> ListNumVertices_5_connected = {
     "D@s", "DBw", "DD[", "DFw", "DF{", "DDW", "D`[", "DqK", "DJ{", "Dr[", "Dr{",
     "D^{", "D~{", "D?{", "D`{", "DJk", "DN{", "D@{", "DB{", "DR{", "Dd[",
 };
 
-std::vector<std::string> ListNumVertices_6 = {
+std::vector<std::string> ListNumVertices_5 = {
+    "D@s", "D??", "DIK", "DBw", "DD[", "DFw", "DF{", "DDW", "D?C", "D`K", "D`[", "DqK",
+    "DJ[", "DJ{", "Dr[", "Dr{", "D^{", "D~{", "D?{", "DGC", "D@K", "D`{", "DJk", "DN{",
+    "D?K", "D?[", "D@o", "D@{", "DB{", "DR{", "Dd[", "DAK", "D@[", "DB[",
+};
+
+std::vector<std::string> ListNumVertices_6_connected = {
     "Es\\o", "EF~w", "E`ow", "EqNw",  "E?Fg",  "EJ^w",  "E}lw", "E^~w", "E~~w",  "E?NO",  "E?dg",  "E?No", "E?lo",
     "E?~w",  "EAIW", "EAN_", "ECSw",  "E@hO",  "E@po",  "E?Bw", "E@Nw", "EoSo",  "EiKw",  "Es\\w", "EFzw", "E`NW",
     "E`Lw",  "E`Nw", "E`~o", "E`~w",  "E{Sw",  "ER~w",  "EJ]w", "EJ~w", "EN~w",  "Et\\w", "Er~w",  "E?^o", "E?lw",
@@ -23,10 +29,25 @@ std::vector<std::string> ListNumVertices_6 = {
     "EMlw",  "ER~o", "EqLw", "ET\\w", "Ed^w",  "EB^w",  "EB~w", "EFxw", "ER^w",  "E@~w",  "Er^w",  "E_lw", "Eqlw",
     "EGcw",  "EBxw", "EDZW", "ETXW",  "EANg",  "EoSw",  "ED^_", "E@pw", "E@^w",  "EImw",  "EHuw",  "E@~o", "E`^o",
     "EBzo",  "EAMw", "EPTw", "EAlw",  "EPVW",  "Er\\w", "ED^w", "E`^w", "Ed\\w", "ED\\w", "E`lw",  "E@lw", "EC\\w",
-    "EIMw",  "E@^o", "E@vo", "E?^w",  "E@NW",  "E`LW",  "E?Fw", "E?NW",
+    "EIMw",  "E@^o", "E@vo", "E?^w",  "E@NW",  "E`LW",  "E?Fw", "E?NW"
 };
 
-std::vector<std::string> ListNumVertices_7 = {
+std::vector<std::string> ListNumVertices_6 = {
+    "E?CW", "E???", "Es\\o", "EF~w", "EwCW", "E`ow", "EqNw", "E?Fg", "EJ\\w", "EJ^w", "E}lw", "E^~w", "E~~w",
+    "E@GW", "E?NO", "E??G", "E?dg", "E?No", "E?lo", "E?~w", "E`?G", "EAIW", "EIGW", "EAN_", "ECSw", "E@hO",
+    "E@po", "E?Bw", "E@Kw", "E@Nw", "EoSo", "EiKw", "Es\\w", "EFzw", "E`NW", "E`Lw", "E`Nw", "E`~o", "E`~w",
+    "E{Sw", "ER~w", "EJ]w", "EJ~w", "EN~w", "Et\\w", "Er~w", "E?d_", "E?\\o", "E?^o", "E??W", "E?lw", "E?~o",
+    "E??w", "EGCw", "EGEw", "E?@w", "EANw", "ECXo", "E@ow", "E@ro", "E_Lw", "E@?G", "E_lo", "EC\\o", "E@lo",
+    "ES\\o", "E@hW", "EKSw", "E`dg", "E?Nw", "E`lo", "EQlw", "E`\\w", "E@rw", "EGFw", "EC^w", "EINw", "EDZw",
+    "EBzw", "EELg", "EElw", "EMlw", "ER~o", "EqLw", "ET\\w", "Ed^w", "EB^w", "EB~w", "EFxw", "ER^w", "E@~w",
+    "Er^w", "E_lw", "Eqlw", "EGcw", "EBxw", "EDZW", "ETXW", "EANg", "EoSw", "ED^_", "E@pw", "E?Lw", "E@^w",
+    "EImw", "EHuw", "E@~o", "E`^o", "EBzo", "EAMw", "EPTw", "EAlw", "EPVW", "E_GW", "EGEW", "Er\\w", "ED^w",
+    "E`^w", "Ed\\w", "ED\\w", "E`lw", "E@lw", "EC\\w", "EIMw", "E@^o", "E@vo", "E?^w", "E@NW", "E`LW", "E?Fw",
+    "E?NW", "E?D_", "EGCW", "E?So", "E?Cw", "E?Dg", "E?F_", "E@N?", "E`GW", "E?Dw", "E?Kw", "E?Sw", "E?Lo",
+    "E@LW", "EGDw", "EGSw", "E_Kw", "E?\\w", "E`Kw", "EALw", "EIKw", "E@Lw", "EILw", "E@\\w", "EB\\w"
+};
+
+std::vector<std::string> ListNumVertices_7_connected = {
     "FqN~w",  "FJ\\~w", "F}lzw",  "F}l~w", "F^~~w",  "F~~~w",  "F?C^w",  "F?O|_",  "F??Ng", "F?Sv?",  "F?dXw",
     "F??^G",  "F??^o",  "F?~v_",  "F?~~w", "F@IQO",  "FCOpW",  "F?AZO",  "FoDPO",  "FCS~?", "F@MYw",  "F?B~w",
     "F@K~w",  "F?GUW",  "F??Fw",  "F?G]_", "FWEYo",  "FF~vW",  "FF~~w",  "F`N@w",  "F`o~_", "F}hXw",  "FJ\\|w",
@@ -54,7 +75,7 @@ std::vector<std::string> ListNumVertices_7 = {
     "F\\^]w", "Fr^~w",  "F?SsW",
 };
 
-std::vector<std::string> ListNumVertices_8 = {
+std::vector<std::string> ListNumVertices_8_connected = {
     "G@Kx~{",  "G?_gqK",  "Gs\\v~w", "GF~~~{",  "GwC^?{",  "G}hPW{",  "GqN~~{",  "GJ\\z~{", "G~z\\z{", "G^~~~{",
     "G~~~~{",  "G?DPV?",  "G?DPTC",  "G?`HW{",  "G@GQSG",  "G??MPg",  "G???Ns",  "G?CW~{",  "GoCQPG",  "G?CHM_",
     "G??gv_",  "G?@HcK",  "G???^w",  "GsP@xw",  "G?@Ht_",  "Gs`zro",  "G?~~~{",  "G`?GZc",  "G??CZc",  "G`_gqK",
@@ -667,20 +688,39 @@ std::unique_ptr<Graph::GraphUsc> UndirectedGraphFromG6::CreateConnected(std::str
 
 const std::vector<std::string> &UndirectedGraphFromG6::getListNumVertices_5_connected()
 {
+    return ListNumVertices_5_connected;
+}
+
+const std::vector<std::string> &UndirectedGraphFromG6::getListNumVertices_5()
+{
     return ListNumVertices_5;
 }
 
 const std::vector<std::string> &UndirectedGraphFromG6::getListNumVertices_6_connected()
 {
+    return ListNumVertices_6_connected;
+}
+
+const std::vector<std::string> &UndirectedGraphFromG6::getListNumVertices_6()
+{
     return ListNumVertices_6;
+}
+
+const std::vector<std::string> &UndirectedGraphFromG6::getListNumVertices_6_connected()
+{
+    return ListNumVertices_6_connected;
 }
 
 const std::vector<std::string> &UndirectedGraphFromG6::getListNumVertices_7_connected()
 {
-    return ListNumVertices_7;
+    return ListNumVertices_7_connected;
 }
 
 const std::vector<std::string> &UndirectedGraphFromG6::getListNumVertices_8_connected()
 {
-    return ListNumVertices_8;
+    return ListNumVertices_8_connected;
+}
+
+std::vector<std::unique_ptr<Graph::UndirectedGraph>> getDisconnectedGraphs(const std::vector<std::string> &list)
+{
 }
