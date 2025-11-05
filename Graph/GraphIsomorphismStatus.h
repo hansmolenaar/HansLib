@@ -16,10 +16,12 @@ class Status
     void setFlag(Flag);
     void addPair(VertexPair);
     std::vector<VertexPair> getVertexPairs() const;
+    bool containsFirst(GraphVertex) const;
+    bool containsSecond(GraphVertex) const;
 
   private:
-    GraphVertex m_numVertices;
-    Flag m_flag;
+    GraphVertex m_numVertices = 0;
+    Flag m_flag = Flag::NotIsomorphic;
     std::vector<GraphVertex> m_vertexFirst;
     std::vector<GraphVertex> m_vertexSecond;
 };

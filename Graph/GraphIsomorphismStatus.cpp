@@ -21,8 +21,8 @@ void Status::setFlag(Flag flag)
 
 void Status::addPair(VertexPair vp)
 {
-    MyAssert(str::find(m_vertexFirst, vp.first) == m_vertexFirst.end());
-    MyAssert(str::find(m_vertexSecond, vp.second) == m_vertexSecond.end());
+    MyAssert(!containsFirst(vp.first));
+    MyAssert(!containsSecond(vp.second));
 
     m_vertexFirst.push_back(vp.first);
     m_vertexSecond.push_back(vp.second);
@@ -42,4 +42,14 @@ std::vector<VertexPair> Status::getVertexPairs() const
         result.push_back({m_vertexFirst.at(n), m_vertexSecond.at(n)});
     }
     return result;
+}
+
+bool Status::containsFirst(GraphVertex vertex) const
+{
+    return str::find(m_vertexFirst, vertex) != m_vertexFirst.end();
+}
+
+bool Status::containsSecond(GraphVertex vertex) const
+{
+    return str::find(m_vertexSecond, vertex) != m_vertexSecond.end();
 }
