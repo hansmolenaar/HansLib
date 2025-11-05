@@ -90,3 +90,8 @@ Status Construct::actionConnected(const Graph::IGraphUsc &graph0, const Graph::I
     }
     return result;
 }
+
+const std::vector<IGraphTaggerFactory *> &Construct::getGraphTaggerFactories()
+{
+    return factoriesGraph;
+};

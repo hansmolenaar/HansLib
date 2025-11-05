@@ -55,6 +55,7 @@ const std::vector<std::string> &getListNumVertices_8_connected();
 const std::vector<std::string> &getListNumVertices_5();
 const std::vector<std::string> &getListNumVertices_6();
 
-std::vector<std::unique_ptr<Graph::UndirectedGraph>> getDisconnectedGraphs(const std::vector<std::string> &);
+std::vector<std::unique_ptr<Graph::IGraphUs>> getDisconnectedGraphs(const std::vector<std::string> &);
+std::vector<std::unique_ptr<Graph::IGraphUs>> getGraphs(const std::vector<std::string> &);
 
 } // namespace UndirectedGraphFromG6
