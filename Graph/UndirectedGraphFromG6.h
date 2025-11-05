@@ -55,6 +55,7 @@ const std::vector<std::string> &getListNumVertices_8_connected();
 const std::vector<std::string> &getListNumVertices_5();
 const std::vector<std::string> &getListNumVertices_6();
 const std::vector<std::string> &getListNumVertices_7();
+const std::vector<std::string> &getListNumVertices_8();
 const std::vector<std::string> &getListNumVertices_9();
 
 std::vector<std::unique_ptr<Graph::IGraphUs>> getDisconnectedGraphs(const std::vector<std::string> &);

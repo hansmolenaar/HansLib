@@ -90,6 +90,12 @@ TEST(GraphIsomorphismConstructTest, Disconnected7)
     CheckUniquenessGraphTaggers(graphs, 35, 30);
 }
 
+TEST(GraphIsomorphismConstructTest, Disconnected8)
+{
+    const auto graphs = UndirectedGraphFromG6::getDisconnectedGraphs(UndirectedGraphFromG6::getListNumVertices_8());
+    CheckUniquenessGraphTaggers(graphs, 17, 16);
+}
+
 TEST(GraphIsomorphismConstructTest, Disconnected9)
 {
     const auto graphs = UndirectedGraphFromG6::getDisconnectedGraphs(UndirectedGraphFromG6::getListNumVertices_9());
