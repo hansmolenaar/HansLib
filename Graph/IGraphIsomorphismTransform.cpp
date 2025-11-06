@@ -7,6 +7,20 @@ using namespace Graph;
 using namespace GraphIsomorphism;
 using namespace Utilities;
 
+namespace
+{
+GraphVertex GetVertexInParent(GraphVertex vertex, const IGraphIsomorphismTransform &transform)
+{
+    const auto &self = transform.getSelf();
+    const auto *subGraph = dynamic_cast<const SubGraphConnected *>(&self);
+    if (subGraph != nullptr)
+    {
+        return subGraph->getVertexInParent(vertex);
+    }
+    return vertex;
+}
+} // namespace
+
 // !!!!!!!!!!!  IGraphIsomorphismTransform
 
 GraphTags IGraphIsomorphismTransform::GetGraphTags(const Graph::IGraphUs &graph)
@@ -36,7 +50,7 @@ GraphIsomorphismTransformLeaf::GraphIsomorphismTransformLeaf(const Graph::IGraph
 
 GraphVertex GraphIsomorphismTransformLeaf::getVertexInParent(GraphVertex v) const
 {
-    return v;
+    return GetVertexInParent(v, *this);
 }
 
 const Graph::IGraphUs &GraphIsomorphismTransformLeaf::getSelf() const
@@ -75,19 +89,23 @@ GraphIsomorphismTransformDisconnected::GraphIsomorphismTransformDisconnected(con
     for (const auto &cmp : components)
     {
         m_children.emplace_back(m_self, cmp.second);
-        const auto tag = IGraphIsomorphismTransform::GetGraphTags(m_children.back());
+    }
+
+    for (const auto &child : m_children)
+    {
+        const auto tag = IGraphIsomorphismTransform::GetGraphTags(child);
         if (!m_childTransformsUP.contains(tag))
         {
             m_childTags.emplace_back(tag);
         }
-        m_childTransformsUP[tag].emplace_back(IGraphIsomorphismTransform::Create(m_children.back()));
+        m_childTransformsUP[tag].emplace_back(IGraphIsomorphismTransform::Create(child));
         m_childTransforms.emplace_back(m_childTransformsUP.at(tag).back().get());
     }
 }
 
 GraphVertex GraphIsomorphismTransformDisconnected::getVertexInParent(GraphVertex v) const
 {
-    return v;
+    return GetVertexInParent(v, *this);
 }
 
 const Graph::IGraphUs &GraphIsomorphismTransformDisconnected::getSelf() const

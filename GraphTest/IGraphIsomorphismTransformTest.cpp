@@ -15,6 +15,10 @@ TEST(IGraphIsomorphismTransformTest, Disconnected2)
     const auto &tag = Single(transformed->getChildTags());
     const auto &children = transformed->getChildren(tag);
     ASSERT_EQ(children.size(), 2);
-    auto tmp0 = children.at(0)->getVertexInParent(0);
-    auto tmp1 = children.at(1)->getVertexInParent(1);
+
+    ASSERT_EQ(children.at(0)->getSelf().getNumVertices(), 1);
+    ASSERT_EQ(children.at(0)->getVertexInParent(0), 0);
+
+    ASSERT_EQ(children.at(1)->getSelf().getNumVertices(), 1);
+    ASSERT_EQ(children.at(1)->getVertexInParent(0), 1);
 }
