@@ -1,4 +1,5 @@
 #include "IGraphIsomorphismTransform.h"
+#include "Defines.h"
 #include "GraphIsomorphismConstruct.h"
 #include "IGraphIsomorphismTagger.h"
 #include "MyAssert.h"
@@ -67,8 +68,7 @@ const std::vector<GraphTags> &GraphIsomorphismTransformLeaf::getChildTags() cons
     return m_childTags;
 }
 
-const std::vector<const IGraphIsomorphismTransform *> &GraphIsomorphismTransformLeaf::getChildren(
-    const GraphTags &) const
+std::vector<const IGraphIsomorphismTransform *> GraphIsomorphismTransformLeaf::getChildren(const GraphTags &) const
 {
     throw MyException("GraphIsomorphismTransformLeaf::getChildren should not come here");
 }
@@ -94,12 +94,11 @@ GraphIsomorphismTransformDisconnected::GraphIsomorphismTransformDisconnected(con
     for (const auto &child : m_children)
     {
         const auto tag = IGraphIsomorphismTransform::GetGraphTags(child);
-        if (!m_childTransformsUP.contains(tag))
+        if (!m_childTransforms.contains(tag))
         {
             m_childTags.emplace_back(tag);
         }
-        m_childTransformsUP[tag].emplace_back(IGraphIsomorphismTransform::Create(child));
-        m_childTransforms.emplace_back(m_childTransformsUP.at(tag).back().get());
+        m_childTransforms[tag].emplace_back(IGraphIsomorphismTransform::Create(child));
     }
 }
 
@@ -122,8 +121,11 @@ const std::vector<GraphTags> &GraphIsomorphismTransformDisconnected::getChildTag
 {
     return m_childTags;
 }
-const std::vector<const IGraphIsomorphismTransform *> &GraphIsomorphismTransformDisconnected::getChildren(
-    const GraphTags &) const
+std::vector<const IGraphIsomorphismTransform *> GraphIsomorphismTransformDisconnected::getChildren(
+    const GraphTags &tag) const
 {
-    return m_childTransforms;
+    const auto &childrenWithTag = m_childTransforms.at(tag);
+    std::vector<const IGraphIsomorphismTransform *> result(childrenWithTag.size());
+    str::transform(childrenWithTag, result.begin(), [](const auto &kid) { return kid.get(); });
+    return result;
 }
