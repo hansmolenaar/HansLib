@@ -15,10 +15,10 @@ class SubGraphConnected : public IGraphUsc
     bool areAdjacent(GraphVertex, GraphVertex) const override;
     GraphVertex getDegree(GraphVertex) const override;
     std::vector<GraphVertex> getConnectedComponents() const override;
-    GraphVertex getVertexInMaster(GraphVertex) const;
+    GraphVertex getVertexInParent(GraphVertex) const;
 
   private:
-    std::vector<GraphVertex> m_verticesInMaster;
+    std::vector<GraphVertex> m_verticesInParent;
     GraphUsc m_graph;
 };
 } // namespace Graph

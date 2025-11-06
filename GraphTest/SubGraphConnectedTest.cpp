@@ -25,6 +25,6 @@ TEST(SubGraphConnected, Basics)
     ASSERT_EQ(subGraph.getDegree(1), 1);
     ASSERT_TRUE(str::equal(subGraph.getConnectedComponents(), std::vector<GraphVertex>{0, 0}));
 
-    ASSERT_EQ(subGraph.getVertexInMaster(0), 1);
-    ASSERT_EQ(subGraph.getVertexInMaster(1), 2);
+    ASSERT_EQ(subGraph.getVertexInParent(0), 1);
+    ASSERT_EQ(subGraph.getVertexInParent(1), 2);
 }

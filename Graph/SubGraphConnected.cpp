@@ -9,26 +9,26 @@ using namespace Utilities;
 namespace
 {
 
-std::optional<GraphVertex> ToLocal(GraphVertex vertexInMaster, const std::vector<GraphVertex> &verticesInMaster)
+std::optional<GraphVertex> ToLocal(GraphVertex vertexInParent, const std::vector<GraphVertex> &verticesInParent)
 {
-    const auto itr = str::find(verticesInMaster, vertexInMaster);
-    if (itr == verticesInMaster.end())
+    const auto itr = str::find(verticesInParent, vertexInParent);
+    if (itr == verticesInParent.end())
     {
         return {};
     }
-    auto result = std::distance(verticesInMaster.begin(), itr);
+    auto result = std::distance(verticesInParent.begin(), itr);
     return result;
 }
 
-UndirectedGraph Generate(const IGraphUs &master, const std::vector<GraphVertex> &verticesInMaster)
+UndirectedGraph Generate(const IGraphUs &master, const std::vector<GraphVertex> &verticesInParent)
 {
-    const GraphVertex nVertices = verticesInMaster.size();
+    const GraphVertex nVertices = verticesInParent.size();
     UndirectedGraph graph(nVertices);
 
     std::vector<GraphVertex> ngbs;
     for (GraphVertex v = 0; v < master.getNumVertices(); ++v)
     {
-        const auto vLocal = ToLocal(v, verticesInMaster);
+        const auto vLocal = ToLocal(v, verticesInParent);
         if (!vLocal)
         {
             continue;
@@ -36,7 +36,7 @@ UndirectedGraph Generate(const IGraphUs &master, const std::vector<GraphVertex> 
         master.setAdjacentVertices(v, ngbs);
         for (auto ngb : ngbs)
         {
-            const auto ngbLocal = ToLocal(ngb, verticesInMaster);
+            const auto ngbLocal = ToLocal(ngb, verticesInParent);
             if (ngbLocal && ngb > v)
             {
                 graph.addEdge(*vLocal, *ngbLocal);
@@ -49,7 +49,7 @@ UndirectedGraph Generate(const IGraphUs &master, const std::vector<GraphVertex> 
 } // namespace
 
 SubGraphConnected::SubGraphConnected(const IGraphUs &master, const std::set<GraphVertex> &subSet)
-    : m_verticesInMaster(subSet.begin(), subSet.end()), m_graph(Generate(master, m_verticesInMaster))
+    : m_verticesInParent(subSet.begin(), subSet.end()), m_graph(Generate(master, m_verticesInParent))
 {
 }
 
@@ -84,7 +84,7 @@ std::vector<GraphVertex> SubGraphConnected::getConnectedComponents() const
     return m_graph.getConnectedComponents();
 }
 
-GraphVertex SubGraphConnected::getVertexInMaster(GraphVertex v) const
+GraphVertex SubGraphConnected::getVertexInParent(GraphVertex v) const
 {
-    return m_verticesInMaster.at(v);
+    return m_verticesInParent.at(v);
 }
