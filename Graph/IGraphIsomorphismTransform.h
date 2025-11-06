@@ -1,7 +1,8 @@
 #pragma once
 
-#include "IGraphUs.h"
 #include "GraphIsomorphismDefines.h"
+#include "IGraphUs.h"
+#include "SubGraphConnected.h"
 
 namespace GraphIsomorphism
 {
@@ -20,9 +21,12 @@ class IGraphIsomorphismTransform
 
     // Can be empty: leaf of tree
     virtual const std::vector<GraphTags> &getChildTags() const = 0;
-    virtual const std::vector < const IGraphIsomorphismTransform * > &getChildren(const GraphTags &) const = 0;
+    virtual const std::vector<const IGraphIsomorphismTransform *> &getChildren(const GraphTags &) const = 0;
 
-    static std::unique_ptr<IGraphIsomorphismTransform> Create(const Graph::IGraphUs&);
+    static GraphTags GetGraphTags(const Graph::IGraphUs &);
+
+  protected:
+    static std::unique_ptr<IGraphIsomorphismTransform> Create(const Graph::IGraphUs &);
 };
 
 class GraphIsomorphismTransformDisconnected : public IGraphIsomorphismTransform
@@ -36,7 +40,14 @@ class GraphIsomorphismTransformDisconnected : public IGraphIsomorphismTransform
 
     // Can be empty: leaf of tree
     const std::vector<GraphTags> &getChildTags() const override;
-    const std::vector < const IGraphIsomorphismTransform * > &getChildren(const GraphTags &) const override;
+    const std::vector<const IGraphIsomorphismTransform *> &getChildren(const GraphTags &) const override;
+
+  private:
+    const Graph::IGraphUs &m_self;
+    GraphTags m_tagSelf;
+    std::vector<Graph::SubGraphConnected> m_children;
+    std::vector<GraphTags> m_childTags;
+    std::map<GraphTags, std::vector<std::unique_ptr<IGraphIsomorphismTransform>>> m_childTransforms;
 };
 
 class GraphIsomorphismTransformVertexFullyConnected : public IGraphIsomorphismTransform
@@ -50,7 +61,7 @@ class GraphIsomorphismTransformVertexFullyConnected : public IGraphIsomorphismTr
 
     // Can be empty: leaf of tree
     const std::vector<GraphTags> &getChildTags() const override;
-    const std::vector < const IGraphIsomorphismTransform * > &getChildren(const GraphTags &) const override;
+    const std::vector<const IGraphIsomorphismTransform *> &getChildren(const GraphTags &) const override;
 
     const std::vector<GraphVertex> &getFullyConnectedVerticesInParent() const;
 };
@@ -66,7 +77,26 @@ class GraphIsomorphismTransformComplement : public IGraphIsomorphismTransform
 
     // Can be empty: leaf of tree
     const std::vector<GraphTags> &getChildTags() const override;
-    const std::vector < const IGraphIsomorphismTransform * > &getChildren(const GraphTags &) const override;
+    const std::vector<const IGraphIsomorphismTransform *> &getChildren(const GraphTags &) const override;
+};
+
+class GraphIsomorphismTransformLeaf : public IGraphIsomorphismTransform
+{
+  public:
+    explicit GraphIsomorphismTransformLeaf(const Graph::IGraphUs &);
+    GraphVertex getVertexInParent(GraphVertex) const override;
+
+    const Graph::IGraphUs &getSelf() const override;
+    const GraphTags &getTagSelf() const override;
+
+    // Can be empty: leaf of tree
+    const std::vector<GraphTags> &getChildTags() const override;
+    const std::vector<const IGraphIsomorphismTransform *> &getChildren(const GraphTags &) const override;
+
+  private:
+    const Graph::IGraphUs &m_self;
+    GraphTags m_tagSelf;
+    std::vector<GraphTags> m_childTags;
 };
 
 } // namespace GraphIsomorphism
