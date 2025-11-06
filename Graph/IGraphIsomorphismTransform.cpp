@@ -21,6 +21,10 @@ GraphTags IGraphIsomorphismTransform::GetGraphTags(const Graph::IGraphUs &graph)
 
 std::unique_ptr<IGraphIsomorphismTransform> IGraphIsomorphismTransform::Create(const Graph::IGraphUs &graph)
 {
+    if (!graph.isConnected())
+    {
+        return std::make_unique<GraphIsomorphismTransformDisconnected>(graph);
+    }
     return std::make_unique<GraphIsomorphismTransformLeaf>(graph);
 }
 
@@ -71,7 +75,37 @@ GraphIsomorphismTransformDisconnected::GraphIsomorphismTransformDisconnected(con
     for (const auto &cmp : components)
     {
         m_children.emplace_back(m_self, cmp.second);
-        m_childTags.emplace_back(IGraphIsomorphismTransform::GetGraphTags(m_children.back()));
-        m_childTransforms[m_childTags.back()].emplace_back(IGraphIsomorphismTransform::Create(m_children.back()));
+        const auto tag = IGraphIsomorphismTransform::GetGraphTags(m_children.back());
+        if (!m_childTransformsUP.contains(tag))
+        {
+            m_childTags.emplace_back(tag);
+        }
+        m_childTransformsUP[tag].emplace_back(IGraphIsomorphismTransform::Create(m_children.back()));
+        m_childTransforms.emplace_back(m_childTransformsUP.at(tag).back().get());
     }
+}
+
+GraphVertex GraphIsomorphismTransformDisconnected::getVertexInParent(GraphVertex v) const
+{
+    return v;
+}
+
+const Graph::IGraphUs &GraphIsomorphismTransformDisconnected::getSelf() const
+{
+    return m_self;
+}
+
+const GraphTags &GraphIsomorphismTransformDisconnected::getTagSelf() const
+{
+    return m_tagSelf;
+}
+
+const std::vector<GraphTags> &GraphIsomorphismTransformDisconnected::getChildTags() const
+{
+    return m_childTags;
+}
+const std::vector<const IGraphIsomorphismTransform *> &GraphIsomorphismTransformDisconnected::getChildren(
+    const GraphTags &) const
+{
+    return m_childTransforms;
 }

@@ -25,7 +25,6 @@ class IGraphIsomorphismTransform
 
     static GraphTags GetGraphTags(const Graph::IGraphUs &);
 
-  protected:
     static std::unique_ptr<IGraphIsomorphismTransform> Create(const Graph::IGraphUs &);
 };
 
@@ -47,7 +46,8 @@ class GraphIsomorphismTransformDisconnected : public IGraphIsomorphismTransform
     GraphTags m_tagSelf;
     std::vector<Graph::SubGraphConnected> m_children;
     std::vector<GraphTags> m_childTags;
-    std::map<GraphTags, std::vector<std::unique_ptr<IGraphIsomorphismTransform>>> m_childTransforms;
+    std::map<GraphTags, std::vector<std::unique_ptr<IGraphIsomorphismTransform>>> m_childTransformsUP;
+    std::vector<const IGraphIsomorphismTransform *> m_childTransforms;
 };
 
 class GraphIsomorphismTransformVertexFullyConnected : public IGraphIsomorphismTransform
