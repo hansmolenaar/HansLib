@@ -23,5 +23,6 @@ class IGraphUs
 
     std::vector<GraphVertex> getSortedDegreeSequence() const;
     bool isConnected() const;
+    bool isComplete() const;
 };
 }; // namespace Graph
