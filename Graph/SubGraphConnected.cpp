@@ -6,85 +6,43 @@
 using namespace Graph;
 using namespace Utilities;
 
-namespace
-{
-
-std::optional<GraphVertex> ToLocal(GraphVertex vertexInParent, const std::vector<GraphVertex> &verticesInParent)
-{
-    const auto itr = str::find(verticesInParent, vertexInParent);
-    if (itr == verticesInParent.end())
-    {
-        return {};
-    }
-    auto result = std::distance(verticesInParent.begin(), itr);
-    return result;
-}
-
-UndirectedGraph Generate(const IGraphUs &master, const std::vector<GraphVertex> &verticesInParent)
-{
-    const GraphVertex nVertices = verticesInParent.size();
-    UndirectedGraph graph(nVertices);
-
-    std::vector<GraphVertex> ngbs;
-    for (GraphVertex v = 0; v < master.getNumVertices(); ++v)
-    {
-        const auto vLocal = ToLocal(v, verticesInParent);
-        if (!vLocal)
-        {
-            continue;
-        }
-        master.setAdjacentVertices(v, ngbs);
-        for (auto ngb : ngbs)
-        {
-            const auto ngbLocal = ToLocal(ngb, verticesInParent);
-            if (ngbLocal && ngb > v)
-            {
-                graph.addEdge(*vLocal, *ngbLocal);
-            }
-        }
-    }
-    return graph;
-}
-
-} // namespace
-
 SubGraphConnected::SubGraphConnected(const IGraphUs &master, const std::set<GraphVertex> &subSet)
-    : m_verticesInParent(subSet.begin(), subSet.end()), m_graph(Generate(master, m_verticesInParent))
+    : m_subGraph(master, subSet)
 {
+    MyAssert(m_subGraph.isConnected());
 }
 
 GraphVertex SubGraphConnected::getNumVertices() const
 {
-    return m_graph.getNumVertices();
+    return m_subGraph.getNumVertices();
 }
 
 GraphEdge SubGraphConnected::getNumEdges() const
 {
-    return m_graph.getNumEdges();
+    return m_subGraph.getNumEdges();
 }
 
 void SubGraphConnected::setAdjacentVertices(GraphVertex vertex, std::vector<GraphVertex> &result) const
-
 {
-    return m_graph.setAdjacentVertices(vertex, result);
+    return m_subGraph.setAdjacentVertices(vertex, result);
 }
 
 bool SubGraphConnected::areAdjacent(GraphVertex v1, GraphVertex v2) const
 {
-    return m_graph.areAdjacent(v1, v2);
+    return m_subGraph.areAdjacent(v1, v2);
 }
 
 GraphVertex SubGraphConnected::getDegree(GraphVertex vertex) const
 {
-    return m_graph.getDegree(vertex);
+    return m_subGraph.getDegree(vertex);
 }
 
 std::vector<GraphVertex> SubGraphConnected::getConnectedComponents() const
 {
-    return m_graph.getConnectedComponents();
+    return m_subGraph.getConnectedComponents();
 }
 
 GraphVertex SubGraphConnected::getVertexInParent(GraphVertex v) const
 {
-    return m_verticesInParent.at(v);
+    return m_subGraph.getVertexInParent(v);
 }

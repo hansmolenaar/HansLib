@@ -1,15 +1,14 @@
 #pragma once
 
-#include "IGraphUsc.h"
-#include "SubGraph.h"
+#include "UndirectedGraph.h"
 
 namespace Graph
 {
 
-class SubGraphConnected : public IGraphUsc
+class SubGraph : public IGraphUs
 {
   public:
-    SubGraphConnected(const IGraphUs &, const std::set<GraphVertex> &);
+    SubGraph(const IGraphUs &, const std::set<GraphVertex> &);
     GraphVertex getNumVertices() const override;
     GraphEdge getNumEdges() const override;
     void setAdjacentVertices(GraphVertex, std::vector<GraphVertex> &) const override;
@@ -19,6 +18,7 @@ class SubGraphConnected : public IGraphUsc
     GraphVertex getVertexInParent(GraphVertex) const;
 
   private:
-    SubGraph m_subGraph;
+    std::vector<GraphVertex> m_verticesInParent;
+    UndirectedGraph m_graph;
 };
 } // namespace Graph
