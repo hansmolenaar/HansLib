@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "Defines.h"
-#include "IGraphIsomorphismTransform.h"
+#include "IGraphIsomorphismDecompose.h"
 #include "Single.h"
 #include "UndirectedGraphFromG6.h"
 #include "UndirectedGraphLibrary.h"
@@ -13,8 +13,8 @@ using namespace Utilities;
 namespace
 {
 
-GraphVertex GetVertexInRoot(GraphVertex vertex, const IGraphIsomorphismTransform *transform,
-                            const IGraphIsomorphismTransform::ToParentMap toParent)
+GraphVertex GetVertexInRoot(GraphVertex vertex, const IGraphIsomorphismDecompose *transform,
+                            const IGraphIsomorphismDecompose::ToParentMap toParent)
 {
     while (toParent.contains(transform))
     {
@@ -24,10 +24,10 @@ GraphVertex GetVertexInRoot(GraphVertex vertex, const IGraphIsomorphismTransform
     return vertex;
 }
 
-void CheckTransform(const IGraphUs &graph, int expectNumLeaves = -1)
+void CheckDecompose(const IGraphUs &graph, int expectNumLeaves = -1)
 {
-    const auto transformed = IGraphIsomorphismTransform::Create(graph);
-    const auto toParent = IGraphIsomorphismTransform::GetToParentMap(transformed.get());
+    const auto transformed = IGraphIsomorphismDecompose::Create(graph);
+    const auto toParent = IGraphIsomorphismDecompose::GetToParentMap(transformed.get());
 
     int numLeaves = 0;
     std::vector<GraphVertex> vertices;
@@ -61,34 +61,34 @@ void CheckTransform(const IGraphUs &graph, int expectNumLeaves = -1)
 }
 } // namespace
 
-TEST(IGraphIsomorphismTransformTest, GetToParentMapSingleton)
+TEST(IGraphIsomorphismDecomposeTest, GetToParentMapSingleton)
 {
     const auto graph = UndirectedGraphLibrary::Get_Singleton();
-    const auto transformed = IGraphIsomorphismTransform::Create(*graph);
-    const auto toParent = IGraphIsomorphismTransform::GetToParentMap(transformed.get());
+    const auto transformed = IGraphIsomorphismDecompose::Create(*graph);
+    const auto toParent = IGraphIsomorphismDecompose::GetToParentMap(transformed.get());
     ASSERT_EQ(toParent.size(), 1);
     ASSERT_EQ(toParent.begin()->first, transformed.get());
     ASSERT_EQ(toParent.begin()->second, nullptr);
 
-    CheckTransform(*graph, 1);
+    CheckDecompose(*graph, 1);
 }
 
-TEST(IGraphIsomorphismTransformTest, GetToParentMapDisconnected2)
+TEST(IGraphIsomorphismDecomposeTest, GetToParentMapDisconnected2)
 {
     const auto graph = UndirectedGraphLibrary::Get_DisconnectedGraph(2);
-    const auto transformed = IGraphIsomorphismTransform::Create(*graph);
+    const auto transformed = IGraphIsomorphismDecompose::Create(*graph);
     const auto *root = transformed.get();
-    const auto toParent = IGraphIsomorphismTransform::GetToParentMap(root);
+    const auto toParent = IGraphIsomorphismDecompose::GetToParentMap(root);
     ASSERT_EQ(toParent.size(), 3);
     ASSERT_EQ(toParent.at(root), nullptr);
 
-    CheckTransform(*graph, 2);
+    CheckDecompose(*graph, 2);
 }
 
-TEST(IGraphIsomorphismTransformTest, Disconnected2)
+TEST(IGraphIsomorphismDecomposeTest, Disconnected2)
 {
     const auto graph = UndirectedGraphLibrary::Get_DisconnectedGraph(2);
-    const auto transformed = IGraphIsomorphismTransform::Create(*graph);
+    const auto transformed = IGraphIsomorphismDecompose::Create(*graph);
     const auto &tag = Single(transformed->getChildTags());
     const auto &children = transformed->getChildren(tag);
     ASSERT_EQ(children.size(), 2);
@@ -99,13 +99,13 @@ TEST(IGraphIsomorphismTransformTest, Disconnected2)
     ASSERT_EQ(children.at(1)->getSelf().getNumVertices(), 1);
     ASSERT_EQ(children.at(1)->getVertexInParent(0), 1);
 
-    CheckTransform(*graph, 2);
+    CheckDecompose(*graph, 2);
 }
 
-TEST(IGraphIsomorphismTransformTest, EdgePlusVertex)
+TEST(IGraphIsomorphismDecomposeTest, EdgePlusVertex)
 {
     const auto graph = UndirectedGraphFromG6::Create("BO");
-    const auto transformed = IGraphIsomorphismTransform::Create(*graph);
+    const auto transformed = IGraphIsomorphismDecompose::Create(*graph);
     const auto &tags = transformed->getChildTags();
     ASSERT_EQ(tags.size(), 2);
 
@@ -126,5 +126,5 @@ TEST(IGraphIsomorphismTransformTest, EdgePlusVertex)
     ASSERT_TRUE(tagsGrandChildren1.empty());
     ASSERT_EQ(Single(children1)->getVertexInParent(0), 1);
 
-    CheckTransform(*graph, 2);
+    CheckDecompose(*graph, 2);
 }
