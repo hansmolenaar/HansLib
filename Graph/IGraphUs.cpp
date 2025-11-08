@@ -33,3 +33,13 @@ bool IGraphUs::isComplete() const
     const GraphVertex maxNumEdges = nVertices * (nVertices - 1) / 2;
     return getNumEdges() == maxNumEdges;
 }
+
+std::vector<GraphVertex> IGraphUs::getFullyConnectedVertices() const
+{
+    std::vector<GraphVertex> result;
+    const auto nVertices = getNumVertices();
+    const auto maxDegree = nVertices - 1;
+    str::copy_if(str::iota_view(GraphVertex{0}, nVertices), std::back_inserter(result),
+                 [this, maxDegree](GraphVertex v) { return getDegree(v) == maxDegree; });
+    return result;
+}
