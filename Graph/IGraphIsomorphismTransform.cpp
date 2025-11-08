@@ -20,6 +20,22 @@ GraphVertex GetVertexInParent(GraphVertex vertex, const IGraphIsomorphismTransfo
     }
     return vertex;
 }
+
+void AddToParentMapRecur(const IGraphIsomorphismTransform *current, const IGraphIsomorphismTransform *parent,
+                         IGraphIsomorphismTransform::ToParentMap &toParent)
+{
+    // Add self
+    toParent[current] = parent;
+
+    for (const auto &tag : current->getChildTags())
+    {
+        for (const auto *child : current->getChildren(tag))
+        {
+            AddToParentMapRecur(child, current, toParent);
+        }
+    }
+}
+
 } // namespace
 
 // !!!!!!!!!!!  IGraphIsomorphismTransform
@@ -43,6 +59,18 @@ std::unique_ptr<IGraphIsomorphismTransform> IGraphIsomorphismTransform::Create(c
     return std::make_unique<GraphIsomorphismTransformLeaf>(graph);
 }
 
+bool IGraphIsomorphismTransform::isLeaf() const
+{
+    return getChildTags().empty();
+}
+
+IGraphIsomorphismTransform::ToParentMap IGraphIsomorphismTransform::GetToParentMap(
+    const IGraphIsomorphismTransform *root)
+{
+    ToParentMap result;
+    AddToParentMapRecur(root, nullptr, result);
+    return result;
+}
 // !!!!!!!!!!! Leaf
 GraphIsomorphismTransformLeaf::GraphIsomorphismTransformLeaf(const Graph::IGraphUs &graph)
     : m_self(graph), m_tagSelf(IGraphIsomorphismTransform::GetGraphTags(m_self))

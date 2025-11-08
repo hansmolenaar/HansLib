@@ -23,9 +23,14 @@ class IGraphIsomorphismTransform
     virtual const std::vector<GraphTags> &getChildTags() const = 0;
     virtual std::vector<const IGraphIsomorphismTransform *> getChildren(const GraphTags &) const = 0;
 
-    static GraphTags GetGraphTags(const Graph::IGraphUs &);
+    bool isLeaf() const;
 
+    static GraphTags GetGraphTags(const Graph::IGraphUs &);
     static std::unique_ptr<IGraphIsomorphismTransform> Create(const Graph::IGraphUs &);
+
+    // Root has nullptr as parent
+    using ToParentMap = std::map<const IGraphIsomorphismTransform *, const IGraphIsomorphismTransform *>;
+    static ToParentMap GetToParentMap(const IGraphIsomorphismTransform *);
 };
 
 class GraphIsomorphismTransformDisconnected : public IGraphIsomorphismTransform
