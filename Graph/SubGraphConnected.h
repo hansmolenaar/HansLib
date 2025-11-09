@@ -6,19 +6,10 @@
 namespace Graph
 {
 
-class SubGraphConnected : public IGraphUsc
+class SubGraphConnected : public SubGraph
 {
   public:
     SubGraphConnected(const IGraphUs &, const std::set<GraphVertex> &);
-    GraphVertex getNumVertices() const override;
-    GraphEdge getNumEdges() const override;
-    void setAdjacentVertices(GraphVertex, std::vector<GraphVertex> &) const override;
-    bool areAdjacent(GraphVertex, GraphVertex) const override;
-    GraphVertex getDegree(GraphVertex) const override;
-    std::vector<GraphVertex> getConnectedComponents() const override;
-    GraphVertex getVertexInParent(GraphVertex) const;
 
-  private:
-    SubGraph m_subGraph;
 };
 } // namespace Graph

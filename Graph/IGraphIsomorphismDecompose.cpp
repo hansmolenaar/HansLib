@@ -13,11 +13,6 @@ namespace
 GraphVertex GetVertexInParent(GraphVertex vertex, const IGraphIsomorphismDecompose &decompose)
 {
     const auto &self = decompose.getSelf();
-    const auto *subGraphConnected = dynamic_cast<const SubGraphConnected *>(&self);
-    if (subGraphConnected != nullptr)
-    {
-        return subGraphConnected->getVertexInParent(vertex);
-    }
     const auto *subGraph = dynamic_cast<const SubGraph *>(&self);
     if (subGraph != nullptr)
     {
