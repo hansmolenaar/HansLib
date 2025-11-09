@@ -77,20 +77,6 @@ class GraphIsomorphismDecomposeVertexFullyConnected : public IGraphIsomorphismDe
     std::map<GraphTags, std::vector<std::unique_ptr<IGraphIsomorphismDecompose>>> m_childDecomposes;
 };
 
-class GraphIsomorphismDecomposeComplement : public IGraphIsomorphismDecompose
-{
-  public:
-    explicit GraphIsomorphismDecomposeComplement(const Graph::IGraphUs &);
-    GraphVertex getVertexInParent(GraphVertex) const override;
-
-    const Graph::IGraphUs &getSelf() const override;
-    const GraphTags &getTagSelf() const override;
-
-    // Can be empty: leaf of tree
-    const std::vector<GraphTags> &getChildTags() const override;
-    std::vector<const IGraphIsomorphismDecompose *> getChildren(const GraphTags &) const override;
-};
-
 class GraphIsomorphismDecomposeLeaf : public IGraphIsomorphismDecompose
 {
   public:
