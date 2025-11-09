@@ -21,6 +21,7 @@ class IGraphUs
     virtual GraphVertex getDegree(GraphVertex vertex) const = 0;
     virtual std::vector<GraphVertex> getConnectedComponents() const = 0;
 
+    std::vector<GraphVertex> getDegreeSequence() const;
     std::vector<GraphVertex> getSortedDegreeSequence() const;
     bool isConnected() const;
     bool isComplete() const;

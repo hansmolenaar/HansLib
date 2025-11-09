@@ -1,0 +1,12 @@
+#pragma once
+
+#include <vector>
+
+#include "GraphIsomorphismDefines.h"
+
+namespace GraphIsomorphismUtils
+{
+
+template <typename T> GraphIsomorphism::Tag CondenseSizeSequence(const std::vector<T> &);
+
+} // namespace GraphIsomorphismUtils

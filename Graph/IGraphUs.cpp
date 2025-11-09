@@ -3,7 +3,7 @@
 
 using namespace Graph;
 
-std::vector<GraphVertex> IGraphUs ::getSortedDegreeSequence() const
+std::vector<GraphVertex> IGraphUs ::getDegreeSequence() const
 {
     const auto numVertices = getNumVertices();
     std::vector<GraphVertex> result(numVertices);
@@ -12,6 +12,12 @@ std::vector<GraphVertex> IGraphUs ::getSortedDegreeSequence() const
         result[v] = getDegree(v);
     }
 
+    return result;
+}
+
+std::vector<GraphVertex> IGraphUs ::getSortedDegreeSequence() const
+{
+    auto result = getDegreeSequence();
     str::sort(result);
     return result;
 }

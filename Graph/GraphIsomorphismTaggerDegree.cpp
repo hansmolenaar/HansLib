@@ -1,13 +1,14 @@
 #include "GraphIsomorphismTaggerDegree.h"
 #include "Defines.h"
 #include "GraphIsomorphismTagFlyweight.h"
+#include "GraphIsomorphismUtils.h"
 
 using namespace GraphIsomorphism;
 
-GraphIsomorphism::TaggerDegree::TaggerDegree(const Graph::IGraphUs &graph)
-    : m_graph(graph), m_degreeSequenceTag(graph.getNumVertices())
+GraphIsomorphism::TaggerDegree::TaggerDegree(const Graph::IGraphUs &graph) : m_graph(graph)
 {
-    str::copy(graph.getSortedDegreeSequence(), m_degreeSequenceTag.begin());
+    str::copy(GraphIsomorphismUtils::CondenseSizeSequence(graph.getDegreeSequence()),
+              std::back_inserter(m_degreeSequenceTag));
 }
 
 const Tag &TaggerDegree::getGraphTag() const

@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "Defines.h"
+#include "GraphIsomorphismUtils.h"
 #include "IGraphIsomorphismDecompose.h"
 #include "Single.h"
 #include "UndirectedGraphFromG6.h"
@@ -60,8 +61,7 @@ void CheckDecompose(const IGraphUs &graph, int expectNumLeaves = -1)
     ASSERT_EQ(vertices.back(), fullNumVertices - 1);
 }
 
-void CheckDecomposeList(const std::vector<std::string> &g6list, size_t expectNumUnique,
-                        std::initializer_list<size_t> expectSortedMultiplicities)
+void CheckDecomposeList(const std::vector<std::string> &g6list, Tag expectMultiplicities)
 {
     const std::vector<std::unique_ptr<Graph::IGraphUs>> graphs = UndirectedGraphFromG6::getGraphs(g6list);
     std::map<GraphTags, size_t> multiplicityMap;
@@ -70,23 +70,15 @@ void CheckDecomposeList(const std::vector<std::string> &g6list, size_t expectNum
         CheckDecompose(*g);
         multiplicityMap[IGraphIsomorphismDecompose::GetGraphTags(*g)] += 1;
     }
-    size_t countUnique = 0;
-    std::vector<size_t> sortedMultiplicities;
+
+    std::vector<size_t> multiplicities;
     for (const auto &itr : multiplicityMap)
     {
-        if (itr.second == 1)
-        {
-            countUnique += 1;
-        }
-        else
-        {
-            sortedMultiplicities.push_back(itr.second);
-        }
+        multiplicities.push_back(itr.second);
     }
-    ASSERT_EQ(countUnique, expectNumUnique);
+    const auto tag = GraphIsomorphismUtils::CondenseSizeSequence(multiplicities);
 
-    str::sort(sortedMultiplicities);
-    if (!str::equal(sortedMultiplicities, expectSortedMultiplicities))
+    if (!str::equal(tag, expectMultiplicities))
     {
         ASSERT_TRUE(false);
     }
@@ -206,21 +198,26 @@ TEST(IGraphIsomorphismDecomposeTest, X100)
 
 TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList3)
 {
-    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_3(), 4, {});
+    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_3(), Tag{1, 4});
 }
 
 TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList4)
 {
-    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_4(), 11, {});
+    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_4(), Tag{1, 11});
 }
 
 TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList5)
 {
-    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_5(), 30, {2, 2});
+    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_5(), {1, 30, 2, 2});
 }
 
 TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList6)
 {
-    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_6(), 74,
-                       {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 5, 5});
+    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_6(), {1, 74, 2, 16, 3, 5, 4, 6, 5, 2});
+}
+
+TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList7)
+{
+    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_7(),
+                       {1, 105, 2, 39, 3, 12, 4, 4, 5, 3, 6, 6, 7, 1, 9, 1});
 }
