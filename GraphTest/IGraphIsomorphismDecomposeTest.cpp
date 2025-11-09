@@ -59,6 +59,39 @@ void CheckDecompose(const IGraphUs &graph, int expectNumLeaves = -1)
     ASSERT_EQ(vertices.front(), 0);
     ASSERT_EQ(vertices.back(), fullNumVertices - 1);
 }
+
+void CheckDecomposeList(const std::vector<std::string> &g6list, size_t expectNumUnique,
+                        std::initializer_list<size_t> expectSortedMultiplicities)
+{
+    const std::vector<std::unique_ptr<Graph::IGraphUs>> graphs = UndirectedGraphFromG6::getGraphs(g6list);
+    std::map<GraphTags, size_t> multiplicityMap;
+    for (const auto &g : graphs)
+    {
+        CheckDecompose(*g);
+        multiplicityMap[IGraphIsomorphismDecompose::GetGraphTags(*g)] += 1;
+    }
+    size_t countUnique = 0;
+    std::vector<size_t> sortedMultiplicities;
+    for (const auto &itr : multiplicityMap)
+    {
+        if (itr.second == 1)
+        {
+            countUnique += 1;
+        }
+        else
+        {
+            sortedMultiplicities.push_back(itr.second);
+        }
+    }
+    ASSERT_EQ(countUnique, expectNumUnique);
+
+    str::sort(sortedMultiplicities);
+    if (!str::equal(sortedMultiplicities, expectSortedMultiplicities))
+    {
+        ASSERT_TRUE(false);
+    }
+}
+
 } // namespace
 
 TEST(IGraphIsomorphismDecomposeTest, GetToParentMapSingleton)
@@ -169,4 +202,25 @@ TEST(IGraphIsomorphismDecomposeTest, X100)
     const auto graph = UndirectedGraphFromG6::Create("FgCNw");
     const auto decomposeed = IGraphIsomorphismDecompose::Create(*graph);
     CheckDecompose(*graph, 3);
+}
+
+TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList3)
+{
+    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_3(), 4, {});
+}
+
+TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList4)
+{
+    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_4(), 11, {});
+}
+
+TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList5)
+{
+    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_5(), 30, {2, 2});
+}
+
+TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList6)
+{
+    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_6(), 74,
+                       {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 5, 5});
 }

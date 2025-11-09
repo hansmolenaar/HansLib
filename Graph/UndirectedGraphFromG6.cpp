@@ -9,6 +9,11 @@ using SortedEdge = std::pair<GraphVertex, GraphVertex>;
 
 namespace
 {
+
+std::vector<std::string> ListNumVertices_3 = {"Bw", "BW", "BG", "B?"};
+
+std::vector<std::string> ListNumVertices_4 = {"C^", "C?", "C~", "C@", "CF", "C`", "CR", "CJ", "CN", "Cr", "CB"};
+
 std::vector<std::string> ListNumVertices_5_connected = {
     "D@s", "DBw", "DD[", "DFw", "DF{", "DDW", "D`[", "DqK", "DJ{", "Dr[", "Dr{",
     "D^{", "D~{", "D?{", "D`{", "DJk", "DN{", "D@{", "DB{", "DR{", "Dd[",
@@ -838,6 +843,16 @@ std::unique_ptr<UndirectedGraph> UndirectedGraphFromG6::Create(std::string line)
         result->addEdge(e.first, e.second);
     }
     return result;
+}
+
+const std::vector<std::string> &UndirectedGraphFromG6::getListNumVertices_3()
+{
+    return ListNumVertices_3;
+}
+
+const std::vector<std::string> &UndirectedGraphFromG6::getListNumVertices_4()
+{
+    return ListNumVertices_4;
 }
 
 std::unique_ptr<Graph::GraphUsc> UndirectedGraphFromG6::CreateConnected(std::string g6)
