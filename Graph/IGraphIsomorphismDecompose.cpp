@@ -1,6 +1,7 @@
 #include "IGraphIsomorphismDecompose.h"
 #include "Defines.h"
 #include "GraphIsomorphismConstruct.h"
+#include "GraphIsomorphismTaggerKnown.h"
 #include "IGraphIsomorphismTagger.h"
 #include "MyAssert.h"
 
@@ -57,15 +58,19 @@ std::unique_ptr<IGraphIsomorphismDecompose> IGraphIsomorphismDecompose::Create(c
         return std::make_unique<GraphIsomorphismDecomposeDisconnected>(graph);
     }
 
-    if (!graph.isComplete())
+    const TaggerKnown taggerKnown(graph);
+    const auto knownTag = taggerKnown.getGraphTag();
+    if (knownTag.front() != TaggerKnown::KnownType::Unknown)
     {
-        const auto fullyConnectedVertices = graph.getFullyConnectedVertices();
-        if (!fullyConnectedVertices.empty())
-        {
-            const std::set<GraphVertex> fullyConnectedVerticesSet(fullyConnectedVertices.begin(),
-                                                                  fullyConnectedVertices.end());
-            return std::make_unique<GraphIsomorphismDecomposeVertexFullyConnected>(graph, fullyConnectedVerticesSet);
-        }
+        return std::make_unique<GraphIsomorphismDecomposeLeaf>(graph);
+    }
+
+    const auto fullyConnectedVertices = graph.getFullyConnectedVertices();
+    if (!fullyConnectedVertices.empty())
+    {
+        const std::set<GraphVertex> fullyConnectedVerticesSet(fullyConnectedVertices.begin(),
+                                                              fullyConnectedVertices.end());
+        return std::make_unique<GraphIsomorphismDecomposeVertexFullyConnected>(graph, fullyConnectedVerticesSet);
     }
 
     return std::make_unique<GraphIsomorphismDecomposeLeaf>(graph);
@@ -226,6 +231,7 @@ const std::vector<GraphTags> &GraphIsomorphismDecomposeVertexFullyConnected::get
 {
     return m_childTags;
 }
+
 std::vector<const IGraphIsomorphismDecompose *> GraphIsomorphismDecomposeVertexFullyConnected::getChildren(
     const GraphTags &tag) const
 {

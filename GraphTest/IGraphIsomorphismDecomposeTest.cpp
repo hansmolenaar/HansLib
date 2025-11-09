@@ -147,7 +147,7 @@ TEST(IGraphIsomorphismDecomposeTest, Dart)
 {
     const auto graph = UndirectedGraphFromG6::Create("DvC");
     const auto decomposeed = IGraphIsomorphismDecompose::Create(*graph);
-    CheckDecompose(*graph, 5);
+    CheckDecompose(*graph, 3);
 }
 
 TEST(IGraphIsomorphismDecomposeTest, K5MinE)
@@ -168,5 +168,5 @@ TEST(IGraphIsomorphismDecomposeTest, X100)
 {
     const auto graph = UndirectedGraphFromG6::Create("FgCNw");
     const auto decomposeed = IGraphIsomorphismDecompose::Create(*graph);
-    CheckDecompose(*graph, 7);
+    CheckDecompose(*graph, 3);
 }
