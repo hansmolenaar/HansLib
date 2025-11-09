@@ -253,3 +253,27 @@ std::string UndirectedGraph::toString() const
     }
     return retval.str();
 }
+
+UndirectedGraph UndirectedGraph::CreateComplement(const IGraphUs &graph)
+{
+    const auto nVertices = graph.getNumVertices();
+    MyAssert(nVertices > 1);
+    UndirectedGraph result(nVertices);
+
+    std::vector<GraphVertex> vertices(nVertices);
+    str::iota(vertices, 0);
+    std::vector<GraphVertex> ngbs;
+    std::vector<GraphVertex> newEdges;
+    for (GraphVertex v = 0; v < nVertices; ++v)
+    {
+        graph.setAdjacentVertices(v, ngbs);
+        newEdges.clear();
+        std::set_difference(vertices.begin() + v + 1, vertices.end(), ngbs.begin(), ngbs.end(),
+                            std::back_inserter(newEdges));
+        for (GraphVertex n : newEdges)
+        {
+            result.addEdge(v, n);
+        }
+    }
+    return result;
+}

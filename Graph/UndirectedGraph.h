@@ -29,6 +29,7 @@ class UndirectedGraph : public Graph::IGraphUs
 
     static UndirectedGraph CreatePermuted(const IGraphUs &, const Permutation &permut);
     static UndirectedGraph CreatePermuted(const IGraphUs &, std::initializer_list<Permutation::Entry>);
+    static UndirectedGraph CreateComplement(const IGraphUs &);
 
     struct CyclesAndPaths
     {

@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "Defines.h"
+#include "GraphIsomorphismTaggerKnown.h"
 #include "IGraphUs.h"
 #include "Single.h"
 #include "UndirectedGraphFromG6.h"
@@ -8,6 +9,7 @@
 
 using namespace Utilities;
 using namespace Graph;
+using namespace GraphIsomorphism;
 
 namespace
 {
@@ -271,4 +273,84 @@ TEST(UndirectedGraphTest, Permut)
     std::vector<GraphVertex> degreeSequencePrm = permuted.getSortedDegreeSequence();
 
     ASSERT_TRUE(str::equal(degreeSequenceOrg, degreeSequencePrm));
+}
+
+TEST(UndirectedGraphTest, Complement_Null)
+{
+    const auto graph = UndirectedGraphLibrary::Get_Null();
+    ASSERT_ANY_THROW(UndirectedGraph::CreateComplement(*graph));
+}
+
+TEST(UndirectedGraphTest, Complement_Singleton)
+{
+    const auto graph = UndirectedGraphLibrary::Get_Singleton();
+    ASSERT_ANY_THROW(UndirectedGraph::CreateComplement(*graph));
+}
+
+TEST(UndirectedGraphTest, Complement_Path2)
+{
+    const auto graph = UndirectedGraphLibrary::Get_Path(2);
+    const auto complement = UndirectedGraph::CreateComplement(*graph);
+    ASSERT_EQ(complement.getNumVertices(), 2);
+    ASSERT_EQ(complement.getNumEdges(), 0);
+}
+
+TEST(UndirectedGraphTest, Complement_Cycle3)
+{
+    const auto graph = UndirectedGraphLibrary::Get_Cycle(3);
+    const auto complement = UndirectedGraph::CreateComplement(*graph);
+    ASSERT_EQ(complement.getNumVertices(), 3);
+    ASSERT_EQ(complement.getNumEdges(), 0);
+}
+
+TEST(UndirectedGraphTest, Complement_Path3)
+{
+    const auto graph = UndirectedGraphLibrary::Get_Path(3);
+    const auto complement = UndirectedGraph::CreateComplement(*graph);
+    ASSERT_EQ(complement.getNumVertices(), 3);
+    ASSERT_EQ(complement.getNumEdges(), 1);
+    ASSERT_TRUE(complement.areAdjacent(0, 2));
+}
+
+TEST(UndirectedGraphTest, Complement_path4)
+{
+    const auto graph = UndirectedGraphLibrary::Get_Path(4);
+    const auto complement = UndirectedGraph::CreateComplement(*graph);
+    GraphIsomorphism::TaggerKnown tagger(complement);
+    ASSERT_EQ(tagger.getGraphTag(), (Tag{TaggerKnown::KnownType::Path, 4}));
+}
+
+TEST(UndirectedGraphTest, Complement_dianmond)
+{
+    const auto graph = UndirectedGraphLibrary::Get_Diamond();
+    const auto complement = UndirectedGraph::CreateComplement(*graph);
+    ASSERT_EQ(complement.getNumVertices(), 4);
+    ASSERT_EQ(complement.getNumEdges(), 1);
+    ASSERT_TRUE(complement.areAdjacent(0, 3));
+}
+
+TEST(UndirectedGraphTest, Complement_pan3)
+{
+    const auto graph = UndirectedGraphFromG6::Create(UndirectedGraphFromG6::pan3);
+    const auto complement = UndirectedGraph::CreateComplement(*graph);
+    ASSERT_EQ(complement.getNumVertices(), 4);
+    ASSERT_EQ(complement.getNumEdges(), 2);
+    ASSERT_TRUE(complement.areAdjacent(1, 3));
+    ASSERT_TRUE(complement.areAdjacent(0, 3));
+}
+
+TEST(UndirectedGraphTest, Complement_house)
+{
+    const auto graph = UndirectedGraphFromG6::Create(UndirectedGraphFromG6::house);
+    const auto complement = UndirectedGraph::CreateComplement(*graph);
+    GraphIsomorphism::TaggerKnown tagger(complement);
+    ASSERT_EQ(tagger.getGraphTag(), (Tag{TaggerKnown::KnownType::Path, 5}));
+}
+
+TEST(UndirectedGraphTest, Complement_disconnected5)
+{
+    const auto graph = UndirectedGraphLibrary::Get_DisconnectedGraph(5);
+    const auto complement = UndirectedGraph::CreateComplement(*graph);
+    GraphIsomorphism::TaggerKnown tagger(complement);
+    ASSERT_EQ(tagger.getGraphTag(), (Tag{TaggerKnown::KnownType::Complete, 5}));
 }
