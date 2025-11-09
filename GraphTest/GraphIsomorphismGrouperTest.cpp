@@ -110,8 +110,7 @@ TEST(GraphIsomorphismGrouperTest, Path4)
     ASSERT_TRUE(str::equal(grouper.getGroupMembers(tags.at(0)), std::vector<GraphVertex>{0, 3}));
     ASSERT_TRUE(str::equal(grouper.getGroupMembers(tags.at(1)), std::vector<GraphVertex>{1, 2}));
 
-    const std::vector<Permutation::Entry> perm{1, 0, 2, 3};
-    const auto graphPermuted = GraphUsc::CreatePermuted(*graph, Permutation::Create(perm));
+    const auto graphPermuted = GraphUsc::CreatePermuted(*graph, {1, 0, 2, 3});
     const auto taggerDegreePermuted = TaggerDegree(graphPermuted);
     const Grouper grouperPermuted(taggerDegreePermuted);
 

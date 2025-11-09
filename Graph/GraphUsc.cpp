@@ -66,3 +66,8 @@ GraphUsc GraphUsc::CreatePermuted(const IGraphUsc &graph, const Permutation &per
 
     return GraphUsc(result);
 }
+
+GraphUsc GraphUsc::CreatePermuted(const IGraphUsc &graph, std::initializer_list<Permutation::Entry> permut)
+{
+    return CreatePermuted(graph, Permutation::Create(permut));
+}

@@ -199,6 +199,10 @@ std::vector<GraphVertex> UndirectedGraph::getIsolatedVertices() const
     }
     return result;
 }
+UndirectedGraph UndirectedGraph::CreatePermuted(const IGraphUs &graph, std::initializer_list<Permutation::Entry> permut)
+{
+    return CreatePermuted(graph, Permutation::Create(permut));
+}
 
 UndirectedGraph UndirectedGraph::CreatePermuted(const IGraphUs &graph, const Permutation &permut)
 {

@@ -4,6 +4,8 @@
 #include "MyAssert.h"
 #include "PermutationUtils.h"
 
+#include <random>
+
 namespace
 {
 std::vector<std::vector<Permutation::Entry>> GetCycles(const std::vector<Permutation::Entry> &permutation)
@@ -67,8 +69,24 @@ Permutation::Entry Permutation::getCardinality() const
 Permutation Permutation::Create(std::span<const Entry> permutSpan)
 {
     std::vector<Entry> permut(permutSpan.begin(), permutSpan.end());
-    Utilities::MyAssert(PermutationUtils::IsPermutation(permut));
     return Permutation(std::move(permut));
+}
+
+Permutation Permutation::Create(std::initializer_list<Entry> entries)
+{
+    std::vector<Entry> permut(entries.begin(), entries.end());
+    return Permutation(std::move(permut));
+}
+
+Permutation Permutation::CreateRandomShuffle(const Permutation &permutation, Entry seed)
+{
+    std::random_device rd;
+    std::mt19937 g(rd());
+    g.seed(seed);
+
+    std::vector<Entry> permut = permutation.m_permut;
+    std::shuffle(permut.begin(), permut.end(), g);
+    return Create(permut);
 }
 
 Permutation Permutation::CreateFromCycle(Entry cardinality, std::span<const Entry> cycle)

@@ -18,6 +18,7 @@ class GraphUsc : public IGraphUsc
     std::vector<GraphVertex> getConnectedComponents() const override;
 
     static GraphUsc CreatePermuted(const IGraphUsc &, const Permutation &);
+    static GraphUsc CreatePermuted(const IGraphUsc &, std::initializer_list<Permutation::Entry>);
 
   private:
     UndirectedGraph m_graph; // TODO avoid copying?

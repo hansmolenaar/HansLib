@@ -30,8 +30,7 @@ TEST(GraphIsomorphismCheckTest, Check1)
     }
 
     {
-        const auto permutation = Permutation::Create(std::vector<Permutation::Entry>{1, 2, 3, 4, 5, 6, 0});
-        const auto permuted = UndirectedGraph::CreatePermuted(*graph, permutation);
+        const auto permuted = UndirectedGraph::CreatePermuted(*graph, {1, 2, 3, 4, 5, 6, 0});
         ASSERT_FALSE(Check{}(*graph, permuted));
     }
 
@@ -43,8 +42,7 @@ TEST(GraphIsomorphismCheckTest, Check1)
 TEST(GraphIsomorphismCheckTest, Check2)
 {
     const auto graph = UndirectedGraphLibrary::Get_Cycle(3);
-    const auto permutation = Permutation::Create(std::vector<Permutation::Entry>{1, 0, 2});
-    const auto permuted = UndirectedGraph::CreatePermuted(*graph, permutation);
+    const auto permuted = UndirectedGraph::CreatePermuted(*graph, Permutation::Create({1, 0, 2}));
     ASSERT_TRUE(Check{}(*graph, permuted));
     const std::vector<VertexPair> perm01{{0, 1}, {1, 0}, {2, 2}};
     ASSERT_TRUE(Check{}(*graph, perm01, permuted));
@@ -53,8 +51,7 @@ TEST(GraphIsomorphismCheckTest, Check2)
 TEST(GraphIsomorphismCheckTest, Check3)
 {
     const auto graph = UndirectedGraphLibrary::Get_Cycle(4);
-    const auto permutation = Permutation::Create(std::vector<Permutation::Entry>{1, 0, 2, 3});
-    const auto permuted = UndirectedGraph::CreatePermuted(*graph, permutation);
+    const auto permuted = UndirectedGraph::CreatePermuted(*graph, {1, 0, 2, 3});
     ASSERT_FALSE(Check{}(*graph, permuted));
     const std::vector<VertexPair> perm01{{0, 1}, {1, 0}, {2, 2}, {3, 3}};
     ASSERT_TRUE(Check{}(*graph, perm01, permuted));

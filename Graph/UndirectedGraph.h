@@ -12,14 +12,14 @@ class UndirectedGraph : public Graph::IGraphUs
 {
   public:
     explicit UndirectedGraph(const Graph::IGraphUs &);
-    explicit UndirectedGraph(GraphVertex numVertices);
-    void addEdge(GraphVertex vertex1, GraphVertex vertex2);
+    explicit UndirectedGraph(GraphVertex);
+    void addEdge(GraphVertex, GraphVertex);
 
     GraphVertex getNumVertices() const override;
     GraphEdge getNumEdges() const override;
-    void setAdjacentVertices(GraphVertex vertex, std::vector<GraphVertex> &result) const override;
-    bool areAdjacent(GraphVertex v1, GraphVertex v2) const override;
-    GraphVertex getDegree(GraphVertex vertex) const override;
+    void setAdjacentVertices(GraphVertex vertex, std::vector<GraphVertex> &) const override;
+    bool areAdjacent(GraphVertex, GraphVertex) const override;
+    GraphVertex getDegree(GraphVertex) const override;
     std::vector<GraphVertex> getConnectedComponents() const override;
 
     std::vector<GraphVertex> getDegreeSequence() const;
@@ -27,7 +27,8 @@ class UndirectedGraph : public Graph::IGraphUs
     std::vector<GraphVertex> getIsolatedVertices() const;
     std::string toString() const;
 
-    static UndirectedGraph CreatePermuted(const IGraphUs &graph, const Permutation &permut);
+    static UndirectedGraph CreatePermuted(const IGraphUs &, const Permutation &permut);
+    static UndirectedGraph CreatePermuted(const IGraphUs &, std::initializer_list<Permutation::Entry>);
 
     struct CyclesAndPaths
     {

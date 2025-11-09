@@ -17,9 +17,11 @@ class Permutation
     };
 
     static Permutation CreateTrivial(Entry);
+    static Permutation Create(std::initializer_list<Entry>);
     static Permutation Create(std::span<const Entry>);
     static Permutation CreateFromCycle(Entry, std::span<const Entry>);
     static Permutation CreateFromDisjunctCycles(Entry, std::initializer_list<std::initializer_list<Entry>> cyvles);
+    static Permutation CreateRandomShuffle(const Permutation &, Entry seed);
 
     template <typename InputIt, typename OutputIt> void apply(InputIt first, OutputIt d_first) const;
 

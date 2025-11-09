@@ -11,8 +11,6 @@
 #include "UndirectedGraphFromG6.h"
 #include "UndirectedGraphLibrary.h"
 
-#include <random>
-
 using namespace Graph;
 using namespace GraphTest;
 using namespace GraphIsomorphism;
@@ -36,16 +34,10 @@ void GraphTest::CheckTaggerConsistency(const IGraphUsc &graph, GraphIsomorphism:
         expectNumAssociatedvertices = grouper.countUnique();
     }
 
-    std::random_device rd;
-    std::mt19937 g(rd());
-    g.seed(42);
-
-    std::vector<Permutation::Entry> permut(nVertices);
-    str::iota(permut, 0);
+    const Permutation trivial = Permutation::CreateTrivial(nVertices);
     for (auto n = 0; n < numPermutations; ++n)
     {
-        std::shuffle(permut.begin(), permut.end(), g);
-        const auto permutation = Permutation::Create(permut);
+        const auto permutation = Permutation::CreateRandomShuffle(trivial, n);
         const UndirectedGraph graphPermuted = UndirectedGraph::CreatePermuted(graph, permutation);
         const GraphUsc uscGraphPermuted(graphPermuted);
         const auto taggerPermuted = factory.createVertexTagger(uscGraphPermuted);
@@ -68,16 +60,10 @@ void GraphTest::CheckTaggerConsistency(const Graph::IGraphUs &graph, IGraphTagge
     const auto tagger = factory.createGraphTagger(graph);
     const auto &tag = tagger->getGraphTag();
 
-    std::random_device rd;
-    std::mt19937 g(rd());
-    g.seed(42);
-
-    std::vector<Permutation::Entry> permut(nVertices);
-    str::iota(permut, 0);
+    const Permutation trivial = Permutation::CreateTrivial(nVertices);
     for (auto n = 0; n < numPermutations; ++n)
     {
-        std::shuffle(permut.begin(), permut.end(), g);
-        const auto permutation = Permutation::Create(permut);
+        const auto permutation = Permutation::CreateRandomShuffle(trivial, n);
         const UndirectedGraph graphPermuted = UndirectedGraph::CreatePermuted(graph, permutation);
         const auto taggerPermuted = factory.createGraphTagger(graphPermuted);
         ASSERT_EQ(tag, taggerPermuted->getGraphTag());

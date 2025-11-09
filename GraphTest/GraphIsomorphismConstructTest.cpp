@@ -66,8 +66,7 @@ TEST(GraphIsomorphismConstructTest, DegreeStar123)
 TEST(GraphIsomorphismConstructTest, DegreePan3)
 {
     const auto graph = UndirectedGraphFromG6::CreateConnected(UndirectedGraphFromG6::pan3);
-    const auto permuted =
-        GraphUsc::CreatePermuted(*graph, Permutation::Create(std::vector<Permutation::Entry>{2, 1, 0, 3}));
+    const auto permuted = GraphUsc::CreatePermuted(*graph, {2, 1, 0, 3});
     const auto status = Construct{}.actionConnected(*graph, permuted);
     ASSERT_EQ(status.getFlag(), Flag::Isomorphic);
 }
