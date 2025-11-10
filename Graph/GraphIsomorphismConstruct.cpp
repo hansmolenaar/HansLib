@@ -2,6 +2,7 @@
 #include "Defines.h"
 #include "GraphIsomorphismGrouper.h"
 #include "GraphIsomorphismTaggerChains.h"
+#include "GraphIsomorphismTaggerComponents.h"
 #include "GraphIsomorphismTaggerDegree.h"
 #include "GraphIsomorphismTaggerDistance.h"
 #include "GraphIsomorphismTaggerKnown.h"
@@ -15,14 +16,15 @@ using namespace Utilities;
 namespace
 {
 TaggerNumbersFactory factoryNumbers;
+TaggerComponentFactory factoryComponents;
 TaggerDegreeFactory factoryDegree;
 TaggerKnownFactory factoryKnown;
 TaggerChainsFactory factoryChains;
 TaggerMaxDegreeFactory factoryMaxDegree;
 TaggerDistanceFactory factoryDistance;
 
-const std::vector<ITaggerFactory *> factories{&factoryNumbers, &factoryDegree,    &factoryKnown,
-                                              &factoryChains,  &factoryMaxDegree, &factoryDistance};
+const std::vector<ITaggerFactory *> factories{&factoryNumbers, &factoryComponents, &factoryDegree,  &factoryKnown,
+                                              &factoryChains,  &factoryMaxDegree,  &factoryDistance};
 
 class CombinedTagger : public IVertexTagger
 {

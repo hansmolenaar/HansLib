@@ -80,23 +80,23 @@ TEST(GraphIsomorphismConstructTest, Disconnected5)
 TEST(GraphIsomorphismConstructTest, Disconnected6)
 {
     const auto graphs = UndirectedGraphFromG6::getDisconnectedGraphs(UndirectedGraphFromG6::getListNumVertices_6());
-    CheckUniquenessGraphTaggers(graphs, 43, 38);
+    CheckUniquenessGraphTaggers(graphs, 43, 41);
 }
 
 TEST(GraphIsomorphismConstructTest, Disconnected7)
 {
     const auto graphs = UndirectedGraphFromG6::getDisconnectedGraphs(UndirectedGraphFromG6::getListNumVertices_7());
-    CheckUniquenessGraphTaggers(graphs, 35, 30);
+    CheckUniquenessGraphTaggers(graphs, 35, 33);
 }
 
 TEST(GraphIsomorphismConstructTest, Disconnected8)
 {
     const auto graphs = UndirectedGraphFromG6::getDisconnectedGraphs(UndirectedGraphFromG6::getListNumVertices_8());
-    CheckUniquenessGraphTaggers(graphs, 17, 16);
+    CheckUniquenessGraphTaggers(graphs, 17, 17);
 }
 
 TEST(GraphIsomorphismConstructTest, Disconnected9)
 {
     const auto graphs = UndirectedGraphFromG6::getDisconnectedGraphs(UndirectedGraphFromG6::getListNumVertices_9());
-    CheckUniquenessGraphTaggers(graphs, 18, 16);
+    CheckUniquenessGraphTaggers(graphs, 18, 18);
 }
