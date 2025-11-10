@@ -50,8 +50,7 @@ const Tag &TaggerKnown::getGraphTag() const
 
 // !!!!!!!!!!!!! FACTORY
 
-std::unique_ptr<IGraphTagger> TaggerKnownFactory::createGraphTagger(const Graph::IGraphUs &graph)
+std::unique_ptr<ITagger> TaggerKnownFactory::createTagger(const Graph::IGraphUs &graph)
 {
-    std::unique_ptr<IGraphTagger> retval = std::make_unique<TaggerKnown>(graph);
-    return retval;
+    return std::make_unique<TaggerKnown>(graph);
 }

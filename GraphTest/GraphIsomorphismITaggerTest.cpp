@@ -19,11 +19,14 @@ namespace
 {
 };
 
-void GraphTest::CheckTaggerConsistency(const IGraphUsc &graph, GraphIsomorphism::IVertexTaggerFactory &factory,
-                                       int expectNumAssociatedvertices, int numPermutations)
+void GraphTest::CheckVertexTaggerConsistency(const IGraphUs &graph, GraphIsomorphism::ITaggerFactory &factory,
+                                             int expectNumAssociatedvertices, int numPermutations)
 {
     const auto nVertices = graph.getNumVertices();
-    const auto tagger = factory.createVertexTagger(graph);
+    const auto gtagger = factory.createTagger(graph);
+    const auto *tagger = gtagger->getVertexTagger();
+    if (tagger == nullptr)
+        return;
     const Grouper grouper(*tagger);
     if (expectNumAssociatedvertices >= 0)
     {
@@ -40,7 +43,8 @@ void GraphTest::CheckTaggerConsistency(const IGraphUsc &graph, GraphIsomorphism:
         const auto permutation = Permutation::CreateRandomShuffle(trivial, n);
         const UndirectedGraph graphPermuted = UndirectedGraph::CreatePermuted(graph, permutation);
         const GraphUsc uscGraphPermuted(graphPermuted);
-        const auto taggerPermuted = factory.createVertexTagger(uscGraphPermuted);
+        const auto gtaggerPermuted = factory.createTagger(uscGraphPermuted);
+        const auto *taggerPermuted = gtaggerPermuted->getVertexTagger();
         const Grouper grouperPermuted(*taggerPermuted);
         ASSERT_EQ(grouperPermuted.countUnique(), expectNumAssociatedvertices);
 
@@ -53,11 +57,14 @@ void GraphTest::CheckTaggerConsistency(const IGraphUsc &graph, GraphIsomorphism:
         }
     }
 };
-void GraphTest::CheckTaggerConsistency(const Graph::IGraphUs &graph, IGraphTaggerFactory &factory, int numPermutations)
+void GraphTest::CheckGraphTaggerConsistency(const Graph::IGraphUs &graph, ITaggerFactory &factory, int numPermutations)
 {
 
     const auto nVertices = graph.getNumVertices();
-    const auto tagger = factory.createGraphTagger(graph);
+    const auto gtagger = factory.createTagger(graph);
+    const auto *tagger = gtagger->getGraphTagger();
+    if (tagger == nullptr)
+        return;
     const auto &tag = tagger->getGraphTag();
 
     const Permutation trivial = Permutation::CreateTrivial(nVertices);
@@ -65,24 +72,25 @@ void GraphTest::CheckTaggerConsistency(const Graph::IGraphUs &graph, IGraphTagge
     {
         const auto permutation = Permutation::CreateRandomShuffle(trivial, n);
         const UndirectedGraph graphPermuted = UndirectedGraph::CreatePermuted(graph, permutation);
-        const auto taggerPermuted = factory.createGraphTagger(graphPermuted);
+        const auto gtaggerPermuted = factory.createTagger(graphPermuted);
+        const auto *taggerPermuted = gtaggerPermuted->getGraphTagger();
         ASSERT_EQ(tag, taggerPermuted->getGraphTag());
     }
 };
 
-void GraphTest::TaggerCheckListG6(const std::vector<std::string> &stringsG6, IVertexTaggerFactory &factory,
+void GraphTest::TaggerCheckListG6(const std::vector<std::string> &stringsG6, ITaggerFactory &factory,
                                   int expectResolved, int numPermutations)
 {
     int numResolved = 0;
     for (const auto &g6 : stringsG6)
     {
-        const auto ugraph = UndirectedGraphFromG6::Create(g6);
-        if (!ugraph->isConnected())
-            continue;
-        const GraphUsc graph(*ugraph);
+        const auto graph = UndirectedGraphFromG6::Create(g6);
 
-        GraphTest::CheckTaggerConsistency(graph, factory, -1, numPermutations);
-        const auto tagger = factory.createVertexTagger(graph);
+        GraphTest::CheckVertexTaggerConsistency(*graph, factory, -1, numPermutations);
+        const auto vtagger = factory.createTagger(*graph);
+        const auto *tagger = vtagger->getVertexTagger();
+        if (tagger == nullptr)
+            continue;
         const Grouper grouper(*tagger);
         if (grouper.isResolved())
         {
@@ -96,21 +104,33 @@ void GraphTest::TaggerCheckListG6(const std::vector<std::string> &stringsG6, IVe
     ASSERT_EQ(numResolved, expectResolved);
 }
 
-void GraphTest::CheckGraphTagger(GraphIsomorphism::IGraphTaggerFactory &factory)
+void GraphTest::CheckGraphTagger(GraphIsomorphism::ITaggerFactory &factory)
 {
     const auto graph0 = UndirectedGraphLibrary::Get_Null();
     const auto graph1 = UndirectedGraphLibrary::Get_Singleton();
-    ASSERT_FALSE(factory.haveSameTags(*graph0, *graph1));
+    const auto gtagger0 = factory.createTagger(*graph0);
+    const auto gtagger1 = factory.createTagger(*graph1);
+    const auto *tagger0 = gtagger0->getGraphTagger();
+    const auto *tagger1 = gtagger1->getGraphTagger();
+    if (tagger0 == nullptr)
+    {
+        return;
+    }
+    ASSERT_NE(tagger0->getGraphTag(), tagger1->getGraphTag());
 }
 
-void GraphTest::CheckVertexTagger(GraphIsomorphism::IVertexTaggerFactory &factory)
+void GraphTest::CheckVertexTagger(GraphIsomorphism::ITaggerFactory &factory)
 {
     const auto graph0 = UndirectedGraphLibrary::Get_Null();
-    const auto tagger0 = factory.createVertexTagger(*graph0);
+    const auto gtagger0 = factory.createTagger(*graph0);
+    const auto tagger0 = gtagger0->getVertexTagger();
+    if (tagger0 == nullptr)
+        return;
     ASSERT_EQ(tagger0->getNumVertices(), 0);
 
     const auto graph1 = UndirectedGraphLibrary::Get_Singleton();
-    const auto tagger1 = factory.createVertexTagger(*graph1);
+    const auto gtagger1 = factory.createTagger(*graph1);
+    const auto tagger1 = gtagger1->getVertexTagger();
     ASSERT_EQ(tagger1->getNumVertices(), 1);
     Tag tag;
     EXPECT_NO_THROW(tag = tagger1->getVertexTag(0));

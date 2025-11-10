@@ -15,16 +15,17 @@ namespace
 void CheckUniquenessGraphTaggers(const std::vector<std::unique_ptr<Graph::IGraphUs>> &graphs, int expectNumGraphs,
                                  int expectNumUniqueTags)
 {
-    const std::vector<IGraphTaggerFactory *> factories = Construct::getGraphTaggerFactories();
     ASSERT_EQ(graphs.size(), expectNumGraphs);
     std::set<std::vector<Tag>> uniqueTags;
     for (const auto &g : graphs)
     {
         ASSERT_TRUE(!g->isConnected());
         std::vector<Tag> tags;
-        for (auto *f : factories)
+        const auto allTaggers = Construct::getAllTaggers(*g);
+        const auto graphTaggers = Construct::selectGraphTaggers(allTaggers);
+        for (const auto *graphTagger : graphTaggers)
         {
-            tags.emplace_back(f->createGraphTagger(*g)->getGraphTag());
+            tags.emplace_back(graphTagger->getGraphTag());
         }
         uniqueTags.insert(tags);
     }

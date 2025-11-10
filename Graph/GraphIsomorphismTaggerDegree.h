@@ -21,10 +21,10 @@ class TaggerDegree : public IGraphTagger, public IVertexTagger
     Tag m_degreeSequenceTag;
 };
 
-class TaggerDegreeFactory : public IGraphTaggerFactory
+class TaggerDegreeFactory : public ITaggerFactory
 {
   public:
-    std::unique_ptr<IGraphTagger> createGraphTagger(const Graph::IGraphUs &) override;
+    std::unique_ptr<ITagger> createTagger(const Graph::IGraphUs &) override;
 };
 
 } // namespace GraphIsomorphism

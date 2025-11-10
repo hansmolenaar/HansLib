@@ -22,19 +22,17 @@ TEST(GraphIsomorphismTaggerNumbersTest, Path3)
 {
     const auto graph = UndirectedGraphLibrary::Get_Path(3);
     TaggerNumbersFactory factory;
-    GraphTest::CheckTaggerConsistency(*graph, factory);
+    GraphTest::CheckGraphTaggerConsistency(*graph, factory);
 
     const TaggerNumbers tagger(*graph);
     ASSERT_TRUE(str::equal(tagger.getGraphTag(), Tag{3, 2}));
-
-    ASSERT_TRUE(factory.haveSameTags(*graph, *graph));
 }
 
 TEST(GraphIsomorphismTaggerNumbersTest, Cycle3)
 {
     const auto graph = UndirectedGraphLibrary::Get_Cycle(3);
     TaggerNumbersFactory factory;
-    GraphTest::CheckTaggerConsistency(*graph, factory);
+    GraphTest::CheckGraphTaggerConsistency(*graph, factory);
 
     const TaggerNumbers tagger(*graph);
     ASSERT_TRUE(str::equal(tagger.getGraphTag(), Tag{3, 3}));

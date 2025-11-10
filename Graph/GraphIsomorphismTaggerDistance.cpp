@@ -58,8 +58,7 @@ GraphVertex TaggerDistance::getNumVertices() const
 
 // !!!!!!!!!!!!! FACTORY
 
-std::unique_ptr<IVertexTagger> TaggerDistanceFactory::createVertexTagger(const Graph::IGraphUs &graph)
+std::unique_ptr<ITagger> TaggerDistanceFactory::createTagger(const Graph::IGraphUs &graph)
 {
-    auto distances = std::make_shared<UndirectedGraphDistance>(graph);
-    return std::make_unique<TaggerDistance>(distances);
+    return std::make_unique<TaggerDistance>(graph);
 }

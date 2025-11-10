@@ -26,8 +26,7 @@ GraphVertex TaggerDegree::getNumVertices() const
 }
 // !!!!!!!!!!!!! FACTORY
 
-std::unique_ptr<IGraphTagger> TaggerDegreeFactory::createGraphTagger(const Graph::IGraphUs &graph)
+std::unique_ptr<ITagger> TaggerDegreeFactory::createTagger(const Graph::IGraphUs &graph)
 {
-    std::unique_ptr<IGraphTagger> retval = std::make_unique<TaggerDegree>(graph);
-    return retval;
+    return std::make_unique<TaggerDegree>(graph);
 }

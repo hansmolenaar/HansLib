@@ -40,12 +40,18 @@ void AddToParentMapRecur(const IDecompose *current, const IDecompose *parent, ID
 
 // !!!!!!!!!!!  IDecompose
 
+// TODO remove me
 GraphTags IDecompose::GetGraphTags(const Graph::IGraphUs &graph)
 {
     GraphTags result;
-    for (auto *factory : Construct::getGraphTaggerFactories())
+    for (auto *factory : Construct::getTaggerFactories())
     {
-        result.emplace_back(factory->createGraphTagger(graph)->getGraphTag());
+        const auto tagger = factory->createTagger(graph);
+        const auto *graphTagger = dynamic_cast<const IGraphTagger *>(tagger.get());
+        if (graphTagger != nullptr)
+        {
+            result.emplace_back(graphTagger->getGraphTag());
+        }
     }
     return result;
 }

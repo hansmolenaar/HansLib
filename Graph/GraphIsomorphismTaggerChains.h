@@ -18,10 +18,10 @@ class TaggerChains : public IVertexTagger
     std::vector<Tag> m_tags;
 };
 
-class TaggerChainsFactory : public IVertexTaggerFactory
+class TaggerChainsFactory : public ITaggerFactory
 {
   public:
-    std::unique_ptr<IVertexTagger> createVertexTagger(const Graph::IGraphUs &) override;
+    std::unique_ptr<ITagger> createTagger(const Graph::IGraphUs &) override;
 };
 
 } // namespace GraphIsomorphism

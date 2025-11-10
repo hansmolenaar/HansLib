@@ -17,8 +17,7 @@ const Tag &TaggerNumbers::getGraphTag() const
 
 // !!!!!!!!!!!!! FACTORY
 
-std::unique_ptr<IGraphTagger> TaggerNumbersFactory::createGraphTagger(const Graph::IGraphUs &graph)
+std::unique_ptr<ITagger> TaggerNumbersFactory::createTagger(const Graph::IGraphUs &graph)
 {
-    std::unique_ptr<IGraphTagger> retval = std::make_unique<TaggerNumbers>(graph);
-    return retval;
+    return std::make_unique<TaggerNumbers>(graph);
 }

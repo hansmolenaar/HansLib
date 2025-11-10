@@ -26,10 +26,10 @@ class TaggerKnown : public IGraphTagger
     Tag m_tag;
 };
 
-class TaggerKnownFactory : public IGraphTaggerFactory
+class TaggerKnownFactory : public ITaggerFactory
 {
   public:
-    std::unique_ptr<IGraphTagger> createGraphTagger(const Graph::IGraphUs &) override;
+    std::unique_ptr<ITagger> createTagger(const Graph::IGraphUs &) override;
 };
 
 } // namespace GraphIsomorphism

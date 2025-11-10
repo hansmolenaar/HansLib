@@ -11,19 +11,25 @@ class IGraphUsc;
 namespace GraphIsomorphism
 {
 
+class IGraphTagger;
+class IVertexTagger;
+
 class ITagger
 {
   public:
     virtual ~ITagger() = default;
+
+    const IGraphTagger *getGraphTagger() const;
+    const IVertexTagger *getVertexTagger() const;
 };
 
-class IGraphTagger : public ITagger
+class IGraphTagger : public virtual ITagger
 {
   public:
     virtual const Tag &getGraphTag() const = 0;
 };
 
-class IVertexTagger : public ITagger
+class IVertexTagger : public virtual ITagger
 {
   public:
     virtual const Tag &getVertexTag(GraphVertex) const = 0;
@@ -34,20 +40,7 @@ class ITaggerFactory
 {
   public:
     virtual ~ITaggerFactory() = default;
-};
-
-class IGraphTaggerFactory : public ITaggerFactory
-{
-  public:
-    virtual std::unique_ptr<IGraphTagger> createGraphTagger(const Graph::IGraphUs &) = 0;
-
-    bool haveSameTags(const Graph::IGraphUs &, const Graph::IGraphUs &);
-};
-
-class IVertexTaggerFactory : public ITaggerFactory
-{
-  public:
-    virtual std::unique_ptr<IVertexTagger> createVertexTagger(const Graph::IGraphUs &) = 0;
+    virtual std::unique_ptr<ITagger> createTagger(const Graph::IGraphUs &) = 0;
 };
 
 } // namespace GraphIsomorphism

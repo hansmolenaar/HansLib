@@ -47,44 +47,51 @@ class CombinedTagger : public IVertexTagger
 
 } // namespace
 
-std::vector<IGraphTaggerFactory *> Construct::getGraphTaggerFactories()
+std::vector<ITaggerFactory *> Construct::getTaggerFactories()
 {
-    std::vector<IGraphTaggerFactory *> result;
-    for (auto *factory : factories)
-    {
-        auto *graphTaggerFactory = dynamic_cast<IGraphTaggerFactory *>(factory);
-        if (graphTaggerFactory != nullptr)
-        {
-            result.push_back(graphTaggerFactory);
-        }
-    }
+    return factories;
+}
+
+std::vector<std::unique_ptr<ITagger>> Construct::getAllTaggers(const Graph::IGraphUs &graph)
+{
+    std::vector<std::unique_ptr<ITagger>> result(factories.size());
+    str::transform(factories, result.begin(), [&graph](const auto &factory) { return factory->createTagger(graph); });
     return result;
 }
 
-std::vector<IVertexTaggerFactory *> Construct::getVertexTaggerFactories()
+std::vector<const IGraphTagger *> Construct::selectGraphTaggers(const std::vector<std::unique_ptr<ITagger>> &taggers)
 {
-    std::vector<IVertexTaggerFactory *> result;
-    for (auto *factory : factories)
-    {
-        auto *vertexTaggerFactory = dynamic_cast<IVertexTaggerFactory *>(factory);
-        if (vertexTaggerFactory != nullptr)
-        {
-            result.push_back(vertexTaggerFactory);
-        }
-    }
+    std::vector<const IGraphTagger *> result(taggers.size());
+    str::transform(taggers, result.begin(),
+                   [](const auto &tagger) { return dynamic_cast<const IGraphTagger *>(tagger.get()); });
+    result.erase(std::remove(result.begin(), result.end(), nullptr), result.end());
+    return result;
+}
+
+std::vector<const IVertexTagger *> Construct::selectVertexTaggers(const std::vector<std::unique_ptr<ITagger>> &taggers)
+{
+    std::vector<const IVertexTagger *> result(taggers.size());
+    str::transform(taggers, result.begin(),
+                   [](const auto &tagger) { return dynamic_cast<const IVertexTagger *>(tagger.get()); });
+    result.erase(std::remove(result.begin(), result.end(), nullptr), result.end());
     return result;
 }
 
 Status Construct::actionConnected(const Graph::IGraphUsc &graph0, const Graph::IGraphUsc &graph1) const
 {
     const auto numVertices = graph0.getNumVertices();
+    const auto factories = getTaggerFactories();
+
+    const auto allTaggers0 = getAllTaggers(graph0);
+    const auto allTaggers1 = getAllTaggers(graph1);
+
     Status result(numVertices);
-    for (auto *factory : getGraphTaggerFactories())
+    const auto graphTaggers0 = selectGraphTaggers(allTaggers0);
+    const auto graphTaggers1 = selectGraphTaggers(allTaggers1);
+    for (const auto &tagger01 : std::views::zip(graphTaggers0, graphTaggers1))
     {
-        const auto tagger0 = factory->createGraphTagger(graph0);
-        const auto tagger1 = factory->createGraphTagger(graph1);
-        const auto &tag0 = tagger0->getGraphTag();
-        const auto &tag1 = tagger1->getGraphTag();
+        const auto &tag0 = std::get<0>(tagger01)->getGraphTag();
+        const auto &tag1 = std::get<1>(tagger01)->getGraphTag();
         if (tag0 != tag1)
         {
             result.setFlag(Flag::NotIsomorphic);
@@ -95,12 +102,13 @@ Status Construct::actionConnected(const Graph::IGraphUsc &graph0, const Graph::I
     std::vector<Tag> groups0(numVertices);
     std::vector<Tag> groups1(numVertices);
 
-    for (auto *factory : getVertexTaggerFactories())
+    const auto vertexTaggers0 = selectVertexTaggers(allTaggers0);
+    const auto vertexTaggers1 = selectVertexTaggers(allTaggers1);
+    for (const auto &tagger01 : std::views::zip(vertexTaggers0, vertexTaggers1))
     {
-        const auto tagger0 = factory->createVertexTagger(graph0);
-        const auto tagger1 = factory->createVertexTagger(graph1);
-        const Grouper grouper0(*tagger0);
-        const Grouper grouper1(*tagger1);
+
+        const Grouper grouper0(*std::get<0>(tagger01));
+        const Grouper grouper1(*std::get<1>(tagger01));
         if (!Grouper::areEquivalent(grouper0, grouper1))
         {
             result.setFlag(Flag::NotIsomorphic);

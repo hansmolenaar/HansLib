@@ -7,11 +7,11 @@
 
 namespace GraphTest
 {
-void CheckTaggerConsistency(const Graph::IGraphUsc &, GraphIsomorphism::IVertexTaggerFactory &, int = -1, int = 5);
-void TaggerCheckListG6(const std::vector<std::string> &, GraphIsomorphism::IVertexTaggerFactory &, int, int = 5);
+void CheckVertexTaggerConsistency(const Graph::IGraphUs &, GraphIsomorphism::ITaggerFactory &, int = -1, int = 5);
+void TaggerCheckListG6(const std::vector<std::string> &, GraphIsomorphism::ITaggerFactory &, int, int = 5);
 
-void CheckTaggerConsistency(const Graph::IGraphUs &, GraphIsomorphism::IGraphTaggerFactory &, int = 5);
+void CheckGraphTaggerConsistency(const Graph::IGraphUs &, GraphIsomorphism::ITaggerFactory &, int = 5);
 
-void CheckGraphTagger(GraphIsomorphism::IGraphTaggerFactory &);
-void CheckVertexTagger(GraphIsomorphism::IVertexTaggerFactory &);
+void CheckGraphTagger(GraphIsomorphism::ITaggerFactory &);
+void CheckVertexTagger(GraphIsomorphism::ITaggerFactory &);
 } // namespace GraphTest

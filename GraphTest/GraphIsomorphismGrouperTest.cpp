@@ -90,8 +90,8 @@ TEST(GraphIsomorphismGrouperTest, DistanceStar321)
 {
     const auto graph = UndirectedGraphLibrary::Get_Star({3, 2, 1});
     const GraphUsc uscGraph(*graph);
-    const auto tagger = TaggerDistanceFactory{}.createVertexTagger(uscGraph);
-    const Grouper grouper(*tagger);
+    const TaggerDistance tagger(uscGraph);
+    const Grouper grouper(tagger);
 
     const auto &tags = grouper.getTags();
     ASSERT_EQ(tags.size(), graph->getNumVertices());

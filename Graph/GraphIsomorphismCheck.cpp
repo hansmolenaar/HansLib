@@ -9,7 +9,10 @@ using namespace GraphIsomorphism;
 
 bool Check::operator()(const IGraphUs &g0, const IGraphUs &g1) const
 {
-    if (!TaggerNumbersFactory{}.haveSameTags(g0, g1))
+    const TaggerNumbers tagger0(g0);
+    const TaggerNumbers tagger1(g1);
+
+    if (tagger0.getGraphTag() != tagger1.getGraphTag())
     {
         return false;
     }

@@ -24,7 +24,7 @@ TEST(GraphIsomorphismTaggerMaxDegreeTest, Path3)
 {
     const auto graph = UndirectedGraphLibrary::Get_Path(3);
     TaggerMaxDegreeFactory factory;
-    GraphTest::CheckTaggerConsistency(*graph, factory, 1);
+    GraphTest::CheckVertexTaggerConsistency(*graph, factory, 1);
 
     const TaggerMaxDegree tagger(*graph);
     ASSERT_TRUE(str::equal(tagger.getVertexTag(0), Tag{0}));
@@ -38,9 +38,10 @@ TEST(GraphIsomorphismTaggerMaxDegreeTest, Diamond)
 {
     const auto graph = UndirectedGraphLibrary::Get_Diamond();
     TaggerMaxDegreeFactory factory;
-    GraphTest::CheckTaggerConsistency(*graph, factory, 2);
+    GraphTest::CheckVertexTaggerConsistency(*graph, factory, 2);
 
-    const auto tagger = factory.createVertexTagger(*graph);
+    const auto vtagger = factory.createTagger(*graph);
+    const auto *tagger = vtagger->getVertexTagger();
     ASSERT_TRUE(str::equal(tagger->getVertexTag(0), Tag{0}));
     ASSERT_TRUE(str::equal(tagger->getVertexTag(1), Tag{1}));
     ASSERT_TRUE(str::equal(tagger->getVertexTag(2), Tag{2}));

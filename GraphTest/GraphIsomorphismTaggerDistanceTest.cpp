@@ -25,7 +25,7 @@ TEST(GraphIsomorphismTaggerDistanceTest, Path3)
 {
     const auto graph = UndirectedGraphLibrary::Get_Path(3);
     TaggerDistanceFactory factory;
-    GraphTest::CheckTaggerConsistency(GraphUsc(*graph), factory, 1);
+    GraphTest::CheckGraphTaggerConsistency(GraphUsc(*graph), factory, 1);
 
     auto distances = std::make_shared<UndirectedGraphDistance>(GraphUsc(*graph));
     const TaggerDistance tagger(distances);
@@ -41,9 +41,10 @@ TEST(GraphIsomorphismTaggerDistanceTest, Star121)
 {
     const auto graph = UndirectedGraphLibrary::Get_Star({1, 2, 1});
     TaggerDistanceFactory factory;
-    GraphTest::CheckTaggerConsistency(*graph, factory, 3);
+    GraphTest::CheckGraphTaggerConsistency(*graph, factory, 3);
 
-    const auto tagger = factory.createVertexTagger(*graph);
+    const auto vtagger = factory.createTagger(*graph);
+    const auto *tagger = vtagger->getVertexTagger();
     ASSERT_TRUE(str::equal(tagger->getVertexTag(0), Tag{3, 1}));
     ASSERT_TRUE(str::equal(tagger->getVertexTag(1), Tag{1, 2, 1}));
     ASSERT_TRUE(str::equal(tagger->getVertexTag(2), Tag{2, 2}));
@@ -61,7 +62,7 @@ TEST(GraphIsomorphismTaggerDistanceTest, NumVertices5)
         const auto graph = UndirectedGraphFromG6::CreateConnected(g6);
         ASSERT_EQ(graph->getNumVertices(), 5);
         TaggerDistanceFactory factory;
-        GraphTest::CheckTaggerConsistency(*graph, factory);
+        GraphTest::CheckVertexTaggerConsistency(*graph, factory);
     }
 }
 
@@ -72,7 +73,7 @@ TEST(GraphIsomorphismTaggerDistanceTest, NumVertices6)
         const auto graph = UndirectedGraphFromG6::CreateConnected(g6);
         ASSERT_EQ(graph->getNumVertices(), 6);
         TaggerDistanceFactory factory;
-        GraphTest::CheckTaggerConsistency(*graph, factory);
+        GraphTest::CheckGraphTaggerConsistency(*graph, factory);
     }
 }
 
@@ -83,7 +84,7 @@ TEST(GraphIsomorphismTaggerDistanceTest, NumVertices7)
         const auto graph = UndirectedGraphFromG6::CreateConnected(g6);
         ASSERT_EQ(graph->getNumVertices(), 7);
         TaggerDistanceFactory factory;
-        GraphTest::CheckTaggerConsistency(*graph, factory);
+        GraphTest::CheckGraphTaggerConsistency(*graph, factory);
     }
 }
 

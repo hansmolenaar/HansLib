@@ -20,10 +20,10 @@ class TaggerMaxDegree : public IVertexTagger
     std::map<GraphVertex, TagEntry> m_fullyConnected2id;
 };
 
-class TaggerMaxDegreeFactory : public IVertexTaggerFactory
+class TaggerMaxDegreeFactory : public ITaggerFactory
 {
   public:
-    std::unique_ptr<IVertexTagger> createVertexTagger(const Graph::IGraphUs &) override;
+    std::unique_ptr<ITagger> createTagger(const Graph::IGraphUs &) override;
 };
 
 } // namespace GraphIsomorphism

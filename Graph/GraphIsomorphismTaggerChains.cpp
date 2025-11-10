@@ -1,5 +1,6 @@
 #include "GraphIsomorphismTaggerChains.h"
 #include "Defines.h"
+#include "GraphUsc.h"
 #include "MyAssert.h"
 
 using namespace Graph;
@@ -333,12 +334,28 @@ std::vector<Tag> GenerateTags(const IGraphUsc &graph)
 
 std::vector<Tag> GenerateTagsForConnected(const IGraphUs *graph)
 {
-    const auto *connectedGraph = dynamic_cast<const IGraphUsc *>(graph);
-    if (connectedGraph != nullptr)
+    if (!graph->isConnected())
     {
-        return GenerateTags(*connectedGraph);
+        return {};
     }
-    return {};
+
+    // TODO this stinks to high heaven
+    const auto *graphUsc = dynamic_cast<const IGraphUsc *>(graph);
+    if (graphUsc != nullptr)
+    {
+        return GenerateTags(*graphUsc);
+    }
+
+    const auto *ugraph = dynamic_cast<const UndirectedGraph *>(graph);
+    std::unique_ptr<UndirectedGraph> undirectedGraph;
+    if (ugraph == nullptr)
+    {
+        undirectedGraph = std::make_unique<UndirectedGraph>(*graph);
+        ugraph = undirectedGraph.get();
+    }
+
+    const GraphUsc connectedGraph(*ugraph);
+    return GenerateTags(connectedGraph);
 }
 
 } // namespace
@@ -359,7 +376,7 @@ GraphVertex TaggerChains::getNumVertices() const
 
 // !!!!!!!!!!!!! FACTORY
 
-std::unique_ptr<IVertexTagger> TaggerChainsFactory::createVertexTagger(const IGraphUs &graph)
+std::unique_ptr<ITagger> TaggerChainsFactory::createTagger(const IGraphUs &graph)
 {
     return std::make_unique<TaggerChains>(graph);
 }

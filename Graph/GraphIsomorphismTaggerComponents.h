@@ -20,10 +20,10 @@ class TaggerComponents : public IGraphTagger
     Tag m_graphTag;
 };
 
-class TaggerComponentFactory : public IGraphTaggerFactory
+class TaggerComponentFactory : public ITaggerFactory
 {
   public:
-    std::unique_ptr<IGraphTagger> createGraphTagger(const Graph::IGraphUs &) override;
+    std::unique_ptr<ITagger> createTagger(const Graph::IGraphUs &) override;
 };
 
 } // namespace GraphIsomorphism
