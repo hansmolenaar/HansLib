@@ -162,10 +162,10 @@ std::pair<Tag, std::vector<Tag>> GenerateTags(const IGraphUs &graph)
 {
     const auto nVertices = graph.getNumVertices();
     std::vector<Tag> retval(nVertices);
-    Tag graphTag;
 
     const auto chains = GetChains(graph);
     auto currentItr = chains.begin();
+    std::map<std::pair<ChainId, size_t>, GraphVertex> chainCounts;
 
     const auto itrPureCycles = std::find_if_not(
         currentItr, chains.end(), [](const auto &tagChain) { return tagChain.first.id == ChainId::PureCycle; });
@@ -178,6 +178,7 @@ std::pair<Tag, std::vector<Tag>> GenerateTags(const IGraphUs &graph)
         TagEntry count = 1;
         for (; currentItr != itrSameSize; ++currentItr, ++count)
         {
+            chainCounts[std::make_pair<ChainId, size_t>(ChainId::PureCycle, currentSize)] += 1;
             for (TagEntry n = 0; n < currentSize; ++n)
             {
                 // ( ChainId, cycle size, number of cycle with this size, position in cycle )
@@ -197,6 +198,7 @@ std::pair<Tag, std::vector<Tag>> GenerateTags(const IGraphUs &graph)
         TagEntry count = 1;
         for (; currentItr != itrSameSize; ++currentItr, ++count)
         {
+            chainCounts[std::make_pair<ChainId, size_t>(ChainId::PurePath, currentSize)] += 1;
             for (TagEntry n = 0; n < currentSize; ++n)
             {
                 // ( ChainId, path size, number of path with this size, position in path )
@@ -223,6 +225,7 @@ std::pair<Tag, std::vector<Tag>> GenerateTags(const IGraphUs &graph)
             TagEntry count = 1;
             for (; currentItr != itrSameSize; ++currentItr, ++count)
             {
+                chainCounts[std::make_pair<ChainId, size_t>(ChainId::AttachedCycle, currentSize)] += 1;
                 for (TagEntry n = 1; n < currentSize; ++n)
                 {
                     // ( ChainId, cycle size, number of cycle with this size, position in cycle )
@@ -255,6 +258,7 @@ std::pair<Tag, std::vector<Tag>> GenerateTags(const IGraphUs &graph)
             TagEntry count = 1;
             for (; currentItr != itrSameSize; ++currentItr, ++count)
             {
+                chainCounts[std::make_pair<ChainId, size_t>(ChainId::AttachedPathSingle, currentSize)] += 1;
                 for (TagEntry n = 1; n < currentSize; ++n)
                 {
                     // ( ChainId, path size, number of paths with this size, position in path )
@@ -294,6 +298,7 @@ std::pair<Tag, std::vector<Tag>> GenerateTags(const IGraphUs &graph)
                 TagEntry count = 1;
                 for (; currentItr != itrSameAttachedOther; ++currentItr, ++count)
                 {
+                    chainCounts[std::make_pair<ChainId, size_t>(ChainId::AttachedPathDouble, currentSize)] += 1;
                     for (TagEntry n = 1; n < currentSize - 1; ++n)
                     {
                         const auto possym = std::min(n, currentSize - n - 1);
@@ -331,25 +336,38 @@ std::pair<Tag, std::vector<Tag>> GenerateTags(const IGraphUs &graph)
         }
     }
 
-    return { graphTag, retval};
+    Tag graphTag;
+    for (const auto &itr : chainCounts)
+    {
+        graphTag.push_back(itr.first.first);
+        graphTag.push_back(itr.first.second);
+        graphTag.push_back(itr.second);
+    }
+    return {graphTag, retval};
 }
 
 } // namespace
 
 TaggerChains::TaggerChains(const IGraphUs &graph)
 {
-   const auto allTags = GenerateTags(graph);
-   m_tags = allTags.second;
+    const auto allTags = GenerateTags(graph);
+    m_graphTag = allTags.first;
+    m_vertexTags = allTags.second;
 }
 
 const Tag &TaggerChains::getVertexTag(GraphVertex v) const
 {
-    return m_tags.at(v);
+    return m_vertexTags.at(v);
 }
 
 GraphVertex TaggerChains::getNumVertices() const
 {
-    return m_tags.size();
+    return m_vertexTags.size();
+}
+
+const Tag &TaggerChains::getGraphTag() const
+{
+    return m_graphTag;
 }
 
 // !!!!!!!!!!!!! FACTORY

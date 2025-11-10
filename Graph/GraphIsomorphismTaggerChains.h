@@ -13,9 +13,11 @@ class TaggerChains : public IVertexTagger
     explicit TaggerChains(const Graph::IGraphUs &);
     const Tag &getVertexTag(GraphVertex) const override;
     GraphVertex getNumVertices() const override;
+    const Tag &getGraphTag() const;
 
   private:
-    std::vector<Tag> m_tags;
+    Tag m_graphTag;
+    std::vector<Tag> m_vertexTags;
 };
 
 class TaggerChainsFactory : public ITaggerFactory
