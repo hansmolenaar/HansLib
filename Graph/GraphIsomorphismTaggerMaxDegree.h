@@ -10,7 +10,7 @@ namespace GraphIsomorphism
 class TaggerMaxDegree : public IVertexTagger
 {
   public:
-    explicit TaggerMaxDegree(const Graph::IGraphUsc &);
+    explicit TaggerMaxDegree(const Graph::IGraphUs &);
 
     const Tag &getVertexTag(GraphVertex) const override;
     GraphVertex getNumVertices() const override;

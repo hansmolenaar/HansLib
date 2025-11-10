@@ -3,7 +3,7 @@
 
 using namespace GraphIsomorphism;
 
-TaggerMaxDegree::TaggerMaxDegree(const Graph::IGraphUsc &graph) : m_numVertices(graph.getNumVertices())
+TaggerMaxDegree::TaggerMaxDegree(const Graph::IGraphUs &graph) : m_numVertices(graph.getNumVertices())
 {
     const auto maxDegree = m_numVertices - 1;
     for (GraphVertex v = 0; v < m_numVertices; ++v)

@@ -331,9 +331,20 @@ std::vector<Tag> GenerateTags(const IGraphUsc &graph)
     return retval;
 }
 
+std::vector<Tag> GenerateTagsForConnected(const IGraphUs *graph)
+{
+   const auto* connectedGraph = dynamic_cast<const IGraphUsc*>(graph);
+   if (connectedGraph != nullptr)
+{
+  return GenerateTags(*connectedGraph);
+}
+return {};
+}
+
+
 } // namespace
 
-TaggerChains::TaggerChains(const IGraphUsc &graph) : m_tags(GenerateTags(graph))
+TaggerChains::TaggerChains(const IGraphUs &graph) : m_tags(GenerateTagsForConnected(&graph))
 {
 }
 

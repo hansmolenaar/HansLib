@@ -86,3 +86,16 @@ TEST(GraphIsomorphismTaggerDistanceTest, NumVertices7)
         GraphTest::CheckTaggerConsistency(*graph, factory);
     }
 }
+
+TEST(GraphIsomorphismTaggerDistanceTest, Disconnected3)
+{
+    const auto graph = UndirectedGraphLibrary::Get_DisconnectedGraph(3);
+    TaggerDistance tagger(*graph);
+
+    const auto &graphTag = tagger.getGraphTag();
+    ASSERT_EQ(graphTag, (Tag{0, 3}));
+
+    ASSERT_EQ(tagger.getVertexTag(0), Tag{});
+    ASSERT_EQ(tagger.getVertexTag(1), Tag{});
+    ASSERT_EQ(tagger.getVertexTag(2), Tag{});
+}

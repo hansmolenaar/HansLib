@@ -10,7 +10,7 @@ namespace GraphIsomorphism
 class TaggerChains : public IVertexTagger
 {
   public:
-    explicit TaggerChains(const Graph::IGraphUsc &);
+    explicit TaggerChains(const Graph::IGraphUs &);
     const Tag &getVertexTag(GraphVertex) const override;
     GraphVertex getNumVertices() const override;
 
