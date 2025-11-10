@@ -62,8 +62,7 @@ std::vector<std::unique_ptr<ITagger>> Construct::getAllTaggers(const Graph::IGra
 std::vector<const IGraphTagger *> Construct::selectGraphTaggers(const std::vector<std::unique_ptr<ITagger>> &taggers)
 {
     std::vector<const IGraphTagger *> result(taggers.size());
-    str::transform(taggers, result.begin(),
-                   [](const auto &tagger) { return dynamic_cast<const IGraphTagger *>(tagger.get()); });
+    str::transform(taggers, result.begin(), [](const auto &tagger) { return tagger->getGraphTagger(); });
     result.erase(std::remove(result.begin(), result.end(), nullptr), result.end());
     return result;
 }
@@ -71,8 +70,7 @@ std::vector<const IGraphTagger *> Construct::selectGraphTaggers(const std::vecto
 std::vector<const IVertexTagger *> Construct::selectVertexTaggers(const std::vector<std::unique_ptr<ITagger>> &taggers)
 {
     std::vector<const IVertexTagger *> result(taggers.size());
-    str::transform(taggers, result.begin(),
-                   [](const auto &tagger) { return dynamic_cast<const IVertexTagger *>(tagger.get()); });
+    str::transform(taggers, result.begin(), [](const auto &tagger) { return tagger->getVertexTagger(); });
     result.erase(std::remove(result.begin(), result.end(), nullptr), result.end());
     return result;
 }
