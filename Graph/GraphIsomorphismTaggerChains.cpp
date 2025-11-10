@@ -329,6 +329,7 @@ std::vector<Tag> GenerateTags(const IGraphUs &graph)
             retval[v].insert(retval[v].end(), itrTag.begin(), itrTag.end());
         }
     }
+
     return retval;
 }
 
@@ -339,7 +340,7 @@ std::vector<Tag> GenerateTagsForConnected(const IGraphUs *graph)
         return GenerateTags(*graph);
     }
 
-    return {};
+    return std::vector<Tag>(graph->getNumVertices());
 }
 
 } // namespace

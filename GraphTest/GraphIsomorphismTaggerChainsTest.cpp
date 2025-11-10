@@ -128,7 +128,17 @@ TEST(GraphIsomorphismTaggerChainsTest, X84)
     ASSERT_TRUE(str::equal(tagger.getVertexTag(2), Tag{4, 3, 2, 1}));
     ASSERT_TRUE(str::equal(tagger.getVertexTag(3), Tag{3, 2, 4, 3, 3}));
     ASSERT_TRUE(str::equal(tagger.getVertexTag(4), Tag{3, 2, 1, 1}));
-    ASSERT_TRUE(str::equal(tagger.getVertexTag(4), Tag{3, 2, 1, 1}));
+}
+
+TEST(GraphIsomorphismTaggerChainsTest, Path2and3)
+{
+    const auto graph = UndirectedGraphFromG6::Create("D`K");
+    const auto tagger = TaggerChains(*graph);
+    ASSERT_TRUE(str::equal(tagger.getVertexTag(0), Tag{}));
+    ASSERT_TRUE(str::equal(tagger.getVertexTag(1), Tag{}));
+    ASSERT_TRUE(str::equal(tagger.getVertexTag(2), Tag{}));
+    ASSERT_TRUE(str::equal(tagger.getVertexTag(3), Tag{}));
+    ASSERT_TRUE(str::equal(tagger.getVertexTag(4), Tag{}));
 }
 
 TEST(GraphIsomorphismTaggerChainsTest, Fish)
