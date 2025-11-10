@@ -158,10 +158,11 @@ std::vector<std::pair<ChainTag, Chain>> GetChains(const IGraphUs &graph)
     return retval;
 }
 
-std::vector<Tag> GenerateTags(const IGraphUs &graph)
+std::pair<Tag, std::vector<Tag>> GenerateTags(const IGraphUs &graph)
 {
     const auto nVertices = graph.getNumVertices();
     std::vector<Tag> retval(nVertices);
+    Tag graphTag;
 
     const auto chains = GetChains(graph);
     auto currentItr = chains.begin();
@@ -330,23 +331,15 @@ std::vector<Tag> GenerateTags(const IGraphUs &graph)
         }
     }
 
-    return retval;
-}
-
-std::vector<Tag> GenerateTagsForConnected(const IGraphUs *graph)
-{
-    if (graph->isConnected())
-    {
-        return GenerateTags(*graph);
-    }
-
-    return std::vector<Tag>(graph->getNumVertices());
+    return { graphTag, retval};
 }
 
 } // namespace
 
-TaggerChains::TaggerChains(const IGraphUs &graph) : m_tags(GenerateTagsForConnected(&graph))
+TaggerChains::TaggerChains(const IGraphUs &graph)
 {
+   const auto allTags = GenerateTags(graph);
+   m_tags = allTags.second;
 }
 
 const Tag &TaggerChains::getVertexTag(GraphVertex v) const
