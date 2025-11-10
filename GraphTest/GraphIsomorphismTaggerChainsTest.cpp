@@ -167,7 +167,6 @@ TEST(GraphIsomorphismTaggerChainsTest, Path2_twice)
     ASSERT_EQ(tagger.getGraphTag(), (Tag{1, 2, 2}));
 }
 
-
 TEST(GraphIsomorphismTaggerChainsTest, Fish)
 {
     const auto graph = UndirectedGraphFromG6::CreateConnected(UndirectedGraphFromG6::fish);

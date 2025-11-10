@@ -76,11 +76,7 @@ void CheckDecomposeList(const std::vector<std::string> &g6list, Tag expectMultip
         multiplicities.push_back(itr.second);
     }
     const auto tag = CondenseSizeSequence(multiplicities);
-
-    if (!str::equal(tag, expectMultiplicities))
-    {
-        ASSERT_TRUE(false);
-    }
+    ASSERT_EQ(tag, expectMultiplicities);
 }
 
 } // namespace
@@ -207,16 +203,15 @@ TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList4)
 
 TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList5)
 {
-    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_5(), {1, 30, 2, 2});
+    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_5(), {1, 34});
 }
 
 TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList6)
 {
-    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_6(), {1, 84, 2, 13, 3, 4, 4, 7, 5, 1});
+    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_6(), {1, 118, 2, 9, 3, 5, 4, 1});
 }
 
 TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList7)
 {
-    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_7(),
-                       {1, 113, 2, 37, 3, 13, 4, 4, 5, 4, 6, 4, 7, 1, 9, 1});
+    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_7(), {1, 168, 2, 29, 3, 8, 4, 4, 5, 3, 6, 2, 9, 1});
 }

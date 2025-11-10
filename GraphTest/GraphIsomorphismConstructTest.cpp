@@ -81,13 +81,13 @@ TEST(GraphIsomorphismConstructTest, Disconnected5)
 TEST(GraphIsomorphismConstructTest, Disconnected6)
 {
     const auto graphs = UndirectedGraphFromG6::getDisconnectedGraphs(UndirectedGraphFromG6::getListNumVertices_6());
-    CheckUniquenessGraphTaggers(graphs, 43, 41);
+    CheckUniquenessGraphTaggers(graphs, 43, 43);
 }
 
 TEST(GraphIsomorphismConstructTest, Disconnected7)
 {
     const auto graphs = UndirectedGraphFromG6::getDisconnectedGraphs(UndirectedGraphFromG6::getListNumVertices_7());
-    CheckUniquenessGraphTaggers(graphs, 35, 33);
+    CheckUniquenessGraphTaggers(graphs, 35, 35);
 }
 
 TEST(GraphIsomorphismConstructTest, Disconnected8)

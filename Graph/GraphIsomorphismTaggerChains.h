@@ -7,13 +7,13 @@
 namespace GraphIsomorphism
 {
 
-class TaggerChains : public IVertexTagger
+class TaggerChains : public IVertexTagger, public IGraphTagger
 {
   public:
     explicit TaggerChains(const Graph::IGraphUs &);
     const Tag &getVertexTag(GraphVertex) const override;
     GraphVertex getNumVertices() const override;
-    const Tag &getGraphTag() const;
+    const Tag &getGraphTag() const override;
 
   private:
     Tag m_graphTag;
