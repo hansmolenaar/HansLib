@@ -21,7 +21,7 @@ class TaggerChains : public IVertexTagger
 class TaggerChainsFactory : public IVertexTaggerFactory
 {
   public:
-    std::unique_ptr<IVertexTagger> createVertexTagger(const Graph::IGraphUsc &) override;
+    std::unique_ptr<IVertexTagger> createVertexTagger(const Graph::IGraphUs &) override;
 };
 
 } // namespace GraphIsomorphism

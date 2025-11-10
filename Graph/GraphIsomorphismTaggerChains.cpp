@@ -333,14 +333,13 @@ std::vector<Tag> GenerateTags(const IGraphUsc &graph)
 
 std::vector<Tag> GenerateTagsForConnected(const IGraphUs *graph)
 {
-   const auto* connectedGraph = dynamic_cast<const IGraphUsc*>(graph);
-   if (connectedGraph != nullptr)
-{
-  return GenerateTags(*connectedGraph);
+    const auto *connectedGraph = dynamic_cast<const IGraphUsc *>(graph);
+    if (connectedGraph != nullptr)
+    {
+        return GenerateTags(*connectedGraph);
+    }
+    return {};
 }
-return {};
-}
-
 
 } // namespace
 
@@ -360,7 +359,7 @@ GraphVertex TaggerChains::getNumVertices() const
 
 // !!!!!!!!!!!!! FACTORY
 
-std::unique_ptr<IVertexTagger> TaggerChainsFactory::createVertexTagger(const IGraphUsc &graph)
+std::unique_ptr<IVertexTagger> TaggerChainsFactory::createVertexTagger(const IGraphUs &graph)
 {
     return std::make_unique<TaggerChains>(graph);
 }

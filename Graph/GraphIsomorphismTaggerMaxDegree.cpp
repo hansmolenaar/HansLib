@@ -31,7 +31,7 @@ GraphVertex TaggerMaxDegree ::getNumVertices() const
 
 // !!!!!!!!!!!!!!!!!
 
-std::unique_ptr<IVertexTagger> TaggerMaxDegreeFactory::createVertexTagger(const Graph::IGraphUsc &graph)
+std::unique_ptr<IVertexTagger> TaggerMaxDegreeFactory::createVertexTagger(const Graph::IGraphUs &graph)
 {
     return std::make_unique<TaggerMaxDegree>(graph);
 }

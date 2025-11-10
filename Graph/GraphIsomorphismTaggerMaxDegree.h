@@ -23,7 +23,7 @@ class TaggerMaxDegree : public IVertexTagger
 class TaggerMaxDegreeFactory : public IVertexTaggerFactory
 {
   public:
-    std::unique_ptr<IVertexTagger> createVertexTagger(const Graph::IGraphUsc &) override;
+    std::unique_ptr<IVertexTagger> createVertexTagger(const Graph::IGraphUs &) override;
 };
 
 } // namespace GraphIsomorphism

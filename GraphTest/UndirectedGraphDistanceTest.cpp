@@ -1,9 +1,9 @@
 #include <gtest/gtest.h>
 
 #include "Defines.h"
+#include "Single.h"
 #include "UndirectedGraphDistance.h"
 #include "UndirectedGraphLibrary.h"
-#include "Single.h"
 
 using namespace Graph;
 using namespace Utilities;
@@ -104,5 +104,3 @@ TEST(UndirectedGraphDistanceTest, Disconnected2)
     d = distances(static_cast<GraphVertex>(1));
     ASSERT_EQ(Single(d), std::vector<GraphVertex>{1});
 }
-
-

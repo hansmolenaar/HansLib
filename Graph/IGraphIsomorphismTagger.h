@@ -47,7 +47,7 @@ class IGraphTaggerFactory : public ITaggerFactory
 class IVertexTaggerFactory : public ITaggerFactory
 {
   public:
-    virtual std::unique_ptr<IVertexTagger> createVertexTagger(const Graph::IGraphUsc &) = 0;
+    virtual std::unique_ptr<IVertexTagger> createVertexTagger(const Graph::IGraphUs &) = 0;
 };
 
 } // namespace GraphIsomorphism
