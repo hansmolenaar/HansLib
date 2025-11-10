@@ -29,7 +29,7 @@ struct ChainTag
     bool operator==(const ChainTag &) const = default;
 };
 
-std::pair<ChainId, Chain> ConstrutcChain(const IGraphUsc &graph, const Chain &part1, Chain part2)
+std::pair<ChainId, Chain> ConstrutcChain(const IGraphUs &graph, const Chain &part1, Chain part2)
 {
     auto retval = part1;
     str::reverse(retval);
@@ -87,7 +87,7 @@ std::pair<ChainId, Chain> ConstrutcChain(const IGraphUsc &graph, const Chain &pa
     throw MyException("Should not come here");
 }
 
-Chain GetChainPart(const IGraphUsc &graph, GraphVertex vertex, GraphVertex current, std::set<GraphVertex> &done)
+Chain GetChainPart(const IGraphUs &graph, GraphVertex vertex, GraphVertex current, std::set<GraphVertex> &done)
 {
     Chain result{vertex};
     std::vector<GraphVertex> ngbs;
@@ -117,7 +117,7 @@ Chain GetChainPart(const IGraphUsc &graph, GraphVertex vertex, GraphVertex curre
     return result;
 }
 
-std::pair<ChainId, Chain> GetChain(const IGraphUsc &graph, GraphVertex vertex, std::set<GraphVertex> &done)
+std::pair<ChainId, Chain> GetChain(const IGraphUs &graph, GraphVertex vertex, std::set<GraphVertex> &done)
 {
     std::vector<GraphVertex> ngbs;
     graph.setAdjacentVertices(vertex, ngbs);
@@ -132,7 +132,7 @@ std::pair<ChainId, Chain> GetChain(const IGraphUsc &graph, GraphVertex vertex, s
     return ConstrutcChain(graph, part1, part2);
 }
 
-std::vector<std::pair<ChainTag, Chain>> GetChains(const IGraphUsc &graph)
+std::vector<std::pair<ChainTag, Chain>> GetChains(const IGraphUs &graph)
 {
     std::vector<std::pair<ChainTag, Chain>> retval;
     const auto nVertices = graph.getNumVertices();
@@ -158,7 +158,7 @@ std::vector<std::pair<ChainTag, Chain>> GetChains(const IGraphUsc &graph)
     return retval;
 }
 
-std::vector<Tag> GenerateTags(const IGraphUsc &graph)
+std::vector<Tag> GenerateTags(const IGraphUs &graph)
 {
     const auto nVertices = graph.getNumVertices();
     std::vector<Tag> retval(nVertices);
@@ -339,23 +339,7 @@ std::vector<Tag> GenerateTagsForConnected(const IGraphUs *graph)
         return {};
     }
 
-    // TODO this stinks to high heaven
-    const auto *graphUsc = dynamic_cast<const IGraphUsc *>(graph);
-    if (graphUsc != nullptr)
-    {
-        return GenerateTags(*graphUsc);
-    }
-
-    const auto *ugraph = dynamic_cast<const UndirectedGraph *>(graph);
-    std::unique_ptr<UndirectedGraph> undirectedGraph;
-    if (ugraph == nullptr)
-    {
-        undirectedGraph = std::make_unique<UndirectedGraph>(*graph);
-        ugraph = undirectedGraph.get();
-    }
-
-    const GraphUsc connectedGraph(*ugraph);
-    return GenerateTags(connectedGraph);
+    return GenerateTags(*graph);
 }
 
 } // namespace
