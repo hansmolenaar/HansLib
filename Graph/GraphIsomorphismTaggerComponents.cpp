@@ -1,4 +1,5 @@
 #include "GraphIsomorphismTaggerComponents.h"
+#include "GraphIsomorphismUtils.h"
 #include "Defines.h"
 
 using namespace GraphIsomorphism;
@@ -12,13 +13,14 @@ GraphIsomorphism::TaggerComponents::TaggerComponents(const Graph::IGraphUs &grap
         componentSize[c] += 1;
     }
 
+    Tag tag;
     for (auto itr : componentSize)
     {
-        m_graphTag.push_back(itr.second);
+        tag.push_back(itr.second);
     }
-
-    str::sort(m_graphTag);
-    m_isConnected = (m_graphTag.size() == 1);
+    str::sort(tag);
+    m_isConnected = (tag.size() == 1);
+    m_graphTag = CondenseSizeSequence(tag);
 }
 
 bool TaggerComponents::isConnected() const
