@@ -11,7 +11,7 @@ using namespace Utilities;
 
 namespace
 {
-GraphVertex GetVertexInParent(GraphVertex vertex, const IGraphIsomorphismDecompose &decompose)
+GraphVertex GetVertexInParent(GraphVertex vertex, const IDecompose &decompose)
 {
     const auto &self = decompose.getSelf();
     const auto *subGraph = dynamic_cast<const SubGraph *>(&self);
@@ -22,8 +22,8 @@ GraphVertex GetVertexInParent(GraphVertex vertex, const IGraphIsomorphismDecompo
     return vertex;
 }
 
-void AddToParentMapRecur(const IGraphIsomorphismDecompose *current, const IGraphIsomorphismDecompose *parent,
-                         IGraphIsomorphismDecompose::ToParentMap &toParent)
+void AddToParentMapRecur(const IDecompose *current, const IDecompose *parent,
+                         IDecompose::ToParentMap &toParent)
 {
     // Add self
     toParent[current] = parent;
@@ -39,9 +39,9 @@ void AddToParentMapRecur(const IGraphIsomorphismDecompose *current, const IGraph
 
 } // namespace
 
-// !!!!!!!!!!!  IGraphIsomorphismDecompose
+// !!!!!!!!!!!  IDecompose
 
-GraphTags IGraphIsomorphismDecompose::GetGraphTags(const Graph::IGraphUs &graph)
+GraphTags IDecompose::GetGraphTags(const Graph::IGraphUs &graph)
 {
     GraphTags result;
     for (auto *factory : Construct::getGraphTaggerFactories())
@@ -51,18 +51,18 @@ GraphTags IGraphIsomorphismDecompose::GetGraphTags(const Graph::IGraphUs &graph)
     return result;
 }
 
-std::unique_ptr<IGraphIsomorphismDecompose> IGraphIsomorphismDecompose::Create(const Graph::IGraphUs &graph)
+std::unique_ptr<IDecompose> IDecompose::Create(const Graph::IGraphUs &graph)
 {
     if (!graph.isConnected())
     {
-        return std::make_unique<GraphIsomorphismDecomposeDisconnected>(graph);
+        return std::make_unique<DecomposeDisconnected>(graph);
     }
 
     const TaggerKnown taggerKnown(graph);
     const auto knownTag = taggerKnown.getGraphTag();
     if (knownTag.front() != TaggerKnown::KnownType::Unknown)
     {
-        return std::make_unique<GraphIsomorphismDecomposeLeaf>(graph);
+        return std::make_unique<DecomposeLeaf>(graph);
     }
 
     const auto fullyConnectedVertices = graph.getFullyConnectedVertices();
@@ -70,57 +70,57 @@ std::unique_ptr<IGraphIsomorphismDecompose> IGraphIsomorphismDecompose::Create(c
     {
         const std::set<GraphVertex> fullyConnectedVerticesSet(fullyConnectedVertices.begin(),
                                                               fullyConnectedVertices.end());
-        return std::make_unique<GraphIsomorphismDecomposeVertexFullyConnected>(graph, fullyConnectedVerticesSet);
+        return std::make_unique<DecomposeVertexFullyConnected>(graph, fullyConnectedVerticesSet);
     }
 
-    return std::make_unique<GraphIsomorphismDecomposeLeaf>(graph);
+    return std::make_unique<DecomposeLeaf>(graph);
 }
 
-bool IGraphIsomorphismDecompose::isLeaf() const
+bool IDecompose::isLeaf() const
 {
     return getChildTags().empty();
 }
 
-IGraphIsomorphismDecompose::ToParentMap IGraphIsomorphismDecompose::GetToParentMap(
-    const IGraphIsomorphismDecompose *root)
+IDecompose::ToParentMap IDecompose::GetToParentMap(
+    const IDecompose *root)
 {
     ToParentMap result;
     AddToParentMapRecur(root, nullptr, result);
     return result;
 }
 // !!!!!!!!!!! Leaf
-GraphIsomorphismDecomposeLeaf::GraphIsomorphismDecomposeLeaf(const Graph::IGraphUs &graph)
-    : m_self(graph), m_tagSelf(IGraphIsomorphismDecompose::GetGraphTags(m_self))
+DecomposeLeaf::DecomposeLeaf(const Graph::IGraphUs &graph)
+    : m_self(graph), m_tagSelf(IDecompose::GetGraphTags(m_self))
 {
 }
 
-GraphVertex GraphIsomorphismDecomposeLeaf::getVertexInParent(GraphVertex v) const
+GraphVertex DecomposeLeaf::getVertexInParent(GraphVertex v) const
 {
     return GetVertexInParent(v, *this);
 }
 
-const Graph::IGraphUs &GraphIsomorphismDecomposeLeaf::getSelf() const
+const Graph::IGraphUs &DecomposeLeaf::getSelf() const
 {
     return m_self;
 }
-const GraphTags &GraphIsomorphismDecomposeLeaf::getTagSelf() const
+const GraphTags &DecomposeLeaf::getTagSelf() const
 {
     return m_tagSelf;
 }
 
-const std::vector<GraphTags> &GraphIsomorphismDecomposeLeaf::getChildTags() const
+const std::vector<GraphTags> &DecomposeLeaf::getChildTags() const
 {
     return m_childTags;
 }
 
-std::vector<const IGraphIsomorphismDecompose *> GraphIsomorphismDecomposeLeaf::getChildren(const GraphTags &) const
+std::vector<const IDecompose *> DecomposeLeaf::getChildren(const GraphTags &) const
 {
-    throw MyException("GraphIsomorphismDecomposeLeaf::getChildren should not come here");
+    throw MyException("DecomposeLeaf::getChildren should not come here");
 }
 
 // !!!!!!!!!!! Disconnected
-GraphIsomorphismDecomposeDisconnected::GraphIsomorphismDecomposeDisconnected(const Graph::IGraphUs &graph)
-    : m_self(graph), m_tagSelf(IGraphIsomorphismDecompose::GetGraphTags(m_self))
+DecomposeDisconnected::DecomposeDisconnected(const Graph::IGraphUs &graph)
+    : m_self(graph), m_tagSelf(IDecompose::GetGraphTags(m_self))
 {
     std::map<GraphVertex, std::set<GraphVertex>> components;
     GraphVertex vertex = 0;
@@ -138,48 +138,48 @@ GraphIsomorphismDecomposeDisconnected::GraphIsomorphismDecomposeDisconnected(con
 
     for (const auto &child : m_children)
     {
-        const auto tag = IGraphIsomorphismDecompose::GetGraphTags(child);
+        const auto tag = IDecompose::GetGraphTags(child);
         if (!m_childDecomposes.contains(tag))
         {
             m_childTags.emplace_back(tag);
         }
-        m_childDecomposes[tag].emplace_back(IGraphIsomorphismDecompose::Create(child));
+        m_childDecomposes[tag].emplace_back(IDecompose::Create(child));
     }
 }
 
-GraphVertex GraphIsomorphismDecomposeDisconnected::getVertexInParent(GraphVertex v) const
+GraphVertex DecomposeDisconnected::getVertexInParent(GraphVertex v) const
 {
     return GetVertexInParent(v, *this);
 }
 
-const Graph::IGraphUs &GraphIsomorphismDecomposeDisconnected::getSelf() const
+const Graph::IGraphUs &DecomposeDisconnected::getSelf() const
 {
     return m_self;
 }
 
-const GraphTags &GraphIsomorphismDecomposeDisconnected::getTagSelf() const
+const GraphTags &DecomposeDisconnected::getTagSelf() const
 {
     return m_tagSelf;
 }
 
-const std::vector<GraphTags> &GraphIsomorphismDecomposeDisconnected::getChildTags() const
+const std::vector<GraphTags> &DecomposeDisconnected::getChildTags() const
 {
     return m_childTags;
 }
-std::vector<const IGraphIsomorphismDecompose *> GraphIsomorphismDecomposeDisconnected::getChildren(
+std::vector<const IDecompose *> DecomposeDisconnected::getChildren(
     const GraphTags &tag) const
 {
     const auto &childrenWithTag = m_childDecomposes.at(tag);
-    std::vector<const IGraphIsomorphismDecompose *> result(childrenWithTag.size());
+    std::vector<const IDecompose *> result(childrenWithTag.size());
     str::transform(childrenWithTag, result.begin(), [](const auto &kid) { return kid.get(); });
     return result;
 }
 
 // !!!!!!!!!!! fully connected vertices
 
-GraphIsomorphismDecomposeVertexFullyConnected::GraphIsomorphismDecomposeVertexFullyConnected(
+DecomposeVertexFullyConnected::DecomposeVertexFullyConnected(
     const Graph::IGraphUs &graph, const std::set<GraphVertex> &fullyConnected)
-    : m_self(graph), m_tagSelf(IGraphIsomorphismDecompose::GetGraphTags(m_self))
+    : m_self(graph), m_tagSelf(IDecompose::GetGraphTags(m_self))
 {
     MyAssert(!fullyConnected.empty());
 
@@ -203,40 +203,40 @@ GraphIsomorphismDecomposeVertexFullyConnected::GraphIsomorphismDecomposeVertexFu
 
     for (const auto &child : m_children)
     {
-        const auto tag = IGraphIsomorphismDecompose::GetGraphTags(*child);
+        const auto tag = IDecompose::GetGraphTags(*child);
         if (!m_childDecomposes.contains(tag))
         {
             m_childTags.emplace_back(tag);
         }
-        m_childDecomposes[tag].emplace_back(IGraphIsomorphismDecompose::Create(*child));
+        m_childDecomposes[tag].emplace_back(IDecompose::Create(*child));
     }
 }
 
-GraphVertex GraphIsomorphismDecomposeVertexFullyConnected::getVertexInParent(GraphVertex v) const
+GraphVertex DecomposeVertexFullyConnected::getVertexInParent(GraphVertex v) const
 {
     return GetVertexInParent(v, *this);
 }
 
-const Graph::IGraphUs &GraphIsomorphismDecomposeVertexFullyConnected::getSelf() const
+const Graph::IGraphUs &DecomposeVertexFullyConnected::getSelf() const
 {
     return m_self;
 }
 
-const GraphTags &GraphIsomorphismDecomposeVertexFullyConnected::getTagSelf() const
+const GraphTags &DecomposeVertexFullyConnected::getTagSelf() const
 {
     return m_tagSelf;
 }
 
-const std::vector<GraphTags> &GraphIsomorphismDecomposeVertexFullyConnected::getChildTags() const
+const std::vector<GraphTags> &DecomposeVertexFullyConnected::getChildTags() const
 {
     return m_childTags;
 }
 
-std::vector<const IGraphIsomorphismDecompose *> GraphIsomorphismDecomposeVertexFullyConnected::getChildren(
+std::vector<const IDecompose *> DecomposeVertexFullyConnected::getChildren(
     const GraphTags &tag) const
 {
     const auto &childrenWithTag = m_childDecomposes.at(tag);
-    std::vector<const IGraphIsomorphismDecompose *> result(childrenWithTag.size());
+    std::vector<const IDecompose *> result(childrenWithTag.size());
     str::transform(childrenWithTag, result.begin(), [](const auto &kid) { return kid.get(); });
     return result;
 }
