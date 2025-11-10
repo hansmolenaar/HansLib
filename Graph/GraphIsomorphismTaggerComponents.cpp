@@ -1,6 +1,6 @@
 #include "GraphIsomorphismTaggerComponents.h"
-#include "GraphIsomorphismUtils.h"
 #include "Defines.h"
+#include "GraphIsomorphismUtils.h"
 
 using namespace GraphIsomorphism;
 

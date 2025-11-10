@@ -33,6 +33,7 @@ TEST(GraphIsomorphismTaggerComponentsTest, Disconneted)
     const auto tagger = factory.createGraphTagger(*graph);
     ASSERT_EQ(tagger->getGraphTag(), (Tag{2, 1, 4, 1}));
 }
+
 TEST(GraphIsomorphismTaggerComponentsTest, Disconneted100)
 {
     const auto graph = UndirectedGraphLibrary::Get_DisconnectedGraph(100);

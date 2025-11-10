@@ -32,20 +32,27 @@ TEST(GraphIsomorphismTaggerDistanceTest, Path3)
     ASSERT_TRUE(str::equal(tagger.getVertexTag(0), Tag{1, 1}));
     ASSERT_TRUE(str::equal(tagger.getVertexTag(1), Tag{2}));
     ASSERT_TRUE(str::equal(tagger.getVertexTag(2), Tag{1, 1}));
+
+    const auto &graphTag = tagger.getGraphTag();
+    ASSERT_EQ(graphTag, (Tag{1, 1, 2, 2}));
 }
 
 TEST(GraphIsomorphismTaggerDistanceTest, Star121)
 {
-    const GraphUsc graph(*UndirectedGraphLibrary::Get_Star({1, 2, 1}));
+    const auto graph = UndirectedGraphLibrary::Get_Star({1, 2, 1});
     TaggerDistanceFactory factory;
-    GraphTest::CheckTaggerConsistency(graph, factory, 3);
+    GraphTest::CheckTaggerConsistency(*graph, factory, 3);
 
-    const auto tagger = factory.createVertexTagger(graph);
+    const auto tagger = factory.createVertexTagger(*graph);
     ASSERT_TRUE(str::equal(tagger->getVertexTag(0), Tag{3, 1}));
     ASSERT_TRUE(str::equal(tagger->getVertexTag(1), Tag{1, 2, 1}));
     ASSERT_TRUE(str::equal(tagger->getVertexTag(2), Tag{2, 2}));
     ASSERT_TRUE(str::equal(tagger->getVertexTag(3), Tag{1, 1, 2}));
     ASSERT_TRUE(str::equal(tagger->getVertexTag(4), Tag{1, 2, 1}));
+
+    auto distances = std::make_shared<UndirectedGraphDistance>(*graph);
+    const auto graphTag = TaggerDistance(distances).getGraphTag();
+    ASSERT_EQ(graphTag, (Tag{2, 2, 3, 3}));
 }
 
 TEST(GraphIsomorphismTaggerDistanceTest, NumVertices5)

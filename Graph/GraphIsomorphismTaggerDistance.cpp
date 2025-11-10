@@ -1,5 +1,6 @@
 #include "GraphIsomorphismTaggerDistance.h"
 #include "Defines.h"
+#include "GraphIsomorphismUtils.h"
 #include "UndirectedGraph.h"
 #include "UndirectedGraphDistance.h"
 
@@ -14,6 +15,15 @@ GraphIsomorphism::TaggerDistance::TaggerDistance(std::shared_ptr<UndirectedGraph
     {
         m_tags.emplace_back(getTag(v));
     }
+
+    // Use maximum distances in the graph tag
+    std::vector<size_t> maxDistances;
+    for (auto v = 0; v < nVertices; ++v)
+    {
+        // Subtract 1, gives expected distance
+        maxDistances.push_back((*m_distances)(v).size() - 1);
+    }
+    m_graphTag = CondenseSizeSequence(maxDistances);
 }
 
 Tag TaggerDistance::getTag(GraphVertex v) const
@@ -28,6 +38,11 @@ Tag TaggerDistance::getTag(GraphVertex v) const
 const Tag &TaggerDistance::getVertexTag(GraphVertex v) const
 {
     return m_tags.at(v);
+}
+
+const Tag &TaggerDistance::getGraphTag() const
+{
+    return m_graphTag;
 }
 
 GraphVertex TaggerDistance::getNumVertices() const

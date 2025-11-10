@@ -17,11 +17,13 @@ class TaggerDistance : public IVertexTagger
     explicit TaggerDistance(std::shared_ptr<Graph::UndirectedGraphDistance>);
     const Tag &getVertexTag(GraphVertex) const override;
     GraphVertex getNumVertices() const override;
+    const Tag &getGraphTag() const;
 
   private:
     Tag getTag(GraphVertex v) const;
     std::shared_ptr<Graph::UndirectedGraphDistance> m_distances;
     std::vector<Tag> m_tags;
+    Tag m_graphTag;
 };
 
 class TaggerDistanceFactory : public IVertexTaggerFactory
