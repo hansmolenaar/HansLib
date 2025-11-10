@@ -18,7 +18,6 @@ class TaggerMaxDegree : public IVertexTagger
   private:
     GraphVertex m_numVertices;
     std::map<GraphVertex, TagEntry> m_fullyConnected2id;
-    ;
 };
 
 class TaggerMaxDegreeFactory : public IVertexTaggerFactory
