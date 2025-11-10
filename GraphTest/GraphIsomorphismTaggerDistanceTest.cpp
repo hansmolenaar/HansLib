@@ -15,7 +15,7 @@ namespace
 {
 } // namespace
 
-TEST(GraphIsomorphismTaggerDistanceTest, CheckVertexTagger)
+TEST(GraphIsomorphismTaggerDistanceTest, CheckTagger)
 {
     TaggerDistanceFactory factory;
     GraphTest::CheckVertexTagger(factory);
@@ -50,8 +50,7 @@ TEST(GraphIsomorphismTaggerDistanceTest, Star121)
     ASSERT_TRUE(str::equal(tagger->getVertexTag(3), Tag{1, 1, 2}));
     ASSERT_TRUE(str::equal(tagger->getVertexTag(4), Tag{1, 2, 1}));
 
-    auto distances = std::make_shared<UndirectedGraphDistance>(*graph);
-    const auto graphTag = TaggerDistance(distances).getGraphTag();
+    const auto graphTag = TaggerDistance(*graph).getGraphTag();
     ASSERT_EQ(graphTag, (Tag{2, 2, 3, 3}));
 }
 

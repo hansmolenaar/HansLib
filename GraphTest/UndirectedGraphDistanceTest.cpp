@@ -3,8 +3,10 @@
 #include "Defines.h"
 #include "UndirectedGraphDistance.h"
 #include "UndirectedGraphLibrary.h"
+#include "Single.h"
 
 using namespace Graph;
+using namespace Utilities;
 
 TEST(UndirectedGraphDistanceTest, Path3)
 {
@@ -90,3 +92,17 @@ TEST(UndirectedGraphDistanceTest, Star111)
     ASSERT_TRUE(str::equal(d.at(1), std::vector<GraphVertex>{0}));
     ASSERT_TRUE(str::equal(d.at(2), std::vector<GraphVertex>{1, 2}));
 }
+
+TEST(UndirectedGraphDistanceTest, Disconnected2)
+{
+    const auto graph = UndirectedGraphLibrary::Get_DisconnectedGraph(2);
+    const UndirectedGraphDistance distances(*graph);
+
+    auto d = distances(static_cast<GraphVertex>(0));
+    ASSERT_EQ(Single(d), std::vector<GraphVertex>{0});
+
+    d = distances(static_cast<GraphVertex>(1));
+    ASSERT_EQ(Single(d), std::vector<GraphVertex>{1});
+}
+
+

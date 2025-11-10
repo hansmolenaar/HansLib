@@ -3,6 +3,7 @@
 #include "GraphIsomorphismUtils.h"
 #include "UndirectedGraph.h"
 #include "UndirectedGraphDistance.h"
+#include "IGraphUsc.h"
 
 using namespace Graph;
 using namespace GraphIsomorphism;
@@ -24,6 +25,10 @@ GraphIsomorphism::TaggerDistance::TaggerDistance(std::shared_ptr<UndirectedGraph
         maxDistances.push_back((*m_distances)(v).size() - 1);
     }
     m_graphTag = CondenseSizeSequence(maxDistances);
+}
+
+TaggerDistance::TaggerDistance(const Graph::IGraphUs & graph) : TaggerDistance(std::make_shared<UndirectedGraphDistance>(graph))
+{
 }
 
 Tag TaggerDistance::getTag(GraphVertex v) const
