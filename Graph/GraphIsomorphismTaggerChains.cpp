@@ -334,12 +334,12 @@ std::vector<Tag> GenerateTags(const IGraphUs &graph)
 
 std::vector<Tag> GenerateTagsForConnected(const IGraphUs *graph)
 {
-    if (!graph->isConnected())
+    if (graph->isConnected())
     {
-        return {};
+        return GenerateTags(*graph);
     }
 
-    return GenerateTags(*graph);
+    return {};
 }
 
 } // namespace
