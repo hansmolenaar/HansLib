@@ -9,4 +9,4 @@ namespace GraphIsomorphism
 
 template <typename T> GraphIsomorphism::Tag CondenseSizeSequence(const std::vector<T> &);
 
-} // namespace GraphIsomorphismUtils
+} // namespace GraphIsomorphism

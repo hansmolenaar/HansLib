@@ -22,8 +22,7 @@ GraphVertex GetVertexInParent(GraphVertex vertex, const IDecompose &decompose)
     return vertex;
 }
 
-void AddToParentMapRecur(const IDecompose *current, const IDecompose *parent,
-                         IDecompose::ToParentMap &toParent)
+void AddToParentMapRecur(const IDecompose *current, const IDecompose *parent, IDecompose::ToParentMap &toParent)
 {
     // Add self
     toParent[current] = parent;
@@ -81,16 +80,14 @@ bool IDecompose::isLeaf() const
     return getChildTags().empty();
 }
 
-IDecompose::ToParentMap IDecompose::GetToParentMap(
-    const IDecompose *root)
+IDecompose::ToParentMap IDecompose::GetToParentMap(const IDecompose *root)
 {
     ToParentMap result;
     AddToParentMapRecur(root, nullptr, result);
     return result;
 }
 // !!!!!!!!!!! Leaf
-DecomposeLeaf::DecomposeLeaf(const Graph::IGraphUs &graph)
-    : m_self(graph), m_tagSelf(IDecompose::GetGraphTags(m_self))
+DecomposeLeaf::DecomposeLeaf(const Graph::IGraphUs &graph) : m_self(graph), m_tagSelf(IDecompose::GetGraphTags(m_self))
 {
 }
 
@@ -166,8 +163,7 @@ const std::vector<GraphTags> &DecomposeDisconnected::getChildTags() const
 {
     return m_childTags;
 }
-std::vector<const IDecompose *> DecomposeDisconnected::getChildren(
-    const GraphTags &tag) const
+std::vector<const IDecompose *> DecomposeDisconnected::getChildren(const GraphTags &tag) const
 {
     const auto &childrenWithTag = m_childDecomposes.at(tag);
     std::vector<const IDecompose *> result(childrenWithTag.size());
@@ -177,8 +173,8 @@ std::vector<const IDecompose *> DecomposeDisconnected::getChildren(
 
 // !!!!!!!!!!! fully connected vertices
 
-DecomposeVertexFullyConnected::DecomposeVertexFullyConnected(
-    const Graph::IGraphUs &graph, const std::set<GraphVertex> &fullyConnected)
+DecomposeVertexFullyConnected::DecomposeVertexFullyConnected(const Graph::IGraphUs &graph,
+                                                             const std::set<GraphVertex> &fullyConnected)
     : m_self(graph), m_tagSelf(IDecompose::GetGraphTags(m_self))
 {
     MyAssert(!fullyConnected.empty());
@@ -232,8 +228,7 @@ const std::vector<GraphTags> &DecomposeVertexFullyConnected::getChildTags() cons
     return m_childTags;
 }
 
-std::vector<const IDecompose *> DecomposeVertexFullyConnected::getChildren(
-    const GraphTags &tag) const
+std::vector<const IDecompose *> DecomposeVertexFullyConnected::getChildren(const GraphTags &tag) const
 {
     const auto &childrenWithTag = m_childDecomposes.at(tag);
     std::vector<const IDecompose *> result(childrenWithTag.size());

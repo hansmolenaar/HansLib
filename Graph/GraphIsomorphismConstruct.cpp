@@ -21,8 +21,8 @@ TaggerChainsFactory factoryChains;
 TaggerMaxDegreeFactory factoryMaxDegree;
 TaggerDistanceFactory factoryDistance;
 
-const std::vector<IGraphTaggerFactory *> factoriesGraph{&factoryNumbers, &factoryKnown, &factoryDegree};
-const std::vector<IVertexTaggerFactory *> factoriesVertex{&factoryChains, &factoryMaxDegree, &factoryDistance};
+const std::vector<ITaggerFactory *> factories{&factoryNumbers, &factoryDegree,    &factoryKnown,
+                                              &factoryChains,  &factoryMaxDegree, &factoryDistance};
 
 class CombinedTagger : public IVertexTagger
 {
@@ -45,6 +45,34 @@ class CombinedTagger : public IVertexTagger
 
 } // namespace
 
+std::vector<IGraphTaggerFactory *> Construct::getGraphTaggerFactories()
+{
+    std::vector<IGraphTaggerFactory *> result;
+    for (auto *factory : factories)
+    {
+        auto *graphTaggerFactory = dynamic_cast<IGraphTaggerFactory *>(factory);
+        if (graphTaggerFactory != nullptr)
+        {
+            result.push_back(graphTaggerFactory);
+        }
+    }
+    return result;
+}
+
+std::vector<IVertexTaggerFactory *> Construct::getVertexTaggerFactories()
+{
+    std::vector<IVertexTaggerFactory *> result;
+    for (auto *factory : factories)
+    {
+        auto *vertexTaggerFactory = dynamic_cast<IVertexTaggerFactory *>(factory);
+        if (vertexTaggerFactory != nullptr)
+        {
+            result.push_back(vertexTaggerFactory);
+        }
+    }
+    return result;
+}
+
 Status Construct::actionConnected(const Graph::IGraphUsc &graph0, const Graph::IGraphUsc &graph1) const
 {
     const auto numVertices = graph0.getNumVertices();
@@ -65,7 +93,7 @@ Status Construct::actionConnected(const Graph::IGraphUsc &graph0, const Graph::I
     std::vector<Tag> groups0(numVertices);
     std::vector<Tag> groups1(numVertices);
 
-    for (auto *factory : factoriesVertex)
+    for (auto *factory : getVertexTaggerFactories())
     {
         const auto tagger0 = factory->createVertexTagger(graph0);
         const auto tagger1 = factory->createVertexTagger(graph1);
@@ -92,8 +120,3 @@ Status Construct::actionConnected(const Graph::IGraphUsc &graph0, const Graph::I
     }
     return result;
 }
-
-const std::vector<IGraphTaggerFactory *> &Construct::getGraphTaggerFactories()
-{
-    return factoriesGraph;
-};

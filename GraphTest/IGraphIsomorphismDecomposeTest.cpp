@@ -14,8 +14,7 @@ using namespace Utilities;
 namespace
 {
 
-GraphVertex GetVertexInRoot(GraphVertex vertex, const IDecompose *decompose,
-                            const IDecompose::ToParentMap toParent)
+GraphVertex GetVertexInRoot(GraphVertex vertex, const IDecompose *decompose, const IDecompose::ToParentMap toParent)
 {
     while (toParent.contains(decompose))
     {
