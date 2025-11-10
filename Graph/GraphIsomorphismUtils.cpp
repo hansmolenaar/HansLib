@@ -2,10 +2,10 @@
 
 using namespace GraphIsomorphism;
 
-template GraphIsomorphism::Tag GraphIsomorphismUtils::CondenseSizeSequence(const std::vector<int> &sizes);
-template GraphIsomorphism::Tag GraphIsomorphismUtils::CondenseSizeSequence(const std::vector<size_t> &sizes);
+template Tag GraphIsomorphism::CondenseSizeSequence(const std::vector<int> &sizes);
+template Tag GraphIsomorphism::CondenseSizeSequence(const std::vector<size_t> &sizes);
 
-template <typename T> GraphIsomorphism::Tag GraphIsomorphismUtils::CondenseSizeSequence(const std::vector<T> &sizes)
+template <typename T> Tag GraphIsomorphism::CondenseSizeSequence(const std::vector<T> &sizes)
 {
     std::map<T, TagEntry> count;
     for (const auto siz : sizes)

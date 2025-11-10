@@ -76,7 +76,7 @@ void CheckDecomposeList(const std::vector<std::string> &g6list, Tag expectMultip
     {
         multiplicities.push_back(itr.second);
     }
-    const auto tag = GraphIsomorphismUtils::CondenseSizeSequence(multiplicities);
+    const auto tag = CondenseSizeSequence(multiplicities);
 
     if (!str::equal(tag, expectMultiplicities))
     {

@@ -7,8 +7,7 @@ using namespace GraphIsomorphism;
 
 GraphIsomorphism::TaggerDegree::TaggerDegree(const Graph::IGraphUs &graph) : m_graph(graph)
 {
-    str::copy(GraphIsomorphismUtils::CondenseSizeSequence(graph.getDegreeSequence()),
-              std::back_inserter(m_degreeSequenceTag));
+    str::copy(CondenseSizeSequence(graph.getDegreeSequence()), std::back_inserter(m_degreeSequenceTag));
 }
 
 const Tag &TaggerDegree::getGraphTag() const
