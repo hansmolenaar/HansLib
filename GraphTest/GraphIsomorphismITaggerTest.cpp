@@ -17,10 +17,10 @@ using namespace GraphIsomorphism;
 
 namespace
 {
-};
+const int numPermutations = 10;
 
-void GraphTest::CheckVertexTaggerConsistency(const IGraphUs &graph, GraphIsomorphism::ITaggerFactory &factory,
-                                             int expectNumAssociatedvertices, int numPermutations)
+void CheckVertexTaggerConsistency(const IGraphUs &graph, GraphIsomorphism::ITaggerFactory &factory,
+                                  int expectNumAssociatedvertices)
 {
     const auto nVertices = graph.getNumVertices();
     const auto gtagger = factory.createTagger(graph);
@@ -57,7 +57,7 @@ void GraphTest::CheckVertexTaggerConsistency(const IGraphUs &graph, GraphIsomorp
     }
 }
 
-void GraphTest::CheckGraphTaggerConsistency(const Graph::IGraphUs &graph, ITaggerFactory &factory, int numPermutations)
+void CheckGraphTaggerConsistency(const Graph::IGraphUs &graph, ITaggerFactory &factory)
 {
     const auto nVertices = graph.getNumVertices();
     const auto gtagger = factory.createTagger(graph);
@@ -76,24 +76,24 @@ void GraphTest::CheckGraphTaggerConsistency(const Graph::IGraphUs &graph, ITagge
         ASSERT_EQ(tag, taggerPermuted->getGraphTag());
     }
 }
+}; // namespace
 
 void GraphTest::CheckTaggerConsistency(const IGraphUs &graph, GraphIsomorphism::ITaggerFactory &factory,
-                                       int numPermutations, int expectNumAssociatedvertices)
+                                       int expectNumAssociatedvertices)
 {
-    CheckGraphTaggerConsistency(graph, factory, numPermutations);
-    CheckVertexTaggerConsistency(graph, factory, expectNumAssociatedvertices, numPermutations);
+    CheckGraphTaggerConsistency(graph, factory);
+    CheckVertexTaggerConsistency(graph, factory, expectNumAssociatedvertices);
 }
 
 void GraphTest::TaggerCheckListG6(const std::vector<std::string> &stringsG6, ITaggerFactory &factory,
-                                  int expectResolved, int numPermutations)
+                                  int expectResolved)
 {
     int numResolved = 0;
     for (const auto &g6 : stringsG6)
     {
         const auto graph = UndirectedGraphFromG6::Create(g6);
 
-        CheckGraphTaggerConsistency(*graph, factory, numPermutations);
-        CheckVertexTaggerConsistency(*graph, factory, -1, numPermutations);
+        CheckTaggerConsistency(*graph, factory);
 
         const auto vtagger = factory.createTagger(*graph);
         const auto *tagger = vtagger->getVertexTagger();
