@@ -1,5 +1,6 @@
 #include "GraphIsomorphismUtils.h"
 
+#include "Defines.h"
 #include "GraphIsomorphismGrouper.h"
 #include "GraphIsomorphismTaggerChains.h"
 #include "GraphIsomorphismTaggerComponents.h"
@@ -9,8 +10,6 @@
 #include "GraphIsomorphismTaggerMaxDegree.h"
 #include "GraphIsomorphismTaggerNumbers.h"
 #include "GraphIsomorphismTaggerTriangles.h"
-#include "GraphIsomorphismConstruct.h"   // TODO remove
-#include "Defines.h"
 
 using namespace GraphIsomorphism;
 
@@ -74,24 +73,26 @@ TaggerMaxDegreeFactory factoryMaxDegree;
 TaggerDistanceFactory factoryDistance;
 TaggerTrianglesFactory factoryTriangles;
 
-const std::vector<ITaggerFactory *> allFactories{&factoryNumbers, &factoryComponents, &factoryDegree,   &factoryKnown,
-                                              &factoryChains,  &factoryMaxDegree,  &factoryDistance, &factoryTriangles};
-}
+const std::vector<ITaggerFactory *> allFactories{&factoryNumbers,  &factoryComponents, &factoryDegree,
+                                                 &factoryKnown,    &factoryChains,     &factoryMaxDegree,
+                                                 &factoryDistance, &factoryTriangles};
+} // namespace
 
 std::vector<ITaggerFactory *> GraphIsomorphism::getTaggerFactories()
 {
     return allFactories;
 }
 
-
 std::vector<std::unique_ptr<ITagger>> GraphIsomorphism::getAllTaggers(const Graph::IGraphUs &graph)
 {
     std::vector<std::unique_ptr<ITagger>> result(getTaggerFactories().size());
-    str::transform(getTaggerFactories(), result.begin(), [&graph](const auto &factory) { return factory->createTagger(graph); });
+    str::transform(getTaggerFactories(), result.begin(),
+                   [&graph](const auto &factory) { return factory->createTagger(graph); });
     return result;
 }
 
-std::vector<const IGraphTagger *> GraphIsomorphism::selectGraphTaggers(const std::vector<std::unique_ptr<ITagger>> &taggers)
+std::vector<const IGraphTagger *> GraphIsomorphism::selectGraphTaggers(
+    const std::vector<std::unique_ptr<ITagger>> &taggers)
 {
     std::vector<const IGraphTagger *> result(taggers.size());
     str::transform(taggers, result.begin(), [](const auto &tagger) { return tagger->getGraphTagger(); });
@@ -99,8 +100,8 @@ std::vector<const IGraphTagger *> GraphIsomorphism::selectGraphTaggers(const std
     return result;
 }
 
-
-std::vector<const IVertexTagger *> GraphIsomorphism::selectVertexTaggers(const std::vector<std::unique_ptr<ITagger>> &taggers)
+std::vector<const IVertexTagger *> GraphIsomorphism::selectVertexTaggers(
+    const std::vector<std::unique_ptr<ITagger>> &taggers)
 {
     std::vector<const IVertexTagger *> result(taggers.size());
     str::transform(taggers, result.begin(), [](const auto &tagger) { return tagger->getVertexTagger(); });

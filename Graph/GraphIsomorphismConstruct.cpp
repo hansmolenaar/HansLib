@@ -1,9 +1,9 @@
 #include "GraphIsomorphismConstruct.h"
 
-#include "GraphIsomorphismUtils.h"
 #include "Defines.h"
-#include "MyAssert.h"
 #include "GraphIsomorphismGrouper.h"
+#include "GraphIsomorphismUtils.h"
+#include "MyAssert.h"
 
 using namespace GraphIsomorphism;
 using namespace Utilities;
@@ -31,7 +31,6 @@ class CombinedTagger : public IVertexTagger
 };
 
 } // namespace
-
 
 Status Construct::actionConnected(const Graph::IGraphUsc &graph0, const Graph::IGraphUsc &graph1) const
 {
