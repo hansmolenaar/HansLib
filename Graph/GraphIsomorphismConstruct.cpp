@@ -32,28 +32,6 @@ class CombinedTagger : public IVertexTagger
 
 } // namespace
 
-std::vector<std::unique_ptr<ITagger>> Construct::getAllTaggers(const Graph::IGraphUs &graph)
-{
-    std::vector<std::unique_ptr<ITagger>> result(getTaggerFactories().size());
-    str::transform(getTaggerFactories(), result.begin(), [&graph](const auto &factory) { return factory->createTagger(graph); });
-    return result;
-}
-
-std::vector<const IGraphTagger *> Construct::selectGraphTaggers(const std::vector<std::unique_ptr<ITagger>> &taggers)
-{
-    std::vector<const IGraphTagger *> result(taggers.size());
-    str::transform(taggers, result.begin(), [](const auto &tagger) { return tagger->getGraphTagger(); });
-    result.erase(std::remove(result.begin(), result.end(), nullptr), result.end());
-    return result;
-}
-
-std::vector<const IVertexTagger *> Construct::selectVertexTaggers(const std::vector<std::unique_ptr<ITagger>> &taggers)
-{
-    std::vector<const IVertexTagger *> result(taggers.size());
-    str::transform(taggers, result.begin(), [](const auto &tagger) { return tagger->getVertexTagger(); });
-    result.erase(std::remove(result.begin(), result.end(), nullptr), result.end());
-    return result;
-}
 
 Status Construct::actionConnected(const Graph::IGraphUsc &graph0, const Graph::IGraphUsc &graph1) const
 {

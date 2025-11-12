@@ -2,6 +2,7 @@
 
 #include "Defines.h"
 #include "GraphIsomorphismConstruct.h"
+#include "GraphIsomorphismUtils.h"
 #include "IGraphIsomorphismTagger.h"
 #include "Permutation.h"
 #include "UndirectedGraphFromG6.h"
@@ -21,8 +22,8 @@ void CheckUniquenessGraphTaggers(const std::vector<std::unique_ptr<Graph::IGraph
     {
         ASSERT_TRUE(!g->isConnected());
         std::vector<Tag> tags;
-        const auto allTaggers = Construct::getAllTaggers(*g);
-        const auto graphTaggers = Construct::selectGraphTaggers(allTaggers);
+        const auto allTaggers = GraphIsomorphism::getAllTaggers(*g);
+        const auto graphTaggers = GraphIsomorphism::selectGraphTaggers(allTaggers);
         for (const auto *graphTagger : graphTaggers)
         {
             tags.emplace_back(graphTagger->getGraphTag());
