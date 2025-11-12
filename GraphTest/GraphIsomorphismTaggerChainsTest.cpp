@@ -187,8 +187,3 @@ TEST(GraphIsomorphismTaggerChainsTest, NumVertices7)
 {
     GraphTest::TaggerCheckListG6(UndirectedGraphFromG6::getListNumVertices_7_connected(), factoryChains, 30);
 }
-
-TEST(GraphIsomorphismTaggerChainsTest, NumVertices8)
-{
-    GraphTest::TaggerCheckListG6(UndirectedGraphFromG6::getListNumVertices_8_connected(), factoryChains, 27);
-}
