@@ -48,7 +48,7 @@ GraphUsc GraphUsc::CreatePermuted(const IGraphUsc &graph, const Permutation &per
 {
     const auto nVertices = graph.getNumVertices();
     MyAssert(nVertices == permut.getCardinality());
-    UndirectedGraph result(nVertices);
+    UndirectedGraph result(nVertices, "Permutation of " + graph.getName());
     std::vector<GraphVertex> ngbs;
     for (GraphVertex v0 = 0; v0 < nVertices; ++v0)
     {
@@ -70,4 +70,9 @@ GraphUsc GraphUsc::CreatePermuted(const IGraphUsc &graph, const Permutation &per
 GraphUsc GraphUsc::CreatePermuted(const IGraphUsc &graph, std::initializer_list<Permutation::Entry> permut)
 {
     return CreatePermuted(graph, Permutation::Create(permut));
+}
+
+    std::string GraphUsc::getName() const 
+{
+   return m_graph.getName();
 }

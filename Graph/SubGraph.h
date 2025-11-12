@@ -16,6 +16,7 @@ class SubGraph : public IGraphUs
     GraphVertex getDegree(GraphVertex) const override;
     std::vector<GraphVertex> getConnectedComponents() const override;
     GraphVertex getVertexInParent(GraphVertex) const;
+    std::string getName() const override;
 
   private:
     std::vector<GraphVertex> m_verticesInParent;

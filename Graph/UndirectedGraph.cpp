@@ -48,11 +48,11 @@ std::vector<GraphVertex> TraceLineOrPolygon(const UndirectedGraph &graph, GraphV
 }
 } // namespace
 
-UndirectedGraph::UndirectedGraph(GraphVertex numVertices) : m_graph(numVertices)
+UndirectedGraph::UndirectedGraph(GraphVertex numVertices, std::string name) : m_graph(numVertices), m_name(name)
 {
 }
 
-UndirectedGraph::UndirectedGraph(const Graph::IGraphUs &graph) : m_graph(graph.getNumVertices())
+UndirectedGraph::UndirectedGraph(const Graph::IGraphUs &graph) : m_graph(graph.getNumVertices()), m_name(graph.getName())
 {
     const auto numVertices = graph.getNumVertices();
     std::vector<GraphVertex> ngbs;
@@ -276,4 +276,9 @@ UndirectedGraph UndirectedGraph::CreateComplement(const IGraphUs &graph)
         }
     }
     return result;
+}
+
+    std::string UndirectedGraph:: getName() const
+{
+ return m_name;
 }

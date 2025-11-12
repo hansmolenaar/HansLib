@@ -10,7 +10,18 @@ using namespace Graph;
 
 namespace
 {
-static void SetEdgesOfPath(UndirectedGraph &graph, GraphEdge numEdges)
+std::string CreateName(std::string name, std::initializer_list<GraphVertex> sizes)
+{
+   std::string result;
+  result += "Homegrown version of " + name;
+  for (auto siz : sizes)
+{
+   name += " " + std::to_string(siz);
+}
+return name;
+}
+
+void SetEdgesOfPath(UndirectedGraph &graph, GraphEdge numEdges)
 {
     for (GraphEdge edge = 0; edge < numEdges; ++edge)
     {
@@ -18,7 +29,7 @@ static void SetEdgesOfPath(UndirectedGraph &graph, GraphEdge numEdges)
     }
 }
 
-static std::unique_ptr<UndirectedGraph> Create(std::initializer_list<std::pair<GraphVertex, GraphVertex>> edges)
+std::unique_ptr<UndirectedGraph> Create(std::initializer_list<std::pair<GraphVertex, GraphVertex>> edges)
 {
     std::set<GraphVertex> vertices;
     for (auto edge : edges)
@@ -45,7 +56,7 @@ static std::unique_ptr<UndirectedGraph> Create(std::initializer_list<std::pair<G
 std::unique_ptr<GraphUsc> UndirectedGraphLibrary::Get_Path(GraphVertex numVertices)
 {
     MyAssert(numVertices > 1);
-    auto ug = std::make_unique<UndirectedGraph>(numVertices);
+    auto ug = std::make_unique<UndirectedGraph>(numVertices, CreateName("Path", {numVertices}));
     SetEdgesOfPath(*ug, numVertices - 1);
     return std::make_unique<GraphUsc>(*ug);
 }
@@ -53,7 +64,7 @@ std::unique_ptr<GraphUsc> UndirectedGraphLibrary::Get_Path(GraphVertex numVertic
 std::unique_ptr<GraphUsc> UndirectedGraphLibrary::Get_Cycle(GraphVertex numVertices)
 {
     MyAssert(numVertices > 2);
-    auto ug = std::make_unique<UndirectedGraph>(numVertices);
+    auto ug = std::make_unique<UndirectedGraph>(numVertices, CreateName("Cycle", {numVertices}));
     // add edge connecting first and last
     ug->addEdge(0, numVertices - 1);
     SetEdgesOfPath(*ug, numVertices - 1);
@@ -63,7 +74,7 @@ std::unique_ptr<GraphUsc> UndirectedGraphLibrary::Get_Cycle(GraphVertex numVerti
 std::unique_ptr<GraphUsc> UndirectedGraphLibrary::Get_CompleteGraph(GraphVertex numVertices)
 {
     MyAssert(numVertices >= 0); // Used to generate empty graph
-    auto ug = std::make_unique<UndirectedGraph>(numVertices);
+    auto ug = std::make_unique<UndirectedGraph>(numVertices, CreateName("Complete", {numVertices}));
 
     for (GraphVertex n0 = 0; n0 < numVertices; ++n0)
     {
@@ -81,7 +92,7 @@ std::unique_ptr<GraphUsc> UndirectedGraphLibrary::Get_Star(std::initializer_list
     MyAssert(sizes.size() > 2);
     MyAssert(str::all_of(sizes, [](auto v) { return v > 0; }));
     const auto numVertices = str::fold_left(sizes, static_cast<GraphVertex>(1), std::plus<GraphVertex>());
-    auto ug = std::make_unique<UndirectedGraph>(numVertices);
+    auto ug = std::make_unique<UndirectedGraph>(numVertices, CreateName("Cycle", sizes));
     GraphVertex cur = 1;
     for (auto s : sizes)
     {
@@ -136,7 +147,7 @@ std::unique_ptr<GraphUsc> UndirectedGraphLibrary::Get_Paw()
 
 std::unique_ptr<UndirectedGraph> UndirectedGraphLibrary::Get_DisconnectedGraph(GraphVertex numVertices)
 {
-    return std::make_unique<UndirectedGraph>(numVertices);
+    return std::make_unique<UndirectedGraph>(numVertices, CreateName("Disconnected", {numVertices}));
 }
 
 std::unique_ptr<GraphUsc> UndirectedGraphLibrary::Get_CompleteBipartite(GraphVertex size0, GraphVertex size1)
@@ -145,7 +156,7 @@ std::unique_ptr<GraphUsc> UndirectedGraphLibrary::Get_CompleteBipartite(GraphVer
     {
         throw MyException("CompleteBipartiteGraph: both sets muust have positive size");
     }
-    UndirectedGraph ug(size0 + size1);
+    UndirectedGraph ug(size0 + size1, CreateName("Complete Bipartite", {size0, size1}) );
     for (int n0 = 0; n0 < size0; ++n0)
     {
         for (int n1 = 0; n1 < size1; ++n1)

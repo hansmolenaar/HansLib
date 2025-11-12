@@ -929,7 +929,7 @@ std::unique_ptr<UndirectedGraph> UndirectedGraphFromG6::Create(std::string line)
     stringtograph(line.c_str(), g, m);
     myputgraphx(g, m, n, edges);
 
-    auto result = std::make_unique<UndirectedGraph>(n);
+    auto result = std::make_unique<UndirectedGraph>(n, line);
     for (auto e : edges)
     {
         result->addEdge(e.first, e.second);

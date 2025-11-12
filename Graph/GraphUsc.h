@@ -16,6 +16,7 @@ class GraphUsc : public IGraphUsc
     bool areAdjacent(GraphVertex v1, GraphVertex v2) const override;
     GraphVertex getDegree(GraphVertex vertex) const override;
     std::vector<GraphVertex> getConnectedComponents() const override;
+    std::string getName() const override;
 
     static GraphUsc CreatePermuted(const IGraphUsc &, const Permutation &);
     static GraphUsc CreatePermuted(const IGraphUsc &, std::initializer_list<Permutation::Entry>);
@@ -23,4 +24,4 @@ class GraphUsc : public IGraphUsc
   private:
     UndirectedGraph m_graph; // TODO avoid copying?
 };
-} // namespace Graph
+} // namespace GraphS

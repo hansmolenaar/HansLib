@@ -12,7 +12,7 @@ class UndirectedGraph : public Graph::IGraphUs
 {
   public:
     explicit UndirectedGraph(const Graph::IGraphUs &);
-    explicit UndirectedGraph(GraphVertex);
+    explicit UndirectedGraph(GraphVertex, std::string = "");
     void addEdge(GraphVertex, GraphVertex);
 
     GraphVertex getNumVertices() const override;
@@ -21,6 +21,8 @@ class UndirectedGraph : public Graph::IGraphUs
     bool areAdjacent(GraphVertex, GraphVertex) const override;
     GraphVertex getDegree(GraphVertex) const override;
     std::vector<GraphVertex> getConnectedComponents() const override;
+
+    std::string getName() const override;
 
     std::vector<GraphVertex> getDegreeSequence() const;
     std::vector<GraphVertex> getSortedDegreeSequence() const;
@@ -40,6 +42,7 @@ class UndirectedGraph : public Graph::IGraphUs
 
   private:
     boost::adjacency_list<boost::listS, boost::vecS, boost::undirectedS, GraphVertex, GraphEdge> m_graph;
+    std::string m_name;
 };
 
 } // namespace Graph
