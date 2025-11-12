@@ -103,7 +103,7 @@ std::unique_ptr<GraphUsc> UndirectedGraphLibrary::Get_Star(std::initializer_list
 //       1
 std::unique_ptr<GraphUsc> UndirectedGraphLibrary::Get_Diamond()
 {
-    return UndirectedGraphFromG6::CreateConnected("Cz");
+    return UndirectedGraphFromG6::CreateConnected(UndirectedGraphFromG6::diamond);
 }
 
 //    0 -- 2 -- 1
@@ -126,7 +126,7 @@ std::unique_ptr<GraphUsc> UndirectedGraphLibrary::Get_Bull()
 
 std::unique_ptr<GraphUsc> UndirectedGraphLibrary::Get_Butterfly()
 {
-    return UndirectedGraphFromG6::CreateConnected("D{c");
+    return UndirectedGraphFromG6::CreateConnected(UndirectedGraphFromG6::butterfly);
 }
 
 std::unique_ptr<GraphUsc> UndirectedGraphLibrary::Get_Paw()

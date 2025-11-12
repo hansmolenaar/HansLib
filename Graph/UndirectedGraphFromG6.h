@@ -46,6 +46,25 @@ static constexpr char X84[] = "ElD?";
 //          2
 //
 
+static constexpr char butterfly[] = "D{c";
+//
+//
+//          1    4
+//          |\  /|
+//          | 0  |
+//          |/ \ |
+//          2    3
+
+static constexpr char diamond[] = "Cz";
+//
+//
+//          1
+//        / |\
+//       0  | 3
+//        \ |/
+//          2
+//
+
 const std::vector<std::string> &getListNumVertices_5_connected();
 const std::vector<std::string> &getListNumVertices_6_connected();
 const std::vector<std::string> &getListNumVertices_7_connected();
