@@ -42,8 +42,7 @@ void GraphTest::CheckVertexTaggerConsistency(const IGraphUs &graph, GraphIsomorp
     {
         const auto permutation = Permutation::CreateRandomShuffle(trivial, n);
         const UndirectedGraph graphPermuted = UndirectedGraph::CreatePermuted(graph, permutation);
-        const GraphUsc uscGraphPermuted(graphPermuted);
-        const auto gtaggerPermuted = factory.createTagger(uscGraphPermuted);
+        const auto gtaggerPermuted = factory.createTagger(graphPermuted);
         const auto *taggerPermuted = gtaggerPermuted->getVertexTagger();
         const Grouper grouperPermuted(*taggerPermuted);
         ASSERT_EQ(grouperPermuted.countUnique(), expectNumAssociatedvertices);
@@ -52,7 +51,7 @@ void GraphTest::CheckVertexTaggerConsistency(const IGraphUs &graph, GraphIsomorp
         ASSERT_EQ(resultCompare.TagCompareStatus, TagCompare::Result::TagStatus::Equivalent);
         if (expectNumAssociatedvertices == nVertices)
         {
-            const auto checkIsomorphism = Check{}(graph, resultCompare.VertexPairs, uscGraphPermuted);
+            const auto checkIsomorphism = Check{}(graph, resultCompare.VertexPairs, graphPermuted);
             ASSERT_TRUE(checkIsomorphism);
         }
     }
@@ -76,6 +75,13 @@ void GraphTest::CheckGraphTaggerConsistency(const Graph::IGraphUs &graph, ITagge
         const auto *taggerPermuted = gtaggerPermuted->getGraphTagger();
         ASSERT_EQ(tag, taggerPermuted->getGraphTag());
     }
+}
+
+void GraphTest::CheckTaggerConsistency(const IGraphUs &graph, GraphIsomorphism::ITaggerFactory &factory,
+                                       int numPermutations, int expectNumAssociatedvertices)
+{
+    CheckGraphTaggerConsistency(graph, factory, numPermutations);
+    CheckVertexTaggerConsistency(graph, factory, expectNumAssociatedvertices, numPermutations);
 }
 
 void GraphTest::TaggerCheckListG6(const std::vector<std::string> &stringsG6, ITaggerFactory &factory,
@@ -130,6 +136,8 @@ void CheckTaggerBasics(GraphIsomorphism::ITaggerFactory &factory, const IGraphUs
             EXPECT_NO_THROW(tag = vertexChecker->getVertexTag(v));
         }
     }
+
+    CheckTaggerConsistency(graph, factory);
 }
 
 }; // namespace
