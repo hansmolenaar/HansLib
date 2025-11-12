@@ -18,7 +18,7 @@ namespace
 TEST(GraphIsomorphismTaggerDistanceTest, CheckTagger)
 {
     TaggerDistanceFactory factory;
-    GraphTest::CheckVertexTagger(factory);
+    GraphTest::CheckTagger(factory);
 }
 
 TEST(GraphIsomorphismTaggerDistanceTest, Path3)

@@ -68,8 +68,8 @@ TEST(GraphIsomorphismTaggerKnownTest, Diamond)
     ASSERT_EQ(tag, (Tag{TaggerKnown::KnownType::Unknown}));
 }
 
-TEST(GraphIsomorphismTaggerKnownTest, CheckGraphTagger)
+TEST(GraphIsomorphismTaggerKnownTest, CheckTagger)
 {
     TaggerKnownFactory factory;
-    GraphTest::CheckGraphTagger(factory);
+    GraphTest::CheckTagger(factory);
 }

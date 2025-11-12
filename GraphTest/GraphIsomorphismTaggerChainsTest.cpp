@@ -15,9 +15,9 @@ namespace
 TaggerChainsFactory factoryChains;
 } // namespace
 
-TEST(GraphIsomorphismTaggerChainsTest, CheckVertexTagger)
+TEST(GraphIsomorphismTaggerChainsTest, CheckTagger)
 {
-    GraphTest::CheckVertexTagger(factoryChains);
+    GraphTest::CheckTagger(factoryChains);
 }
 
 TEST(GraphIsomorphismTaggerChainsTest, PureCycle3)

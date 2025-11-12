@@ -11,10 +11,10 @@ namespace
 {
 } // namespace
 
-TEST(GraphIsomorphismTaggerDegreeTest, CheckGraphTagger)
+TEST(GraphIsomorphismTaggerDegreeTest, CheckTagger)
 {
     TaggerDegreeFactory factory;
-    GraphTest::CheckGraphTagger(factory);
+    GraphTest::CheckTagger(factory);
 }
 
 TEST(GraphIsomorphismTaggerDegreeTest, Path3)

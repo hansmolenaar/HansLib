@@ -14,10 +14,10 @@ namespace
 {
 } // namespace
 
-TEST(GraphIsomorphismTaggerMaxDegreeTest, CheckVertexTagger)
+TEST(GraphIsomorphismTaggerMaxDegreeTest, CheckTagger)
 {
     TaggerMaxDegreeFactory factory;
-    GraphTest::CheckVertexTagger(factory);
+    GraphTest::CheckTagger(factory);
 }
 
 TEST(GraphIsomorphismTaggerMaxDegreeTest, Path3)
