@@ -8,6 +8,7 @@
 #include "GraphIsomorphismTaggerKnown.h"
 #include "GraphIsomorphismTaggerMaxDegree.h"
 #include "GraphIsomorphismTaggerNumbers.h"
+#include "GraphIsomorphismTaggerTriangles.h"
 #include "MyAssert.h"
 
 using namespace GraphIsomorphism;
@@ -22,9 +23,10 @@ TaggerKnownFactory factoryKnown;
 TaggerChainsFactory factoryChains;
 TaggerMaxDegreeFactory factoryMaxDegree;
 TaggerDistanceFactory factoryDistance;
+TaggerTrianglesFactory factoryTriangles;
 
-const std::vector<ITaggerFactory *> factories{&factoryNumbers, &factoryComponents, &factoryDegree,  &factoryKnown,
-                                              &factoryChains,  &factoryMaxDegree,  &factoryDistance};
+const std::vector<ITaggerFactory *> factories{&factoryNumbers, &factoryComponents, &factoryDegree,   &factoryKnown,
+                                              &factoryChains,  &factoryMaxDegree,  &factoryDistance, &factoryTriangles};
 
 class CombinedTagger : public IVertexTagger
 {

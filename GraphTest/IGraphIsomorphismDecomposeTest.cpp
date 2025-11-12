@@ -208,22 +208,20 @@ TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList5)
 
 TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList6)
 {
-    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_6(), {1, 124, 2, 11, 3, 3});
+    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_6(), {1, 151, 2, 2});
 }
 
 TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList7)
 {
-    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_7(), {1, 196, 2, 27, 3, 8, 4, 2, 5, 1, 6, 1, 9, 1});
+    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_7(), {1, 294, 2, 4});
 }
 
 TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList8)
 {
-    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_8(),
-                       {1, 332, 2, 66, 3, 29, 4, 11, 5, 3, 6, 7, 7, 3, 8, 3, 9, 2, 10, 2, 11, 1});
+    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_8(), {1, 703, 2, 20, 3, 1});
 }
 
 TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList9)
 {
-    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_9(),
-                       {1, 227, 2, 30, 3, 8, 4, 9, 5, 3, 6, 4, 7, 4, 8, 1, 10, 2, 11, 1, 12, 1, 16, 1});
+    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_9(), {1, 442, 2, 15, 3, 3});
 }

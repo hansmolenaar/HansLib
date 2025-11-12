@@ -13,10 +13,14 @@ class TaggerTriangles : public IGraphTagger
     explicit TaggerTriangles(const Graph::IGraphUs &);
 
     const Tag &getGraphTag() const override;
+    const Tag &getVertexTag(GraphVertex) const;
+    GraphVertex getNumVertices() const;
+
     static std::vector<std::array<GraphVertex, 3>> getAllTriangles(const Graph::IGraphUs &);
 
   private:
     Tag m_graphTag;
+    std::vector<size_t> m_countPerVertex;
 };
 
 class TaggerTrianglesFactory : public ITaggerFactory

@@ -1,5 +1,7 @@
 #include "GraphIsomorphismTaggerTriangles.h"
 #include "Defines.h"
+#include "GraphIsomorphismTagFlyweight.h"
+#include "GraphIsomorphismUtils.h"
 
 using namespace GraphIsomorphism;
 
@@ -24,13 +26,32 @@ std::vector<std::array<GraphVertex, 2>> getAllEdges(const std::vector<std::vecto
 }
 }; // namespace
 
-TaggerTriangles::TaggerTriangles(const Graph::IGraphUs &graph)
+TaggerTriangles::TaggerTriangles(const Graph::IGraphUs &graph) : m_countPerVertex(graph.getNumVertices())
 {
+    const auto allTriangles = getAllTriangles(graph);
+    for (const auto &triangle : allTriangles)
+    {
+        for (GraphVertex vertex : triangle)
+        {
+            m_countPerVertex.at(vertex) += 1;
+        }
+    }
+    m_graphTag = CondenseSizeSequence(m_countPerVertex);
 }
 
 const Tag &TaggerTriangles::getGraphTag() const
 {
     return m_graphTag;
+}
+
+const Tag &TaggerTriangles::getVertexTag(GraphVertex v) const
+{
+    return TagFlyweight::getSingleEntryTag(m_countPerVertex.at(v));
+}
+
+GraphVertex TaggerTriangles ::getNumVertices() const
+{
+    return m_countPerVertex.size();
 }
 
 std::vector<std::array<GraphVertex, 3>> TaggerTriangles::getAllTriangles(const Graph::IGraphUs &graph)
@@ -41,6 +62,7 @@ std::vector<std::array<GraphVertex, 3>> TaggerTriangles::getAllTriangles(const G
     {
         graph.setAdjacentVertices(v, allNeighbors.at(v));
     }
+
     std::vector<std::array<GraphVertex, 3>> result;
     std::vector<GraphVertex> commonVertices;
     for (const auto &edge : getAllEdges(allNeighbors))
@@ -57,4 +79,9 @@ std::vector<std::array<GraphVertex, 3>> TaggerTriangles::getAllTriangles(const G
     }
 
     return result;
+}
+
+std::unique_ptr<ITagger> TaggerTrianglesFactory::createTagger(const Graph::IGraphUs &graph)
+{
+    return std::make_unique<TaggerTriangles>(graph);
 }
