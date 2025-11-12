@@ -11,14 +11,14 @@ class UndirectedGraphDistance;
 namespace GraphIsomorphism
 {
 
-class TaggerDistance : public IVertexTagger
+class TaggerDistance : public IVertexTagger, public IGraphTagger
 {
   public:
     explicit TaggerDistance(std::shared_ptr<Graph::UndirectedGraphDistance>);
     explicit TaggerDistance(const Graph::IGraphUs &);
     const Tag &getVertexTag(GraphVertex) const override;
     GraphVertex getNumVertices() const override;
-    const Tag &getGraphTag() const;
+    const Tag &getGraphTag() const override;
 
   private:
     Tag getTag(GraphVertex v) const;

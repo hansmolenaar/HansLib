@@ -13,6 +13,7 @@ TaggerMaxDegree::TaggerMaxDegree(const Graph::IGraphUs &graph) : m_numVertices(g
             m_fullyConnected2id[v] = m_fullyConnected2id.size() + 1;
         }
     }
+    m_graphTag = TagFlyweight::getSingleEntryTag(m_fullyConnected2id.size());
 }
 
 const Tag &TaggerMaxDegree::getVertexTag(GraphVertex v) const
@@ -27,6 +28,11 @@ const Tag &TaggerMaxDegree::getVertexTag(GraphVertex v) const
 GraphVertex TaggerMaxDegree ::getNumVertices() const
 {
     return m_numVertices;
+}
+
+const Tag &TaggerMaxDegree::getGraphTag() const
+{
+    return m_graphTag;
 }
 
 // !!!!!!!!!!!!!!!!!

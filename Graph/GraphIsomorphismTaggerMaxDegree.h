@@ -7,17 +7,19 @@
 namespace GraphIsomorphism
 {
 
-class TaggerMaxDegree : public IVertexTagger
+class TaggerMaxDegree : public IVertexTagger, public IGraphTagger
 {
   public:
     explicit TaggerMaxDegree(const Graph::IGraphUs &);
 
+    const Tag &getGraphTag() const override;
     const Tag &getVertexTag(GraphVertex) const override;
     GraphVertex getNumVertices() const override;
 
   private:
     GraphVertex m_numVertices;
     std::map<GraphVertex, TagEntry> m_fullyConnected2id;
+    Tag m_graphTag;
 };
 
 class TaggerMaxDegreeFactory : public ITaggerFactory
