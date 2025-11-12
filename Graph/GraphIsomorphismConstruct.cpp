@@ -1,32 +1,15 @@
 #include "GraphIsomorphismConstruct.h"
+
+#include "GraphIsomorphismUtils.h"
 #include "Defines.h"
-#include "GraphIsomorphismGrouper.h"
-#include "GraphIsomorphismTaggerChains.h"
-#include "GraphIsomorphismTaggerComponents.h"
-#include "GraphIsomorphismTaggerDegree.h"
-#include "GraphIsomorphismTaggerDistance.h"
-#include "GraphIsomorphismTaggerKnown.h"
-#include "GraphIsomorphismTaggerMaxDegree.h"
-#include "GraphIsomorphismTaggerNumbers.h"
-#include "GraphIsomorphismTaggerTriangles.h"
 #include "MyAssert.h"
+#include "GraphIsomorphismGrouper.h"
 
 using namespace GraphIsomorphism;
 using namespace Utilities;
 
 namespace
 {
-TaggerNumbersFactory factoryNumbers;
-TaggerComponentFactory factoryComponents;
-TaggerDegreeFactory factoryDegree;
-TaggerKnownFactory factoryKnown;
-TaggerChainsFactory factoryChains;
-TaggerMaxDegreeFactory factoryMaxDegree;
-TaggerDistanceFactory factoryDistance;
-TaggerTrianglesFactory factoryTriangles;
-
-const std::vector<ITaggerFactory *> factories{&factoryNumbers, &factoryComponents, &factoryDegree,   &factoryKnown,
-                                              &factoryChains,  &factoryMaxDegree,  &factoryDistance, &factoryTriangles};
 
 class CombinedTagger : public IVertexTagger
 {
@@ -49,15 +32,10 @@ class CombinedTagger : public IVertexTagger
 
 } // namespace
 
-std::vector<ITaggerFactory *> Construct::getTaggerFactories()
-{
-    return factories;
-}
-
 std::vector<std::unique_ptr<ITagger>> Construct::getAllTaggers(const Graph::IGraphUs &graph)
 {
-    std::vector<std::unique_ptr<ITagger>> result(factories.size());
-    str::transform(factories, result.begin(), [&graph](const auto &factory) { return factory->createTagger(graph); });
+    std::vector<std::unique_ptr<ITagger>> result(getTaggerFactories().size());
+    str::transform(getTaggerFactories(), result.begin(), [&graph](const auto &factory) { return factory->createTagger(graph); });
     return result;
 }
 

@@ -1,6 +1,6 @@
 #include "IGraphIsomorphismDecompose.h"
 #include "Defines.h"
-#include "GraphIsomorphismConstruct.h"
+#include "GraphIsomorphismConstruct.h" // TODO remove me
 #include "GraphIsomorphismTaggerKnown.h"
 #include "IGraphIsomorphismTagger.h"
 #include "MyAssert.h"
@@ -43,9 +43,8 @@ void AddToParentMapRecur(const IDecompose *current, const IDecompose *parent, ID
 GraphTags IDecompose::GetGraphTags(const Graph::IGraphUs &graph)
 {
     GraphTags result;
-    for (auto *factory : Construct::getTaggerFactories())
+    for (const auto& tagger : Construct::getAllTaggers(graph))
     {
-        const auto tagger = factory->createTagger(graph);
         const auto *graphTagger = tagger->getGraphTagger();
         if (graphTagger != nullptr)
         {

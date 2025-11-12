@@ -1,5 +1,16 @@
 #include "GraphIsomorphismUtils.h"
 
+#include "GraphIsomorphismGrouper.h"
+#include "GraphIsomorphismTaggerChains.h"
+#include "GraphIsomorphismTaggerComponents.h"
+#include "GraphIsomorphismTaggerDegree.h"
+#include "GraphIsomorphismTaggerDistance.h"
+#include "GraphIsomorphismTaggerKnown.h"
+#include "GraphIsomorphismTaggerMaxDegree.h"
+#include "GraphIsomorphismTaggerNumbers.h"
+#include "GraphIsomorphismTaggerTriangles.h"
+#include "GraphIsomorphismConstruct.h"   // TODO remove
+
 using namespace GraphIsomorphism;
 
 template Tag GraphIsomorphism::CondenseSizeSequence(const std::vector<int> &sizes);
@@ -50,3 +61,26 @@ std::ostream &operator<<(std::ostream &os, const GraphIsomorphism::GraphTags &ta
     os << " }";
     return os;
 }
+
+namespace
+{
+TaggerNumbersFactory factoryNumbers;
+TaggerComponentFactory factoryComponents;
+TaggerDegreeFactory factoryDegree;
+TaggerKnownFactory factoryKnown;
+TaggerChainsFactory factoryChains;
+TaggerMaxDegreeFactory factoryMaxDegree;
+TaggerDistanceFactory factoryDistance;
+TaggerTrianglesFactory factoryTriangles;
+
+const std::vector<ITaggerFactory *> allFactories{&factoryNumbers, &factoryComponents, &factoryDegree,   &factoryKnown,
+                                              &factoryChains,  &factoryMaxDegree,  &factoryDistance, &factoryTriangles};
+}
+
+std::vector<ITaggerFactory *> GraphIsomorphism::getTaggerFactories()
+{
+    return allFactories;
+}
+
+
+

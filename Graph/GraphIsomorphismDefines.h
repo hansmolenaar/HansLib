@@ -15,6 +15,7 @@ namespace GraphIsomorphism
 using TagEntry = int;
 using Tag = std::vector<TagEntry>;
 using GraphTags = std::vector<Tag>;
+using VertexTags = std::vector<Tag>;
 
 using GraphGroup = std::vector<int>;
 using GraphPair = std::pair<const Graph::UndirectedGraph &, const Graph::UndirectedGraph &>;
