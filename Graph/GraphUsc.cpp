@@ -72,7 +72,7 @@ GraphUsc GraphUsc::CreatePermuted(const IGraphUsc &graph, std::initializer_list<
     return CreatePermuted(graph, Permutation::Create(permut));
 }
 
-    std::string GraphUsc::getName() const 
+std::string GraphUsc::getName() const
 {
-   return m_graph.getName();
+    return m_graph.getName();
 }

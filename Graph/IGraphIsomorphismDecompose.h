@@ -7,8 +7,6 @@
 namespace GraphIsomorphism
 {
 
-using GraphTags = std::vector<Tag>;
-
 class IDecompose
 {
   public:

@@ -89,7 +89,7 @@ GraphVertex SubGraph::getVertexInParent(GraphVertex v) const
     return m_verticesInParent.at(v);
 }
 
-std::string SubGraph::getName() const 
+std::string SubGraph::getName() const
 {
-   return std::string("Sub graph of ") + m_graph.getName();
+    return std::string("Sub graph of ") + m_graph.getName();
 }

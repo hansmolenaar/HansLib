@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "Defines.h"
+#include "GraphIsomorphismTaggerNumbers.h"
 #include "GraphIsomorphismUtils.h"
 #include "IGraphIsomorphismDecompose.h"
 #include "Single.h"
@@ -85,7 +86,6 @@ void PrintMultipleTags(const std::vector<std::string> &g6list)
     std::map<GraphTags, std::vector<const IGraphUs *>> multiplicityMap;
     for (const auto &g : graphs)
     {
-        CheckDecompose(*g);
         multiplicityMap[IDecompose::GetGraphTags(*g)].push_back(g.get());
     }
 
@@ -94,11 +94,13 @@ void PrintMultipleTags(const std::vector<std::string> &g6list)
     {
         if (itr.second.size() > 1)
         {
-            std::cout << "size = " << itr.second.size() << ": ";
+            std::cout << "size = " << itr.second.size() << "\n";
             for (const auto *g : itr.second)
             {
-                std::cout << g->getName() << "    ";
+                const auto tagAgain = IDecompose::GetGraphTags(*g);
+                std::cout << g->getName() << "    " << tagAgain << "\n";
             }
+            std::cout << "\n";
             std::cout << "\n";
         }
     }
@@ -218,10 +220,18 @@ TEST(IGraphIsomorphismDecomposeTest, X100)
 
 TEST(IGraphIsomorphismDecomposeTest, JustAskingQuestions)
 {
-    const auto graph1 = UndirectedGraphFromG6::Create("F?S~");
-    const auto graph2 = UndirectedGraphFromG6::Create("FALcw");
-    const auto decomposeed = IDecompose::Create(*graph);
-    CheckDecompose(*graph, 3);
+    const std::vector<std::string> names{"F?S~", "FALcw"};
+    const auto graph1 = UndirectedGraphFromG6::Create(names.at(0));
+    const auto graph2 = UndirectedGraphFromG6::Create(names.at(1));
+    TaggerNumbersFactory factory;
+    const auto tagger1 = factory.createTagger(*graph1);
+    const auto tagger2 = factory.createTagger(*graph2);
+    const auto graphTag1 = tagger1->getGraphTagger()->getGraphTag();
+    const auto graphTag2 = tagger2->getGraphTagger()->getGraphTag();
+    const auto graphTagAll1 = IDecompose::GetGraphTags(*graph1);
+    const auto graphTagAll2 = IDecompose::GetGraphTags(*graph2);
+    ASSERT_NE(graphTagAll1, graphTagAll2);
+    CheckDecomposeList(names, Tag{1, 2});
 }
 
 TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList3)
@@ -247,7 +257,7 @@ TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList6)
 TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList7)
 {
     CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_7(), {1, 294, 2, 4});
-PrintMultipleTags(UndirectedGraphFromG6::getListNumVertices_7());
+    // PrintMultipleTags(UndirectedGraphFromG6::getListNumVertices_7());
 }
 
 TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList8)

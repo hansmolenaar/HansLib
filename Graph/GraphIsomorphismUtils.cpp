@@ -22,3 +22,31 @@ template <typename T> Tag GraphIsomorphism::CondenseSizeSequence(const std::vect
 
     return result;
 }
+
+std::ostream &operator<<(std::ostream &os, const GraphIsomorphism::Tag &tag)
+{
+    bool first = true;
+    os << "{";
+    for (TagEntry entry : tag)
+    {
+        if (!first)
+        {
+            os << ",";
+        }
+        first = false;
+        os << " " << entry;
+    }
+    os << " }";
+    return os;
+}
+
+std::ostream &operator<<(std::ostream &os, const GraphIsomorphism::GraphTags &tags)
+{
+    os << "{";
+    for (const auto &tag : tags)
+    {
+        os << " " << tag;
+    }
+    os << " }";
+    return os;
+}

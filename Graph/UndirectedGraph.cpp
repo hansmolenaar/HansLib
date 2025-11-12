@@ -52,7 +52,8 @@ UndirectedGraph::UndirectedGraph(GraphVertex numVertices, std::string name) : m_
 {
 }
 
-UndirectedGraph::UndirectedGraph(const Graph::IGraphUs &graph) : m_graph(graph.getNumVertices()), m_name(graph.getName())
+UndirectedGraph::UndirectedGraph(const Graph::IGraphUs &graph)
+    : m_graph(graph.getNumVertices()), m_name(graph.getName())
 {
     const auto numVertices = graph.getNumVertices();
     std::vector<GraphVertex> ngbs;
@@ -278,7 +279,7 @@ UndirectedGraph UndirectedGraph::CreateComplement(const IGraphUs &graph)
     return result;
 }
 
-    std::string UndirectedGraph:: getName() const
+std::string UndirectedGraph::getName() const
 {
- return m_name;
+    return m_name;
 }

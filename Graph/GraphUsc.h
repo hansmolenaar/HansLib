@@ -24,4 +24,4 @@ class GraphUsc : public IGraphUsc
   private:
     UndirectedGraph m_graph; // TODO avoid copying?
 };
-} // namespace GraphS
+} // namespace Graph

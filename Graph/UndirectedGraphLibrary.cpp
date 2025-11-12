@@ -12,13 +12,13 @@ namespace
 {
 std::string CreateName(std::string name, std::initializer_list<GraphVertex> sizes)
 {
-   std::string result;
-  result += "Homegrown version of " + name;
-  for (auto siz : sizes)
-{
-   name += " " + std::to_string(siz);
-}
-return name;
+    std::string result;
+    result += "Homegrown version of " + name;
+    for (auto siz : sizes)
+    {
+        name += " " + std::to_string(siz);
+    }
+    return name;
 }
 
 void SetEdgesOfPath(UndirectedGraph &graph, GraphEdge numEdges)
@@ -156,7 +156,7 @@ std::unique_ptr<GraphUsc> UndirectedGraphLibrary::Get_CompleteBipartite(GraphVer
     {
         throw MyException("CompleteBipartiteGraph: both sets muust have positive size");
     }
-    UndirectedGraph ug(size0 + size1, CreateName("Complete Bipartite", {size0, size1}) );
+    UndirectedGraph ug(size0 + size1, CreateName("Complete Bipartite", {size0, size1}));
     for (int n0 = 0; n0 < size0; ++n0)
     {
         for (int n1 = 0; n1 < size1; ++n1)
