@@ -78,6 +78,7 @@ const std::vector<std::string> &getListNumVertices_6();
 const std::vector<std::string> &getListNumVertices_7();
 const std::vector<std::string> &getListNumVertices_8();
 const std::vector<std::string> &getListNumVertices_9();
+const std::vector<std::string> &getListNumVertices_10();
 
 std::vector<std::unique_ptr<Graph::IGraphUs>> getDisconnectedGraphs(const std::vector<std::string> &);
 std::vector<std::unique_ptr<Graph::IGraphUs>> getGraphs(const std::vector<std::string> &);
