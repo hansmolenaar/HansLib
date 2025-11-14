@@ -12,12 +12,17 @@ class TaggedGraph
 {
   public:
     explicit TaggedGraph(const Graph::IGraphUs &);
+    const Graph::IGraphUs &getGraph() const;
+
+    std::weak_ordering operator<=>(const TaggedGraph &) const;
+    bool operator==(const TaggedGraph &) const;
 
   private:
     const Graph::IGraphUs &m_graph;
     std::vector<std::unique_ptr<ITagger>> m_taggers;
     GraphTags m_graphTags; // For quick testing
     std::vector<Grouper> m_vertexGroupers;
+    std::vector<Tag> m_vertexGroupTags;
 };
 
 } // namespace GraphIsomorphism

@@ -59,9 +59,9 @@ GraphVertex Grouper::getNumVertices() const
     return m_numVertices;
 }
 
-bool Grouper::operator==(const GraphIsomorphism::Grouper &grouper1 ) const
+bool Grouper::operator==(const GraphIsomorphism::Grouper &grouper1) const
 {
-    const Grouper& grouper0 = *this;
+    const Grouper &grouper0 = *this;
 
     const auto &tags0 = grouper0.getTags();
     const auto &tags1 = grouper1.getTags();
@@ -84,7 +84,7 @@ bool Grouper::operator==(const GraphIsomorphism::Grouper &grouper1 ) const
 
 std::weak_ordering Grouper::operator<=>(const Grouper &grouper1) const
 {
-    const Grouper& grouper0 = *this;
+    const Grouper &grouper0 = *this;
 
     const auto &tags0 = grouper0.getTags();
     const auto &tags1 = grouper1.getTags();
@@ -118,6 +118,7 @@ std::weak_ordering Grouper::operator<=>(const Grouper &grouper1) const
     return result;
 }
 
+// TODO remove me
 void Grouper::updateVertexGroupTags(std::vector<Tag> &groupTags) const
 {
     TagEntry groupEntry = 0;
@@ -136,7 +137,7 @@ Status Grouper::compare(const Grouper &grouper0, const Grouper &grouper1)
     MyAssert(grouper0.getNumVertices() == grouper1.getNumVertices());
     Status result(grouper0.getNumVertices());
 
-    if (grouper0 !=  grouper1)
+    if (grouper0 != grouper1)
     {
         result.setFlag(Flag::NotIsomorphic);
         return result;

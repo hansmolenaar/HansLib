@@ -40,6 +40,7 @@ void AddToParentMapRecur(const IDecompose *current, const IDecompose *parent, ID
 
 // !!!!!!!!!!!  IDecompose
 
+// TODO remove me
 GraphTags IDecompose::GetGraphTags(const Graph::IGraphUs &graph)
 {
     GraphTags result;
