@@ -2,6 +2,7 @@
 
 #include "Defines.h"
 #include "GraphIsomorphismGrouper.h"
+#include "GraphIsomorphismTaggedGraph.h"
 #include "GraphIsomorphismUtils.h"
 #include "MyAssert.h"
 
@@ -41,17 +42,13 @@ Status Construct::actionConnected(const Graph::IGraphUsc &graph0, const Graph::I
     const auto allTaggers1 = getAllTaggers(graph1);
 
     Status result(numVertices);
-    const auto graphTaggers0 = selectGraphTaggers(allTaggers0);
-    const auto graphTaggers1 = selectGraphTaggers(allTaggers1);
-    for (const auto &tagger01 : std::views::zip(graphTaggers0, graphTaggers1))
+    const TaggedGraph tg0(graph0);
+    const TaggedGraph tg1(graph1);
+
+    if (tg0 != tg1)
     {
-        const auto &tag0 = std::get<0>(tagger01)->getGraphTag();
-        const auto &tag1 = std::get<1>(tagger01)->getGraphTag();
-        if (tag0 != tag1)
-        {
-            result.setFlag(Flag::NotIsomorphic);
-            return result;
-        }
+        result.setFlag(Flag::NotIsomorphic);
+        return result;
     }
 
     std::vector<Tag> groups0(numVertices);
@@ -64,11 +61,7 @@ Status Construct::actionConnected(const Graph::IGraphUsc &graph0, const Graph::I
 
         const Grouper grouper0(*std::get<0>(tagger01));
         const Grouper grouper1(*std::get<1>(tagger01));
-        if (grouper0 != grouper1)
-        {
-            result.setFlag(Flag::NotIsomorphic);
-            return result;
-        }
+
         grouper0.updateVertexGroupTags(groups0);
         grouper1.updateVertexGroupTags(groups1);
 
