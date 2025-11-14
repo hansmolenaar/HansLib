@@ -18,10 +18,8 @@ class Grouper
     int countUnique() const;
     bool isResolved() const;
 
-    // Equivalent if same tags, and same number of vertices per tag
-    static bool areEquivalent(const Grouper &, const Grouper &);
-    friend std::weak_ordering operator<=>(const Grouper &, const Grouper &);
-    friend bool operator==(const Grouper &, const Grouper &);
+    std::weak_ordering operator<=>(const GraphIsomorphism::Grouper &) const;
+    bool operator==(const GraphIsomorphism::Grouper &) const;
 
     void updateVertexGroupTags(std::vector<Tag> &) const;
 

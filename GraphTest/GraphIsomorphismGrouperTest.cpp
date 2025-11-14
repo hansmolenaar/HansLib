@@ -114,7 +114,7 @@ TEST(GraphIsomorphismGrouperTest, Path4)
     const auto taggerDegreePermuted = TaggerDegree(graphPermuted);
     const Grouper grouperPermuted(taggerDegreePermuted);
 
-    ASSERT_TRUE(Grouper::areEquivalent(grouper, grouperPermuted));
+    ASSERT_EQ(grouper, grouperPermuted);
 }
 
 TEST(GraphIsomorphismGrouperTest, Path4and5)
@@ -127,5 +127,5 @@ TEST(GraphIsomorphismGrouperTest, Path4and5)
     const auto taggerDegree5 = TaggerDegree(*graph5);
     const Grouper grouper5(taggerDegree5);
 
-    ASSERT_FALSE(Grouper::areEquivalent(grouper4, grouper5));
+    ASSERT_NE(grouper4, grouper5);
 }

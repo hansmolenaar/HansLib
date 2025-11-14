@@ -64,7 +64,7 @@ Status Construct::actionConnected(const Graph::IGraphUsc &graph0, const Graph::I
 
         const Grouper grouper0(*std::get<0>(tagger01));
         const Grouper grouper1(*std::get<1>(tagger01));
-        if (!Grouper::areEquivalent(grouper0, grouper1))
+        if (grouper0 !=  grouper1)
         {
             result.setFlag(Flag::NotIsomorphic);
             return result;

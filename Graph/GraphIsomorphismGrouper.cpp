@@ -59,8 +59,10 @@ GraphVertex Grouper::getNumVertices() const
     return m_numVertices;
 }
 
-bool Grouper::areEquivalent(const Grouper &grouper0, const Grouper &grouper1)
+bool Grouper::operator==(const GraphIsomorphism::Grouper &grouper1 ) const
 {
+    const Grouper& grouper0 = *this;
+
     const auto &tags0 = grouper0.getTags();
     const auto &tags1 = grouper1.getTags();
     if (!str::equal(tags0, tags1))
@@ -80,29 +82,10 @@ bool Grouper::areEquivalent(const Grouper &grouper0, const Grouper &grouper1)
     return true;
 }
 
-bool operator==(const Grouper &grouper0, const Grouper &grouper1)
+std::weak_ordering Grouper::operator<=>(const Grouper &grouper1) const
 {
-    const auto &tags0 = grouper0.getTags();
-    const auto &tags1 = grouper1.getTags();
-    if (!str::equal(tags0, tags1))
-    {
-        return false;
-    }
-    for (const auto &tag : tags0)
-    {
-        const auto &members0 = grouper0.getGroupMembers(tag);
-        const auto &members1 = grouper1.getGroupMembers(tag);
-        if (members0.size() != members1.size())
-        {
-            return false;
-        }
-    }
+    const Grouper& grouper0 = *this;
 
-    return true;
-}
-
-std::weak_ordering operator<=>(const Grouper &grouper0, const Grouper &grouper1)
-{
     const auto &tags0 = grouper0.getTags();
     const auto &tags1 = grouper1.getTags();
 
@@ -153,7 +136,7 @@ Status Grouper::compare(const Grouper &grouper0, const Grouper &grouper1)
     MyAssert(grouper0.getNumVertices() == grouper1.getNumVertices());
     Status result(grouper0.getNumVertices());
 
-    if (!areEquivalent(grouper0, grouper1))
+    if (grouper0 !=  grouper1)
     {
         result.setFlag(Flag::NotIsomorphic);
         return result;
