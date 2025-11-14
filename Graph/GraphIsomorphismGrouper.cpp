@@ -80,6 +80,61 @@ bool Grouper::areEquivalent(const Grouper &grouper0, const Grouper &grouper1)
     return true;
 }
 
+bool operator==(const Grouper &grouper0, const Grouper &grouper1)
+{
+    const auto &tags0 = grouper0.getTags();
+    const auto &tags1 = grouper1.getTags();
+    if (!str::equal(tags0, tags1))
+    {
+        return false;
+    }
+    for (const auto &tag : tags0)
+    {
+        const auto &members0 = grouper0.getGroupMembers(tag);
+        const auto &members1 = grouper1.getGroupMembers(tag);
+        if (members0.size() != members1.size())
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+std::weak_ordering operator<=>(const Grouper &grouper0, const Grouper &grouper1)
+{
+    const auto &tags0 = grouper0.getTags();
+    const auto &tags1 = grouper1.getTags();
+
+    std::weak_ordering result = tags0.size() <=> tags1.size();
+    if (result != 0)
+    {
+        return result;
+    }
+
+    for (size_t n = 0; n < tags0.size(); ++n)
+    {
+        result = tags0.at(n) <=> tags1.at(n);
+        if (result != 0)
+        {
+            return result;
+        }
+    }
+
+    for (const auto &tag : tags0)
+    {
+        const auto &members0 = grouper0.getGroupMembers(tag);
+        const auto &members1 = grouper1.getGroupMembers(tag);
+        result = members0.size() <=> members1.size();
+        if (result != 0)
+        {
+            return result;
+        }
+    }
+
+    return result;
+}
+
 void Grouper::updateVertexGroupTags(std::vector<Tag> &groupTags) const
 {
     TagEntry groupEntry = 0;

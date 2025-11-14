@@ -20,6 +20,8 @@ class Grouper
 
     // Equivalent if same tags, and same number of vertices per tag
     static bool areEquivalent(const Grouper &, const Grouper &);
+    friend std::weak_ordering operator<=>(const Grouper &, const Grouper &);
+    friend bool operator==(const Grouper &, const Grouper &);
 
     void updateVertexGroupTags(std::vector<Tag> &) const;
 
