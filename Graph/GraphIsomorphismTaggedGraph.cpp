@@ -31,6 +31,21 @@ TaggedGraph::TaggedGraph(const Graph::IGraphUs &graph)
         }
     }
 
+    std::map<Tag, std::vector<GraphVertex>> groupByVertexGroupTag;
+    const auto nVertices = m_graph.getNumVertices();
+    for (GraphVertex v = 0; v < nVertices; ++v)
+    {
+        groupByVertexGroupTag[m_vertexGroupTags.at(v)].push_back(v);
+    }
+
+    for (const auto &itr : groupByVertexGroupTag)
+    {
+        if (itr.second.size() == 1)
+        {
+            m_uniqueVertexAndGroupTag[itr.first] = itr.second.front();
+        }
+    }
+
     str::sort(m_vertexGroupTags);
 }
 
@@ -58,10 +73,32 @@ std::weak_ordering TaggedGraph::operator<=>(const TaggedGraph &rhs) const
         }
     }
 
-    return lhs.m_vertexGroupTags<=> rhs.m_vertexGroupTags;
+    return lhs.m_vertexGroupTags <=> rhs.m_vertexGroupTags;
 }
 
 bool TaggedGraph::operator==(const TaggedGraph &rhs) const
 {
-   return (*this <=> rhs) == 0;
+    return (*this <=> rhs) == 0;
+}
+
+Status TaggedGraph::tryConnect(const TaggedGraph &tg0, const TaggedGraph &tg1)
+{
+    const auto numVertices = tg0.getGraph().getNumVertices();
+    Status result(numVertices);
+
+    if (tg0 != tg1)
+    {
+        result.setFlag(Flag::NotIsomorphic);
+        return result;
+    }
+
+    for (const auto &itr : tg0.m_uniqueVertexAndGroupTag)
+    {
+        const auto &tag = itr.first;
+        const GraphVertex vertex0 = tg0.m_uniqueVertexAndGroupTag.at(tag);
+        const GraphVertex vertex1 = tg1.m_uniqueVertexAndGroupTag.at(tag);
+        result.addPair(VertexPair{vertex0, vertex1});
+    }
+
+    return result;
 }

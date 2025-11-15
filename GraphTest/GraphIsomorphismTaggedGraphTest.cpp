@@ -81,6 +81,26 @@ void PrintMultipleTags(const std::vector<std::string> &g6list)
     }
 }
 
+void CheckUniquenessGraphTaggers(const std::vector<std::unique_ptr<Graph::IGraphUs>> &graphs, int expectNumGraphs,
+                                 int expectNumUniqueTags)
+{
+    ASSERT_EQ(graphs.size(), expectNumGraphs);
+    std::set<std::vector<Tag>> uniqueTags;
+    for (const auto &g : graphs)
+    {
+        ASSERT_TRUE(!g->isConnected());
+        std::vector<Tag> tags;
+        const auto allTaggers = GraphIsomorphism::getAllTaggers(*g);
+        const auto graphTaggers = GraphIsomorphism::selectGraphTaggers(allTaggers);
+        for (const auto *graphTagger : graphTaggers)
+        {
+            tags.emplace_back(graphTagger->getGraphTag());
+        }
+        uniqueTags.insert(tags);
+    }
+    ASSERT_EQ(uniqueTags.size(), expectNumUniqueTags);
+}
+
 } // namespace
 
 TEST(GraphIsomorphismTaggedGraphTest, Singleton)
@@ -102,6 +122,47 @@ TEST(GraphIsomorphismTaggedGraphTest, Path2)
     ASSERT_FALSE(tg < pg);
     ASSERT_FALSE(tg > pg);
 }
+
+TEST(GraphIsomorphismTaggedGraphTest, DegreePath2and3)
+{
+    const auto g0 = UndirectedGraphLibrary::Get_Path(2);
+    const auto g1 = UndirectedGraphLibrary::Get_Path(3);
+    const TaggedGraph tg0(*g0);
+    const TaggedGraph tg1(*g1);
+    const auto status = TaggedGraph::tryConnect(tg0, tg1);
+    ASSERT_EQ(status.getFlag(), Flag::NotIsomorphic);
+}
+
+TEST(GraphIsomorphismTaggedGraphTest, DegreePath3)
+{
+    const auto g0 = UndirectedGraphLibrary::Get_Path(3);
+    const auto g1 = UndirectedGraphLibrary::Get_Path(3);
+    const TaggedGraph tg0(*g0);
+    const TaggedGraph tg1(*g1);
+    const auto status = TaggedGraph::tryConnect(tg0, tg1);
+    ASSERT_EQ(status.getFlag(), Flag::Isomorphic);
+}
+
+TEST(GraphIsomorphismTaggedGraphTest, DegreeStar123)
+{
+    const auto g0 = UndirectedGraphLibrary::Get_Star({1, 2, 3});
+    const auto g1 = UndirectedGraphLibrary::Get_Star({3, 1, 2});
+    const TaggedGraph tg0(*g0);
+    const TaggedGraph tg1(*g1);
+    const auto status = TaggedGraph::tryConnect(tg0, tg1);
+    ASSERT_EQ(status.getFlag(), Flag::Isomorphic);
+}
+
+TEST(GraphIsomorphismTaggedGraphTest, DegreePan3)
+{
+    const auto g0 = UndirectedGraphFromG6::CreateConnected(UndirectedGraphFromG6::pan3);
+    const auto g1 = GraphUsc::CreatePermuted(*g0, {2, 1, 0, 3});
+    const TaggedGraph tg0(*g0);
+    const TaggedGraph tg1(g1);
+    const auto status = TaggedGraph::tryConnect(tg0, tg1);
+    ASSERT_EQ(status.getFlag(), Flag::Isomorphic);
+}
+
 TEST(GraphIsomorphismTaggedGraphTest, CheckDecomposeList3)
 {
     CheckTaggingForList(UndirectedGraphFromG6::getListNumVertices_3(), Tag{1, 4});
@@ -141,4 +202,34 @@ TEST(GraphIsomorphismTaggedGraphTest, CheckDecomposeList9)
 TEST(GraphIsomorphismTaggedGraphTest, CheckDecomposeList10)
 {
     CheckTaggingForList(UndirectedGraphFromG6::getListNumVertices_10(), {1, 692, 2, 4, 3, 3, 6, 1});
+}
+
+TEST(GraphIsomorphismConstructTest, Disconnected5)
+{
+    const auto graphs = UndirectedGraphFromG6::getDisconnectedGraphs(UndirectedGraphFromG6::getListNumVertices_5());
+    CheckUniquenessGraphTaggers(graphs, 13, 13);
+}
+
+TEST(GraphIsomorphismTaggedGraphTest, Disconnected6)
+{
+    const auto graphs = UndirectedGraphFromG6::getDisconnectedGraphs(UndirectedGraphFromG6::getListNumVertices_6());
+    CheckUniquenessGraphTaggers(graphs, 43, 43);
+}
+
+TEST(GraphIsomorphismTaggedGraphTest, Disconnected7)
+{
+    const auto graphs = UndirectedGraphFromG6::getDisconnectedGraphs(UndirectedGraphFromG6::getListNumVertices_7());
+    CheckUniquenessGraphTaggers(graphs, 35, 35);
+}
+
+TEST(GraphIsomorphismTaggedGraphTest, Disconnected8)
+{
+    const auto graphs = UndirectedGraphFromG6::getDisconnectedGraphs(UndirectedGraphFromG6::getListNumVertices_8());
+    CheckUniquenessGraphTaggers(graphs, 17, 17);
+}
+
+TEST(GraphIsomorphismTaggedGraphTest, Disconnected9)
+{
+    const auto graphs = UndirectedGraphFromG6::getDisconnectedGraphs(UndirectedGraphFromG6::getListNumVertices_9());
+    CheckUniquenessGraphTaggers(graphs, 18, 18);
 }
