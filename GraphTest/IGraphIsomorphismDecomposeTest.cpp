@@ -62,52 +62,15 @@ void CheckDecompose(const IGraphUs &graph, int expectNumLeaves = -1)
     ASSERT_EQ(vertices.back(), fullNumVertices - 1);
 }
 
-void CheckDecomposeList(const std::vector<std::string> &g6list, Tag expectMultiplicities)
+void CheckDecomposeList(const std::vector<std::string> &g6list)
 {
     std::vector<std::unique_ptr<Graph::IGraphUs>> graphs = UndirectedGraphFromG6::getGraphs(g6list);
     std::vector<TaggedGraph> taggedGraphs;
     str::transform(graphs, std::back_inserter(taggedGraphs), [](const auto &gp) { return TaggedGraph(*gp); });
 
-    auto cmp = [](const TaggedGraph *lhs, const TaggedGraph *rhs) { return *lhs < *rhs; };
-    std::map<const TaggedGraph *, size_t, decltype(cmp)> multiplicityMap(cmp);
     for (const auto &tg : taggedGraphs)
     {
         CheckDecompose(tg.getGraph());
-        multiplicityMap[&tg] += 1;
-    }
-
-    std::vector<size_t> multiplicities;
-    for (const auto &itr : multiplicityMap)
-    {
-        multiplicities.push_back(itr.second);
-    }
-    const auto tag = CondenseSizeSequence(multiplicities);
-    ASSERT_EQ(tag, expectMultiplicities);
-}
-
-void PrintMultipleTags(const std::vector<std::string> &g6list)
-{
-    const std::vector<std::unique_ptr<Graph::IGraphUs>> graphs = UndirectedGraphFromG6::getGraphs(g6list);
-    std::map<GraphTags, std::vector<const IGraphUs *>> multiplicityMap;
-    for (const auto &g : graphs)
-    {
-        multiplicityMap[IDecompose::GetGraphTags(*g)].push_back(g.get());
-    }
-
-    std::vector<size_t> multiplicities;
-    for (const auto &itr : multiplicityMap)
-    {
-        if (itr.second.size() > 1)
-        {
-            std::cout << "size = " << itr.second.size() << "\n";
-            for (const auto *g : itr.second)
-            {
-                const auto tagAgain = IDecompose::GetGraphTags(*g);
-                std::cout << g->getName() << "    " << tagAgain << "\n";
-            }
-            std::cout << "\n";
-            std::cout << "\n";
-        }
     }
 }
 
@@ -236,46 +199,35 @@ TEST(IGraphIsomorphismDecomposeTest, JustAskingQuestions)
     const auto graphTagAll1 = IDecompose::GetGraphTags(*graph1);
     const auto graphTagAll2 = IDecompose::GetGraphTags(*graph2);
     ASSERT_NE(graphTagAll1, graphTagAll2);
-    CheckDecomposeList(names, Tag{1, 2});
+    CheckDecomposeList(names);
 }
 
 TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList3)
 {
-    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_3(), Tag{1, 4});
+    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_3());
 }
 
 TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList4)
 {
-    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_4(), Tag{1, 11});
+    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_4());
 }
 
 TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList5)
 {
-    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_5(), {1, 34});
+    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_5());
 }
 
 TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList6)
 {
-    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_6(), {1, 155});
+    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_6());
 }
 
 TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList7)
 {
-    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_7(), {1, 298, 2, 2});
-    // PrintMultipleTags(UndirectedGraphFromG6::getListNumVertices_7());
+    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_7());
 }
 
 TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList8)
 {
-    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_8(), {1, 716, 2, 15});
-}
-
-TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList9)
-{
-    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_9(), {1, 442, 2, 15, 3, 3});
-}
-
-TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList10)
-{
-    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_10(), {1, 692, 2, 4, 3, 3, 6, 1});
+    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_8());
 }

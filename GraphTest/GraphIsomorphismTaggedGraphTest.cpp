@@ -1,0 +1,144 @@
+#include <gtest/gtest.h>
+
+#include "Defines.h"
+#include "GraphIsomorphismTaggedGraph.h"
+#include "GraphIsomorphismUtils.h"
+#include "UndirectedGraphFromG6.h"
+#include "UndirectedGraphLibrary.h"
+
+using namespace GraphIsomorphism;
+using namespace Graph;
+
+namespace
+{
+
+void CheckAgainsPermutations(const TaggedGraph &tg)
+{
+    constexpr int numPermutations = 5;
+    const auto &graph = tg.getGraph();
+    const Permutation trivial = Permutation::CreateTrivial(graph.getNumVertices());
+    for (int n = 0; n < numPermutations; ++n)
+    {
+        const auto permutation = Permutation::CreateRandomShuffle(trivial, n);
+        const auto graphPermuted = UndirectedGraph::CreatePermuted(graph, permutation);
+        const TaggedGraph pg(graphPermuted);
+        ASSERT_TRUE(tg == pg);
+        ASSERT_FALSE(tg < pg);
+        ASSERT_FALSE(tg > pg);
+    }
+}
+
+void CheckTaggingForList(const std::vector<std::string> &g6list, Tag expectMultiplicities)
+{
+    std::vector<std::unique_ptr<Graph::IGraphUs>> graphs = UndirectedGraphFromG6::getGraphs(g6list);
+    std::vector<TaggedGraph> taggedGraphs;
+    str::transform(graphs, std::back_inserter(taggedGraphs), [](const auto &gp) { return TaggedGraph(*gp); });
+
+    auto cmp = [](const TaggedGraph *lhs, const TaggedGraph *rhs) { return *lhs < *rhs; };
+    std::map<const TaggedGraph *, size_t, decltype(cmp)> multiplicityMap(cmp);
+    for (const auto &tg : taggedGraphs)
+    {
+        CheckAgainsPermutations(tg);
+        multiplicityMap[&tg] += 1;
+    }
+
+    std::vector<size_t> multiplicities;
+    for (const auto &itr : multiplicityMap)
+    {
+        multiplicities.push_back(itr.second);
+    }
+    const auto tag = CondenseSizeSequence(multiplicities);
+    ASSERT_EQ(tag, expectMultiplicities);
+}
+
+void PrintMultipleTags(const std::vector<std::string> &g6list)
+{
+    const std::vector<std::unique_ptr<Graph::IGraphUs>> graphs = UndirectedGraphFromG6::getGraphs(g6list);
+    std::vector<TaggedGraph> taggedGraphs;
+    str::transform(graphs, std::back_inserter(taggedGraphs), [](const auto &gp) { return TaggedGraph(*gp); });
+
+    auto cmp = [](const TaggedGraph *lhs, const TaggedGraph *rhs) { return *lhs < *rhs; };
+    std::map<const TaggedGraph *, std::vector<const TaggedGraph *>, decltype(cmp)> multiplicityMap(cmp);
+
+    for (const auto &tg : taggedGraphs)
+    {
+        multiplicityMap[&tg].push_back(&tg);
+    }
+
+    std::vector<size_t> multiplicities;
+    for (const auto &itr : multiplicityMap)
+    {
+        if (itr.second.size() > 1)
+        {
+            std::cout << "size = " << itr.second.size() << "\n";
+            for (const auto *tg : itr.second)
+            {
+                std::cout << tg->getGraph().getName() << "\n";
+            }
+            std::cout << "\n";
+            std::cout << "\n";
+        }
+    }
+}
+
+} // namespace
+
+TEST(GraphIsomorphismTaggedGraphTest, Singleton)
+{
+    const auto graph = UndirectedGraphLibrary::Get_Singleton();
+    const TaggedGraph tg(*graph);
+    ASSERT_TRUE(tg == tg);
+    ASSERT_FALSE(tg < tg);
+    ASSERT_FALSE(tg > tg);
+}
+
+TEST(GraphIsomorphismTaggedGraphTest, Path2)
+{
+    const auto graph = UndirectedGraphLibrary::Get_Path(2);
+    const auto permuted = UndirectedGraph::CreatePermuted(*graph, Permutation::Create({1, 0}));
+    const TaggedGraph tg(*graph);
+    const TaggedGraph pg(permuted);
+    ASSERT_TRUE(tg == pg);
+    ASSERT_FALSE(tg < pg);
+    ASSERT_FALSE(tg > pg);
+}
+TEST(GraphIsomorphismTaggedGraphTest, CheckDecomposeList3)
+{
+    CheckTaggingForList(UndirectedGraphFromG6::getListNumVertices_3(), Tag{1, 4});
+}
+
+TEST(GraphIsomorphismTaggedGraphTest, CheckDecomposeList4)
+{
+    CheckTaggingForList(UndirectedGraphFromG6::getListNumVertices_4(), Tag{1, 11});
+}
+
+TEST(GraphIsomorphismTaggedGraphTest, CheckDecomposeList5)
+{
+    CheckTaggingForList(UndirectedGraphFromG6::getListNumVertices_5(), {1, 34});
+}
+
+TEST(GraphIsomorphismTaggedGraphTest, CheckDecomposeList6)
+{
+    CheckTaggingForList(UndirectedGraphFromG6::getListNumVertices_6(), {1, 155});
+}
+
+TEST(GraphIsomorphismTaggedGraphTest, CheckDecomposeList7)
+{
+    CheckTaggingForList(UndirectedGraphFromG6::getListNumVertices_7(), {1, 298, 2, 2});
+    // PrintMultipleTags(UndirectedGraphFromG6::getListNumVertices_7());
+}
+
+TEST(GraphIsomorphismTaggedGraphTest, CheckDecomposeList8)
+{
+    CheckTaggingForList(UndirectedGraphFromG6::getListNumVertices_8(), {1, 716, 2, 15});
+}
+
+TEST(GraphIsomorphismTaggedGraphTest, CheckDecomposeList9)
+{
+    CheckTaggingForList(UndirectedGraphFromG6::getListNumVertices_9(), {1, 442, 2, 15, 3, 3});
+}
+
+TEST(GraphIsomorphismTaggedGraphTest, CheckDecomposeList10)
+{
+    CheckTaggingForList(UndirectedGraphFromG6::getListNumVertices_10(), {1, 692, 2, 4, 3, 3, 6, 1});
+}
