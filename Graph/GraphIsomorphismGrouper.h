@@ -21,9 +21,6 @@ class Grouper
     std::weak_ordering operator<=>(const GraphIsomorphism::Grouper &) const;
     bool operator==(const GraphIsomorphism::Grouper &) const;
 
-    void updateVertexGroupTags(std::vector<Tag> &) const;
-
-    static Status compare(const Grouper &, const Grouper &);
     GraphVertex getNumVertices() const;
 
   private:
