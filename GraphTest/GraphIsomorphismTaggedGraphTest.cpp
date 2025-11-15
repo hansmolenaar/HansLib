@@ -2,12 +2,16 @@
 
 #include "Defines.h"
 #include "GraphIsomorphismTaggedGraph.h"
+#include "GraphIsomorphismTaggerChains.h"
+#include "GraphIsomorphismTaggerTriangles.h"
 #include "GraphIsomorphismUtils.h"
+#include "Single.h"
 #include "UndirectedGraphFromG6.h"
 #include "UndirectedGraphLibrary.h"
 
 using namespace GraphIsomorphism;
 using namespace Graph;
+using namespace Utilities;
 
 namespace
 {
@@ -163,45 +167,45 @@ TEST(GraphIsomorphismTaggedGraphTest, DegreePan3)
     ASSERT_EQ(status.getFlag(), Flag::Isomorphic);
 }
 
-TEST(GraphIsomorphismTaggedGraphTest, CheckDecomposeList3)
+TEST(GraphIsomorphismTaggedGraphTest, CheckTaggingList3)
 {
     CheckTaggingForList(UndirectedGraphFromG6::getListNumVertices_3(), Tag{1, 4});
 }
 
-TEST(GraphIsomorphismTaggedGraphTest, CheckDecomposeList4)
+TEST(GraphIsomorphismTaggedGraphTest, CheckTaggingList4)
 {
     CheckTaggingForList(UndirectedGraphFromG6::getListNumVertices_4(), Tag{1, 11});
 }
 
-TEST(GraphIsomorphismTaggedGraphTest, CheckDecomposeList5)
+TEST(GraphIsomorphismTaggedGraphTest, CheckTaggingList5)
 {
     CheckTaggingForList(UndirectedGraphFromG6::getListNumVertices_5(), {1, 34});
 }
 
-TEST(GraphIsomorphismTaggedGraphTest, CheckDecomposeList6)
+TEST(GraphIsomorphismTaggedGraphTest, CheckTaggingList6)
 {
     CheckTaggingForList(UndirectedGraphFromG6::getListNumVertices_6(), {1, 155});
 }
 
-TEST(GraphIsomorphismTaggedGraphTest, CheckDecomposeList7)
+TEST(GraphIsomorphismTaggedGraphTest, CheckTaggingList7)
 {
-    CheckTaggingForList(UndirectedGraphFromG6::getListNumVertices_7(), {1, 298, 2, 2});
+    CheckTaggingForList(UndirectedGraphFromG6::getListNumVertices_7(), {1, 300, 2, 1});
     // PrintMultipleTags(UndirectedGraphFromG6::getListNumVertices_7());
 }
 
-TEST(GraphIsomorphismTaggedGraphTest, CheckDecomposeList8)
+TEST(GraphIsomorphismTaggedGraphTest, CheckTaggingList8)
 {
-    CheckTaggingForList(UndirectedGraphFromG6::getListNumVertices_8(), {1, 716, 2, 15});
+    CheckTaggingForList(UndirectedGraphFromG6::getListNumVertices_8(), {1, 718, 2, 14});
 }
 
-TEST(GraphIsomorphismTaggedGraphTest, CheckDecomposeList9)
+TEST(GraphIsomorphismTaggedGraphTest, CheckTaggingList9)
 {
     CheckTaggingForList(UndirectedGraphFromG6::getListNumVertices_9(), {1, 442, 2, 15, 3, 3});
 }
 
-TEST(GraphIsomorphismTaggedGraphTest, CheckDecomposeList10)
+TEST(GraphIsomorphismTaggedGraphTest, CheckTaggingList10)
 {
-    CheckTaggingForList(UndirectedGraphFromG6::getListNumVertices_10(), {1, 692, 2, 4, 3, 3, 6, 1});
+    CheckTaggingForList(UndirectedGraphFromG6::getListNumVertices_10(), {1, 694, 2, 3, 3, 3, 6, 1});
 }
 
 TEST(GraphIsomorphismConstructTest, Disconnected5)
@@ -232,4 +236,33 @@ TEST(GraphIsomorphismTaggedGraphTest, Disconnected9)
 {
     const auto graphs = UndirectedGraphFromG6::getDisconnectedGraphs(UndirectedGraphFromG6::getListNumVertices_9());
     CheckUniquenessGraphTaggers(graphs, 18, 18);
+}
+
+TEST(GraphIsomorphismTaggedGraphTest, SpecialCase1)
+{
+    const auto g0 = UndirectedGraphFromG6::CreateConnected("FMhXw");
+    const auto g1 = UndirectedGraphFromG6::CreateConnected("FDxZg");
+    const TaggedGraph tg0(*g0);
+    const TaggedGraph tg1(*g1);
+    const auto status = TaggedGraph::tryConnect(tg0, tg1);
+
+    const TaggerTriangles taggerTriangles0(*g0);
+    const TaggerTriangles taggerTriangles1(*g1);
+
+    ASSERT_EQ(Single(taggerTriangles0.getVertexTag(3)), 2);
+    ASSERT_EQ(Single(taggerTriangles0.getVertexTag(4)), 2);
+
+    ASSERT_EQ(Single(taggerTriangles1.getVertexTag(3)), 2);
+    ASSERT_EQ(Single(taggerTriangles1.getVertexTag(4)), 1);
+
+    const TaggerChains taggerChains0(*g0);
+    const TaggerChains taggerChains1(*g1);
+
+    ASSERT_EQ(taggerChains0.getVertexTag(3), (Tag{4, 3}));
+    ASSERT_EQ(taggerChains0.getVertexTag(4), (Tag{4, 3}));
+
+    ASSERT_EQ(taggerChains1.getVertexTag(3), (Tag{4, 3}));
+    ASSERT_EQ(taggerChains1.getVertexTag(4), (Tag{4, 3}));
+
+    ASSERT_TRUE( tg0 != tg1);
 }

@@ -7,14 +7,14 @@
 namespace GraphIsomorphism
 {
 
-class TaggerTriangles : public IGraphTagger
+class TaggerTriangles : public IGraphTagger, public IVertexTagger
 {
   public:
     explicit TaggerTriangles(const Graph::IGraphUs &);
 
     const Tag &getGraphTag() const override;
-    const Tag &getVertexTag(GraphVertex) const;
-    GraphVertex getNumVertices() const;
+    const Tag &getVertexTag(GraphVertex) const override;
+    GraphVertex getNumVertices() const override;
 
     static std::vector<std::array<GraphVertex, 3>> getAllTriangles(const Graph::IGraphUs &);
 
