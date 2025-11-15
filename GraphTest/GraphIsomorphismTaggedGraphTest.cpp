@@ -264,5 +264,15 @@ TEST(GraphIsomorphismTaggedGraphTest, SpecialCase1)
     ASSERT_EQ(taggerChains1.getVertexTag(3), (Tag{4, 3}));
     ASSERT_EQ(taggerChains1.getVertexTag(4), (Tag{4, 3}));
 
-    ASSERT_TRUE( tg0 != tg1);
+    ASSERT_TRUE(tg0 != tg1);
+}
+TEST(GraphIsomorphismTaggedGraphTest, SpecialCase2)
+{
+    const auto g0 = UndirectedGraphFromG6::CreateConnected("F@h^w");
+    const auto g1 = UndirectedGraphFromG6::CreateConnected("F?lvw");
+    const TaggedGraph tg0(*g0);
+    const TaggedGraph tg1(*g1);
+    const auto status = TaggedGraph::tryConnect(tg0, tg1);
+
+    ASSERT_TRUE(tg0 != tg1);
 }
