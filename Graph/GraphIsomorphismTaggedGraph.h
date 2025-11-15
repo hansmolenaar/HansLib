@@ -22,8 +22,7 @@ class TaggedGraph
     std::vector<std::unique_ptr<ITagger>> m_taggers;
     GraphTags m_graphTags; // For quick testing
     std::vector<Grouper> m_vertexGroupers;
-    std::vector<Tag> m_vertexGroupTags;       // One tag per vertex, in order
-    std::vector<Tag> m_vertexGroupTagsSorted; // Sorted
+    std::vector<Tag> m_vertexGroupTags;       // Sorted
 };
 
 } // namespace GraphIsomorphism

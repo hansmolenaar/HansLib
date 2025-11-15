@@ -31,8 +31,7 @@ TaggedGraph::TaggedGraph(const Graph::IGraphUs &graph)
         }
     }
 
-    m_vertexGroupTagsSorted = m_vertexGroupTags;
-    str::sort(m_vertexGroupTagsSorted);
+    str::sort(m_vertexGroupTags);
 }
 
 const Graph::IGraphUs &TaggedGraph::getGraph() const
@@ -40,7 +39,6 @@ const Graph::IGraphUs &TaggedGraph::getGraph() const
     return m_graph;
 }
 
-// TODO TEST test TeSt
 std::weak_ordering TaggedGraph::operator<=>(const TaggedGraph &rhs) const
 {
     const auto &lhs = *this;
@@ -60,25 +58,10 @@ std::weak_ordering TaggedGraph::operator<=>(const TaggedGraph &rhs) const
         }
     }
 
-    return lhs.m_vertexGroupTagsSorted <=> rhs.m_vertexGroupTagsSorted;
+    return lhs.m_vertexGroupTags<=> rhs.m_vertexGroupTags;
 }
 
 bool TaggedGraph::operator==(const TaggedGraph &rhs) const
 {
-    const auto &lhs = *this;
-    if (lhs.m_graphTags != rhs.m_graphTags)
-    {
-        return false;
-    }
-
-    MyAssert(lhs.m_vertexGroupers.size() == rhs.m_vertexGroupers.size());
-    for (size_t n = 0; n < m_vertexGroupers.size(); ++n)
-    {
-        if (lhs.m_vertexGroupers.at(n) != rhs.m_vertexGroupers.at(n))
-        {
-            return true;
-        }
-    }
-
-    return lhs.m_vertexGroupTagsSorted == rhs.m_vertexGroupTagsSorted;
+   return (*this <=> rhs) == 0;
 }
