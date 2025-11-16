@@ -6,6 +6,7 @@
 
 namespace GraphIsomorphism
 {
+class ToParentMap;
 
 class IDecompose
 {
@@ -27,6 +28,7 @@ class IDecompose
     static std::unique_ptr<IDecompose> Create(const Graph::IGraphUs &);
 
     static std::weak_ordering CompareRoots(const IDecompose *, const IDecompose *);
+    static std::weak_ordering CompareLeaves(const IDecompose *, const IDecompose *, const ToParentMap &);
 };
 
 class ToParentMap
@@ -34,10 +36,12 @@ class ToParentMap
   public:
     explicit ToParentMap(const IDecompose *);
     bool isRoot(const IDecompose *) const; // Root has nullptr as parent
+    const IDecompose *getRoot(const IDecompose *) const;
     const IDecompose *getParent(const IDecompose *) const;
     std::vector<const IDecompose *> getLeaves() const;
     size_t size() const;
-    GraphVertex getVertexInRoot(GraphVertex vertex, const IDecompose *decompose) const;
+    GraphVertex getVertexInRoot(GraphVertex vertex, const IDecompose *) const;
+    std::vector<Tag> collectDecomposeTags(const IDecompose *) const;
 
   private:
     std::map<const IDecompose *, const IDecompose *> m_toParent;

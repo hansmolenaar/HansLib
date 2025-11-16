@@ -290,6 +290,27 @@ GraphVertex ToParentMap::getVertexInRoot(GraphVertex vertex, const IDecompose *d
     return vertex;
 }
 
+std::vector<Tag> ToParentMap::collectDecomposeTags(const IDecompose *decompose) const
+{
+    std::vector<Tag> result;
+    while (decompose != nullptr)
+    {
+        result.push_back(decompose->getTag());
+        decompose = getParent(decompose);
+    }
+    return result;
+}
+
+const IDecompose *ToParentMap::getRoot(const IDecompose *ptr) const
+{
+    MyAssert(ptr != nullptr);
+    while (!isRoot(ptr))
+    {
+        ptr = getParent(ptr);
+    }
+    return ptr;
+}
+
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! compare
 
 std::weak_ordering IDecompose::CompareRoots(const IDecompose *root1, const IDecompose *root2)
@@ -307,6 +328,35 @@ std::weak_ordering IDecompose::CompareRoots(const IDecompose *root1, const IDeco
     if (result != 0)
     {
         return result;
+    }
+    return result;
+}
+
+std::weak_ordering IDecompose::CompareLeaves(const IDecompose *leaf1, const IDecompose *leaf2,
+                                             const ToParentMap &toParent)
+{
+    MyAssert(leaf1->isLeaf());
+    MyAssert(leaf2->isLeaf());
+
+    std::weak_ordering result = toParent.collectDecomposeTags(leaf1) <=> toParent.collectDecomposeTags(leaf2);
+    if (result != 0)
+    {
+        return result;
+    }
+
+    const auto *d1 = leaf1;
+    const auto *d2 = leaf2;
+    while (d1 != nullptr)
+    {
+        const TaggedGraph tg1(d1->getSelf());
+        const TaggedGraph tg2(d2->getSelf());
+        result = tg1 <=> tg2;
+        if (result != 0)
+        {
+            return result;
+        }
+        d1 = toParent.getParent(d1);
+        d2 = toParent.getParent(d2);
     }
     return result;
 }

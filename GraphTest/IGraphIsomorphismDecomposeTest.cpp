@@ -52,12 +52,10 @@ void CheckDecompose(const IGraphUs &graph, int expectNumLeaves = -1)
 void CheckDecomposeList(const std::vector<std::string> &g6list)
 {
     std::vector<std::unique_ptr<Graph::IGraphUs>> graphs = UndirectedGraphFromG6::getGraphs(g6list);
-    std::vector<TaggedGraph> taggedGraphs;
-    str::transform(graphs, std::back_inserter(taggedGraphs), [](const auto &gp) { return TaggedGraph(*gp); });
 
-    for (const auto &tg : taggedGraphs)
+    for (const auto &graph : graphs)
     {
-        CheckDecompose(tg.getGraph());
+        CheckDecompose(*graph);
     }
 }
 
@@ -102,22 +100,25 @@ TEST(IGraphIsomorphismDecomposeTest, EdgePlusVertex)
     const auto graph = UndirectedGraphFromG6::Create("BO");
     const auto decomposed = IDecompose::Create(*graph);
     ASSERT_EQ(decomposed->getTag(), (Tag{1, 1, 2}));
+    const ToParentMap toParent(decomposed.get());
 
     const auto &tags = decomposed->getChildTags();
     ASSERT_EQ(tags.size(), 2);
 
-    const auto &children0 = decomposed->getChildren(tags.at(0));
-    ASSERT_EQ(children0.size(), 1);
-    ASSERT_EQ(children0.at(0)->getSelf().getNumVertices(), 2);
-    ASSERT_EQ(children0.at(0)->getTag(), (Tag{0}));
-    ASSERT_TRUE(children0.at(0)->isLeaf());
+    const auto *child0 =Single( decomposed->getChildren(tags.at(0)));
+    ASSERT_EQ(child0->getSelf().getNumVertices(), 2);
+    ASSERT_EQ(child0->getTag(), (Tag{0}));
+    ASSERT_TRUE(child0->isLeaf());
 
-    const auto &children1 = decomposed->getChildren(tags.at(1));
-    ASSERT_EQ(children1.size(), 1);
-    ASSERT_EQ(children1.at(0)->getSelf().getNumVertices(), 1);
-    ASSERT_EQ(children1.at(0)->getTag(), (Tag{0}));
-    ASSERT_TRUE(children1.at(0)->isLeaf());
+    const auto *child1 =Single( decomposed->getChildren(tags.at(1)));
+    ASSERT_EQ(child1->getSelf().getNumVertices(), 1);
+    ASSERT_EQ(child1->getTag(), (Tag{0}));
+    ASSERT_TRUE(child1->isLeaf());
 
+    const auto tag0 = toParent.collectDecomposeTags(child0);
+    const auto tag1 = toParent.collectDecomposeTags(child1);
+    ASSERT_EQ(tag0, (std::vector<Tag>{Tag{0}, Tag{1, 1, 2}}));
+    ASSERT_EQ(tag1, (std::vector<Tag>{Tag{0}, Tag{1, 1, 2}}));
     CheckDecompose(*graph, 2);
 }
 
