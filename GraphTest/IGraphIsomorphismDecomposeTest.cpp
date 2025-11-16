@@ -16,34 +16,21 @@ using namespace Utilities;
 namespace
 {
 
-GraphVertex GetVertexInRoot(GraphVertex vertex, const IDecompose *decompose, const IDecompose::ToParentMap toParent)
-{
-    while (toParent.contains(decompose))
-    {
-        vertex = decompose->getVertexInParent(vertex);
-        decompose = toParent.at(decompose);
-    }
-    return vertex;
-}
-
 void CheckDecompose(const IGraphUs &graph, int expectNumLeaves = -1)
 {
-    const auto decomposeed = IDecompose::Create(graph);
-    const auto toParent = IDecompose::GetToParentMap(decomposeed.get());
+    const auto decomposed = IDecompose::Create(graph);
+    const GraphIsomorphism::ToParentMap toParent(decomposed.get());
 
     int numLeaves = 0;
     std::vector<GraphVertex> vertices;
-    for (const auto &itr : toParent)
+    for (const auto *leaf : toParent.getLeaves())
     {
-        if (itr.first->isLeaf())
+        numLeaves += 1;
+        const IGraphUs &graph = leaf->getSelf();
+        const auto numVertices = graph.getNumVertices();
+        for (GraphVertex v = 0; v < numVertices; ++v)
         {
-            numLeaves += 1;
-            const IGraphUs &graph = itr.first->getSelf();
-            const auto numVertices = graph.getNumVertices();
-            for (GraphVertex v = 0; v < numVertices; ++v)
-            {
-                vertices.emplace_back(GetVertexInRoot(v, itr.first, toParent));
-            }
+            vertices.emplace_back(toParent.getVertexInRoot(v, leaf));
         }
     }
 
@@ -79,11 +66,11 @@ void CheckDecomposeList(const std::vector<std::string> &g6list)
 TEST(IGraphIsomorphismDecomposeTest, GetToParentMapSingleton)
 {
     const auto graph = UndirectedGraphLibrary::Get_Singleton();
-    const auto decomposeed = IDecompose::Create(*graph);
-    const auto toParent = IDecompose::GetToParentMap(decomposeed.get());
+    const auto decomposed = IDecompose::Create(*graph);
+    ASSERT_EQ(decomposed->getTag(), (Tag{0}));
+    const ToParentMap toParent(decomposed.get());
     ASSERT_EQ(toParent.size(), 1);
-    ASSERT_EQ(toParent.begin()->first, decomposeed.get());
-    ASSERT_EQ(toParent.begin()->second, nullptr);
+    ASSERT_TRUE(toParent.isRoot(decomposed.get()));
 
     CheckDecompose(*graph, 1);
 }
@@ -91,55 +78,45 @@ TEST(IGraphIsomorphismDecomposeTest, GetToParentMapSingleton)
 TEST(IGraphIsomorphismDecomposeTest, GetToParentMapDisconnected2)
 {
     const auto graph = UndirectedGraphLibrary::Get_DisconnectedGraph(2);
-    const auto decomposeed = IDecompose::Create(*graph);
-    const auto *root = decomposeed.get();
-    const auto toParent = IDecompose::GetToParentMap(root);
-    ASSERT_EQ(toParent.size(), 3);
-    ASSERT_EQ(toParent.at(root), nullptr);
+    const auto decomposed = IDecompose::Create(*graph);
+    ASSERT_EQ(decomposed->getTag(), (Tag{0}));
+    const auto *root = decomposed.get();
+    const ToParentMap toParent(root);
+    ASSERT_EQ(toParent.size(), 1);
+    ASSERT_TRUE(toParent.isRoot(decomposed.get()));
+    ASSERT_EQ(toParent.getParent(root), nullptr);
 
-    CheckDecompose(*graph, 2);
+    CheckDecompose(*graph, 1);
 }
 
 TEST(IGraphIsomorphismDecomposeTest, Disconnected2)
 {
     const auto graph = UndirectedGraphLibrary::Get_DisconnectedGraph(2);
-    const auto decomposeed = IDecompose::Create(*graph);
-    const auto &tag = Single(decomposeed->getChildTags());
-    const auto &children = decomposeed->getChildren(tag);
-    ASSERT_EQ(children.size(), 2);
-
-    ASSERT_EQ(children.at(0)->getSelf().getNumVertices(), 1);
-    ASSERT_EQ(children.at(0)->getVertexInParent(0), 0);
-
-    ASSERT_EQ(children.at(1)->getSelf().getNumVertices(), 1);
-    ASSERT_EQ(children.at(1)->getVertexInParent(0), 1);
-
-    CheckDecompose(*graph, 2);
+    const auto decomposed = IDecompose::Create(*graph);
+    ASSERT_EQ(decomposed->getTag(), (Tag{0}));
+    CheckDecompose(*graph, 1);
 }
 
 TEST(IGraphIsomorphismDecomposeTest, EdgePlusVertex)
 {
     const auto graph = UndirectedGraphFromG6::Create("BO");
-    const auto decomposeed = IDecompose::Create(*graph);
-    const auto &tags = decomposeed->getChildTags();
+    const auto decomposed = IDecompose::Create(*graph);
+    ASSERT_EQ(decomposed->getTag(), (Tag{1, 1, 2}));
+
+    const auto &tags = decomposed->getChildTags();
     ASSERT_EQ(tags.size(), 2);
 
-    const auto &children0 = decomposeed->getChildren(tags.at(0));
+    const auto &children0 = decomposed->getChildren(tags.at(0));
     ASSERT_EQ(children0.size(), 1);
     ASSERT_EQ(children0.at(0)->getSelf().getNumVertices(), 2);
+    ASSERT_EQ(children0.at(0)->getTag(), (Tag{0}));
+    ASSERT_TRUE(children0.at(0)->isLeaf());
 
-    const auto &children1 = decomposeed->getChildren(tags.at(1));
+    const auto &children1 = decomposed->getChildren(tags.at(1));
     ASSERT_EQ(children1.size(), 1);
     ASSERT_EQ(children1.at(0)->getSelf().getNumVertices(), 1);
-
-    const auto &tagsGrandChildren0 = Single(children0)->getChildTags();
-    ASSERT_TRUE(tagsGrandChildren0.empty());
-    ASSERT_EQ(Single(children0)->getVertexInParent(0), 0);
-    ASSERT_EQ(Single(children0)->getVertexInParent(1), 2);
-
-    const auto &tagsGrandChildren1 = Single(children1)->getChildTags();
-    ASSERT_TRUE(tagsGrandChildren1.empty());
-    ASSERT_EQ(Single(children1)->getVertexInParent(0), 1);
+    ASSERT_EQ(children1.at(0)->getTag(), (Tag{0}));
+    ASSERT_TRUE(children1.at(0)->isLeaf());
 
     CheckDecompose(*graph, 2);
 }
@@ -147,42 +124,42 @@ TEST(IGraphIsomorphismDecomposeTest, EdgePlusVertex)
 TEST(IGraphIsomorphismDecomposeTest, Diamond)
 {
     const auto graph = UndirectedGraphLibrary::Get_Diamond();
-    const auto decomposeed = IDecompose::Create(*graph);
-    CheckDecompose(*graph, 3);
+    const auto decomposed = IDecompose::Create(*graph);
+    CheckDecompose(*graph, 2);
 }
 
 TEST(IGraphIsomorphismDecomposeTest, Paw)
 {
     const auto graph = UndirectedGraphFromG6::Create("Cx");
-    const auto decomposeed = IDecompose::Create(*graph);
+    const auto decomposed = IDecompose::Create(*graph);
     CheckDecompose(*graph, 3);
 }
 
 TEST(IGraphIsomorphismDecomposeTest, Dart)
 {
     const auto graph = UndirectedGraphFromG6::Create("DvC");
-    const auto decomposeed = IDecompose::Create(*graph);
+    const auto decomposed = IDecompose::Create(*graph);
     CheckDecompose(*graph, 3);
 }
 
 TEST(IGraphIsomorphismDecomposeTest, K5MinE)
 {
     const auto graph = UndirectedGraphFromG6::Create("D~k");
-    const auto decomposeed = IDecompose::Create(*graph);
-    CheckDecompose(*graph, 3);
+    const auto decomposed = IDecompose::Create(*graph);
+    CheckDecompose(*graph, 2);
 }
 
 TEST(IGraphIsomorphismDecomposeTest, Gem)
 {
     const auto graph = UndirectedGraphFromG6::Create("Dh{");
-    const auto decomposeed = IDecompose::Create(*graph);
+    const auto decomposed = IDecompose::Create(*graph);
     CheckDecompose(*graph, 2);
 }
 
 TEST(IGraphIsomorphismDecomposeTest, X100)
 {
     const auto graph = UndirectedGraphFromG6::Create("FgCNw");
-    const auto decomposeed = IDecompose::Create(*graph);
+    const auto decomposed = IDecompose::Create(*graph);
     CheckDecompose(*graph, 3);
 }
 
@@ -230,4 +207,15 @@ TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList7)
 TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList8)
 {
     CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_8());
+}
+
+TEST(IGraphIsomorphismDecomposeTest, SpecialCase1)
+{
+    const auto g0 = UndirectedGraphFromG6::CreateConnected("F@h^w");
+    const auto g1 = UndirectedGraphFromG6::CreateConnected("F?lvw");
+
+    const auto decompose0 = IDecompose::Create(*g0);
+    const auto decompose1 = IDecompose::Create(*g1);
+    const auto cmp = IDecompose::CompareRoots(decompose0.get(), decompose1.get());
+    ASSERT_TRUE(cmp != 0);
 }

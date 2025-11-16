@@ -26,9 +26,21 @@ class IDecompose
     static GraphTags GetGraphTags(const Graph::IGraphUs &);
     static std::unique_ptr<IDecompose> Create(const Graph::IGraphUs &);
 
-    // Root has nullptr as parent
-    using ToParentMap = std::map<const IDecompose *, const IDecompose *>;
-    static ToParentMap GetToParentMap(const IDecompose *);
+    static std::weak_ordering CompareRoots(const IDecompose *, const IDecompose *);
+};
+
+class ToParentMap
+{
+  public:
+    explicit ToParentMap(const IDecompose *);
+    bool isRoot(const IDecompose *) const; // Root has nullptr as parent
+    const IDecompose *getParent(const IDecompose *) const;
+    std::vector<const IDecompose *> getLeaves() const;
+    size_t size() const;
+    GraphVertex getVertexInRoot(GraphVertex vertex, const IDecompose *decompose) const;
+
+  private:
+    std::map<const IDecompose *, const IDecompose *> m_toParent;
 };
 
 class DecomposeDisconnected : public IDecompose

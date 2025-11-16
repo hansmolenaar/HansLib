@@ -68,6 +68,14 @@ TEST(GraphIsomorphismTaggerKnownTest, Diamond)
     ASSERT_EQ(tag, (Tag{TaggerKnown::KnownType::Unknown}));
 }
 
+TEST(GraphIsomorphismTaggerKnownTest, Disconnected3)
+{
+    const auto graph = UndirectedGraphLibrary::Get_DisconnectedGraph(5);
+    const TaggerKnown tagger(*graph);
+    const auto tag = tagger.getGraphTag();
+    ASSERT_EQ(tag, (Tag{TaggerKnown::KnownType::Singletons, 5}));
+}
+
 TEST(GraphIsomorphismTaggerKnownTest, CheckTagger)
 {
     TaggerKnownFactory factory;

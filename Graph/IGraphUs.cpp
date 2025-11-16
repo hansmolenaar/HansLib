@@ -3,7 +3,7 @@
 
 using namespace Graph;
 
-std::vector<GraphVertex> IGraphUs ::getDegreeSequence() const
+std::vector<GraphVertex> IGraphUs::getDegreeSequence() const
 {
     const auto numVertices = getNumVertices();
     std::vector<GraphVertex> result(numVertices);
@@ -15,17 +15,27 @@ std::vector<GraphVertex> IGraphUs ::getDegreeSequence() const
     return result;
 }
 
-std::vector<GraphVertex> IGraphUs ::getSortedDegreeSequence() const
+std::vector<GraphVertex> IGraphUs::getSortedDegreeSequence() const
 {
     auto result = getDegreeSequence();
     str::sort(result);
     return result;
 }
 
-bool IGraphUs ::isConnected() const
+bool IGraphUs::isConnected() const
 {
     const auto components = getConnectedComponents();
     return str::all_of(components, [](auto c) { return c == 0; });
+}
+
+GraphVertex IGraphUs::getNumberOfComponents() const
+{
+    const auto components = getConnectedComponents();
+    if (components.empty())
+    {
+        return 0;
+    }
+    return *str::max_element(components) + 1;
 }
 
 bool IGraphUs::isComplete() const

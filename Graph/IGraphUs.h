@@ -23,6 +23,7 @@ class IGraphUs
 
     virtual std::string getName() const = 0;
 
+    GraphVertex getNumberOfComponents() const;
     std::vector<GraphVertex> getDegreeSequence() const;
     std::vector<GraphVertex> getSortedDegreeSequence() const;
     bool isConnected() const;

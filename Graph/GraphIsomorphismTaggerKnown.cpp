@@ -14,8 +14,13 @@ GraphIsomorphism::TaggerKnown::TaggerKnown(const Graph::IGraphUs &graph) : m_tag
         return;
     }
 
-    if (!graph.isConnected())
+    const auto nComponents = graph.getNumberOfComponents();
+    if (nComponents > 1 && nVertices > 1)
     {
+        if (graph.getNumberOfComponents() == nVertices)
+        {
+            m_tag = {KnownType::Singletons, static_cast<TagEntry>(nVertices)};
+        }
         return;
     }
 

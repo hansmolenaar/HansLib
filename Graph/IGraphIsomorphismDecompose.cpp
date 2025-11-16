@@ -1,5 +1,6 @@
 #include "IGraphIsomorphismDecompose.h"
 #include "Defines.h"
+#include "GraphIsomorphismTaggedGraph.h"
 #include "GraphIsomorphismTaggerKnown.h"
 #include "GraphIsomorphismUtils.h"
 #include "IGraphIsomorphismTagger.h"
@@ -29,7 +30,8 @@ GraphVertex GetVertexInParent(GraphVertex vertex, const IDecompose &decompose)
     return vertex;
 }
 
-void AddToParentMapRecur(const IDecompose *current, const IDecompose *parent, IDecompose::ToParentMap &toParent)
+void AddToParentMapRecur(const IDecompose *current, const IDecompose *parent,
+                         std::map<const IDecompose *, const IDecompose *> &toParent)
 {
     // Add self
     toParent[current] = parent;
@@ -64,16 +66,16 @@ GraphTags IDecompose::GetGraphTags(const Graph::IGraphUs &graph)
 
 std::unique_ptr<IDecompose> IDecompose::Create(const Graph::IGraphUs &graph)
 {
-    if (!graph.isConnected())
-    {
-        return std::make_unique<DecomposeDisconnected>(graph);
-    }
-
     const TaggerKnown taggerKnown(graph);
     const auto knownTag = taggerKnown.getGraphTag();
     if (knownTag.front() != TaggerKnown::KnownType::Unknown)
     {
         return std::make_unique<DecomposeLeaf>(graph);
+    }
+
+    if (!graph.isConnected())
+    {
+        return std::make_unique<DecomposeDisconnected>(graph);
     }
 
     const auto fullyConnectedVertices = graph.getFullyConnectedVertices();
@@ -91,15 +93,8 @@ bool IDecompose::isLeaf() const
 {
     return getChildTags().empty();
 }
-
-IDecompose::ToParentMap IDecompose::GetToParentMap(const IDecompose *root)
-{
-    ToParentMap result;
-    AddToParentMapRecur(root, nullptr, result);
-    return result;
-}
 // !!!!!!!!!!! Leaf
-DecomposeLeaf::DecomposeLeaf(const Graph::IGraphUs &graph) : m_self(graph), m_tag(IDecomposeType::Leaf)
+DecomposeLeaf::DecomposeLeaf(const Graph::IGraphUs &graph) : m_self(graph), m_tag{IDecomposeType::Leaf}
 {
 }
 
@@ -189,7 +184,7 @@ std::vector<const IDecompose *> DecomposeDisconnected::getChildren(const GraphTa
 
 DecomposeVertexFullyConnected::DecomposeVertexFullyConnected(const Graph::IGraphUs &graph,
                                                              const std::set<GraphVertex> &fullyConnected)
-    : m_self(graph), m_tag(IDecomposeType::FullyConnected, fullyConnected.size())
+    : m_self(graph), m_tag{IDecomposeType::FullyConnected, static_cast<TagEntry>(fullyConnected.size())}
 {
     MyAssert(!fullyConnected.empty());
 
@@ -247,5 +242,71 @@ std::vector<const IDecompose *> DecomposeVertexFullyConnected::getChildren(const
     const auto &childrenWithTag = m_childDecomposes.at(tag);
     std::vector<const IDecompose *> result(childrenWithTag.size());
     str::transform(childrenWithTag, result.begin(), [](const auto &kid) { return kid.get(); });
+    return result;
+}
+
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ToParent
+
+ToParentMap::ToParentMap(const IDecompose *root)
+{
+    AddToParentMapRecur(root, nullptr, m_toParent);
+}
+
+const IDecompose *ToParentMap::getParent(const IDecompose *ptr) const
+{
+    return m_toParent.at(ptr);
+}
+
+bool ToParentMap::isRoot(const IDecompose *ptr) const
+{
+    return getParent(ptr) == nullptr;
+}
+
+std::vector<const IDecompose *> ToParentMap::getLeaves() const
+{
+    std::vector<const IDecompose *> result;
+    for (const auto &itr : m_toParent)
+    {
+        if (itr.first->isLeaf())
+        {
+            result.push_back(itr.first);
+        }
+    }
+    return result;
+}
+
+size_t ToParentMap::size() const
+{
+    return m_toParent.size();
+}
+
+GraphVertex ToParentMap::getVertexInRoot(GraphVertex vertex, const IDecompose *decompose) const
+{
+    while (decompose != nullptr)
+    {
+        vertex = decompose->getVertexInParent(vertex);
+        decompose = getParent(decompose);
+    }
+    return vertex;
+}
+
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! compare
+
+std::weak_ordering IDecompose::CompareRoots(const IDecompose *root1, const IDecompose *root2)
+{
+    const ToParentMap toParentMap1(root1);
+    const ToParentMap toParentMap2(root2);
+
+    MyAssert(toParentMap1.isRoot(root1));
+    MyAssert(toParentMap2.isRoot(root2));
+
+    const TaggedGraph tg1(root1->getSelf());
+    const TaggedGraph tg2(root2->getSelf());
+
+    std::weak_ordering result = (tg1 <=> tg2);
+    if (result != 0)
+    {
+        return result;
+    }
     return result;
 }

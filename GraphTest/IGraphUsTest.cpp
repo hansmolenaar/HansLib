@@ -13,6 +13,14 @@ TEST(IGraphUsTest, isConnected)
     ASSERT_FALSE(UndirectedGraphLibrary::Get_DisconnectedGraph(2)->isConnected());
 }
 
+TEST(IGraphUsTest, numComponents)
+{
+    ASSERT_EQ(UndirectedGraphLibrary::Get_Null()->getNumberOfComponents(), 0);
+    ASSERT_EQ(UndirectedGraphLibrary::Get_Singleton()->getNumberOfComponents(), 1);
+    ASSERT_EQ(UndirectedGraphLibrary::Get_Path(2)->getNumberOfComponents(), 1);
+    ASSERT_EQ(UndirectedGraphLibrary::Get_DisconnectedGraph(2)->getNumberOfComponents(), 2);
+}
+
 TEST(IGraphUsTest, isComplete)
 {
     ASSERT_TRUE(UndirectedGraphLibrary::Get_Null()->isComplete());

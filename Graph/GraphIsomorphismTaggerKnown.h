@@ -15,7 +15,8 @@ class TaggerKnown : public IGraphTagger
         Unknown,
         Complete,
         Cycle,
-        Path
+        Path,
+        Singletons, // More than 1
     };
 
     explicit TaggerKnown(const Graph::IGraphUs &);
