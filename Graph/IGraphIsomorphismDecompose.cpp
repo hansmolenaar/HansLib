@@ -11,6 +11,13 @@ using namespace Utilities;
 
 namespace
 {
+enum IDecomposeType : TagEntry
+{
+    Leaf = 0,
+    Disconnected,
+    FullyConnected
+};
+
 GraphVertex GetVertexInParent(GraphVertex vertex, const IDecompose &decompose)
 {
     const auto &self = decompose.getSelf();
@@ -92,7 +99,7 @@ IDecompose::ToParentMap IDecompose::GetToParentMap(const IDecompose *root)
     return result;
 }
 // !!!!!!!!!!! Leaf
-DecomposeLeaf::DecomposeLeaf(const Graph::IGraphUs &graph) : m_self(graph), m_tagSelf(IDecompose::GetGraphTags(m_self))
+DecomposeLeaf::DecomposeLeaf(const Graph::IGraphUs &graph) : m_self(graph), m_tag(IDecomposeType::Leaf)
 {
 }
 
@@ -105,9 +112,9 @@ const Graph::IGraphUs &DecomposeLeaf::getSelf() const
 {
     return m_self;
 }
-const GraphTags &DecomposeLeaf::getTagSelf() const
+const Tag &DecomposeLeaf::getTag() const
 {
-    return m_tagSelf;
+    return m_tag;
 }
 
 const std::vector<GraphTags> &DecomposeLeaf::getChildTags() const
@@ -122,7 +129,7 @@ std::vector<const IDecompose *> DecomposeLeaf::getChildren(const GraphTags &) co
 
 // !!!!!!!!!!! Disconnected
 DecomposeDisconnected::DecomposeDisconnected(const Graph::IGraphUs &graph)
-    : m_self(graph), m_tagSelf(IDecompose::GetGraphTags(m_self))
+    : m_self(graph), m_tag({IDecomposeType::Disconnected})
 {
     std::map<GraphVertex, std::set<GraphVertex>> components;
     GraphVertex vertex = 0;
@@ -136,7 +143,9 @@ DecomposeDisconnected::DecomposeDisconnected(const Graph::IGraphUs &graph)
     for (const auto &cmp : components)
     {
         m_children.emplace_back(m_self, cmp.second);
+        m_tag.push_back(cmp.second.size());
     }
+    std::sort(m_tag.begin() + 1, m_tag.end());
 
     for (const auto &child : m_children)
     {
@@ -159,9 +168,9 @@ const Graph::IGraphUs &DecomposeDisconnected::getSelf() const
     return m_self;
 }
 
-const GraphTags &DecomposeDisconnected::getTagSelf() const
+const Tag &DecomposeDisconnected::getTag() const
 {
-    return m_tagSelf;
+    return m_tag;
 }
 
 const std::vector<GraphTags> &DecomposeDisconnected::getChildTags() const
@@ -180,7 +189,7 @@ std::vector<const IDecompose *> DecomposeDisconnected::getChildren(const GraphTa
 
 DecomposeVertexFullyConnected::DecomposeVertexFullyConnected(const Graph::IGraphUs &graph,
                                                              const std::set<GraphVertex> &fullyConnected)
-    : m_self(graph), m_tagSelf(IDecompose::GetGraphTags(m_self))
+    : m_self(graph), m_tag(IDecomposeType::FullyConnected, fullyConnected.size())
 {
     MyAssert(!fullyConnected.empty());
 
@@ -223,9 +232,9 @@ const Graph::IGraphUs &DecomposeVertexFullyConnected::getSelf() const
     return m_self;
 }
 
-const GraphTags &DecomposeVertexFullyConnected::getTagSelf() const
+const Tag &DecomposeVertexFullyConnected::getTag() const
 {
-    return m_tagSelf;
+    return m_tag;
 }
 
 const std::vector<GraphTags> &DecomposeVertexFullyConnected::getChildTags() const

@@ -15,7 +15,7 @@ class IDecompose
     virtual GraphVertex getVertexInParent(GraphVertex) const = 0;
 
     virtual const Graph::IGraphUs &getSelf() const = 0;
-    virtual const GraphTags &getTagSelf() const = 0;
+    virtual const Tag &getTag() const = 0;
 
     // Can be empty: leaf of tree
     virtual const std::vector<GraphTags> &getChildTags() const = 0;
@@ -38,7 +38,7 @@ class DecomposeDisconnected : public IDecompose
     GraphVertex getVertexInParent(GraphVertex) const override;
 
     const Graph::IGraphUs &getSelf() const override;
-    const GraphTags &getTagSelf() const override;
+    const Tag &getTag() const override;
 
     // Can be empty: leaf of tree
     const std::vector<GraphTags> &getChildTags() const override;
@@ -46,7 +46,7 @@ class DecomposeDisconnected : public IDecompose
 
   private:
     const Graph::IGraphUs &m_self;
-    GraphTags m_tagSelf;
+    Tag m_tag;
     std::vector<Graph::SubGraphConnected> m_children;
     std::vector<GraphTags> m_childTags;
     std::map<GraphTags, std::vector<std::unique_ptr<IDecompose>>> m_childDecomposes;
@@ -59,7 +59,7 @@ class DecomposeVertexFullyConnected : public IDecompose
     GraphVertex getVertexInParent(GraphVertex) const override;
 
     const Graph::IGraphUs &getSelf() const override;
-    const GraphTags &getTagSelf() const override;
+    const Tag &getTag() const override;
 
     // Can be empty: leaf of tree
     const std::vector<GraphTags> &getChildTags() const override;
@@ -69,7 +69,7 @@ class DecomposeVertexFullyConnected : public IDecompose
 
   private:
     const Graph::IGraphUs &m_self;
-    GraphTags m_tagSelf;
+    Tag m_tag;
     std::vector<std::unique_ptr<Graph::IGraphUs>> m_children;
     std::vector<GraphTags> m_childTags;
     std::map<GraphTags, std::vector<std::unique_ptr<IDecompose>>> m_childDecomposes;
@@ -82,7 +82,7 @@ class DecomposeLeaf : public IDecompose
     GraphVertex getVertexInParent(GraphVertex) const override;
 
     const Graph::IGraphUs &getSelf() const override;
-    const GraphTags &getTagSelf() const override;
+    const Tag &getTag() const override;
 
     // Can be empty: leaf of tree
     const std::vector<GraphTags> &getChildTags() const override;
@@ -90,7 +90,7 @@ class DecomposeLeaf : public IDecompose
 
   private:
     const Graph::IGraphUs &m_self;
-    GraphTags m_tagSelf;
+    Tag m_tag;
     std::vector<GraphTags> m_childTags;
 };
 
