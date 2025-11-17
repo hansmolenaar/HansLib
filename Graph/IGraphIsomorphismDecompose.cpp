@@ -1,5 +1,6 @@
 #include "IGraphIsomorphismDecompose.h"
 #include "Defines.h"
+#include "GraphIsomorphismGrouping.h"
 #include "GraphIsomorphismTaggedGraph.h"
 #include "GraphIsomorphismTaggerKnown.h"
 #include "GraphIsomorphismUtils.h"
@@ -346,34 +347,13 @@ std::weak_ordering ToParentMap::compareLeaves(const DecomposeLeaf *leaf1, const 
     return result;
 }
 
-namespace
-{
-std::vector<size_t> getGroupSizes(const std::vector<std::vector<const DecomposeLeaf *>> &groups)
-{
-    std::vector<size_t> result(groups.size());
-    str::transform(groups, result.begin(), [](const auto &group) { return group.size(); });
-    return result;
-}
-} // namespace
-
-std::vector<std::vector<const DecomposeLeaf *>> ToParentMap::groupLeaves() const
+Grouping<const DecomposeLeaf *> ToParentMap::groupLeaves() const
 {
     auto cmp = [this](const DecomposeLeaf *leaf1, const DecomposeLeaf *leaf2) {
         return compareLeaves(leaf1, leaf2) == std::weak_ordering::less;
     };
-    std::map<const DecomposeLeaf *, std::vector<const DecomposeLeaf *>, typeof(cmp)> grouped(cmp);
-    for (const auto *leaf : getLeaves())
-    {
-        grouped[leaf].push_back(leaf);
-    }
-
-    std::vector<std::vector<const DecomposeLeaf *>> result;
-    for (const auto &itr : grouped)
-    {
-        result.emplace_back(itr.second);
-    }
-
-    return result;
+    const Grouping grouping(getLeaves(), cmp);
+    return grouping;
 }
 
 std::weak_ordering ToParentMap::operator<=>(const ToParentMap &map2) const
@@ -381,17 +361,17 @@ std::weak_ordering ToParentMap::operator<=>(const ToParentMap &map2) const
     const auto &map1 = *this;
     const auto groups1 = map1.groupLeaves();
     const auto groups2 = map2.groupLeaves();
-    std::weak_ordering result = getGroupSizes(groups1) <=> getGroupSizes(groups2);
+    std::weak_ordering result = groups1.getGroupSizes() <=> groups2.getGroupSizes();
     if (result != 0)
     {
         return result;
     }
 
-    const auto nGroups = groups1.size();
+    const auto nGroups = groups1().size();
     for (size_t n = 0; n < nGroups; ++n)
     {
-        const auto &group1 = groups1.at(n);
-        const auto &group2 = groups2.at(n);
+        const auto &group1 = groups1().at(n);
+        const auto &group2 = groups2().at(n);
         const auto *leaf1 = group1.front();
         const auto *leaf2 = group2.front();
 

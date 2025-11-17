@@ -16,9 +16,9 @@ TEST(GraphIsomorphismGrouping, SomeInts)
     const std::vector<int> values{3, 2, 3, 2, 3, 1};
     const Grouping grouping(values);
     ASSERT_EQ(grouping.getGroupSizes(), (std::vector<size_t>{1, 2, 3}));
-    ASSERT_EQ(grouping.get().at(0), (std::vector<int>{1}));
-    ASSERT_EQ(grouping.get().at(1), (std::vector<int>{2, 2}));
-    ASSERT_EQ(grouping.get().at(2), (std::vector<int>{3, 3, 3}));
+    ASSERT_EQ(grouping().at(0), (std::vector<int>{1}));
+    ASSERT_EQ(grouping().at(1), (std::vector<int>{2, 2}));
+    ASSERT_EQ(grouping().at(2), (std::vector<int>{3, 3, 3}));
 }
 
 TEST(GraphIsomorphismGrouping, CustomCompare)

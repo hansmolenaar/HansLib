@@ -1,6 +1,7 @@
 #pragma once
 
 #include "GraphIsomorphismDefines.h"
+#include "GraphIsomorphismGrouping.h"
 #include "IGraphUs.h"
 #include "SubGraphConnected.h"
 
@@ -105,7 +106,7 @@ class ToParentMap
     std::vector<Tag> collectDecomposeTags(const DecomposeLeaf *) const;
 
     std::weak_ordering compareLeaves(const DecomposeLeaf *, const DecomposeLeaf *) const;
-    std::vector<std::vector<const DecomposeLeaf *>> groupLeaves() const;
+    GraphIsomorphism::Grouping<const DecomposeLeaf *> groupLeaves() const;
 
     std::weak_ordering operator<=>(const ToParentMap &) const;
 

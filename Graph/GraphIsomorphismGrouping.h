@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Defines.h"
+
 namespace GraphIsomorphism
 {
 
@@ -30,7 +32,7 @@ template <typename T> class Grouping
         str::transform(grouped, m_groups.begin(), [](const auto &itr) { return itr.second; });
     }
 
-    const std::vector<std::vector<T>> get() const
+    const std::vector<std::vector<T>> &operator()() const
     {
         return m_groups;
     }
