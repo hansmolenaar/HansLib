@@ -1,4 +1,4 @@
-#include "GraphIsomorphismGrouper.h"
+#include "GraphIsomorphismVertexGrouper.h"
 #include "Defines.h"
 #include "UndirectedGraph.h"
 
@@ -11,7 +11,7 @@ namespace
 const std::vector<GraphVertex> s_emptyMemberList;
 } // namespace
 
-Grouper::Grouper(const IVertexTagger &tagger) : m_numVertices(tagger.getNumVertices())
+VertexGrouper::VertexGrouper(const IVertexTagger &tagger) : m_numVertices(tagger.getNumVertices())
 {
     std::map<Tag, std::vector<GraphVertex>> groups;
     for (GraphVertex v = 0; v < m_numVertices; ++v)
@@ -26,12 +26,12 @@ Grouper::Grouper(const IVertexTagger &tagger) : m_numVertices(tagger.getNumVerti
     }
 }
 
-const std::vector<Tag> &Grouper::getTags() const
+const std::vector<Tag> &VertexGrouper::getTags() const
 {
     return m_tags;
 }
 
-const std::vector<GraphVertex> &Grouper::getGroupMembers(const Tag &tag) const
+const std::vector<GraphVertex> &VertexGrouper::getGroupMembers(const Tag &tag) const
 {
     const auto found = str::find(m_tags, tag);
     if (found != m_tags.end())
@@ -42,29 +42,29 @@ const std::vector<GraphVertex> &Grouper::getGroupMembers(const Tag &tag) const
     return s_emptyMemberList;
 }
 
-int Grouper::countUnique() const
+int VertexGrouper::countUnique() const
 {
     return str::count_if(m_groups, [](const auto &g) { return g.size() == 1; });
 }
 
-bool Grouper::isResolved() const
+bool VertexGrouper::isResolved() const
 {
     return countUnique() == m_tags.size();
 }
 
-GraphVertex Grouper::getNumVertices() const
+GraphVertex VertexGrouper::getNumVertices() const
 {
     return m_numVertices;
 }
 
-bool Grouper::operator==(const GraphIsomorphism::Grouper &grouper1) const
+bool VertexGrouper::operator==(const GraphIsomorphism::VertexGrouper &grouper1) const
 {
     return (*this <=> grouper1) == 0;
 }
 
-std::weak_ordering Grouper::operator<=>(const Grouper &grouper1) const
+std::weak_ordering VertexGrouper::operator<=>(const VertexGrouper &grouper1) const
 {
-    const Grouper &grouper0 = *this;
+    const VertexGrouper &grouper0 = *this;
 
     const auto &tags0 = grouper0.getTags();
     const auto &tags1 = grouper1.getTags();

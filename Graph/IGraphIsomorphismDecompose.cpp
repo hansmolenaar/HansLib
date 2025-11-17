@@ -379,8 +379,6 @@ std::vector<std::vector<const DecomposeLeaf *>> ToParentMap::groupLeaves() const
 std::weak_ordering ToParentMap::operator<=>(const ToParentMap &map2) const
 {
     const auto &map1 = *this;
-    // const auto* root1 = map1.getRoot();
-    // const auto* root2 = map2.getRoot();
     const auto groups1 = map1.groupLeaves();
     const auto groups2 = map2.groupLeaves();
     std::weak_ordering result = getGroupSizes(groups1) <=> getGroupSizes(groups2);

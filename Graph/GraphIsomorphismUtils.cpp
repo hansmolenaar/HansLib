@@ -1,7 +1,7 @@
 #include "GraphIsomorphismUtils.h"
 
 #include "Defines.h"
-#include "GraphIsomorphismGrouper.h"
+#include "GraphIsomorphismVertexGrouper.h"
 #include "GraphIsomorphismTaggerChains.h"
 #include "GraphIsomorphismTaggerComponents.h"
 #include "GraphIsomorphismTaggerDegree.h"

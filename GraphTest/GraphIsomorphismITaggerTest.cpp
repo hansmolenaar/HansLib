@@ -3,7 +3,7 @@
 #include "Defines.h"
 #include "GraphIsomorphismCheck.h"
 #include "GraphIsomorphismDefines.h"
-#include "GraphIsomorphismGrouper.h"
+#include "GraphIsomorphismVertexGrouper.h"
 #include "GraphIsomorphismITaggerTest.h"
 #include "GraphIsomorphismTagCompare.h"
 #include "GraphUsc.h"
@@ -27,7 +27,7 @@ void CheckVertexTaggerConsistency(const IGraphUs &graph, GraphIsomorphism::ITagg
     const auto *tagger = gtagger->getVertexTagger();
     if (tagger == nullptr)
         return;
-    const Grouper grouper(*tagger);
+    const VertexGrouper grouper(*tagger);
     if (expectNumAssociatedvertices >= 0)
     {
         ASSERT_EQ(grouper.countUnique(), expectNumAssociatedvertices);
@@ -44,7 +44,7 @@ void CheckVertexTaggerConsistency(const IGraphUs &graph, GraphIsomorphism::ITagg
         const UndirectedGraph graphPermuted = UndirectedGraph::CreatePermuted(graph, permutation);
         const auto gtaggerPermuted = factory.createTagger(graphPermuted);
         const auto *taggerPermuted = gtaggerPermuted->getVertexTagger();
-        const Grouper grouperPermuted(*taggerPermuted);
+        const VertexGrouper grouperPermuted(*taggerPermuted);
         ASSERT_EQ(grouperPermuted.countUnique(), expectNumAssociatedvertices);
 
         const auto resultCompare = GraphIsomorphism::TagCompare{}.compare({*tagger, *taggerPermuted});
@@ -99,7 +99,7 @@ void GraphTest::TaggerCheckListG6(const std::vector<std::string> &stringsG6, ITa
         const auto *tagger = vtagger->getVertexTagger();
         if (tagger == nullptr)
             continue;
-        const Grouper grouper(*tagger);
+        const VertexGrouper grouper(*tagger);
         if (grouper.isResolved())
         {
             numResolved += 1;

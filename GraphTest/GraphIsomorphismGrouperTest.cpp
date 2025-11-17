@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "Defines.h"
-#include "GraphIsomorphismGrouper.h"
+#include "GraphIsomorphismVertexGrouper.h"
 #include "GraphIsomorphismTaggerDegree.h"
 #include "GraphIsomorphismTaggerDistance.h"
 #include "GraphUsc.h"
@@ -18,12 +18,12 @@ namespace
 {
 } // namespace
 
-TEST(GraphIsomorphismGrouperTest, DegreePath3)
+TEST(GraphIsomorphismVertexGrouperTest, DegreePath3)
 {
     const auto graph = UndirectedGraphLibrary::Get_Path(3);
 
     const auto taggerDegree = TaggerDegree(*graph);
-    const Grouper grouper(taggerDegree);
+    const VertexGrouper grouper(taggerDegree);
 
     const auto &tags = grouper.getTags();
     ASSERT_EQ(grouper.countUnique(), 1);
@@ -36,12 +36,12 @@ TEST(GraphIsomorphismGrouperTest, DegreePath3)
     ASSERT_TRUE(grouper.getGroupMembers(dummy).empty());
 }
 
-TEST(GraphIsomorphismGrouperTest, DegreeCycle3)
+TEST(GraphIsomorphismVertexGrouperTest, DegreeCycle3)
 {
     const auto graph = UndirectedGraphLibrary::Get_Cycle(3);
 
     const auto taggerDegree = TaggerDegree(*graph);
-    const Grouper grouper(taggerDegree);
+    const VertexGrouper grouper(taggerDegree);
 
     const auto &tags = grouper.getTags();
     ASSERT_EQ(tags.size(), 1);
@@ -49,12 +49,12 @@ TEST(GraphIsomorphismGrouperTest, DegreeCycle3)
     ASSERT_TRUE(str::equal(grouper.getGroupMembers(tags.at(0)), std::vector<GraphVertex>{0, 1, 2}));
 }
 
-TEST(GraphIsomorphismGrouperTest, Star112)
+TEST(GraphIsomorphismVertexGrouperTest, Star112)
 {
     const auto graph = UndirectedGraphLibrary::Get_Star({1, 1, 2});
 
     const auto taggerDegree = TaggerDegree(*graph);
-    const Grouper grouper(taggerDegree);
+    const VertexGrouper grouper(taggerDegree);
 
     const auto &tags = grouper.getTags();
     ASSERT_EQ(tags.size(), 3);
@@ -64,12 +64,12 @@ TEST(GraphIsomorphismGrouperTest, Star112)
     ASSERT_TRUE(str::equal(grouper.getGroupMembers(tags.at(2)), std::vector<GraphVertex>{0}));
 }
 
-TEST(GraphIsomorphismGrouperTest, DegreeStar321)
+TEST(GraphIsomorphismVertexGrouperTest, DegreeStar321)
 {
     const auto graph = UndirectedGraphLibrary::Get_Star({3, 2, 1});
 
     const auto taggerDegree = TaggerDegree(*graph);
-    const Grouper grouper(taggerDegree);
+    const VertexGrouper grouper(taggerDegree);
 
     const auto &tags = grouper.getTags();
     ASSERT_EQ(tags.size(), 3);
@@ -80,23 +80,23 @@ TEST(GraphIsomorphismGrouperTest, DegreeStar321)
     ASSERT_FALSE(grouper.isResolved());
 }
 
-TEST(GraphIsomorphismGrouperTest, DistanceStar321)
+TEST(GraphIsomorphismVertexGrouperTest, DistanceStar321)
 {
     const auto graph = UndirectedGraphLibrary::Get_Star({3, 2, 1});
     const GraphUsc uscGraph(*graph);
     const TaggerDistance tagger(uscGraph);
-    const Grouper grouper(tagger);
+    const VertexGrouper grouper(tagger);
 
     const auto &tags = grouper.getTags();
     ASSERT_EQ(tags.size(), graph->getNumVertices());
     ASSERT_TRUE(grouper.isResolved());
 }
 
-TEST(GraphIsomorphismGrouperTest, Path4)
+TEST(GraphIsomorphismVertexGrouperTest, Path4)
 {
     const auto graph = UndirectedGraphLibrary::Get_Path(4);
     const auto taggerDegree = TaggerDegree(*graph);
-    const Grouper grouper(taggerDegree);
+    const VertexGrouper grouper(taggerDegree);
 
     const auto &tags = grouper.getTags();
     ASSERT_EQ(tags.size(), 2);
@@ -106,20 +106,20 @@ TEST(GraphIsomorphismGrouperTest, Path4)
 
     const auto graphPermuted = GraphUsc::CreatePermuted(*graph, {1, 0, 2, 3});
     const auto taggerDegreePermuted = TaggerDegree(graphPermuted);
-    const Grouper grouperPermuted(taggerDegreePermuted);
+    const VertexGrouper grouperPermuted(taggerDegreePermuted);
 
     ASSERT_EQ(grouper, grouperPermuted);
 }
 
-TEST(GraphIsomorphismGrouperTest, Path4and5)
+TEST(GraphIsomorphismVertexGrouperTest, Path4and5)
 {
     const auto graph4 = UndirectedGraphLibrary::Get_Path(4);
     const auto taggerDegree4 = TaggerDegree(*graph4);
-    const Grouper grouper4(taggerDegree4);
+    const VertexGrouper grouper4(taggerDegree4);
 
     const auto graph5 = UndirectedGraphLibrary::Get_Path(5);
     const auto taggerDegree5 = TaggerDegree(*graph5);
-    const Grouper grouper5(taggerDegree5);
+    const VertexGrouper grouper5(taggerDegree5);
 
     ASSERT_NE(grouper4, grouper5);
 }

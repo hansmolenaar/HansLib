@@ -8,18 +8,18 @@
 namespace GraphIsomorphism
 {
 
-class Grouper
+class VertexGrouper
 {
   public:
-    explicit Grouper(const IVertexTagger &tagger);
+    explicit VertexGrouper(const IVertexTagger &tagger);
     const std::vector<Tag> &getTags() const;
     // Returns empty list if not found
     const std::vector<GraphVertex> &getGroupMembers(const Tag &) const;
     int countUnique() const;
     bool isResolved() const;
 
-    std::weak_ordering operator<=>(const GraphIsomorphism::Grouper &) const;
-    bool operator==(const GraphIsomorphism::Grouper &) const;
+    std::weak_ordering operator<=>(const GraphIsomorphism::VertexGrouper &) const;
+    bool operator==(const GraphIsomorphism::VertexGrouper &) const;
 
     GraphVertex getNumVertices() const;
 

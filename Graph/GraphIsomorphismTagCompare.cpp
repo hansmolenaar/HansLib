@@ -1,13 +1,13 @@
 #include "GraphIsomorphismTagCompare.h"
-#include "GraphIsomorphismGrouper.h"
+#include "GraphIsomorphismVertexGrouper.h"
 
 using namespace GraphIsomorphism;
 
 TagCompare::Result TagCompare::compare(std::pair<const IVertexTagger &, const IVertexTagger &> taggers) const
 {
     std::vector<VertexPair> vertexPairs;
-    const Grouper grouper1(taggers.first);
-    const Grouper grouper2(taggers.second);
+    const VertexGrouper grouper1(taggers.first);
+    const VertexGrouper grouper2(taggers.second);
     const auto &tags1 = grouper1.getTags();
     const auto &tags2 = grouper2.getTags();
 
