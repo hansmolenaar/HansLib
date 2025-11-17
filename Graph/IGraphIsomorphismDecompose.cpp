@@ -332,7 +332,7 @@ std::weak_ordering ToParentMap::compareLeaves(const DecomposeLeaf *leaf1, const 
 
     const IDecompose *d1 = leaf1;
     const IDecompose *d2 = leaf2;
-    while (d1 != nullptr)
+    while (d1 != d2)
     {
         const TaggedGraph tg1(d1->getSelf());
         const TaggedGraph tg2(d2->getSelf());
@@ -367,6 +367,8 @@ std::weak_ordering ToParentMap::operator<=>(const ToParentMap &map2) const
         return result;
     }
 
+    std::set<std::pair<const IGraphUs *, const IGraphUs *>> done;
+
     const auto nGroups = groups1().size();
     for (size_t n = 0; n < nGroups; ++n)
     {
@@ -390,9 +392,17 @@ std::weak_ordering ToParentMap::operator<=>(const ToParentMap &map2) const
         {
             MyAssert(decomp2 != nullptr);
 
-            // TODO avoid repeated checking
-            const TaggedGraph tg1(decomp1->getSelf());
-            const TaggedGraph tg2(decomp2->getSelf());
+            // Test only once, this is an expensive operation
+            const auto &self1 = decomp1->getSelf();
+            const auto &self2 = decomp2->getSelf();
+            const auto graphPair = std::make_pair(&self1, &self2);
+            if (done.contains(graphPair))
+            {
+                break;
+            }
+            done.insert(graphPair);
+            const TaggedGraph tg1(self1);
+            const TaggedGraph tg2(self2);
             result = tg1 <=> tg2;
             if (result != 0)
             {
@@ -401,7 +411,6 @@ std::weak_ordering ToParentMap::operator<=>(const ToParentMap &map2) const
             decomp1 = map1.getParent(decomp1);
             decomp2 = map2.getParent(decomp2);
         }
-        MyAssert(decomp2 == nullptr);
     }
     return result;
 }

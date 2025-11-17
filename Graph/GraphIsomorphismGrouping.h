@@ -77,6 +77,14 @@ template <typename T, typename V> class TaggedGrouping
         return m_emptyList;
     }
 
+    std::vector<T> getUniqueTags() const
+    {
+        std::vector<T> result;
+        str::copy_if(m_tags, std::back_inserter(result),
+                     [this](const auto &tag) { return m_groups.at(tag).size() == 1; });
+        return result;
+    }
+
     size_t countUnique() const
     {
         return str::count_if(m_groups, [](const auto &itr) { return itr.second.size() == 1; });

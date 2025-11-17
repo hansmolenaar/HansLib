@@ -2,6 +2,7 @@
 #include "Defines.h"
 #include "GraphIsomorphismUtils.h"
 #include "MyAssert.h"
+#include "Single.h"
 
 using namespace Graph;
 using namespace GraphIsomorphism;
@@ -31,20 +32,11 @@ TaggedGraph::TaggedGraph(const Graph::IGraphUs &graph)
         }
     }
 
-    // TaggedGrouping<Tag, GraphVertex> grouping
-    std::map<Tag, std::vector<GraphVertex>> groupByVertexGroupTag;
-    const auto nVertices = m_graph.getNumVertices();
-    for (GraphVertex v = 0; v < nVertices; ++v)
+    auto getTag = [this](GraphVertex v) { return m_vertexGroupTags.at(v); };
+    const TaggedGrouping<Tag, GraphVertex> grouping(m_graph.getVertices(), getTag);
+    for (const auto &tag : grouping.getUniqueTags())
     {
-        groupByVertexGroupTag[m_vertexGroupTags.at(v)].push_back(v);
-    }
-
-    for (const auto &itr : groupByVertexGroupTag)
-    {
-        if (itr.second.size() == 1)
-        {
-            m_uniqueVertexAndGroupTag[itr.first] = itr.second.front();
-        }
+        m_uniqueVertexAndGroupTag[tag] = Single(grouping.getGroupMembers(tag));
     }
 
     str::sort(m_vertexGroupTags);
