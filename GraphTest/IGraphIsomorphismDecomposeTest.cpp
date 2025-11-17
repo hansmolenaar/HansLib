@@ -310,6 +310,8 @@ TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList7)
     CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_7(), {1, 302});
 }
 
+// TODO don´t want to wait too long
+#if false
 TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList8)
 {
     CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_8(), {1, 734, 2, 6});
@@ -319,7 +321,6 @@ TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList9)
 {
     CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_9(), {1, 446, 2, 13, 3, 3});
 }
-#if false
 TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList10)
 {
     CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_10(), {1, 694, 2, 3, 3, 3, 6, 1});

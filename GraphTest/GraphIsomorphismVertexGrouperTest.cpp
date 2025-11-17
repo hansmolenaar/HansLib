@@ -1,9 +1,9 @@
 #include <gtest/gtest.h>
 
 #include "Defines.h"
-#include "GraphIsomorphismVertexGrouper.h"
 #include "GraphIsomorphismTaggerDegree.h"
 #include "GraphIsomorphismTaggerDistance.h"
+#include "GraphIsomorphismVertexGrouper.h"
 #include "GraphUsc.h"
 #include "Permutation.h"
 #include "Single.h"

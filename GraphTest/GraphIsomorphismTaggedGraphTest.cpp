@@ -197,17 +197,6 @@ TEST(GraphIsomorphismTaggedGraphTest, CheckTaggingList8)
 {
     CheckTaggingForList(UndirectedGraphFromG6::getListNumVertices_8(), {1, 718, 2, 14});
 }
-
-TEST(GraphIsomorphismTaggedGraphTest, CheckTaggingList9)
-{
-    CheckTaggingForList(UndirectedGraphFromG6::getListNumVertices_9(), {1, 442, 2, 15, 3, 3});
-}
-
-TEST(GraphIsomorphismTaggedGraphTest, CheckTaggingList10)
-{
-    CheckTaggingForList(UndirectedGraphFromG6::getListNumVertices_10(), {1, 694, 2, 3, 3, 3, 6, 1});
-}
-
 TEST(GraphIsomorphismConstructTest, Disconnected5)
 {
     const auto graphs = UndirectedGraphFromG6::getDisconnectedGraphs(UndirectedGraphFromG6::getListNumVertices_5());

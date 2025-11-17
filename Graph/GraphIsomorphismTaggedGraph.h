@@ -1,8 +1,8 @@
 #pragma once
 
 #include "GraphIsomorphismDefines.h"
-#include "GraphIsomorphismVertexGrouper.h"
 #include "GraphIsomorphismStatus.h"
+#include "GraphIsomorphismVertexGrouper.h"
 #include "IGraphIsomorphismTagger.h"
 #include "IGraphUs.h"
 

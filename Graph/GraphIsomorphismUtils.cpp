@@ -1,7 +1,6 @@
 #include "GraphIsomorphismUtils.h"
 
 #include "Defines.h"
-#include "GraphIsomorphismVertexGrouper.h"
 #include "GraphIsomorphismTaggerChains.h"
 #include "GraphIsomorphismTaggerComponents.h"
 #include "GraphIsomorphismTaggerDegree.h"
@@ -10,6 +9,7 @@
 #include "GraphIsomorphismTaggerMaxDegree.h"
 #include "GraphIsomorphismTaggerNumbers.h"
 #include "GraphIsomorphismTaggerTriangles.h"
+#include "GraphIsomorphismVertexGrouper.h"
 
 using namespace GraphIsomorphism;
 
