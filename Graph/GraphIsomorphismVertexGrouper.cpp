@@ -5,25 +5,14 @@
 #include <map>
 
 using namespace GraphIsomorphism;
+using namespace Graph;
 
 namespace
 {
-const std::vector<GraphVertex> s_emptyMemberList;
-
-std::vector<GraphVertex> getVertices(GraphVertex nVertices)
-{
-    std::vector<GraphVertex> result(nVertices);
-    for (GraphVertex v = 0; v < nVertices; ++v)
-    {
-        result[v] = v;
-    }
-    return result;
-}
-
 } // namespace
 
 VertexGrouper::VertexGrouper(const IVertexTagger &tagger)
-    : m_numVertices(tagger.getNumVertices()), m_grouping(getVertices(m_numVertices), tagger)
+    : m_numVertices(tagger.getNumVertices()), m_grouping(IGraphUs::getVertices(m_numVertices), tagger)
 {
 }
 

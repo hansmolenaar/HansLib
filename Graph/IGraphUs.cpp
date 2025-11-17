@@ -1,6 +1,8 @@
 #include "IGraphUs.h"
 #include "Defines.h"
 
+#include <functional>
+
 using namespace Graph;
 
 std::vector<GraphVertex> IGraphUs::getDegreeSequence() const
@@ -58,4 +60,16 @@ std::vector<GraphVertex> IGraphUs::getFullyConnectedVertices() const
     str::copy_if(str::iota_view(GraphVertex{0}, nVertices), std::back_inserter(result),
                  [this, maxDegree](GraphVertex v) { return getDegree(v) == maxDegree; });
     return result;
+}
+
+std::vector<GraphVertex> IGraphUs::getVertices(GraphVertex nVertices)
+{
+    std::vector<GraphVertex> result(nVertices);
+    str::transform(str::iota_view(GraphVertex{0}, nVertices), result.begin(), std::identity{});
+    return result;
+}
+
+std::vector<GraphVertex> IGraphUs::getVertices() const
+{
+    return getVertices(getNumVertices());
 }

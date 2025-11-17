@@ -31,6 +31,7 @@ TaggedGraph::TaggedGraph(const Graph::IGraphUs &graph)
         }
     }
 
+    // TaggedGrouping<Tag, GraphVertex> grouping
     std::map<Tag, std::vector<GraphVertex>> groupByVertexGroupTag;
     const auto nVertices = m_graph.getNumVertices();
     for (GraphVertex v = 0; v < nVertices; ++v)
