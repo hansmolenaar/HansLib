@@ -26,25 +26,6 @@ class IDecompose
 
     static GraphTags GetGraphTags(const Graph::IGraphUs &);
     static std::unique_ptr<IDecompose> Create(const Graph::IGraphUs &);
-
-    static std::weak_ordering CompareRoots(const IDecompose *, const IDecompose *);
-    static std::weak_ordering CompareLeaves(const IDecompose *, const IDecompose *, const ToParentMap &);
-};
-
-class ToParentMap
-{
-  public:
-    explicit ToParentMap(const IDecompose *);
-    bool isRoot(const IDecompose *) const; // Root has nullptr as parent
-    const IDecompose *getRoot(const IDecompose *) const;
-    const IDecompose *getParent(const IDecompose *) const;
-    std::vector<const IDecompose *> getLeaves() const;
-    size_t size() const;
-    GraphVertex getVertexInRoot(GraphVertex vertex, const IDecompose *) const;
-    std::vector<Tag> collectDecomposeTags(const IDecompose *) const;
-
-  private:
-    std::map<const IDecompose *, const IDecompose *> m_toParent;
 };
 
 class DecomposeDisconnected : public IDecompose
@@ -108,6 +89,28 @@ class DecomposeLeaf : public IDecompose
     const Graph::IGraphUs &m_self;
     Tag m_tag;
     std::vector<GraphTags> m_childTags;
+};
+
+class ToParentMap
+{
+  public:
+    explicit ToParentMap(const IDecompose *);
+    bool isRoot(const IDecompose *) const; // Root has nullptr as parent
+    const IDecompose *getRoot() const;
+    const IDecompose *getRoot(const IDecompose *) const;
+    const IDecompose *getParent(const IDecompose *) const;
+    std::vector<const DecomposeLeaf *> getLeaves() const;
+    size_t size() const;
+    GraphVertex getVertexInRoot(GraphVertex vertex, const IDecompose *) const;
+    std::vector<Tag> collectDecomposeTags(const DecomposeLeaf *) const;
+
+    std::weak_ordering compareLeaves(const DecomposeLeaf *, const DecomposeLeaf *) const;
+    std::vector<std::vector<const DecomposeLeaf *>> groupLeaves() const;
+
+    std::weak_ordering operator<=>(const ToParentMap &) const;
+
+  private:
+    std::map<const IDecompose *, const IDecompose *> m_toParent;
 };
 
 } // namespace GraphIsomorphism

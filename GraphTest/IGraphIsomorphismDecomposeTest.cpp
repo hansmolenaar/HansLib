@@ -105,12 +105,12 @@ TEST(IGraphIsomorphismDecomposeTest, EdgePlusVertex)
     const auto &tags = decomposed->getChildTags();
     ASSERT_EQ(tags.size(), 2);
 
-    const auto *child0 =Single( decomposed->getChildren(tags.at(0)));
+    const auto *child0 =dynamic_cast<const DecomposeLeaf*>(Single( decomposed->getChildren(tags.at(0))));
     ASSERT_EQ(child0->getSelf().getNumVertices(), 2);
     ASSERT_EQ(child0->getTag(), (Tag{0}));
     ASSERT_TRUE(child0->isLeaf());
 
-    const auto *child1 =Single( decomposed->getChildren(tags.at(1)));
+    const auto *child1 =dynamic_cast<const DecomposeLeaf*>(Single( decomposed->getChildren(tags.at(1))));
     ASSERT_EQ(child1->getSelf().getNumVertices(), 1);
     ASSERT_EQ(child1->getTag(), (Tag{0}));
     ASSERT_TRUE(child1->isLeaf());
@@ -217,6 +217,8 @@ TEST(IGraphIsomorphismDecomposeTest, SpecialCase1)
 
     const auto decompose0 = IDecompose::Create(*g0);
     const auto decompose1 = IDecompose::Create(*g1);
-    const auto cmp = IDecompose::CompareRoots(decompose0.get(), decompose1.get());
+    const ToParentMap map0(decompose0.get());
+    const ToParentMap map1(decompose1.get());
+    const auto cmp = map0 <=> map1;
     ASSERT_TRUE(cmp != 0);
 }

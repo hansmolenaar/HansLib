@@ -262,14 +262,16 @@ bool ToParentMap::isRoot(const IDecompose *ptr) const
     return getParent(ptr) == nullptr;
 }
 
-std::vector<const IDecompose *> ToParentMap::getLeaves() const
+std::vector<const DecomposeLeaf *> ToParentMap::getLeaves() const
 {
-    std::vector<const IDecompose *> result;
+    std::vector<const DecomposeLeaf *> result;
     for (const auto &itr : m_toParent)
     {
-        if (itr.first->isLeaf())
+        const auto leaf = dynamic_cast<const DecomposeLeaf *>(itr.first);
+        MyAssert((leaf != nullptr) == itr.first->isLeaf());
+        if (leaf != nullptr)
         {
-            result.push_back(itr.first);
+            result.push_back(leaf);
         }
     }
     return result;
@@ -290,8 +292,10 @@ GraphVertex ToParentMap::getVertexInRoot(GraphVertex vertex, const IDecompose *d
     return vertex;
 }
 
-std::vector<Tag> ToParentMap::collectDecomposeTags(const IDecompose *decompose) const
+std::vector<Tag> ToParentMap::collectDecomposeTags(const DecomposeLeaf *leaf) const
 {
+    MyAssert(leaf != nullptr);
+    const IDecompose *decompose = leaf;
     std::vector<Tag> result;
     while (decompose != nullptr)
     {
@@ -311,41 +315,22 @@ const IDecompose *ToParentMap::getRoot(const IDecompose *ptr) const
     return ptr;
 }
 
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! compare
-
-std::weak_ordering IDecompose::CompareRoots(const IDecompose *root1, const IDecompose *root2)
+const IDecompose *ToParentMap::getRoot() const
 {
-    const ToParentMap toParentMap1(root1);
-    const ToParentMap toParentMap2(root2);
-
-    MyAssert(toParentMap1.isRoot(root1));
-    MyAssert(toParentMap2.isRoot(root2));
-
-    const TaggedGraph tg1(root1->getSelf());
-    const TaggedGraph tg2(root2->getSelf());
-
-    std::weak_ordering result = (tg1 <=> tg2);
-    if (result != 0)
-    {
-        return result;
-    }
-    return result;
+    MyAssert(!m_toParent.empty());
+    return getRoot(m_toParent.begin()->first);
 }
 
-std::weak_ordering IDecompose::CompareLeaves(const IDecompose *leaf1, const IDecompose *leaf2,
-                                             const ToParentMap &toParent)
+std::weak_ordering ToParentMap::compareLeaves(const DecomposeLeaf *leaf1, const DecomposeLeaf *leaf2) const
 {
-    MyAssert(leaf1->isLeaf());
-    MyAssert(leaf2->isLeaf());
-
-    std::weak_ordering result = toParent.collectDecomposeTags(leaf1) <=> toParent.collectDecomposeTags(leaf2);
+    std::weak_ordering result = collectDecomposeTags(leaf1) <=> collectDecomposeTags(leaf2);
     if (result != 0)
     {
         return result;
     }
 
-    const auto *d1 = leaf1;
-    const auto *d2 = leaf2;
+    const IDecompose *d1 = leaf1;
+    const IDecompose *d2 = leaf2;
     while (d1 != nullptr)
     {
         const TaggedGraph tg1(d1->getSelf());
@@ -355,8 +340,69 @@ std::weak_ordering IDecompose::CompareLeaves(const IDecompose *leaf1, const IDec
         {
             return result;
         }
-        d1 = toParent.getParent(d1);
-        d2 = toParent.getParent(d2);
+        d1 = getParent(d1);
+        d2 = getParent(d2);
+    }
+    return result;
+}
+
+namespace
+{
+std::vector<size_t> getGroupSizes(const std::vector<std::vector<const DecomposeLeaf *>> &groups)
+{
+    std::vector<size_t> result(groups.size());
+    str::transform(groups, result.begin(), [](const auto &group) { return group.size(); });
+    return result;
+}
+} // namespace
+
+std::vector<std::vector<const DecomposeLeaf *>> ToParentMap::groupLeaves() const
+{
+    auto cmp = [this](const DecomposeLeaf *leaf1, const DecomposeLeaf *leaf2) {
+        return compareLeaves(leaf1, leaf2) == std::weak_ordering::less;
+    };
+    std::map<const DecomposeLeaf *, std::vector<const DecomposeLeaf *>, typeof(cmp)> grouped(cmp);
+    for (const auto *leaf : getLeaves())
+    {
+        grouped[leaf].push_back(leaf);
+    }
+
+    std::vector<std::vector<const DecomposeLeaf *>> result;
+    for (const auto &itr : grouped)
+    {
+        result.emplace_back(itr.second);
+    }
+
+    return result;
+}
+
+std::weak_ordering ToParentMap::operator<=>(const ToParentMap &map2) const
+{
+    const auto &map1 = *this;
+    // const auto* root1 = map1.getRoot();
+    // const auto* root2 = map2.getRoot();
+    const auto groups1 = map1.groupLeaves();
+    const auto groups2 = map2.groupLeaves();
+    std::weak_ordering result = getGroupSizes(groups1) <=> getGroupSizes(groups2);
+    if (result != 0)
+    {
+        return result;
+    }
+
+    const auto nGroups = groups1.size();
+    for (size_t n = 0; n < nGroups; ++n)
+    {
+        const auto &group1 = groups1.at(n);
+        const auto &group2 = groups2.at(n);
+        const auto *leaf1 = group1.front();
+        const auto *leaf2 = group2.front();
+        const TaggedGraph tg1(leaf1->getSelf());
+        const TaggedGraph tg2(leaf2->getSelf());
+        result = tg1 <=> tg2;
+        if (result != 0)
+        {
+            return result;
+        }
     }
     return result;
 }
