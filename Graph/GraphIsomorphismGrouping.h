@@ -48,4 +48,44 @@ template <typename T> class Grouping
     std::vector<std::vector<T>> m_groups;
 };
 
+template <typename T, typename V> class TaggedGrouping
+{
+  public:
+    template <typename P> TaggedGrouping(const std::vector<V> &values, P &tagProvider)
+    {
+        for (const auto &value : values)
+        {
+            m_groups[tagProvider(value)].push_back(value);
+        }
+
+        m_tags.resize(m_groups.size());
+        str::transform(m_groups, m_tags.begin(), [](const auto &itr) { return itr.first; });
+    }
+
+    const std::vector<T> &getTags() const
+    {
+        return m_tags;
+    }
+
+    const std::vector<V> &getGroupMembers(const T &tag) const
+    {
+        const auto found = m_groups.find(tag);
+        if (found != m_groups.end())
+        {
+            return found->second;
+        }
+        return m_emptyList;
+    }
+
+    size_t countUnique() const
+    {
+        return str::count_if(m_groups, [](const auto &itr) { return itr.second.size() == 1; });
+    }
+
+  private:
+    std::vector<T> m_tags;
+    std::map<T, std::vector<V>> m_groups;
+    std::vector<V> m_emptyList;
+};
+
 } // namespace GraphIsomorphism

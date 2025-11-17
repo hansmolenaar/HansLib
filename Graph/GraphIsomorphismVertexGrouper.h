@@ -1,6 +1,7 @@
 #pragma once
 
 #include "GraphIsomorphismDefines.h"
+#include "GraphIsomorphismGrouping.h"
 #include "GraphIsomorphismStatus.h"
 #include "IGraphIsomorphismTagger.h"
 #include "UndirectedGraph.h"
@@ -25,9 +26,7 @@ class VertexGrouper
 
   private:
     GraphVertex m_numVertices;
-    std::vector<Tag> m_tags;
-    // Same order as m_tags
-    std::vector<std::vector<GraphVertex>> m_groups;
+    GraphIsomorphism::TaggedGrouping<Tag, GraphVertex> m_grouping;
 };
 
 } // namespace GraphIsomorphism

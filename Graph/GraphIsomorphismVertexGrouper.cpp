@@ -9,47 +9,42 @@ using namespace GraphIsomorphism;
 namespace
 {
 const std::vector<GraphVertex> s_emptyMemberList;
+
+std::vector<GraphVertex> getVertices(GraphVertex nVertices)
+{
+    std::vector<GraphVertex> result(nVertices);
+    for (GraphVertex v = 0; v < nVertices; ++v)
+    {
+        result[v] = v;
+    }
+    return result;
+}
+
 } // namespace
 
-VertexGrouper::VertexGrouper(const IVertexTagger &tagger) : m_numVertices(tagger.getNumVertices())
+VertexGrouper::VertexGrouper(const IVertexTagger &tagger)
+    : m_numVertices(tagger.getNumVertices()), m_grouping(getVertices(m_numVertices), tagger)
 {
-    std::map<Tag, std::vector<GraphVertex>> groups;
-    for (GraphVertex v = 0; v < m_numVertices; ++v)
-    {
-        groups[tagger.getVertexTag(v)].push_back(v);
-    }
-
-    for (const auto &itr : groups)
-    {
-        m_tags.emplace_back(itr.first);
-        m_groups.emplace_back(itr.second);
-    }
 }
 
 const std::vector<Tag> &VertexGrouper::getTags() const
 {
-    return m_tags;
+    return m_grouping.getTags();
 }
 
 const std::vector<GraphVertex> &VertexGrouper::getGroupMembers(const Tag &tag) const
 {
-    const auto found = str::find(m_tags, tag);
-    if (found != m_tags.end())
-    {
-        const auto pos = std::distance(m_tags.begin(), found);
-        return m_groups.at(pos);
-    }
-    return s_emptyMemberList;
+    return m_grouping.getGroupMembers(tag);
 }
 
 int VertexGrouper::countUnique() const
 {
-    return str::count_if(m_groups, [](const auto &g) { return g.size() == 1; });
+    return m_grouping.countUnique();
 }
 
 bool VertexGrouper::isResolved() const
 {
-    return countUnique() == m_tags.size();
+    return countUnique() == m_grouping.getTags().size();
 }
 
 GraphVertex VertexGrouper::getNumVertices() const
