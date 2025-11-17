@@ -16,11 +16,8 @@ using namespace Utilities;
 namespace
 {
 
-void CheckDecompose(const IGraphUs &graph, int expectNumLeaves = -1)
+void CheckVertexConservation(const GraphIsomorphism::ToParentMap &toParent, int expectNumLeaves)
 {
-    const auto decomposed = IDecompose::Create(graph);
-    const GraphIsomorphism::ToParentMap toParent(decomposed.get());
-
     int numLeaves = 0;
     std::vector<GraphVertex> vertices;
     for (const auto *leaf : toParent.getLeaves())
@@ -40,7 +37,7 @@ void CheckDecompose(const IGraphUs &graph, int expectNumLeaves = -1)
     }
 
     // Not vertices lost or added?
-    const auto fullNumVertices = graph.getNumVertices();
+    const auto fullNumVertices = toParent.getRoot()->getSelf().getNumVertices();
     str::sort(vertices);
     ASSERT_EQ(vertices.size(), fullNumVertices);
     vertices.erase(std::unique(vertices.begin(), vertices.end()), vertices.end());
@@ -49,13 +46,91 @@ void CheckDecompose(const IGraphUs &graph, int expectNumLeaves = -1)
     ASSERT_EQ(vertices.back(), fullNumVertices - 1);
 }
 
-void CheckDecomposeList(const std::vector<std::string> &g6list)
+void CheckDecompose(const IGraphUs &graph, int expectNumLeaves = -1)
+{
+    const auto decomposed = IDecompose::Create(graph);
+    const GraphIsomorphism::ToParentMap toParent(decomposed.get());
+
+    expectNumLeaves = expectNumLeaves > 0 ? expectNumLeaves : toParent.getLeaves().size();
+    CheckVertexConservation(toParent, expectNumLeaves);
+
+    // Try some permutations
+    constexpr size_t numPermutation = 3;
+    const Permutation trivial = Permutation::CreateTrivial(graph.getNumVertices());
+    for (size_t n = 0; n < numPermutation; ++n)
+    {
+        const auto permutation = Permutation::CreateRandomShuffle(trivial, n);
+        const auto graphPermuted = UndirectedGraph::CreatePermuted(graph, permutation);
+        const auto decomposedPermuted = IDecompose::Create(graphPermuted);
+        const GraphIsomorphism::ToParentMap toParentPermuted(decomposed.get());
+        CheckVertexConservation(toParentPermuted, expectNumLeaves);
+        const auto cmp = toParent <=> toParentPermuted;
+        ASSERT_TRUE(cmp == std::weak_ordering::equivalent);
+    }
+}
+
+void CheckDecomposeList(const std::vector<std::string> &g6list, Tag expectMultiplicities)
 {
     std::vector<std::unique_ptr<Graph::IGraphUs>> graphs = UndirectedGraphFromG6::getGraphs(g6list);
-
     for (const auto &graph : graphs)
     {
         CheckDecompose(*graph);
+    }
+
+    std::vector<std::unique_ptr<GraphIsomorphism::IDecompose>> decomposedGraphs(graphs.size());
+    str::transform(graphs, decomposedGraphs.begin(),
+                   [](const auto &g) { return GraphIsomorphism::IDecompose::Create(*g); });
+
+    std::vector<GraphIsomorphism::ToParentMap> toParentMaps;
+    str::transform(decomposedGraphs, std::back_inserter(toParentMaps),
+                   [](const auto &dg) { return GraphIsomorphism::ToParentMap(dg.get()); });
+
+    std::map<GraphIsomorphism::ToParentMap, size_t> multiplicityMap;
+    for (const auto &dg : decomposedGraphs)
+    {
+        const GraphIsomorphism::ToParentMap tpm(dg.get());
+        multiplicityMap[tpm] += 1;
+    }
+
+    std::vector<size_t> multiplicities;
+    for (const auto &itr : multiplicityMap)
+    {
+        multiplicities.push_back(itr.second);
+    }
+    const auto tag = CondenseSizeSequence(multiplicities);
+    ASSERT_EQ(tag, expectMultiplicities);
+}
+
+void PrintMultipleDecompositions(const std::vector<std::string> &g6list)
+{
+    std::vector<std::unique_ptr<Graph::IGraphUs>> graphs = UndirectedGraphFromG6::getGraphs(g6list);
+    std::vector<std::unique_ptr<GraphIsomorphism::IDecompose>> decomposedGraphs(graphs.size());
+    str::transform(graphs, decomposedGraphs.begin(),
+                   [](const auto &g) { return GraphIsomorphism::IDecompose::Create(*g); });
+
+    std::vector<GraphIsomorphism::ToParentMap> toParentMaps;
+    str::transform(decomposedGraphs, std::back_inserter(toParentMaps),
+                   [](const auto &dg) { return GraphIsomorphism::ToParentMap(dg.get()); });
+
+    std::map<GraphIsomorphism::ToParentMap, std::vector<GraphIsomorphism::ToParentMap>> multiplicityMap;
+    for (const auto &dg : decomposedGraphs)
+    {
+        const GraphIsomorphism::ToParentMap tpm(dg.get());
+        multiplicityMap[tpm].emplace_back(tpm);
+    }
+
+    for (const auto &itr : multiplicityMap)
+    {
+        if (itr.second.size() > 1)
+        {
+            std::cout << "size = " << itr.second.size() << "\n";
+            for (const auto &tpm : itr.second)
+            {
+                std::cout << tpm.getRoot()->getSelf().getName() << "\n";
+            }
+            std::cout << "\n";
+            std::cout << "\n";
+        }
     }
 }
 
@@ -105,12 +180,12 @@ TEST(IGraphIsomorphismDecomposeTest, EdgePlusVertex)
     const auto &tags = decomposed->getChildTags();
     ASSERT_EQ(tags.size(), 2);
 
-    const auto *child0 =dynamic_cast<const DecomposeLeaf*>(Single( decomposed->getChildren(tags.at(0))));
+    const auto *child0 = dynamic_cast<const DecomposeLeaf *>(Single(decomposed->getChildren(tags.at(0))));
     ASSERT_EQ(child0->getSelf().getNumVertices(), 2);
     ASSERT_EQ(child0->getTag(), (Tag{0}));
     ASSERT_TRUE(child0->isLeaf());
 
-    const auto *child1 =dynamic_cast<const DecomposeLeaf*>(Single( decomposed->getChildren(tags.at(1))));
+    const auto *child1 = dynamic_cast<const DecomposeLeaf *>(Single(decomposed->getChildren(tags.at(1))));
     ASSERT_EQ(child1->getSelf().getNumVertices(), 1);
     ASSERT_EQ(child1->getTag(), (Tag{0}));
     ASSERT_TRUE(child1->isLeaf());
@@ -177,37 +252,7 @@ TEST(IGraphIsomorphismDecomposeTest, JustAskingQuestions)
     const auto graphTagAll1 = IDecompose::GetGraphTags(*graph1);
     const auto graphTagAll2 = IDecompose::GetGraphTags(*graph2);
     ASSERT_NE(graphTagAll1, graphTagAll2);
-    CheckDecomposeList(names);
-}
-
-TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList3)
-{
-    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_3());
-}
-
-TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList4)
-{
-    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_4());
-}
-
-TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList5)
-{
-    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_5());
-}
-
-TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList6)
-{
-    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_6());
-}
-
-TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList7)
-{
-    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_7());
-}
-
-TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList8)
-{
-    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_8());
+    CheckDecomposeList(names, Tag{1, 2});
 }
 
 TEST(IGraphIsomorphismDecomposeTest, SpecialCase1)
@@ -222,3 +267,61 @@ TEST(IGraphIsomorphismDecomposeTest, SpecialCase1)
     const auto cmp = map0 <=> map1;
     ASSERT_TRUE(cmp != 0);
 }
+
+TEST(IGraphIsomorphismDecomposeTest, SpecialCase2)
+{
+    const auto g0 = UndirectedGraphFromG6::Create("DR{");
+    const auto g1 = UndirectedGraphFromG6::Create("DAK");
+    const TaggedGraph tg0(*g0);
+    const TaggedGraph tg1(*g1);
+    const auto tgCompare = tg0 <=> tg1;
+    ASSERT_TRUE(tgCompare != 0);
+
+    const auto decompose0 = IDecompose::Create(*g0);
+    const auto decompose1 = IDecompose::Create(*g1);
+    const ToParentMap map0(decompose0.get());
+    const ToParentMap map1(decompose1.get());
+    const auto cmp = map0 <=> map1;
+    ASSERT_TRUE(cmp != 0);
+}
+
+TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList3)
+{
+    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_3(), Tag{1, 4});
+}
+
+TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList4)
+{
+    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_4(), Tag{1, 11});
+}
+
+TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList5)
+{
+    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_5(), {1, 34});
+    // PrintMultipleDecompositions(UndirectedGraphFromG6::getListNumVertices_5());
+}
+
+TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList6)
+{
+    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_6(), {1, 155});
+}
+TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList7)
+{
+    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_7(), {1, 302});
+}
+
+TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList8)
+{
+    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_8(), {1, 734, 2, 6});
+}
+
+TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList9)
+{
+    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_9(), {1, 446, 2, 13, 3, 3});
+}
+#if false
+TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList10)
+{
+    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_10(), {1, 694, 2, 3, 3, 3, 6, 1});
+}
+#endif

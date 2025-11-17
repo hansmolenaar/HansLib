@@ -396,13 +396,34 @@ std::weak_ordering ToParentMap::operator<=>(const ToParentMap &map2) const
         const auto &group2 = groups2.at(n);
         const auto *leaf1 = group1.front();
         const auto *leaf2 = group2.front();
-        const TaggedGraph tg1(leaf1->getSelf());
-        const TaggedGraph tg2(leaf2->getSelf());
-        result = tg1 <=> tg2;
+
+        const auto pathTags1 = map1.collectDecomposeTags(leaf1);
+        const auto pathTags2 = map2.collectDecomposeTags(leaf2);
+        result = pathTags1 <=> pathTags2;
         if (result != 0)
         {
             return result;
         }
+
+        // Test back to root
+        const IDecompose *decomp1 = leaf1;
+        const IDecompose *decomp2 = leaf2;
+        while (decomp1 != nullptr)
+        {
+            MyAssert(decomp2 != nullptr);
+
+            // TODO avoid repeated checking
+            const TaggedGraph tg1(decomp1->getSelf());
+            const TaggedGraph tg2(decomp2->getSelf());
+            result = tg1 <=> tg2;
+            if (result != 0)
+            {
+                return result;
+            }
+            decomp1 = map1.getParent(decomp1);
+            decomp2 = map2.getParent(decomp2);
+        }
+        MyAssert(decomp2 == nullptr);
     }
     return result;
 }
