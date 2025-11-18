@@ -194,15 +194,10 @@ DecomposeVertexFullyConnected::DecomposeVertexFullyConnected(const Graph::IGraph
     m_children.emplace_back(std::move(completePart));
 
     // Remainder
+    auto range =
+        graph.getVertexRange() | stv::filter([&fullyConnected](GraphVertex v) { return !fullyConnected.contains(v); });
     std::set<GraphVertex> remainder;
-    const auto nVertices = graph.getNumVertices();
-    for (GraphVertex v = 0; v < nVertices; ++v)
-    {
-        if (!fullyConnected.contains(v))
-        {
-            remainder.insert(v);
-        }
-    }
+    str::copy(range, std::inserter(remainder, remainder.end()));
 
     auto remainderPart = std::make_unique<SubGraph>(graph, remainder);
     m_children.emplace_back(std::move(remainderPart));
