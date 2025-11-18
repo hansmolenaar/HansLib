@@ -2,6 +2,7 @@
 
 #include "GraphIsomorphismDefines.h"
 #include "GraphIsomorphismGrouping.h"
+#include "GraphIsomorphismTaggedGraph.h"
 #include "IGraphUs.h"
 #include "SubGraphConnected.h"
 
@@ -16,7 +17,8 @@ class IDecompose
 
     virtual GraphVertex getVertexInParent(GraphVertex) const = 0;
 
-    virtual const Graph::IGraphUs &getSelf() const = 0;
+    const Graph::IGraphUs &getGraph() const;
+    const TaggedGraph &getTaggedGraph() const;
     virtual const Tag &getTag() const = 0;
 
     // Can be empty: leaf of tree
@@ -26,6 +28,12 @@ class IDecompose
     bool isLeaf() const;
 
     static std::unique_ptr<IDecompose> Create(const Graph::IGraphUs &);
+
+  protected:
+    explicit IDecompose(const Graph::IGraphUs &);
+
+  private:
+    std::unique_ptr<TaggedGraph> m_taggedGraph;
 };
 
 class DecomposeDisconnected : public IDecompose
@@ -34,7 +42,6 @@ class DecomposeDisconnected : public IDecompose
     explicit DecomposeDisconnected(const Graph::IGraphUs &);
     GraphVertex getVertexInParent(GraphVertex) const override;
 
-    const Graph::IGraphUs &getSelf() const override;
     const Tag &getTag() const override;
 
     // Can be empty: leaf of tree
@@ -42,7 +49,6 @@ class DecomposeDisconnected : public IDecompose
     std::vector<const IDecompose *> getChildren(const GraphTags &) const override;
 
   private:
-    const Graph::IGraphUs &m_self;
     Tag m_tag;
     std::vector<Graph::SubGraphConnected> m_children;
     std::vector<GraphTags> m_childTags;
@@ -55,7 +61,6 @@ class DecomposeVertexFullyConnected : public IDecompose
     explicit DecomposeVertexFullyConnected(const Graph::IGraphUs &, const std::set<GraphVertex> &);
     GraphVertex getVertexInParent(GraphVertex) const override;
 
-    const Graph::IGraphUs &getSelf() const override;
     const Tag &getTag() const override;
 
     // Can be empty: leaf of tree
@@ -65,7 +70,6 @@ class DecomposeVertexFullyConnected : public IDecompose
     const std::vector<GraphVertex> &getFullyConnectedVerticesInParent() const;
 
   private:
-    const Graph::IGraphUs &m_self;
     Tag m_tag;
     std::vector<std::unique_ptr<Graph::IGraphUs>> m_children;
     std::vector<GraphTags> m_childTags;
@@ -78,7 +82,6 @@ class DecomposeLeaf : public IDecompose
     explicit DecomposeLeaf(const Graph::IGraphUs &);
     GraphVertex getVertexInParent(GraphVertex) const override;
 
-    const Graph::IGraphUs &getSelf() const override;
     const Tag &getTag() const override;
 
     // Can be empty: leaf of tree
@@ -86,7 +89,6 @@ class DecomposeLeaf : public IDecompose
     std::vector<const IDecompose *> getChildren(const GraphTags &) const override;
 
   private:
-    const Graph::IGraphUs &m_self;
     Tag m_tag;
     std::vector<GraphTags> m_childTags;
 };

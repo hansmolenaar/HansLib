@@ -1,7 +1,6 @@
 #include "IGraphIsomorphismDecompose.h"
 #include "Defines.h"
 #include "GraphIsomorphismGrouping.h"
-#include "GraphIsomorphismTaggedGraph.h"
 #include "GraphIsomorphismTaggerKnown.h"
 #include "GraphIsomorphismUtils.h"
 #include "IGraphIsomorphismTagger.h"
@@ -22,7 +21,7 @@ enum IDecomposeType : TagEntry
 
 GraphVertex GetVertexInParent(GraphVertex vertex, const IDecompose &decompose)
 {
-    const auto &self = decompose.getSelf();
+    const auto &self = decompose.getGraph();
     const auto *subGraph = dynamic_cast<const SubGraph *>(&self);
     if (subGraph != nullptr)
     {
@@ -64,6 +63,20 @@ GraphTags GetGraphTags(const Graph::IGraphUs &graph)
 
 // !!!!!!!!!!!  IDecompose
 
+IDecompose::IDecompose(const Graph::IGraphUs &graph) : m_taggedGraph(std::make_unique<TaggedGraph>(graph))
+{
+}
+
+const TaggedGraph &IDecompose::getTaggedGraph() const
+{
+    return *m_taggedGraph;
+}
+
+const Graph::IGraphUs &IDecompose::getGraph() const
+{
+    return m_taggedGraph->getGraph();
+}
+
 std::unique_ptr<IDecompose> IDecompose::Create(const Graph::IGraphUs &graph)
 {
     const TaggerKnown taggerKnown(graph);
@@ -93,8 +106,9 @@ bool IDecompose::isLeaf() const
 {
     return getChildTags().empty();
 }
+
 // !!!!!!!!!!! Leaf
-DecomposeLeaf::DecomposeLeaf(const Graph::IGraphUs &graph) : m_self(graph), m_tag{IDecomposeType::Leaf}
+DecomposeLeaf::DecomposeLeaf(const Graph::IGraphUs &graph) : IDecompose(graph), m_tag{IDecomposeType::Leaf}
 {
 }
 
@@ -103,10 +117,6 @@ GraphVertex DecomposeLeaf::getVertexInParent(GraphVertex v) const
     return GetVertexInParent(v, *this);
 }
 
-const Graph::IGraphUs &DecomposeLeaf::getSelf() const
-{
-    return m_self;
-}
 const Tag &DecomposeLeaf::getTag() const
 {
     return m_tag;
@@ -124,7 +134,7 @@ std::vector<const IDecompose *> DecomposeLeaf::getChildren(const GraphTags &) co
 
 // !!!!!!!!!!! Disconnected
 DecomposeDisconnected::DecomposeDisconnected(const Graph::IGraphUs &graph)
-    : m_self(graph), m_tag({IDecomposeType::Disconnected})
+    : IDecompose(graph), m_tag({IDecomposeType::Disconnected})
 {
     std::map<GraphVertex, std::set<GraphVertex>> components;
     GraphVertex vertex = 0;
@@ -137,7 +147,7 @@ DecomposeDisconnected::DecomposeDisconnected(const Graph::IGraphUs &graph)
 
     for (const auto &cmp : components)
     {
-        m_children.emplace_back(m_self, cmp.second);
+        m_children.emplace_back(graph, cmp.second);
         m_tag.push_back(cmp.second.size());
     }
     std::sort(m_tag.begin() + 1, m_tag.end());
@@ -156,11 +166,6 @@ DecomposeDisconnected::DecomposeDisconnected(const Graph::IGraphUs &graph)
 GraphVertex DecomposeDisconnected::getVertexInParent(GraphVertex v) const
 {
     return GetVertexInParent(v, *this);
-}
-
-const Graph::IGraphUs &DecomposeDisconnected::getSelf() const
-{
-    return m_self;
 }
 
 const Tag &DecomposeDisconnected::getTag() const
@@ -184,7 +189,7 @@ std::vector<const IDecompose *> DecomposeDisconnected::getChildren(const GraphTa
 
 DecomposeVertexFullyConnected::DecomposeVertexFullyConnected(const Graph::IGraphUs &graph,
                                                              const std::set<GraphVertex> &fullyConnected)
-    : m_self(graph), m_tag{IDecomposeType::FullyConnected, static_cast<TagEntry>(fullyConnected.size())}
+    : IDecompose(graph), m_tag{IDecomposeType::FullyConnected, static_cast<TagEntry>(fullyConnected.size())}
 {
     MyAssert(!fullyConnected.empty());
 
@@ -215,11 +220,6 @@ DecomposeVertexFullyConnected::DecomposeVertexFullyConnected(const Graph::IGraph
 GraphVertex DecomposeVertexFullyConnected::getVertexInParent(GraphVertex v) const
 {
     return GetVertexInParent(v, *this);
-}
-
-const Graph::IGraphUs &DecomposeVertexFullyConnected::getSelf() const
-{
-    return m_self;
 }
 
 const Tag &DecomposeVertexFullyConnected::getTag() const
@@ -328,8 +328,8 @@ std::weak_ordering ToParentMap::compareLeaves(const DecomposeLeaf *leaf1, const 
     const IDecompose *d2 = leaf2;
     while (d1 != d2)
     {
-        const TaggedGraph tg1(d1->getSelf());
-        const TaggedGraph tg2(d2->getSelf());
+        const TaggedGraph &tg1(d1->getTaggedGraph());
+        const TaggedGraph &tg2(d2->getTaggedGraph());
         result = tg1 <=> tg2;
         if (result != 0)
         {
@@ -387,16 +387,16 @@ std::weak_ordering ToParentMap::operator<=>(const ToParentMap &map2) const
             MyAssert(decomp2 != nullptr);
 
             // Test only once, this is an expensive operation
-            const auto &self1 = decomp1->getSelf();
-            const auto &self2 = decomp2->getSelf();
+            const auto &self1 = decomp1->getGraph();
+            const auto &self2 = decomp2->getGraph();
             const auto graphPair = std::make_pair(&self1, &self2);
             if (done.contains(graphPair))
             {
                 break;
             }
             done.insert(graphPair);
-            const TaggedGraph tg1(self1);
-            const TaggedGraph tg2(self2);
+            const TaggedGraph &tg1(decomp1->getTaggedGraph());
+            const TaggedGraph &tg2(decomp2->getTaggedGraph());
             result = tg1 <=> tg2;
             if (result != 0)
             {

@@ -23,7 +23,7 @@ void CheckVertexConservation(const GraphIsomorphism::ToParentMap &toParent, int 
     for (const auto *leaf : toParent.getLeaves())
     {
         numLeaves += 1;
-        const IGraphUs &graph = leaf->getSelf();
+        const IGraphUs &graph = leaf->getGraph();
         const auto numVertices = graph.getNumVertices();
         for (GraphVertex v = 0; v < numVertices; ++v)
         {
@@ -37,7 +37,7 @@ void CheckVertexConservation(const GraphIsomorphism::ToParentMap &toParent, int 
     }
 
     // Not vertices lost or added?
-    const auto fullNumVertices = toParent.getRoot()->getSelf().getNumVertices();
+    const auto fullNumVertices = toParent.getRoot()->getGraph().getNumVertices();
     str::sort(vertices);
     ASSERT_EQ(vertices.size(), fullNumVertices);
     vertices.erase(std::unique(vertices.begin(), vertices.end()), vertices.end());
@@ -126,7 +126,7 @@ void PrintMultipleDecompositions(const std::vector<std::string> &g6list)
             std::cout << "size = " << itr.second.size() << "\n";
             for (const auto &tpm : itr.second)
             {
-                std::cout << tpm.getRoot()->getSelf().getName() << "\n";
+                std::cout << tpm.getRoot()->getGraph().getName() << "\n";
             }
             std::cout << "\n";
             std::cout << "\n";
@@ -181,12 +181,12 @@ TEST(IGraphIsomorphismDecomposeTest, EdgePlusVertex)
     ASSERT_EQ(tags.size(), 2);
 
     const auto *child0 = dynamic_cast<const DecomposeLeaf *>(Single(decomposed->getChildren(tags.at(0))));
-    ASSERT_EQ(child0->getSelf().getNumVertices(), 2);
+    ASSERT_EQ(child0->getGraph().getNumVertices(), 2);
     ASSERT_EQ(child0->getTag(), (Tag{0}));
     ASSERT_TRUE(child0->isLeaf());
 
     const auto *child1 = dynamic_cast<const DecomposeLeaf *>(Single(decomposed->getChildren(tags.at(1))));
-    ASSERT_EQ(child1->getSelf().getNumVertices(), 1);
+    ASSERT_EQ(child1->getGraph().getNumVertices(), 1);
     ASSERT_EQ(child1->getTag(), (Tag{0}));
     ASSERT_TRUE(child1->isLeaf());
 
