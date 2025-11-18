@@ -6,12 +6,10 @@ using namespace GraphIsomorphism;
 TaggerMaxDegree::TaggerMaxDegree(const Graph::IGraphUs &graph) : m_numVertices(graph.getNumVertices())
 {
     const auto maxDegree = m_numVertices - 1;
-    for (GraphVertex v = 0; v < m_numVertices; ++v)
+    auto vertexIsFullyConnected = [&graph, maxDegree](GraphVertex vv) { return graph.getDegree(vv) == maxDegree; };
+    for (GraphVertex v : graph.getVertexRange() | stv::filter(vertexIsFullyConnected))
     {
-        if (graph.getDegree(v) == maxDegree)
-        {
-            m_fullyConnected2id[v] = m_fullyConnected2id.size() + 1;
-        }
+        m_fullyConnected2id[v] = m_fullyConnected2id.size() + 1;
     }
     m_graphTag = TagFlyweight::getSingleEntryTag(m_fullyConnected2id.size());
 }

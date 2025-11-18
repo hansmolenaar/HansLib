@@ -16,3 +16,9 @@ TEST(GraphIsomorphismTagFlyweightTest, Test)
     const Tag &tag0_again = TagFlyweight::getSingleEntryTag(0);
     ASSERT_EQ(&tag0, &tag0_again);
 }
+
+TEST(GraphIsomorphismTagFlyweightTest, Empty)
+{
+    const Tag &tag = TagFlyweight::getEmptyTag();
+    ASSERT_TRUE(tag.empty());
+}

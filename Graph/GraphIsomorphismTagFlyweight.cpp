@@ -14,4 +14,10 @@ const Tag &TagFlyweight::getSingleEntryTag(TagEntry entry)
         Tags[entry] = std::make_unique<Tag>(1, entry);
     }
     return *Tags.at(entry);
-};
+}
+
+const Tag &TagFlyweight::getEmptyTag()
+{
+    static const Tag emptyTag;
+    return emptyTag;
+}
