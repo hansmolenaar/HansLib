@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Defines.h"
 #include "GraphDefines.h"
 
 #include <string>
@@ -23,8 +24,14 @@ class IGraphUs
 
     virtual std::string getName() const = 0;
 
-    static std::vector<GraphVertex> getVertices(GraphVertex);
-    std::vector<GraphVertex> getVertices() const; // Looping made easy
+    static auto getVertexRange(GraphVertex nVertices)
+    {
+        return stv::iota(GraphVertex{0}, nVertices);
+    }
+    auto getVertexRange() const
+    {
+        return getVertexRange(getNumVertices());
+    }
     GraphVertex getNumberOfComponents() const;
     std::vector<GraphVertex> getDegreeSequence() const;
     std::vector<GraphVertex> getSortedDegreeSequence() const;

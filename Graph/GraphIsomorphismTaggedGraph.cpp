@@ -33,7 +33,7 @@ TaggedGraph::TaggedGraph(const Graph::IGraphUs &graph)
     }
 
     auto getTag = [this](GraphVertex v) { return m_vertexGroupTags.at(v); };
-    const TaggedGrouping<Tag, GraphVertex> grouping(m_graph.getVertices(), getTag);
+    const TaggedGrouping<Tag, GraphVertex> grouping(m_graph.getVertexRange(), getTag);
     m_uniqueVertexAndGroupTag = grouping.getUniqueTags();
 
     str::sort(m_vertexGroupTags);

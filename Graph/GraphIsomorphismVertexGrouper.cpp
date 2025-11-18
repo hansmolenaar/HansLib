@@ -12,7 +12,7 @@ namespace
 } // namespace
 
 VertexGrouper::VertexGrouper(const IVertexTagger &tagger)
-    : m_numVertices(tagger.getNumVertices()), m_grouping(IGraphUs::getVertices(m_numVertices), tagger)
+    : m_numVertices(tagger.getNumVertices()), m_grouping(IGraphUs::getVertexRange(m_numVertices), tagger)
 {
 }
 

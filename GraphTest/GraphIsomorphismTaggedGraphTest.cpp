@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "Defines.h"
+#include "GraphIsomorphismGrouping.h"
 #include "GraphIsomorphismTaggedGraph.h"
 #include "GraphIsomorphismTaggerChains.h"
 #include "GraphIsomorphismTaggerTriangles.h"
@@ -8,7 +9,6 @@
 #include "Single.h"
 #include "UndirectedGraphFromG6.h"
 #include "UndirectedGraphLibrary.h"
-#include "GraphIsomorphismGrouping.h"
 
 using namespace GraphIsomorphism;
 using namespace Graph;
@@ -39,10 +39,10 @@ void CheckTaggingForList(const std::vector<std::string> &g6list, Tag expectMulti
     std::vector<TaggedGraph> taggedGraphs;
     str::transform(graphs, std::back_inserter(taggedGraphs), [](const auto &gp) { return TaggedGraph(*gp); });
     std::vector<const TaggedGraph *> taggedGraphPointers(taggedGraphs.size());
-    str::transform(taggedGraphs, taggedGraphPointers.begin(), [](const auto& tg){ return &tg; });
+    str::transform(taggedGraphs, taggedGraphPointers.begin(), [](const auto &tg) { return &tg; });
 
     auto cmp = [](const TaggedGraph *lhs, const TaggedGraph *rhs) { return *lhs < *rhs; };
-    const Grouping multiplicityMap(taggedGraphPointers, cmp );
+    const Grouping multiplicityMap(taggedGraphPointers, cmp);
 
     const std::vector<size_t> multiplicities = multiplicityMap.getGroupSizes();
     const auto tag = CondenseSizeSequence(multiplicities);
@@ -55,12 +55,12 @@ void PrintMultipleTags(const std::vector<std::string> &g6list)
     std::vector<TaggedGraph> taggedGraphs;
     str::transform(graphs, std::back_inserter(taggedGraphs), [](const auto &gp) { return TaggedGraph(*gp); });
     std::vector<const TaggedGraph *> taggedGraphPointers(taggedGraphs.size());
-    str::transform(taggedGraphs, taggedGraphPointers.begin(), [](const auto& tg){ return &tg; });
+    str::transform(taggedGraphs, taggedGraphPointers.begin(), [](const auto &tg) { return &tg; });
 
     auto cmp = [](const TaggedGraph *lhs, const TaggedGraph *rhs) { return *lhs < *rhs; };
-    const Grouping multiplicityMap(taggedGraphPointers, cmp );
+    const Grouping multiplicityMap(taggedGraphPointers, cmp);
 
-    for (const auto &group : multiplicityMap() )
+    for (const auto &group : multiplicityMap())
     {
         if (group.size() > 1)
         {

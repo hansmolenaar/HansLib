@@ -61,15 +61,3 @@ std::vector<GraphVertex> IGraphUs::getFullyConnectedVertices() const
                  [this, maxDegree](GraphVertex v) { return getDegree(v) == maxDegree; });
     return result;
 }
-
-std::vector<GraphVertex> IGraphUs::getVertices(GraphVertex nVertices)
-{
-    std::vector<GraphVertex> result(nVertices);
-    str::transform(str::iota_view(GraphVertex{0}, nVertices), result.begin(), std::identity{});
-    return result;
-}
-
-std::vector<GraphVertex> IGraphUs::getVertices() const
-{
-    return getVertices(getNumVertices());
-}

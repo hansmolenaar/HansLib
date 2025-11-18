@@ -8,7 +8,7 @@ namespace GraphIsomorphism
 template <typename T> class Grouping
 {
   public:
-    explicit Grouping(const std::vector<T> &values)
+    explicit Grouping(const auto &values)
     {
         std::map<T, std::vector<T>> grouped;
         for (const auto &value : values)
@@ -64,7 +64,7 @@ template <typename T> class Grouping
 template <typename T, typename V> class TaggedGrouping
 {
   public:
-    template <typename P> TaggedGrouping(const std::vector<V> &values, P &tagProvider)
+    template <typename P> TaggedGrouping(const auto &values, P &tagProvider)
     {
         for (const auto &value : values)
         {
