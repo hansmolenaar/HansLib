@@ -44,6 +44,19 @@ template <typename T> class Grouping
         return result;
     }
 
+    std::vector<T> getUniqueValues() const
+    {
+        std::vector<T> result;
+        for (const auto &itr : m_groups)
+        {
+            if (itr.second.size() == 1)
+            {
+                result.emplace_back(itr.second.front());
+            }
+        }
+        return result;
+    }
+
   private:
     std::vector<std::vector<T>> m_groups;
 };

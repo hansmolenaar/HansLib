@@ -8,6 +8,7 @@
 #include "Single.h"
 #include "UndirectedGraphFromG6.h"
 #include "UndirectedGraphLibrary.h"
+#include "GraphIsomorphismGrouping.h"
 
 using namespace GraphIsomorphism;
 using namespace Graph;
@@ -37,20 +38,13 @@ void CheckTaggingForList(const std::vector<std::string> &g6list, Tag expectMulti
     std::vector<std::unique_ptr<Graph::IGraphUs>> graphs = UndirectedGraphFromG6::getGraphs(g6list);
     std::vector<TaggedGraph> taggedGraphs;
     str::transform(graphs, std::back_inserter(taggedGraphs), [](const auto &gp) { return TaggedGraph(*gp); });
+    std::vector<const TaggedGraph *> taggedGraphPointers(taggedGraphs.size());
+    str::transform(taggedGraphs, taggedGraphPointers.begin(), [](const auto& tg){ return &tg; });
 
     auto cmp = [](const TaggedGraph *lhs, const TaggedGraph *rhs) { return *lhs < *rhs; };
-    std::map<const TaggedGraph *, size_t, decltype(cmp)> multiplicityMap(cmp);
-    for (const auto &tg : taggedGraphs)
-    {
-        CheckAgainsPermutations(tg);
-        multiplicityMap[&tg] += 1;
-    }
+    const Grouping multiplicityMap(taggedGraphPointers, cmp );
 
-    std::vector<size_t> multiplicities;
-    for (const auto &itr : multiplicityMap)
-    {
-        multiplicities.push_back(itr.second);
-    }
+    const std::vector<size_t> multiplicities = multiplicityMap.getGroupSizes();
     const auto tag = CondenseSizeSequence(multiplicities);
     ASSERT_EQ(tag, expectMultiplicities);
 }
@@ -60,22 +54,18 @@ void PrintMultipleTags(const std::vector<std::string> &g6list)
     const std::vector<std::unique_ptr<Graph::IGraphUs>> graphs = UndirectedGraphFromG6::getGraphs(g6list);
     std::vector<TaggedGraph> taggedGraphs;
     str::transform(graphs, std::back_inserter(taggedGraphs), [](const auto &gp) { return TaggedGraph(*gp); });
+    std::vector<const TaggedGraph *> taggedGraphPointers(taggedGraphs.size());
+    str::transform(taggedGraphs, taggedGraphPointers.begin(), [](const auto& tg){ return &tg; });
 
     auto cmp = [](const TaggedGraph *lhs, const TaggedGraph *rhs) { return *lhs < *rhs; };
-    std::map<const TaggedGraph *, std::vector<const TaggedGraph *>, decltype(cmp)> multiplicityMap(cmp);
+    const Grouping multiplicityMap(taggedGraphPointers, cmp );
 
-    for (const auto &tg : taggedGraphs)
+    for (const auto &group : multiplicityMap() )
     {
-        multiplicityMap[&tg].push_back(&tg);
-    }
-
-    std::vector<size_t> multiplicities;
-    for (const auto &itr : multiplicityMap)
-    {
-        if (itr.second.size() > 1)
+        if (group.size() > 1)
         {
-            std::cout << "size = " << itr.second.size() << "\n";
-            for (const auto *tg : itr.second)
+            std::cout << "size = " << group.size() << "\n";
+            for (const auto *tg : group)
             {
                 std::cout << tg->getGraph().getName() << "\n";
             }
