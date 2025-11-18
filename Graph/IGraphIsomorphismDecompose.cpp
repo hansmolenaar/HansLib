@@ -46,12 +46,7 @@ void AddToParentMapRecur(const IDecompose *current, const IDecompose *parent,
     }
 }
 
-} // namespace
-
-// !!!!!!!!!!!  IDecompose
-
-// TODO remove me
-GraphTags IDecompose::GetGraphTags(const Graph::IGraphUs &graph)
+GraphTags GetGraphTags(const Graph::IGraphUs &graph)
 {
     GraphTags result;
     for (const auto &tagger : GraphIsomorphism::getAllTaggers(graph))
@@ -64,6 +59,10 @@ GraphTags IDecompose::GetGraphTags(const Graph::IGraphUs &graph)
     }
     return result;
 }
+
+} // namespace
+
+// !!!!!!!!!!!  IDecompose
 
 std::unique_ptr<IDecompose> IDecompose::Create(const Graph::IGraphUs &graph)
 {
@@ -145,7 +144,7 @@ DecomposeDisconnected::DecomposeDisconnected(const Graph::IGraphUs &graph)
 
     for (const auto &child : m_children)
     {
-        const auto tag = IDecompose::GetGraphTags(child);
+        const auto tag = GetGraphTags(child);
         if (!m_childDecomposes.contains(tag))
         {
             m_childTags.emplace_back(tag);
@@ -204,7 +203,7 @@ DecomposeVertexFullyConnected::DecomposeVertexFullyConnected(const Graph::IGraph
 
     for (const auto &child : m_children)
     {
-        const auto tag = IDecompose::GetGraphTags(*child);
+        const auto tag = GetGraphTags(*child);
         if (!m_childDecomposes.contains(tag))
         {
             m_childTags.emplace_back(tag);

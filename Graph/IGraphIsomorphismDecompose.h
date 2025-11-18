@@ -25,7 +25,6 @@ class IDecompose
 
     bool isLeaf() const;
 
-    static GraphTags GetGraphTags(const Graph::IGraphUs &);
     static std::unique_ptr<IDecompose> Create(const Graph::IGraphUs &);
 };
 

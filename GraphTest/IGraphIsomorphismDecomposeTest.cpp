@@ -239,22 +239,6 @@ TEST(IGraphIsomorphismDecomposeTest, X100)
     CheckDecompose(*graph, 3);
 }
 
-TEST(IGraphIsomorphismDecomposeTest, JustAskingQuestions)
-{
-    const std::vector<std::string> names{"F?S~", "FALcw"};
-    const auto graph1 = UndirectedGraphFromG6::Create(names.at(0));
-    const auto graph2 = UndirectedGraphFromG6::Create(names.at(1));
-    TaggerNumbersFactory factory;
-    const auto tagger1 = factory.createTagger(*graph1);
-    const auto tagger2 = factory.createTagger(*graph2);
-    const auto graphTag1 = tagger1->getGraphTagger()->getGraphTag();
-    const auto graphTag2 = tagger2->getGraphTagger()->getGraphTag();
-    const auto graphTagAll1 = IDecompose::GetGraphTags(*graph1);
-    const auto graphTagAll2 = IDecompose::GetGraphTags(*graph2);
-    ASSERT_NE(graphTagAll1, graphTagAll2);
-    CheckDecomposeList(names, Tag{1, 2});
-}
-
 TEST(IGraphIsomorphismDecomposeTest, SpecialCase1)
 {
     const auto g0 = UndirectedGraphFromG6::CreateConnected("F@h^w");
