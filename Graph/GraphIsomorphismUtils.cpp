@@ -108,3 +108,36 @@ std::vector<const IVertexTagger *> GraphIsomorphism::selectVertexTaggers(
     result.erase(std::remove(result.begin(), result.end(), nullptr), result.end());
     return result;
 }
+
+void GraphIsomorphism::toAdjacentyList(const Graph::IGraphUs &graph, std::ostream &os)
+{
+    std::vector<GraphVertex> ngbs;
+
+    for (auto v : graph.getVertexRange())
+    {
+        graph.setAdjacentVertices(v, ngbs);
+        os << v + 1 << " :";
+        for (auto n : ngbs)
+        {
+            os << " " << n + 1;
+        }
+        os << "\n";
+    }
+}
+
+void GraphIsomorphism::toEdgeList(const Graph::IGraphUs &graph, std::ostream &os)
+{
+    std::vector<GraphVertex> ngbs;
+
+    for (auto v : graph.getVertexRange())
+    {
+        graph.setAdjacentVertices(v, ngbs);
+        for (auto n : ngbs)
+        {
+            if (n > v)
+            {
+                os << v + 1 << "-" << n + 1 << "\n";
+            }
+        }
+    }
+}

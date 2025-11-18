@@ -15,6 +15,9 @@ std::vector<std::unique_ptr<ITagger>> getAllTaggers(const Graph::IGraphUs &);
 std::vector<const IGraphTagger *> selectGraphTaggers(const std::vector<std::unique_ptr<ITagger>> &);
 std::vector<const IVertexTagger *> selectVertexTaggers(const std::vector<std::unique_ptr<ITagger>> &);
 
+void toAdjacentyList(const Graph::IGraphUs &, std::ostream &);
+void toEdgeList(const Graph::IGraphUs &, std::ostream &);
+
 } // namespace GraphIsomorphism
 
 std::ostream &operator<<(std::ostream &, const GraphIsomorphism::Tag &);
