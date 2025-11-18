@@ -77,11 +77,16 @@ template <typename T, typename V> class TaggedGrouping
         return m_emptyList;
     }
 
-    std::vector<T> getUniqueTags() const
+    std::map<T, V> getUniqueTags() const
     {
-        std::vector<T> result;
-        str::copy_if(m_tags, std::back_inserter(result),
-                     [this](const auto &tag) { return m_groups.at(tag).size() == 1; });
+        std::map<T, V> result;
+        for (const auto &itr : m_groups)
+        {
+            if (itr.second.size() == 1)
+            {
+                result[itr.first] = itr.second.front();
+            }
+        }
         return result;
     }
 
