@@ -108,7 +108,9 @@ bool IDecompose::isLeaf() const
 }
 
 // !!!!!!!!!!! Leaf
-DecomposeLeaf::DecomposeLeaf(const Graph::IGraphUs &graph) : IDecompose(graph), m_tag{IDecomposeType::Leaf}
+DecomposeLeaf::DecomposeLeaf(const Graph::IGraphUs &graph)
+    : IDecompose(graph), m_tag{IDecomposeType::Leaf, static_cast<TagEntry>(graph.getNumVertices()),
+                               static_cast<TagEntry>(graph.getNumEdges())}
 {
 }
 
