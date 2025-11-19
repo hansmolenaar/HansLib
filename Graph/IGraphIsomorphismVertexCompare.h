@@ -1,3 +1,5 @@
+#pragma once
+
 #include "GraphIsomorphismDefines.h"
 
 namespace GraphIsomorphism

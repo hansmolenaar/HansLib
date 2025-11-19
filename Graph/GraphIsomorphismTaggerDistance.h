@@ -2,6 +2,7 @@
 
 #include "GraphIsomorphismDefines.h"
 #include "IGraphIsomorphismTagger.h"
+#include "IGraphIsomorphismVertexCompare.h"
 
 namespace Graph
 {
@@ -11,7 +12,7 @@ class UndirectedGraphDistance;
 namespace GraphIsomorphism
 {
 
-class TaggerDistance : public IVertexTagger, public IGraphTagger
+class TaggerDistance : public IVertexTagger, public IGraphTagger, public IVertexCompare
 {
   public:
     explicit TaggerDistance(std::shared_ptr<Graph::UndirectedGraphDistance>);
@@ -19,6 +20,9 @@ class TaggerDistance : public IVertexTagger, public IGraphTagger
     const Tag &getVertexTag(GraphVertex) const override;
     GraphVertex getNumVertices() const override;
     const Tag &getGraphTag() const override;
+
+    bool less(GraphVertex, GraphVertex) const override;
+    bool equal(GraphVertex, const IVertexCompare &, GraphVertex) const override;
 
   private:
     Tag getTag(GraphVertex v) const;

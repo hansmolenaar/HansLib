@@ -2,12 +2,13 @@
 
 #include "GraphIsomorphismDefines.h"
 #include "IGraphIsomorphismTagger.h"
+#include "IGraphIsomorphismVertexCompare.h"
 #include "IGraphUs.h"
 
 namespace GraphIsomorphism
 {
 
-class TaggerTriangles : public IGraphTagger, public IVertexTagger
+class TaggerTriangles : public IGraphTagger, public IVertexTagger, public IVertexCompare
 {
   public:
     explicit TaggerTriangles(const Graph::IGraphUs &);
@@ -15,6 +16,9 @@ class TaggerTriangles : public IGraphTagger, public IVertexTagger
     const Tag &getGraphTag() const override;
     const Tag &getVertexTag(GraphVertex) const override;
     GraphVertex getNumVertices() const override;
+
+    bool less(GraphVertex, GraphVertex) const override;
+    bool equal(GraphVertex, const IVertexCompare &, GraphVertex) const override;
 
     static std::vector<std::array<GraphVertex, 3>> getAllTriangles(const Graph::IGraphUs &);
 

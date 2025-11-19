@@ -33,6 +33,17 @@ const Tag &TaggerMaxDegree::getGraphTag() const
     return m_graphTag;
 }
 
+bool TaggerMaxDegree::less(GraphVertex vertex0, GraphVertex vertex1) const
+{
+    return getVertexTag(vertex0) < getVertexTag(vertex1);
+}
+
+bool TaggerMaxDegree::equal(GraphVertex vertex0, const IVertexCompare &other, GraphVertex vertex1) const
+{
+    return m_fullyConnected2id.contains(vertex0) ==
+           dynamic_cast<const TaggerMaxDegree &>(other).m_fullyConnected2id.contains(vertex1);
+}
+
 // !!!!!!!!!!!!!!!!!
 
 std::unique_ptr<ITagger> TaggerMaxDegreeFactory::createTagger(const Graph::IGraphUs &graph)

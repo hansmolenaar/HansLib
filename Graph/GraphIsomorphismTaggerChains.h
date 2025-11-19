@@ -2,18 +2,22 @@
 
 #include "GraphIsomorphismDefines.h"
 #include "IGraphIsomorphismTagger.h"
+#include "IGraphIsomorphismVertexCompare.h"
 #include "IGraphUsc.h"
 
 namespace GraphIsomorphism
 {
 
-class TaggerChains : public IVertexTagger, public IGraphTagger
+class TaggerChains : public IVertexTagger, public IGraphTagger, public IVertexCompare
 {
   public:
     explicit TaggerChains(const Graph::IGraphUs &);
     const Tag &getVertexTag(GraphVertex) const override;
     GraphVertex getNumVertices() const override;
     const Tag &getGraphTag() const override;
+
+    bool less(GraphVertex, GraphVertex) const override;
+    bool equal(GraphVertex, const IVertexCompare &, GraphVertex) const override;
 
   private:
     Tag m_graphTag;

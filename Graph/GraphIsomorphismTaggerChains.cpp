@@ -370,6 +370,16 @@ const Tag &TaggerChains::getGraphTag() const
     return m_graphTag;
 }
 
+bool TaggerChains::less(GraphVertex vertex0, GraphVertex vertex1) const
+{
+    return getVertexTag(vertex0) < getVertexTag(vertex1);
+}
+
+bool TaggerChains::equal(GraphVertex vertex0, const IVertexCompare &other, GraphVertex vertex1) const
+{
+    return getVertexTag(vertex0) < dynamic_cast<const TaggerChains &>(other).getVertexTag(vertex1);
+}
+
 // !!!!!!!!!!!!! FACTORY
 
 std::unique_ptr<ITagger> TaggerChainsFactory::createTagger(const IGraphUs &graph)
