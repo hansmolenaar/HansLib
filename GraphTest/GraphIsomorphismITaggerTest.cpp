@@ -7,6 +7,7 @@
 #include "GraphIsomorphismTagCompare.h"
 #include "GraphIsomorphismVertexGrouper.h"
 #include "GraphUsc.h"
+#include "IGraphIsomorphismVertexCompare.h"
 #include "Permutation.h"
 #include "UndirectedGraphFromG6.h"
 #include "UndirectedGraphLibrary.h"
@@ -18,6 +19,15 @@ using namespace GraphIsomorphism;
 namespace
 {
 const int numPermutations = 10;
+
+#if 0
+void CheckVertexComparerConsistency(const IGraphUs &graph, GraphIsomorphism::ITaggerFactory &factory,
+                                  int expectNumAssociatedvertices)
+{
+    const auto gtagger = factory.createTagger(graph);
+    const auto *tagger = gtagger->getVertexTagger();
+}
+#endif
 
 void CheckVertexTaggerConsistency(const IGraphUs &graph, GraphIsomorphism::ITaggerFactory &factory,
                                   int expectNumAssociatedvertices)
@@ -90,6 +100,7 @@ namespace
 
 void CheckTaggerBasics(GraphIsomorphism::ITaggerFactory &factory, const IGraphUs &graph)
 {
+    const auto nVertices = graph.getNumVertices();
     const auto tagger = factory.createTagger(graph);
     Tag tag;
     const auto *graphChecker = tagger->getGraphTagger();
@@ -102,11 +113,21 @@ void CheckTaggerBasics(GraphIsomorphism::ITaggerFactory &factory, const IGraphUs
     const auto *vertexChecker = tagger->getVertexTagger();
     if (vertexChecker != nullptr)
     {
-        const auto nVertices = graph.getNumVertices();
         ASSERT_EQ(vertexChecker->getNumVertices(), nVertices);
         for (GraphVertex v = 0; v < nVertices; ++v)
         {
             EXPECT_NO_THROW(tag = vertexChecker->getVertexTag(v));
+        }
+    }
+
+    const IVertexCompare *vertexComparer = dynamic_cast<const GraphIsomorphism::IVertexCompare *>(tagger.get());
+    if (vertexComparer != nullptr)
+    {
+        ASSERT_EQ(&vertexComparer->getGraph(), &graph);
+        if (nVertices > 0)
+        {
+            ASSERT_FALSE(vertexComparer->less(0, 0));
+            ASSERT_TRUE(vertexComparer->equal(0, *vertexComparer, 0));
         }
     }
 

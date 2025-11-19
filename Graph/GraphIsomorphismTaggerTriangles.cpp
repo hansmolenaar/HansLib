@@ -94,7 +94,7 @@ bool TaggerTriangles::less(GraphVertex vertex0, GraphVertex vertex1) const
 
 bool TaggerTriangles::equal(GraphVertex vertex0, const IVertexCompare &other, GraphVertex vertex1) const
 {
-    return getVertexTag(vertex0) < dynamic_cast<const TaggerTriangles &>(other).getVertexTag(vertex1);
+    return getVertexTag(vertex0) == dynamic_cast<const TaggerTriangles &>(other).getVertexTag(vertex1);
 }
 
 std::unique_ptr<ITagger> TaggerTrianglesFactory::createTagger(const Graph::IGraphUs &graph)

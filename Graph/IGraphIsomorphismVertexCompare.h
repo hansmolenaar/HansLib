@@ -1,6 +1,7 @@
 #pragma once
 
 #include "GraphIsomorphismDefines.h"
+#include "IGraphIsomorphismTagger.h"
 
 namespace Graph
 {
@@ -10,7 +11,7 @@ class IGraphUs;
 namespace GraphIsomorphism
 {
 
-class IVertexCompare
+class IVertexCompare : public virtual ITagger
 {
   public:
     ~IVertexCompare() = default;

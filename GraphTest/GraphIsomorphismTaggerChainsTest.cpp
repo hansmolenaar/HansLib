@@ -45,14 +45,22 @@ TEST(GraphIsomorphismTaggerChainsTest, PurePath2)
 
 TEST(GraphIsomorphismTaggerChainsTest, PurePath3)
 {
-    const GraphUsc graph(*UndirectedGraphLibrary::Get_Path(3));
-    GraphTest::CheckTaggerConsistency(graph, factoryChains, 3);
-    const auto tagger = TaggerChains(graph);
+    const auto graph = UndirectedGraphLibrary::Get_Path(3);
+    GraphTest::CheckTaggerConsistency(*graph, factoryChains, 3);
+    const auto tagger = TaggerChains(*graph);
     ASSERT_TRUE(str::equal(tagger.getVertexTag(0), Tag{1, 3, 1, 0}));
     ASSERT_TRUE(str::equal(tagger.getVertexTag(1), Tag{1, 3, 1, 1}));
     ASSERT_TRUE(str::equal(tagger.getVertexTag(2), Tag{1, 3, 1, 2}));
 
     ASSERT_EQ(tagger.getGraphTag(), (Tag{1, 3, 1}));
+
+    ASSERT_EQ(&tagger.getGraph(), graph.get());
+    ASSERT_TRUE(tagger.less(0, 1));
+    ASSERT_FALSE(tagger.less(1, 0));
+    ASSERT_TRUE(tagger.less(0, 2));
+    ASSERT_FALSE(tagger.less(2, 0));
+    ASSERT_TRUE(tagger.less(1, 2));
+    ASSERT_FALSE(tagger.less(2, 1));
 }
 
 TEST(GraphIsomorphismTaggerChainsTest, Pan3)
