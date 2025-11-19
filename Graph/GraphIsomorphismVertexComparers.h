@@ -1,0 +1,33 @@
+#pragma once
+
+#include "GraphIsomorphismGrouping.h"
+#include "IGraphIsomorphismVertexCompare.h"
+
+namespace GraphIsomorphism
+{
+
+class VertexComparers : public IVertexCompare
+{
+  public:
+    explicit VertexComparers(std::vector<const IVertexCompare *>);
+
+    const Graph::IGraphUs &getGraph() const override;
+    bool less(GraphVertex, GraphVertex) const override;
+    bool equal(GraphVertex, const IVertexCompare &, GraphVertex) const override;
+
+#if false
+    int countUnique() const;
+    bool isResolved() const;
+
+    std::weak_ordering operator<=>(const GraphIsomorphism::VertexGrouper &) const;
+    bool operator==(const GraphIsomorphism::VertexGrouper &) const;
+
+    GraphVertex getNumVertices() const;
+#endif
+  private:
+    std::vector<const IVertexCompare *> m_vertexComparers;
+    std::map<GraphVertex, size_t> m_vertex2group;
+    Grouping<GraphVertex> m_grouping;
+};
+
+} // namespace GraphIsomorphism

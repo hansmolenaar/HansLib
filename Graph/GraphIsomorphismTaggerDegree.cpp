@@ -25,6 +25,11 @@ GraphVertex TaggerDegree::getNumVertices() const
     return m_graph.getNumVertices();
 }
 
+const Graph::IGraphUs &TaggerDegree::getGraph() const
+{
+    return m_graph;
+}
+
 bool TaggerDegree::less(GraphVertex vertex0, GraphVertex vertex1) const
 {
     return m_graph.getDegree(vertex0) < m_graph.getDegree(vertex1);

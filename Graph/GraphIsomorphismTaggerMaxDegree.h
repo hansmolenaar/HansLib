@@ -17,11 +17,12 @@ class TaggerMaxDegree : public IVertexTagger, public IGraphTagger, public IVerte
     const Tag &getVertexTag(GraphVertex) const override;
     GraphVertex getNumVertices() const override;
 
+    const Graph::IGraphUs &getGraph() const override;
     bool less(GraphVertex, GraphVertex) const override;
     bool equal(GraphVertex, const IVertexCompare &, GraphVertex) const override;
 
   private:
-    GraphVertex m_numVertices;
+    const Graph::IGraphUs &m_graph;
     std::map<GraphVertex, TagEntry> m_fullyConnected2id;
     Tag m_graphTag;
 };

@@ -17,6 +17,7 @@ class TaggerDegree : public IGraphTagger, public IVertexTagger, public IVertexCo
     const Tag &getVertexTag(GraphVertex) const override;
     GraphVertex getNumVertices() const override;
 
+    const Graph::IGraphUs &getGraph() const override;
     bool less(GraphVertex, GraphVertex) const override;
     bool equal(GraphVertex, const IVertexCompare &, GraphVertex) const override;
 

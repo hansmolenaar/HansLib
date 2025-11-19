@@ -46,7 +46,7 @@ UndirectedGraphDistance::AtDistance Generate(const IGraphUs &graph, const GraphV
 }
 } // namespace
 
-UndirectedGraphDistance::UndirectedGraphDistance(const IGraphUs &graph)
+UndirectedGraphDistance::UndirectedGraphDistance(const IGraphUs &graph) : m_graph(graph)
 {
     const auto nVertices = graph.getNumVertices();
     m_distances.reserve(nVertices);
@@ -54,6 +54,11 @@ UndirectedGraphDistance::UndirectedGraphDistance(const IGraphUs &graph)
     {
         m_distances.emplace_back(Generate(graph, v));
     }
+}
+
+const Graph::IGraphUs &UndirectedGraphDistance::getGraph() const
+{
+    return m_graph;
 }
 
 const UndirectedGraphDistance::AtDistance &UndirectedGraphDistance::operator()(GraphVertex vertex) const

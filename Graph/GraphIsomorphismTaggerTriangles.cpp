@@ -26,7 +26,8 @@ std::vector<std::array<GraphVertex, 2>> getAllEdges(const std::vector<std::vecto
 }
 }; // namespace
 
-TaggerTriangles::TaggerTriangles(const Graph::IGraphUs &graph) : m_countPerVertex(graph.getNumVertices())
+TaggerTriangles::TaggerTriangles(const Graph::IGraphUs &graph)
+    : m_graph(graph), m_countPerVertex(graph.getNumVertices())
 {
     const auto allTriangles = getAllTriangles(graph);
     for (const auto &triangle : allTriangles)
@@ -79,6 +80,11 @@ std::vector<std::array<GraphVertex, 3>> TaggerTriangles::getAllTriangles(const G
     }
 
     return result;
+}
+
+const Graph::IGraphUs &TaggerTriangles::getGraph() const
+{
+    return m_graph;
 }
 
 bool TaggerTriangles::less(GraphVertex vertex0, GraphVertex vertex1) const

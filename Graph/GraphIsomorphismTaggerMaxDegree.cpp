@@ -3,9 +3,9 @@
 
 using namespace GraphIsomorphism;
 
-TaggerMaxDegree::TaggerMaxDegree(const Graph::IGraphUs &graph) : m_numVertices(graph.getNumVertices())
+TaggerMaxDegree::TaggerMaxDegree(const Graph::IGraphUs &graph) : m_graph(graph)
 {
-    const auto maxDegree = m_numVertices - 1;
+    const auto maxDegree = m_graph.getNumVertices() - 1;
     auto vertexIsFullyConnected = [&graph, maxDegree](GraphVertex vv) { return graph.getDegree(vv) == maxDegree; };
     for (GraphVertex v : graph.getVertexRange() | stv::filter(vertexIsFullyConnected))
     {
@@ -25,7 +25,7 @@ const Tag &TaggerMaxDegree::getVertexTag(GraphVertex v) const
 
 GraphVertex TaggerMaxDegree ::getNumVertices() const
 {
-    return m_numVertices;
+    return m_graph.getNumVertices();
 }
 
 const Tag &TaggerMaxDegree::getGraphTag() const
@@ -33,9 +33,14 @@ const Tag &TaggerMaxDegree::getGraphTag() const
     return m_graphTag;
 }
 
+const Graph::IGraphUs &TaggerMaxDegree::getGraph() const
+{
+    return m_graph;
+}
+
 bool TaggerMaxDegree::less(GraphVertex vertex0, GraphVertex vertex1) const
 {
-    return getVertexTag(vertex0) < getVertexTag(vertex1);
+    return m_graph.getDegree(vertex0) < m_graph.getDegree(vertex1);
 }
 
 bool TaggerMaxDegree::equal(GraphVertex vertex0, const IVertexCompare &other, GraphVertex vertex1) const

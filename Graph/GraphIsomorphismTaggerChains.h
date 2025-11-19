@@ -16,10 +16,12 @@ class TaggerChains : public IVertexTagger, public IGraphTagger, public IVertexCo
     GraphVertex getNumVertices() const override;
     const Tag &getGraphTag() const override;
 
+    const Graph::IGraphUs &getGraph() const override;
     bool less(GraphVertex, GraphVertex) const override;
     bool equal(GraphVertex, const IVertexCompare &, GraphVertex) const override;
 
   private:
+    const Graph::IGraphUs &m_graph;
     Tag m_graphTag;
     std::vector<Tag> m_vertexTags;
 };

@@ -42,7 +42,7 @@ void CheckTaggingForList(const std::vector<std::string> &g6list, Tag expectMulti
     str::transform(taggedGraphs, taggedGraphPointers.begin(), [](const auto &tg) { return &tg; });
 
     auto cmp = [](const TaggedGraph *lhs, const TaggedGraph *rhs) { return *lhs < *rhs; };
-    const Grouping multiplicityMap(taggedGraphPointers, cmp);
+    const Grouping<const TaggedGraph *> multiplicityMap(taggedGraphPointers, cmp);
 
     const std::vector<size_t> multiplicities = multiplicityMap.getGroupSizes();
     const auto tag = CondenseSizeSequence(multiplicities);
@@ -58,7 +58,7 @@ void PrintMultipleTags(const std::vector<std::string> &g6list)
     str::transform(taggedGraphs, taggedGraphPointers.begin(), [](const auto &tg) { return &tg; });
 
     auto cmp = [](const TaggedGraph *lhs, const TaggedGraph *rhs) { return *lhs < *rhs; };
-    const Grouping multiplicityMap(taggedGraphPointers, cmp);
+    const Grouping<const TaggedGraph *> multiplicityMap(taggedGraphPointers, cmp);
 
     for (const auto &group : multiplicityMap())
     {

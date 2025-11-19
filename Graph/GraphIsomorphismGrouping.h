@@ -20,7 +20,7 @@ template <typename T> class Grouping
         str::transform(grouped, m_groups.begin(), [](const auto &itr) { return itr.second; });
     }
 
-    template <typename C> Grouping(const std::vector<T> &values, C compare)
+    template <typename C> Grouping(const auto &values, C compare)
     {
         std::map<T, std::vector<T>, C> grouped(compare);
         for (const auto &value : values)

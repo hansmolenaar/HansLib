@@ -21,6 +21,7 @@ class TaggerDistance : public IVertexTagger, public IGraphTagger, public IVertex
     GraphVertex getNumVertices() const override;
     const Tag &getGraphTag() const override;
 
+    const Graph::IGraphUs &getGraph() const override;
     bool less(GraphVertex, GraphVertex) const override;
     bool equal(GraphVertex, const IVertexCompare &, GraphVertex) const override;
 

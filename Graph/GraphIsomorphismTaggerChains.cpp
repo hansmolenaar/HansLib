@@ -348,7 +348,7 @@ std::pair<Tag, std::vector<Tag>> GenerateTags(const IGraphUs &graph)
 
 } // namespace
 
-TaggerChains::TaggerChains(const IGraphUs &graph)
+TaggerChains::TaggerChains(const IGraphUs &graph) : m_graph(graph)
 {
     const auto allTags = GenerateTags(graph);
     m_graphTag = allTags.first;
@@ -368,6 +368,11 @@ GraphVertex TaggerChains::getNumVertices() const
 const Tag &TaggerChains::getGraphTag() const
 {
     return m_graphTag;
+}
+
+const IGraphUs &TaggerChains::getGraph() const
+{
+    return m_graph;
 }
 
 bool TaggerChains::less(GraphVertex vertex0, GraphVertex vertex1) const

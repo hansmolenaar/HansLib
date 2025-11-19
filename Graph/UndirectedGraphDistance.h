@@ -14,8 +14,10 @@ class UndirectedGraphDistance
     explicit UndirectedGraphDistance(const Graph::IGraphUs &);
     const AtDistance &operator()(GraphVertex) const;
     GraphVertex getNumVertices() const;
+    const Graph::IGraphUs &getGraph() const;
 
   private:
+    const Graph::IGraphUs &m_graph;
     std::vector<AtDistance> m_distances;
 };
 

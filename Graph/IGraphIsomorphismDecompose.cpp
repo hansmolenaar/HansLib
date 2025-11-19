@@ -348,7 +348,7 @@ Grouping<const DecomposeLeaf *> ToParentMap::groupLeaves() const
     auto cmp = [this](const DecomposeLeaf *leaf1, const DecomposeLeaf *leaf2) {
         return compareLeaves(leaf1, leaf2) == std::weak_ordering::less;
     };
-    const Grouping grouping(getLeaves(), cmp);
+    const Grouping<const DecomposeLeaf *> grouping(getLeaves(), cmp);
     return grouping;
 }
 

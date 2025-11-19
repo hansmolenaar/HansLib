@@ -17,12 +17,14 @@ class TaggerTriangles : public IGraphTagger, public IVertexTagger, public IVerte
     const Tag &getVertexTag(GraphVertex) const override;
     GraphVertex getNumVertices() const override;
 
+    const Graph::IGraphUs &getGraph() const override;
     bool less(GraphVertex, GraphVertex) const override;
     bool equal(GraphVertex, const IVertexCompare &, GraphVertex) const override;
 
     static std::vector<std::array<GraphVertex, 3>> getAllTriangles(const Graph::IGraphUs &);
 
   private:
+    const Graph::IGraphUs &m_graph;
     Tag m_graphTag;
     std::vector<size_t> m_countPerVertex;
 };
