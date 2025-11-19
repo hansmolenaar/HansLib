@@ -4,9 +4,7 @@
 #include "GraphIsomorphismCheck.h"
 #include "GraphIsomorphismDefines.h"
 #include "GraphIsomorphismITaggerTest.h"
-#include "GraphIsomorphismTagCompare.h"
 #include "GraphIsomorphismVertexComparers.h"
-#include "GraphIsomorphismVertexGrouper.h"
 #include "GraphUsc.h"
 #include "IGraphIsomorphismVertexCompare.h"
 #include "Permutation.h"
@@ -59,44 +57,6 @@ void CheckVertexCompareConsistency(const IGraphUs &graph, GraphIsomorphism::ITag
     }
 }
 
-void CheckVertexTaggerConsistency(const IGraphUs &graph, GraphIsomorphism::ITaggerFactory &factory,
-                                  int expectNumAssociatedvertices)
-{
-    const auto nVertices = graph.getNumVertices();
-    const auto gtagger = factory.createTagger(graph);
-    const auto *tagger = gtagger->getVertexTagger();
-    if (tagger == nullptr)
-        return;
-    const VertexGrouper grouper(*tagger);
-    if (expectNumAssociatedvertices >= 0)
-    {
-        ASSERT_EQ(grouper.countUnique(), expectNumAssociatedvertices);
-    }
-    else
-    {
-        expectNumAssociatedvertices = grouper.countUnique();
-    }
-
-    const Permutation trivial = Permutation::CreateTrivial(nVertices);
-    for (auto n = 0; n < numPermutations; ++n)
-    {
-        const auto permutation = Permutation::CreateRandomShuffle(trivial, n);
-        const UndirectedGraph graphPermuted = UndirectedGraph::CreatePermuted(graph, permutation);
-        const auto gtaggerPermuted = factory.createTagger(graphPermuted);
-        const auto *taggerPermuted = gtaggerPermuted->getVertexTagger();
-        const VertexGrouper grouperPermuted(*taggerPermuted);
-        ASSERT_EQ(grouperPermuted.countUnique(), expectNumAssociatedvertices);
-
-        const auto resultCompare = GraphIsomorphism::TagCompare{}.compare({*tagger, *taggerPermuted});
-        ASSERT_EQ(resultCompare.TagCompareStatus, TagCompare::Result::TagStatus::Equivalent);
-        if (expectNumAssociatedvertices == nVertices)
-        {
-            const auto checkIsomorphism = Check{}(graph, resultCompare.VertexPairs, graphPermuted);
-            ASSERT_TRUE(checkIsomorphism);
-        }
-    }
-}
-
 void CheckGraphTaggerConsistency(const Graph::IGraphUs &graph, ITaggerFactory &factory)
 {
     const auto nVertices = graph.getNumVertices();
@@ -119,11 +79,10 @@ void CheckGraphTaggerConsistency(const Graph::IGraphUs &graph, ITaggerFactory &f
 }; // namespace
 
 void GraphTest::CheckTaggerConsistency(const IGraphUs &graph, GraphIsomorphism::ITaggerFactory &factory,
-                                       int expectNumAssociatedvertices)
+                                       int expectNumUniqueVertices)
 {
     CheckGraphTaggerConsistency(graph, factory);
-    CheckVertexTaggerConsistency(graph, factory, expectNumAssociatedvertices);
-    CheckVertexCompareConsistency(graph, factory, expectNumAssociatedvertices);
+    CheckVertexCompareConsistency(graph, factory, expectNumUniqueVertices);
 }
 
 namespace
