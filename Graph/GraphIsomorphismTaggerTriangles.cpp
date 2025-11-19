@@ -87,14 +87,15 @@ const Graph::IGraphUs &TaggerTriangles::getGraph() const
     return m_graph;
 }
 
-bool TaggerTriangles::less(GraphVertex vertex0, GraphVertex vertex1) const
+std::weak_ordering TaggerTriangles::compare(GraphVertex vertex0, GraphVertex vertex1) const
 {
-    return getVertexTag(vertex0) < getVertexTag(vertex1);
+    return getVertexTag(vertex0) <=> getVertexTag(vertex1);
 }
 
-bool TaggerTriangles::less(GraphVertex vertex0, const IVertexCompare &other, GraphVertex vertex1) const
+std::weak_ordering TaggerTriangles::compareOtherGraph(GraphVertex vertex0, const IVertexCompare &other,
+                                                      GraphVertex vertex1) const
 {
-    return getVertexTag(vertex0) < dynamic_cast<const TaggerTriangles &>(other).getVertexTag(vertex1);
+    return getVertexTag(vertex0) <=> dynamic_cast<const TaggerTriangles &>(other).getVertexTag(vertex1);
 }
 
 std::unique_ptr<ITagger> TaggerTrianglesFactory::createTagger(const Graph::IGraphUs &graph)

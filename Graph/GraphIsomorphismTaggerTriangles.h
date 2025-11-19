@@ -18,8 +18,8 @@ class TaggerTriangles : public IGraphTagger, public IVertexTagger, public IVerte
     GraphVertex getNumVertices() const override;
 
     const Graph::IGraphUs &getGraph() const override;
-    bool less(GraphVertex, GraphVertex) const override;
-    bool less(GraphVertex, const IVertexCompare &, GraphVertex) const override;
+    std::weak_ordering compare(GraphVertex, GraphVertex) const override;
+    std::weak_ordering compareOtherGraph(GraphVertex, const IVertexCompare &, GraphVertex) const override;
 
     static std::vector<std::array<GraphVertex, 3>> getAllTriangles(const Graph::IGraphUs &);
 

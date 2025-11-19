@@ -375,16 +375,17 @@ const IGraphUs &TaggerChains::getGraph() const
     return m_graph;
 }
 
-bool TaggerChains::less(GraphVertex vertex0, GraphVertex vertex1) const
+std::weak_ordering TaggerChains::compare(GraphVertex vertex0, GraphVertex vertex1) const
 {
-    return getVertexTag(vertex0) < getVertexTag(vertex1);
+    return getVertexTag(vertex0) <=> getVertexTag(vertex1);
 }
 
-bool TaggerChains::less(GraphVertex vertex0, const IVertexCompare &other, GraphVertex vertex1) const
+std::weak_ordering TaggerChains::compareOtherGraph(GraphVertex vertex0, const IVertexCompare &other,
+                                                   GraphVertex vertex1) const
 {
     const auto &tagger0 = *this;
     const auto &tagger1 = dynamic_cast<const TaggerChains &>(other);
-    return getVertexTag(vertex0) < dynamic_cast<const TaggerChains &>(other).getVertexTag(vertex1);
+    return getVertexTag(vertex0) <=> dynamic_cast<const TaggerChains &>(other).getVertexTag(vertex1);
 }
 
 // !!!!!!!!!!!!! FACTORY

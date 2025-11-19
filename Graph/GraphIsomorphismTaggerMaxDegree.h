@@ -18,8 +18,8 @@ class TaggerMaxDegree : public IVertexTagger, public IGraphTagger, public IVerte
     GraphVertex getNumVertices() const override;
 
     const Graph::IGraphUs &getGraph() const override;
-    bool less(GraphVertex, GraphVertex) const override;
-    bool less(GraphVertex, const IVertexCompare &, GraphVertex) const override;
+    std::weak_ordering compare(GraphVertex, GraphVertex) const override;
+    std::weak_ordering compareOtherGraph(GraphVertex, const IVertexCompare &, GraphVertex) const override;
 
   private:
     const Graph::IGraphUs &m_graph;

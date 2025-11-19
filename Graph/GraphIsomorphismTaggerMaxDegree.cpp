@@ -38,14 +38,15 @@ const Graph::IGraphUs &TaggerMaxDegree::getGraph() const
     return m_graph;
 }
 
-bool TaggerMaxDegree::less(GraphVertex vertex0, GraphVertex vertex1) const
+std::weak_ordering TaggerMaxDegree::compare(GraphVertex vertex0, GraphVertex vertex1) const
 {
-    return getVertexTag(vertex0) < getVertexTag(vertex1);
+    return getVertexTag(vertex0) <=> getVertexTag(vertex1);
 }
 
-bool TaggerMaxDegree::less(GraphVertex vertex0, const IVertexCompare &other, GraphVertex vertex1) const
+std::weak_ordering TaggerMaxDegree::compareOtherGraph(GraphVertex vertex0, const IVertexCompare &other,
+                                                      GraphVertex vertex1) const
 {
-    return getVertexTag(vertex0) < dynamic_cast<const TaggerMaxDegree &>(other).getVertexTag(vertex1);
+    return getVertexTag(vertex0) <=> dynamic_cast<const TaggerMaxDegree &>(other).getVertexTag(vertex1);
 }
 
 // !!!!!!!!!!!!!!!!!

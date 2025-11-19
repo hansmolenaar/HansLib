@@ -116,8 +116,8 @@ void CheckTaggerBasics(GraphIsomorphism::ITaggerFactory &factory, const IGraphUs
         ASSERT_EQ(&vertexComparer->getGraph(), &graph);
         if (nVertices > 0)
         {
-            ASSERT_FALSE(vertexComparer->less(0, 0));
-            ASSERT_FALSE(vertexComparer->less(0, *vertexComparer, 0));
+            ASSERT_EQ(vertexComparer->compare(0, 0), std::weak_ordering::equivalent);
+            ASSERT_EQ(vertexComparer->compareOtherGraph(0, *vertexComparer, 0), std::weak_ordering::equivalent);
         }
     }
 

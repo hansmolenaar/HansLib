@@ -30,14 +30,15 @@ const Graph::IGraphUs &TaggerDegree::getGraph() const
     return m_graph;
 }
 
-bool TaggerDegree::less(GraphVertex vertex0, GraphVertex vertex1) const
+std::weak_ordering TaggerDegree::compare(GraphVertex vertex0, GraphVertex vertex1) const
 {
-    return m_graph.getDegree(vertex0) < m_graph.getDegree(vertex1);
+    return m_graph.getDegree(vertex0) <=> m_graph.getDegree(vertex1);
 }
 
-bool TaggerDegree::less(GraphVertex vertex0, const IVertexCompare &other, GraphVertex vertex1) const
+std::weak_ordering TaggerDegree::compareOtherGraph(GraphVertex vertex0, const IVertexCompare &other,
+                                                   GraphVertex vertex1) const
 {
-    return m_graph.getDegree(vertex0) < dynamic_cast<const TaggerDegree &>(other).m_graph.getDegree(vertex1);
+    return m_graph.getDegree(vertex0) <=> dynamic_cast<const TaggerDegree &>(other).m_graph.getDegree(vertex1);
 }
 
 // !!!!!!!!!!!!! FACTORY
