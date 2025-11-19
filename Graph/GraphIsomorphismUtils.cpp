@@ -108,6 +108,16 @@ std::vector<const IVertexTagger *> GraphIsomorphism::selectVertexTaggers(
     return result;
 }
 
+std::vector<const IVertexCompare *> GraphIsomorphism::selectVertexCompare(
+    const std::vector<std::unique_ptr<ITagger>> &taggers)
+{
+    std::vector<const IVertexCompare *> result(taggers.size());
+    str::transform(taggers, result.begin(),
+                   [](const auto &tagger) { return dynamic_cast<const IVertexCompare *>(tagger.get()); });
+    result.erase(std::remove(result.begin(), result.end(), nullptr), result.end());
+    return result;
+}
+
 void GraphIsomorphism::toAdjacentyList(const Graph::IGraphUs &graph, std::ostream &os)
 {
     std::vector<GraphVertex> ngbs;

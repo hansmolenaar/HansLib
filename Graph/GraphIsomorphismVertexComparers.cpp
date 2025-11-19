@@ -26,7 +26,8 @@ struct CompareAll
 } // namespace
 
 VertexComparers::VertexComparers(std::vector<const IVertexCompare *> comparers)
-    : m_vertexComparers(std::move(comparers)), m_grouping(getGraph().getVertexRange(), CompareAll{m_vertexComparers})
+    : m_vertexComparers(comparers),
+      m_grouping(comparers.front()->getGraph().getVertexRange(), CompareAll{m_vertexComparers})
 {
     size_t groupPos = 0;
     for (const auto &group : m_grouping())
