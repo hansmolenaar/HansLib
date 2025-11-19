@@ -5,6 +5,7 @@
 #include "GraphIsomorphismDefines.h"
 #include "GraphIsomorphismITaggerTest.h"
 #include "GraphIsomorphismTagCompare.h"
+#include "GraphIsomorphismVertexComparers.h"
 #include "GraphIsomorphismVertexGrouper.h"
 #include "GraphUsc.h"
 #include "IGraphIsomorphismVertexCompare.h"
@@ -20,14 +21,43 @@ namespace
 {
 const int numPermutations = 10;
 
-#if 0
-void CheckVertexComparerConsistency(const IGraphUs &graph, GraphIsomorphism::ITaggerFactory &factory,
-                                  int expectNumAssociatedvertices)
+void CheckVertexCompareConsistency(const IGraphUs &graph, GraphIsomorphism::ITaggerFactory &factory,
+                                   int expectNumUniqueVertices)
 {
     const auto gtagger = factory.createTagger(graph);
-    const auto *tagger = gtagger->getVertexTagger();
+    const auto *vertexCompare = dynamic_cast<const GraphIsomorphism::IVertexCompare *>(gtagger.get());
+    if (vertexCompare == nullptr)
+    {
+        return;
+    }
+    const auto nVertices = graph.getNumVertices();
+    const VertexComparers comparerOrg(std::vector<const IVertexCompare *>{vertexCompare});
+    const Grouping<GraphVertex> grouping(graph.getVertexRange(), VertexLess{*vertexCompare});
+
+    if (expectNumUniqueVertices >= 0)
+    {
+        ASSERT_EQ(grouping.countUnique(), expectNumUniqueVertices);
+    }
+    else
+    {
+        expectNumUniqueVertices = grouping.countUnique();
+    }
+
+    const Permutation trivial = Permutation::CreateTrivial(nVertices);
+    for (auto n = 0; n < numPermutations; ++n)
+    {
+        const auto permutation = Permutation::CreateRandomShuffle(trivial, n);
+        const UndirectedGraph graphPermuted = UndirectedGraph::CreatePermuted(graph, permutation);
+        const auto gtaggerPermuted = factory.createTagger(graphPermuted);
+        const auto *vertexComparePermuted =
+            dynamic_cast<const GraphIsomorphism::IVertexCompare *>(gtaggerPermuted.get());
+        const Grouping<GraphVertex> groupingPermuted(graph.getVertexRange(), VertexLess{*vertexComparePermuted});
+        ASSERT_EQ(groupingPermuted.countUnique(), expectNumUniqueVertices);
+
+        const VertexComparers comparerPermuted(std::vector<const IVertexCompare *>{vertexComparePermuted});
+        ASSERT_FALSE(comparerOrg < comparerPermuted);
+    }
 }
-#endif
 
 void CheckVertexTaggerConsistency(const IGraphUs &graph, GraphIsomorphism::ITaggerFactory &factory,
                                   int expectNumAssociatedvertices)
@@ -93,6 +123,7 @@ void GraphTest::CheckTaggerConsistency(const IGraphUs &graph, GraphIsomorphism::
 {
     CheckGraphTaggerConsistency(graph, factory);
     CheckVertexTaggerConsistency(graph, factory, expectNumAssociatedvertices);
+    CheckVertexCompareConsistency(graph, factory, expectNumAssociatedvertices);
 }
 
 namespace
@@ -127,7 +158,7 @@ void CheckTaggerBasics(GraphIsomorphism::ITaggerFactory &factory, const IGraphUs
         if (nVertices > 0)
         {
             ASSERT_FALSE(vertexComparer->less(0, 0));
-            ASSERT_TRUE(vertexComparer->equal(0, *vertexComparer, 0));
+            ASSERT_FALSE(vertexComparer->less(0, *vertexComparer, 0));
         }
     }
 

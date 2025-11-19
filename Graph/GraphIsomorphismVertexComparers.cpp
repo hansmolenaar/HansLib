@@ -49,7 +49,7 @@ bool VertexComparers::less(GraphVertex v0, GraphVertex v1) const
     return m_vertex2group.at(v0) < m_vertex2group.at(v1);
 }
 
-bool VertexComparers::equal(GraphVertex v0, const IVertexCompare &otherCompare, GraphVertex v1) const
+bool VertexComparers::less(GraphVertex v0, const IVertexCompare &otherCompare, GraphVertex v1) const
 {
     const VertexComparers &other = dynamic_cast<const VertexComparers &>(otherCompare);
     const auto nComparers = m_vertexComparers.size();
@@ -57,19 +57,19 @@ bool VertexComparers::equal(GraphVertex v0, const IVertexCompare &otherCompare, 
     {
         const IVertexCompare *compare0 = m_vertexComparers.at(n);
         const IVertexCompare *compare1 = other.m_vertexComparers.at(n);
-        if (!compare0->equal(v0, *compare1, v1))
+        if (compare0->less(v0, *compare1, v1))
         {
-            return false;
+            return true;
         }
     }
-    return true;
+    return false;
 }
 
 bool VertexComparers::operator<(const VertexComparers &other) const
 {
-    if (m_grouping.getGroupSizes() != other.m_grouping.getGroupSizes())
+    if (m_grouping.getGroupSizes() < other.m_grouping.getGroupSizes())
     {
-        return false;
+        return true;
     }
 
     const auto &groups0 = m_grouping();
@@ -80,10 +80,10 @@ bool VertexComparers::operator<(const VertexComparers &other) const
     {
         const GraphVertex v0 = groups0.at(n).front();
         const GraphVertex v1 = groups1.at(n).front();
-        if (!equal(v0, other, v1))
+        if (less(v0, other, v1))
         {
-            return false;
+            return true;
         }
     }
-    return true;
+    return false;
 }

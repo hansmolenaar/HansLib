@@ -18,7 +18,7 @@ class TaggerChains : public IVertexTagger, public IGraphTagger, public IVertexCo
 
     const Graph::IGraphUs &getGraph() const override;
     bool less(GraphVertex, GraphVertex) const override;
-    bool equal(GraphVertex, const IVertexCompare &, GraphVertex) const override;
+    bool less(GraphVertex, const IVertexCompare &, GraphVertex) const override;
 
   private:
     const Graph::IGraphUs &m_graph;

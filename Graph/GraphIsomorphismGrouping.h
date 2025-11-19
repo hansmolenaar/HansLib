@@ -57,6 +57,11 @@ template <typename T> class Grouping
         return result;
     }
 
+    size_t countUnique() const
+    {
+        return str::count_if(m_groups, [](const auto &itr) { return itr.size() == 1; });
+    }
+
   private:
     std::vector<std::vector<T>> m_groups;
 };

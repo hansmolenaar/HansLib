@@ -66,9 +66,9 @@ bool TaggerDistance::less(GraphVertex vertex0, GraphVertex vertex1) const
     return getVertexTag(vertex0) < getVertexTag(vertex1);
 }
 
-bool TaggerDistance::equal(GraphVertex vertex0, const IVertexCompare &other, GraphVertex vertex1) const
+bool TaggerDistance::less(GraphVertex vertex0, const IVertexCompare &other, GraphVertex vertex1) const
 {
-    return getVertexTag(vertex0) == dynamic_cast<const TaggerDistance &>(other).getVertexTag(vertex1);
+    return getVertexTag(vertex0) < dynamic_cast<const TaggerDistance &>(other).getVertexTag(vertex1);
 }
 
 // !!!!!!!!!!!!! FACTORY

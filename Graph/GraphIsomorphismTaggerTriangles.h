@@ -19,7 +19,7 @@ class TaggerTriangles : public IGraphTagger, public IVertexTagger, public IVerte
 
     const Graph::IGraphUs &getGraph() const override;
     bool less(GraphVertex, GraphVertex) const override;
-    bool equal(GraphVertex, const IVertexCompare &, GraphVertex) const override;
+    bool less(GraphVertex, const IVertexCompare &, GraphVertex) const override;
 
     static std::vector<std::array<GraphVertex, 3>> getAllTriangles(const Graph::IGraphUs &);
 

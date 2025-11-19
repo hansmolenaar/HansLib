@@ -19,7 +19,7 @@ class TaggerMaxDegree : public IVertexTagger, public IGraphTagger, public IVerte
 
     const Graph::IGraphUs &getGraph() const override;
     bool less(GraphVertex, GraphVertex) const override;
-    bool equal(GraphVertex, const IVertexCompare &, GraphVertex) const override;
+    bool less(GraphVertex, const IVertexCompare &, GraphVertex) const override;
 
   private:
     const Graph::IGraphUs &m_graph;

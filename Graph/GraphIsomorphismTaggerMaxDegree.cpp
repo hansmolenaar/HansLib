@@ -40,13 +40,12 @@ const Graph::IGraphUs &TaggerMaxDegree::getGraph() const
 
 bool TaggerMaxDegree::less(GraphVertex vertex0, GraphVertex vertex1) const
 {
-    return m_graph.getDegree(vertex0) < m_graph.getDegree(vertex1);
+    return getVertexTag(vertex0) < getVertexTag(vertex1);
 }
 
-bool TaggerMaxDegree::equal(GraphVertex vertex0, const IVertexCompare &other, GraphVertex vertex1) const
+bool TaggerMaxDegree::less(GraphVertex vertex0, const IVertexCompare &other, GraphVertex vertex1) const
 {
-    return m_fullyConnected2id.contains(vertex0) ==
-           dynamic_cast<const TaggerMaxDegree &>(other).m_fullyConnected2id.contains(vertex1);
+    return getVertexTag(vertex0) < dynamic_cast<const TaggerMaxDegree &>(other).getVertexTag(vertex1);
 }
 
 // !!!!!!!!!!!!!!!!!

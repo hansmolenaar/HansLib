@@ -13,7 +13,7 @@ class VertexComparers : public IVertexCompare
 
     const Graph::IGraphUs &getGraph() const override;
     bool less(GraphVertex, GraphVertex) const override;
-    bool equal(GraphVertex, const IVertexCompare &, GraphVertex) const override;
+    bool less(GraphVertex, const IVertexCompare &, GraphVertex) const override;
 
     bool operator<(const VertexComparers &) const;
 
