@@ -64,3 +64,26 @@ bool VertexComparers::equal(GraphVertex v0, const IVertexCompare &otherCompare, 
     }
     return true;
 }
+
+bool VertexComparers::operator<(const VertexComparers &other) const
+{
+    if (m_grouping.getGroupSizes() != other.m_grouping.getGroupSizes())
+    {
+        return false;
+    }
+
+    const auto &groups0 = m_grouping();
+    const auto &groups1 = other.m_grouping();
+
+    const auto nGroups = groups0.size();
+    for (size_t n = 0; n < nGroups; ++n)
+    {
+        const GraphVertex v0 = groups0.at(n).front();
+        const GraphVertex v1 = groups1.at(n).front();
+        if (!equal(v0, other, v1))
+        {
+            return false;
+        }
+    }
+    return true;
+}

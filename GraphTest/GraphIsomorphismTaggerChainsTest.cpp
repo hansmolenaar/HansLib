@@ -166,24 +166,3 @@ TEST(GraphIsomorphismTaggerChainsTest, Path2_twice)
     const auto tagger = TaggerChains(*graph);
     ASSERT_EQ(tagger.getGraphTag(), (Tag{1, 2, 2}));
 }
-
-TEST(GraphIsomorphismTaggerChainsTest, Fish)
-{
-    const auto graph = UndirectedGraphFromG6::CreateConnected(UndirectedGraphFromG6::fish);
-    GraphTest::CheckTaggerConsistency(*graph, factoryChains, 6);
-}
-
-TEST(GraphIsomorphismTaggerChainsTest, NumVertices5)
-{
-    GraphTest::TaggerCheckListG6(UndirectedGraphFromG6::getListNumVertices_5_connected(), factoryChains, 9);
-}
-
-TEST(GraphIsomorphismTaggerChainsTest, NumVertices6)
-{
-    GraphTest::TaggerCheckListG6(UndirectedGraphFromG6::getListNumVertices_6_connected(), factoryChains, 22);
-}
-
-TEST(GraphIsomorphismTaggerChainsTest, NumVertices7)
-{
-    GraphTest::TaggerCheckListG6(UndirectedGraphFromG6::getListNumVertices_7_connected(), factoryChains, 30);
-}

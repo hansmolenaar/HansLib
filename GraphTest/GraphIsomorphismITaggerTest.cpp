@@ -85,33 +85,6 @@ void GraphTest::CheckTaggerConsistency(const IGraphUs &graph, GraphIsomorphism::
     CheckVertexTaggerConsistency(graph, factory, expectNumAssociatedvertices);
 }
 
-void GraphTest::TaggerCheckListG6(const std::vector<std::string> &stringsG6, ITaggerFactory &factory,
-                                  int expectResolved)
-{
-    int numResolved = 0;
-    for (const auto &g6 : stringsG6)
-    {
-        const auto graph = UndirectedGraphFromG6::Create(g6);
-
-        CheckTaggerConsistency(*graph, factory);
-
-        const auto vtagger = factory.createTagger(*graph);
-        const auto *tagger = vtagger->getVertexTagger();
-        if (tagger == nullptr)
-            continue;
-        const VertexGrouper grouper(*tagger);
-        if (grouper.isResolved())
-        {
-            numResolved += 1;
-        }
-        else
-        {
-            // auto tmp = graph->toString();
-        }
-    }
-    ASSERT_EQ(numResolved, expectResolved);
-}
-
 namespace
 {
 

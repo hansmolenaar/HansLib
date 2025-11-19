@@ -9,7 +9,6 @@
 #include "GraphIsomorphismTaggerMaxDegree.h"
 #include "GraphIsomorphismTaggerNumbers.h"
 #include "GraphIsomorphismTaggerTriangles.h"
-#include "GraphIsomorphismVertexGrouper.h"
 
 using namespace GraphIsomorphism;
 
