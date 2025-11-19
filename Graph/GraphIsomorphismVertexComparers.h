@@ -15,6 +15,8 @@ class VertexComparers : public IVertexCompare
     bool less(GraphVertex, GraphVertex) const override;
     bool equal(GraphVertex, const IVertexCompare &, GraphVertex) const override;
 
+    bool operator<(const VertexComparers &) const;
+
 #if false
     int countUnique() const;
     bool isResolved() const;
