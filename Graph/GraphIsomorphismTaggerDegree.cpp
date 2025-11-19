@@ -24,6 +24,17 @@ GraphVertex TaggerDegree::getNumVertices() const
 {
     return m_graph.getNumVertices();
 }
+
+bool TaggerDegree::less(GraphVertex vertex0, GraphVertex vertex1) const
+{
+    return m_graph.getDegree(vertex0) < m_graph.getDegree(vertex1);
+}
+
+bool TaggerDegree::equal(GraphVertex vertex0, const IVertexCompare &other, GraphVertex vertex1) const
+{
+    return m_graph.getDegree(vertex0) < dynamic_cast<const TaggerDegree &>(other).m_graph.getDegree(vertex1);
+}
+
 // !!!!!!!!!!!!! FACTORY
 
 std::unique_ptr<ITagger> TaggerDegreeFactory::createTagger(const Graph::IGraphUs &graph)

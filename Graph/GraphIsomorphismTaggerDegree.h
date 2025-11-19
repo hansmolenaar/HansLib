@@ -2,12 +2,13 @@
 
 #include "GraphIsomorphismDefines.h"
 #include "IGraphIsomorphismTagger.h"
+#include "IGraphIsomorphismVertexCompare.h"
 #include "IGraphUs.h"
 
 namespace GraphIsomorphism
 {
 
-class TaggerDegree : public IGraphTagger, public IVertexTagger
+class TaggerDegree : public IGraphTagger, public IVertexTagger, public IVertexCompare
 {
   public:
     explicit TaggerDegree(const Graph::IGraphUs &);
@@ -15,6 +16,9 @@ class TaggerDegree : public IGraphTagger, public IVertexTagger
     const Tag &getGraphTag() const override;
     const Tag &getVertexTag(GraphVertex) const override;
     GraphVertex getNumVertices() const override;
+
+    bool less(GraphVertex, GraphVertex) const override;
+    bool equal(GraphVertex, const IVertexCompare &, GraphVertex) const override;
 
   private:
     const Graph::IGraphUs &m_graph;
