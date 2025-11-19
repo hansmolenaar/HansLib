@@ -49,9 +49,9 @@ template <typename T> class Grouping
         std::vector<T> result;
         for (const auto &itr : m_groups)
         {
-            if (itr.second.size() == 1)
+            if (itr.size() == 1)
             {
-                result.emplace_back(itr.second.front());
+                result.emplace_back(itr.front());
             }
         }
         return result;
