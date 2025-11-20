@@ -16,15 +16,6 @@ class VertexComparers : public IVertexCompare
     std::weak_ordering compareOtherGraph(GraphVertex, const IVertexCompare &, GraphVertex) const override;
     std::weak_ordering operator<=>(const VertexComparers &) const;
 
-#if false
-    int countUnique() const;
-    bool isResolved() const;
-
-    std::weak_ordering operator<=>(const GraphIsomorphism::VertexGrouper &) const;
-    bool operator==(const GraphIsomorphism::VertexGrouper &) const;
-
-    GraphVertex getNumVertices() const;
-#endif
   private:
     std::vector<const IVertexCompare *> m_vertexComparers;
     std::map<GraphVertex, size_t> m_vertex2group;
