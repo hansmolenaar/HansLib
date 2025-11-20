@@ -9,36 +9,13 @@ using namespace GraphIsomorphism;
 using namespace Utilities;
 
 TaggedGraph::TaggedGraph(const Graph::IGraphUs &graph)
-    : m_graph(graph), m_taggers(getAllTaggers(m_graph)), m_vertexGroupTags(graph.getNumVertices()),
-      m_vertexComparers(selectVertexCompare(m_taggers)),
+    : m_graph(graph), m_taggers(getAllTaggers(m_graph)), m_vertexComparers(selectVertexCompare(m_taggers)),
       m_grouping(graph.getVertexRange(), VertexLess{m_vertexComparers})
 {
     for (const auto *graphTagger : selectGraphTaggers(m_taggers))
     {
         m_graphTags.emplace_back(graphTagger->getGraphTag());
     }
-    for (const auto *vertexTagger : selectVertexTaggers(m_taggers))
-    {
-        m_vertexGroupers.emplace_back(*vertexTagger);
-    }
-    for (const auto &grouper : m_vertexGroupers)
-    {
-        TagEntry groupEntry = 0;
-        for (const auto &tag : grouper.getTags())
-        {
-            ++groupEntry;
-            for (GraphVertex v : grouper.getGroupMembers(tag))
-            {
-                m_vertexGroupTags.at(v).push_back(groupEntry);
-            }
-        }
-    }
-
-    auto getTag = [this](GraphVertex v) { return m_vertexGroupTags.at(v); };
-    const TaggedGrouping<Tag, GraphVertex> grouping(m_graph.getVertexRange(), getTag);
-    m_uniqueVertexAndGroupTag = grouping.getUniqueTags();
-
-    str::sort(m_vertexGroupTags);
 }
 
 const Graph::IGraphUs &TaggedGraph::getGraph() const

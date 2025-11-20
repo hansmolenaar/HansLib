@@ -3,7 +3,6 @@
 #include "GraphIsomorphismDefines.h"
 #include "GraphIsomorphismStatus.h"
 #include "GraphIsomorphismVertexComparers.h"
-#include "GraphIsomorphismVertexGrouper.h"
 #include "IGraphIsomorphismTagger.h"
 #include "IGraphUs.h"
 
@@ -25,9 +24,6 @@ class TaggedGraph
     const Graph::IGraphUs &m_graph;
     std::vector<std::unique_ptr<ITagger>> m_taggers;
     GraphTags m_graphTags; // For quick testing
-    std::vector<VertexGrouper> m_vertexGroupers;
-    std::vector<Tag> m_vertexGroupTags; // Sorted
-    std::map<Tag, GraphVertex> m_uniqueVertexAndGroupTag;
     VertexComparers m_vertexComparers;
     Grouping<GraphVertex> m_grouping;
 };
