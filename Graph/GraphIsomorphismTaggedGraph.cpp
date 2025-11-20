@@ -9,7 +9,8 @@ using namespace GraphIsomorphism;
 using namespace Utilities;
 
 TaggedGraph::TaggedGraph(const Graph::IGraphUs &graph)
-    : m_graph(graph), m_taggers(getAllTaggers(m_graph)), m_vertexGroupTags(graph.getNumVertices())
+    : m_graph(graph), m_taggers(getAllTaggers(m_graph)), m_vertexGroupTags(graph.getNumVertices()),
+      m_vertexComparers(selectVertexCompare(m_taggers))
 {
     for (const auto *graphTagger : selectGraphTaggers(m_taggers))
     {
@@ -48,7 +49,7 @@ std::weak_ordering TaggedGraph::operator<=>(const TaggedGraph &rhs) const
 {
     const auto &lhs = *this;
     std::weak_ordering result = lhs.m_graphTags <=> rhs.m_graphTags;
-    if (result != 0)
+    if (result != std::weak_ordering::equivalent)
     {
         return result;
     }
@@ -57,7 +58,7 @@ std::weak_ordering TaggedGraph::operator<=>(const TaggedGraph &rhs) const
     {
         result = lhs.m_vertexGroupers.at(n) <=> rhs.m_vertexGroupers.at(n);
 
-        if (result != 0)
+        if (result != std::weak_ordering::equivalent)
         {
             return result;
         }

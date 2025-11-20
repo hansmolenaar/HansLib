@@ -83,11 +83,12 @@ std::weak_ordering VertexComparers::compareOtherGraph(GraphVertex v0, const IVer
     return result;
 }
 
-bool VertexComparers::operator<(const VertexComparers &other) const
+std::weak_ordering VertexComparers::operator<=>(const VertexComparers &other) const
 {
-    if (m_grouping.getGroupSizes() < other.m_grouping.getGroupSizes())
+    std::weak_ordering result = m_grouping.getGroupSizes() <=> other.m_grouping.getGroupSizes();
+    if (result != std::weak_ordering::equivalent)
     {
-        return true;
+        return result;
     }
 
     const auto &groups0 = m_grouping();
@@ -98,15 +99,11 @@ bool VertexComparers::operator<(const VertexComparers &other) const
     {
         const GraphVertex v0 = groups0.at(n).front();
         const GraphVertex v1 = groups1.at(n).front();
-        const auto cmp = compareOtherGraph(v0, other, v1);
-        if (cmp == std::weak_ordering::less)
+        result = compareOtherGraph(v0, other, v1);
+        if (result != std::weak_ordering::equivalent)
         {
-            return true;
-        }
-        else if (cmp == std::weak_ordering::greater)
-        {
-            return false;
+            return result;
         }
     }
-    return false;
+    return result;
 }
