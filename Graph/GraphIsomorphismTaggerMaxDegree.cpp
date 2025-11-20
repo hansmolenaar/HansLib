@@ -23,11 +23,6 @@ const Tag &TaggerMaxDegree::getVertexTag(GraphVertex v) const
     return TagFlyweight::getSingleEntryTag(m_fullyConnected2id.at(v));
 }
 
-GraphVertex TaggerMaxDegree ::getNumVertices() const
-{
-    return m_graph.getNumVertices();
-}
-
 const Tag &TaggerMaxDegree::getGraphTag() const
 {
     return m_graphTag;

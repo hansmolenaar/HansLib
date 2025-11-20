@@ -51,11 +51,6 @@ const Tag &TaggerDistance::getGraphTag() const
     return m_graphTag;
 }
 
-GraphVertex TaggerDistance::getNumVertices() const
-{
-    return m_tags.size();
-}
-
 const IGraphUs &TaggerDistance::getGraph() const
 {
     return m_distances->getGraph();

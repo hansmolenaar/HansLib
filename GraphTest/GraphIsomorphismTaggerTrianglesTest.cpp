@@ -81,7 +81,6 @@ TEST(GraphIsomorphismTaggerTrianglesTest, Diamond)
     const TaggerTriangles tagger(*graph);
     ASSERT_EQ(tagger.getGraphTag(), (Tag{1, 2, 2, 2}));
 
-    ASSERT_EQ(tagger.getNumVertices(), 4);
     ASSERT_EQ(Single(tagger.getVertexTag(0)), 1);
     ASSERT_EQ(Single(tagger.getVertexTag(1)), 2);
     ASSERT_EQ(Single(tagger.getVertexTag(2)), 2);

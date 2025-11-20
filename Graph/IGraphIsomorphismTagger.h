@@ -33,7 +33,6 @@ class IVertexTagger : public virtual ITagger
 {
   public:
     virtual const Tag &getVertexTag(GraphVertex) const = 0;
-    virtual GraphVertex getNumVertices() const = 0;
     const Tag &operator()(GraphVertex v) const
     {
         return getVertexTag(v);

@@ -50,11 +50,6 @@ const Tag &TaggerTriangles::getVertexTag(GraphVertex v) const
     return TagFlyweight::getSingleEntryTag(m_countPerVertex.at(v));
 }
 
-GraphVertex TaggerTriangles ::getNumVertices() const
-{
-    return m_countPerVertex.size();
-}
-
 std::vector<std::array<GraphVertex, 3>> TaggerTriangles::getAllTriangles(const Graph::IGraphUs &graph)
 {
     const auto nVertices = graph.getNumVertices();

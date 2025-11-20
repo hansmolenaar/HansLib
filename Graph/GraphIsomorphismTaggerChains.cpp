@@ -360,11 +360,6 @@ const Tag &TaggerChains::getVertexTag(GraphVertex v) const
     return m_vertexTags.at(v);
 }
 
-GraphVertex TaggerChains::getNumVertices() const
-{
-    return m_vertexTags.size();
-}
-
 const Tag &TaggerChains::getGraphTag() const
 {
     return m_graphTag;

@@ -103,7 +103,7 @@ void CheckTaggerBasics(GraphIsomorphism::ITaggerFactory &factory, const IGraphUs
     const auto *vertexChecker = tagger->getVertexTagger();
     if (vertexChecker != nullptr)
     {
-        ASSERT_EQ(vertexChecker->getNumVertices(), nVertices);
+        ASSERT_EQ(graph.getNumVertices(), nVertices);
         for (GraphVertex v = 0; v < nVertices; ++v)
         {
             EXPECT_NO_THROW(tag = vertexChecker->getVertexTag(v));

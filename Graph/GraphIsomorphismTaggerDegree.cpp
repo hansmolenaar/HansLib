@@ -20,11 +20,6 @@ const Tag &TaggerDegree::getVertexTag(GraphVertex v) const
     return TagFlyweight::getSingleEntryTag(m_graph.getDegree(v));
 }
 
-GraphVertex TaggerDegree::getNumVertices() const
-{
-    return m_graph.getNumVertices();
-}
-
 const Graph::IGraphUs &TaggerDegree::getGraph() const
 {
     return m_graph;

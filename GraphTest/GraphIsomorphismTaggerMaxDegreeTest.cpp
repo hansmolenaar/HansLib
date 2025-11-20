@@ -31,8 +31,6 @@ TEST(GraphIsomorphismTaggerMaxDegreeTest, Path3)
     ASSERT_EQ(tagger.getVertexTag(0), (Tag{0}));
     ASSERT_EQ(tagger.getVertexTag(1), (Tag{1}));
     ASSERT_EQ(tagger.getVertexTag(2), (Tag{0}));
-
-    ASSERT_EQ(tagger.getNumVertices(), 3);
 }
 
 TEST(GraphIsomorphismTaggerMaxDegreeTest, Diamond)
