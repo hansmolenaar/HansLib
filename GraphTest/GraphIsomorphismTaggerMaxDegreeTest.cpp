@@ -28,9 +28,9 @@ TEST(GraphIsomorphismTaggerMaxDegreeTest, Path3)
 
     const TaggerMaxDegree tagger(*graph);
     ASSERT_EQ(tagger.getGraphTag(), (Tag{1}));
-    ASSERT_EQ(tagger.getVertexTag(0), (Tag{0}));
-    ASSERT_EQ(tagger.getVertexTag(1), (Tag{1}));
-    ASSERT_EQ(tagger.getVertexTag(2), (Tag{0}));
+    ASSERT_EQ(tagger.getVertexTag(0), 0);
+    ASSERT_EQ(tagger.getVertexTag(1), 1);
+    ASSERT_EQ(tagger.getVertexTag(2), 0);
 }
 
 TEST(GraphIsomorphismTaggerMaxDegreeTest, Diamond)
@@ -39,11 +39,10 @@ TEST(GraphIsomorphismTaggerMaxDegreeTest, Diamond)
     TaggerMaxDegreeFactory factory;
     GraphTest::CheckTaggerConsistency(*graph, factory, 2);
 
-    const auto vtagger = factory.createTagger(*graph);
-    const auto *tagger = vtagger->getVertexTagger();
-    ASSERT_EQ(vtagger->getGraphTagger()->getGraphTag(), (Tag{2}));
-    ASSERT_TRUE(str::equal(tagger->getVertexTag(0), Tag{0}));
-    ASSERT_TRUE(str::equal(tagger->getVertexTag(1), Tag{1}));
-    ASSERT_TRUE(str::equal(tagger->getVertexTag(2), Tag{2}));
-    ASSERT_TRUE(str::equal(tagger->getVertexTag(3), Tag{0}));
+    const TaggerMaxDegree tagger(*graph);
+    ASSERT_EQ(tagger.getGraphTag(), (Tag{2}));
+    ASSERT_EQ(tagger.getVertexTag(0), 0);
+    ASSERT_EQ(tagger.getVertexTag(1), 1);
+    ASSERT_EQ(tagger.getVertexTag(2), 2);
+    ASSERT_EQ(tagger.getVertexTag(3), 0);
 }

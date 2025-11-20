@@ -14,13 +14,13 @@ TaggerMaxDegree::TaggerMaxDegree(const Graph::IGraphUs &graph) : m_graph(graph)
     m_graphTag = TagFlyweight::getSingleEntryTag(m_fullyConnected2id.size());
 }
 
-const Tag &TaggerMaxDegree::getVertexTag(GraphVertex v) const
+TagEntry TaggerMaxDegree::getVertexTag(GraphVertex v) const
 {
     if (!m_fullyConnected2id.contains(v))
     {
-        return TagFlyweight::getSingleEntryTag(0);
+        return 0;
     }
-    return TagFlyweight::getSingleEntryTag(m_fullyConnected2id.at(v));
+    return m_fullyConnected2id.at(v);
 }
 
 const Tag &TaggerMaxDegree::getGraphTag() const

@@ -15,11 +15,6 @@ const Tag &TaggerDegree::getGraphTag() const
     return m_degreeSequenceTag;
 }
 
-const Tag &TaggerDegree::getVertexTag(GraphVertex v) const
-{
-    return TagFlyweight::getSingleEntryTag(m_graph.getDegree(v));
-}
-
 const Graph::IGraphUs &TaggerDegree::getGraph() const
 {
     return m_graph;

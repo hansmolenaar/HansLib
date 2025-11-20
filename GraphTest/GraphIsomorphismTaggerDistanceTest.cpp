@@ -43,15 +43,14 @@ TEST(GraphIsomorphismTaggerDistanceTest, Star121)
     TaggerDistanceFactory factory;
     GraphTest::CheckTaggerConsistency(*graph, factory, 3);
 
-    const auto vtagger = factory.createTagger(*graph);
-    const auto *tagger = vtagger->getVertexTagger();
-    ASSERT_TRUE(str::equal(tagger->getVertexTag(0), Tag{3, 1}));
-    ASSERT_TRUE(str::equal(tagger->getVertexTag(1), Tag{1, 2, 1}));
-    ASSERT_TRUE(str::equal(tagger->getVertexTag(2), Tag{2, 2}));
-    ASSERT_TRUE(str::equal(tagger->getVertexTag(3), Tag{1, 1, 2}));
-    ASSERT_TRUE(str::equal(tagger->getVertexTag(4), Tag{1, 2, 1}));
+    TaggerDistance tagger(*graph);
+    ASSERT_TRUE(str::equal(tagger.getVertexTag(0), Tag{3, 1}));
+    ASSERT_TRUE(str::equal(tagger.getVertexTag(1), Tag{1, 2, 1}));
+    ASSERT_TRUE(str::equal(tagger.getVertexTag(2), Tag{2, 2}));
+    ASSERT_TRUE(str::equal(tagger.getVertexTag(3), Tag{1, 1, 2}));
+    ASSERT_TRUE(str::equal(tagger.getVertexTag(4), Tag{1, 2, 1}));
 
-    const auto graphTag = TaggerDistance(*graph).getGraphTag();
+    const auto graphTag = tagger.getGraphTag();
     ASSERT_EQ(graphTag, (Tag{2, 2, 3, 3}));
 }
 

@@ -37,10 +37,9 @@ TEST(GraphIsomorphismTaggerChainsTest, PurePath2)
 {
     const GraphUsc graph(*UndirectedGraphLibrary::Get_Path(2));
     GraphTest::CheckTaggerConsistency(graph, factoryChains, 2);
-    const auto gtagger = factoryChains.createTagger(graph);
-    const auto *tagger = gtagger->getVertexTagger();
-    ASSERT_TRUE(str::equal(tagger->getVertexTag(0), Tag{1, 2, 1, 0}));
-    ASSERT_TRUE(str::equal(tagger->getVertexTag(1), Tag{1, 2, 1, 1}));
+    const auto tagger = TaggerChains(graph);
+    ASSERT_TRUE(str::equal(tagger.getVertexTag(0), Tag{1, 2, 1, 0}));
+    ASSERT_TRUE(str::equal(tagger.getVertexTag(1), Tag{1, 2, 1, 1}));
 }
 
 TEST(GraphIsomorphismTaggerChainsTest, PurePath3)

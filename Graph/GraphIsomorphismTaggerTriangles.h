@@ -14,7 +14,7 @@ class TaggerTriangles : public IGraphTagger, public IVertexTagger, public IVerte
     explicit TaggerTriangles(const Graph::IGraphUs &);
 
     const Tag &getGraphTag() const override;
-    const Tag &getVertexTag(GraphVertex) const override;
+    TagEntry getVertexTag(GraphVertex) const ;
 
     const Graph::IGraphUs &getGraph() const override;
     std::weak_ordering compare(GraphVertex, GraphVertex) const override;

@@ -14,7 +14,6 @@ class TaggerDegree : public IGraphTagger, public IVertexTagger, public IVertexCo
     explicit TaggerDegree(const Graph::IGraphUs &);
 
     const Tag &getGraphTag() const override;
-    const Tag &getVertexTag(GraphVertex) const override;
 
     const Graph::IGraphUs &getGraph() const override;
     std::weak_ordering compare(GraphVertex, GraphVertex) const override;

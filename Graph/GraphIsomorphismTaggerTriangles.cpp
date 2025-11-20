@@ -45,9 +45,9 @@ const Tag &TaggerTriangles::getGraphTag() const
     return m_graphTag;
 }
 
-const Tag &TaggerTriangles::getVertexTag(GraphVertex v) const
+TagEntry TaggerTriangles::getVertexTag(GraphVertex v) const
 {
-    return TagFlyweight::getSingleEntryTag(m_countPerVertex.at(v));
+    return m_countPerVertex.at(v);
 }
 
 std::vector<std::array<GraphVertex, 3>> TaggerTriangles::getAllTriangles(const Graph::IGraphUs &graph)

@@ -228,11 +228,11 @@ TEST(GraphIsomorphismTaggedGraphTest, SpecialCase1)
     const TaggerTriangles taggerTriangles0(*g0);
     const TaggerTriangles taggerTriangles1(*g1);
 
-    ASSERT_EQ(Single(taggerTriangles0.getVertexTag(3)), 2);
-    ASSERT_EQ(Single(taggerTriangles0.getVertexTag(4)), 2);
+    ASSERT_EQ(taggerTriangles0.getVertexTag(3), 2);
+    ASSERT_EQ(taggerTriangles0.getVertexTag(4), 2);
 
-    ASSERT_EQ(Single(taggerTriangles1.getVertexTag(3)), 2);
-    ASSERT_EQ(Single(taggerTriangles1.getVertexTag(4)), 1);
+    ASSERT_EQ(taggerTriangles1.getVertexTag(3), 2);
+    ASSERT_EQ(taggerTriangles1.getVertexTag(4), 1);
 
     const TaggerChains taggerChains0(*g0);
     const TaggerChains taggerChains1(*g1);

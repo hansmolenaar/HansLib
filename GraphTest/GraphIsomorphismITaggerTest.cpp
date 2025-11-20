@@ -100,16 +100,6 @@ void CheckTaggerBasics(GraphIsomorphism::ITaggerFactory &factory, const IGraphUs
         EXPECT_NO_THROW(tag = graphChecker->getGraphTag());
     }
 
-    const auto *vertexChecker = tagger->getVertexTagger();
-    if (vertexChecker != nullptr)
-    {
-        ASSERT_EQ(graph.getNumVertices(), nVertices);
-        for (GraphVertex v = 0; v < nVertices; ++v)
-        {
-            EXPECT_NO_THROW(tag = vertexChecker->getVertexTag(v));
-        }
-    }
-
     const IVertexCompare *vertexComparer = dynamic_cast<const GraphIsomorphism::IVertexCompare *>(tagger.get());
     if (vertexComparer != nullptr)
     {
