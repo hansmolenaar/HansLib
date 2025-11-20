@@ -99,15 +99,6 @@ std::vector<const IGraphTagger *> GraphIsomorphism::selectGraphTaggers(
     return result;
 }
 
-std::vector<const IVertexTagger *> GraphIsomorphism::selectVertexTaggers(
-    const std::vector<std::unique_ptr<ITagger>> &taggers)
-{
-    std::vector<const IVertexTagger *> result(taggers.size());
-    str::transform(taggers, result.begin(), [](const auto &tagger) { return tagger->getVertexTagger(); });
-    result.erase(std::remove(result.begin(), result.end(), nullptr), result.end());
-    return result;
-}
-
 std::vector<const IVertexCompare *> GraphIsomorphism::selectVertexCompare(
     const std::vector<std::unique_ptr<ITagger>> &taggers)
 {

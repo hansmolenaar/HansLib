@@ -12,7 +12,6 @@ namespace GraphIsomorphism
 {
 
 class IGraphTagger;
-class IVertexTagger;
 
 class ITagger
 {
@@ -20,19 +19,12 @@ class ITagger
     virtual ~ITagger() = default;
 
     const IGraphTagger *getGraphTagger() const;
-    const IVertexTagger *getVertexTagger() const;
 };
 
 class IGraphTagger : public virtual ITagger
 {
   public:
     virtual const Tag &getGraphTag() const = 0;
-};
-
-class IVertexTagger : public virtual ITagger
-{
-  public:
-    //virtual const Tag &getVertexTag(GraphVertex) const = 0;
 };
 
 class ITaggerFactory

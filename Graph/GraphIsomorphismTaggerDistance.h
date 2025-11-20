@@ -12,7 +12,7 @@ class UndirectedGraphDistance;
 namespace GraphIsomorphism
 {
 
-class TaggerDistance : public IVertexTagger, public IGraphTagger, public IVertexCompare
+class TaggerDistance : public IGraphTagger, public IVertexCompare
 {
   public:
     explicit TaggerDistance(std::shared_ptr<Graph::UndirectedGraphDistance>);

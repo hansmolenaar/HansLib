@@ -8,7 +8,7 @@
 namespace GraphIsomorphism
 {
 
-class TaggerMaxDegree : public IVertexTagger, public IGraphTagger, public IVertexCompare
+class TaggerMaxDegree : public IGraphTagger, public IVertexCompare
 {
   public:
     explicit TaggerMaxDegree(const Graph::IGraphUs &);

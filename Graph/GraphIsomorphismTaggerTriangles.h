@@ -8,7 +8,7 @@
 namespace GraphIsomorphism
 {
 
-class TaggerTriangles : public IGraphTagger, public IVertexTagger, public IVertexCompare
+class TaggerTriangles : public IGraphTagger, public IVertexCompare
 {
   public:
     explicit TaggerTriangles(const Graph::IGraphUs &);

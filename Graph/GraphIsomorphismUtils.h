@@ -14,7 +14,6 @@ template <typename T> GraphIsomorphism::Tag CondenseSizeSequence(const std::vect
 std::vector<ITaggerFactory *> getTaggerFactories();
 std::vector<std::unique_ptr<ITagger>> getAllTaggers(const Graph::IGraphUs &);
 std::vector<const IGraphTagger *> selectGraphTaggers(const std::vector<std::unique_ptr<ITagger>> &);
-std::vector<const IVertexTagger *> selectVertexTaggers(const std::vector<std::unique_ptr<ITagger>> &);
 std::vector<const IVertexCompare *> selectVertexCompare(const std::vector<std::unique_ptr<ITagger>> &);
 
 void toAdjacentyList(const Graph::IGraphUs &, std::ostream &);
