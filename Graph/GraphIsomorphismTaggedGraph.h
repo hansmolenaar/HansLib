@@ -29,6 +29,7 @@ class TaggedGraph
     std::vector<Tag> m_vertexGroupTags; // Sorted
     std::map<Tag, GraphVertex> m_uniqueVertexAndGroupTag;
     VertexComparers m_vertexComparers;
+    Grouping<GraphVertex> m_grouping;
 };
 
 } // namespace GraphIsomorphism

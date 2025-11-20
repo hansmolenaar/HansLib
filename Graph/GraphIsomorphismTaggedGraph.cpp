@@ -10,7 +10,8 @@ using namespace Utilities;
 
 TaggedGraph::TaggedGraph(const Graph::IGraphUs &graph)
     : m_graph(graph), m_taggers(getAllTaggers(m_graph)), m_vertexGroupTags(graph.getNumVertices()),
-      m_vertexComparers(selectVertexCompare(m_taggers))
+      m_vertexComparers(selectVertexCompare(m_taggers)),
+      m_grouping(graph.getVertexRange(), VertexLess{m_vertexComparers})
 {
     for (const auto *graphTagger : selectGraphTaggers(m_taggers))
     {
@@ -54,17 +55,7 @@ std::weak_ordering TaggedGraph::operator<=>(const TaggedGraph &rhs) const
         return result;
     }
 
-    for (size_t n = 0; n < m_vertexGroupers.size(); ++n)
-    {
-        result = lhs.m_vertexGroupers.at(n) <=> rhs.m_vertexGroupers.at(n);
-
-        if (result != std::weak_ordering::equivalent)
-        {
-            return result;
-        }
-    }
-
-    return lhs.m_vertexGroupTags <=> rhs.m_vertexGroupTags;
+    return lhs.m_vertexComparers <=> rhs.m_vertexComparers;
 }
 
 bool TaggedGraph::operator==(const TaggedGraph &rhs) const
@@ -83,12 +74,12 @@ Status TaggedGraph::tryConnect(const TaggedGraph &tg0, const TaggedGraph &tg1)
         return result;
     }
 
-    for (const auto &itr : tg0.m_uniqueVertexAndGroupTag)
+    const auto uniqueValues0 = tg0.m_grouping.getUniqueValues();
+    const auto uniqueValues1 = tg1.m_grouping.getUniqueValues();
+    MyAssert(uniqueValues0.size() == uniqueValues1.size());
+    for (const auto vertex01 : stv::zip(uniqueValues0, uniqueValues1))
     {
-        const auto &tag = itr.first;
-        const GraphVertex vertex0 = tg0.m_uniqueVertexAndGroupTag.at(tag);
-        const GraphVertex vertex1 = tg1.m_uniqueVertexAndGroupTag.at(tag);
-        result.addPair(VertexPair{vertex0, vertex1});
+        result.addPair(vertex01);
     }
 
     return result;
