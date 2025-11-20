@@ -2,7 +2,6 @@
 
 #include "GraphIsomorphismDefines.h"
 #include "IGraphIsomorphismTagger.h"
-#include "IGraphIsomorphismVertexCompare.h"
 #include "IGraphUsc.h"
 
 namespace GraphIsomorphism
@@ -14,7 +13,7 @@ class TaggerMaxDegree : public IGraphTagger, public IVertexCompare
     explicit TaggerMaxDegree(const Graph::IGraphUs &);
 
     const Tag &getGraphTag() const override;
-    TagEntry getVertexTag(GraphVertex) const ;
+    TagEntry getVertexTag(GraphVertex) const;
     const Graph::IGraphUs &getGraph() const override;
     std::weak_ordering compare(GraphVertex, GraphVertex) const override;
     std::weak_ordering compareOtherGraph(GraphVertex, const IVertexCompare &, GraphVertex) const override;

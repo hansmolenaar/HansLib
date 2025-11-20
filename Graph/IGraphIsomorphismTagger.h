@@ -12,6 +12,7 @@ namespace GraphIsomorphism
 {
 
 class IGraphTagger;
+class IVertexCompare;
 
 class ITagger
 {
@@ -19,12 +20,31 @@ class ITagger
     virtual ~ITagger() = default;
 
     const IGraphTagger *getGraphTagger() const;
+    const IVertexCompare *getVertexCompare() const;
 };
 
 class IGraphTagger : public virtual ITagger
 {
   public:
     virtual const Tag &getGraphTag() const = 0;
+};
+
+class IVertexCompare : public virtual ITagger
+{
+  public:
+    ~IVertexCompare() = default;
+    virtual const Graph::IGraphUs &getGraph() const = 0;
+    virtual std::weak_ordering compare(GraphVertex, GraphVertex) const = 0;
+    virtual std::weak_ordering compareOtherGraph(GraphVertex, const IVertexCompare &, GraphVertex) const = 0;
+};
+
+struct VertexLess
+{
+    bool operator()(GraphVertex v0, GraphVertex v1) const
+    {
+        return Compare.compare(v0, v1) < 0;
+    }
+    const IVertexCompare &Compare;
 };
 
 class ITaggerFactory

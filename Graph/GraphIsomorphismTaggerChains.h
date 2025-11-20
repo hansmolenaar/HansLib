@@ -2,7 +2,6 @@
 
 #include "GraphIsomorphismDefines.h"
 #include "IGraphIsomorphismTagger.h"
-#include "IGraphIsomorphismVertexCompare.h"
 #include "IGraphUsc.h"
 
 namespace GraphIsomorphism

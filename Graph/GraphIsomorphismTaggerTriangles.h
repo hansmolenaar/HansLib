@@ -2,7 +2,6 @@
 
 #include "GraphIsomorphismDefines.h"
 #include "IGraphIsomorphismTagger.h"
-#include "IGraphIsomorphismVertexCompare.h"
 #include "IGraphUs.h"
 
 namespace GraphIsomorphism
@@ -14,7 +13,7 @@ class TaggerTriangles : public IGraphTagger, public IVertexCompare
     explicit TaggerTriangles(const Graph::IGraphUs &);
 
     const Tag &getGraphTag() const override;
-    TagEntry getVertexTag(GraphVertex) const ;
+    TagEntry getVertexTag(GraphVertex) const;
 
     const Graph::IGraphUs &getGraph() const override;
     std::weak_ordering compare(GraphVertex, GraphVertex) const override;

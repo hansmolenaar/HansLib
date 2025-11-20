@@ -1,7 +1,7 @@
 #pragma once
 
 #include "GraphIsomorphismGrouping.h"
-#include "IGraphIsomorphismVertexCompare.h"
+#include "IGraphIsomorphismTagger.h"
 
 namespace GraphIsomorphism
 {
