@@ -190,8 +190,8 @@ TEST(IGraphIsomorphismDecomposeTest, EdgePlusVertex)
     ASSERT_EQ(child1->getTag(), (Tag{0, 1, 0}));
     ASSERT_TRUE(child1->isLeaf());
 
-    const auto tag0 = toParent.collectDecomposeTags(child0);
-    const auto tag1 = toParent.collectDecomposeTags(child1);
+    const auto tag0 = toParent.collectDecomposeTagsForLeaf(child0);
+    const auto tag1 = toParent.collectDecomposeTagsForLeaf(child1);
     ASSERT_EQ(tag0, (std::vector<Tag>{Tag{0, 2, 1}, Tag{1, 1, 2}}));
     ASSERT_EQ(tag1, (std::vector<Tag>{Tag{0, 1, 0}, Tag{1, 1, 2}}));
     CheckDecompose(*graph, 2);

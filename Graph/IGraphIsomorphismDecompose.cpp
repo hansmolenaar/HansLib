@@ -259,16 +259,14 @@ bool ToParentMap::isRoot(const IDecompose *ptr) const
     return getParent(ptr) == nullptr;
 }
 
-std::vector<const DecomposeLeaf *> ToParentMap::getLeaves() const
+std::vector<const IDecompose *> ToParentMap::getLeaves() const
 {
-    std::vector<const DecomposeLeaf *> result;
+    std::vector<const IDecompose *> result;
     for (const auto &itr : m_toParent)
     {
-        const auto leaf = dynamic_cast<const DecomposeLeaf *>(itr.first);
-        MyAssert((leaf != nullptr) == itr.first->isLeaf());
-        if (leaf != nullptr)
+        if (itr.first->isLeaf())
         {
-            result.push_back(leaf);
+            result.push_back(itr.first);
         }
     }
     return result;
@@ -289,10 +287,9 @@ GraphVertex ToParentMap::getVertexInRoot(GraphVertex vertex, const IDecompose *d
     return vertex;
 }
 
-std::vector<Tag> ToParentMap::collectDecomposeTags(const DecomposeLeaf *leaf) const
+std::vector<Tag> ToParentMap::collectDecomposeTagsForLeaf(const IDecompose *decompose) const
 {
-    MyAssert(leaf != nullptr);
-    const IDecompose *decompose = leaf;
+    MyAssert(decompose != nullptr && decompose->isLeaf());
     std::vector<Tag> result;
     while (decompose != nullptr)
     {
@@ -318,9 +315,11 @@ const IDecompose *ToParentMap::getRoot() const
     return getRoot(m_toParent.begin()->first);
 }
 
-std::weak_ordering ToParentMap::compareLeaves(const DecomposeLeaf *leaf1, const DecomposeLeaf *leaf2) const
+std::weak_ordering ToParentMap::compareLeaves(const IDecompose *leaf1, const IDecompose *leaf2) const
 {
-    std::weak_ordering result = collectDecomposeTags(leaf1) <=> collectDecomposeTags(leaf2);
+    MyAssert(leaf1->isLeaf());
+    MyAssert(leaf2->isLeaf());
+    std::weak_ordering result = collectDecomposeTagsForLeaf(leaf1) <=> collectDecomposeTagsForLeaf(leaf2);
     if (result != 0)
     {
         return result;
@@ -343,12 +342,12 @@ std::weak_ordering ToParentMap::compareLeaves(const DecomposeLeaf *leaf1, const 
     return result;
 }
 
-Grouping<const DecomposeLeaf *> ToParentMap::groupLeaves() const
+Grouping<const IDecompose *> ToParentMap::groupLeaves() const
 {
-    auto cmp = [this](const DecomposeLeaf *leaf1, const DecomposeLeaf *leaf2) {
+    auto cmp = [this](const IDecompose *leaf1, const IDecompose *leaf2) {
         return compareLeaves(leaf1, leaf2) == std::weak_ordering::less;
     };
-    const Grouping<const DecomposeLeaf *> grouping(getLeaves(), cmp);
+    const Grouping<const IDecompose *> grouping(getLeaves(), cmp);
     return grouping;
 }
 
@@ -373,8 +372,8 @@ std::weak_ordering ToParentMap::operator<=>(const ToParentMap &map2) const
         const auto *leaf1 = group1.front();
         const auto *leaf2 = group2.front();
 
-        const auto pathTags1 = map1.collectDecomposeTags(leaf1);
-        const auto pathTags2 = map2.collectDecomposeTags(leaf2);
+        const auto pathTags1 = map1.collectDecomposeTagsForLeaf(leaf1);
+        const auto pathTags2 = map2.collectDecomposeTagsForLeaf(leaf2);
         result = pathTags1 <=> pathTags2;
         if (result != 0)
         {

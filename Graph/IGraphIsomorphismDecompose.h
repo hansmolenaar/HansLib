@@ -101,13 +101,13 @@ class ToParentMap
     const IDecompose *getRoot() const;
     const IDecompose *getRoot(const IDecompose *) const;
     const IDecompose *getParent(const IDecompose *) const;
-    std::vector<const DecomposeLeaf *> getLeaves() const;
+    std::vector<const IDecompose *> getLeaves() const;
     size_t size() const;
     GraphVertex getVertexInRoot(GraphVertex vertex, const IDecompose *) const;
-    std::vector<Tag> collectDecomposeTags(const DecomposeLeaf *) const;
+    std::vector<Tag> collectDecomposeTagsForLeaf(const IDecompose *) const;
 
-    std::weak_ordering compareLeaves(const DecomposeLeaf *, const DecomposeLeaf *) const;
-    GraphIsomorphism::Grouping<const DecomposeLeaf *> groupLeaves() const;
+    std::weak_ordering compareLeaves(const IDecompose *, const IDecompose *) const;
+    GraphIsomorphism::Grouping<const IDecompose *> groupLeaves() const;
 
     std::weak_ordering operator<=>(const ToParentMap &) const;
 
