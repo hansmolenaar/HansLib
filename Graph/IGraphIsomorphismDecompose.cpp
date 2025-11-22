@@ -107,6 +107,24 @@ bool IDecompose::isLeaf() const
     return getChildTags().empty();
 }
 
+std::weak_ordering IDecompose::operator<=>(const IDecompose &id1) const
+{
+    const IDecompose &id0 = *this;
+    std::weak_ordering result = id0.getTag() <=> id1.getTag();
+    if (result != std::weak_ordering::equivalent)
+    {
+        return result;
+    }
+
+    return id0.getTaggedGraph() <=> id1.getTaggedGraph();
+}
+
+Grouping<const IDecompose *> IDecompose::CreateGrouping(const std::vector<const IDecompose *> &children)
+{
+    auto compare = [](const IDecompose *child1, const IDecompose *child2) { return *child1 < *child2; };
+    return Grouping<const IDecompose *>(children, compare);
+}
+
 // !!!!!!!!!!! Leaf
 DecomposeLeaf::DecomposeLeaf(const Graph::IGraphUs &graph)
     : IDecompose(graph), m_tag{IDecomposeType::Leaf, static_cast<TagEntry>(graph.getNumVertices()),
@@ -134,6 +152,11 @@ std::vector<const IDecompose *> DecomposeLeaf::getChildren(const GraphTags &) co
     throw MyException("DecomposeLeaf::getChildren should not come here");
 }
 
+const Grouping<const IDecompose *> &DecomposeLeaf::getGroupingChildren() const
+{
+    throw MyException("DecomposeLeaf::getGrouping should not come here");
+}
+
 // !!!!!!!!!!! Disconnected
 DecomposeDisconnected::DecomposeDisconnected(const Graph::IGraphUs &graph)
     : IDecompose(graph), m_tag({IDecomposeType::Disconnected})
@@ -154,6 +177,7 @@ DecomposeDisconnected::DecomposeDisconnected(const Graph::IGraphUs &graph)
     }
     std::sort(m_tag.begin() + 1, m_tag.end());
 
+    std::vector<const IDecompose *> allChildren;
     for (const auto &child : m_children)
     {
         const auto tag = GetGraphTags(child);
@@ -162,7 +186,10 @@ DecomposeDisconnected::DecomposeDisconnected(const Graph::IGraphUs &graph)
             m_childTags.emplace_back(tag);
         }
         m_childDecomposes[tag].emplace_back(IDecompose::Create(child));
+        allChildren.push_back(m_childDecomposes[tag].back().get());
     }
+
+    m_groupingChildren = CreateGrouping(allChildren);
 }
 
 GraphVertex DecomposeDisconnected::getVertexInParent(GraphVertex v) const
@@ -187,6 +214,11 @@ std::vector<const IDecompose *> DecomposeDisconnected::getChildren(const GraphTa
     return result;
 }
 
+const Grouping<const IDecompose *> &DecomposeDisconnected::getGroupingChildren() const
+{
+    return m_groupingChildren;
+}
+
 // !!!!!!!!!!! fully connected vertices
 
 DecomposeVertexFullyConnected::DecomposeVertexFullyConnected(const Graph::IGraphUs &graph,
@@ -208,6 +240,7 @@ DecomposeVertexFullyConnected::DecomposeVertexFullyConnected(const Graph::IGraph
     auto remainderPart = std::make_unique<SubGraph>(graph, remainder);
     m_children.emplace_back(std::move(remainderPart));
 
+    std::vector<const IDecompose *> allChildren;
     for (const auto &child : m_children)
     {
         const auto tag = GetGraphTags(*child);
@@ -216,7 +249,10 @@ DecomposeVertexFullyConnected::DecomposeVertexFullyConnected(const Graph::IGraph
             m_childTags.emplace_back(tag);
         }
         m_childDecomposes[tag].emplace_back(IDecompose::Create(*child));
+        allChildren.push_back(m_childDecomposes[tag].back().get());
     }
+
+    m_groupingChildren = CreateGrouping(allChildren);
 }
 
 GraphVertex DecomposeVertexFullyConnected::getVertexInParent(GraphVertex v) const
@@ -240,6 +276,11 @@ std::vector<const IDecompose *> DecomposeVertexFullyConnected::getChildren(const
     std::vector<const IDecompose *> result(childrenWithTag.size());
     str::transform(childrenWithTag, result.begin(), [](const auto &kid) { return kid.get(); });
     return result;
+}
+
+const Grouping<const IDecompose *> &DecomposeVertexFullyConnected::getGroupingChildren() const
+{
+    return m_groupingChildren;
 }
 
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ToParent

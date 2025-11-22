@@ -177,23 +177,23 @@ TEST(IGraphIsomorphismDecomposeTest, EdgePlusVertex)
     ASSERT_EQ(decomposed->getTag(), (Tag{1, 1, 2}));
     const ToParentMap toParent(decomposed.get());
 
-    const auto &tags = decomposed->getChildTags();
-    ASSERT_EQ(tags.size(), 2);
+    const auto &grouping = decomposed->getGroupingChildren()();
+    ASSERT_EQ(grouping.size(), 2);
 
-    const auto *child0 = dynamic_cast<const DecomposeLeaf *>(Single(decomposed->getChildren(tags.at(0))));
-    ASSERT_EQ(child0->getGraph().getNumVertices(), 2);
-    ASSERT_EQ(child0->getTag(), (Tag{0, 2, 1}));
+    const auto *child0 = dynamic_cast<const DecomposeLeaf *>(Single(grouping.at(0)));
+    ASSERT_EQ(child0->getGraph().getNumVertices(), 1);
+    ASSERT_EQ(child0->getTag(), (Tag{0, 1, 0}));
     ASSERT_TRUE(child0->isLeaf());
 
-    const auto *child1 = dynamic_cast<const DecomposeLeaf *>(Single(decomposed->getChildren(tags.at(1))));
-    ASSERT_EQ(child1->getGraph().getNumVertices(), 1);
-    ASSERT_EQ(child1->getTag(), (Tag{0, 1, 0}));
+    const auto *child1 = dynamic_cast<const DecomposeLeaf *>(Single(grouping.at(1)));
+    ASSERT_EQ(child1->getGraph().getNumVertices(), 2);
+    ASSERT_EQ(child1->getTag(), (Tag{0, 2, 1}));
     ASSERT_TRUE(child1->isLeaf());
 
     const auto tag0 = toParent.collectDecomposeTagsForLeaf(child0);
     const auto tag1 = toParent.collectDecomposeTagsForLeaf(child1);
-    ASSERT_EQ(tag0, (std::vector<Tag>{Tag{0, 2, 1}, Tag{1, 1, 2}}));
-    ASSERT_EQ(tag1, (std::vector<Tag>{Tag{0, 1, 0}, Tag{1, 1, 2}}));
+    ASSERT_EQ(tag0, (std::vector<Tag>{Tag{0, 1, 0}, Tag{1, 1, 2}}));
+    ASSERT_EQ(tag1, (std::vector<Tag>{Tag{0, 2, 1}, Tag{1, 1, 2}}));
     CheckDecompose(*graph, 2);
 }
 

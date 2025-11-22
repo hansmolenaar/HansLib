@@ -4,8 +4,8 @@
 #include "GraphIsomorphismITaggerTest.h"
 #include "GraphIsomorphismStatus.h"
 #include "GraphIsomorphismTaggerKnown.h"
-#include "UndirectedGraphLibrary.h"
 #include "UndirectedGraphFromG6.h"
+#include "UndirectedGraphLibrary.h"
 
 using namespace GraphIsomorphism;
 

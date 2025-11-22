@@ -8,6 +8,8 @@ namespace GraphIsomorphism
 template <typename T> class Grouping
 {
   public:
+    Grouping() = default;
+
     explicit Grouping(const auto &values)
     {
         std::map<T, std::vector<T>> grouped;
