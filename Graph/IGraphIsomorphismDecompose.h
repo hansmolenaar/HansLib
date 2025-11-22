@@ -21,8 +21,6 @@ class IDecompose
     const TaggedGraph &getTaggedGraph() const;
     virtual const Tag &getTag() const = 0;
     virtual const Grouping<const IDecompose *> &getGroupingChildren() const = 0;
-    virtual const std::vector<GraphTags> &getChildTags() const = 0;
-    virtual std::vector<const IDecompose *> getChildren(const GraphTags &) const = 0;
 
     std::weak_ordering operator<=>(const IDecompose &) const;
     bool isLeaf() const;
@@ -48,8 +46,6 @@ class DecomposeDisconnected : public IDecompose
 
     // Can be empty: leaf of tree
     const Grouping<const IDecompose *> &getGroupingChildren() const override;
-    const std::vector<GraphTags> &getChildTags() const override;
-    std::vector<const IDecompose *> getChildren(const GraphTags &) const override;
 
   private:
     Tag m_tag;
@@ -69,8 +65,6 @@ class DecomposeVertexFullyConnected : public IDecompose
 
     // Can be empty: leaf of tree
     const Grouping<const IDecompose *> &getGroupingChildren() const override;
-    const std::vector<GraphTags> &getChildTags() const override;
-    std::vector<const IDecompose *> getChildren(const GraphTags &) const override;
 
     const std::vector<GraphVertex> &getFullyConnectedVerticesInParent() const;
 
@@ -92,12 +86,11 @@ class DecomposeLeaf : public IDecompose
 
     // Is empty
     const Grouping<const IDecompose *> &getGroupingChildren() const override;
-    const std::vector<GraphTags> &getChildTags() const override;
-    std::vector<const IDecompose *> getChildren(const GraphTags &) const override;
 
   private:
     Tag m_tag;
     std::vector<GraphTags> m_childTags;
+    const Grouping<const IDecompose *> m_groupingChildren;
 };
 
 class ToParentMap

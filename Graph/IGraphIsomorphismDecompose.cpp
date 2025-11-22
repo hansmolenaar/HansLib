@@ -36,9 +36,9 @@ void AddToParentMapRecur(const IDecompose *current, const IDecompose *parent,
     // Add self
     toParent[current] = parent;
 
-    for (const auto &tag : current->getChildTags())
+    for (const auto &group : current->getGroupingChildren()())
     {
-        for (const auto *child : current->getChildren(tag))
+        for (const auto *child : group)
         {
             AddToParentMapRecur(child, current, toParent);
         }
@@ -104,7 +104,7 @@ std::unique_ptr<IDecompose> IDecompose::Create(const Graph::IGraphUs &graph)
 
 bool IDecompose::isLeaf() const
 {
-    return getChildTags().empty();
+    return getGroupingChildren()().empty();
 }
 
 std::weak_ordering IDecompose::operator<=>(const IDecompose &id1) const
@@ -142,19 +142,9 @@ const Tag &DecomposeLeaf::getTag() const
     return m_tag;
 }
 
-const std::vector<GraphTags> &DecomposeLeaf::getChildTags() const
-{
-    return m_childTags;
-}
-
-std::vector<const IDecompose *> DecomposeLeaf::getChildren(const GraphTags &) const
-{
-    throw MyException("DecomposeLeaf::getChildren should not come here");
-}
-
 const Grouping<const IDecompose *> &DecomposeLeaf::getGroupingChildren() const
 {
-    throw MyException("DecomposeLeaf::getGrouping should not come here");
+    return m_groupingChildren;
 }
 
 // !!!!!!!!!!! Disconnected
@@ -200,18 +190,6 @@ GraphVertex DecomposeDisconnected::getVertexInParent(GraphVertex v) const
 const Tag &DecomposeDisconnected::getTag() const
 {
     return m_tag;
-}
-
-const std::vector<GraphTags> &DecomposeDisconnected::getChildTags() const
-{
-    return m_childTags;
-}
-std::vector<const IDecompose *> DecomposeDisconnected::getChildren(const GraphTags &tag) const
-{
-    const auto &childrenWithTag = m_childDecomposes.at(tag);
-    std::vector<const IDecompose *> result(childrenWithTag.size());
-    str::transform(childrenWithTag, result.begin(), [](const auto &kid) { return kid.get(); });
-    return result;
 }
 
 const Grouping<const IDecompose *> &DecomposeDisconnected::getGroupingChildren() const
@@ -263,19 +241,6 @@ GraphVertex DecomposeVertexFullyConnected::getVertexInParent(GraphVertex v) cons
 const Tag &DecomposeVertexFullyConnected::getTag() const
 {
     return m_tag;
-}
-
-const std::vector<GraphTags> &DecomposeVertexFullyConnected::getChildTags() const
-{
-    return m_childTags;
-}
-
-std::vector<const IDecompose *> DecomposeVertexFullyConnected::getChildren(const GraphTags &tag) const
-{
-    const auto &childrenWithTag = m_childDecomposes.at(tag);
-    std::vector<const IDecompose *> result(childrenWithTag.size());
-    str::transform(childrenWithTag, result.begin(), [](const auto &kid) { return kid.get(); });
-    return result;
 }
 
 const Grouping<const IDecompose *> &DecomposeVertexFullyConnected::getGroupingChildren() const
