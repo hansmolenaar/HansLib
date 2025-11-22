@@ -61,32 +61,17 @@ std::ostream &operator<<(std::ostream &os, const GraphIsomorphism::GraphTags &ta
     return os;
 }
 
-namespace
-{
-TaggerNumbersFactory factoryNumbers;
-TaggerComponentFactory factoryComponents;
-TaggerDegreeFactory factoryDegree;
-TaggerKnownFactory factoryKnown;
-TaggerChainsFactory factoryChains;
-TaggerMaxDegreeFactory factoryMaxDegree;
-TaggerDistanceFactory factoryDistance;
-TaggerTrianglesFactory factoryTriangles;
-
-const std::vector<ITaggerFactory *> allFactories{&factoryNumbers,  &factoryComponents, &factoryDegree,
-                                                 &factoryKnown,    &factoryChains,     &factoryMaxDegree,
-                                                 &factoryDistance, &factoryTriangles};
-} // namespace
-
-std::vector<ITaggerFactory *> GraphIsomorphism::getTaggerFactories()
-{
-    return allFactories;
-}
-
 std::vector<std::unique_ptr<ITagger>> GraphIsomorphism::getAllTaggers(const Graph::IGraphUs &graph)
 {
-    std::vector<std::unique_ptr<ITagger>> result(getTaggerFactories().size());
-    str::transform(getTaggerFactories(), result.begin(),
-                   [&graph](const auto &factory) { return factory->createTagger(graph); });
+    std::vector<std::unique_ptr<ITagger>> result;
+    result.emplace_back(std::make_unique<TaggerNumbers>(graph));
+    result.emplace_back(std::make_unique<TaggerComponents>(graph));
+    result.emplace_back(std::make_unique<TaggerDegree>(graph));
+    result.emplace_back(std::make_unique<TaggerChains>(graph));
+    result.emplace_back(std::make_unique<TaggerDistance>(graph));
+    result.emplace_back(std::make_unique<TaggerKnown>(graph));
+    result.emplace_back(std::make_unique<TaggerMaxDegree>(graph));
+    result.emplace_back(std::make_unique<TaggerTriangles>(graph));
     return result;
 }
 

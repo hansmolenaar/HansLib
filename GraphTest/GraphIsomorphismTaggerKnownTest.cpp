@@ -5,6 +5,7 @@
 #include "GraphIsomorphismStatus.h"
 #include "GraphIsomorphismTaggerKnown.h"
 #include "UndirectedGraphLibrary.h"
+#include "UndirectedGraphFromG6.h"
 
 using namespace GraphIsomorphism;
 
@@ -63,6 +64,14 @@ TEST(GraphIsomorphismTaggerKnownTest, Cycle4)
 TEST(GraphIsomorphismTaggerKnownTest, Diamond)
 {
     const auto graph = UndirectedGraphLibrary::Get_Diamond();
+    const TaggerKnown tagger(*graph);
+    const auto tag = tagger.getGraphTag();
+    ASSERT_EQ(tag, (Tag{TaggerKnown::KnownType::Unknown}));
+}
+
+TEST(GraphIsomorphismTaggerKnownTest, TwoTriangles)
+{
+    const auto graph = UndirectedGraphFromG6::Create("EwCW");
     const TaggerKnown tagger(*graph);
     const auto tag = tagger.getGraphTag();
     ASSERT_EQ(tag, (Tag{TaggerKnown::KnownType::Unknown}));
