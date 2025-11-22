@@ -50,8 +50,7 @@ class DecomposeDisconnected : public IDecompose
   private:
     Tag m_tag;
     std::vector<Graph::SubGraphConnected> m_children;
-    std::vector<GraphTags> m_childTags;
-    std::map<GraphTags, std::vector<std::unique_ptr<IDecompose>>> m_childDecomposes;
+    std::vector<std::unique_ptr<IDecompose>> m_childDecomposes;
     Grouping<const IDecompose *> m_groupingChildren;
 };
 
@@ -71,8 +70,7 @@ class DecomposeVertexFullyConnected : public IDecompose
   private:
     Tag m_tag;
     std::vector<std::unique_ptr<Graph::IGraphUs>> m_children;
-    std::vector<GraphTags> m_childTags;
-    std::map<GraphTags, std::vector<std::unique_ptr<IDecompose>>> m_childDecomposes;
+    std::vector<std::unique_ptr<IDecompose>> m_childDecomposes;
     Grouping<const IDecompose *> m_groupingChildren;
 };
 
@@ -89,7 +87,24 @@ class DecomposeLeaf : public IDecompose
 
   private:
     Tag m_tag;
-    std::vector<GraphTags> m_childTags;
+    const Grouping<const IDecompose *> m_groupingChildren;
+};
+
+class DecomposeKnown : public IDecompose
+{
+  public:
+    DecomposeKnown(const Graph::IGraphUs &, Tag);
+    static std::unique_ptr<IDecompose> tryCreate(const Graph::IGraphUs &);
+
+    GraphVertex getVertexInParent(GraphVertex) const override;
+
+    const Tag &getTag() const override;
+
+    // Is empty
+    const Grouping<const IDecompose *> &getGroupingChildren() const override;
+
+  private:
+    Tag m_tag;
     const Grouping<const IDecompose *> m_groupingChildren;
 };
 

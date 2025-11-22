@@ -16,7 +16,8 @@ enum IDecomposeType : TagEntry
 {
     Leaf = 0,
     Disconnected,
-    FullyConnected
+    FullyConnected,
+    Known
 };
 
 GraphVertex GetVertexInParent(GraphVertex vertex, const IDecompose &decompose)
@@ -45,20 +46,6 @@ void AddToParentMapRecur(const IDecompose *current, const IDecompose *parent,
     }
 }
 
-GraphTags GetGraphTags(const Graph::IGraphUs &graph)
-{
-    GraphTags result;
-    for (const auto &tagger : GraphIsomorphism::getAllTaggers(graph))
-    {
-        const auto *graphTagger = tagger->getGraphTagger();
-        if (graphTagger != nullptr)
-        {
-            result.emplace_back(graphTagger->getGraphTag());
-        }
-    }
-    return result;
-}
-
 } // namespace
 
 // !!!!!!!!!!!  IDecompose
@@ -79,11 +66,10 @@ const Graph::IGraphUs &IDecompose::getGraph() const
 
 std::unique_ptr<IDecompose> IDecompose::Create(const Graph::IGraphUs &graph)
 {
-    const TaggerKnown taggerKnown(graph);
-    const auto knownTag = taggerKnown.getGraphTag();
-    if (knownTag.front() != TaggerKnown::KnownType::Unknown)
+    auto knownGraph = DecomposeKnown::tryCreate(graph);
+    if (knownGraph)
     {
-        return std::make_unique<DecomposeLeaf>(graph);
+        return knownGraph;
     }
 
     if (!graph.isConnected())
@@ -147,6 +133,40 @@ const Grouping<const IDecompose *> &DecomposeLeaf::getGroupingChildren() const
     return m_groupingChildren;
 }
 
+// !!!!!!!!!!! Known
+
+std::unique_ptr<IDecompose> DecomposeKnown::tryCreate(const Graph::IGraphUs &graph)
+{
+    const TaggerKnown taggerKnown(graph);
+    auto knownTag = taggerKnown.getGraphTag();
+    if (knownTag.front() != TaggerKnown::KnownType::Unknown)
+    {
+        knownTag.insert(knownTag.begin(), IDecomposeType::Known);
+        return std::make_unique<DecomposeKnown>(graph, knownTag);
+    }
+
+    return {};
+}
+
+DecomposeKnown::DecomposeKnown(const Graph::IGraphUs &graph, Tag tag) : IDecompose(graph), m_tag(std::move(tag))
+{
+}
+
+GraphVertex DecomposeKnown::getVertexInParent(GraphVertex v) const
+{
+    return GetVertexInParent(v, *this);
+}
+
+const Tag &DecomposeKnown::getTag() const
+{
+    return m_tag;
+}
+
+const Grouping<const IDecompose *> &DecomposeKnown::getGroupingChildren() const
+{
+    return m_groupingChildren;
+}
+
 // !!!!!!!!!!! Disconnected
 DecomposeDisconnected::DecomposeDisconnected(const Graph::IGraphUs &graph)
     : IDecompose(graph), m_tag({IDecomposeType::Disconnected})
@@ -170,13 +190,8 @@ DecomposeDisconnected::DecomposeDisconnected(const Graph::IGraphUs &graph)
     std::vector<const IDecompose *> allChildren;
     for (const auto &child : m_children)
     {
-        const auto tag = GetGraphTags(child);
-        if (!m_childDecomposes.contains(tag))
-        {
-            m_childTags.emplace_back(tag);
-        }
-        m_childDecomposes[tag].emplace_back(IDecompose::Create(child));
-        allChildren.push_back(m_childDecomposes[tag].back().get());
+        m_childDecomposes.emplace_back(IDecompose::Create(child));
+        allChildren.push_back(m_childDecomposes.back().get());
     }
 
     m_groupingChildren = CreateGrouping(allChildren);
@@ -221,13 +236,8 @@ DecomposeVertexFullyConnected::DecomposeVertexFullyConnected(const Graph::IGraph
     std::vector<const IDecompose *> allChildren;
     for (const auto &child : m_children)
     {
-        const auto tag = GetGraphTags(*child);
-        if (!m_childDecomposes.contains(tag))
-        {
-            m_childTags.emplace_back(tag);
-        }
-        m_childDecomposes[tag].emplace_back(IDecompose::Create(*child));
-        allChildren.push_back(m_childDecomposes[tag].back().get());
+        m_childDecomposes.emplace_back(IDecompose::Create(*child));
+        allChildren.push_back(m_childDecomposes.back().get());
     }
 
     m_groupingChildren = CreateGrouping(allChildren);
