@@ -269,6 +269,28 @@ TEST(IGraphIsomorphismDecomposeTest, SpecialCase2)
     ASSERT_TRUE(cmp != 0);
 }
 
+TEST(IGraphIsomorphismDecomposeTest, SpecialCase3)
+{
+    const auto graph = UndirectedGraphFromG6::Create("D]w");
+    const auto decompose = IDecompose::Create(*graph, true);
+    ASSERT_FALSE(decompose->isLeaf());
+
+    const ToParentMap toParent(decompose.get());
+    const auto leaves = toParent.getLeaves();
+    ASSERT_EQ(leaves.size(), 2);
+    const auto grouping = toParent.groupLeaves();
+    ASSERT_EQ(grouping().size(), 2);
+    ASSERT_EQ(grouping().at(0).front()->getTag(), (Tag{3, 1, 2}));
+    ASSERT_EQ(grouping().at(1).front()->getTag(), (Tag{3, 3, 3}));
+}
+
+TEST(IGraphIsomorphismDecomposeTest, BullIsSelfComplement)
+{
+    const auto graph = UndirectedGraphLibrary::Get_Bull();
+    const auto decompose = IDecompose::Create(*graph, true);
+    ASSERT_TRUE(decompose->isLeaf());
+}
+
 TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList3)
 {
     CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_3(), Tag{1, 4});

@@ -5,6 +5,7 @@
 #include "GraphIsomorphismTaggedGraph.h"
 #include "IGraphUs.h"
 #include "SubGraphConnected.h"
+#include "UndirectedGraph.h"
 
 namespace GraphIsomorphism
 {
@@ -25,6 +26,7 @@ class IDecompose
     std::weak_ordering operator<=>(const IDecompose &) const;
     bool isLeaf() const;
 
+    static std::unique_ptr<IDecompose> Create(const Graph::IGraphUs &, bool);
     static std::unique_ptr<IDecompose> Create(const Graph::IGraphUs &);
 
     static Grouping<const IDecompose *> CreateGrouping(const std::vector<const IDecompose *> &);
@@ -106,6 +108,26 @@ class DecomposeKnown : public IDecompose
   private:
     Tag m_tag;
     const Grouping<const IDecompose *> m_groupingChildren;
+};
+
+class DecomposeComplement : public IDecompose
+{
+  public:
+    DecomposeComplement(std::unique_ptr<Graph::UndirectedGraph> &&graph);
+    static std::unique_ptr<IDecompose> Create(const Graph::IGraphUs &);
+
+    GraphVertex getVertexInParent(GraphVertex) const override;
+
+    const Tag &getTag() const override;
+
+    // Is empty
+    const Grouping<const IDecompose *> &getGroupingChildren() const override;
+
+  private:
+    std::unique_ptr<Graph::UndirectedGraph> m_complement;
+    Tag m_tag;
+    std::unique_ptr<IDecompose> m_child; // only child?
+    Grouping<const IDecompose *> m_groupingChildren;
 };
 
 class ToParentMap

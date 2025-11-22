@@ -4,8 +4,8 @@
 #include "GraphIsomorphismTaggerKnown.h"
 #include "GraphIsomorphismUtils.h"
 #include "IGraphIsomorphismTagger.h"
-#include "MyAssert.h"
 #include "UndirectedGraph.h"
+#include "MyAssert.h"
 
 using namespace Graph;
 using namespace GraphIsomorphism;
@@ -18,8 +18,7 @@ enum IDecomposeType : TagEntry
     Leaf = 0,
     Disconnected,
     FullyConnected,
-    Known,
-    Complement
+    Known
 };
 
 GraphVertex GetVertexInParent(GraphVertex vertex, const IDecompose &decompose)
@@ -87,34 +86,6 @@ std::unique_ptr<IDecompose> IDecompose::Create(const Graph::IGraphUs &graph)
         return std::make_unique<DecomposeVertexFullyConnected>(graph, fullyConnectedVerticesSet);
     }
 
-    return std::make_unique<DecomposeLeaf>(graph);
-}
-
-std::unique_ptr<IDecompose> IDecompose::Create(const Graph::IGraphUs &graph, bool tryComplement)
-{
-    auto knownGraph = DecomposeKnown::tryCreate(graph);
-    if (knownGraph)
-    {
-        return knownGraph;
-    }
-
-    if (!graph.isConnected())
-    {
-        return std::make_unique<DecomposeDisconnected>(graph);
-    }
-
-    const auto fullyConnectedVertices = graph.getFullyConnectedVertices();
-    if (!fullyConnectedVertices.empty())
-    {
-        const std::set<GraphVertex> fullyConnectedVerticesSet(fullyConnectedVertices.begin(),
-                                                              fullyConnectedVertices.end());
-        return std::make_unique<DecomposeVertexFullyConnected>(graph, fullyConnectedVerticesSet);
-    }
-
-    if (tryComplement)
-    {
-        return DecomposeComplement::Create(graph);
-    }
     return std::make_unique<DecomposeLeaf>(graph);
 }
 
@@ -199,24 +170,9 @@ const Grouping<const IDecompose *> &DecomposeKnown::getGroupingChildren() const
 
 // !!!!!!!!!!! complement
 
-std::unique_ptr<IDecompose> DecomposeComplement::Create(const Graph::IGraphUs &graph)
+DecomposeComplement::DecomposeComplement(const Graph::IGraphUs &graph) : 
+   IDecompose(UndirectedGraph::CreateComplement(graph)), m_tag(getGraph().getTag())
 {
-    auto complement = std::make_unique<UndirectedGraph>(UndirectedGraph::CreateComplement(graph));
-    return std::make_unique<DecomposeComplement>(std::move(complement));
-}
-
-DecomposeComplement::DecomposeComplement(std::unique_ptr<Graph::UndirectedGraph> &&complement)
-    : IDecompose(UndirectedGraph::CreateComplement(*complement)), m_complement(std::move(complement)),
-      m_tag{IDecomposeType::Complement}
-{
-    // Further decomposition now possible?
-    auto offspring = IDecompose::Create(*m_complement, false);
-    if (!offspring->isLeaf())
-    {
-        m_child = std::move(offspring);
-        std::vector<const IDecompose *> allChildren{m_child.get()};
-        m_groupingChildren = CreateGrouping(allChildren);
-    }
 }
 
 GraphVertex DecomposeComplement::getVertexInParent(GraphVertex v) const
@@ -233,6 +189,7 @@ const Grouping<const IDecompose *> &DecomposeComplement::getGroupingChildren() c
 {
     return m_groupingChildren;
 }
+
 
 // !!!!!!!!!!! Disconnected
 DecomposeDisconnected::DecomposeDisconnected(const Graph::IGraphUs &graph)
