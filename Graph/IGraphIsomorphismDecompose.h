@@ -16,8 +16,6 @@ class IDecompose
   public:
     virtual ~IDecompose() = default;
 
-    virtual GraphVertex getVertexInParent(GraphVertex) const = 0;
-
     const Graph::IGraphUs &getGraph() const;
     const TaggedGraph &getTaggedGraph() const;
     virtual const Tag &getTag() const = 0;
@@ -42,7 +40,6 @@ class DecomposeDisconnected : public IDecompose
 {
   public:
     explicit DecomposeDisconnected(const Graph::IGraphUs &);
-    GraphVertex getVertexInParent(GraphVertex) const override;
 
     const Tag &getTag() const override;
 
@@ -60,7 +57,6 @@ class DecomposeVertexFullyConnected : public IDecompose
 {
   public:
     explicit DecomposeVertexFullyConnected(const Graph::IGraphUs &, const std::set<GraphVertex> &);
-    GraphVertex getVertexInParent(GraphVertex) const override;
 
     const Tag &getTag() const override;
 
@@ -80,7 +76,6 @@ class DecomposeLeaf : public IDecompose
 {
   public:
     explicit DecomposeLeaf(const Graph::IGraphUs &);
-    GraphVertex getVertexInParent(GraphVertex) const override;
 
     const Tag &getTag() const override;
 
@@ -98,8 +93,6 @@ class DecomposeKnown : public IDecompose
     DecomposeKnown(const Graph::IGraphUs &, Tag);
     static std::unique_ptr<IDecompose> tryCreate(const Graph::IGraphUs &);
 
-    GraphVertex getVertexInParent(GraphVertex) const override;
-
     const Tag &getTag() const override;
 
     // Is empty
@@ -115,8 +108,6 @@ class DecomposeComplement : public IDecompose
   public:
     DecomposeComplement(std::unique_ptr<Graph::UndirectedGraph> &&graph);
     static std::unique_ptr<IDecompose> Create(const Graph::IGraphUs &);
-
-    GraphVertex getVertexInParent(GraphVertex) const override;
 
     const Tag &getTag() const override;
 

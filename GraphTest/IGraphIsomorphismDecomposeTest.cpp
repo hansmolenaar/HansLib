@@ -204,6 +204,25 @@ TEST(IGraphIsomorphismDecomposeTest, Diamond)
     CheckDecompose(*graph, 2);
 }
 
+TEST(IGraphIsomorphismDecomposeTest, Pan3)
+{
+    const auto graph = UndirectedGraphFromG6::Create(UndirectedGraphFromG6::pan3);
+    const auto decomposed = IDecompose::Create(*graph);
+    const ToParentMap toParent(decomposed.get());
+    const auto leaves = toParent.groupLeaves();
+    ASSERT_EQ(leaves().size(), 3);
+    ASSERT_EQ(leaves().at(0).size(), 1);
+    ASSERT_EQ(leaves().at(1).size(), 1);
+    ASSERT_EQ(leaves().at(2).size(), 1);
+    ASSERT_EQ(leaves().at(0).front()->getTag(), (Tag{3, 1, 1}));
+    ASSERT_EQ(leaves().at(1).front()->getTag(), (Tag{3, 1, 1}));
+    ASSERT_EQ(leaves().at(2).front()->getTag(), (Tag{3, 1, 2}));
+    ASSERT_EQ(toParent.getVertexInRoot(0, leaves().at(0).front()), 3);
+    ASSERT_EQ(toParent.getVertexInRoot(0, leaves().at(1).front()), 2);
+    ASSERT_EQ(toParent.getVertexInRoot(0, leaves().at(2).front()), 0);
+    ASSERT_EQ(toParent.getVertexInRoot(1, leaves().at(2).front()), 1);
+}
+
 TEST(IGraphIsomorphismDecomposeTest, Paw)
 {
     const auto graph = UndirectedGraphFromG6::Create("Cx");

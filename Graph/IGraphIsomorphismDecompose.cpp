@@ -152,11 +152,6 @@ DecomposeLeaf::DecomposeLeaf(const Graph::IGraphUs &graph)
 {
 }
 
-GraphVertex DecomposeLeaf::getVertexInParent(GraphVertex v) const
-{
-    return GetVertexInParent(v, *this);
-}
-
 const Tag &DecomposeLeaf::getTag() const
 {
     return m_tag;
@@ -184,11 +179,6 @@ std::unique_ptr<IDecompose> DecomposeKnown::tryCreate(const Graph::IGraphUs &gra
 
 DecomposeKnown::DecomposeKnown(const Graph::IGraphUs &graph, Tag tag) : IDecompose(graph), m_tag(std::move(tag))
 {
-}
-
-GraphVertex DecomposeKnown::getVertexInParent(GraphVertex v) const
-{
-    return GetVertexInParent(v, *this);
 }
 
 const Tag &DecomposeKnown::getTag() const
@@ -234,11 +224,6 @@ DecomposeComplement::DecomposeComplement(std::unique_ptr<Graph::UndirectedGraph>
     }
 }
 
-GraphVertex DecomposeComplement::getVertexInParent(GraphVertex v) const
-{
-    return GetVertexInParent(v, *this);
-}
-
 const Tag &DecomposeComplement::getTag() const
 {
     return m_tag;
@@ -277,11 +262,6 @@ DecomposeDisconnected::DecomposeDisconnected(const Graph::IGraphUs &graph)
     }
 
     m_groupingChildren = CreateGrouping(allChildren);
-}
-
-GraphVertex DecomposeDisconnected::getVertexInParent(GraphVertex v) const
-{
-    return GetVertexInParent(v, *this);
 }
 
 const Tag &DecomposeDisconnected::getTag() const
@@ -323,11 +303,6 @@ DecomposeVertexFullyConnected::DecomposeVertexFullyConnected(const Graph::IGraph
     }
 
     m_groupingChildren = CreateGrouping(allChildren);
-}
-
-GraphVertex DecomposeVertexFullyConnected::getVertexInParent(GraphVertex v) const
-{
-    return GetVertexInParent(v, *this);
 }
 
 const Tag &DecomposeVertexFullyConnected::getTag() const
@@ -379,7 +354,7 @@ GraphVertex ToParentMap::getVertexInRoot(GraphVertex vertex, const IDecompose *d
 {
     while (decompose != nullptr)
     {
-        vertex = decompose->getVertexInParent(vertex);
+        vertex = GetVertexInParent(vertex, *decompose);
         decompose = getParent(decompose);
     }
     return vertex;
