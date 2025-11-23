@@ -113,7 +113,11 @@ std::unique_ptr<IDecompose> IDecompose::Create(const Graph::IGraphUs &graph, boo
 
     if (tryComplement)
     {
-        return DecomposeComplement::Create(graph);
+        auto complementGraph = DecomposeComplement::Create(graph);
+        if (complementGraph)
+        {
+            return complementGraph;
+        }
     }
     return std::make_unique<DecomposeLeaf>(graph);
 }
@@ -202,7 +206,14 @@ const Grouping<const IDecompose *> &DecomposeKnown::getGroupingChildren() const
 std::unique_ptr<IDecompose> DecomposeComplement::Create(const Graph::IGraphUs &graph)
 {
     auto complement = std::make_unique<UndirectedGraph>(UndirectedGraph::CreateComplement(graph));
-    return std::make_unique<DecomposeComplement>(std::move(complement));
+    auto retval = std::make_unique<DecomposeComplement>(std::move(complement));
+    if (!retval->isLeaf())
+    {
+        return retval;
+    }
+
+    // No decomposition possible of complement, ignore
+    return {};
 }
 
 DecomposeComplement::DecomposeComplement(std::unique_ptr<Graph::UndirectedGraph> &&complement)
@@ -216,6 +227,10 @@ DecomposeComplement::DecomposeComplement(std::unique_ptr<Graph::UndirectedGraph>
         m_child = std::move(offspring);
         std::vector<const IDecompose *> allChildren{m_child.get()};
         m_groupingChildren = CreateGrouping(allChildren);
+    }
+    else
+    {
+        // A leaf is returned
     }
 }
 
