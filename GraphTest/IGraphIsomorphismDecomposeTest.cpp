@@ -303,6 +303,59 @@ TEST(IGraphIsomorphismDecomposeTest, SpecialCase3)
     ASSERT_EQ(grouping().at(1).front()->getTag(), (Tag{3, 3, 3}));
 }
 
+TEST(IGraphIsomorphismDecomposeTest, SpecialCase4)
+{
+    // Bipartite (2,3)
+    const auto graph = UndirectedGraphFromG6::Create("DFw");
+    const auto decompose = IDecompose::Create(*graph, true);
+    ASSERT_FALSE(decompose->isLeaf());
+
+    const ToParentMap toParent(decompose.get());
+    const auto leaves = toParent.getLeaves();
+    ASSERT_EQ(leaves.size(), 2);
+    const auto grouping = toParent.groupLeaves();
+    ASSERT_EQ(grouping().size(), 2);
+    const auto *leaf2 = Single(grouping().at(0));
+    const auto *leaf3 = Single(grouping().at(1));
+    ASSERT_EQ(leaf2->getTag(), (Tag{3, 1, 2}));
+    ASSERT_EQ(leaf3->getTag(), (Tag{3, 1, 3}));
+    ASSERT_EQ(toParent.collectDecomposeTagsForLeaf(leaf2), (std::vector<Tag>{{3, 1, 2}, {1, 2, 3}, {4}}));
+    ASSERT_EQ(toParent.collectDecomposeTagsForLeaf(leaf3), (std::vector<Tag>{{3, 1, 3}, {1, 2, 3}, {4}}));
+    ASSERT_EQ(toParent.getVertexInRoot(0, leaf2), 3);
+    ASSERT_EQ(toParent.getVertexInRoot(1, leaf2), 4);
+    ASSERT_EQ(toParent.getVertexInRoot(0, leaf3), 0);
+    ASSERT_EQ(toParent.getVertexInRoot(1, leaf3), 1);
+    ASSERT_EQ(toParent.getVertexInRoot(2, leaf3), 2);
+    CheckVertexConservation(toParent, 2);
+}
+
+TEST(IGraphIsomorphismDecomposeTest, SpecialCase5)
+{
+    // Bipartite (2,3) + singletom
+    const auto graph = UndirectedGraphFromG6::Create("E?\\o");
+    const auto decompose = IDecompose::Create(*graph, true);
+    ASSERT_FALSE(decompose->isLeaf());
+
+    const ToParentMap toParent(decompose.get());
+    const auto leaves = toParent.getLeaves();
+    ASSERT_EQ(leaves.size(), 3);
+    const auto grouping = toParent.groupLeaves();
+    ASSERT_EQ(grouping().size(), 3);
+    const auto *leaf1 = Single(grouping().at(0));
+    const auto *leaf2 = Single(grouping().at(1));
+    const auto *leaf3 = Single(grouping().at(2));
+    ASSERT_EQ(toParent.collectDecomposeTagsForLeaf(leaf1), (std::vector<Tag>{{3, 1, 1}, {1, 1, 5}}));
+    ASSERT_EQ(toParent.collectDecomposeTagsForLeaf(leaf2), (std::vector<Tag>{{3, 1, 2}, {1, 2, 3}, {4}, {1, 1, 5}}));
+    ASSERT_EQ(toParent.collectDecomposeTagsForLeaf(leaf3), (std::vector<Tag>{{3, 1, 3}, {1, 2, 3}, {4}, {1, 1, 5}}));
+    ASSERT_EQ(toParent.getVertexInRoot(0, leaf1), 0);
+    ASSERT_EQ(toParent.getVertexInRoot(0, leaf2), 4);
+    ASSERT_EQ(toParent.getVertexInRoot(1, leaf2), 5);
+    ASSERT_EQ(toParent.getVertexInRoot(0, leaf3), 1);
+    ASSERT_EQ(toParent.getVertexInRoot(1, leaf3), 2);
+    ASSERT_EQ(toParent.getVertexInRoot(2, leaf3), 3);
+    CheckVertexConservation(toParent, 3);
+}
+
 TEST(IGraphIsomorphismDecomposeTest, BullIsSelfComplement)
 {
     const auto graph = UndirectedGraphLibrary::Get_Bull();
@@ -337,14 +390,14 @@ TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList7)
 
 TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList8)
 {
-    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_8(), {1, 734, 2, 6});
+    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_8(), {1, 736, 2, 5});
 }
 
 TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList9)
 {
-    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_9(), {1, 446, 2, 13, 3, 3});
+    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_9(), {1, 452, 2, 10, 3, 3});
 }
 TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList10)
 {
-    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_10(), {1, 694, 2, 3, 3, 3, 6, 1});
+    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_10(), {1, 697, 2, 3, 3, 2, 6, 1 });
 }

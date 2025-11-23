@@ -24,8 +24,9 @@ enum IDecomposeType : TagEntry
 
 GraphVertex GetVertexInParent(GraphVertex vertex, const IDecompose &decompose)
 {
-    const auto &self = decompose.getGraph();
-    const auto *subGraph = dynamic_cast<const SubGraph *>(&self);
+    const auto *complement = dynamic_cast<const DecomposeComplement *>(&decompose);
+    const auto &graph = complement != nullptr ? complement->getOriginal() : decompose.getGraph();
+    const auto *subGraph = dynamic_cast<const SubGraph *>(&graph);
     if (subGraph != nullptr)
     {
         return subGraph->getVertexInParent(vertex);
@@ -66,30 +67,6 @@ const Graph::IGraphUs &IDecompose::getGraph() const
     return m_taggedGraph->getGraph();
 }
 
-std::unique_ptr<IDecompose> IDecompose::Create(const Graph::IGraphUs &graph)
-{
-    auto knownGraph = DecomposeKnown::tryCreate(graph);
-    if (knownGraph)
-    {
-        return knownGraph;
-    }
-
-    if (!graph.isConnected())
-    {
-        return std::make_unique<DecomposeDisconnected>(graph);
-    }
-
-    const auto fullyConnectedVertices = graph.getFullyConnectedVertices();
-    if (!fullyConnectedVertices.empty())
-    {
-        const std::set<GraphVertex> fullyConnectedVerticesSet(fullyConnectedVertices.begin(),
-                                                              fullyConnectedVertices.end());
-        return std::make_unique<DecomposeVertexFullyConnected>(graph, fullyConnectedVerticesSet);
-    }
-
-    return std::make_unique<DecomposeLeaf>(graph);
-}
-
 std::unique_ptr<IDecompose> IDecompose::Create(const Graph::IGraphUs &graph, bool tryComplement)
 {
     auto knownGraph = DecomposeKnown::tryCreate(graph);
@@ -125,6 +102,11 @@ std::unique_ptr<IDecompose> IDecompose::Create(const Graph::IGraphUs &graph, boo
 bool IDecompose::isLeaf() const
 {
     return getGroupingChildren()().empty();
+}
+
+std::string IDecompose::getName() const
+{
+    return getGraph().getName();
 }
 
 std::weak_ordering IDecompose::operator<=>(const IDecompose &id1) const
@@ -196,7 +178,7 @@ const Grouping<const IDecompose *> &DecomposeKnown::getGroupingChildren() const
 std::unique_ptr<IDecompose> DecomposeComplement::Create(const Graph::IGraphUs &graph)
 {
     auto complement = std::make_unique<UndirectedGraph>(UndirectedGraph::CreateComplement(graph));
-    auto retval = std::make_unique<DecomposeComplement>(std::move(complement));
+    auto retval = std::make_unique<DecomposeComplement>(std::move(complement), graph);
     if (!retval->isLeaf())
     {
         return retval;
@@ -206,9 +188,9 @@ std::unique_ptr<IDecompose> DecomposeComplement::Create(const Graph::IGraphUs &g
     return {};
 }
 
-DecomposeComplement::DecomposeComplement(std::unique_ptr<Graph::UndirectedGraph> &&complement)
-    : IDecompose(UndirectedGraph::CreateComplement(*complement)), m_complement(std::move(complement)),
-      m_tag{IDecomposeType::Complement}
+DecomposeComplement::DecomposeComplement(std::unique_ptr<Graph::UndirectedGraph> &&complement,
+                                         const Graph::IGraphUs &org)
+    : IDecompose(*complement), m_complement(std::move(complement)), m_original(org), m_tag{IDecomposeType::Complement}
 {
     // Further decomposition now possible?
     auto offspring = IDecompose::Create(*m_complement, false);
@@ -232,6 +214,11 @@ const Tag &DecomposeComplement::getTag() const
 const Grouping<const IDecompose *> &DecomposeComplement::getGroupingChildren() const
 {
     return m_groupingChildren;
+}
+
+const Graph::IGraphUs &DecomposeComplement::getOriginal() const
+{
+    return m_original;
 }
 
 // !!!!!!!!!!! Disconnected

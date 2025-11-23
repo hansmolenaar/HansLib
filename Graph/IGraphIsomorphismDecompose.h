@@ -23,9 +23,9 @@ class IDecompose
 
     std::weak_ordering operator<=>(const IDecompose &) const;
     bool isLeaf() const;
+    std::string getName() const;
 
-    static std::unique_ptr<IDecompose> Create(const Graph::IGraphUs &, bool);
-    static std::unique_ptr<IDecompose> Create(const Graph::IGraphUs &);
+    static std::unique_ptr<IDecompose> Create(const Graph::IGraphUs &, bool = true);
 
     static Grouping<const IDecompose *> CreateGrouping(const std::vector<const IDecompose *> &);
 
@@ -106,15 +106,17 @@ class DecomposeKnown : public IDecompose
 class DecomposeComplement : public IDecompose
 {
   public:
-    DecomposeComplement(std::unique_ptr<Graph::UndirectedGraph> &&graph);
+    DecomposeComplement(std::unique_ptr<Graph::UndirectedGraph> &&graph, const Graph::IGraphUs &org);
     static std::unique_ptr<IDecompose> Create(const Graph::IGraphUs &);
 
     const Tag &getTag() const override;
+    const Graph::IGraphUs &getOriginal() const;
 
     // Is empty
     const Grouping<const IDecompose *> &getGroupingChildren() const override;
 
   private:
+    const Graph::IGraphUs &m_original;
     std::unique_ptr<Graph::UndirectedGraph> m_complement;
     Tag m_tag;
     std::unique_ptr<IDecompose> m_child; // only child?

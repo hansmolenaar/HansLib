@@ -22,8 +22,9 @@ std::optional<GraphVertex> ToLocal(GraphVertex vertexInParent, const std::vector
 
 UndirectedGraph Generate(const IGraphUs &master, const std::vector<GraphVertex> &verticesInParent)
 {
+    const std::string name = "SubGraph of size " + std::to_string(verticesInParent.size()) + " of " + master.getName();
     const GraphVertex nVertices = verticesInParent.size();
-    UndirectedGraph graph(nVertices);
+    UndirectedGraph graph(nVertices, name);
 
     std::vector<GraphVertex> ngbs;
     for (GraphVertex v = 0; v < master.getNumVertices(); ++v)
@@ -91,5 +92,5 @@ GraphVertex SubGraph::getVertexInParent(GraphVertex v) const
 
 std::string SubGraph::getName() const
 {
-    return std::string("Sub graph of ") + m_graph.getName();
+    return m_graph.getName();
 }
