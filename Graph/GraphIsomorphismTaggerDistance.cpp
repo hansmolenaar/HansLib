@@ -67,7 +67,8 @@ std::vector<ScalarVertexValues> CollectVertexValues(const std::vector<GraphVerte
     std::vector<ScalarVertexValues> result(vertices.size());
     str::transform(vertices, result.begin(), [&triangles](GraphVertex v) {
         return ScalarVertexValues{static_cast<TagEntry>(triangles.getGraph().getDegree(v)),
-                                  static_cast<TagEntry>(triangles.numTrianglesAt(v))};
+                                  static_cast<TagEntry>(triangles.numTrianglesAt(v)),
+                                  static_cast<TagEntry>(triangles.numNeighborsInTrianglesAt(v))};
     });
     str::sort(result);
     return result;

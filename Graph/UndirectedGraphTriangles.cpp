@@ -35,15 +35,25 @@ std::vector<std::array<GraphVertex, 3>> GetAllTriangles(const Graph::IGraphUs &g
 } // namespace
 
 UndirectedGraphTriangles::UndirectedGraphTriangles(const Graph::IGraphUs &graph)
-    : m_graph(graph), m_countPerVertex(m_graph.getNumVertices())
+    : m_graph(graph), m_countPerVertex(m_graph.getNumVertices()), m_numNeigborsInTriangles(m_graph.getNumVertices())
 {
     const auto allTriangles = GetAllTriangles(graph);
+    std::map<GraphVertex, std::set<GraphVertex>> neighbors;
     for (const auto &triangle : allTriangles)
     {
         for (GraphVertex vertex : triangle)
         {
             m_countPerVertex.at(vertex) += 1;
+            for (auto ngb : triangle)
+            {
+                neighbors[vertex].insert(ngb);
+            }
         }
+    }
+
+    for (const auto &itr : neighbors)
+    {
+        m_numNeigborsInTriangles[itr.first] = itr.second.size() - 1;
     }
 }
 
@@ -60,4 +70,9 @@ size_t UndirectedGraphTriangles::numTrianglesAt(GraphVertex vertex) const
 const Graph::IGraphUs &UndirectedGraphTriangles::getGraph() const
 {
     return m_graph;
+}
+
+size_t UndirectedGraphTriangles::numNeighborsInTrianglesAt(GraphVertex vertex) const
+{
+    return m_numNeigborsInTriangles.at(vertex);
 }

@@ -16,6 +16,7 @@ struct ScalarVertexValues
 {
     GraphIsomorphism::TagEntry Degree;
     GraphIsomorphism::TagEntry NumTriangles;
+    GraphIsomorphism::TagEntry NumNeigborsInTriangles;
     auto operator<=>(const ScalarVertexValues &) const = default;
 };
 

@@ -159,6 +159,32 @@ TEST(GraphIsomorphismTaggedGraphTest, DegreePan3)
 
 TEST(GraphIsomorphismTaggedGraphTest, SpecialCase1)
 {
+    const auto g0 = UndirectedGraphFromG6::CreateConnected("FMhXw");
+    const auto g1 = UndirectedGraphFromG6::CreateConnected("FDxZg");
+    const TaggedGraph tg0(*g0);
+    const TaggedGraph tg1(*g1);
+    const auto status = TaggedGraph::tryConnect(tg0, tg1);
+
+    const TaggerTriangles taggerTriangles0(std::make_shared<UndirectedGraphTriangles>(*g0));
+    const TaggerTriangles taggerTriangles1(std::make_shared<UndirectedGraphTriangles>(*g1));
+
+    ASSERT_EQ(taggerTriangles0.compareOtherGraph(3, taggerTriangles0, 4), std::weak_ordering::equivalent);
+    ASSERT_EQ(taggerTriangles1.compareOtherGraph(3, taggerTriangles1, 4), std::weak_ordering::greater);
+
+    const TaggerChains taggerChains0(*g0);
+    const TaggerChains taggerChains1(*g1);
+
+    ASSERT_EQ(taggerChains0.getVertexTag(3), (Tag{4, 3}));
+    ASSERT_EQ(taggerChains0.getVertexTag(4), (Tag{4, 3}));
+
+    ASSERT_EQ(taggerChains1.getVertexTag(3), (Tag{4, 3}));
+    ASSERT_EQ(taggerChains1.getVertexTag(4), (Tag{4, 3}));
+
+    ASSERT_TRUE(tg0 != tg1);
+}
+
+TEST(GraphIsomorphismTaggedGraphTest, SpecialCase2)
+{
     const auto g0 = UndirectedGraphFromG6::Create("G}hPW{");
     const auto g1 = UndirectedGraphFromG6::Create("G~`HW{");
     const TaggedGraph tg0(*g0);
@@ -169,7 +195,7 @@ TEST(GraphIsomorphismTaggedGraphTest, SpecialCase1)
     ASSERT_TRUE(grouping1.getUniqueValues().empty());
 
     const auto tgCompare = tg0 <=> tg1;
-    ASSERT_TRUE(tgCompare != std::weak_ordering::equivalent); // TODO fails for the time being
+    ASSERT_TRUE(tgCompare != std::weak_ordering::equivalent);
 }
 
 TEST(GraphIsomorphismTaggedGraphTest, CheckTaggingList3)
@@ -200,7 +226,7 @@ TEST(GraphIsomorphismTaggedGraphTest, CheckTaggingList7)
 
 TEST(GraphIsomorphismTaggedGraphTest, CheckTaggingList8)
 {
-    CheckTaggingForList(UndirectedGraphFromG6::getListNumVertices_8(), {1, 742, 2, 2});
+    CheckTaggingForList(UndirectedGraphFromG6::getListNumVertices_8(), {1, 744, 2, 1});
 }
 TEST(GraphIsomorphismConstructTest, Disconnected5)
 {
@@ -230,30 +256,4 @@ TEST(GraphIsomorphismTaggedGraphTest, Disconnected9)
 {
     const auto graphs = UndirectedGraphFromG6::getDisconnectedGraphs(UndirectedGraphFromG6::getListNumVertices_9());
     CheckUniquenessGraphTaggers(graphs, 18, 18);
-}
-
-TEST(GraphIsomorphismTaggedGraphTest, SpecialCase1)
-{
-    const auto g0 = UndirectedGraphFromG6::CreateConnected("FMhXw");
-    const auto g1 = UndirectedGraphFromG6::CreateConnected("FDxZg");
-    const TaggedGraph tg0(*g0);
-    const TaggedGraph tg1(*g1);
-    const auto status = TaggedGraph::tryConnect(tg0, tg1);
-
-    const TaggerTriangles taggerTriangles0(std::make_shared<UndirectedGraphTriangles>(*g0));
-    const TaggerTriangles taggerTriangles1(std::make_shared<UndirectedGraphTriangles>(*g1));
-
-    ASSERT_EQ(taggerTriangles0.compareOtherGraph(3, taggerTriangles0, 4), std::weak_ordering::equivalent);
-    ASSERT_EQ(taggerTriangles1.compareOtherGraph(3, taggerTriangles1, 4), std::weak_ordering::greater);
-
-    const TaggerChains taggerChains0(*g0);
-    const TaggerChains taggerChains1(*g1);
-
-    ASSERT_EQ(taggerChains0.getVertexTag(3), (Tag{4, 3}));
-    ASSERT_EQ(taggerChains0.getVertexTag(4), (Tag{4, 3}));
-
-    ASSERT_EQ(taggerChains1.getVertexTag(3), (Tag{4, 3}));
-    ASSERT_EQ(taggerChains1.getVertexTag(4), (Tag{4, 3}));
-
-    ASSERT_TRUE(tg0 != tg1);
 }

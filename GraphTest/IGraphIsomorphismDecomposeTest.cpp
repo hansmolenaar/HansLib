@@ -389,15 +389,15 @@ TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList7)
 
 TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList8)
 {
-    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_8(), {1, 744, 2, 1});
-    // PrintMultipleDecompositions(UndirectedGraphFromG6::getListNumVertices_8());
+    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_8(), {1, 746});
 }
 
 TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList9)
 {
-    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_9(), {1, 469, 2, 6});
+    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_9(), {1, 477, 2, 2});
+    // PrintMultipleDecompositions(UndirectedGraphFromG6::getListNumVertices_9());
 }
 TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList10)
 {
-    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_10(), {1, 704, 2, 1, 3, 1, 6, 1});
+    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_10(), {1, 706, 3, 1, 6, 1});
 }
