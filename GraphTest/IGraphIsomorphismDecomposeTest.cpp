@@ -355,6 +355,7 @@ TEST(IGraphIsomorphismDecomposeTest, SpecialCase5)
     ASSERT_EQ(toParent.getVertexInRoot(2, leaf3), 3);
     CheckVertexConservation(toParent, 3);
 }
+
 TEST(IGraphIsomorphismDecomposeTest, BullIsSelfComplement)
 {
     const auto graph = UndirectedGraphLibrary::Get_Bull();

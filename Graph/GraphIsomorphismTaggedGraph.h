@@ -18,6 +18,7 @@ class TaggedGraph
     std::weak_ordering operator<=>(const TaggedGraph &) const;
     bool operator==(const TaggedGraph &) const;
 
+    const Grouping<GraphVertex> &getVertexGrouping() const;
     static Status tryConnect(const TaggedGraph &, const TaggedGraph &);
 
   private:

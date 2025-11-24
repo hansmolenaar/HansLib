@@ -157,6 +157,21 @@ TEST(GraphIsomorphismTaggedGraphTest, DegreePan3)
     ASSERT_EQ(status.getFlag(), Flag::Isomorphic);
 }
 
+TEST(GraphIsomorphismTaggedGraphTest, SpecialCase1)
+{
+    const auto g0 = UndirectedGraphFromG6::Create("G}hPW{");
+    const auto g1 = UndirectedGraphFromG6::Create("G~`HW{");
+    const TaggedGraph tg0(*g0);
+    const TaggedGraph tg1(*g1);
+    const auto grouping0 = tg0.getVertexGrouping();
+    const auto grouping1 = tg1.getVertexGrouping();
+    ASSERT_TRUE(grouping0.getUniqueValues().empty());
+    ASSERT_TRUE(grouping1.getUniqueValues().empty());
+
+    const auto tgCompare = tg0 <=> tg1;
+    ASSERT_TRUE(tgCompare != std::weak_ordering::equivalent); // TODO fails for the time being
+}
+
 TEST(GraphIsomorphismTaggedGraphTest, CheckTaggingList3)
 {
     CheckTaggingForList(UndirectedGraphFromG6::getListNumVertices_3(), Tag{1, 4});

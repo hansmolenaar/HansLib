@@ -61,3 +61,8 @@ Status TaggedGraph::tryConnect(const TaggedGraph &tg0, const TaggedGraph &tg1)
 
     return result;
 }
+
+const Grouping<GraphVertex> &TaggedGraph::getVertexGrouping() const
+{
+    return m_grouping;
+}
