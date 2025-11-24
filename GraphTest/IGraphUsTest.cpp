@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "IGraphUs.h"
+#include "UndirectedGraphFromG6.h"
 #include "UndirectedGraphLibrary.h"
 
 using namespace Graph;
@@ -51,4 +52,23 @@ TEST(IGraphUsTest, FullyConnectedVertices)
 
     fullyConnectedVertices = UndirectedGraphLibrary::Get_Diamond()->getFullyConnectedVertices();
     ASSERT_EQ(fullyConnectedVertices.size(), 2);
+}
+
+TEST(IGraphUsTest, sortedEdges)
+{
+    ASSERT_EQ(UndirectedGraphLibrary::Get_Null()->getAllSortedEdges(), (std::vector<std::array<GraphVertex, 2>>{}));
+    ASSERT_EQ(UndirectedGraphLibrary::Get_Singleton()->getAllSortedEdges(),
+              (std::vector<std::array<GraphVertex, 2>>{}));
+    ASSERT_EQ(UndirectedGraphLibrary::Get_Path(2)->getAllSortedEdges(),
+              (std::vector<std::array<GraphVertex, 2>>{{0, 1}}));
+    ASSERT_EQ(UndirectedGraphLibrary::Get_Cycle(3)->getAllSortedEdges(),
+              (std::vector<std::array<GraphVertex, 2>>{{0, 1}, {0, 2}, {1, 2}}));
+    ASSERT_EQ(UndirectedGraphLibrary::Get_Path(3)->getAllSortedEdges(),
+              (std::vector<std::array<GraphVertex, 2>>{{0, 1}, {1, 2}}));
+    ASSERT_EQ(UndirectedGraphLibrary::Get_DisconnectedGraph(3)->getAllSortedEdges(),
+              (std::vector<std::array<GraphVertex, 2>>{}));
+    ASSERT_EQ(UndirectedGraphFromG6 ::Create(UndirectedGraphFromG6::pan3)->getAllSortedEdges(),
+              (std::vector<std::array<GraphVertex, 2>>{{0, 1}, {0, 2}, {1, 2}, {2, 3}}));
+    ASSERT_EQ(UndirectedGraphFromG6 ::Create(UndirectedGraphFromG6::diamond)->getAllSortedEdges(),
+              (std::vector<std::array<GraphVertex, 2>>{{0, 1}, {0, 2}, {1, 2}, {1, 3}, {2, 3}}));
 }

@@ -38,5 +38,6 @@ class IGraphUs
     bool isConnected() const;
     bool isComplete() const;
     std::vector<GraphVertex> getFullyConnectedVertices() const;
+    std::vector<std::array<GraphVertex, 2>> getAllSortedEdges() const;
 };
 }; // namespace Graph

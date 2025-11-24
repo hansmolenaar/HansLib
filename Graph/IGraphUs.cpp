@@ -61,3 +61,24 @@ std::vector<GraphVertex> IGraphUs::getFullyConnectedVertices() const
                  [this, maxDegree](GraphVertex v) { return getDegree(v) == maxDegree; });
     return result;
 }
+
+std::vector<std::array<GraphVertex, 2>> IGraphUs::getAllSortedEdges() const
+{
+    const auto nVertices = getNumVertices();
+    std::vector<std::array<GraphVertex, 2>> result;
+    std::vector<GraphVertex> neighbors;
+    for (GraphVertex v = 0; v < nVertices; ++v)
+    {
+        setAdjacentVertices(v, neighbors);
+        for (GraphVertex ngb : neighbors)
+        {
+            if (ngb > v)
+            {
+                result.emplace_back(std::array<GraphVertex, 2>{v, ngb});
+            }
+        }
+    }
+
+    // Sorted/unique by construction
+    return result;
+}

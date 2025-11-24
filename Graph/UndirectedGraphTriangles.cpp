@@ -5,24 +5,6 @@ using namespace Graph;
 namespace
 {
 
-std::vector<std::array<GraphVertex, 2>> getAllSortedEdges(const std::vector<std::vector<GraphVertex>> &allNeighbors)
-{
-    std::vector<std::array<GraphVertex, 2>> result;
-    const auto nVertices = allNeighbors.size();
-    for (GraphVertex v = 0; v < nVertices; ++v)
-    {
-        for (GraphVertex ngb : allNeighbors.at(v))
-        {
-            if (ngb > v)
-            {
-                result.emplace_back(std::array<GraphVertex, 2>{v, ngb});
-            }
-        }
-    }
-    // Sorted/unique by construction
-    return result;
-}
-
 std::vector<std::array<GraphVertex, 3>> GetAllTriangles(const Graph::IGraphUs &graph)
 {
     const auto nVertices = graph.getNumVertices();
@@ -34,7 +16,7 @@ std::vector<std::array<GraphVertex, 3>> GetAllTriangles(const Graph::IGraphUs &g
 
     std::vector<std::array<GraphVertex, 3>> result;
     std::vector<GraphVertex> commonVertices;
-    for (const auto &edge : getAllSortedEdges(allNeighbors))
+    for (const auto &edge : graph.getAllSortedEdges())
     {
         commonVertices.clear();
         str::set_intersection(allNeighbors.at(edge[0]), allNeighbors.at(edge[1]), std::back_inserter(commonVertices));
