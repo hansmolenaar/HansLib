@@ -225,14 +225,11 @@ TEST(GraphIsomorphismTaggedGraphTest, SpecialCase1)
     const TaggedGraph tg1(*g1);
     const auto status = TaggedGraph::tryConnect(tg0, tg1);
 
-    const TaggerTriangles taggerTriangles0(*g0);
-    const TaggerTriangles taggerTriangles1(*g1);
+    const TaggerTriangles taggerTriangles0(std::make_shared<UndirectedGraphTriangles>(*g0));
+    const TaggerTriangles taggerTriangles1(std::make_shared<UndirectedGraphTriangles>(*g1));
 
-    ASSERT_EQ(taggerTriangles0.getVertexTag(3), 2);
-    ASSERT_EQ(taggerTriangles0.getVertexTag(4), 2);
-
-    ASSERT_EQ(taggerTriangles1.getVertexTag(3), 2);
-    ASSERT_EQ(taggerTriangles1.getVertexTag(4), 1);
+    ASSERT_EQ(taggerTriangles0.compareOtherGraph(3, taggerTriangles0, 4), std::weak_ordering::equivalent);
+    ASSERT_EQ(taggerTriangles1.compareOtherGraph(3, taggerTriangles1, 4), std::weak_ordering::greater);
 
     const TaggerChains taggerChains0(*g0);
     const TaggerChains taggerChains1(*g1);

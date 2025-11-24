@@ -71,7 +71,8 @@ std::vector<std::unique_ptr<ITagger>> GraphIsomorphism::getAllTaggers(const Grap
     result.emplace_back(std::make_unique<TaggerDistance>(graph));
     result.emplace_back(std::make_unique<TaggerKnown>(graph));
     result.emplace_back(std::make_unique<TaggerMaxDegree>(graph));
-    result.emplace_back(std::make_unique<TaggerTriangles>(graph));
+    auto triangles = std::make_shared<Graph::UndirectedGraphTriangles>(graph);
+    result.emplace_back(std::make_unique<TaggerTriangles>(triangles));
     return result;
 }
 

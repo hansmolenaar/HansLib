@@ -12,6 +12,7 @@ class UndirectedGraphTriangles
     explicit UndirectedGraphTriangles(const Graph::IGraphUs &);
     const Graph::IGraphUs &getGraph() const;
     size_t numTrianglesAt(GraphVertex) const;
+    std::vector<size_t> getSequence() const;
 
   private:
     const Graph::IGraphUs &m_graph;

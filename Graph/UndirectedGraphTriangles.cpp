@@ -52,7 +52,8 @@ std::vector<std::array<GraphVertex, 3>> GetAllTriangles(const Graph::IGraphUs &g
 
 } // namespace
 
-UndirectedGraphTriangles::UndirectedGraphTriangles(const Graph::IGraphUs &graph) : m_graph(graph)
+UndirectedGraphTriangles::UndirectedGraphTriangles(const Graph::IGraphUs &graph)
+    : m_graph(graph), m_countPerVertex(m_graph.getNumVertices())
 {
     const auto allTriangles = GetAllTriangles(graph);
     for (const auto &triangle : allTriangles)
@@ -62,4 +63,19 @@ UndirectedGraphTriangles::UndirectedGraphTriangles(const Graph::IGraphUs &graph)
             m_countPerVertex.at(vertex) += 1;
         }
     }
+}
+
+std::vector<size_t> UndirectedGraphTriangles::getSequence() const
+{
+    return m_countPerVertex;
+}
+
+size_t UndirectedGraphTriangles::numTrianglesAt(GraphVertex vertex) const
+{
+    return m_countPerVertex.at(vertex);
+}
+
+const Graph::IGraphUs &UndirectedGraphTriangles::getGraph() const
+{
+    return m_graph;
 }

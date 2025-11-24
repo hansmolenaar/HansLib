@@ -45,7 +45,7 @@ TEST(GraphIsomorphismVertexComparersTest, Fish)
 {
     const auto graph = UndirectedGraphFromG6::CreateConnected(UndirectedGraphFromG6::fish);
     const TaggerDegree taggerDegree(*graph);
-    const TaggerTriangles taggerTriangles(*graph);
+    const TaggerTriangles taggerTriangles(std::make_shared<UndirectedGraphTriangles>(*graph));
     const std::vector<const IVertexCompare *> taggers{&taggerDegree, &taggerTriangles};
     const VertexComparers comparers(taggers);
 

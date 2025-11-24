@@ -3,6 +3,7 @@
 #include "GraphIsomorphismDefines.h"
 #include "IGraphIsomorphismTagger.h"
 #include "IGraphUs.h"
+#include "UndirectedGraphTriangles.h"
 
 namespace GraphIsomorphism
 {
@@ -10,20 +11,16 @@ namespace GraphIsomorphism
 class TaggerTriangles : public IGraphTagger, public IVertexCompare
 {
   public:
-    explicit TaggerTriangles(const Graph::IGraphUs &);
+    explicit TaggerTriangles(std::shared_ptr<Graph::UndirectedGraphTriangles>);
 
     const Tag &getGraphTag() const override;
-    TagEntry getVertexTag(GraphVertex) const;
 
     const Graph::IGraphUs &getGraph() const override;
     std::weak_ordering compareOtherGraph(GraphVertex, const IVertexCompare &, GraphVertex) const override;
 
-    static std::vector<std::array<GraphVertex, 3>> getAllTriangles(const Graph::IGraphUs &);
-
   private:
-    const Graph::IGraphUs &m_graph;
+    std::shared_ptr<Graph::UndirectedGraphTriangles> m_triangles;
     Tag m_graphTag;
-    std::vector<size_t> m_countPerVertex;
 };
 
 class TaggerTrianglesFactory : public ITaggerFactory
