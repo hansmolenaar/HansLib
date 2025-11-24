@@ -9,6 +9,7 @@
 #include "GraphIsomorphismTaggerMaxDegree.h"
 #include "GraphIsomorphismTaggerNumbers.h"
 #include "GraphIsomorphismTaggerTriangles.h"
+#include "UndirectedGraphDistance.h"
 
 using namespace GraphIsomorphism;
 
@@ -64,14 +65,16 @@ std::ostream &operator<<(std::ostream &os, const GraphIsomorphism::GraphTags &ta
 std::vector<std::unique_ptr<ITagger>> GraphIsomorphism::getAllTaggers(const Graph::IGraphUs &graph)
 {
     std::vector<std::unique_ptr<ITagger>> result;
+    auto triangles = std::make_shared<Graph::UndirectedGraphTriangles>(graph);
+    auto distances = std::make_shared<Graph::UndirectedGraphDistance>(graph);
+
     result.emplace_back(std::make_unique<TaggerNumbers>(graph));
     result.emplace_back(std::make_unique<TaggerComponents>(graph));
     result.emplace_back(std::make_unique<TaggerDegree>(graph));
     result.emplace_back(std::make_unique<TaggerChains>(graph));
-    result.emplace_back(std::make_unique<TaggerDistance>(graph));
+    result.emplace_back(std::make_unique<TaggerDistance>(distances, triangles));
     result.emplace_back(std::make_unique<TaggerKnown>(graph));
     result.emplace_back(std::make_unique<TaggerMaxDegree>(graph));
-    auto triangles = std::make_shared<Graph::UndirectedGraphTriangles>(graph);
     result.emplace_back(std::make_unique<TaggerTriangles>(triangles));
     return result;
 }

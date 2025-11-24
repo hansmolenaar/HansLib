@@ -179,13 +179,13 @@ TEST(GraphIsomorphismTaggedGraphTest, CheckTaggingList6)
 
 TEST(GraphIsomorphismTaggedGraphTest, CheckTaggingList7)
 {
-    CheckTaggingForList(UndirectedGraphFromG6::getListNumVertices_7(), {1, 300, 2, 1});
+    CheckTaggingForList(UndirectedGraphFromG6::getListNumVertices_7(), {1, 302});
     // PrintMultipleTags(UndirectedGraphFromG6::getListNumVertices_7());
 }
 
 TEST(GraphIsomorphismTaggedGraphTest, CheckTaggingList8)
 {
-    CheckTaggingForList(UndirectedGraphFromG6::getListNumVertices_8(), {1, 718, 2, 14});
+    CheckTaggingForList(UndirectedGraphFromG6::getListNumVertices_8(), {1, 742, 2, 2});
 }
 TEST(GraphIsomorphismConstructTest, Disconnected5)
 {

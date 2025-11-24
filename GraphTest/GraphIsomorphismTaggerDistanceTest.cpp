@@ -3,10 +3,12 @@
 #include "Defines.h"
 #include "GraphIsomorphismITaggerTest.h"
 #include "GraphIsomorphismTaggerDistance.h"
+#include "GraphIsomorphismVertexComparers.h"
 #include "GraphUsc.h"
 #include "UndirectedGraphDistance.h"
 #include "UndirectedGraphFromG6.h"
 #include "UndirectedGraphLibrary.h"
+#include "UndirectedGraphTriangles.h"
 
 using namespace GraphIsomorphism;
 using namespace Graph;
@@ -28,7 +30,8 @@ TEST(GraphIsomorphismTaggerDistanceTest, Path3)
     GraphTest::CheckTaggerConsistency(GraphUsc(*graph), factory, 1);
 
     auto distances = std::make_shared<UndirectedGraphDistance>(GraphUsc(*graph));
-    const TaggerDistance tagger(distances);
+    auto triangles = std::make_shared<UndirectedGraphTriangles>(*graph);
+    const TaggerDistance tagger(distances, triangles);
     ASSERT_TRUE(str::equal(tagger.getVertexTag(0), Tag{1, 1}));
     ASSERT_TRUE(str::equal(tagger.getVertexTag(1), Tag{2}));
     ASSERT_TRUE(str::equal(tagger.getVertexTag(2), Tag{1, 1}));
@@ -52,6 +55,21 @@ TEST(GraphIsomorphismTaggerDistanceTest, Star121)
 
     const auto graphTag = tagger.getGraphTag();
     ASSERT_EQ(graphTag, (Tag{2, 2, 3, 3}));
+}
+
+TEST(GraphIsomorphismTaggerDistanceTest, SpecialCase1)
+{
+    const auto g0 = UndirectedGraphFromG6::CreateConnected("GRQH}w");
+    const auto g1 = UndirectedGraphFromG6::CreateConnected("GEhrS{");
+
+    TaggerDistance tagger0(*g0);
+    TaggerDistance tagger1(*g1);
+
+    ASSERT_EQ(tagger0.getGraphTag(), tagger1.getGraphTag());
+    const VertexComparers compare0(std::vector<const IVertexCompare *>{&tagger0});
+    const VertexComparers compare1(std::vector<const IVertexCompare *>{&tagger1});
+
+    ASSERT_TRUE(compare0 < compare1);
 }
 
 TEST(GraphIsomorphismTaggerDistanceTest, NumVertices5)

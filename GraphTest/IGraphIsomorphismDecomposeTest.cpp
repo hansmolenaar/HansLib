@@ -355,24 +355,6 @@ TEST(IGraphIsomorphismDecomposeTest, SpecialCase5)
     ASSERT_EQ(toParent.getVertexInRoot(2, leaf3), 3);
     CheckVertexConservation(toParent, 3);
 }
-
-TEST(IGraphIsomorphismDecomposeTest, SpecialCase6)
-{
-    const auto g0 = UndirectedGraphFromG6::CreateConnected("GRQH}w");
-    const auto g1 = UndirectedGraphFromG6::CreateConnected("GEhrS{");
-
-    const auto decompose0 = IDecompose::Create(*g0);
-    const auto decompose1 = IDecompose::Create(*g1);
-    const ToParentMap map0(decompose0.get());
-    const ToParentMap map1(decompose1.get());
-
-    const auto leafNames0 = map0.namesOfLeaves();
-    const auto leafNames1 = map1.namesOfLeaves();
-
-    const auto cmp = map0 <=> map1;
-    ASSERT_TRUE(cmp == 0); // TODO !=
-}
-
 TEST(IGraphIsomorphismDecomposeTest, BullIsSelfComplement)
 {
     const auto graph = UndirectedGraphLibrary::Get_Bull();
@@ -406,15 +388,15 @@ TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList7)
 
 TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList8)
 {
-    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_8(), {1, 736, 2, 5});
+    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_8(), {1, 744, 2, 1});
     // PrintMultipleDecompositions(UndirectedGraphFromG6::getListNumVertices_8());
 }
 
 TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList9)
 {
-    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_9(), {1, 452, 2, 10, 3, 3});
+    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_9(), {1, 469, 2, 6});
 }
 TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList10)
 {
-    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_10(), {1, 697, 2, 3, 3, 2, 6, 1});
+    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_10(), {1, 704, 2, 1, 3, 1, 6, 1});
 }

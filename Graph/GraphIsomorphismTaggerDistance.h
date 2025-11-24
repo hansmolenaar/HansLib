@@ -6,7 +6,8 @@
 namespace Graph
 {
 class UndirectedGraphDistance;
-}
+class UndirectedGraphTriangles;
+} // namespace Graph
 
 namespace GraphIsomorphism
 {
@@ -21,7 +22,8 @@ struct ScalarVertexValues
 class TaggerDistance : public IGraphTagger, public IVertexCompare
 {
   public:
-    explicit TaggerDistance(std::shared_ptr<Graph::UndirectedGraphDistance>);
+    explicit TaggerDistance(std::shared_ptr<Graph::UndirectedGraphDistance>,
+                            std::shared_ptr<Graph::UndirectedGraphTriangles>);
     explicit TaggerDistance(const Graph::IGraphUs &);
     const Tag &getVertexTag(GraphVertex) const;
     const Tag &getGraphTag() const override;
@@ -30,8 +32,10 @@ class TaggerDistance : public IGraphTagger, public IVertexCompare
     std::weak_ordering compareOtherGraph(GraphVertex, const IVertexCompare &, GraphVertex) const override;
 
   private:
-    Tag getTag(GraphVertex v) const;
     std::shared_ptr<Graph::UndirectedGraphDistance> m_distances;
+    std::shared_ptr<Graph::UndirectedGraphTriangles> m_triangles;
+
+    Tag getTag(GraphVertex v) const;
     std::vector<Tag> m_tags;
     Tag m_graphTag;
 };
