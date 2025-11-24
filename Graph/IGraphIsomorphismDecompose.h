@@ -136,6 +136,7 @@ class ToParentMap
     GraphVertex getVertexInRoot(GraphVertex vertex, const IDecompose *) const;
 
     std::vector<Tag> collectDecomposeTagsForLeaf(const IDecompose *) const;
+    std::vector<std::string> namesOfLeaves() const;
 
     std::weak_ordering compareLeaves(const IDecompose *, const IDecompose *) const;
     GraphIsomorphism::Grouping<const IDecompose *> groupLeaves() const;

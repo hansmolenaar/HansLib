@@ -469,3 +469,11 @@ std::weak_ordering ToParentMap::operator<=>(const ToParentMap &map2) const
     }
     return result;
 }
+
+std::vector<std::string> ToParentMap::namesOfLeaves() const
+{
+    const auto leaves = getLeaves();
+    std::vector<std::string> result(leaves.size());
+    str::transform(leaves, result.begin(), [](const auto *leaf) { return leaf->getName(); });
+    return result;
+}
