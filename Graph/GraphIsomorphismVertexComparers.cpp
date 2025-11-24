@@ -58,22 +58,22 @@ const IGraphUs &VertexComparers::getGraph() const
     return m_vertexComparers.front()->getGraph();
 }
 
-std::weak_ordering VertexComparers::compare(GraphVertex v0, GraphVertex v1) const
-{
-    return m_vertex2group.at(v0) <=> m_vertex2group.at(v1);
-}
-
 std::weak_ordering VertexComparers::compareOtherGraph(GraphVertex v0, const IVertexCompare &otherCompare,
                                                       GraphVertex v1) const
 {
-    const VertexComparers &other = dynamic_cast<const VertexComparers &>(otherCompare);
+    const VertexComparers *other = dynamic_cast<const VertexComparers *>(&otherCompare);
+    if (this == other)
+    {
+        return m_vertex2group.at(v0) <=> m_vertex2group.at(v1);
+    }
+
     const auto nComparers = m_vertexComparers.size();
     std::weak_ordering result = std::weak_ordering::equivalent;
-    MyAssert(other.m_vertexComparers.size() == nComparers);
+    MyAssert(other->m_vertexComparers.size() == nComparers);
     for (size_t n = 0; n < nComparers; ++n)
     {
         const IVertexCompare *compare0 = m_vertexComparers.at(n);
-        const IVertexCompare *compare1 = other.m_vertexComparers.at(n);
+        const IVertexCompare *compare1 = other->m_vertexComparers.at(n);
         result = compare0->compareOtherGraph(v0, *compare1, v1);
         if (result != std::weak_ordering::equivalent)
         {

@@ -33,11 +33,6 @@ const Graph::IGraphUs &TaggerMaxDegree::getGraph() const
     return m_graph;
 }
 
-std::weak_ordering TaggerMaxDegree::compare(GraphVertex vertex0, GraphVertex vertex1) const
-{
-    return getVertexTag(vertex0) <=> getVertexTag(vertex1);
-}
-
 std::weak_ordering TaggerMaxDegree::compareOtherGraph(GraphVertex vertex0, const IVertexCompare &other,
                                                       GraphVertex vertex1) const
 {

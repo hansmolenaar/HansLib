@@ -34,8 +34,9 @@ class IVertexCompare : public virtual ITagger
   public:
     ~IVertexCompare() = default;
     virtual const Graph::IGraphUs &getGraph() const = 0;
-    virtual std::weak_ordering compare(GraphVertex, GraphVertex) const = 0;
     virtual std::weak_ordering compareOtherGraph(GraphVertex, const IVertexCompare &, GraphVertex) const = 0;
+
+    std::weak_ordering compare(GraphVertex, GraphVertex) const;
 };
 
 struct VertexLess

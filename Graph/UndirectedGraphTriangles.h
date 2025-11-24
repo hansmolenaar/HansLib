@@ -1,0 +1,21 @@
+#pragma once
+
+#include "GraphDefines.h"
+#include "IGraphUs.h"
+
+namespace Graph
+{
+
+class UndirectedGraphTriangles
+{
+  public:
+    explicit UndirectedGraphTriangles(const Graph::IGraphUs &);
+    const Graph::IGraphUs &getGraph() const;
+    size_t numTrianglesAt(GraphVertex) const;
+
+  private:
+    const Graph::IGraphUs &m_graph;
+    std::vector<size_t> m_countPerVertex;
+};
+
+} // namespace Graph

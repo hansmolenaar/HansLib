@@ -20,11 +20,6 @@ const Graph::IGraphUs &TaggerDegree::getGraph() const
     return m_graph;
 }
 
-std::weak_ordering TaggerDegree::compare(GraphVertex vertex0, GraphVertex vertex1) const
-{
-    return m_graph.getDegree(vertex0) <=> m_graph.getDegree(vertex1);
-}
-
 std::weak_ordering TaggerDegree::compareOtherGraph(GraphVertex vertex0, const IVertexCompare &other,
                                                    GraphVertex vertex1) const
 {

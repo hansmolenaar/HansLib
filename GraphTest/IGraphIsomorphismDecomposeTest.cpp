@@ -407,7 +407,7 @@ TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList7)
 TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList8)
 {
     CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_8(), {1, 736, 2, 5});
-    //PrintMultipleDecompositions(UndirectedGraphFromG6::getListNumVertices_8());
+    // PrintMultipleDecompositions(UndirectedGraphFromG6::getListNumVertices_8());
 }
 
 TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList9)

@@ -82,11 +82,6 @@ const Graph::IGraphUs &TaggerTriangles::getGraph() const
     return m_graph;
 }
 
-std::weak_ordering TaggerTriangles::compare(GraphVertex vertex0, GraphVertex vertex1) const
-{
-    return getVertexTag(vertex0) <=> getVertexTag(vertex1);
-}
-
 std::weak_ordering TaggerTriangles::compareOtherGraph(GraphVertex vertex0, const IVertexCompare &other,
                                                       GraphVertex vertex1) const
 {

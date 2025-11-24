@@ -11,6 +11,13 @@ class UndirectedGraphDistance;
 namespace GraphIsomorphism
 {
 
+struct ScalarVertexValues
+{
+    GraphIsomorphism::TagEntry Degree;
+    GraphIsomorphism::TagEntry NumTriangles;
+    auto operator<=>(const ScalarVertexValues &) const = default;
+};
+
 class TaggerDistance : public IGraphTagger, public IVertexCompare
 {
   public:
@@ -20,7 +27,6 @@ class TaggerDistance : public IGraphTagger, public IVertexCompare
     const Tag &getGraphTag() const override;
 
     const Graph::IGraphUs &getGraph() const override;
-    std::weak_ordering compare(GraphVertex, GraphVertex) const override;
     std::weak_ordering compareOtherGraph(GraphVertex, const IVertexCompare &, GraphVertex) const override;
 
   private:

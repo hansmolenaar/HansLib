@@ -11,3 +11,8 @@ const IVertexCompare *ITagger::getVertexCompare() const
 {
     return dynamic_cast<const IVertexCompare *>(this);
 }
+
+std::weak_ordering IVertexCompare::compare(GraphVertex lhs, GraphVertex rhs) const
+{
+    return compareOtherGraph(lhs, *this, rhs);
+}

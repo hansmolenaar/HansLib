@@ -56,11 +56,6 @@ const IGraphUs &TaggerDistance::getGraph() const
     return m_distances->getGraph();
 }
 
-std::weak_ordering TaggerDistance::compare(GraphVertex vertex0, GraphVertex vertex1) const
-{
-    return getVertexTag(vertex0) <=> getVertexTag(vertex1);
-}
-
 std::weak_ordering TaggerDistance::compareOtherGraph(GraphVertex vertex0, const IVertexCompare &other,
                                                      GraphVertex vertex1) const
 {
