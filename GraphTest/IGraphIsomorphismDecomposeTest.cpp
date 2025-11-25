@@ -377,7 +377,7 @@ TEST(IGraphIsomorphismDecomposeTest, SpecialCase6)
         if (leaf->getGraph().getNumVertices() > 2)
         {
             const auto grouping = leaf->getTaggedGraph().getVertexGrouping();
-            //GraphIsomorphism::toEdgeList(leaf->getGraph(), std::cout);
+            // GraphIsomorphism::toEdgeList(leaf->getGraph(), std::cout);
         }
     }
     std::cout << "\n\n\n";
@@ -387,7 +387,7 @@ TEST(IGraphIsomorphismDecomposeTest, SpecialCase6)
         if (leaf->getGraph().getNumVertices() > 2)
         {
             const auto grouping = leaf->getTaggedGraph().getVertexGrouping();
-            //GraphIsomorphism::toEdgeList(leaf->getGraph(), std::cout);
+            // GraphIsomorphism::toEdgeList(leaf->getGraph(), std::cout);
         }
     }
 
@@ -434,7 +434,7 @@ TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList8)
 TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList9)
 {
     CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_9(), {1, 477, 2, 2});
-    //PrintMultipleDecompositions(UndirectedGraphFromG6::getListNumVertices_9());
+    // PrintMultipleDecompositions(UndirectedGraphFromG6::getListNumVertices_9());
 }
 TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList10)
 {

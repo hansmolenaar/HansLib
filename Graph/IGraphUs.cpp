@@ -82,3 +82,31 @@ std::vector<std::array<GraphVertex, 2>> IGraphUs::getAllSortedEdges() const
     // Sorted/unique by construction
     return result;
 }
+
+bool IGraphUs::isClique(std::vector<GraphVertex> vertices) const
+{
+    str::sort(vertices);
+    vertices.erase(std::unique(vertices.begin(), vertices.end()), vertices.end());
+
+    if (vertices.size() < 2)
+    {
+        return false;
+    }
+    const size_t maxIntersectionSize = vertices.size() - 1;
+    std::vector<GraphVertex> neighbors;
+    std::vector<GraphVertex> intersection;
+
+    for (GraphVertex v : vertices)
+    {
+        setAdjacentVertices(v, neighbors);
+        intersection.clear();
+        std::set_intersection(vertices.begin(), vertices.end(), neighbors.begin(), neighbors.end(),
+                              std::back_inserter(intersection));
+        if (intersection.size() < maxIntersectionSize)
+        {
+            return false;
+        }
+    }
+
+    return true;
+}

@@ -33,6 +33,22 @@ TEST(IGraphUsTest, isComplete)
     ASSERT_FALSE(UndirectedGraphLibrary::Get_DisconnectedGraph(2)->isComplete());
 }
 
+TEST(IGraphUsTest, isClique)
+{
+    ASSERT_FALSE(UndirectedGraphLibrary::Get_Null()->isClique(std::vector<GraphVertex>{}));
+    ASSERT_FALSE(UndirectedGraphLibrary::Get_Singleton()->isClique(std::vector<GraphVertex>{0}));
+    ASSERT_TRUE(UndirectedGraphLibrary::Get_Path(2)->isClique(std::vector<GraphVertex>{0, 1}));
+    ASSERT_TRUE(UndirectedGraphLibrary::Get_Cycle(3)->isClique(std::vector<GraphVertex>{0, 2}));
+    ASSERT_TRUE(UndirectedGraphLibrary::Get_Path(3)->isClique(std::vector<GraphVertex>{1, 2}));
+    ASSERT_FALSE(UndirectedGraphLibrary::Get_Path(3)->isClique(std::vector<GraphVertex>{0, 2}));
+    ASSERT_FALSE(UndirectedGraphLibrary::Get_DisconnectedGraph(5)->isClique(std::vector<GraphVertex>{0, 2}));
+    ASSERT_TRUE(UndirectedGraphLibrary::Get_CompleteGraph(5)->isClique(std::vector<GraphVertex>{0, 2, 4, 1, 2, 4, 1}));
+    ASSERT_TRUE(
+        UndirectedGraphFromG6::Create(UndirectedGraphFromG6::diamond)->isClique(std::vector<GraphVertex>{1, 2, 3}));
+    ASSERT_FALSE(
+        UndirectedGraphFromG6::Create(UndirectedGraphFromG6::diamond)->isClique(std::vector<GraphVertex>{0, 1, 3}));
+}
+
 TEST(IGraphUsTest, FullyConnectedVertices)
 {
     auto fullyConnectedVertices = UndirectedGraphLibrary::Get_Null()->getFullyConnectedVertices();

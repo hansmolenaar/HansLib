@@ -39,5 +39,6 @@ class IGraphUs
     bool isComplete() const;
     std::vector<GraphVertex> getFullyConnectedVertices() const;
     std::vector<std::array<GraphVertex, 2>> getAllSortedEdges() const;
+    bool isClique(std::vector<GraphVertex>) const;
 };
 }; // namespace Graph
