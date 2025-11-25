@@ -19,11 +19,12 @@ class IDecompose
     const Graph::IGraphUs &getGraph() const;
     const TaggedGraph &getTaggedGraph() const;
     virtual const Tag &getTag() const = 0;
+    virtual std::string getDescription() const = 0;
     virtual const Grouping<const IDecompose *> &getGroupingChildren() const = 0;
 
     std::weak_ordering operator<=>(const IDecompose &) const;
     bool isLeaf() const;
-    std::string getName() const;
+    std::string getGraphName() const;
 
     static std::unique_ptr<IDecompose> Create(const Graph::IGraphUs &, bool = true);
 
@@ -42,6 +43,7 @@ class DecomposeDisconnected : public IDecompose
     explicit DecomposeDisconnected(const Graph::IGraphUs &);
 
     const Tag &getTag() const override;
+    std::string getDescription() const override;
 
     // Can be empty: leaf of tree
     const Grouping<const IDecompose *> &getGroupingChildren() const override;
@@ -59,6 +61,7 @@ class DecomposeVertexFullyConnected : public IDecompose
     explicit DecomposeVertexFullyConnected(const Graph::IGraphUs &, const std::set<GraphVertex> &);
 
     const Tag &getTag() const override;
+    std::string getDescription() const override;
 
     // Can be empty: leaf of tree
     const Grouping<const IDecompose *> &getGroupingChildren() const override;
@@ -78,6 +81,7 @@ class DecomposeLeaf : public IDecompose
     explicit DecomposeLeaf(const Graph::IGraphUs &);
 
     const Tag &getTag() const override;
+    std::string getDescription() const override;
 
     // Is empty
     const Grouping<const IDecompose *> &getGroupingChildren() const override;
@@ -94,6 +98,7 @@ class DecomposeKnown : public IDecompose
     static std::unique_ptr<IDecompose> tryCreate(const Graph::IGraphUs &);
 
     const Tag &getTag() const override;
+    std::string getDescription() const override;
 
     // Is empty
     const Grouping<const IDecompose *> &getGroupingChildren() const override;
@@ -110,6 +115,7 @@ class DecomposeComplement : public IDecompose
     static std::unique_ptr<IDecompose> Create(const Graph::IGraphUs &);
 
     const Tag &getTag() const override;
+    std::string getDescription() const override;
     const Graph::IGraphUs &getOriginal() const;
 
     // Is empty
@@ -136,7 +142,7 @@ class ToParentMap
     GraphVertex getVertexInRoot(GraphVertex vertex, const IDecompose *) const;
 
     std::vector<Tag> collectDecomposeTagsForLeaf(const IDecompose *) const;
-    std::vector<std::string> namesOfLeaves() const;
+    std::string getDescriptions() const;
 
     std::weak_ordering compareLeaves(const IDecompose *, const IDecompose *) const;
     GraphIsomorphism::Grouping<const IDecompose *> groupLeaves() const;

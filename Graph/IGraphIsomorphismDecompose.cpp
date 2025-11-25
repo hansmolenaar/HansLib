@@ -104,7 +104,7 @@ bool IDecompose::isLeaf() const
     return getGroupingChildren()().empty();
 }
 
-std::string IDecompose::getName() const
+std::string IDecompose::getGraphName() const
 {
     return getGraph().getName();
 }
@@ -139,6 +139,11 @@ const Tag &DecomposeLeaf::getTag() const
     return m_tag;
 }
 
+std::string DecomposeLeaf::getDescription() const
+{
+    return "Leaf: " + getGraphName();
+}
+
 const Grouping<const IDecompose *> &DecomposeLeaf::getGroupingChildren() const
 {
     return m_groupingChildren;
@@ -166,6 +171,11 @@ DecomposeKnown::DecomposeKnown(const Graph::IGraphUs &graph, Tag tag) : IDecompo
 const Tag &DecomposeKnown::getTag() const
 {
     return m_tag;
+}
+
+std::string DecomposeKnown::getDescription() const
+{
+    return "Known: " + getGraphName();
 }
 
 const Grouping<const IDecompose *> &DecomposeKnown::getGroupingChildren() const
@@ -204,6 +214,11 @@ DecomposeComplement::DecomposeComplement(std::unique_ptr<Graph::UndirectedGraph>
     {
         // A leaf is returned
     }
+}
+
+std::string DecomposeComplement::getDescription() const
+{
+    return "Complement of: " + m_original.getName();
 }
 
 const Tag &DecomposeComplement::getTag() const
@@ -251,6 +266,11 @@ DecomposeDisconnected::DecomposeDisconnected(const Graph::IGraphUs &graph)
     m_groupingChildren = CreateGrouping(allChildren);
 }
 
+std::string DecomposeDisconnected::getDescription() const
+{
+    return "Disconnected: " + getGraphName();
+}
+
 const Tag &DecomposeDisconnected::getTag() const
 {
     return m_tag;
@@ -295,6 +315,11 @@ DecomposeVertexFullyConnected::DecomposeVertexFullyConnected(const Graph::IGraph
 const Tag &DecomposeVertexFullyConnected::getTag() const
 {
     return m_tag;
+}
+
+std::string DecomposeVertexFullyConnected::getDescription() const
+{
+    return "FullyConnected: " + getGraphName();
 }
 
 const Grouping<const IDecompose *> &DecomposeVertexFullyConnected::getGroupingChildren() const
@@ -470,10 +495,18 @@ std::weak_ordering ToParentMap::operator<=>(const ToParentMap &map2) const
     return result;
 }
 
-std::vector<std::string> ToParentMap::namesOfLeaves() const
+std::string ToParentMap::getDescriptions() const
 {
-    const auto leaves = getLeaves();
-    std::vector<std::string> result(leaves.size());
-    str::transform(leaves, result.begin(), [](const auto *leaf) { return leaf->getName(); });
+    std::string result;
+    for (const auto *leaf : getLeaves())
+    {
+        const auto *id = leaf;
+        while (id != nullptr)
+        {
+            result += id->getDescription() + "\n";
+            id = getParent(id);
+        }
+        result += "\n\n";
+    }
     return result;
 }

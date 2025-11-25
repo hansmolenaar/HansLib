@@ -117,15 +117,8 @@ void GraphIsomorphism::toEdgeList(const Graph::IGraphUs &graph, std::ostream &os
 {
     std::vector<GraphVertex> ngbs;
 
-    for (auto v : graph.getVertexRange())
+    for (auto edge : graph.getAllSortedEdges())
     {
-        graph.setAdjacentVertices(v, ngbs);
-        for (auto n : ngbs)
-        {
-            if (n > v)
-            {
-                os << v + 1 << "-" << n + 1 << "\n";
-            }
-        }
+        os << edge[0] + 1 << "-" << edge[1] + 1 << "\n";
     }
 }

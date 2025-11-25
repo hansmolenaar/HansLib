@@ -356,6 +356,45 @@ TEST(IGraphIsomorphismDecomposeTest, SpecialCase5)
     CheckVertexConservation(toParent, 3);
 }
 
+TEST(IGraphIsomorphismDecomposeTest, SpecialCase6)
+{
+    const auto g0 = UndirectedGraphFromG6::Create("HR]~Mv~");
+    const auto g1 = UndirectedGraphFromG6::Create("HRl~Mv~");
+    const TaggedGraph tg0(*g0);
+    const TaggedGraph tg1(*g1);
+    const auto tgCompare = tg0 <=> tg1;
+    // ASSERT_TRUE(tgCompare != 0); TODO
+
+    const auto decompose0 = IDecompose::Create(*g0);
+    const auto decompose1 = IDecompose::Create(*g1);
+    const ToParentMap map0(decompose0.get());
+    const ToParentMap map1(decompose1.get());
+
+    auto tmp0 = map0.getDescriptions();
+    auto tmp1 = map1.getDescriptions();
+    for (const auto *leaf : map0.getLeaves())
+    {
+        if (leaf->getGraph().getNumVertices() > 2)
+        {
+            const auto grouping = leaf->getTaggedGraph().getVertexGrouping();
+            //GraphIsomorphism::toEdgeList(leaf->getGraph(), std::cout);
+        }
+    }
+    std::cout << "\n\n\n";
+
+    for (const auto *leaf : map1.getLeaves())
+    {
+        if (leaf->getGraph().getNumVertices() > 2)
+        {
+            const auto grouping = leaf->getTaggedGraph().getVertexGrouping();
+            //GraphIsomorphism::toEdgeList(leaf->getGraph(), std::cout);
+        }
+    }
+
+    const auto cmp = map0 <=> map1;
+    ASSERT_TRUE(cmp == 0); // TODO !=
+}
+
 TEST(IGraphIsomorphismDecomposeTest, BullIsSelfComplement)
 {
     const auto graph = UndirectedGraphLibrary::Get_Bull();
@@ -395,7 +434,7 @@ TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList8)
 TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList9)
 {
     CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_9(), {1, 477, 2, 2});
-    // PrintMultipleDecompositions(UndirectedGraphFromG6::getListNumVertices_9());
+    //PrintMultipleDecompositions(UndirectedGraphFromG6::getListNumVertices_9());
 }
 TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList10)
 {
