@@ -37,7 +37,7 @@ class IGraphUs
     std::vector<GraphVertex> getSortedDegreeSequence() const;
     bool isConnected() const;
     bool isComplete() const;
-    std::vector<GraphVertex> getFullyConnectedVertices() const;
+    std::vector<GraphVertex> getUniversalVertices() const;
     std::vector<std::array<GraphVertex, 2>> getAllSortedEdges() const;
     bool isClique(std::vector<GraphVertex>) const;
 };

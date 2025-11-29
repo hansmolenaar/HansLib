@@ -19,7 +19,7 @@ class TaggerMaxDegree : public IGraphTagger, public IVertexCompare
 
   private:
     const Graph::IGraphUs &m_graph;
-    std::map<GraphVertex, TagEntry> m_fullyConnected2id;
+    std::map<GraphVertex, TagEntry> m_universal2id;
     Tag m_graphTag;
 };
 

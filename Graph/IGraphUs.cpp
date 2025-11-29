@@ -52,7 +52,7 @@ bool IGraphUs::isComplete() const
     return getNumEdges() == maxNumEdges;
 }
 
-std::vector<GraphVertex> IGraphUs::getFullyConnectedVertices() const
+std::vector<GraphVertex> IGraphUs::getUniversalVertices() const
 {
     std::vector<GraphVertex> result;
     const auto nVertices = getNumVertices();

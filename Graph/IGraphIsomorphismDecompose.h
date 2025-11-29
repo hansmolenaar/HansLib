@@ -55,18 +55,16 @@ class DecomposeDisconnected : public IDecompose
     Grouping<const IDecompose *> m_groupingChildren;
 };
 
-class DecomposeVertexFullyConnected : public IDecompose
+class DecomposeUniversalVertex : public IDecompose
 {
   public:
-    explicit DecomposeVertexFullyConnected(const Graph::IGraphUs &, const std::set<GraphVertex> &);
+    explicit DecomposeUniversalVertex(const Graph::IGraphUs &, const std::set<GraphVertex> &);
 
     const Tag &getTag() const override;
     std::string getDescription() const override;
 
     // Can be empty: leaf of tree
     const Grouping<const IDecompose *> &getGroupingChildren() const override;
-
-    const std::vector<GraphVertex> &getFullyConnectedVerticesInParent() const;
 
   private:
     Tag m_tag;

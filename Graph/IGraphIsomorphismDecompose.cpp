@@ -17,7 +17,7 @@ enum IDecomposeType : TagEntry
 {
     Leaf = 0,
     Disconnected,
-    FullyConnected,
+    UniversalVertex,
     Known,
     Complement
 };
@@ -80,12 +80,12 @@ std::unique_ptr<IDecompose> IDecompose::Create(const Graph::IGraphUs &graph, boo
         return std::make_unique<DecomposeDisconnected>(graph);
     }
 
-    const auto fullyConnectedVertices = graph.getFullyConnectedVertices();
-    if (!fullyConnectedVertices.empty())
+    const auto universalVertices = graph.getUniversalVertices();
+    if (!universalVertices.empty())
     {
-        const std::set<GraphVertex> fullyConnectedVerticesSet(fullyConnectedVertices.begin(),
-                                                              fullyConnectedVertices.end());
-        return std::make_unique<DecomposeVertexFullyConnected>(graph, fullyConnectedVerticesSet);
+        const std::set<GraphVertex> universalVerticesSet(universalVertices.begin(),
+                                                              universalVertices.end());
+        return std::make_unique<DecomposeUniversalVertex>(graph, universalVerticesSet);
     }
 
     if (tryComplement)
@@ -281,21 +281,21 @@ const Grouping<const IDecompose *> &DecomposeDisconnected::getGroupingChildren()
     return m_groupingChildren;
 }
 
-// !!!!!!!!!!! fully connected vertices
+// !!!!!!!!!!! universal vertices
 
-DecomposeVertexFullyConnected::DecomposeVertexFullyConnected(const Graph::IGraphUs &graph,
-                                                             const std::set<GraphVertex> &fullyConnected)
-    : IDecompose(graph), m_tag{IDecomposeType::FullyConnected, static_cast<TagEntry>(fullyConnected.size())}
+DecomposeUniversalVertex::DecomposeUniversalVertex(const Graph::IGraphUs &graph,
+                                                             const std::set<GraphVertex> &universalVertices)
+    : IDecompose(graph), m_tag{IDecomposeType::UniversalVertex, static_cast<TagEntry>(universalVertices.size())}
 {
-    MyAssert(!fullyConnected.empty());
+    MyAssert(!universalVertices.empty());
 
     // Complete part
-    auto completePart = std::make_unique<SubGraphConnected>(graph, fullyConnected);
+    auto completePart = std::make_unique<SubGraphConnected>(graph, universalVertices);
     m_children.emplace_back(std::move(completePart));
 
     // Remainder
     auto range =
-        graph.getVertexRange() | stv::filter([&fullyConnected](GraphVertex v) { return !fullyConnected.contains(v); });
+        graph.getVertexRange() | stv::filter([&universalVertices](GraphVertex v) { return !universalVertices.contains(v); });
     std::set<GraphVertex> remainder;
     str::copy(range, std::inserter(remainder, remainder.end()));
 
@@ -312,17 +312,17 @@ DecomposeVertexFullyConnected::DecomposeVertexFullyConnected(const Graph::IGraph
     m_groupingChildren = CreateGrouping(allChildren);
 }
 
-const Tag &DecomposeVertexFullyConnected::getTag() const
+const Tag &DecomposeUniversalVertex::getTag() const
 {
     return m_tag;
 }
 
-std::string DecomposeVertexFullyConnected::getDescription() const
+std::string DecomposeUniversalVertex::getDescription() const
 {
-    return "FullyConnected: " + getGraphName();
+    return "Universal vertices: " + getGraphName();
 }
 
-const Grouping<const IDecompose *> &DecomposeVertexFullyConnected::getGroupingChildren() const
+const Grouping<const IDecompose *> &DecomposeUniversalVertex::getGroupingChildren() const
 {
     return m_groupingChildren;
 }
