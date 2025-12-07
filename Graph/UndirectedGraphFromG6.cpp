@@ -5,7 +5,7 @@
 
 using namespace Graph;
 
-using SortedEdge = std::pair<GraphVertex, GraphVertex>;
+using SortedEdge = std::pair<Vertex, Vertex>;
 
 namespace
 {
@@ -839,7 +839,7 @@ static long nin;
  *                                                                            *
  *****************************************************************************/
 
-void myputsetx(GraphVertex source, std::set<SortedEdge> &edges, set *set1, int *curlenp, int linelength, int m,
+void myputsetx(Vertex source, std::set<SortedEdge> &edges, set *set1, int *curlenp, int linelength, int m,
                boolean compress, int start)
 {
     int slen, j1, j2;
@@ -873,7 +873,7 @@ void myputsetx(GraphVertex source, std::set<SortedEdge> &edges, set *set1, int *
         if (first)
         {
             // fprintf(f, "%s", s);
-            const GraphVertex target = std::stoi(s);
+            const Vertex target = std::stoi(s);
             edges.insert(SortedEdge{std::min(source, target), std::max(source, target)});
             *curlenp += slen;
             first = FALSE;
@@ -881,7 +881,7 @@ void myputsetx(GraphVertex source, std::set<SortedEdge> &edges, set *set1, int *
         else
         {
             // fprintf(f, " %s", s);
-            const GraphVertex target = std::stoi(s);
+            const Vertex target = std::stoi(s);
             edges.insert(SortedEdge{std::min(source, target), std::max(source, target)});
             *curlenp += slen + 1;
         }
@@ -907,7 +907,7 @@ void myputgraphx(graph *g, int m, int n, std::set<SortedEdge> &edges)
 
     for (i = 0, pg = g; i < n; ++i, pg += m)
     {
-        GraphVertex source = i + labelorg;
+        Vertex source = i + labelorg;
         // fprintf(f, "%3d : ", i + labelorg);
         curlen = 7;
         const bool triang = false;

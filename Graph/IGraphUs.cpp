@@ -5,11 +5,11 @@
 
 using namespace Graph;
 
-std::vector<GraphVertex> IGraphUs::getDegreeSequence() const
+std::vector<Vertex> IGraphUs::getDegreeSequence() const
 {
     const auto numVertices = getNumVertices();
-    std::vector<GraphVertex> result(numVertices);
-    for (GraphVertex v = 0; v < numVertices; ++v)
+    std::vector<Vertex> result(numVertices);
+    for (Vertex v = 0; v < numVertices; ++v)
     {
         result[v] = getDegree(v);
     }
@@ -17,7 +17,7 @@ std::vector<GraphVertex> IGraphUs::getDegreeSequence() const
     return result;
 }
 
-std::vector<GraphVertex> IGraphUs::getSortedDegreeSequence() const
+std::vector<Vertex> IGraphUs::getSortedDegreeSequence() const
 {
     auto result = getDegreeSequence();
     str::sort(result);
@@ -30,7 +30,7 @@ bool IGraphUs::isConnected() const
     return str::all_of(components, [](auto c) { return c == 0; });
 }
 
-GraphVertex IGraphUs::getNumberOfComponents() const
+Vertex IGraphUs::getNumberOfComponents() const
 {
     const auto components = getConnectedComponents();
     if (components.empty())
@@ -48,33 +48,33 @@ bool IGraphUs::isComplete() const
     {
         return true;
     }
-    const GraphVertex maxNumEdges = nVertices * (nVertices - 1) / 2;
+    const Vertex maxNumEdges = nVertices * (nVertices - 1) / 2;
     return getNumEdges() == maxNumEdges;
 }
 
-std::vector<GraphVertex> IGraphUs::getUniversalVertices() const
+std::vector<Vertex> IGraphUs::getUniversalVertices() const
 {
-    std::vector<GraphVertex> result;
+    std::vector<Vertex> result;
     const auto nVertices = getNumVertices();
     const auto maxDegree = nVertices - 1;
-    str::copy_if(str::iota_view(GraphVertex{0}, nVertices), std::back_inserter(result),
-                 [this, maxDegree](GraphVertex v) { return getDegree(v) == maxDegree; });
+    str::copy_if(str::iota_view(Vertex{0}, nVertices), std::back_inserter(result),
+                 [this, maxDegree](Vertex v) { return getDegree(v) == maxDegree; });
     return result;
 }
 
-std::vector<std::array<GraphVertex, 2>> IGraphUs::getAllSortedEdges() const
+std::vector<std::array<Vertex, 2>> IGraphUs::getAllSortedEdges() const
 {
     const auto nVertices = getNumVertices();
-    std::vector<std::array<GraphVertex, 2>> result;
-    std::vector<GraphVertex> neighbors;
-    for (GraphVertex v = 0; v < nVertices; ++v)
+    std::vector<std::array<Vertex, 2>> result;
+    std::vector<Vertex> neighbors;
+    for (Vertex v = 0; v < nVertices; ++v)
     {
         setAdjacentVertices(v, neighbors);
-        for (GraphVertex ngb : neighbors)
+        for (Vertex ngb : neighbors)
         {
             if (ngb > v)
             {
-                result.emplace_back(std::array<GraphVertex, 2>{v, ngb});
+                result.emplace_back(std::array<Vertex, 2>{v, ngb});
             }
         }
     }
@@ -83,7 +83,7 @@ std::vector<std::array<GraphVertex, 2>> IGraphUs::getAllSortedEdges() const
     return result;
 }
 
-bool IGraphUs::isClique(std::vector<GraphVertex> vertices) const
+bool IGraphUs::isClique(std::vector<Vertex> vertices) const
 {
     str::sort(vertices);
     vertices.erase(std::unique(vertices.begin(), vertices.end()), vertices.end());
@@ -93,10 +93,10 @@ bool IGraphUs::isClique(std::vector<GraphVertex> vertices) const
         return false;
     }
     const size_t maxIntersectionSize = vertices.size() - 1;
-    std::vector<GraphVertex> neighbors;
-    std::vector<GraphVertex> intersection;
+    std::vector<Vertex> neighbors;
+    std::vector<Vertex> intersection;
 
-    for (GraphVertex v : vertices)
+    for (Vertex v : vertices)
     {
         setAdjacentVertices(v, neighbors);
         intersection.clear();

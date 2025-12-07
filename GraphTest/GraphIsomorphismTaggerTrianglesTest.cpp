@@ -50,11 +50,11 @@ TEST(GraphIsomorphismTaggerTrianglesTest, Complete4)
 {
     const auto graph = UndirectedGraphLibrary::Get_CompleteGraph(4);
     const auto allTriangles = TaggerTriangles::getAllTriangles(*graph);
-    const std::vector<std::array<GraphVertex, 3>> expect = {
-        std::array<GraphVertex, 3>{0, 1, 2},
-        std::array<GraphVertex, 3>{0, 1, 3},
-        std::array<GraphVertex, 3>{0, 2, 3},
-        std::array<GraphVertex, 3>{1, 2, 3},
+    const std::vector<std::array<Vertex, 3>> expect = {
+        std::array<Vertex, 3>{0, 1, 2},
+        std::array<Vertex, 3>{0, 1, 3},
+        std::array<Vertex, 3>{0, 2, 3},
+        std::array<Vertex, 3>{1, 2, 3},
     };
     ASSERT_EQ(allTriangles, expect);
 
@@ -66,11 +66,11 @@ TEST(GraphIsomorphismTaggerTrianglesTest, Complete5)
 {
     const auto graph = UndirectedGraphLibrary::Get_CompleteGraph(5);
     const auto allTriangles = TaggerTriangles::getAllTriangles(*graph);
-    const std::vector<std::array<GraphVertex, 3>> expect = {
-        std::array<GraphVertex, 3>{0, 1, 2}, std::array<GraphVertex, 3>{0, 1, 3}, std::array<GraphVertex, 3>{0, 1, 4},
-        std::array<GraphVertex, 3>{0, 2, 3}, std::array<GraphVertex, 3>{0, 2, 4}, std::array<GraphVertex, 3>{0, 3, 4},
-        std::array<GraphVertex, 3>{1, 2, 3}, std::array<GraphVertex, 3>{1, 2, 4}, std::array<GraphVertex, 3>{1, 3, 4},
-        std::array<GraphVertex, 3>{2, 3, 4},
+    const std::vector<std::array<Vertex, 3>> expect = {
+        std::array<Vertex, 3>{0, 1, 2}, std::array<Vertex, 3>{0, 1, 3}, std::array<Vertex, 3>{0, 1, 4},
+        std::array<Vertex, 3>{0, 2, 3}, std::array<Vertex, 3>{0, 2, 4}, std::array<Vertex, 3>{0, 3, 4},
+        std::array<Vertex, 3>{1, 2, 3}, std::array<Vertex, 3>{1, 2, 4}, std::array<Vertex, 3>{1, 3, 4},
+        std::array<Vertex, 3>{2, 3, 4},
     };
     ASSERT_EQ(allTriangles, expect);
 

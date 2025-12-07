@@ -18,7 +18,7 @@ class TaggedGraph
     std::weak_ordering operator<=>(const TaggedGraph &) const;
     bool operator==(const TaggedGraph &) const;
 
-    const Grouping<Graph::GraphVertex> &getVertexGrouping() const;
+    const Grouping<Graph::Vertex> &getVertexGrouping() const;
     static Status tryConnect(const TaggedGraph &, const TaggedGraph &);
 
   private:
@@ -26,7 +26,7 @@ class TaggedGraph
     std::vector<std::unique_ptr<ITagger>> m_taggers;
     GraphTags m_graphTags; // For quick testing
     VertexComparers m_vertexComparers;
-    Grouping<Graph::GraphVertex> m_grouping;
+    Grouping<Graph::Vertex> m_grouping;
 };
 
 } // namespace GraphIsomorphism

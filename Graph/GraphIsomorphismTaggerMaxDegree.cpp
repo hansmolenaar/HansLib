@@ -7,15 +7,15 @@ using namespace GraphIsomorphism;
 TaggerMaxDegree::TaggerMaxDegree(const Graph::IGraphUs &graph) : m_graph(graph)
 {
     const auto maxDegree = m_graph.getNumVertices() - 1;
-    auto vertexIsUniversal = [&graph, maxDegree](GraphVertex vv) { return graph.getDegree(vv) == maxDegree; };
-    for (GraphVertex v : graph.getVertexRange() | stv::filter(vertexIsUniversal))
+    auto vertexIsUniversal = [&graph, maxDegree](Vertex vv) { return graph.getDegree(vv) == maxDegree; };
+    for (Vertex v : graph.getVertexRange() | stv::filter(vertexIsUniversal))
     {
         m_universal2id[v] = m_universal2id.size() + 1;
     }
     m_graphTag = TagFlyweight::getSingleEntryTag(m_universal2id.size());
 }
 
-TagEntry TaggerMaxDegree::getVertexTag(GraphVertex v) const
+TagEntry TaggerMaxDegree::getVertexTag(Vertex v) const
 {
     if (!m_universal2id.contains(v))
     {
@@ -34,8 +34,8 @@ const Graph::IGraphUs &TaggerMaxDegree::getGraph() const
     return m_graph;
 }
 
-std::weak_ordering TaggerMaxDegree::compareOtherGraph(GraphVertex vertex0, const IVertexCompare &other,
-                                                      GraphVertex vertex1) const
+std::weak_ordering TaggerMaxDegree::compareOtherGraph(Vertex vertex0, const IVertexCompare &other,
+                                                      Vertex vertex1) const
 {
     return getVertexTag(vertex0) <=> dynamic_cast<const TaggerMaxDegree &>(other).getVertexTag(vertex1);
 }

@@ -9,14 +9,14 @@ using namespace Utilities;
 
 namespace
 {
-constexpr GraphVertex DegreeSequenceDone = std::numeric_limits<GraphVertex>::max();
+constexpr Vertex DegreeSequenceDone = std::numeric_limits<Vertex>::max();
 
 // If a polygon is found the last node of the resulting list equals the first one
-std::vector<GraphVertex> TraceLineOrPolygon(const UndirectedGraph &graph, GraphVertex start, GraphVertex nxt,
-                                            std::vector<GraphVertex> &degreeSequence)
+std::vector<Vertex> TraceLineOrPolygon(const UndirectedGraph &graph, Vertex start, Vertex nxt,
+                                            std::vector<Vertex> &degreeSequence)
 {
-    std::vector<GraphVertex> result;
-    std::vector<GraphVertex> ngbVertices;
+    std::vector<Vertex> result;
+    std::vector<Vertex> ngbVertices;
     result.push_back(start);
     while (true)
     {
@@ -48,7 +48,7 @@ std::vector<GraphVertex> TraceLineOrPolygon(const UndirectedGraph &graph, GraphV
 }
 } // namespace
 
-UndirectedGraph::UndirectedGraph(GraphVertex numVertices, std::string name) : m_graph(numVertices), m_name(name)
+UndirectedGraph::UndirectedGraph(Vertex numVertices, std::string name) : m_graph(numVertices), m_name(name)
 {
 }
 
@@ -56,11 +56,11 @@ UndirectedGraph::UndirectedGraph(const Graph::IGraphUs &graph)
     : m_graph(graph.getNumVertices()), m_name(graph.getName())
 {
     const auto numVertices = graph.getNumVertices();
-    std::vector<GraphVertex> ngbs;
-    for (GraphVertex v = 0; v < numVertices; ++v)
+    std::vector<Vertex> ngbs;
+    for (Vertex v = 0; v < numVertices; ++v)
     {
         graph.setAdjacentVertices(v, ngbs);
-        for (GraphVertex n : ngbs)
+        for (Vertex n : ngbs)
         {
             if (v < n)
             {
@@ -70,7 +70,7 @@ UndirectedGraph::UndirectedGraph(const Graph::IGraphUs &graph)
     }
 }
 
-void UndirectedGraph::addEdge(GraphVertex vertex1, GraphVertex vertex2)
+void UndirectedGraph::addEdge(Vertex vertex1, Vertex vertex2)
 {
     if (!areAdjacent(vertex1, vertex2))
     {
@@ -78,19 +78,19 @@ void UndirectedGraph::addEdge(GraphVertex vertex1, GraphVertex vertex2)
     }
 }
 
-GraphVertex UndirectedGraph::getNumVertices() const
+Vertex UndirectedGraph::getNumVertices() const
 {
     return boost::num_vertices(m_graph);
 }
 
-std::vector<GraphVertex> UndirectedGraph::getConnectedComponents() const
+std::vector<Vertex> UndirectedGraph::getConnectedComponents() const
 {
-    std::vector<GraphVertex> result(getNumVertices());
+    std::vector<Vertex> result(getNumVertices());
     boost::connected_components(m_graph, result.data());
     return result;
 }
 
-void UndirectedGraph::setAdjacentVertices(GraphVertex vertex, std::vector<GraphVertex> &result) const
+void UndirectedGraph::setAdjacentVertices(Vertex vertex, std::vector<Vertex> &result) const
 {
     result.clear();
     const auto neighbours = boost::adjacent_vertices(vertex, m_graph);
@@ -106,17 +106,17 @@ Edge UndirectedGraph::getNumEdges() const
     return boost::num_edges(m_graph);
 }
 
-GraphVertex UndirectedGraph::getDegree(GraphVertex vertex) const
+Vertex UndirectedGraph::getDegree(Vertex vertex) const
 {
     const auto neighbours = boost::adjacent_vertices(vertex, m_graph);
     return std::distance(neighbours.first, neighbours.second);
 }
 
-std::vector<GraphVertex> UndirectedGraph::getDegreeSequence() const
+std::vector<Vertex> UndirectedGraph::getDegreeSequence() const
 {
     const auto numVertices = getNumVertices();
-    std::vector<GraphVertex> result(numVertices);
-    for (GraphVertex v = 0; v < numVertices; ++v)
+    std::vector<Vertex> result(numVertices);
+    for (Vertex v = 0; v < numVertices; ++v)
     {
         result[v] = getDegree(v);
     }
@@ -130,9 +130,9 @@ UndirectedGraph::CyclesAndPaths UndirectedGraph::SplitInCyclesAndPaths() const
 
     const auto vertexCount = getNumVertices();
     auto degreeSequence = getDegreeSequence();
-    std::vector<GraphVertex> ngbVertices;
+    std::vector<Vertex> ngbVertices;
 
-    for (GraphVertex v = 0; v < vertexCount; ++v)
+    for (Vertex v = 0; v < vertexCount; ++v)
     {
         // Set degree sequence to -1 if done
         if (degreeSequence.at(v) != DegreeSequenceDone && degreeSequence.at(v) != 2)
@@ -144,7 +144,7 @@ UndirectedGraph::CyclesAndPaths UndirectedGraph::SplitInCyclesAndPaths() const
             {
                 if (degreeSequence.at(ngb) != DegreeSequenceDone)
                 {
-                    std::vector<GraphVertex> list = TraceLineOrPolygon(*this, v, ngb, degreeSequence);
+                    std::vector<Vertex> list = TraceLineOrPolygon(*this, v, ngb, degreeSequence);
                     if (list.front() != list.back())
                     {
                         result.Paths.emplace_back(std::move(list));
@@ -161,7 +161,7 @@ UndirectedGraph::CyclesAndPaths UndirectedGraph::SplitInCyclesAndPaths() const
     }
 
     // But there is more: isolated loops
-    for (GraphVertex v = 0; v < vertexCount; ++v)
+    for (Vertex v = 0; v < vertexCount; ++v)
     {
         if (degreeSequence.at(v) == 2)
         {
@@ -175,11 +175,11 @@ UndirectedGraph::CyclesAndPaths UndirectedGraph::SplitInCyclesAndPaths() const
         }
     }
 
-    MyAssert(str::all_of(degreeSequence, [](GraphVertex v) { return v == DegreeSequenceDone; }));
+    MyAssert(str::all_of(degreeSequence, [](Vertex v) { return v == DegreeSequenceDone; }));
     return result;
 }
 
-bool UndirectedGraph::areAdjacent(GraphVertex v1, GraphVertex v2) const
+bool UndirectedGraph::areAdjacent(Vertex v1, Vertex v2) const
 {
     if (std::max(v1, v2) >= getNumVertices())
     {
@@ -190,10 +190,10 @@ bool UndirectedGraph::areAdjacent(GraphVertex v1, GraphVertex v2) const
     return found;
 }
 
-std::vector<GraphVertex> UndirectedGraph::getIsolatedVertices() const
+std::vector<Vertex> UndirectedGraph::getIsolatedVertices() const
 {
-    std::vector<GraphVertex> result;
-    for (GraphVertex v = 0; v < getNumVertices(); ++v)
+    std::vector<Vertex> result;
+    for (Vertex v = 0; v < getNumVertices(); ++v)
     {
         if (getDegree(v) == 0)
             result.push_back(v);
@@ -210,8 +210,8 @@ UndirectedGraph UndirectedGraph::CreatePermuted(const IGraphUs &graph, const Per
     const auto nVertices = graph.getNumVertices();
     MyAssert(nVertices == permut.getCardinality());
     UndirectedGraph result(nVertices);
-    std::vector<GraphVertex> ngbs;
-    for (GraphVertex v0 = 0; v0 < nVertices; ++v0)
+    std::vector<Vertex> ngbs;
+    for (Vertex v0 = 0; v0 < nVertices; ++v0)
     {
         const auto v1 = permut(v0);
         graph.setAdjacentVertices(v0, ngbs);
@@ -228,7 +228,7 @@ UndirectedGraph UndirectedGraph::CreatePermuted(const IGraphUs &graph, const Per
     return result;
 }
 
-std::vector<GraphVertex> UndirectedGraph::getSortedDegreeSequence() const
+std::vector<Vertex> UndirectedGraph::getSortedDegreeSequence() const
 {
     auto result = getDegreeSequence();
     str::sort(result);
@@ -240,8 +240,8 @@ std::string UndirectedGraph::toString() const
     const auto nVertices = getNumVertices();
     std::stringstream retval;
     retval << "#vertices " << nVertices << "\n";
-    std::vector<GraphVertex> ngbs;
-    for (GraphVertex v = 0; v < nVertices - 1; ++v)
+    std::vector<Vertex> ngbs;
+    for (Vertex v = 0; v < nVertices - 1; ++v)
     {
         setAdjacentVertices(v, ngbs);
         for (auto ngb : ngbs)
@@ -261,17 +261,17 @@ UndirectedGraph UndirectedGraph::CreateComplement(const IGraphUs &graph)
     MyAssert(nVertices > 1);
     UndirectedGraph result(nVertices, "Complement of: " + graph.getName());
 
-    std::vector<GraphVertex> vertices(nVertices);
+    std::vector<Vertex> vertices(nVertices);
     str::iota(vertices, 0);
-    std::vector<GraphVertex> ngbs;
-    std::vector<GraphVertex> newEdges;
-    for (GraphVertex v = 0; v < nVertices; ++v)
+    std::vector<Vertex> ngbs;
+    std::vector<Vertex> newEdges;
+    for (Vertex v = 0; v < nVertices; ++v)
     {
         graph.setAdjacentVertices(v, ngbs);
         newEdges.clear();
         std::set_difference(vertices.begin() + v + 1, vertices.end(), ngbs.begin(), ngbs.end(),
                             std::back_inserter(newEdges));
-        for (GraphVertex n : newEdges)
+        for (Vertex n : newEdges)
         {
             result.addEdge(v, n);
         }

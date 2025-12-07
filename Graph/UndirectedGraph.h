@@ -12,21 +12,21 @@ class UndirectedGraph : public Graph::IGraphUs
 {
   public:
     explicit UndirectedGraph(const Graph::IGraphUs &);
-    explicit UndirectedGraph(GraphVertex, std::string = "");
-    void addEdge(GraphVertex, GraphVertex);
+    explicit UndirectedGraph(Vertex, std::string = "");
+    void addEdge(Vertex, Vertex);
 
-    GraphVertex getNumVertices() const override;
+    Vertex getNumVertices() const override;
     Edge getNumEdges() const override;
-    void setAdjacentVertices(GraphVertex vertex, std::vector<GraphVertex> &) const override;
-    bool areAdjacent(GraphVertex, GraphVertex) const override;
-    GraphVertex getDegree(GraphVertex) const override;
-    std::vector<GraphVertex> getConnectedComponents() const override;
+    void setAdjacentVertices(Vertex vertex, std::vector<Vertex> &) const override;
+    bool areAdjacent(Vertex, Vertex) const override;
+    Vertex getDegree(Vertex) const override;
+    std::vector<Vertex> getConnectedComponents() const override;
 
     std::string getName() const override;
 
-    std::vector<GraphVertex> getDegreeSequence() const;
-    std::vector<GraphVertex> getSortedDegreeSequence() const;
-    std::vector<GraphVertex> getIsolatedVertices() const;
+    std::vector<Vertex> getDegreeSequence() const;
+    std::vector<Vertex> getSortedDegreeSequence() const;
+    std::vector<Vertex> getIsolatedVertices() const;
     std::string toString() const;
 
     static UndirectedGraph CreatePermuted(const IGraphUs &, const Permutation &permut);
@@ -35,13 +35,13 @@ class UndirectedGraph : public Graph::IGraphUs
 
     struct CyclesAndPaths
     {
-        std::vector<std::vector<GraphVertex>> Cycles;
-        std::vector<std::vector<GraphVertex>> Paths;
+        std::vector<std::vector<Vertex>> Cycles;
+        std::vector<std::vector<Vertex>> Paths;
     };
     CyclesAndPaths SplitInCyclesAndPaths() const;
 
   private:
-    boost::adjacency_list<boost::listS, boost::vecS, boost::undirectedS, GraphVertex, Edge> m_graph;
+    boost::adjacency_list<boost::listS, boost::vecS, boost::undirectedS, Vertex, Edge> m_graph;
     std::string m_name;
 };
 

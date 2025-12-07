@@ -11,11 +11,11 @@ class TaggerChains : public IGraphTagger, public IVertexCompare
 {
   public:
     explicit TaggerChains(const Graph::IGraphUs &);
-    const Tag &getVertexTag(Graph::GraphVertex) const;
+    const Tag &getVertexTag(Graph::Vertex) const;
     const Tag &getGraphTag() const override;
 
     const Graph::IGraphUs &getGraph() const override;
-    std::weak_ordering compareOtherGraph(Graph::GraphVertex, const IVertexCompare &, Graph::GraphVertex) const override;
+    std::weak_ordering compareOtherGraph(Graph::Vertex, const IVertexCompare &, Graph::Vertex) const override;
 
   private:
     const Graph::IGraphUs &m_graph;

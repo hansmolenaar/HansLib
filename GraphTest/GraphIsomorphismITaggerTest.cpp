@@ -29,7 +29,7 @@ void CheckVertexCompareConsistency(const IGraphUs &graph, GraphIsomorphism::ITag
     }
     const auto nVertices = graph.getNumVertices();
     const VertexComparers comparerOrg(std::vector<const IVertexCompare *>{vertexCompare});
-    const Grouping<GraphVertex> grouping(graph.getVertexRange(), VertexLess{*vertexCompare});
+    const Grouping<Vertex> grouping(graph.getVertexRange(), VertexLess{*vertexCompare});
 
     if (expectNumUniqueVertices >= 0)
     {
@@ -47,7 +47,7 @@ void CheckVertexCompareConsistency(const IGraphUs &graph, GraphIsomorphism::ITag
         const UndirectedGraph graphPermuted = UndirectedGraph::CreatePermuted(graph, permutation);
         const auto gtaggerPermuted = factory.createTagger(graphPermuted);
         const auto *vertexComparePermuted = gtaggerPermuted->getVertexCompare();
-        const Grouping<GraphVertex> groupingPermuted(graph.getVertexRange(), VertexLess{*vertexComparePermuted});
+        const Grouping<Vertex> groupingPermuted(graph.getVertexRange(), VertexLess{*vertexComparePermuted});
         ASSERT_EQ(groupingPermuted.countUnique(), expectNumUniqueVertices);
 
         const VertexComparers comparerPermuted(std::vector<const IVertexCompare *>{vertexComparePermuted});

@@ -8,15 +8,15 @@ using namespace Graph;
 
 namespace
 {
-UndirectedGraphDistance::AtDistance Generate(const IGraphUs &graph, const GraphVertex vertex)
+UndirectedGraphDistance::AtDistance Generate(const IGraphUs &graph, const Vertex vertex)
 {
     const auto nVertices = graph.getNumVertices();
     std::vector<bool> done(nVertices, false);
 
     UndirectedGraphDistance::AtDistance result;
 
-    std::vector<GraphVertex> ngbs;
-    std::vector<GraphVertex> current(1, vertex);
+    std::vector<Vertex> ngbs;
+    std::vector<Vertex> current(1, vertex);
 
     while (!current.empty())
     {
@@ -25,7 +25,7 @@ UndirectedGraphDistance::AtDistance Generate(const IGraphUs &graph, const GraphV
         {
             done[c] = true;
         }
-        std::set<GraphVertex> todo;
+        std::set<Vertex> todo;
         for (auto c : current)
         {
             graph.setAdjacentVertices(c, ngbs);
@@ -37,9 +37,9 @@ UndirectedGraphDistance::AtDistance Generate(const IGraphUs &graph, const GraphV
                 }
             }
         }
-        current = std::vector<GraphVertex>(todo.begin(), todo.end());
+        current = std::vector<Vertex>(todo.begin(), todo.end());
         // TODO use c++23
-        // current = std::vector<GraphVertex>(todo);
+        // current = std::vector<Vertex>(todo);
     }
 
     return result;
@@ -50,7 +50,7 @@ UndirectedGraphDistance::UndirectedGraphDistance(const IGraphUs &graph) : m_grap
 {
     const auto nVertices = graph.getNumVertices();
     m_distances.reserve(nVertices);
-    for (GraphVertex v = 0; v < nVertices; ++v)
+    for (Vertex v = 0; v < nVertices; ++v)
     {
         m_distances.emplace_back(Generate(graph, v));
     }
@@ -61,12 +61,12 @@ const Graph::IGraphUs &UndirectedGraphDistance::getGraph() const
     return m_graph;
 }
 
-const UndirectedGraphDistance::AtDistance &UndirectedGraphDistance::operator()(GraphVertex vertex) const
+const UndirectedGraphDistance::AtDistance &UndirectedGraphDistance::operator()(Vertex vertex) const
 {
     return m_distances.at(vertex);
 }
 
-GraphVertex UndirectedGraphDistance::getNumVertices() const
+Vertex UndirectedGraphDistance::getNumVertices() const
 {
     return m_distances.size();
 }

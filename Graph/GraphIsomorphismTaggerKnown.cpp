@@ -30,7 +30,7 @@ GraphIsomorphism::TaggerKnown::TaggerKnown(const Graph::IGraphUs &graph) : m_tag
         return;
     }
 
-    const std::vector<GraphVertex> degreeSequence = graph.getSortedDegreeSequence();
+    const std::vector<Vertex> degreeSequence = graph.getSortedDegreeSequence();
     if (degreeSequence.back() > 2)
     {
         return;

@@ -9,7 +9,7 @@ using namespace Utilities;
 
 namespace
 {
-using Chain = std::vector<GraphVertex>;
+using Chain = std::vector<Vertex>;
 enum ChainId : TagEntry
 {
     PureCycle,
@@ -23,8 +23,8 @@ struct ChainTag
 {
     ChainId id;
     size_t size;
-    GraphVertex attacheFirst = 0;
-    GraphVertex attacheLast = 0;
+    Vertex attacheFirst = 0;
+    Vertex attacheLast = 0;
     auto operator<=>(const ChainTag &) const = default;
     bool operator==(const ChainTag &) const = default;
 };
@@ -87,10 +87,10 @@ std::pair<ChainId, Chain> ConstrutcChain(const IGraphUs &graph, const Chain &par
     throw MyException("Should not come here");
 }
 
-Chain GetChainPart(const IGraphUs &graph, GraphVertex vertex, GraphVertex current, std::set<GraphVertex> &done)
+Chain GetChainPart(const IGraphUs &graph, Vertex vertex, Vertex current, std::set<Vertex> &done)
 {
     Chain result{vertex};
-    std::vector<GraphVertex> ngbs;
+    std::vector<Vertex> ngbs;
     while (graph.getDegree(current) == 2)
     {
         graph.setAdjacentVertices(current, ngbs);
@@ -117,9 +117,9 @@ Chain GetChainPart(const IGraphUs &graph, GraphVertex vertex, GraphVertex curren
     return result;
 }
 
-std::pair<ChainId, Chain> GetChain(const IGraphUs &graph, GraphVertex vertex, std::set<GraphVertex> &done)
+std::pair<ChainId, Chain> GetChain(const IGraphUs &graph, Vertex vertex, std::set<Vertex> &done)
 {
-    std::vector<GraphVertex> ngbs;
+    std::vector<Vertex> ngbs;
     graph.setAdjacentVertices(vertex, ngbs);
     const Chain part1 = GetChainPart(graph, vertex, ngbs.front(), done);
 
@@ -136,9 +136,9 @@ std::vector<std::pair<ChainTag, Chain>> GetChains(const IGraphUs &graph)
 {
     std::vector<std::pair<ChainTag, Chain>> retval;
     const auto nVertices = graph.getNumVertices();
-    std::vector<GraphVertex> ngbs;
-    std::set<GraphVertex> done;
-    for (GraphVertex v = 0; v < nVertices; ++v)
+    std::vector<Vertex> ngbs;
+    std::set<Vertex> done;
+    for (Vertex v = 0; v < nVertices; ++v)
     {
         const auto degree = graph.getDegree(v);
         if (degree == 0)
@@ -165,7 +165,7 @@ std::pair<Tag, std::vector<Tag>> GenerateTags(const IGraphUs &graph)
 
     const auto chains = GetChains(graph);
     auto currentItr = chains.begin();
-    std::map<std::pair<ChainId, size_t>, GraphVertex> chainCounts;
+    std::map<std::pair<ChainId, size_t>, Vertex> chainCounts;
 
     const auto itrPureCycles = std::find_if_not(
         currentItr, chains.end(), [](const auto &tagChain) { return tagChain.first.id == ChainId::PureCycle; });
@@ -211,7 +211,7 @@ std::pair<Tag, std::vector<Tag>> GenerateTags(const IGraphUs &graph)
         currentItr, chains.end(), [](const auto &tagChain) { return tagChain.first.id == ChainId::AttachedCycle; });
     while (currentItr != itrAttachedCycle)
     {
-        const GraphVertex attachedTo = currentItr->first.attacheFirst;
+        const Vertex attachedTo = currentItr->first.attacheFirst;
         const auto itrSameAttachedTo =
             std::find_if_not(currentItr, itrAttachedCycle,
                              [attachedTo](const auto &tagChain) { return tagChain.first.attacheFirst == attachedTo; });
@@ -232,7 +232,7 @@ std::pair<Tag, std::vector<Tag>> GenerateTags(const IGraphUs &graph)
                     retval[currentItr->second.at(n)] =
                         std::vector<TagEntry>{ChainId::AttachedCycle, currentSize, count, n};
                 }
-                const GraphVertex root = currentItr->first.attacheFirst;
+                const Vertex root = currentItr->first.attacheFirst;
                 retval[root].push_back(ChainId::AttachedCycle);
                 retval[root].push_back(currentSize);
             }
@@ -244,7 +244,7 @@ std::pair<Tag, std::vector<Tag>> GenerateTags(const IGraphUs &graph)
     });
     while (currentItr != itrAttachedPathSingle)
     {
-        const GraphVertex attachedTo = currentItr->first.attacheFirst;
+        const Vertex attachedTo = currentItr->first.attacheFirst;
         const auto itrSameAttachedTo =
             std::find_if_not(currentItr, itrAttachedPathSingle,
                              [attachedTo](const auto &tagChain) { return tagChain.first.attacheFirst == attachedTo; });
@@ -265,7 +265,7 @@ std::pair<Tag, std::vector<Tag>> GenerateTags(const IGraphUs &graph)
                     retval[currentItr->second.at(n)] =
                         std::vector<TagEntry>{ChainId::AttachedPathSingle, currentSize, count, n};
                 }
-                const GraphVertex root = currentItr->first.attacheFirst;
+                const Vertex root = currentItr->first.attacheFirst;
                 retval[root].push_back(ChainId::AttachedPathSingle);
                 retval[root].push_back(currentSize);
             }
@@ -278,7 +278,7 @@ std::pair<Tag, std::vector<Tag>> GenerateTags(const IGraphUs &graph)
     });
     while (currentItr != itrAttachedPathDouble)
     {
-        const GraphVertex attachedTo = currentItr->first.attacheFirst;
+        const Vertex attachedTo = currentItr->first.attacheFirst;
         const auto itrSameAttachedTo =
             std::find_if_not(currentItr, itrAttachedPathDouble,
                              [attachedTo](const auto &tagChain) { return tagChain.first.attacheFirst == attachedTo; });
@@ -290,7 +290,7 @@ std::pair<Tag, std::vector<Tag>> GenerateTags(const IGraphUs &graph)
                                  [currentSize](const auto &tagChain) { return tagChain.first.size == currentSize; });
             while (currentItr != itrSameSize)
             {
-                const GraphVertex attachedOther = currentItr->first.attacheLast;
+                const Vertex attachedOther = currentItr->first.attacheLast;
                 const auto itrSameAttachedOther =
                     std::find_if_not(currentItr, itrSameSize, [attachedOther](const auto &tagChain) {
                         return tagChain.first.attacheLast == attachedOther;
@@ -312,7 +312,7 @@ std::pair<Tag, std::vector<Tag>> GenerateTags(const IGraphUs &graph)
         }
     }
 
-    std::map<GraphVertex, std::multiset<Tag>> perVertex;
+    std::map<Vertex, std::multiset<Tag>> perVertex;
     for (const auto &itrPair : pairTags)
     {
         Tag tag;
@@ -329,7 +329,7 @@ std::pair<Tag, std::vector<Tag>> GenerateTags(const IGraphUs &graph)
 
     for (const auto &itr : perVertex)
     {
-        const GraphVertex v = itr.first;
+        const Vertex v = itr.first;
         for (const auto &itrTag : itr.second)
         {
             retval[v].insert(retval[v].end(), itrTag.begin(), itrTag.end());
@@ -355,7 +355,7 @@ TaggerChains::TaggerChains(const IGraphUs &graph) : m_graph(graph)
     m_vertexTags = allTags.second;
 }
 
-const Tag &TaggerChains::getVertexTag(GraphVertex v) const
+const Tag &TaggerChains::getVertexTag(Vertex v) const
 {
     return m_vertexTags.at(v);
 }
@@ -370,8 +370,8 @@ const IGraphUs &TaggerChains::getGraph() const
     return m_graph;
 }
 
-std::weak_ordering TaggerChains::compareOtherGraph(GraphVertex vertex0, const IVertexCompare &other,
-                                                   GraphVertex vertex1) const
+std::weak_ordering TaggerChains::compareOtherGraph(Vertex vertex0, const IVertexCompare &other,
+                                                   Vertex vertex1) const
 {
     return getVertexTag(vertex0) <=> dynamic_cast<const TaggerChains &>(other).getVertexTag(vertex1);
 }

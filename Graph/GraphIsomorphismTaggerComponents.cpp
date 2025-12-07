@@ -8,7 +8,7 @@ using namespace GraphIsomorphism;
 GraphIsomorphism::TaggerComponents::TaggerComponents(const Graph::IGraphUs &graph)
 {
     const auto components = graph.getConnectedComponents();
-    std::map<GraphVertex, TagEntry> componentSize;
+    std::map<Vertex, TagEntry> componentSize;
     for (auto c : components)
     {
         componentSize[c] += 1;

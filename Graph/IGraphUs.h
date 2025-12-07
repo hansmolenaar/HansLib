@@ -15,30 +15,30 @@ class IGraphUs
   public:
     virtual ~IGraphUs() = default;
 
-    virtual GraphVertex getNumVertices() const = 0;
+    virtual Vertex getNumVertices() const = 0;
     virtual Edge getNumEdges() const = 0;
-    virtual void setAdjacentVertices(GraphVertex vertex, std::vector<GraphVertex> &result) const = 0;
-    virtual bool areAdjacent(GraphVertex v1, GraphVertex v2) const = 0;
-    virtual GraphVertex getDegree(GraphVertex vertex) const = 0;
-    virtual std::vector<GraphVertex> getConnectedComponents() const = 0;
+    virtual void setAdjacentVertices(Vertex vertex, std::vector<Vertex> &result) const = 0;
+    virtual bool areAdjacent(Vertex v1, Vertex v2) const = 0;
+    virtual Vertex getDegree(Vertex vertex) const = 0;
+    virtual std::vector<Vertex> getConnectedComponents() const = 0;
 
     virtual std::string getName() const = 0;
 
-    static auto getVertexRange(GraphVertex nVertices)
+    static auto getVertexRange(Vertex nVertices)
     {
-        return stv::iota(GraphVertex{0}, nVertices);
+        return stv::iota(Vertex{0}, nVertices);
     }
     auto getVertexRange() const
     {
         return getVertexRange(getNumVertices());
     }
-    GraphVertex getNumberOfComponents() const;
-    std::vector<GraphVertex> getDegreeSequence() const;
-    std::vector<GraphVertex> getSortedDegreeSequence() const;
+    Vertex getNumberOfComponents() const;
+    std::vector<Vertex> getDegreeSequence() const;
+    std::vector<Vertex> getSortedDegreeSequence() const;
     bool isConnected() const;
     bool isComplete() const;
-    std::vector<GraphVertex> getUniversalVertices() const;
-    std::vector<std::array<GraphVertex, 2>> getAllSortedEdges() const;
-    bool isClique(std::vector<GraphVertex>) const;
+    std::vector<Vertex> getUniversalVertices() const;
+    std::vector<std::array<Vertex, 2>> getAllSortedEdges() const;
+    bool isClique(std::vector<Vertex>) const;
 };
 }; // namespace Graph

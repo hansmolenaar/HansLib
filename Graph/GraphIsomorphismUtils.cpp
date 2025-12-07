@@ -100,7 +100,7 @@ std::vector<const IVertexCompare *> GraphIsomorphism::selectVertexCompare(
 
 void GraphIsomorphism::toAdjacentyList(const Graph::IGraphUs &graph, std::ostream &os)
 {
-    std::vector<GraphVertex> ngbs;
+    std::vector<Vertex> ngbs;
 
     for (auto v : graph.getVertexRange())
     {
@@ -116,7 +116,7 @@ void GraphIsomorphism::toAdjacentyList(const Graph::IGraphUs &graph, std::ostrea
 
 void GraphIsomorphism::toEdgeList(const Graph::IGraphUs &graph, std::ostream &os)
 {
-    std::vector<GraphVertex> ngbs;
+    std::vector<Vertex> ngbs;
 
     for (auto edge : graph.getAllSortedEdges())
     {

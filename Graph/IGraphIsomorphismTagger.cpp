@@ -13,7 +13,7 @@ const IVertexCompare *ITagger::getVertexCompare() const
     return dynamic_cast<const IVertexCompare *>(this);
 }
 
-std::weak_ordering IVertexCompare::compare(GraphVertex lhs, GraphVertex rhs) const
+std::weak_ordering IVertexCompare::compare(Vertex lhs, Vertex rhs) const
 {
     return compareOtherGraph(lhs, *this, rhs);
 }

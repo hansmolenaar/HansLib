@@ -22,7 +22,7 @@ enum IDecomposeType : TagEntry
     Complement
 };
 
-GraphVertex GetVertexInParent(GraphVertex vertex, const IDecompose &decompose)
+Vertex GetVertexInParent(Vertex vertex, const IDecompose &decompose)
 {
     const auto *complement = dynamic_cast<const DecomposeComplement *>(&decompose);
     const auto &graph = complement != nullptr ? complement->getOriginal() : decompose.getGraph();
@@ -83,7 +83,7 @@ std::unique_ptr<IDecompose> IDecompose::Create(const Graph::IGraphUs &graph, boo
     const auto universalVertices = graph.getUniversalVertices();
     if (!universalVertices.empty())
     {
-        const std::set<GraphVertex> universalVerticesSet(universalVertices.begin(), universalVertices.end());
+        const std::set<Vertex> universalVerticesSet(universalVertices.begin(), universalVertices.end());
         return std::make_unique<DecomposeUniversalVertex>(graph, universalVerticesSet);
     }
 
@@ -239,8 +239,8 @@ const Graph::IGraphUs &DecomposeComplement::getOriginal() const
 DecomposeDisconnected::DecomposeDisconnected(const Graph::IGraphUs &graph)
     : IDecompose(graph), m_tag({IDecomposeType::Disconnected})
 {
-    std::map<GraphVertex, std::set<GraphVertex>> components;
-    GraphVertex vertex = 0;
+    std::map<Vertex, std::set<Vertex>> components;
+    Vertex vertex = 0;
     for (auto c : graph.getConnectedComponents())
     {
         components[c].insert(vertex);
@@ -283,7 +283,7 @@ const Grouping<const IDecompose *> &DecomposeDisconnected::getGroupingChildren()
 // !!!!!!!!!!! universal vertices
 
 DecomposeUniversalVertex::DecomposeUniversalVertex(const Graph::IGraphUs &graph,
-                                                   const std::set<GraphVertex> &universalVertices)
+                                                   const std::set<Vertex> &universalVertices)
     : IDecompose(graph), m_tag{IDecomposeType::UniversalVertex, static_cast<TagEntry>(universalVertices.size())}
 {
     MyAssert(!universalVertices.empty());
@@ -294,8 +294,8 @@ DecomposeUniversalVertex::DecomposeUniversalVertex(const Graph::IGraphUs &graph,
 
     // Remainder
     auto range = graph.getVertexRange() |
-                 stv::filter([&universalVertices](GraphVertex v) { return !universalVertices.contains(v); });
-    std::set<GraphVertex> remainder;
+                 stv::filter([&universalVertices](Vertex v) { return !universalVertices.contains(v); });
+    std::set<Vertex> remainder;
     str::copy(range, std::inserter(remainder, remainder.end()));
 
     auto remainderPart = std::make_unique<SubGraph>(graph, remainder);
@@ -361,7 +361,7 @@ size_t ToParentMap::size() const
     return m_toParent.size();
 }
 
-GraphVertex ToParentMap::getVertexInRoot(GraphVertex vertex, const IDecompose *decompose) const
+Vertex ToParentMap::getVertexInRoot(Vertex vertex, const IDecompose *decompose) const
 {
     while (decompose != nullptr)
     {

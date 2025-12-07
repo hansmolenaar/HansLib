@@ -6,7 +6,7 @@ using namespace Graph;
 using namespace GraphIsomorphism;
 using namespace Utilities;
 
-Status::Status(GraphVertex numVertices) : m_numVertices(numVertices), m_flag(Flag::Undecided)
+Status::Status(Vertex numVertices) : m_numVertices(numVertices), m_flag(Flag::Undecided)
 {
 }
 
@@ -46,12 +46,12 @@ std::vector<Graph::VertexPair> Status::getVertexPairs() const
     return result;
 }
 
-bool Status::containsFirst(GraphVertex vertex) const
+bool Status::containsFirst(Vertex vertex) const
 {
     return str::find(m_vertexFirst, vertex) != m_vertexFirst.end();
 }
 
-bool Status::containsSecond(GraphVertex vertex) const
+bool Status::containsSecond(Vertex vertex) const
 {
     return str::find(m_vertexSecond, vertex) != m_vertexSecond.end();
 }

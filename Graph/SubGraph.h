@@ -8,18 +8,18 @@ namespace Graph
 class SubGraph : public IGraphUs
 {
   public:
-    SubGraph(const IGraphUs &, const std::set<GraphVertex> &);
-    GraphVertex getNumVertices() const override;
+    SubGraph(const IGraphUs &, const std::set<Vertex> &);
+    Vertex getNumVertices() const override;
     Edge getNumEdges() const override;
-    void setAdjacentVertices(GraphVertex, std::vector<GraphVertex> &) const override;
-    bool areAdjacent(GraphVertex, GraphVertex) const override;
-    GraphVertex getDegree(GraphVertex) const override;
-    std::vector<GraphVertex> getConnectedComponents() const override;
-    GraphVertex getVertexInParent(GraphVertex) const;
+    void setAdjacentVertices(Vertex, std::vector<Vertex> &) const override;
+    bool areAdjacent(Vertex, Vertex) const override;
+    Vertex getDegree(Vertex) const override;
+    std::vector<Vertex> getConnectedComponents() const override;
+    Vertex getVertexInParent(Vertex) const;
     std::string getName() const override;
 
   private:
-    std::vector<GraphVertex> m_verticesInParent;
+    std::vector<Vertex> m_verticesInParent;
     UndirectedGraph m_graph;
 };
 } // namespace Graph

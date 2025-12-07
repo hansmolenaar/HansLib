@@ -35,18 +35,18 @@ TEST(IGraphUsTest, isComplete)
 
 TEST(IGraphUsTest, isClique)
 {
-    ASSERT_FALSE(UndirectedGraphLibrary::Get_Null()->isClique(std::vector<GraphVertex>{}));
-    ASSERT_FALSE(UndirectedGraphLibrary::Get_Singleton()->isClique(std::vector<GraphVertex>{0}));
-    ASSERT_TRUE(UndirectedGraphLibrary::Get_Path(2)->isClique(std::vector<GraphVertex>{0, 1}));
-    ASSERT_TRUE(UndirectedGraphLibrary::Get_Cycle(3)->isClique(std::vector<GraphVertex>{0, 2}));
-    ASSERT_TRUE(UndirectedGraphLibrary::Get_Path(3)->isClique(std::vector<GraphVertex>{1, 2}));
-    ASSERT_FALSE(UndirectedGraphLibrary::Get_Path(3)->isClique(std::vector<GraphVertex>{0, 2}));
-    ASSERT_FALSE(UndirectedGraphLibrary::Get_DisconnectedGraph(5)->isClique(std::vector<GraphVertex>{0, 2}));
-    ASSERT_TRUE(UndirectedGraphLibrary::Get_CompleteGraph(5)->isClique(std::vector<GraphVertex>{0, 2, 4, 1, 2, 4, 1}));
+    ASSERT_FALSE(UndirectedGraphLibrary::Get_Null()->isClique(std::vector<Vertex>{}));
+    ASSERT_FALSE(UndirectedGraphLibrary::Get_Singleton()->isClique(std::vector<Vertex>{0}));
+    ASSERT_TRUE(UndirectedGraphLibrary::Get_Path(2)->isClique(std::vector<Vertex>{0, 1}));
+    ASSERT_TRUE(UndirectedGraphLibrary::Get_Cycle(3)->isClique(std::vector<Vertex>{0, 2}));
+    ASSERT_TRUE(UndirectedGraphLibrary::Get_Path(3)->isClique(std::vector<Vertex>{1, 2}));
+    ASSERT_FALSE(UndirectedGraphLibrary::Get_Path(3)->isClique(std::vector<Vertex>{0, 2}));
+    ASSERT_FALSE(UndirectedGraphLibrary::Get_DisconnectedGraph(5)->isClique(std::vector<Vertex>{0, 2}));
+    ASSERT_TRUE(UndirectedGraphLibrary::Get_CompleteGraph(5)->isClique(std::vector<Vertex>{0, 2, 4, 1, 2, 4, 1}));
     ASSERT_TRUE(
-        UndirectedGraphFromG6::Create(UndirectedGraphFromG6::diamond)->isClique(std::vector<GraphVertex>{1, 2, 3}));
+        UndirectedGraphFromG6::Create(UndirectedGraphFromG6::diamond)->isClique(std::vector<Vertex>{1, 2, 3}));
     ASSERT_FALSE(
-        UndirectedGraphFromG6::Create(UndirectedGraphFromG6::diamond)->isClique(std::vector<GraphVertex>{0, 1, 3}));
+        UndirectedGraphFromG6::Create(UndirectedGraphFromG6::diamond)->isClique(std::vector<Vertex>{0, 1, 3}));
 }
 
 TEST(IGraphUsTest, FullyConnectedVertices)
@@ -72,19 +72,19 @@ TEST(IGraphUsTest, FullyConnectedVertices)
 
 TEST(IGraphUsTest, sortedEdges)
 {
-    ASSERT_EQ(UndirectedGraphLibrary::Get_Null()->getAllSortedEdges(), (std::vector<std::array<GraphVertex, 2>>{}));
+    ASSERT_EQ(UndirectedGraphLibrary::Get_Null()->getAllSortedEdges(), (std::vector<std::array<Vertex, 2>>{}));
     ASSERT_EQ(UndirectedGraphLibrary::Get_Singleton()->getAllSortedEdges(),
-              (std::vector<std::array<GraphVertex, 2>>{}));
+              (std::vector<std::array<Vertex, 2>>{}));
     ASSERT_EQ(UndirectedGraphLibrary::Get_Path(2)->getAllSortedEdges(),
-              (std::vector<std::array<GraphVertex, 2>>{{0, 1}}));
+              (std::vector<std::array<Vertex, 2>>{{0, 1}}));
     ASSERT_EQ(UndirectedGraphLibrary::Get_Cycle(3)->getAllSortedEdges(),
-              (std::vector<std::array<GraphVertex, 2>>{{0, 1}, {0, 2}, {1, 2}}));
+              (std::vector<std::array<Vertex, 2>>{{0, 1}, {0, 2}, {1, 2}}));
     ASSERT_EQ(UndirectedGraphLibrary::Get_Path(3)->getAllSortedEdges(),
-              (std::vector<std::array<GraphVertex, 2>>{{0, 1}, {1, 2}}));
+              (std::vector<std::array<Vertex, 2>>{{0, 1}, {1, 2}}));
     ASSERT_EQ(UndirectedGraphLibrary::Get_DisconnectedGraph(3)->getAllSortedEdges(),
-              (std::vector<std::array<GraphVertex, 2>>{}));
+              (std::vector<std::array<Vertex, 2>>{}));
     ASSERT_EQ(UndirectedGraphFromG6 ::Create(UndirectedGraphFromG6::pan3)->getAllSortedEdges(),
-              (std::vector<std::array<GraphVertex, 2>>{{0, 1}, {0, 2}, {1, 2}, {2, 3}}));
+              (std::vector<std::array<Vertex, 2>>{{0, 1}, {0, 2}, {1, 2}, {2, 3}}));
     ASSERT_EQ(UndirectedGraphFromG6 ::Create(UndirectedGraphFromG6::diamond)->getAllSortedEdges(),
-              (std::vector<std::array<GraphVertex, 2>>{{0, 1}, {0, 2}, {1, 2}, {1, 3}, {2, 3}}));
+              (std::vector<std::array<Vertex, 2>>{{0, 1}, {0, 2}, {1, 2}, {1, 3}, {2, 3}}));
 }

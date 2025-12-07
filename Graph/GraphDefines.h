@@ -7,9 +7,9 @@
 
 namespace Graph
 {
-using GraphVertex = size_t;
+using Vertex = size_t;
 using Edge = size_t;
-using VertexPair = std::array<GraphVertex, 2>;
+using VertexPair = std::array<Vertex, 2>;
 using OrderedNonLoopEdge = VertexPair; // Not checked, responsibility of creator
 } // namespace Graph
 

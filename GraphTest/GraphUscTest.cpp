@@ -18,12 +18,12 @@ TEST(GraphUscTest, ConnectedComponents)
     ASSERT_EQ(uscGraph.getDegree(1), 2);
     ASSERT_EQ(uscGraph.getDegree(2), 1);
     ASSERT_FALSE(uscGraph.areAdjacent(0, 2));
-    std::vector<GraphVertex> ngbs;
+    std::vector<Vertex> ngbs;
     uscGraph.setAdjacentVertices(0, ngbs);
-    ASSERT_EQ(ngbs, std::vector<GraphVertex>{1});
+    ASSERT_EQ(ngbs, std::vector<Vertex>{1});
 
     const auto components = uscGraph.getConnectedComponents();
-    ASSERT_EQ(components, (std::vector<GraphVertex>{0, 0, 0}));
+    ASSERT_EQ(components, (std::vector<Vertex>{0, 0, 0}));
 }
 
 TEST(GraphUscTest, Disconnected)
@@ -44,10 +44,10 @@ TEST(GraphUscTest, Permuted)
     ASSERT_EQ(permuted.getDegree(1), 1);
     ASSERT_EQ(permuted.getDegree(2), 1);
     ASSERT_FALSE(permuted.areAdjacent(1, 2));
-    std::vector<GraphVertex> ngbs;
+    std::vector<Vertex> ngbs;
     permuted.setAdjacentVertices(1, ngbs);
-    ASSERT_EQ(ngbs, std::vector<GraphVertex>{0});
+    ASSERT_EQ(ngbs, std::vector<Vertex>{0});
 
     const auto components = permuted.getConnectedComponents();
-    ASSERT_EQ(components, (std::vector<GraphVertex>{0, 0, 0}));
+    ASSERT_EQ(components, (std::vector<Vertex>{0, 0, 0}));
 }

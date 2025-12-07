@@ -17,10 +17,10 @@ bool Check::operator()(const IGraphUs &g0, const IGraphUs &g1) const
         return false;
     }
 
-    std::vector<GraphVertex> adjacent0;
-    std::vector<GraphVertex> adjacent1;
+    std::vector<Vertex> adjacent0;
+    std::vector<Vertex> adjacent1;
     const auto nVertices = g0.getNumVertices();
-    for (GraphVertex v = 0; v < nVertices; ++v)
+    for (Vertex v = 0; v < nVertices; ++v)
     {
         g0.setAdjacentVertices(v, adjacent0);
         g1.setAdjacentVertices(v, adjacent1);

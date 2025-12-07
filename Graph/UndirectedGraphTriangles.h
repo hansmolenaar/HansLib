@@ -11,8 +11,8 @@ class UndirectedGraphTriangles
   public:
     explicit UndirectedGraphTriangles(const Graph::IGraphUs &);
     const Graph::IGraphUs &getGraph() const;
-    size_t numTrianglesAt(GraphVertex) const;
-    size_t numNeighborsInTrianglesAt(GraphVertex) const;
+    size_t numTrianglesAt(Vertex) const;
+    size_t numNeighborsInTrianglesAt(Vertex) const;
     std::vector<size_t> getSequence() const;
 
   private:

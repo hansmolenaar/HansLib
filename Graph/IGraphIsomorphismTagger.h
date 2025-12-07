@@ -34,14 +34,14 @@ class IVertexCompare : public virtual ITagger
   public:
     ~IVertexCompare() = default;
     virtual const Graph::IGraphUs &getGraph() const = 0;
-    virtual std::weak_ordering compareOtherGraph(Graph::GraphVertex, const IVertexCompare &, Graph::GraphVertex) const = 0;
+    virtual std::weak_ordering compareOtherGraph(Graph::Vertex, const IVertexCompare &, Graph::Vertex) const = 0;
 
-    std::weak_ordering compare(Graph::GraphVertex, Graph::GraphVertex) const;
+    std::weak_ordering compare(Graph::Vertex, Graph::Vertex) const;
 };
 
 struct VertexLess
 {
-    bool operator()(Graph::GraphVertex v0, Graph::GraphVertex v1) const
+    bool operator()(Graph::Vertex v0, Graph::Vertex v1) const
     {
         return Compare.compare(v0, v1) < 0;
     }

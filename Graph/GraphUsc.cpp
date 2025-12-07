@@ -14,17 +14,17 @@ GraphUsc::GraphUsc(const UndirectedGraph &graph) : m_graph(graph)
     }
 }
 
-GraphVertex GraphUsc::getNumVertices() const
+Vertex GraphUsc::getNumVertices() const
 {
     return m_graph.getNumVertices();
 }
 
-std::vector<GraphVertex> GraphUsc::getConnectedComponents() const
+std::vector<Vertex> GraphUsc::getConnectedComponents() const
 {
     return m_graph.getConnectedComponents();
 }
 
-void GraphUsc::setAdjacentVertices(GraphVertex vertex, std::vector<GraphVertex> &result) const
+void GraphUsc::setAdjacentVertices(Vertex vertex, std::vector<Vertex> &result) const
 {
     return m_graph.setAdjacentVertices(vertex, result);
 }
@@ -34,12 +34,12 @@ Edge GraphUsc::getNumEdges() const
     return m_graph.getNumEdges();
 }
 
-GraphVertex GraphUsc::getDegree(GraphVertex vertex) const
+Vertex GraphUsc::getDegree(Vertex vertex) const
 {
     return m_graph.getDegree(vertex);
 }
 
-bool GraphUsc::areAdjacent(GraphVertex v1, GraphVertex v2) const
+bool GraphUsc::areAdjacent(Vertex v1, Vertex v2) const
 {
     return m_graph.areAdjacent(v1, v2);
 }
@@ -49,8 +49,8 @@ GraphUsc GraphUsc::CreatePermuted(const IGraphUsc &graph, const Permutation &per
     const auto nVertices = graph.getNumVertices();
     MyAssert(nVertices == permut.getCardinality());
     UndirectedGraph result(nVertices, "Permutation of " + graph.getName());
-    std::vector<GraphVertex> ngbs;
-    for (GraphVertex v0 = 0; v0 < nVertices; ++v0)
+    std::vector<Vertex> ngbs;
+    for (Vertex v0 = 0; v0 < nVertices; ++v0)
     {
         const auto v1 = permut(v0);
         graph.setAdjacentVertices(v0, ngbs);

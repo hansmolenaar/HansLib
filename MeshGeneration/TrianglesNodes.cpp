@@ -114,7 +114,7 @@ std::vector<std::vector<CellIndex>> TrianglesNodes::splitInEdgeConnectedComponen
     const auto cellIds = getAllTriangles();
     if (cellIds.empty())
         return {};
-    const RenumberContiguous<CellIndex, GraphVertex> rc(cellIds.begin(), cellIds.end());
+    const RenumberContiguous<CellIndex, Vertex> rc(cellIds.begin(), cellIds.end());
     UndirectedGraph graph(rc.size());
     for (const auto &edge : getAllSortedEdges())
     {
@@ -130,7 +130,7 @@ std::vector<std::vector<CellIndex>> TrianglesNodes::splitInEdgeConnectedComponen
         return {cellIds};
 
     std::vector<std::vector<CellIndex>> result(numComponents);
-    for (GraphVertex v = 0; auto c : components)
+    for (Vertex v = 0; auto c : components)
     {
         result[c].push_back(rc.at(v));
         ++v;

@@ -10,12 +10,12 @@ class GraphUsc : public IGraphUsc
 {
   public:
     explicit GraphUsc(const UndirectedGraph &);
-    GraphVertex getNumVertices() const override;
+    Vertex getNumVertices() const override;
     Edge getNumEdges() const override;
-    void setAdjacentVertices(GraphVertex vertex, std::vector<GraphVertex> &result) const override;
-    bool areAdjacent(GraphVertex v1, GraphVertex v2) const override;
-    GraphVertex getDegree(GraphVertex vertex) const override;
-    std::vector<GraphVertex> getConnectedComponents() const override;
+    void setAdjacentVertices(Vertex vertex, std::vector<Vertex> &result) const override;
+    bool areAdjacent(Vertex v1, Vertex v2) const override;
+    Vertex getDegree(Vertex vertex) const override;
+    std::vector<Vertex> getConnectedComponents() const override;
     std::string getName() const override;
 
     static GraphUsc CreatePermuted(const IGraphUsc &, const Permutation &);

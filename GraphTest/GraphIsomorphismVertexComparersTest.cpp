@@ -31,9 +31,9 @@ TEST(GraphIsomorphismVertexComparersTest, DegreeButterfly)
     ASSERT_EQ(comparers.compareOtherGraph(0, other, 1), std::weak_ordering::greater);
     ASSERT_EQ(comparers.compareOtherGraph(1, other, 0), std::weak_ordering::less);
 
-    const Grouping<GraphVertex> grouping(graph->getVertexRange(), VertexLess{comparers});
+    const Grouping<Vertex> grouping(graph->getVertexRange(), VertexLess{comparers});
     ASSERT_EQ(grouping.countUnique(), 1);
-    ASSERT_EQ(grouping.getUniqueValues(), std::vector<GraphVertex>{0});
+    ASSERT_EQ(grouping.getUniqueValues(), std::vector<Vertex>{0});
     ASSERT_EQ(grouping.getGroupSizes(), (std::vector<size_t>{4, 1}));
 
     const VertexLess less{comparers};
@@ -63,9 +63,9 @@ TEST(GraphIsomorphismVertexComparersTest, Fish)
     ASSERT_EQ(comparers.compareOtherGraph(4, other, 0), std::weak_ordering::greater);
     ASSERT_EQ(comparers.compareOtherGraph(0, other, 4), std::weak_ordering::less);
 
-    const Grouping<GraphVertex> grouping(graph->getVertexRange(), VertexLess{comparers});
+    const Grouping<Vertex> grouping(graph->getVertexRange(), VertexLess{comparers});
     ASSERT_EQ(grouping.countUnique(), 1);
-    ASSERT_EQ(grouping.getUniqueValues(), std::vector<GraphVertex>{3});
+    ASSERT_EQ(grouping.getUniqueValues(), std::vector<Vertex>{3});
     ASSERT_EQ(grouping.getGroupSizes(), (std::vector<size_t>{3, 2, 1}));
 }
 
@@ -76,7 +76,7 @@ TEST(GraphIsomorphismVertexComparersTest, Diamond)
     const std::vector<const IVertexCompare *> allVertexCompare = selectVertexCompare(taggers);
     const VertexComparers comparers(allVertexCompare);
 
-    const Grouping<GraphVertex> grouping(graph->getVertexRange(), VertexLess{comparers});
+    const Grouping<Vertex> grouping(graph->getVertexRange(), VertexLess{comparers});
     ASSERT_EQ(grouping.countUnique(), 4);
     ASSERT_EQ(grouping.getGroupSizes(), (std::vector<size_t>{1, 1, 1, 1}));
 }
@@ -88,6 +88,6 @@ TEST(GraphIsomorphismVertexComparersTest, HardCase)
     const std::vector<const IVertexCompare *> allVertexCompare = selectVertexCompare(taggers);
     const VertexComparers comparers(allVertexCompare);
 
-    const Grouping<GraphVertex> grouping(graph->getVertexRange(), VertexLess{comparers});
+    const Grouping<Vertex> grouping(graph->getVertexRange(), VertexLess{comparers});
     ASSERT_EQ(grouping.countUnique(), 2);
 }

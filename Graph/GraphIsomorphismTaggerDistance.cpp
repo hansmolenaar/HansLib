@@ -35,7 +35,7 @@ TaggerDistance::TaggerDistance(const Graph::IGraphUs &graph)
 {
 }
 
-Tag TaggerDistance::getTag(GraphVertex v) const
+Tag TaggerDistance::getTag(Vertex v) const
 {
     const auto &atDistance = (*m_distances)(v);
     // Skip first entry, always 1
@@ -44,7 +44,7 @@ Tag TaggerDistance::getTag(GraphVertex v) const
     return retval;
 }
 
-const Tag &TaggerDistance::getVertexTag(GraphVertex v) const
+const Tag &TaggerDistance::getVertexTag(Vertex v) const
 {
     return m_tags.at(v);
 }
@@ -61,11 +61,11 @@ const IGraphUs &TaggerDistance::getGraph() const
 
 namespace
 {
-std::vector<ScalarVertexValues> CollectVertexValues(const std::vector<GraphVertex> &vertices,
+std::vector<ScalarVertexValues> CollectVertexValues(const std::vector<Vertex> &vertices,
                                                     const UndirectedGraphTriangles &triangles)
 {
     std::vector<ScalarVertexValues> result(vertices.size());
-    str::transform(vertices, result.begin(), [&triangles](GraphVertex v) {
+    str::transform(vertices, result.begin(), [&triangles](Vertex v) {
         return ScalarVertexValues{static_cast<TagEntry>(triangles.getGraph().getDegree(v)),
                                   static_cast<TagEntry>(triangles.numTrianglesAt(v)),
                                   static_cast<TagEntry>(triangles.numNeighborsInTrianglesAt(v))};
@@ -75,8 +75,8 @@ std::vector<ScalarVertexValues> CollectVertexValues(const std::vector<GraphVerte
 }
 } // namespace
 
-std::weak_ordering TaggerDistance::compareOtherGraph(GraphVertex vertex0, const IVertexCompare &other,
-                                                     GraphVertex vertex1) const
+std::weak_ordering TaggerDistance::compareOtherGraph(Vertex vertex0, const IVertexCompare &other,
+                                                     Vertex vertex1) const
 {
     const auto &tagger0 = *this;
     const auto &tagger1 = dynamic_cast<const TaggerDistance &>(other);

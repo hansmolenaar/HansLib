@@ -9,11 +9,11 @@ namespace Graph
 class UndirectedGraphDistance
 {
   public:
-    using AtDistance = std::vector<std::vector<GraphVertex>>;
+    using AtDistance = std::vector<std::vector<Vertex>>;
 
     explicit UndirectedGraphDistance(const Graph::IGraphUs &);
-    const AtDistance &operator()(GraphVertex) const;
-    GraphVertex getNumVertices() const;
+    const AtDistance &operator()(Vertex) const;
+    Vertex getNumVertices() const;
     const Graph::IGraphUs &getGraph() const;
 
   private:

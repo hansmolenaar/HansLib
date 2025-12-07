@@ -19,13 +19,13 @@ namespace
 void CheckVertexConservation(const GraphIsomorphism::ToParentMap &toParent, int expectNumLeaves)
 {
     int numLeaves = 0;
-    std::vector<GraphVertex> vertices;
+    std::vector<Vertex> vertices;
     for (const auto *leaf : toParent.getLeaves())
     {
         numLeaves += 1;
         const IGraphUs &graph = leaf->getGraph();
         const auto numVertices = graph.getNumVertices();
-        for (GraphVertex v = 0; v < numVertices; ++v)
+        for (Vertex v = 0; v < numVertices; ++v)
         {
             vertices.emplace_back(toParent.getVertexInRoot(v, leaf));
         }
