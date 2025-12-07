@@ -11,19 +11,19 @@ class Status
 {
   public:
     Status() = default;
-    explicit Status(GraphVertex);
+    explicit Status(Graph::GraphVertex);
     Flag getFlag() const;
     void setFlag(Flag);
     void addPair(Graph::VertexPair);
     std::vector<Graph::VertexPair> getVertexPairs() const;
-    bool containsFirst(GraphVertex) const;
-    bool containsSecond(GraphVertex) const;
+    bool containsFirst(Graph::GraphVertex) const;
+    bool containsSecond(Graph::GraphVertex) const;
 
   private:
-    GraphVertex m_numVertices = 0;
+    Graph::GraphVertex m_numVertices = 0;
     Flag m_flag = Flag::NotIsomorphic;
-    std::vector<GraphVertex> m_vertexFirst;
-    std::vector<GraphVertex> m_vertexSecond;
+    std::vector<Graph::GraphVertex> m_vertexFirst;
+    std::vector<Graph::GraphVertex> m_vertexSecond;
 };
 
 } // namespace GraphIsomorphism

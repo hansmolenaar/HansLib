@@ -1,6 +1,7 @@
 #include "GraphIsomorphismTaggerMaxDegree.h"
 #include "GraphIsomorphismTagFlyweight.h"
 
+using namespace Graph;
 using namespace GraphIsomorphism;
 
 TaggerMaxDegree::TaggerMaxDegree(const Graph::IGraphUs &graph) : m_graph(graph)

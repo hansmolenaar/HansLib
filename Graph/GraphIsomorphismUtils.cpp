@@ -11,6 +11,7 @@
 #include "GraphIsomorphismTaggerTriangles.h"
 #include "UndirectedGraphDistance.h"
 
+using namespace Graph;
 using namespace GraphIsomorphism;
 
 template Tag GraphIsomorphism::CondenseSizeSequence(const std::vector<int> &sizes);

@@ -1,5 +1,6 @@
 #include "IGraphIsomorphismTagger.h"
 
+using namespace Graph;
 using namespace GraphIsomorphism;
 
 const IGraphTagger *ITagger::getGraphTagger() const

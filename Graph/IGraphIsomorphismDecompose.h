@@ -58,7 +58,7 @@ class DecomposeDisconnected : public IDecompose
 class DecomposeUniversalVertex : public IDecompose
 {
   public:
-    explicit DecomposeUniversalVertex(const Graph::IGraphUs &, const std::set<GraphVertex> &);
+    explicit DecomposeUniversalVertex(const Graph::IGraphUs &, const std::set<Graph::GraphVertex> &);
 
     const Tag &getTag() const override;
     std::string getDescription() const override;
@@ -137,7 +137,7 @@ class ToParentMap
     const IDecompose *getParent(const IDecompose *) const;
     std::vector<const IDecompose *> getLeaves() const;
     size_t size() const;
-    GraphVertex getVertexInRoot(GraphVertex vertex, const IDecompose *) const;
+    Graph::GraphVertex getVertexInRoot(Graph::GraphVertex vertex, const IDecompose *) const;
 
     std::vector<Tag> collectDecomposeTagsForLeaf(const IDecompose *) const;
     std::string getDescriptions() const;

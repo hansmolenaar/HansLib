@@ -3,6 +3,7 @@
 #include "GraphIsomorphismTagFlyweight.h"
 #include "GraphIsomorphismUtils.h"
 
+using namespace Graph;
 using namespace GraphIsomorphism;
 
 TaggerTriangles::TaggerTriangles(std::shared_ptr<Graph::UndirectedGraphTriangles> triangles)

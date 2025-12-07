@@ -3,6 +3,7 @@
 #include "GraphIsomorphismTagFlyweight.h"
 #include "GraphIsomorphismUtils.h"
 
+using namespace Graph;
 using namespace GraphIsomorphism;
 
 GraphIsomorphism::TaggerDegree::TaggerDegree(const Graph::IGraphUs &graph) : m_graph(graph)

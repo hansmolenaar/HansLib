@@ -2,6 +2,7 @@
 #include "Defines.h"
 #include "GraphIsomorphismUtils.h"
 
+using namespace Graph;
 using namespace GraphIsomorphism;
 
 GraphIsomorphism::TaggerComponents::TaggerComponents(const Graph::IGraphUs &graph)

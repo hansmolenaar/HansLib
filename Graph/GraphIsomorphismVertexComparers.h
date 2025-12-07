@@ -12,13 +12,13 @@ class VertexComparers : public IVertexCompare
     explicit VertexComparers(std::vector<const IVertexCompare *>);
 
     const Graph::IGraphUs &getGraph() const override;
-    std::weak_ordering compareOtherGraph(GraphVertex, const IVertexCompare &, GraphVertex) const override;
+    std::weak_ordering compareOtherGraph(Graph::GraphVertex, const IVertexCompare &, Graph::GraphVertex) const override;
     std::weak_ordering operator<=>(const VertexComparers &) const;
 
   private:
     std::vector<const IVertexCompare *> m_vertexComparers;
-    std::map<GraphVertex, size_t> m_vertex2group;
-    Grouping<GraphVertex> m_grouping;
+    std::map<Graph::GraphVertex, size_t> m_vertex2group;
+    Grouping<Graph::GraphVertex> m_grouping;
 };
 
 } // namespace GraphIsomorphism

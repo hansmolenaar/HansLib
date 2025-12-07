@@ -26,17 +26,17 @@ class TaggerDistance : public IGraphTagger, public IVertexCompare
     explicit TaggerDistance(std::shared_ptr<Graph::UndirectedGraphDistance>,
                             std::shared_ptr<Graph::UndirectedGraphTriangles>);
     explicit TaggerDistance(const Graph::IGraphUs &);
-    const Tag &getVertexTag(GraphVertex) const;
+    const Tag &getVertexTag(Graph::GraphVertex) const;
     const Tag &getGraphTag() const override;
 
     const Graph::IGraphUs &getGraph() const override;
-    std::weak_ordering compareOtherGraph(GraphVertex, const IVertexCompare &, GraphVertex) const override;
+    std::weak_ordering compareOtherGraph(Graph::GraphVertex, const IVertexCompare &, Graph::GraphVertex) const override;
 
   private:
     std::shared_ptr<Graph::UndirectedGraphDistance> m_distances;
     std::shared_ptr<Graph::UndirectedGraphTriangles> m_triangles;
 
-    Tag getTag(GraphVertex v) const;
+    Tag getTag(Graph::GraphVertex v) const;
     std::vector<Tag> m_tags;
     Tag m_graphTag;
 };
