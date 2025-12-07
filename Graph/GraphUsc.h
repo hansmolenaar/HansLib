@@ -11,7 +11,7 @@ class GraphUsc : public IGraphUsc
   public:
     explicit GraphUsc(const UndirectedGraph &);
     GraphVertex getNumVertices() const override;
-    GraphEdge getNumEdges() const override;
+    Edge getNumEdges() const override;
     void setAdjacentVertices(GraphVertex vertex, std::vector<GraphVertex> &result) const override;
     bool areAdjacent(GraphVertex v1, GraphVertex v2) const override;
     GraphVertex getDegree(GraphVertex vertex) const override;

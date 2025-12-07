@@ -10,7 +10,7 @@ class SubGraph : public IGraphUs
   public:
     SubGraph(const IGraphUs &, const std::set<GraphVertex> &);
     GraphVertex getNumVertices() const override;
-    GraphEdge getNumEdges() const override;
+    Edge getNumEdges() const override;
     void setAdjacentVertices(GraphVertex, std::vector<GraphVertex> &) const override;
     bool areAdjacent(GraphVertex, GraphVertex) const override;
     GraphVertex getDegree(GraphVertex) const override;

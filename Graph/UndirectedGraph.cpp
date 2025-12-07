@@ -101,7 +101,7 @@ void UndirectedGraph::setAdjacentVertices(GraphVertex vertex, std::vector<GraphV
     str::sort(result);
 }
 
-GraphEdge UndirectedGraph::getNumEdges() const
+Edge UndirectedGraph::getNumEdges() const
 {
     return boost::num_edges(m_graph);
 }

@@ -29,7 +29,7 @@ void GraphUsc::setAdjacentVertices(GraphVertex vertex, std::vector<GraphVertex> 
     return m_graph.setAdjacentVertices(vertex, result);
 }
 
-GraphEdge GraphUsc::getNumEdges() const
+Edge GraphUsc::getNumEdges() const
 {
     return m_graph.getNumEdges();
 }

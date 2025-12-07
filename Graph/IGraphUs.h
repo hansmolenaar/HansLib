@@ -16,7 +16,7 @@ class IGraphUs
     virtual ~IGraphUs() = default;
 
     virtual GraphVertex getNumVertices() const = 0;
-    virtual GraphEdge getNumEdges() const = 0;
+    virtual Edge getNumEdges() const = 0;
     virtual void setAdjacentVertices(GraphVertex vertex, std::vector<GraphVertex> &result) const = 0;
     virtual bool areAdjacent(GraphVertex v1, GraphVertex v2) const = 0;
     virtual GraphVertex getDegree(GraphVertex vertex) const = 0;

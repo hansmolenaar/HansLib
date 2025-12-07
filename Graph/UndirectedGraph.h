@@ -16,7 +16,7 @@ class UndirectedGraph : public Graph::IGraphUs
     void addEdge(GraphVertex, GraphVertex);
 
     GraphVertex getNumVertices() const override;
-    GraphEdge getNumEdges() const override;
+    Edge getNumEdges() const override;
     void setAdjacentVertices(GraphVertex vertex, std::vector<GraphVertex> &) const override;
     bool areAdjacent(GraphVertex, GraphVertex) const override;
     GraphVertex getDegree(GraphVertex) const override;
@@ -41,7 +41,7 @@ class UndirectedGraph : public Graph::IGraphUs
     CyclesAndPaths SplitInCyclesAndPaths() const;
 
   private:
-    boost::adjacency_list<boost::listS, boost::vecS, boost::undirectedS, GraphVertex, GraphEdge> m_graph;
+    boost::adjacency_list<boost::listS, boost::vecS, boost::undirectedS, GraphVertex, Edge> m_graph;
     std::string m_name;
 };
 

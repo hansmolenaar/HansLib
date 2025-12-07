@@ -59,7 +59,7 @@ GraphVertex SubGraph::getNumVertices() const
     return m_graph.getNumVertices();
 }
 
-GraphEdge SubGraph::getNumEdges() const
+Edge SubGraph::getNumEdges() const
 {
     return m_graph.getNumEdges();
 }

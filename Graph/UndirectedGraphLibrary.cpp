@@ -21,9 +21,9 @@ std::string CreateName(std::string name, std::initializer_list<GraphVertex> size
     return name;
 }
 
-void SetEdgesOfPath(UndirectedGraph &graph, GraphEdge numEdges)
+void SetEdgesOfPath(UndirectedGraph &graph, Edge numEdges)
 {
-    for (GraphEdge edge = 0; edge < numEdges; ++edge)
+    for (Edge edge = 0; edge < numEdges; ++edge)
     {
         graph.addEdge(edge, edge + 1);
     }
