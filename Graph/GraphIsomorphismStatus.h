@@ -14,8 +14,8 @@ class Status
     explicit Status(GraphVertex);
     Flag getFlag() const;
     void setFlag(Flag);
-    void addPair(VertexPair);
-    std::vector<VertexPair> getVertexPairs() const;
+    void addPair(Graph::VertexPair);
+    std::vector<Graph::VertexPair> getVertexPairs() const;
     bool containsFirst(GraphVertex) const;
     bool containsSecond(GraphVertex) const;
 

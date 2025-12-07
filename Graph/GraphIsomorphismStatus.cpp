@@ -1,7 +1,9 @@
 #include "GraphIsomorphismStatus.h"
 #include "Defines.h"
+#include "GraphDefines.h"
 #include "MyAssert.h"
 
+using namespace Graph;
 using namespace GraphIsomorphism;
 using namespace Utilities;
 
@@ -34,12 +36,12 @@ void Status::addPair(VertexPair vp)
     }
 }
 
-std::vector<VertexPair> Status::getVertexPairs() const
+std::vector<Graph::VertexPair> Status::getVertexPairs() const
 {
-    std::vector<VertexPair> result;
+    std::vector<Graph::VertexPair> result;
     for (size_t n = 0; n < m_vertexFirst.size(); ++n)
     {
-        result.push_back({m_vertexFirst.at(n), m_vertexSecond.at(n)});
+        result.emplace_back(VertexPair{m_vertexFirst.at(n), m_vertexSecond.at(n)});
     }
     return result;
 }

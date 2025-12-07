@@ -7,6 +7,12 @@
 using GraphVertex = size_t;
 using GraphEdge = size_t;
 
+namespace Graph
+{
+using VertexPair = std::array<GraphVertex, 2>;
+using OrderedNonLoopEdge = VertexPair; // Not checked, responsibility of creator
+}
+
 // Undirected graph, no data
 using UGraph = boost::adjacency_list<boost::listS, boost::vecS, boost::undirectedS>;
 
