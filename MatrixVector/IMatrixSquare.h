@@ -10,7 +10,7 @@ class IMatrixSquare : public IMatrix
     inline int GetRowDimension() const override;
     inline int GetColDimension() const override;
 
-    virtual ~IMatrixSquare(){};
+    virtual ~IMatrixSquare() {};
 };
 
 int IMatrixSquare::GetRowDimension() const

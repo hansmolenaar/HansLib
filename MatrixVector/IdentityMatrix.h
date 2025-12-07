@@ -12,7 +12,7 @@ class IdentityMatrix : public IMatrixSymmetric
     virtual int GetColDimension() const override;
     virtual double operator()(int, int) const override;
     virtual double &operator()(int, int) override;
-    virtual ~IdentityMatrix(){};
+    virtual ~IdentityMatrix() {};
 
   private:
     int m_dimension;

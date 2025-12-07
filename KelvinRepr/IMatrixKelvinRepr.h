@@ -11,5 +11,5 @@ class IMatrixKelvinRepr : public IMatrixSymmetric
     virtual double Get(int, int) const = 0;
     virtual void Set(int, int, double) = 0;
     virtual std::span<const double> Vector() const = 0;
-    virtual ~IMatrixKelvinRepr(){};
+    virtual ~IMatrixKelvinRepr() {};
 };

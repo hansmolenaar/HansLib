@@ -1,6 +1,5 @@
 #include "GraphIsomorphismStatus.h"
 #include "Defines.h"
-#include "GraphDefines.h"
 #include "MyAssert.h"
 
 using namespace Graph;
@@ -10,6 +9,7 @@ using namespace Utilities;
 Status::Status(GraphVertex numVertices) : m_numVertices(numVertices), m_flag(Flag::Undecided)
 {
 }
+
 Flag Status::getFlag() const
 {
     return m_flag;

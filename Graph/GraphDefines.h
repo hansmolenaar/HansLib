@@ -11,7 +11,7 @@ namespace Graph
 {
 using VertexPair = std::array<GraphVertex, 2>;
 using OrderedNonLoopEdge = VertexPair; // Not checked, responsibility of creator
-}
+} // namespace Graph
 
 // Undirected graph, no data
 using UGraph = boost::adjacency_list<boost::listS, boost::vecS, boost::undirectedS>;

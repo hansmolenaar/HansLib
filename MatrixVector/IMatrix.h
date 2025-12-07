@@ -12,7 +12,7 @@ class IMatrix
 
     inline void CopyFrom(const IMatrix &other);
 
-    virtual ~IMatrix(){};
+    virtual ~IMatrix() {};
 };
 
 void IMatrix::CopyFrom(const IMatrix &other)

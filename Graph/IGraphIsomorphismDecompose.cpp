@@ -83,8 +83,7 @@ std::unique_ptr<IDecompose> IDecompose::Create(const Graph::IGraphUs &graph, boo
     const auto universalVertices = graph.getUniversalVertices();
     if (!universalVertices.empty())
     {
-        const std::set<GraphVertex> universalVerticesSet(universalVertices.begin(),
-                                                              universalVertices.end());
+        const std::set<GraphVertex> universalVerticesSet(universalVertices.begin(), universalVertices.end());
         return std::make_unique<DecomposeUniversalVertex>(graph, universalVerticesSet);
     }
 
@@ -284,7 +283,7 @@ const Grouping<const IDecompose *> &DecomposeDisconnected::getGroupingChildren()
 // !!!!!!!!!!! universal vertices
 
 DecomposeUniversalVertex::DecomposeUniversalVertex(const Graph::IGraphUs &graph,
-                                                             const std::set<GraphVertex> &universalVertices)
+                                                   const std::set<GraphVertex> &universalVertices)
     : IDecompose(graph), m_tag{IDecomposeType::UniversalVertex, static_cast<TagEntry>(universalVertices.size())}
 {
     MyAssert(!universalVertices.empty());
@@ -294,8 +293,8 @@ DecomposeUniversalVertex::DecomposeUniversalVertex(const Graph::IGraphUs &graph,
     m_children.emplace_back(std::move(completePart));
 
     // Remainder
-    auto range =
-        graph.getVertexRange() | stv::filter([&universalVertices](GraphVertex v) { return !universalVertices.contains(v); });
+    auto range = graph.getVertexRange() |
+                 stv::filter([&universalVertices](GraphVertex v) { return !universalVertices.contains(v); });
     std::set<GraphVertex> remainder;
     str::copy(range, std::inserter(remainder, remainder.end()));
 

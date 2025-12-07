@@ -23,7 +23,7 @@ template <int Dimension> class MatrixKelvinReprBase : public IMatrixKelvinRepr
     double Get(int, int) const override;
     void Set(int, int, double) override;
 
-    virtual ~MatrixKelvinReprBase(){};
+    virtual ~MatrixKelvinReprBase() {};
     static const int VectorLength = Dimension * (Dimension + 1) / 2;
     std::span<const double> Vector() const override;
 

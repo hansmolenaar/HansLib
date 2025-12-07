@@ -6,7 +6,7 @@
 template <size_t N> class PointTransformationFromGroupAction : public IPointTransformation<double, N>
 {
   public:
-    PointTransformationFromGroupAction(const IFinitePointGroupAction<N> &a, int e) : m_action(a), m_element(e){};
+    PointTransformationFromGroupAction(const IFinitePointGroupAction<N> &a, int e) : m_action(a), m_element(e) {};
     Point<double, N> operator()(const Point<double, N> &) const override;
 
   private:
