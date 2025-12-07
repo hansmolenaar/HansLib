@@ -13,7 +13,7 @@ constexpr Vertex DegreeSequenceDone = std::numeric_limits<Vertex>::max();
 
 // If a polygon is found the last node of the resulting list equals the first one
 std::vector<Vertex> TraceLineOrPolygon(const UndirectedGraph &graph, Vertex start, Vertex nxt,
-                                            std::vector<Vertex> &degreeSequence)
+                                       std::vector<Vertex> &degreeSequence)
 {
     std::vector<Vertex> result;
     std::vector<Vertex> ngbVertices;

@@ -43,10 +43,8 @@ TEST(IGraphUsTest, isClique)
     ASSERT_FALSE(UndirectedGraphLibrary::Get_Path(3)->isClique(std::vector<Vertex>{0, 2}));
     ASSERT_FALSE(UndirectedGraphLibrary::Get_DisconnectedGraph(5)->isClique(std::vector<Vertex>{0, 2}));
     ASSERT_TRUE(UndirectedGraphLibrary::Get_CompleteGraph(5)->isClique(std::vector<Vertex>{0, 2, 4, 1, 2, 4, 1}));
-    ASSERT_TRUE(
-        UndirectedGraphFromG6::Create(UndirectedGraphFromG6::diamond)->isClique(std::vector<Vertex>{1, 2, 3}));
-    ASSERT_FALSE(
-        UndirectedGraphFromG6::Create(UndirectedGraphFromG6::diamond)->isClique(std::vector<Vertex>{0, 1, 3}));
+    ASSERT_TRUE(UndirectedGraphFromG6::Create(UndirectedGraphFromG6::diamond)->isClique(std::vector<Vertex>{1, 2, 3}));
+    ASSERT_FALSE(UndirectedGraphFromG6::Create(UndirectedGraphFromG6::diamond)->isClique(std::vector<Vertex>{0, 1, 3}));
 }
 
 TEST(IGraphUsTest, FullyConnectedVertices)
@@ -73,10 +71,8 @@ TEST(IGraphUsTest, FullyConnectedVertices)
 TEST(IGraphUsTest, sortedEdges)
 {
     ASSERT_EQ(UndirectedGraphLibrary::Get_Null()->getAllSortedEdges(), (std::vector<std::array<Vertex, 2>>{}));
-    ASSERT_EQ(UndirectedGraphLibrary::Get_Singleton()->getAllSortedEdges(),
-              (std::vector<std::array<Vertex, 2>>{}));
-    ASSERT_EQ(UndirectedGraphLibrary::Get_Path(2)->getAllSortedEdges(),
-              (std::vector<std::array<Vertex, 2>>{{0, 1}}));
+    ASSERT_EQ(UndirectedGraphLibrary::Get_Singleton()->getAllSortedEdges(), (std::vector<std::array<Vertex, 2>>{}));
+    ASSERT_EQ(UndirectedGraphLibrary::Get_Path(2)->getAllSortedEdges(), (std::vector<std::array<Vertex, 2>>{{0, 1}}));
     ASSERT_EQ(UndirectedGraphLibrary::Get_Cycle(3)->getAllSortedEdges(),
               (std::vector<std::array<Vertex, 2>>{{0, 1}, {0, 2}, {1, 2}}));
     ASSERT_EQ(UndirectedGraphLibrary::Get_Path(3)->getAllSortedEdges(),

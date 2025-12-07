@@ -293,8 +293,8 @@ DecomposeUniversalVertex::DecomposeUniversalVertex(const Graph::IGraphUs &graph,
     m_children.emplace_back(std::move(completePart));
 
     // Remainder
-    auto range = graph.getVertexRange() |
-                 stv::filter([&universalVertices](Vertex v) { return !universalVertices.contains(v); });
+    auto range =
+        graph.getVertexRange() | stv::filter([&universalVertices](Vertex v) { return !universalVertices.contains(v); });
     std::set<Vertex> remainder;
     str::copy(range, std::inserter(remainder, remainder.end()));
 

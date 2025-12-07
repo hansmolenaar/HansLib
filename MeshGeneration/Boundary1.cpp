@@ -20,12 +20,10 @@ UndirectedGraph CreateGraph(std::span<const Topology::EdgeNodesSorted> edges,
     return result;
 }
 
-std::vector<NodeIndex> ToNodesIndices(const std::vector<Vertex> &grapVertices,
-                                      std::span<const NodeIndex> manifoldNodes)
+std::vector<NodeIndex> ToNodesIndices(const std::vector<Vertex> &grapVertices, std::span<const NodeIndex> manifoldNodes)
 {
     std::vector<NodeIndex> result(manifoldNodes.size());
-    str::transform(grapVertices, result.begin(),
-                   [&manifoldNodes](Vertex vertex) { return manifoldNodes[vertex]; });
+    str::transform(grapVertices, result.begin(), [&manifoldNodes](Vertex vertex) { return manifoldNodes[vertex]; });
     return result;
 }
 } // namespace

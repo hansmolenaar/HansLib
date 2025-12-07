@@ -370,8 +370,7 @@ const IGraphUs &TaggerChains::getGraph() const
     return m_graph;
 }
 
-std::weak_ordering TaggerChains::compareOtherGraph(Vertex vertex0, const IVertexCompare &other,
-                                                   Vertex vertex1) const
+std::weak_ordering TaggerChains::compareOtherGraph(Vertex vertex0, const IVertexCompare &other, Vertex vertex1) const
 {
     return getVertexTag(vertex0) <=> dynamic_cast<const TaggerChains &>(other).getVertexTag(vertex1);
 }

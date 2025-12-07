@@ -34,8 +34,7 @@ const Graph::IGraphUs &TaggerMaxDegree::getGraph() const
     return m_graph;
 }
 
-std::weak_ordering TaggerMaxDegree::compareOtherGraph(Vertex vertex0, const IVertexCompare &other,
-                                                      Vertex vertex1) const
+std::weak_ordering TaggerMaxDegree::compareOtherGraph(Vertex vertex0, const IVertexCompare &other, Vertex vertex1) const
 {
     return getVertexTag(vertex0) <=> dynamic_cast<const TaggerMaxDegree &>(other).getVertexTag(vertex1);
 }

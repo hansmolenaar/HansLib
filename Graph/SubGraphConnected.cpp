@@ -6,8 +6,7 @@
 using namespace Graph;
 using namespace Utilities;
 
-SubGraphConnected::SubGraphConnected(const IGraphUs &master, const std::set<Vertex> &subSet)
-    : SubGraph(master, subSet)
+SubGraphConnected::SubGraphConnected(const IGraphUs &master, const std::set<Vertex> &subSet) : SubGraph(master, subSet)
 {
     MyAssert(isConnected());
 }

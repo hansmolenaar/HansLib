@@ -23,8 +23,7 @@ const Graph::IGraphUs &TaggerTriangles::getGraph() const
     return m_triangles->getGraph();
 }
 
-std::weak_ordering TaggerTriangles::compareOtherGraph(Vertex vertex0, const IVertexCompare &other,
-                                                      Vertex vertex1) const
+std::weak_ordering TaggerTriangles::compareOtherGraph(Vertex vertex0, const IVertexCompare &other, Vertex vertex1) const
 {
     return m_triangles->numTrianglesAt(vertex0) <=>
            dynamic_cast<const TaggerTriangles &>(other).m_triangles->numTrianglesAt(vertex1);

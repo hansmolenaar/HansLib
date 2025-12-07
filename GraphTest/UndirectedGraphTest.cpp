@@ -24,8 +24,7 @@ void CheckSequenceAfterSorting(std::span<const Vertex> actual, std::span<const V
     ASSERT_TRUE(std::equal(actualSorted.begin(), actualSorted.end(), expectSorted.begin(), expectSorted.end()));
 }
 
-void CheckDegreeSequence(const Graph::IGraphUs &graph, Vertex numVertices,
-                         std::span<const Vertex> degreeSequenceSorted)
+void CheckDegreeSequence(const Graph::IGraphUs &graph, Vertex numVertices, std::span<const Vertex> degreeSequenceSorted)
 {
     ASSERT_EQ(graph.getNumVertices(), numVertices);
     ASSERT_EQ(degreeSequenceSorted.size(), numVertices);

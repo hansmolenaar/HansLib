@@ -4,7 +4,6 @@
 #include <boost/graph/connected_components.hpp>
 #include <boost/graph/sequential_vertex_coloring.hpp>
 
-
 namespace Graph
 {
 using Vertex = size_t;

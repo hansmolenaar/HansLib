@@ -58,8 +58,7 @@ const IGraphUs &VertexComparers::getGraph() const
     return m_vertexComparers.front()->getGraph();
 }
 
-std::weak_ordering VertexComparers::compareOtherGraph(Vertex v0, const IVertexCompare &otherCompare,
-                                                      Vertex v1) const
+std::weak_ordering VertexComparers::compareOtherGraph(Vertex v0, const IVertexCompare &otherCompare, Vertex v1) const
 {
     const VertexComparers *other = dynamic_cast<const VertexComparers *>(&otherCompare);
     if (this == other)

@@ -21,8 +21,7 @@ const Graph::IGraphUs &TaggerDegree::getGraph() const
     return m_graph;
 }
 
-std::weak_ordering TaggerDegree::compareOtherGraph(Vertex vertex0, const IVertexCompare &other,
-                                                   Vertex vertex1) const
+std::weak_ordering TaggerDegree::compareOtherGraph(Vertex vertex0, const IVertexCompare &other, Vertex vertex1) const
 {
     return m_graph.getDegree(vertex0) <=> dynamic_cast<const TaggerDegree &>(other).m_graph.getDegree(vertex1);
 }
