@@ -21,11 +21,11 @@ void Status::setFlag(Flag flag)
 
 void Status::addPair(VertexPair vp)
 {
-    MyAssert(!containsFirst(vp.first));
-    MyAssert(!containsSecond(vp.second));
+    MyAssert(!containsFirst(vp[0]));
+    MyAssert(!containsSecond(vp[1]));
 
-    m_vertexFirst.push_back(vp.first);
-    m_vertexSecond.push_back(vp.second);
+    m_vertexFirst.push_back(vp[0]);
+    m_vertexSecond.push_back(vp[1]);
 
     MyAssert(getFlag() == Flag::Undecided);
     if (m_vertexFirst.size() == m_numVertices)

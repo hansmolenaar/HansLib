@@ -19,7 +19,8 @@ using VertexTags = std::vector<Tag>;
 
 using GraphGroup = std::vector<int>;
 using GraphPair = std::pair<const Graph::UndirectedGraph &, const Graph::UndirectedGraph &>;
-using VertexPair = std::pair<GraphVertex, GraphVertex>;
+using VertexPair = std::array<GraphVertex, 2>;
+using OrderedNonLoopEdge = VertexPair; // Not checked, responsibility of creator
 
 enum Flag
 {

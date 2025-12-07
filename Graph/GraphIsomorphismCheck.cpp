@@ -39,7 +39,7 @@ bool Check::operator()(const IGraphUs &g0, const std::vector<VertexPair> &perm01
     std::vector<Permutation::Entry> perm0(nVertices);
     for (size_t n = 0; n < nVertices; ++n)
     {
-        perm0.at(perm01.at(n).first) = perm01.at(n).second;
+        perm0.at(perm01.at(n)[0]) = perm01.at(n)[1];
     }
     const auto g0Permuted = UndirectedGraph::CreatePermuted(g0, Permutation::Create(perm0));
 

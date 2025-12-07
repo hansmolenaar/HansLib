@@ -305,7 +305,7 @@ std::pair<Tag, std::vector<Tag>> GenerateTags(const IGraphUs &graph)
                         retval[currentItr->second.at(n)] =
                             std::vector<TagEntry>{ChainId::AttachedPathDouble, currentSize, count, possym};
                     }
-                    pairTags[std::make_pair(currentItr->first.attacheFirst, currentItr->first.attacheLast)].push_back(
+                    pairTags[VertexPair{currentItr->first.attacheFirst, currentItr->first.attacheLast}].push_back(
                         currentSize);
                 }
             }
@@ -323,8 +323,8 @@ std::pair<Tag, std::vector<Tag>> GenerateTags(const IGraphUs &graph)
         str::sort(tag);
         tag.insert(tag.begin(), ChainId::AttachedPathDouble);
 
-        perVertex[itrPair.first.first].insert(tag);
-        perVertex[itrPair.first.second].insert(tag);
+        perVertex[itrPair.first[0]].insert(tag);
+        perVertex[itrPair.first[1]].insert(tag);
     }
 
     for (const auto &itr : perVertex)

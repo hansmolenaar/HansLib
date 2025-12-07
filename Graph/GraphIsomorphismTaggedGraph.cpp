@@ -56,7 +56,7 @@ Status TaggedGraph::tryConnect(const TaggedGraph &tg0, const TaggedGraph &tg1)
     MyAssert(uniqueValues0.size() == uniqueValues1.size());
     for (const auto vertex01 : stv::zip(uniqueValues0, uniqueValues1))
     {
-        result.addPair(vertex01);
+        result.addPair({std::get<0>(vertex01), std::get<1>(vertex01)});
     }
 
     return result;

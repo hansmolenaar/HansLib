@@ -380,7 +380,7 @@ TEST(IGraphIsomorphismDecomposeTest, SpecialCase6)
             // GraphIsomorphism::toEdgeList(leaf->getGraph(), std::cout);
         }
     }
-    std::cout << "\n\n\n";
+    //std::cout << "\n\n\n";
 
     for (const auto *leaf : map1.getLeaves())
     {
