@@ -14,6 +14,7 @@ class UndirectedGraph : public Graph::IGraphUs
     explicit UndirectedGraph(const Graph::IGraphUs &);
     explicit UndirectedGraph(Vertex, std::string = "");
     void addEdge(Vertex, Vertex);
+    void addEdge(VertexPair);
 
     Vertex getNumVertices() const override;
     Edge getNumEdges() const override;
@@ -32,6 +33,7 @@ class UndirectedGraph : public Graph::IGraphUs
     static UndirectedGraph CreatePermuted(const IGraphUs &, const Permutation &permut);
     static UndirectedGraph CreatePermuted(const IGraphUs &, std::initializer_list<Permutation::Entry>);
     static UndirectedGraph CreateComplement(const IGraphUs &);
+    static UndirectedGraph CreateEdgesOmitted(const IGraphUs &, const std::vector<std::vector<Vertex>> &);
 
     struct CyclesAndPaths
     {

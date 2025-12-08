@@ -78,6 +78,11 @@ void UndirectedGraph::addEdge(Vertex vertex1, Vertex vertex2)
     }
 }
 
+void UndirectedGraph::addEdge(VertexPair edge)
+{
+addEdge(edge[0], edge[1]);
+}
+
 Vertex UndirectedGraph::getNumVertices() const
 {
     return boost::num_vertices(m_graph);
@@ -282,4 +287,40 @@ UndirectedGraph UndirectedGraph::CreateComplement(const IGraphUs &graph)
 std::string UndirectedGraph::getName() const
 {
     return m_name;
+}
+
+UndirectedGraph UndirectedGraph::CreateEdgesOmitted(const IGraphUs &graph,
+                                                     const std::vector<std::vector<Vertex>> &omitEdgesBetween)
+{
+    UndirectedGraph result(graph.getNumVertices());
+    std::map<Vertex, size_t> vertex2group;
+
+    for (size_t group = 0; group < omitEdgesBetween.size(); ++group)
+    {
+        for (Vertex v : omitEdgesBetween.at(group))
+        {
+            if (!vertex2group.contains(v))
+            {
+                vertex2group[v] = group;
+            }
+            else
+            {
+                MyAssert(vertex2group.at(v) == group);
+            }
+        }
+    }
+
+    for (auto edge : graph.getAllSortedEdges())
+    {
+        bool doAdd = true;
+        if (vertex2group.contains(edge[0]) && vertex2group.contains(edge[1]))
+        {
+            doAdd = (vertex2group[edge[0]] != vertex2group[edge[1]]);
+        }
+        if (doAdd)
+        {
+            result.addEdge(edge);
+        }
+    }
+    return result;
 }

@@ -353,3 +353,26 @@ TEST(UndirectedGraphTest, Complement_disconnected5)
     GraphIsomorphism::TaggerKnown tagger(complement);
     ASSERT_EQ(tagger.getGraphTag(), (Tag{TaggerKnown::KnownType::Complete, 5}));
 }
+
+TEST(UndirectedGraphTest, CreateEdgesOmmitted_basic)
+{
+    const auto graph = UndirectedGraphLibrary::Get_Cycle(3);
+    const std::vector<Vertex> omitBetween{1, 2, 1};
+    const auto reduced = UndirectedGraph::CreateEdgesOmitted(*graph, std::vector<std::vector<Vertex>>{omitBetween});
+    ASSERT_EQ(reduced.getNumVertices(), 3);
+    ASSERT_EQ(reduced.getNumEdges(), 2);
+    std::vector<Vertex> neighbors;
+    reduced.setAdjacentVertices(1, neighbors);
+    ASSERT_EQ(Single(neighbors), 0);
+    reduced.setAdjacentVertices(2, neighbors);
+    ASSERT_EQ(Single(neighbors), 0);
+}
+
+TEST(UndirectedGraphTest, CreateEdgesOmmitted_error)
+{
+    const auto graph = UndirectedGraphLibrary::Get_Cycle(3);
+    const std::vector<Vertex> omitBetween{1, 2, 1};
+    ASSERT_THROW(UndirectedGraph::CreateEdgesOmitted(
+                     *graph, std::vector<std::vector<Vertex>>{std::vector<Vertex>{0, 1}, std::vector<Vertex>{1, 2}}),
+                 MyException);
+}
