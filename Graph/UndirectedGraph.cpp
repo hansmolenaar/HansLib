@@ -80,7 +80,7 @@ void UndirectedGraph::addEdge(Vertex vertex1, Vertex vertex2)
 
 void UndirectedGraph::addEdge(VertexPair edge)
 {
-addEdge(edge[0], edge[1]);
+    addEdge(edge[0], edge[1]);
 }
 
 Vertex UndirectedGraph::getNumVertices() const
@@ -290,7 +290,7 @@ std::string UndirectedGraph::getName() const
 }
 
 UndirectedGraph UndirectedGraph::CreateEdgesOmitted(const IGraphUs &graph,
-                                                     const std::vector<std::vector<Vertex>> &omitEdgesBetween)
+                                                    const std::vector<std::vector<Vertex>> &omitEdgesBetween)
 {
     UndirectedGraph result(graph.getNumVertices());
     std::map<Vertex, size_t> vertex2group;

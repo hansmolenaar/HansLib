@@ -19,7 +19,8 @@ enum IDecomposeType : TagEntry
     Disconnected,
     UniversalVertex,
     Known,
-    Complement
+    Complement,
+    OmittedEdges,
 };
 
 Vertex GetVertexInParent(Vertex vertex, const IDecompose &decompose)
@@ -86,6 +87,14 @@ std::unique_ptr<IDecompose> IDecompose::Create(const Graph::IGraphUs &graph, boo
         const std::set<Vertex> universalVerticesSet(universalVertices.begin(), universalVertices.end());
         return std::make_unique<DecomposeUniversalVertex>(graph, universalVerticesSet);
     }
+
+#if false // TODO
+    auto omitEdges = DecomposeOmitEdges::tryCreate(graph);
+    if (omitEdges)
+    {
+        return omitEdges;
+    }
+#endif
 
     if (tryComplement)
     {
@@ -276,6 +285,69 @@ const Tag &DecomposeDisconnected::getTag() const
 }
 
 const Grouping<const IDecompose *> &DecomposeDisconnected::getGroupingChildren() const
+{
+    return m_groupingChildren;
+}
+
+// !!!!!!!!!!! edges in vertex groups that are cliques
+DecomposeOmitEdges::DecomposeOmitEdges(const IGraphUs &graph)
+    : IDecompose(graph), m_tag{IDecomposeType::OmittedEdges, static_cast<TagEntry>(graph.getNumEdges()), 0}
+{
+    const Grouping<Graph::Vertex> &vertexGrouping = getTaggedGraph().getVertexGrouping();
+    std::vector<std::vector<Vertex>> cliques;
+
+    for (const auto &group : vertexGrouping())
+    {
+        if (graph.isClique(group))
+        {
+            cliques.emplace_back(group);
+        }
+    }
+
+    if (cliques.empty())
+    {
+        return;
+    }
+
+    m_child = std::make_unique<UndirectedGraph>(UndirectedGraph::CreateEdgesOmitted(graph, cliques));
+    m_numOmittedEdges = graph.getNumEdges() - m_child->getNumEdges();
+    if (m_numOmittedEdges == 0)
+    {
+        m_child = {};
+        return;
+    }
+
+    m_tag.back() = m_numOmittedEdges;
+    m_childDecomposes = IDecompose::Create(*m_child);
+    m_groupingChildren = CreateGrouping(std::vector<const IDecompose *>{m_childDecomposes.get()});
+}
+
+std::string DecomposeOmitEdges::getDescription() const
+{
+    return std::to_string(getNumOmittedEdges()) + " omitted edges from: " + getGraph().getName();
+}
+
+Edge DecomposeOmitEdges::getNumOmittedEdges() const
+{
+    return m_numOmittedEdges;
+}
+
+const Tag &DecomposeOmitEdges::getTag() const
+{
+    return m_tag;
+}
+
+std::unique_ptr<IDecompose> DecomposeOmitEdges::tryCreate(const IGraphUs &graph)
+{
+    std::unique_ptr<DecomposeOmitEdges> retval(new DecomposeOmitEdges(graph));
+    if (retval->getNumOmittedEdges() == 0)
+    {
+        retval = {};
+    }
+    return retval;
+}
+
+const Grouping<const IDecompose *> &DecomposeOmitEdges::getGroupingChildren() const
 {
     return m_groupingChildren;
 }

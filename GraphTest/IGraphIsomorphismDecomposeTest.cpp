@@ -402,6 +402,33 @@ TEST(IGraphIsomorphismDecomposeTest, BullIsSelfComplement)
     ASSERT_TRUE(decompose->isLeaf());
 }
 
+TEST(IGraphIsomorphismDecomposeTest, OmitEdgesDiamond)
+{
+    const auto graph = UndirectedGraphLibrary::Get_Bull();
+    const auto decomposed = DecomposeOmitEdges::tryCreate(*graph);
+    const ToParentMap toParent(decomposed.get());
+    const auto descr = toParent.getDescriptions();
+    ASSERT_EQ(toParent.size(), 2);
+    // Leaf: path of length 5
+    const auto *leaf = Single(toParent.getLeaves());
+    const auto tag = leaf->getTag();
+    ASSERT_EQ(tag, (std::vector<TagEntry>{3, 3, 5}));
+}
+
+TEST(IGraphIsomorphismDecomposeTest, OmitEdgesH)
+{
+    const auto graph = UndirectedGraphFromG6::Create("EgSG");
+    const auto decomposed = DecomposeOmitEdges::tryCreate(*graph);
+    const ToParentMap toParent(decomposed.get());
+    const auto descr = toParent.getDescriptions();
+    ASSERT_EQ(toParent.size(), 4);
+    // Leaves: 2 paths of length 3
+    const auto leaves = toParent.getLeaves();
+    ASSERT_EQ(leaves.size(), 2);
+    ASSERT_EQ(leaves[0]->getTag(), (std::vector<TagEntry>{3, 3, 3}));
+    ASSERT_EQ(leaves[1]->getTag(), (std::vector<TagEntry>{3, 3, 3}));
+}
+
 TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList3)
 {
     CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_3(), Tag{1, 4});

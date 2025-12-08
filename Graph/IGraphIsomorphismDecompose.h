@@ -106,6 +106,26 @@ class DecomposeKnown : public IDecompose
     const Grouping<const IDecompose *> m_groupingChildren;
 };
 
+class DecomposeOmitEdges : public IDecompose
+{
+  public:
+    static std::unique_ptr<IDecompose> tryCreate(const Graph::IGraphUs &);
+
+    const Tag &getTag() const override;
+    std::string getDescription() const override;
+    const Grouping<const IDecompose *> &getGroupingChildren() const override;
+    Graph::Edge getNumOmittedEdges() const;
+
+  private:
+    DecomposeOmitEdges(const Graph::IGraphUs &);
+
+    Graph::Edge m_numOmittedEdges = 0;
+    Tag m_tag;
+    std::unique_ptr<Graph::UndirectedGraph> m_child;
+    std::unique_ptr<IDecompose> m_childDecomposes;
+    Grouping<const IDecompose *> m_groupingChildren;
+};
+
 class DecomposeComplement : public IDecompose
 {
   public:
