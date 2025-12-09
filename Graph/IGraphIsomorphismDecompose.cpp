@@ -37,9 +37,8 @@ Vertex GetVertexInParent(Vertex vertex, const IGraphUs &graph)
 
 Vertex GetVertexInParent(Vertex vertex, const IDecompose &decompose)
 {
-    const auto *complement = dynamic_cast<const DecomposeComplement *>(&decompose);
-    const auto &graph = complement != nullptr ? complement->getOriginal() : decompose.getGraph();
-    return GetVertexInParent(vertex, graph);
+    const auto &graph = decompose.getGraph();
+    return GetVertexInParent(vertex, decompose.getGraph());
 }
 
 void AddToParentMapRecur(const IDecompose *current, const IDecompose *parent,
@@ -114,16 +113,6 @@ std::unique_ptr<IDecompose> IDecompose::Create(const Graph::IGraphUs &graph, boo
         return complementIsDisconnected;
     }
 
-#if true // TODO
-    if (tryComplement)
-    {
-        auto complementGraph = DecomposeComplement::Create(graph);
-        if (complementGraph)
-        {
-            return complementGraph;
-        }
-    }
-#endif
     return std::make_unique<DecomposeLeaf>(graph);
 }
 
