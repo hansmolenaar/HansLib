@@ -339,7 +339,8 @@ UndirectedGraph UndirectedGraph::CreateEdgesKeep(const IGraphUs &graph, const st
         }
     }
 
-    MyAssert(vertex2group.size() == graph.getNumVertices(), "UndirectedGraph::CreateEdgesKeep() all vertices must be in a group");
+    MyAssert(vertex2group.size() == graph.getNumVertices(),
+             "UndirectedGraph::CreateEdgesKeep() all vertices must be in a group");
 
     for (auto edge : graph.getAllSortedEdges())
     {

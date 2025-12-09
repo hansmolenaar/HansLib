@@ -22,6 +22,7 @@ enum IDecomposeType : TagEntry
     Complement,
     OmittedEdges,
     ComplementKnown,
+    DecomposeComplementDisconnected,
 };
 
 Vertex GetVertexInParent(Vertex vertex, const IGraphUs &graph)
@@ -253,6 +254,64 @@ const Grouping<const IDecompose *> &DecomposeComplementKnown::getGroupingChildre
 }
 
 Graph::Vertex DecomposeComplementKnown::getVertexInParent(Graph::Vertex vertex) const
+{
+    return GetVertexInParent(vertex, getGraph());
+}
+
+// !!!!!!!!!!! complement is disconnected
+
+std::unique_ptr<IDecompose> DecomposeComplementDisconnected::tryCreate(
+    const IGraphUs &graph, const std::shared_ptr<Graph::UndirectedGraph> &complement)
+{
+    if (complement->isConnected())
+    {
+        return {};
+    }
+    return std::unique_ptr<IDecompose>(new DecomposeComplementDisconnected(graph, complement));
+}
+
+namespace
+{
+std::unique_ptr<UndirectedGraph> CreateDisconnectedGraph(const IGraphUs &complement)
+{
+    const auto components = complement.getConnectedComponents();
+    std::vector<std::vector<Vertex>> groups(*str::max_element(components) + 1);
+    MyAssert(groups.size() > 1);
+
+    for (Vertex v = 0; v < complement.getNumVertices(); ++v)
+    {
+        groups.at(components.at(v)).push_back(v);
+    }
+    return std::make_unique<UndirectedGraph>(UndirectedGraph::CreateEdgesKeep(complement, groups));
+}
+
+} // namespace
+
+DecomposeComplementDisconnected::DecomposeComplementDisconnected(const IGraphUs &graph,
+                                                                 std::shared_ptr<Graph::UndirectedGraph> complement)
+    : IDecompose(graph), m_edgesReduced(CreateDisconnectedGraph(*complement)),
+      m_tag{IDecomposeType::DecomposeComplementDisconnected}, m_child(new DecomposeDisconnected(*m_edgesReduced)),
+      m_groupingChildren(CreateGrouping(std::vector<const IDecompose *>{m_child.get()}))
+{
+    MyAssert(static_cast<bool>(m_child));
+}
+
+const Tag &DecomposeComplementDisconnected::getTag() const
+{
+    return m_tag;
+}
+
+std::string DecomposeComplementDisconnected::getDescription() const
+{
+    return "Complement is disconnected";
+}
+
+const Grouping<const IDecompose *> &DecomposeComplementDisconnected::getGroupingChildren() const
+{
+    return m_groupingChildren;
+}
+
+Graph::Vertex DecomposeComplementDisconnected::getVertexInParent(Graph::Vertex vertex) const
 {
     return GetVertexInParent(vertex, getGraph());
 }

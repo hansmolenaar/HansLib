@@ -280,6 +280,27 @@ TEST(IGraphIsomorphismDecomposeTest, ComplementKnownSpecialCase1)
     CheckDecompose(*graph, 3);
 }
 
+TEST(IGraphIsomorphismDecomposeTest, ComplementDisconnectedPath2)
+{
+    const auto graph = UndirectedGraphLibrary::Get_Path(2);
+    const auto complement = std::make_shared<UndirectedGraph>(UndirectedGraph::CreateComplement(*graph));
+    const auto decomposed = DecomposeComplementDisconnected::tryCreate(*graph, complement);
+    ASSERT_TRUE(static_cast<bool>(decomposed));
+    const ToParentMap toParent(decomposed.get());
+    ASSERT_EQ(toParent.size(), 4);
+}
+
+TEST(IGraphIsomorphismDecomposeTest, ComplementDisconnectedClaw)
+{
+    const auto graph = UndirectedGraphLibrary::Get_Claw();
+    const auto complement = std::make_shared<UndirectedGraph>(UndirectedGraph::CreateComplement(*graph));
+    const auto decomposed = DecomposeComplementDisconnected::tryCreate(*graph, complement);
+    ASSERT_TRUE(static_cast<bool>(decomposed));
+    const ToParentMap toParent(decomposed.get());
+    ASSERT_EQ(toParent.size(), 4);
+}
+
+
 TEST(IGraphIsomorphismDecomposeTest, X100)
 {
     const auto graph = UndirectedGraphFromG6::Create("FgCNw");
