@@ -106,6 +106,26 @@ class DecomposeKnown : public IDecompose
     const Grouping<const IDecompose *> m_groupingChildren;
 };
 
+class DecomposeComplementKnown : public IDecompose
+{
+  public:
+    static std::unique_ptr<IDecompose> tryCreate(const Graph::IGraphUs &,
+                                                 const std::shared_ptr<Graph::UndirectedGraph> &);
+
+    const Tag &getTag() const override;
+    std::string getDescription() const override;
+    const Grouping<const IDecompose *> &getGroupingChildren() const override;
+
+  private:
+    DecomposeComplementKnown(const Graph::IGraphUs &, std::shared_ptr<Graph::UndirectedGraph>);
+
+    const Graph::IGraphUs &m_graph;
+    std::shared_ptr<Graph::UndirectedGraph> m_complement;
+    Tag m_tag;
+    std::unique_ptr<IDecompose> m_child;
+    const Grouping<const IDecompose *> m_groupingChildren;
+};
+
 class DecomposeOmitEdges : public IDecompose
 {
   public:

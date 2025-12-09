@@ -21,6 +21,7 @@ enum IDecomposeType : TagEntry
     Known,
     Complement,
     OmittedEdges,
+    ComplementKnown,
 };
 
 Vertex GetVertexInParent(Vertex vertex, const IDecompose &decompose)
@@ -88,13 +89,18 @@ std::unique_ptr<IDecompose> IDecompose::Create(const Graph::IGraphUs &graph, boo
         return std::make_unique<DecomposeUniversalVertex>(graph, universalVerticesSet);
     }
 
-#if true // TODO
     auto omitEdges = DecomposeOmitEdges::tryCreate(graph);
     if (omitEdges)
     {
         return omitEdges;
     }
-#endif
+
+    const auto complement = std::make_shared<UndirectedGraph>(UndirectedGraph::CreateComplement(graph));
+    auto complementIsKnown = DecomposeComplementKnown::tryCreate(graph, complement);
+    if (complementIsKnown)
+    {
+        return complementIsKnown;
+    }
 
 #if true // TODO
     if (tryComplement)
@@ -193,20 +199,57 @@ const Grouping<const IDecompose *> &DecomposeKnown::getGroupingChildren() const
     return m_groupingChildren;
 }
 
+// !!!!!!!!!!! complement is known
+
+std::unique_ptr<IDecompose> DecomposeComplementKnown::tryCreate(
+    const IGraphUs &graph, const std::shared_ptr<Graph::UndirectedGraph> &complement)
+{
+    const TaggerKnown taggerKnown(*complement);
+    if (taggerKnown.getGraphTag().front() == TaggerKnown::KnownType::Unknown)
+    {
+        return {};
+    }
+    return std::unique_ptr<IDecompose>(new DecomposeComplementKnown(graph, complement));
+}
+
+DecomposeComplementKnown::DecomposeComplementKnown(const IGraphUs &graph,
+                                                   std::shared_ptr<Graph::UndirectedGraph> complement)
+    : IDecompose(graph), m_graph(graph), m_complement(std::move(complement)), m_tag{IDecomposeType::ComplementKnown},
+      m_child(DecomposeKnown::tryCreate(*m_complement)),
+      m_groupingChildren(CreateGrouping(std::vector<const IDecompose *>{m_child.get()}))
+{
+    MyAssert(static_cast<bool>(m_child));
+    MyAssert(m_child->isLeaf());
+}
+
+const Tag &DecomposeComplementKnown::getTag() const
+{
+    return m_tag;
+}
+
+std::string DecomposeComplementKnown::getDescription() const
+{
+    return "Complement is knonw";
+}
+
+const Grouping<const IDecompose *> &DecomposeComplementKnown::getGroupingChildren() const
+{
+    return m_groupingChildren;
+}
 // !!!!!!!!!!! complement
 
 std::unique_ptr<IDecompose> DecomposeComplement::Create(const Graph::IGraphUs &graph)
 {
     auto complement = std::make_unique<UndirectedGraph>(UndirectedGraph::CreateComplement(graph));
     TaggerKnown taggerKnown(*complement);
-    if (taggerKnown.getGraphTag().front() != TaggerKnown::KnownType::Unknown || !complement->isConnected() )
-{
-    auto retval = std::make_unique<DecomposeComplement>(std::move(complement), graph);
-    if (!retval->isLeaf())
+    if (!complement->isConnected())
     {
-        return retval;
+        auto retval = std::make_unique<DecomposeComplement>(std::move(complement), graph);
+        if (!retval->isLeaf())
+        {
+            return retval;
+        }
     }
-}
 
     // No decomposition possible of complement, ignore
     return {};

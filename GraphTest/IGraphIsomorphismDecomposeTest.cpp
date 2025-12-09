@@ -251,6 +251,35 @@ TEST(IGraphIsomorphismDecomposeTest, Gem)
     CheckDecompose(*graph, 2);
 }
 
+TEST(IGraphIsomorphismDecomposeTest, ComplementKnownHouse)
+{
+    const auto house = UndirectedGraphFromG6::Create("DUw");
+    const auto complement = std::make_shared<UndirectedGraph>(UndirectedGraph::CreateComplement(*house));
+    const auto decomposed = DecomposeComplementKnown::tryCreate(*house, complement);
+    ASSERT_TRUE(static_cast<bool>(decomposed));
+    CheckDecompose(*house, 1);
+}
+
+TEST(IGraphIsomorphismDecomposeTest, ComplementKnownCycle3)
+{
+    const auto graph = UndirectedGraphLibrary::Get_Cycle(3);
+    const auto complement = std::make_shared<UndirectedGraph>(UndirectedGraph::CreateComplement(*graph));
+    const auto decomposed = DecomposeComplementKnown::tryCreate(*graph, complement);
+    ASSERT_TRUE(static_cast<bool>(decomposed));
+    const ToParentMap toParent(decomposed.get());
+    ASSERT_EQ(toParent.size(), 2);
+    CheckDecompose(*graph, 1);
+}
+
+TEST(IGraphIsomorphismDecomposeTest, ComplementKnownSpecialCase1)
+{
+    const auto graph = UndirectedGraphFromG6::Create("GJOg~{");
+    const auto decomposed = IDecompose::Create(*graph);
+    const ToParentMap toParent(decomposed.get());
+    const auto descr = toParent.getDescriptions();
+    CheckDecompose(*graph, 3);
+}
+
 TEST(IGraphIsomorphismDecomposeTest, X100)
 {
     const auto graph = UndirectedGraphFromG6::Create("FgCNw");
@@ -405,7 +434,6 @@ TEST(IGraphIsomorphismDecomposeTest, SpecialCase7)
     ASSERT_TRUE(tgCompare != 0);
 }
 
-
 TEST(IGraphIsomorphismDecomposeTest, BullIsSelfComplement)
 {
     const auto graph = UndirectedGraphLibrary::Get_Bull();
@@ -464,7 +492,7 @@ TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList6)
 TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList7)
 {
     CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_7(), {1, 300, 2, 1});
-    //PrintMultipleDecompositions(UndirectedGraphFromG6::getListNumVertices_7());
+    // PrintMultipleDecompositions(UndirectedGraphFromG6::getListNumVertices_7());
 }
 
 TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList8)
