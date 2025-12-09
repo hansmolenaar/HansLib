@@ -165,6 +165,11 @@ const Grouping<const IDecompose *> &DecomposeLeaf::getGroupingChildren() const
     return m_groupingChildren;
 }
 
+Graph::Vertex DecomposeLeaf::getVertexInParent(Graph::Vertex vertex) const
+{
+    return GetVertexInParent(vertex, *this);
+}
+
 // !!!!!!!!!!! Known
 
 std::unique_ptr<IDecompose> DecomposeKnown::tryCreate(const Graph::IGraphUs &graph)
@@ -197,6 +202,11 @@ std::string DecomposeKnown::getDescription() const
 const Grouping<const IDecompose *> &DecomposeKnown::getGroupingChildren() const
 {
     return m_groupingChildren;
+}
+
+Graph::Vertex DecomposeKnown::getVertexInParent(Graph::Vertex vertex) const
+{
+    return GetVertexInParent(vertex, *this);
 }
 
 // !!!!!!!!!!! complement is known
@@ -236,6 +246,12 @@ const Grouping<const IDecompose *> &DecomposeComplementKnown::getGroupingChildre
 {
     return m_groupingChildren;
 }
+
+Graph::Vertex DecomposeComplementKnown::getVertexInParent(Graph::Vertex vertex) const
+{
+    return GetVertexInParent(vertex, *this);
+}
+
 // !!!!!!!!!!! complement
 
 std::unique_ptr<IDecompose> DecomposeComplement::Create(const Graph::IGraphUs &graph)
@@ -293,6 +309,11 @@ const Graph::IGraphUs &DecomposeComplement::getOriginal() const
     return m_original;
 }
 
+Graph::Vertex DecomposeComplement::getVertexInParent(Graph::Vertex vertex) const
+{
+    return GetVertexInParent(vertex, *this);
+}
+
 // !!!!!!!!!!! Disconnected
 DecomposeDisconnected::DecomposeDisconnected(const Graph::IGraphUs &graph)
     : IDecompose(graph), m_tag({IDecomposeType::Disconnected})
@@ -336,6 +357,11 @@ const Tag &DecomposeDisconnected::getTag() const
 const Grouping<const IDecompose *> &DecomposeDisconnected::getGroupingChildren() const
 {
     return m_groupingChildren;
+}
+
+Graph::Vertex DecomposeDisconnected::getVertexInParent(Graph::Vertex vertex) const
+{
+    return GetVertexInParent(vertex, *this);
 }
 
 // !!!!!!!!!!! edges in vertex groups that are cliques
@@ -401,6 +427,11 @@ const Grouping<const IDecompose *> &DecomposeOmitEdges::getGroupingChildren() co
     return m_groupingChildren;
 }
 
+Graph::Vertex DecomposeOmitEdges::getVertexInParent(Graph::Vertex vertex) const
+{
+    return GetVertexInParent(vertex, *this);
+}
+
 // !!!!!!!!!!! universal vertices
 
 DecomposeUniversalVertex::DecomposeUniversalVertex(const Graph::IGraphUs &graph,
@@ -447,6 +478,11 @@ const Grouping<const IDecompose *> &DecomposeUniversalVertex::getGroupingChildre
     return m_groupingChildren;
 }
 
+Graph::Vertex DecomposeUniversalVertex::getVertexInParent(Graph::Vertex vertex) const
+{
+    return GetVertexInParent(vertex, *this);
+}
+
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ToParent
 
 ToParentMap::ToParentMap(const IDecompose *root)
@@ -486,7 +522,7 @@ Vertex ToParentMap::getVertexInRoot(Vertex vertex, const IDecompose *decompose) 
 {
     while (decompose != nullptr)
     {
-        vertex = GetVertexInParent(vertex, *decompose);
+        vertex = decompose->getVertexInParent(vertex);
         decompose = getParent(decompose);
     }
     return vertex;

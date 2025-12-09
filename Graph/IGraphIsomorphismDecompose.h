@@ -21,6 +21,7 @@ class IDecompose
     virtual const Tag &getTag() const = 0;
     virtual std::string getDescription() const = 0;
     virtual const Grouping<const IDecompose *> &getGroupingChildren() const = 0;
+    virtual Graph::Vertex getVertexInParent(Graph::Vertex vertex) const = 0;
 
     std::weak_ordering operator<=>(const IDecompose &) const;
     bool isLeaf() const;
@@ -44,6 +45,7 @@ class DecomposeDisconnected : public IDecompose
 
     const Tag &getTag() const override;
     std::string getDescription() const override;
+    Graph::Vertex getVertexInParent(Graph::Vertex vertex) const override;
 
     // Can be empty: leaf of tree
     const Grouping<const IDecompose *> &getGroupingChildren() const override;
@@ -62,6 +64,7 @@ class DecomposeUniversalVertex : public IDecompose
 
     const Tag &getTag() const override;
     std::string getDescription() const override;
+    Graph::Vertex getVertexInParent(Graph::Vertex vertex) const override;
 
     // Can be empty: leaf of tree
     const Grouping<const IDecompose *> &getGroupingChildren() const override;
@@ -80,6 +83,7 @@ class DecomposeLeaf : public IDecompose
 
     const Tag &getTag() const override;
     std::string getDescription() const override;
+    Graph::Vertex getVertexInParent(Graph::Vertex vertex) const override;
 
     // Is empty
     const Grouping<const IDecompose *> &getGroupingChildren() const override;
@@ -97,6 +101,7 @@ class DecomposeKnown : public IDecompose
 
     const Tag &getTag() const override;
     std::string getDescription() const override;
+    Graph::Vertex getVertexInParent(Graph::Vertex vertex) const override;
 
     // Is empty
     const Grouping<const IDecompose *> &getGroupingChildren() const override;
@@ -115,6 +120,7 @@ class DecomposeComplementKnown : public IDecompose
     const Tag &getTag() const override;
     std::string getDescription() const override;
     const Grouping<const IDecompose *> &getGroupingChildren() const override;
+    Graph::Vertex getVertexInParent(Graph::Vertex vertex) const override;
 
   private:
     DecomposeComplementKnown(const Graph::IGraphUs &, std::shared_ptr<Graph::UndirectedGraph>);
@@ -134,6 +140,7 @@ class DecomposeOmitEdges : public IDecompose
     const Tag &getTag() const override;
     std::string getDescription() const override;
     const Grouping<const IDecompose *> &getGroupingChildren() const override;
+    Graph::Vertex getVertexInParent(Graph::Vertex vertex) const override;
     Graph::Edge getNumOmittedEdges() const;
 
   private:
@@ -154,6 +161,7 @@ class DecomposeComplement : public IDecompose
 
     const Tag &getTag() const override;
     std::string getDescription() const override;
+    Graph::Vertex getVertexInParent(Graph::Vertex vertex) const override;
     const Graph::IGraphUs &getOriginal() const;
 
     // Is empty
