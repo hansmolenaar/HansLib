@@ -368,8 +368,8 @@ TEST(IGraphIsomorphismDecomposeTest, SpecialCase4)
     const auto *leaf3 = Single(grouping().at(1));
     ASSERT_EQ(leaf2->getTag(), (Tag{3, 1, 2}));
     ASSERT_EQ(leaf3->getTag(), (Tag{3, 1, 3}));
-    ASSERT_EQ(toParent.collectDecomposeTagsForLeaf(leaf2), (std::vector<Tag>{{3, 1, 2}, {1, 2, 3}, {7}}));
-    ASSERT_EQ(toParent.collectDecomposeTagsForLeaf(leaf3), (std::vector<Tag>{{3, 1, 3}, {1, 2, 3}, {7}}));
+    ASSERT_EQ(toParent.collectDecomposeTagsForLeaf(leaf2), (std::vector<Tag>{{3, 1, 2}, {1, 2, 3}, {6}}));
+    ASSERT_EQ(toParent.collectDecomposeTagsForLeaf(leaf3), (std::vector<Tag>{{3, 1, 3}, {1, 2, 3}, {6}}));
     ASSERT_EQ(toParent.getVertexInRoot(0, leaf2), 3);
     ASSERT_EQ(toParent.getVertexInRoot(1, leaf2), 4);
     ASSERT_EQ(toParent.getVertexInRoot(0, leaf3), 0);
@@ -394,8 +394,8 @@ TEST(IGraphIsomorphismDecomposeTest, SpecialCase5)
     const auto *leaf2 = Single(grouping().at(1));
     const auto *leaf3 = Single(grouping().at(2));
     ASSERT_EQ(toParent.collectDecomposeTagsForLeaf(leaf1), (std::vector<Tag>{{3, 1, 1}, {1, 1, 5}}));
-    ASSERT_EQ(toParent.collectDecomposeTagsForLeaf(leaf2), (std::vector<Tag>{{3, 1, 2}, {1, 2, 3}, {7}, {1, 1, 5}}));
-    ASSERT_EQ(toParent.collectDecomposeTagsForLeaf(leaf3), (std::vector<Tag>{{3, 1, 3}, {1, 2, 3}, {7}, {1, 1, 5}}));
+    ASSERT_EQ(toParent.collectDecomposeTagsForLeaf(leaf2), (std::vector<Tag>{{3, 1, 2}, {1, 2, 3}, {6}, {1, 1, 5}}));
+    ASSERT_EQ(toParent.collectDecomposeTagsForLeaf(leaf3), (std::vector<Tag>{{3, 1, 3}, {1, 2, 3}, {6}, {1, 1, 5}}));
     ASSERT_EQ(toParent.getVertexInRoot(0, leaf1), 0);
     ASSERT_EQ(toParent.getVertexInRoot(0, leaf2), 4);
     ASSERT_EQ(toParent.getVertexInRoot(1, leaf2), 5);
@@ -487,7 +487,7 @@ TEST(IGraphIsomorphismDecomposeTest, OmitEdgesH)
     ASSERT_EQ(leaves[0]->getTag(), (std::vector<TagEntry>{3, 3, 3}));
     ASSERT_EQ(leaves[1]->getTag(), (std::vector<TagEntry>{3, 3, 3}));
     const auto leafRoot = toParent.getRoot()->getTag();
-    ASSERT_EQ(leafRoot, (std::vector<TagEntry>{5, 5, 1}));
+    ASSERT_EQ(leafRoot, (std::vector<TagEntry>{4, 5, 1}));
 }
 
 TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList3)

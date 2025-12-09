@@ -19,10 +19,10 @@ enum IDecomposeType : TagEntry
     Disconnected,
     UniversalVertex,
     Known,
-    Complement,
     OmittedEdges,
     ComplementKnown,
     DecomposeComplementDisconnected,
+    Complement,
 };
 
 Vertex GetVertexInParent(Vertex vertex, const IGraphUs &graph)
