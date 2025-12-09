@@ -24,16 +24,21 @@ enum IDecomposeType : TagEntry
     ComplementKnown,
 };
 
-Vertex GetVertexInParent(Vertex vertex, const IDecompose &decompose)
+Vertex GetVertexInParent(Vertex vertex, const IGraphUs &graph)
 {
-    const auto *complement = dynamic_cast<const DecomposeComplement *>(&decompose);
-    const auto &graph = complement != nullptr ? complement->getOriginal() : decompose.getGraph();
     const auto *subGraph = dynamic_cast<const SubGraph *>(&graph);
     if (subGraph != nullptr)
     {
         return subGraph->getVertexInParent(vertex);
     }
     return vertex;
+}
+
+Vertex GetVertexInParent(Vertex vertex, const IDecompose &decompose)
+{
+    const auto *complement = dynamic_cast<const DecomposeComplement *>(&decompose);
+    const auto &graph = complement != nullptr ? complement->getOriginal() : decompose.getGraph();
+    return GetVertexInParent(vertex, graph);
 }
 
 void AddToParentMapRecur(const IDecompose *current, const IDecompose *parent,
@@ -224,7 +229,7 @@ std::unique_ptr<IDecompose> DecomposeComplementKnown::tryCreate(
 
 DecomposeComplementKnown::DecomposeComplementKnown(const IGraphUs &graph,
                                                    std::shared_ptr<Graph::UndirectedGraph> complement)
-    : IDecompose(graph), m_graph(graph), m_complement(std::move(complement)), m_tag{IDecomposeType::ComplementKnown},
+    : IDecompose(graph), m_complement(std::move(complement)), m_tag{IDecomposeType::ComplementKnown},
       m_child(DecomposeKnown::tryCreate(*m_complement)),
       m_groupingChildren(CreateGrouping(std::vector<const IDecompose *>{m_child.get()}))
 {
@@ -249,7 +254,7 @@ const Grouping<const IDecompose *> &DecomposeComplementKnown::getGroupingChildre
 
 Graph::Vertex DecomposeComplementKnown::getVertexInParent(Graph::Vertex vertex) const
 {
-    return GetVertexInParent(vertex, *this);
+    return GetVertexInParent(vertex, getGraph());
 }
 
 // !!!!!!!!!!! complement

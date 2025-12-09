@@ -33,7 +33,12 @@ class UndirectedGraph : public Graph::IGraphUs
     static UndirectedGraph CreatePermuted(const IGraphUs &, const Permutation &permut);
     static UndirectedGraph CreatePermuted(const IGraphUs &, std::initializer_list<Permutation::Entry>);
     static UndirectedGraph CreateComplement(const IGraphUs &);
+
+    // Remove all edges between vertices in the same group
     static UndirectedGraph CreateEdgesOmitted(const IGraphUs &, const std::vector<std::vector<Vertex>> &);
+
+    // Only keep edges between vertices in the same group
+    static UndirectedGraph CreateEdgesKeep(const IGraphUs &, const std::vector<std::vector<Vertex>> &);
 
     struct CyclesAndPaths
     {

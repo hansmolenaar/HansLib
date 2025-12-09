@@ -376,3 +376,33 @@ TEST(UndirectedGraphTest, CreateEdgesOmmitted_error)
                      *graph, std::vector<std::vector<Vertex>>{std::vector<Vertex>{0, 1}, std::vector<Vertex>{1, 2}}),
                  MyException);
 }
+
+TEST(UndirectedGraphTest, CreateEdgesKeep)
+{
+    const auto graph = UndirectedGraphLibrary::Get_Cycle(3);
+    const std::vector<std::vector<Vertex>> groups{{0, 1}, {2}};
+    const auto reduced = UndirectedGraph::CreateEdgesKeep(*graph, groups);
+    ASSERT_EQ(reduced.getNumVertices(), 3);
+    ASSERT_EQ(reduced.getNumEdges(), 1);
+    std::vector<Vertex> neighbors;
+    reduced.setAdjacentVertices(0, neighbors);
+    ASSERT_EQ(Single(neighbors), 1);
+    reduced.setAdjacentVertices(1, neighbors);
+    ASSERT_EQ(Single(neighbors), 0);
+    reduced.setAdjacentVertices(2, neighbors);
+    ASSERT_TRUE(neighbors.empty());
+}
+
+TEST(UndirectedGraphTest, CreateEdgesKeep_ErrorDuplicate)
+{
+    const auto graph = UndirectedGraphLibrary::Get_Cycle(3);
+    const std::vector<std::vector<Vertex>> groups{{0, 1}, {1, 2}};
+    ASSERT_THROW(UndirectedGraph::CreateEdgesKeep(*graph, groups), MyException);
+}
+
+TEST(UndirectedGraphTest, CreateEdgesKeep_ErrorIncomplete)
+{
+    const auto graph = UndirectedGraphLibrary::Get_Cycle(3);
+    const std::vector<std::vector<Vertex>> groups{{0}, {2}};
+    ASSERT_THROW(UndirectedGraph::CreateEdgesKeep(*graph, groups), MyException);
+}

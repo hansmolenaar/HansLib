@@ -324,3 +324,30 @@ UndirectedGraph UndirectedGraph::CreateEdgesOmitted(const IGraphUs &graph,
     }
     return result;
 }
+
+UndirectedGraph UndirectedGraph::CreateEdgesKeep(const IGraphUs &graph, const std::vector<std::vector<Vertex>> &groups)
+{
+    UndirectedGraph result(graph.getNumVertices());
+    std::map<Vertex, size_t> vertex2group;
+
+    for (size_t group = 0; group < groups.size(); ++group)
+    {
+        for (Vertex v : groups.at(group))
+        {
+            MyAssert(!vertex2group.contains(v));
+            vertex2group[v] = group;
+        }
+    }
+
+    MyAssert(vertex2group.size() == graph.getNumVertices(), "UndirectedGraph::CreateEdgesKeep() all vertices must be in a group");
+
+    for (auto edge : graph.getAllSortedEdges())
+    {
+        if (vertex2group.at(edge[0]) == vertex2group.at(edge[1]))
+        {
+            result.addEdge(edge);
+        }
+    }
+
+    return result;
+}

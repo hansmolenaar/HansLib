@@ -125,7 +125,6 @@ class DecomposeComplementKnown : public IDecompose
   private:
     DecomposeComplementKnown(const Graph::IGraphUs &, std::shared_ptr<Graph::UndirectedGraph>);
 
-    const Graph::IGraphUs &m_graph;
     std::shared_ptr<Graph::UndirectedGraph> m_complement;
     Tag m_tag;
     std::unique_ptr<IDecompose> m_child;
