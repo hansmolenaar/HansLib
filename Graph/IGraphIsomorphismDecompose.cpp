@@ -88,7 +88,7 @@ std::unique_ptr<IDecompose> IDecompose::Create(const Graph::IGraphUs &graph, boo
         return std::make_unique<DecomposeUniversalVertex>(graph, universalVerticesSet);
     }
 
-#if false // TODO
+#if true // TODO
     auto omitEdges = DecomposeOmitEdges::tryCreate(graph);
     if (omitEdges)
     {
@@ -96,6 +96,7 @@ std::unique_ptr<IDecompose> IDecompose::Create(const Graph::IGraphUs &graph, boo
     }
 #endif
 
+#if true // TODO
     if (tryComplement)
     {
         auto complementGraph = DecomposeComplement::Create(graph);
@@ -104,6 +105,7 @@ std::unique_ptr<IDecompose> IDecompose::Create(const Graph::IGraphUs &graph, boo
             return complementGraph;
         }
     }
+#endif
     return std::make_unique<DecomposeLeaf>(graph);
 }
 
@@ -196,11 +198,15 @@ const Grouping<const IDecompose *> &DecomposeKnown::getGroupingChildren() const
 std::unique_ptr<IDecompose> DecomposeComplement::Create(const Graph::IGraphUs &graph)
 {
     auto complement = std::make_unique<UndirectedGraph>(UndirectedGraph::CreateComplement(graph));
+    TaggerKnown taggerKnown(*complement);
+    if (taggerKnown.getGraphTag().front() != TaggerKnown::KnownType::Unknown || !complement->isConnected() )
+{
     auto retval = std::make_unique<DecomposeComplement>(std::move(complement), graph);
     if (!retval->isLeaf())
     {
         return retval;
     }
+}
 
     // No decomposition possible of complement, ignore
     return {};
