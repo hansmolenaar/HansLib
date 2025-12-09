@@ -300,7 +300,6 @@ TEST(IGraphIsomorphismDecomposeTest, ComplementDisconnectedClaw)
     ASSERT_EQ(toParent.size(), 4);
 }
 
-
 TEST(IGraphIsomorphismDecomposeTest, X100)
 {
     const auto graph = UndirectedGraphFromG6::Create("FgCNw");
@@ -369,8 +368,8 @@ TEST(IGraphIsomorphismDecomposeTest, SpecialCase4)
     const auto *leaf3 = Single(grouping().at(1));
     ASSERT_EQ(leaf2->getTag(), (Tag{3, 1, 2}));
     ASSERT_EQ(leaf3->getTag(), (Tag{3, 1, 3}));
-    ASSERT_EQ(toParent.collectDecomposeTagsForLeaf(leaf2), (std::vector<Tag>{{3, 1, 2}, {1, 2, 3}, {4}}));
-    ASSERT_EQ(toParent.collectDecomposeTagsForLeaf(leaf3), (std::vector<Tag>{{3, 1, 3}, {1, 2, 3}, {4}}));
+    ASSERT_EQ(toParent.collectDecomposeTagsForLeaf(leaf2), (std::vector<Tag>{{3, 1, 2}, {1, 2, 3}, {7}}));
+    ASSERT_EQ(toParent.collectDecomposeTagsForLeaf(leaf3), (std::vector<Tag>{{3, 1, 3}, {1, 2, 3}, {7}}));
     ASSERT_EQ(toParent.getVertexInRoot(0, leaf2), 3);
     ASSERT_EQ(toParent.getVertexInRoot(1, leaf2), 4);
     ASSERT_EQ(toParent.getVertexInRoot(0, leaf3), 0);
@@ -395,8 +394,8 @@ TEST(IGraphIsomorphismDecomposeTest, SpecialCase5)
     const auto *leaf2 = Single(grouping().at(1));
     const auto *leaf3 = Single(grouping().at(2));
     ASSERT_EQ(toParent.collectDecomposeTagsForLeaf(leaf1), (std::vector<Tag>{{3, 1, 1}, {1, 1, 5}}));
-    ASSERT_EQ(toParent.collectDecomposeTagsForLeaf(leaf2), (std::vector<Tag>{{3, 1, 2}, {1, 2, 3}, {4}, {1, 1, 5}}));
-    ASSERT_EQ(toParent.collectDecomposeTagsForLeaf(leaf3), (std::vector<Tag>{{3, 1, 3}, {1, 2, 3}, {4}, {1, 1, 5}}));
+    ASSERT_EQ(toParent.collectDecomposeTagsForLeaf(leaf2), (std::vector<Tag>{{3, 1, 2}, {1, 2, 3}, {7}, {1, 1, 5}}));
+    ASSERT_EQ(toParent.collectDecomposeTagsForLeaf(leaf3), (std::vector<Tag>{{3, 1, 3}, {1, 2, 3}, {7}, {1, 1, 5}}));
     ASSERT_EQ(toParent.getVertexInRoot(0, leaf1), 0);
     ASSERT_EQ(toParent.getVertexInRoot(0, leaf2), 4);
     ASSERT_EQ(toParent.getVertexInRoot(1, leaf2), 5);
@@ -512,7 +511,7 @@ TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList6)
 }
 TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList7)
 {
-    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_7(), {1, 300, 2, 1});
+    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_7(), {1, 302});
     // PrintMultipleDecompositions(UndirectedGraphFromG6::getListNumVertices_7());
 }
 

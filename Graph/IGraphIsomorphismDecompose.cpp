@@ -108,6 +108,12 @@ std::unique_ptr<IDecompose> IDecompose::Create(const Graph::IGraphUs &graph, boo
         return complementIsKnown;
     }
 
+    auto complementIsDisconnected = DecomposeComplementDisconnected::tryCreate(graph, complement);
+    if (complementIsDisconnected)
+    {
+        return complementIsDisconnected;
+    }
+
 #if true // TODO
     if (tryComplement)
     {
