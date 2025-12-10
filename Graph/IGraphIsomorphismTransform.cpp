@@ -10,13 +10,25 @@ using namespace Utilities;
 
 namespace
 {
-const std::vector<const TaggedGraph *> s_noChildren;
+const std::vector<std::shared_ptr<TaggedGraph>> s_noChildren;
 }
 
 // !!!!!!!!!!!!! ITransform
 
 ITransform::ITransform(std::shared_ptr<TaggedGraph> tgraph) : m_taggedGraph(std::move(tgraph))
 {
+}
+
+std::unique_ptr<ITransform> ITransform::Create(const std::shared_ptr<TaggedGraph> &tgraph)
+{
+    auto transformKnown = TransformKnown::tryCreate(tgraph);
+    if (transformKnown)
+    {
+        return transformKnown;
+    }
+
+    // Return something
+    return {};
 }
 
 const TaggedGraph &ITransform::getTaggedGraph() const
@@ -53,7 +65,7 @@ std::string TransformKnown::getDescription() const
     return "Known graph: " + m_taggerKnown.getDescription();
 }
 
-const std::vector<const TaggedGraph *> &TransformKnown::getChildren() const
+const std::vector<std::shared_ptr<TaggedGraph>> &TransformKnown::getChildren() const
 {
     return s_noChildren;
 }

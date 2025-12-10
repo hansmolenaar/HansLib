@@ -20,7 +20,7 @@ void TestInterface(const GraphIsomorphism::ITransform &transform)
     const auto &children = transform.getChildren();
     if (children.empty())
     {
-        ASSERT_NE(dynamic_cast<const GraphIsomorphism::TransformKnown*>(&transform), nullptr);
+        ASSERT_NE(dynamic_cast<const GraphIsomorphism::TransformKnown *>(&transform), nullptr);
     }
     else
     {
@@ -36,7 +36,7 @@ TEST(IGraphIsomorphismTransformTest, KnownPath4)
     const auto transform = TransformKnown::tryCreate(tgraph);
     ASSERT_NE(transform.get(), nullptr);
     TestInterface(*transform);
-    ASSERT_EQ(transform->getTagOfTransform(), (Tag{0, 3, 4}));
+    ASSERT_EQ(transform->getTagOfTransform(), (Tag{1, 3, 4}));
     ASSERT_EQ(transform->getDescription(), "Known graph: path of size 4");
     ASSERT_TRUE(transform->getChildren().empty());
 }

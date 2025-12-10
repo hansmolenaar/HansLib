@@ -13,14 +13,13 @@ namespace GraphIsomorphism
 {
 
 class TaggedGraph;
-class IGraphUs;
-class TaggerKnown;
 
 class ITransform
 {
   public:
     enum Type : TagEntry
     {
+        Fail,
         Known,
     };
 
@@ -32,7 +31,7 @@ class ITransform
 
     virtual const Tag &getTagOfTransform() const = 0;
     virtual std::string getDescription() const = 0;
-    virtual const std::vector<const TaggedGraph *> &getChildren() const = 0;
+    virtual const std::vector<std::shared_ptr<TaggedGraph>> &getChildren() const = 0;
 
     static std::unique_ptr<ITransform> Create(const std::shared_ptr<TaggedGraph> &);
 
@@ -50,7 +49,7 @@ class TransformKnown : public ITransform
 
     const Tag &getTagOfTransform() const override;
     std::string getDescription() const override;
-    const std::vector<const TaggedGraph *> &getChildren() const override;
+    const std::vector<std::shared_ptr<TaggedGraph>> &getChildren() const override;
 
   private:
     TransformKnown(const std::shared_ptr<TaggedGraph> &, TaggerKnown);
