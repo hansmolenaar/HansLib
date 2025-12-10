@@ -10,7 +10,6 @@ namespace
 {
 } // namespace
 
-
 DecomposeNode::DecomposeNode(std::unique_ptr<ITransform> &&transform) : m_transform(std::move(transform))
 {
     const auto &children = m_transform->getChildren();

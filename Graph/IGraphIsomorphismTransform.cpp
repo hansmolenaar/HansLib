@@ -27,8 +27,8 @@ std::unique_ptr<ITransform> ITransform::Create(const std::shared_ptr<TaggedGraph
         return transformKnown;
     }
 
-    // Return something
-    return {};
+    // Return failure
+    return std::make_unique<TransformFailure>(tgraph);
 }
 
 const TaggedGraph &ITransform::getTaggedGraph() const
@@ -78,4 +78,26 @@ std::unique_ptr<TransformKnown> TransformKnown::tryCreate(const std::shared_ptr<
         return {};
     }
     return std::unique_ptr<TransformKnown>(new TransformKnown(tgraph, taggerKnown));
+}
+
+// !!!!!!!!!!!!! TransformFailure
+
+TransformFailure::TransformFailure(const std::shared_ptr<TaggedGraph> &tgraph)
+    : ITransform(tgraph), m_tag{ITransform::Type::Failure}
+{
+}
+
+const Tag &TransformFailure::getTagOfTransform() const
+{
+    return m_tag;
+}
+
+std::string TransformFailure::getDescription() const
+{
+    return "Graph of order " + std::to_string(getGraph().getNumVertices()) + " cannot be transformed";
+}
+
+const std::vector<std::shared_ptr<TaggedGraph>> &TransformFailure::getChildren() const
+{
+    return s_noChildren;
 }

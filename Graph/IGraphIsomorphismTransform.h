@@ -19,7 +19,7 @@ class ITransform
   public:
     enum Type : TagEntry
     {
-        Fail,
+        Failure,
         Known,
     };
 
@@ -55,6 +55,19 @@ class TransformKnown : public ITransform
     TransformKnown(const std::shared_ptr<TaggedGraph> &, TaggerKnown);
 
     TaggerKnown m_taggerKnown;
+    Tag m_tag;
+};
+
+class TransformFailure : public ITransform
+{
+  public:
+    TransformFailure(const std::shared_ptr<TaggedGraph> &);
+
+    const Tag &getTagOfTransform() const override;
+    std::string getDescription() const override;
+    const std::vector<std::shared_ptr<TaggedGraph>> &getChildren() const override;
+
+  private:
     Tag m_tag;
 };
 

@@ -21,7 +21,7 @@ GraphIsomorphism::TaggerKnown::TaggerKnown(const Graph::IGraphUs &graph)
         if (graph.getNumberOfComponents() == nVertices)
         {
             m_tag = {KnownType::Singletons, static_cast<TagEntry>(nVertices)};
-            m_description = "completely disconnected graph of size " + std::to_string(nVertices);
+            m_description = "completely disconnected graph of order " + std::to_string(nVertices);
         }
         return;
     }
@@ -29,7 +29,7 @@ GraphIsomorphism::TaggerKnown::TaggerKnown(const Graph::IGraphUs &graph)
     if (graph.isComplete())
     {
         m_tag = {KnownType::Complete, static_cast<TagEntry>(nVertices)};
-        m_description = "complete graph of size " + std::to_string(nVertices);
+        m_description = "complete graph of order " + std::to_string(nVertices);
         return;
     }
 
@@ -42,7 +42,7 @@ GraphIsomorphism::TaggerKnown::TaggerKnown(const Graph::IGraphUs &graph)
     if (degreeSequence.front() == 2)
     {
         m_tag = {KnownType::Cycle, static_cast<TagEntry>(nVertices)};
-        m_description = "cycle of size " + std::to_string(nVertices);
+        m_description = "cycle of order " + std::to_string(nVertices);
         return;
     }
 
@@ -50,7 +50,7 @@ GraphIsomorphism::TaggerKnown::TaggerKnown(const Graph::IGraphUs &graph)
     MyAssert(degreeSequence.at(1) == 1);
     MyAssert(degreeSequence.at(2) == 2);
     m_tag = {KnownType::Path, static_cast<TagEntry>(nVertices)};
-    m_description = "path of size " + std::to_string(nVertices);
+    m_description = "path of order " + std::to_string(nVertices);
 }
 
 const Tag &TaggerKnown::getGraphTag() const
