@@ -19,6 +19,7 @@ TEST(GraphIsomorphismTaggerKnownTest, Singleton)
     const TaggerKnown tagger(*graph);
     const auto tag = tagger.getGraphTag();
     ASSERT_EQ(tag, (Tag{TaggerKnown::KnownType::Complete, 1}));
+    ASSERT_EQ(tagger.getDescription(), "complete graph of size 1");
 }
 
 TEST(GraphIsomorphismTaggerKnownTest, Path2)
@@ -27,6 +28,7 @@ TEST(GraphIsomorphismTaggerKnownTest, Path2)
     const TaggerKnown tagger(*graph);
     const auto tag = tagger.getGraphTag();
     ASSERT_EQ(tag, (Tag{TaggerKnown::KnownType::Complete, 2}));
+    ASSERT_EQ(tagger.getDescription(), "complete graph of size 2");
 }
 
 TEST(GraphIsomorphismTaggerKnownTest, Path3)
@@ -35,6 +37,7 @@ TEST(GraphIsomorphismTaggerKnownTest, Path3)
     const TaggerKnown tagger(*graph);
     const auto tag = tagger.getGraphTag();
     ASSERT_EQ(tag, (Tag{TaggerKnown::KnownType::Path, 3}));
+    ASSERT_EQ(tagger.getDescription(), "path of size 3");
 }
 
 TEST(GraphIsomorphismTaggerKnownTest, Path4)
@@ -43,6 +46,7 @@ TEST(GraphIsomorphismTaggerKnownTest, Path4)
     const TaggerKnown tagger(*graph);
     const auto tag = tagger.getGraphTag();
     ASSERT_EQ(tag, (Tag{TaggerKnown::KnownType::Path, 4}));
+    ASSERT_EQ(tagger.getDescription(), "path of size 4");
 }
 
 TEST(GraphIsomorphismTaggerKnownTest, Cycle3)
@@ -51,6 +55,7 @@ TEST(GraphIsomorphismTaggerKnownTest, Cycle3)
     const TaggerKnown tagger(*graph);
     const auto tag = tagger.getGraphTag();
     ASSERT_EQ(tag, (Tag{TaggerKnown::KnownType::Complete, 3}));
+    ASSERT_EQ(tagger.getDescription(), "complete graph of size 3");
 }
 
 TEST(GraphIsomorphismTaggerKnownTest, Cycle4)
@@ -59,6 +64,7 @@ TEST(GraphIsomorphismTaggerKnownTest, Cycle4)
     const TaggerKnown tagger(*graph);
     const auto tag = tagger.getGraphTag();
     ASSERT_EQ(tag, (Tag{TaggerKnown::KnownType::Cycle, 4}));
+    ASSERT_EQ(tagger.getDescription(), "cycle of size 4");
 }
 
 TEST(GraphIsomorphismTaggerKnownTest, Diamond)
@@ -67,6 +73,7 @@ TEST(GraphIsomorphismTaggerKnownTest, Diamond)
     const TaggerKnown tagger(*graph);
     const auto tag = tagger.getGraphTag();
     ASSERT_EQ(tag, (Tag{TaggerKnown::KnownType::Unknown}));
+    ASSERT_EQ(tagger.getDescription(), "Unknown");
 }
 
 TEST(GraphIsomorphismTaggerKnownTest, TwoTriangles)
@@ -75,14 +82,16 @@ TEST(GraphIsomorphismTaggerKnownTest, TwoTriangles)
     const TaggerKnown tagger(*graph);
     const auto tag = tagger.getGraphTag();
     ASSERT_EQ(tag, (Tag{TaggerKnown::KnownType::Unknown}));
+    ASSERT_EQ(tagger.getDescription(), "Unknown");
 }
 
-TEST(GraphIsomorphismTaggerKnownTest, Disconnected3)
+TEST(GraphIsomorphismTaggerKnownTest, Disconnected5)
 {
     const auto graph = UndirectedGraphLibrary::Get_DisconnectedGraph(5);
     const TaggerKnown tagger(*graph);
     const auto tag = tagger.getGraphTag();
     ASSERT_EQ(tag, (Tag{TaggerKnown::KnownType::Singletons, 5}));
+    ASSERT_EQ(tagger.getDescription(), "completely disconnected graph of size 5");
 }
 
 TEST(GraphIsomorphismTaggerKnownTest, CheckTagger)

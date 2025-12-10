@@ -1,7 +1,6 @@
 #include "IGraphIsomorphismTransform.h"
 
 #include "GraphIsomorphismTaggedGraph.h"
-#include "GraphIsomorphismTaggerKnown.h"
 #include "IGraphUs.h"
 #include "MyAssert.h"
 
@@ -16,26 +15,26 @@ const std::vector<const TaggedGraph *> s_noChildren;
 
 // !!!!!!!!!!!!! ITransform
 
-ITransform::ITransform(const TaggedGraph &tgraph) : m_taggedGraph(tgraph)
+ITransform::ITransform(std::shared_ptr<TaggedGraph> tgraph) : m_taggedGraph(std::move(tgraph))
 {
 }
 
 const TaggedGraph &ITransform::getTaggedGraph() const
 {
-    return m_taggedGraph;
+    return *m_taggedGraph;
 }
 
 const Graph::IGraphUs &ITransform::getGraph() const
 {
-    return m_taggedGraph.getGraph();
+    return m_taggedGraph->getGraph();
 }
 
 // !!!!!!!!!!!!! TransformKnown
 
-TransformKnown::TransformKnown(const TaggedGraph &tgraph, const TaggerKnown &tagger)
-    : ITransform(tgraph), m_tag{ITransform::Type::Known}
+TransformKnown::TransformKnown(const std::shared_ptr<TaggedGraph> &tgraph, TaggerKnown tagger)
+    : ITransform(tgraph), m_taggerKnown(std::move(tagger)), m_tag{ITransform::Type::Known}
 {
-    const auto &tag = tagger.getGraphTag();
+    const auto &tag = m_taggerKnown.getGraphTag();
     MyAssert(tag.front() != TaggerKnown::KnownType::Unknown);
     m_tag.insert(m_tag.end(), tag.begin(), tag.end());
 }
@@ -47,7 +46,7 @@ const Tag &TransformKnown::getTagOfTransform() const
 
 std::string TransformKnown::getDescription() const
 {
-    return "Known graph";
+    return "Known graph: " + m_taggerKnown.getDescription();
 }
 
 const std::vector<const TaggedGraph *> &TransformKnown::getChildren() const
@@ -55,9 +54,9 @@ const std::vector<const TaggedGraph *> &TransformKnown::getChildren() const
     return s_noChildren;
 }
 
-std::unique_ptr<ITransform> TransformKnown::tryCreate(const TaggedGraph &tgraph)
+std::unique_ptr<ITransform> TransformKnown::tryCreate(const std::shared_ptr<TaggedGraph> &tgraph)
 {
-    const TaggerKnown taggerKnown(tgraph.getGraph());
+    const TaggerKnown taggerKnown(tgraph->getGraph());
     if (taggerKnown.getGraphTag().front() == TaggerKnown::KnownType::Unknown)
     {
         return {};

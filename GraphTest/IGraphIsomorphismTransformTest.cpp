@@ -32,19 +32,19 @@ void TestInterface(const GraphIsomorphism::ITransform &transform)
 TEST(IGraphIsomorphismTransformTest, KnownPath4)
 {
     const auto graph = UndirectedGraphLibrary::Get_Path(4);
-    const TaggedGraph tgraph(*graph);
+    const auto tgraph = std::make_shared<TaggedGraph>(*graph);
     const auto transform = TransformKnown::tryCreate(tgraph);
     ASSERT_NE(transform.get(), nullptr);
     TestInterface(*transform);
     ASSERT_EQ(transform->getTagOfTransform(), (Tag{0, 3, 4}));
-    ASSERT_EQ(transform->getDescription(), "Known graph");
+    ASSERT_EQ(transform->getDescription(), "Known graph: path of size 4");
     ASSERT_TRUE(transform->getChildren().empty());
 }
 
 TEST(IGraphIsomorphismTransformTest, UnKnown)
 {
     const auto graph = UndirectedGraphLibrary::Get_Butterfly();
-    const TaggedGraph tgraph(*graph);
+    const auto tgraph = std::make_shared<TaggedGraph>(*graph);
     const auto transform = TransformKnown::tryCreate(tgraph);
     ASSERT_TRUE(!transform);
 }

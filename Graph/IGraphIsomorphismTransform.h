@@ -2,6 +2,7 @@
 
 #include "GraphIsomorphismDefines.h"
 #include "GraphIsomorphismGrouping.h"
+#include "GraphIsomorphismTaggerKnown.h"
 
 namespace Graph
 {
@@ -32,27 +33,28 @@ class ITransform
     virtual std::string getDescription() const = 0;
     virtual const std::vector<const TaggedGraph *> &getChildren() const = 0;
 
-    static std::unique_ptr<ITransform> Create(const TaggedGraph &);
+    static std::unique_ptr<ITransform> Create(const std::shared_ptr<TaggedGraph> &);
 
   protected:
-    explicit ITransform(const TaggedGraph &);
+    explicit ITransform(std::shared_ptr<TaggedGraph>);
 
   private:
-    const TaggedGraph &m_taggedGraph;
+    std::shared_ptr<TaggedGraph> m_taggedGraph;
 };
 
 class TransformKnown : public ITransform
 {
   public:
-    static std::unique_ptr<ITransform> tryCreate(const TaggedGraph &);
+    static std::unique_ptr<ITransform> tryCreate(const std::shared_ptr<TaggedGraph> &);
 
     const Tag &getTagOfTransform() const override;
     std::string getDescription() const override;
     const std::vector<const TaggedGraph *> &getChildren() const override;
 
   private:
-    TransformKnown(const TaggedGraph &, const TaggerKnown &);
+    TransformKnown(const std::shared_ptr<TaggedGraph> &, TaggerKnown);
 
+    TaggerKnown m_taggerKnown;
     Tag m_tag;
 };
 

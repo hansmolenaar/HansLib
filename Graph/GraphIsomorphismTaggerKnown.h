@@ -22,9 +22,11 @@ class TaggerKnown : public IGraphTagger
     explicit TaggerKnown(const Graph::IGraphUs &);
 
     const Tag &getGraphTag() const override;
+    std::string getDescription() const;
 
   private:
     Tag m_tag;
+    std::string m_description;
 };
 
 class TaggerKnownFactory : public ITaggerFactory
