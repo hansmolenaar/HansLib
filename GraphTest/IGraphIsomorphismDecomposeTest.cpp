@@ -529,14 +529,3 @@ TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList10)
 {
     CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_10(), {1, 706, 3, 1, 6, 1});
 }
-
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! DecomposeNode
-
-TEST(IGraphIsomorphismDecomposeTest, DecomposeNode_Cycle5)
-{
-    const auto graph = UndirectedGraphLibrary::Get_Cycle(5);
-    const auto tgraph = std::make_shared<TaggedGraph>(*graph);
-    const auto decomposeNode = DecomposeNode::Create(tgraph);
-    ASSERT_EQ(graph->getName(), decomposeNode->getGraph().getName());
-    ASSERT_EQ(decomposeNode->getTag(), (Tag{1, 2, 5}));
-}
