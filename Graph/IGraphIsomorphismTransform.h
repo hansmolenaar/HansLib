@@ -28,6 +28,7 @@ class ITransform
 
     const Graph::IGraphUs &getGraph() const;
     const TaggedGraph &getTaggedGraph() const;
+    const std::shared_ptr<TaggedGraph> getTaggedGraphPtr() const;
 
     virtual const Tag &getTagOfTransform() const = 0;
     virtual std::string getDescription() const = 0;
@@ -45,7 +46,7 @@ class ITransform
 class TransformKnown : public ITransform
 {
   public:
-    static std::unique_ptr<ITransform> tryCreate(const std::shared_ptr<TaggedGraph> &);
+    static std::unique_ptr<TransformKnown> tryCreate(const std::shared_ptr<TaggedGraph> &);
 
     const Tag &getTagOfTransform() const override;
     std::string getDescription() const override;

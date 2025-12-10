@@ -29,6 +29,10 @@ const Graph::IGraphUs &ITransform::getGraph() const
     return m_taggedGraph->getGraph();
 }
 
+const std::shared_ptr<TaggedGraph> ITransform::getTaggedGraphPtr() const
+{
+    return m_taggedGraph;
+}
 // !!!!!!!!!!!!! TransformKnown
 
 TransformKnown::TransformKnown(const std::shared_ptr<TaggedGraph> &tgraph, TaggerKnown tagger)
@@ -54,12 +58,12 @@ const std::vector<const TaggedGraph *> &TransformKnown::getChildren() const
     return s_noChildren;
 }
 
-std::unique_ptr<ITransform> TransformKnown::tryCreate(const std::shared_ptr<TaggedGraph> &tgraph)
+std::unique_ptr<TransformKnown> TransformKnown::tryCreate(const std::shared_ptr<TaggedGraph> &tgraph)
 {
     const TaggerKnown taggerKnown(tgraph->getGraph());
     if (taggerKnown.getGraphTag().front() == TaggerKnown::KnownType::Unknown)
     {
         return {};
     }
-    return std::unique_ptr<ITransform>(new TransformKnown(tgraph, taggerKnown));
+    return std::unique_ptr<TransformKnown>(new TransformKnown(tgraph, taggerKnown));
 }

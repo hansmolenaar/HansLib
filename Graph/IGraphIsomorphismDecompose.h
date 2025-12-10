@@ -33,9 +33,10 @@ class IDecompose
 
   protected:
     explicit IDecompose(const Graph::IGraphUs &);
+    explicit IDecompose(std::shared_ptr<TaggedGraph>);
 
   private:
-    std::unique_ptr<TaggedGraph> m_taggedGraph;
+    std::shared_ptr<TaggedGraph> m_taggedGraph;
 };
 
 class DecomposeDisconnected : public IDecompose

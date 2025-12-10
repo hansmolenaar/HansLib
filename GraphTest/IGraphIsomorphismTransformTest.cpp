@@ -20,7 +20,7 @@ void TestInterface(const GraphIsomorphism::ITransform &transform)
     const auto &children = transform.getChildren();
     if (children.empty())
     {
-        // Nothing to do
+        ASSERT_NE(dynamic_cast<const GraphIsomorphism::TransformKnown*>(&transform), nullptr);
     }
     else
     {

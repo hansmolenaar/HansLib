@@ -25,7 +25,7 @@ enum IDecomposeType : TagEntry
     Complement,
 };
 
-Vertex GetVertexInParent(Vertex vertex, const IGraphUs &graph)
+Vertex GetVertexInParent(Vertex vertex, const Graph::IGraphUs &graph)
 {
     const auto *subGraph = dynamic_cast<const SubGraph *>(&graph);
     if (subGraph != nullptr)
@@ -60,7 +60,11 @@ void AddToParentMapRecur(const IDecompose *current, const IDecompose *parent,
 
 // !!!!!!!!!!!  IDecompose
 
-IDecompose::IDecompose(const Graph::IGraphUs &graph) : m_taggedGraph(std::make_unique<TaggedGraph>(graph))
+IDecompose::IDecompose(const Graph::IGraphUs &graph) : IDecompose(std::make_shared<TaggedGraph>(graph))
+{
+}
+
+IDecompose::IDecompose(std::shared_ptr<TaggedGraph> tgraph) : m_taggedGraph(std::move(tgraph))
 {
 }
 
