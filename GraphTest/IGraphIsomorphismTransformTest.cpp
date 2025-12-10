@@ -26,7 +26,14 @@ void TestInterface(const GraphIsomorphism::ITransform &transform)
     }
     else
     {
-        throw std::runtime_error("Implement me");
+        Vertex numVertices = 0;
+        for (const auto &kid : children)
+        {
+            const auto *subGraph = dynamic_cast<const Graph::SubGraph *>(&kid->getGraph());
+            ASSERT_TRUE(subGraph != nullptr);
+            numVertices += subGraph->getNumVertices();
+        }
+        ASSERT_EQ(transform.getGraph().getNumVertices(), numVertices);
     }
 }
 } // namespace
@@ -58,4 +65,38 @@ TEST(IGraphIsomorphismTransformTest, UnKnown)
     ASSERT_EQ(transform->getTagOfTransform(), (Tag{0}));
     ASSERT_EQ(transform->getDescription(), "Graph of order 5 cannot be transformed");
     ASSERT_TRUE(transform->getChildren().empty());
+}
+
+TEST(IGraphIsomorphismTransformTest, DisconnectedComplementPath2)
+{
+    const auto graphComplement = UndirectedGraphLibrary::Get_Path(2);
+    const auto graph = UndirectedGraph::CreateComplement(*graphComplement);
+    const auto tgraph = std::make_shared<TaggedGraph>(graph);
+    const auto transform = TransformDisconnected::tryCreate(tgraph);
+    ASSERT_NE(transform.get(), nullptr);
+    TestInterface(*transform);
+    ASSERT_EQ(transform->getTagOfTransform(), (Tag{2, 1, 1}));
+    ASSERT_EQ(transform->getDescription(), "Disconnected graph with components of order: 1 1");
+    ASSERT_EQ(transform->getChildren().size(), 2);
+}
+
+TEST(IGraphIsomorphismTransformTest, DisconnectedComplementDiamond)
+{
+    const auto graphComplement = UndirectedGraphLibrary::Get_Diamond();
+    const auto graph = UndirectedGraph::CreateComplement(*graphComplement);
+    const auto tgraph = std::make_shared<TaggedGraph>(graph);
+    const auto transform = TransformDisconnected::tryCreate(tgraph);
+    ASSERT_NE(transform.get(), nullptr);
+    TestInterface(*transform);
+    ASSERT_EQ(transform->getTagOfTransform(), (Tag{2, 1, 1, 2}));
+    ASSERT_EQ(transform->getDescription(), "Disconnected graph with components of order: 1 1 2");
+    ASSERT_EQ(transform->getChildren().size(), 3);
+}
+
+TEST(IGraphIsomorphismTransformTest, DisconnectedPath2)
+{
+    const auto graph = UndirectedGraphLibrary::Get_Path(2);
+    const auto tgraph = std::make_shared<TaggedGraph>(*graph);
+    const auto transform = TransformDisconnected::tryCreate(tgraph);
+    ASSERT_EQ(transform.get(), nullptr);
 }

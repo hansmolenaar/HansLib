@@ -58,7 +58,7 @@ TEST(GraphIsomorphismDecomposeNodeTest, Cycle5)
 TEST(GraphIsomorphismDecomposeNodeTest, NotTransformable)
 {
     // May change
-    const auto graph = UndirectedGraphLibrary::Get_Star({3,5,7});
+    const auto graph = UndirectedGraphLibrary::Get_Star({3, 5, 7});
     const auto tgraph = std::make_shared<TaggedGraph>(*graph);
     const auto decomposeNode = DecomposeNode::Create(tgraph);
     TestInterface(*decomposeNode);

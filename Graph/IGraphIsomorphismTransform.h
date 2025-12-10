@@ -3,6 +3,7 @@
 #include "GraphIsomorphismDefines.h"
 #include "GraphIsomorphismGrouping.h"
 #include "GraphIsomorphismTaggerKnown.h"
+#include "SubGraph.h"
 
 namespace Graph
 {
@@ -85,6 +86,8 @@ class TransformDisconnected : public ITransform
     TransformDisconnected(const std::shared_ptr<TaggedGraph> &);
 
     Tag m_tag;
+    std::vector<std::unique_ptr<Graph::SubGraph>> m_components;
+    std::vector<std::shared_ptr<TaggedGraph>> m_taggedGraphs;
 };
 
 } // namespace GraphIsomorphism
