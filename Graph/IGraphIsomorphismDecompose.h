@@ -27,7 +27,7 @@ class IDecompose
     bool isLeaf() const;
     std::string getGraphName() const;
 
-    static std::unique_ptr<IDecompose> Create(const Graph::IGraphUs &, bool = true);
+    static std::unique_ptr<IDecompose> Create(const Graph::IGraphUs &);
 
     static Grouping<const IDecompose *> CreateGrouping(const std::vector<const IDecompose *> &);
 
@@ -169,28 +169,6 @@ class DecomposeOmitEdges : public IDecompose
     Tag m_tag;
     std::unique_ptr<Graph::UndirectedGraph> m_child;
     std::unique_ptr<IDecompose> m_childDecomposes;
-    Grouping<const IDecompose *> m_groupingChildren;
-};
-
-class DecomposeComplement : public IDecompose
-{
-  public:
-    DecomposeComplement(std::unique_ptr<Graph::UndirectedGraph> &&graph, const Graph::IGraphUs &org);
-    static std::unique_ptr<IDecompose> Create(const Graph::IGraphUs &);
-
-    const Tag &getTag() const override;
-    std::string getDescription() const override;
-    Graph::Vertex getVertexInParent(Graph::Vertex vertex) const override;
-    const Graph::IGraphUs &getOriginal() const;
-
-    // Is empty
-    const Grouping<const IDecompose *> &getGroupingChildren() const override;
-
-  private:
-    const Graph::IGraphUs &m_original;
-    std::unique_ptr<Graph::UndirectedGraph> m_complement;
-    Tag m_tag;
-    std::unique_ptr<IDecompose> m_child; // only child?
     Grouping<const IDecompose *> m_groupingChildren;
 };
 

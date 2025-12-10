@@ -74,7 +74,7 @@ const Graph::IGraphUs &IDecompose::getGraph() const
     return m_taggedGraph->getGraph();
 }
 
-std::unique_ptr<IDecompose> IDecompose::Create(const Graph::IGraphUs &graph, bool tryComplement)
+std::unique_ptr<IDecompose> IDecompose::Create(const Graph::IGraphUs &graph)
 {
     auto knownGraph = DecomposeKnown::tryCreate(graph);
     if (knownGraph)
@@ -309,68 +309,6 @@ const Grouping<const IDecompose *> &DecomposeComplementDisconnected::getGrouping
 Graph::Vertex DecomposeComplementDisconnected::getVertexInParent(Graph::Vertex vertex) const
 {
     return GetVertexInParent(vertex, getGraph());
-}
-
-// !!!!!!!!!!! complement
-
-std::unique_ptr<IDecompose> DecomposeComplement::Create(const Graph::IGraphUs &graph)
-{
-    auto complement = std::make_unique<UndirectedGraph>(UndirectedGraph::CreateComplement(graph));
-    TaggerKnown taggerKnown(*complement);
-    if (!complement->isConnected())
-    {
-        auto retval = std::make_unique<DecomposeComplement>(std::move(complement), graph);
-        if (!retval->isLeaf())
-        {
-            return retval;
-        }
-    }
-
-    // No decomposition possible of complement, ignore
-    return {};
-}
-
-DecomposeComplement::DecomposeComplement(std::unique_ptr<Graph::UndirectedGraph> &&complement,
-                                         const Graph::IGraphUs &org)
-    : IDecompose(*complement), m_complement(std::move(complement)), m_original(org), m_tag{IDecomposeType::Complement}
-{
-    // Further decomposition now possible?
-    auto offspring = IDecompose::Create(*m_complement, false);
-    if (!offspring->isLeaf())
-    {
-        m_child = std::move(offspring);
-        std::vector<const IDecompose *> allChildren{m_child.get()};
-        m_groupingChildren = CreateGrouping(allChildren);
-    }
-    else
-    {
-        // A leaf is returned
-    }
-}
-
-std::string DecomposeComplement::getDescription() const
-{
-    return "Complement of: " + m_original.getName();
-}
-
-const Tag &DecomposeComplement::getTag() const
-{
-    return m_tag;
-}
-
-const Grouping<const IDecompose *> &DecomposeComplement::getGroupingChildren() const
-{
-    return m_groupingChildren;
-}
-
-const Graph::IGraphUs &DecomposeComplement::getOriginal() const
-{
-    return m_original;
-}
-
-Graph::Vertex DecomposeComplement::getVertexInParent(Graph::Vertex vertex) const
-{
-    return GetVertexInParent(vertex, *this);
 }
 
 // !!!!!!!!!!! Disconnected

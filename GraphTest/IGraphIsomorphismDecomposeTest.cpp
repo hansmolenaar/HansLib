@@ -340,7 +340,7 @@ TEST(IGraphIsomorphismDecomposeTest, SpecialCase2)
 TEST(IGraphIsomorphismDecomposeTest, SpecialCase3)
 {
     const auto graph = UndirectedGraphFromG6::Create("D]w");
-    const auto decompose = IDecompose::Create(*graph, true);
+    const auto decompose = IDecompose::Create(*graph);
     ASSERT_FALSE(decompose->isLeaf());
 
     const ToParentMap toParent(decompose.get());
@@ -356,7 +356,7 @@ TEST(IGraphIsomorphismDecomposeTest, SpecialCase4)
 {
     // Bipartite (2,3)
     const auto graph = UndirectedGraphFromG6::Create("DFw");
-    const auto decompose = IDecompose::Create(*graph, true);
+    const auto decompose = IDecompose::Create(*graph);
     ASSERT_FALSE(decompose->isLeaf());
 
     const ToParentMap toParent(decompose.get());
@@ -382,7 +382,7 @@ TEST(IGraphIsomorphismDecomposeTest, SpecialCase5)
 {
     // Bipartite (2,3) + singletom
     const auto graph = UndirectedGraphFromG6::Create("E?\\o");
-    const auto decompose = IDecompose::Create(*graph, true);
+    const auto decompose = IDecompose::Create(*graph);
     ASSERT_FALSE(decompose->isLeaf());
 
     const ToParentMap toParent(decompose.get());
@@ -457,7 +457,7 @@ TEST(IGraphIsomorphismDecomposeTest, SpecialCase7)
 TEST(IGraphIsomorphismDecomposeTest, BullIsSelfComplement)
 {
     const auto graph = UndirectedGraphLibrary::Get_Bull();
-    const auto decompose = IDecompose::Create(*graph, true);
+    const auto decompose = IDecompose::Create(*graph);
     ASSERT_FALSE(decompose->isLeaf());
 }
 
