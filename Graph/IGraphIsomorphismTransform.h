@@ -21,6 +21,7 @@ class ITransform
     {
         Failure,
         Known,
+        Disconnected,
     };
 
     virtual ~ITransform() = default;
@@ -68,6 +69,21 @@ class TransformFailure : public ITransform
     const std::vector<std::shared_ptr<TaggedGraph>> &getChildren() const override;
 
   private:
+    Tag m_tag;
+};
+
+class TransformDisconnected : public ITransform
+{
+  public:
+    static std::unique_ptr<TransformDisconnected> tryCreate(const std::shared_ptr<TaggedGraph> &);
+
+    const Tag &getTagOfTransform() const override;
+    std::string getDescription() const override;
+    const std::vector<std::shared_ptr<TaggedGraph>> &getChildren() const override;
+
+  private:
+    TransformDisconnected(const std::shared_ptr<TaggedGraph> &);
+
     Tag m_tag;
 };
 

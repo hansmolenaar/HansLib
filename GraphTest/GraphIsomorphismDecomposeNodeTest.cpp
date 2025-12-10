@@ -8,11 +8,60 @@
 using namespace Graph;
 using namespace GraphIsomorphism;
 
+namespace
+{
+void TestInterface(const DecomposeNode &decomposeNode)
+{
+    ASSERT_FALSE(decomposeNode.getTag().empty());
+    ASSERT_FALSE(decomposeNode.getDescription().empty());
+    if (decomposeNode.isLeaf())
+    {
+        ASSERT_EQ(decomposeNode.getGroupingChildren().getGroupSizes().size(), 0);
+    }
+    else
+    {
+        std::vector<Vertex> verticesInParent;
+        for (const auto &group : decomposeNode.getGroupingChildren()())
+        {
+            for (const auto *part : group)
+            {
+                for (Vertex vertex = 0; vertex < part->getGraph().getNumVertices(); ++vertex)
+                {
+                    verticesInParent.push_back(part->getVertexInParent(vertex));
+                }
+            }
+            const auto nVertices = decomposeNode.getGraph().getNumVertices();
+            ASSERT_EQ(verticesInParent.size(), nVertices);
+            str::sort(verticesInParent);
+            verticesInParent.erase(std::unique(verticesInParent.begin(), verticesInParent.end()),
+                                   verticesInParent.end());
+            ASSERT_EQ(verticesInParent.back() + 1, nVertices);
+            ASSERT_EQ(verticesInParent.size(), nVertices);
+        }
+    }
+
+    ASSERT_EQ(decomposeNode <=> decomposeNode, std::weak_ordering::equivalent);
+}
+
+} // namespace
+
 TEST(GraphIsomorphismDecomposeNodeTest, Cycle5)
 {
     const auto graph = UndirectedGraphLibrary::Get_Cycle(5);
     const auto tgraph = std::make_shared<TaggedGraph>(*graph);
     const auto decomposeNode = DecomposeNode::Create(tgraph);
+    TestInterface(*decomposeNode);
     ASSERT_EQ(graph->getName(), decomposeNode->getGraph().getName());
     ASSERT_EQ(decomposeNode->getTag(), (Tag{1, 2, 5}));
+}
+
+TEST(GraphIsomorphismDecomposeNodeTest, NotTransformable)
+{
+    // May change
+    const auto graph = UndirectedGraphLibrary::Get_Star({3,5,7});
+    const auto tgraph = std::make_shared<TaggedGraph>(*graph);
+    const auto decomposeNode = DecomposeNode::Create(tgraph);
+    TestInterface(*decomposeNode);
+    ASSERT_EQ(graph->getName(), decomposeNode->getGraph().getName());
+    ASSERT_EQ(decomposeNode->getTag(), (Tag{0}));
 }

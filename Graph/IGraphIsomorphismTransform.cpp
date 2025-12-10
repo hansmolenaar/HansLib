@@ -101,3 +101,20 @@ const std::vector<std::shared_ptr<TaggedGraph>> &TransformFailure::getChildren()
 {
     return s_noChildren;
 }
+
+// !!!!!!!!!!!!! TransformDisconnected
+#if false
+    std::unique_ptr<TransformDisconnected> TransformDisconnected::tryCreate(const std::shared_ptr<TaggedGraph> & tgraph) 
+{
+  if (tgraph->getGraph().isConnected())
+{
+ return {};
+}
+ 
+return std::unique_ptr<TransformDisconnected>(new TransformDisconnected(tgraph));
+}
+
+TransformDisconnected::    TransformDisconnected(const std::shared_ptr<TaggedGraph> & tgraph) : ITransform(tgraph)
+{
+}
+#endif
