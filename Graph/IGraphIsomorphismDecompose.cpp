@@ -22,7 +22,6 @@ enum IDecomposeType : TagEntry
     OmittedEdges,
     ComplementKnown,
     DecomposeComplementDisconnected,
-    Complement,
 };
 
 Vertex GetVertexInParent(Vertex vertex, const Graph::IGraphUs &graph)

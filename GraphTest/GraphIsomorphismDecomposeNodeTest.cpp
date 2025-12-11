@@ -12,8 +12,10 @@ namespace
 {
 void TestInterface(const DecomposeNode &decomposeNode)
 {
-    ASSERT_FALSE(decomposeNode.getTag().empty());
-    ASSERT_FALSE(decomposeNode.getDescription().empty());
+    const auto tag = decomposeNode.getTag();
+    ASSERT_FALSE(tag.empty());
+    const auto descr = decomposeNode.getDescription();
+    ASSERT_FALSE(descr.empty());
     if (decomposeNode.isLeaf())
     {
         ASSERT_EQ(decomposeNode.getGroupingChildren().getGroupSizes().size(), 0);
@@ -21,7 +23,8 @@ void TestInterface(const DecomposeNode &decomposeNode)
     else
     {
         std::vector<Vertex> verticesInParent;
-        for (const auto &group : decomposeNode.getGroupingChildren()())
+        const auto &grouping = decomposeNode.getGroupingChildren()();
+        for (const auto &group : grouping)
         {
             for (const auto *part : group)
             {
@@ -30,14 +33,13 @@ void TestInterface(const DecomposeNode &decomposeNode)
                     verticesInParent.push_back(part->getVertexInParent(vertex));
                 }
             }
-            const auto nVertices = decomposeNode.getGraph().getNumVertices();
-            ASSERT_EQ(verticesInParent.size(), nVertices);
-            str::sort(verticesInParent);
-            verticesInParent.erase(std::unique(verticesInParent.begin(), verticesInParent.end()),
-                                   verticesInParent.end());
-            ASSERT_EQ(verticesInParent.back() + 1, nVertices);
-            ASSERT_EQ(verticesInParent.size(), nVertices);
         }
+        const auto nVertices = decomposeNode.getGraph().getNumVertices();
+        ASSERT_EQ(verticesInParent.size(), nVertices);
+        str::sort(verticesInParent);
+        verticesInParent.erase(std::unique(verticesInParent.begin(), verticesInParent.end()), verticesInParent.end());
+        ASSERT_EQ(verticesInParent.back() + 1, nVertices);
+        ASSERT_EQ(verticesInParent.size(), nVertices);
     }
 
     ASSERT_EQ(decomposeNode <=> decomposeNode, std::weak_ordering::equivalent);
@@ -79,4 +81,18 @@ TEST(GraphIsomorphismDecomposeNodeTest, TwoEdges)
 
     const auto &groupingChildren = decomposeNode->getGroupingChildren();
     ASSERT_EQ(groupingChildren.getGroupSizes(), (std::vector<size_t>{2}));
+}
+
+TEST(GraphIsomorphismDecomposeNodeTest, CoDiamond)
+{
+    const auto graphComplement = UndirectedGraphLibrary::Get_Diamond();
+    const auto graph = UndirectedGraph::CreateComplement(*graphComplement);
+    const auto tgraph = std::make_shared<TaggedGraph>(graph);
+    const auto decomposeNode = DecomposeNode::Create(tgraph);
+    const auto descr = decomposeNode->getDescription();
+    ASSERT_EQ(descr, "Disconnected graph with components of order: 1 1 2");
+    const auto &groupingChildren = decomposeNode->getGroupingChildren();
+    ASSERT_EQ(groupingChildren.getGroupSizes(), (std::vector<size_t>{2, 1}));
+    TestInterface(*decomposeNode);
+    ASSERT_EQ(decomposeNode->getTag(), (Tag{2, 1, 1, 2}));
 }
