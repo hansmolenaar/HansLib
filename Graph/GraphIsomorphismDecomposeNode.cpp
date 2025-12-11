@@ -22,7 +22,6 @@ DecomposeNode::DecomposeNode(std::unique_ptr<ITransform> &&transform) : m_transf
         m_childDecomposes.emplace_back(std::move(childTransform));
         allChildren.push_back(m_childDecomposes.back().get());
     }
-    MyAssert(m_childDecomposes.empty());
 
     auto compare = [](const DecomposeNode *child1, const DecomposeNode *child2) { return *child1 < *child2; };
     m_groupingChildren = Grouping<const DecomposeNode *>(allChildren, compare);

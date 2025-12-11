@@ -27,6 +27,12 @@ std::unique_ptr<ITransform> ITransform::Create(const std::shared_ptr<TaggedGraph
         return transformKnown;
     }
 
+    auto transformDisconnected = TransformDisconnected::tryCreate(tgraph);
+    if (transformDisconnected)
+    {
+        return transformDisconnected;
+    }
+
     // Return failure
     return std::make_unique<TransformFailure>(tgraph);
 }
