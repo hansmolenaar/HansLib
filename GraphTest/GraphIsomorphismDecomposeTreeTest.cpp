@@ -141,7 +141,7 @@ TEST(GraphIsomorphismDecomposeTreeTest, Singleton)
     ASSERT_EQ(decomposed->getTag(), (Tag{1, 1, 1}));
     const DecomposeTree decomposeTree(std::move(decomposed));
     const auto descr = decomposeTree.getDescriptions();
-    ASSERT_EQ(descr, "Known graph: complete graph of order 1\n\n\n");
+    ASSERT_EQ(Single(descr), "Known graph: complete graph of order 1");
     ASSERT_EQ(decomposeTree.size(), 1);
 
     CheckDecompose(decomposeTree, 1);
@@ -156,40 +156,48 @@ TEST(GraphIsomorphismDecomposeTreeTest, Disconnected2)
     const auto *leaf = Single(decomposeTree.getLeaves());
     ASSERT_EQ(Single(decomposeTree.collectDecomposeTagsForLeaf(leaf)), (Tag{1, 4, 2}));
     const auto descr = decomposeTree.getDescriptions();
-    ASSERT_EQ(descr, "Known graph: completely disconnected graph of order 2\n\n\n");
+    ASSERT_EQ(Single(descr), "Known graph: completely disconnected graph of order 2");
 
     CheckDecompose(decomposeTree, 1);
 }
 
-#if false
 
 TEST(GraphIsomorphismDecomposeTreeTest, EdgePlusVertex)
 {
     const auto graph = UndirectedGraphFromG6::Create("BO");
-    const auto decomposed = IDecompose::Create(*graph);
-    ASSERT_EQ(decomposed->getTag(), (Tag{1, 1, 2}));
-    const DecomposeTree decomposeTree(decomposed.get());
+    const DecomposeTree decomposeTree(*graph);
 
-    const auto &grouping = decomposed->getGroupingChildren()();
+    const auto leaves = decomposeTree.getLeaves();
+    ASSERT_EQ(leaves.size(), 2);
+    ASSERT_TRUE(leaves.at(0)->isLeaf());
+    ASSERT_TRUE(leaves.at(1)->isLeaf());
+
+    const auto grouping = decomposeTree.groupLeaves()();
     ASSERT_EQ(grouping.size(), 2);
 
-    const auto *child0 = dynamic_cast<const DecomposeKnown *>(Single(grouping.at(0)));
+    const auto *child0 = Single(grouping.at(0));
     ASSERT_EQ(child0->getGraph().getNumVertices(), 1);
-    ASSERT_EQ(child0->getTag(), (Tag{3, 1, 1}));
+    ASSERT_EQ(child0->getTag(), (Tag{1, 1, 1}));
     ASSERT_TRUE(child0->isLeaf());
 
-    const auto *child1 = dynamic_cast<const DecomposeKnown *>(Single(grouping.at(1)));
+    const auto *child1 = Single(grouping.at(1));
     ASSERT_EQ(child1->getGraph().getNumVertices(), 2);
-    ASSERT_EQ(child1->getTag(), (Tag{3, 1, 2}));
+    ASSERT_EQ(child1->getTag(), (Tag{1, 1, 2}));
     ASSERT_TRUE(child1->isLeaf());
 
     const auto tag0 = decomposeTree.collectDecomposeTagsForLeaf(child0);
     const auto tag1 = decomposeTree.collectDecomposeTagsForLeaf(child1);
-    ASSERT_EQ(tag0, (std::vector<Tag>{Tag{3, 1, 1}, Tag{1, 1, 2}}));
-    ASSERT_EQ(tag1, (std::vector<Tag>{Tag{3, 1, 2}, Tag{1, 1, 2}}));
+    ASSERT_EQ(tag0, (std::vector<Tag>{Tag{1, 1, 1}, Tag{2, 1, 2}}));
+    ASSERT_EQ(tag1, (std::vector<Tag>{Tag{1, 1, 2}, Tag{2, 1, 2}}));
+ 
+    const auto descr = decomposeTree.getDescriptions();
+    ASSERT_EQ(descr.size(), 2 );
+    ASSERT_EQ(descr.at(0), "Known graph: complete graph of order 2 -> Disconnected graph with components of order: 1 2" );
+    ASSERT_EQ(descr.at(1), "Known graph: complete graph of order 1 -> Disconnected graph with components of order: 1 2" );
     CheckDecompose(*graph, 2);
 }
 
+#if false
 TEST(GraphIsomorphismDecomposeTreeTest, Diamond)
 {
     const auto graph = UndirectedGraphLibrary::Get_Diamond();

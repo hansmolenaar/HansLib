@@ -14,7 +14,7 @@ class DecomposeTree
     std::vector<const DecomposeNode *> getLeaves() const;
     size_t size() const;
     Graph::Vertex getVertexInRoot(Graph::Vertex vertex, const DecomposeNode &) const;
-    std::string getDescriptions() const;
+    std::vector<std::string> getDescriptions() const;
 
     std::weak_ordering compareLeaves(const DecomposeNode *, const DecomposeNode *) const;
     GraphIsomorphism::Grouping<const DecomposeNode *> groupLeaves() const;

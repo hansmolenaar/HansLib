@@ -76,18 +76,24 @@ Vertex DecomposeTree::getVertexInRoot(Vertex vertex, const DecomposeNode &decomp
     return vertex;
 }
 
-std::string DecomposeTree::getDescriptions() const
+std::vector<std::string> DecomposeTree::getDescriptions() const
 {
-    std::string result;
+    static const std::string sep = " -> ";
+    std::vector<std::string> result;
     for (const auto *leaf : getLeaves())
     {
         const auto *id = leaf;
+        std::string descr;
         while (id != nullptr)
         {
-            result += id->getDescription() + "\n";
+            if (!descr.empty())
+            {
+                descr += sep;
+            }
+            descr += id->getDescription();
             id = getParent(id);
         }
-        result += "\n\n";
+        result.push_back(descr);
     }
     return result;
 }
