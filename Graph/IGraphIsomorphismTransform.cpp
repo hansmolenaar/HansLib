@@ -3,6 +3,7 @@
 #include "GraphIsomorphismTaggedGraph.h"
 #include "IGraphUs.h"
 #include "MyAssert.h"
+#include "UndirectedGraph.h"
 
 using namespace GraphIsomorphism;
 using namespace Graph;
@@ -190,5 +191,57 @@ std::vector<std::vector<Graph::Vertex>> TransformDisconnected::getComponentsJoin
         result.push_back(singletons);
     }
 
+    return result;
+}
+
+// !!!!!!!!!!!!! TransformComplemntDisconnected
+
+std::unique_ptr<TransformComplementDisconnected> TransformComplementDisconnected::tryCreate(
+    const std::shared_ptr<TaggedGraph> &tgraph)
+{
+    const std::unique_ptr<UndirectedGraph> complement =
+        std::make_unique<UndirectedGraph>(UndirectedGraph::CreateComplement(tgraph->getGraph()));
+    const auto components = TransformDisconnected::getComponentsJoinSingletons(*complement);
+    if (components.size() < 2)
+    {
+        return {};
+    }
+
+    return std::unique_ptr<TransformComplementDisconnected>(new TransformComplementDisconnected(tgraph, components));
+}
+
+TransformComplementDisconnected::TransformComplementDisconnected(
+    const std::shared_ptr<TaggedGraph> &tgraph, const std::vector<std::vector<Graph::Vertex>> &components)
+    : ITransform(tgraph), m_tag{ITransform::Type::ComplementDisconnected}
+{
+    const auto &graph = tgraph->getGraph();
+    MyAssert(components.size() > 1);
+
+    for (const auto &cmp : components)
+    {
+        m_components.emplace_back(std::make_unique<SubGraph>(graph, std::set<Vertex>(cmp.begin(), cmp.end())));
+        m_taggedGraphs.emplace_back(std::make_shared<TaggedGraph>(*m_components.back()));
+        m_tag.push_back(cmp.size());
+    }
+    std::sort(m_tag.begin() + 1, m_tag.end());
+}
+
+const Tag &TransformComplementDisconnected::getTagOfTransform() const
+{
+    return m_tag;
+}
+
+const std::vector<std::shared_ptr<TaggedGraph>> &TransformComplementDisconnected::getChildren() const
+{
+    return m_taggedGraphs;
+}
+
+std::string TransformComplementDisconnected::getDescription() const
+{
+    std::string result{"Complement is disconnected graph with components of order:"};
+    for (auto itr = m_tag.begin() + 1; itr != m_tag.end(); ++itr)
+    {
+        result += " " + std::to_string(*itr);
+    }
     return result;
 }

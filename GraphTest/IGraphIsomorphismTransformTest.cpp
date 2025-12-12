@@ -96,6 +96,7 @@ TEST(IGraphIsomorphismTransformTest, DisconnectedPath2)
     const auto transform = TransformDisconnected::tryCreate(tgraph);
     ASSERT_EQ(transform.get(), nullptr);
 }
+
 TEST(IGraphIsomorphismTransformTest, GetComponentsJoinSingletons_Null)
 {
     const auto graph = UndirectedGraphLibrary::Get_Null();
@@ -138,4 +139,16 @@ TEST(IGraphIsomorphismTransformTest, GetComponentsJoinSingletons_X197)
     ASSERT_EQ(retval.at(0), (std::vector<Vertex>{0, 1, 2}));
     ASSERT_EQ(retval.at(1), (std::vector<Vertex>{3, 4}));
     ASSERT_EQ(retval.at(2), (std::vector<Vertex>{5}));
+}
+
+TEST(IGraphIsomorphismTransformTest, ComplemntDisconnectedPath3)
+{
+    const auto graph = UndirectedGraphLibrary::Get_Path(3);
+    const auto tgraph = std::make_shared<TaggedGraph>(*graph);
+    const auto transform = TransformComplementDisconnected::tryCreate(tgraph);
+    ASSERT_NE(transform.get(), nullptr);
+    TestInterface(*transform);
+    ASSERT_EQ(transform->getTagOfTransform(), (Tag{3, 1, 2}));
+    ASSERT_EQ(transform->getDescription(), "Complement is disconnected graph with components of order: 1 2");
+    ASSERT_EQ(transform->getChildren().size(), 2);
 }

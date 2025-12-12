@@ -23,6 +23,7 @@ class ITransform
         Failure,
         Known,
         Disconnected,
+        ComplementDisconnected,
     };
 
     virtual ~ITransform() = default;
@@ -86,6 +87,27 @@ class TransformDisconnected : public ITransform
 
   private:
     TransformDisconnected(const std::shared_ptr<TaggedGraph> &, const std::vector<std::vector<Graph::Vertex>> &);
+
+    Tag m_tag;
+    std::vector<std::unique_ptr<Graph::SubGraph>> m_components;
+    std::vector<std::shared_ptr<TaggedGraph>> m_taggedGraphs;
+};
+;
+
+class TransformComplementDisconnected : public ITransform
+{
+  public:
+    static std::unique_ptr<TransformComplementDisconnected> tryCreate(const std::shared_ptr<TaggedGraph> &);
+
+    const Tag &getTagOfTransform() const override;
+    std::string getDescription() const override;
+    const std::vector<std::shared_ptr<TaggedGraph>> &getChildren() const override;
+
+    static std::vector<std::vector<Graph::Vertex>> getComponentsJoinSingletons(const Graph::IGraphUs &);
+
+  private:
+    TransformComplementDisconnected(const std::shared_ptr<TaggedGraph> &,
+                                    const std::vector<std::vector<Graph::Vertex>> &);
 
     Tag m_tag;
     std::vector<std::unique_ptr<Graph::SubGraph>> m_components;

@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
-#include "GraphIsomorphismTaggedGraph.h"
 #include "GraphIsomorphismDecomposeTree.h"
+#include "GraphIsomorphismTaggedGraph.h"
 #include "Single.h"
 #include "UndirectedGraphFromG6.h"
 #include "UndirectedGraphLibrary.h"
@@ -161,7 +161,6 @@ TEST(GraphIsomorphismDecomposeTreeTest, Disconnected2)
     CheckDecompose(decomposeTree, 1);
 }
 
-
 TEST(GraphIsomorphismDecomposeTreeTest, EdgePlusVertex)
 {
     const auto graph = UndirectedGraphFromG6::Create("BO");
@@ -189,11 +188,13 @@ TEST(GraphIsomorphismDecomposeTreeTest, EdgePlusVertex)
     const auto tag1 = decomposeTree.collectDecomposeTagsForLeaf(child1);
     ASSERT_EQ(tag0, (std::vector<Tag>{Tag{1, 1, 1}, Tag{2, 1, 2}}));
     ASSERT_EQ(tag1, (std::vector<Tag>{Tag{1, 1, 2}, Tag{2, 1, 2}}));
- 
+
     const auto descr = decomposeTree.getDescriptions();
-    ASSERT_EQ(descr.size(), 2 );
-    ASSERT_EQ(descr.at(0), "Known graph: complete graph of order 2 -> Disconnected graph with components of order: 1 2" );
-    ASSERT_EQ(descr.at(1), "Known graph: complete graph of order 1 -> Disconnected graph with components of order: 1 2" );
+    ASSERT_EQ(descr.size(), 2);
+    ASSERT_EQ(descr.at(0),
+              "Known graph: complete graph of order 2 -> Disconnected graph with components of order: 1 2");
+    ASSERT_EQ(descr.at(1),
+              "Known graph: complete graph of order 1 -> Disconnected graph with components of order: 1 2");
     CheckDecompose(*graph, 2);
 }
 
