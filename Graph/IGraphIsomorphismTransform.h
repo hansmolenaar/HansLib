@@ -85,7 +85,7 @@ class TransformDisconnected : public ITransform
     static std::vector<std::vector<Graph::Vertex>> getComponentsJoinSingletons(const Graph::IGraphUs &);
 
   private:
-    TransformDisconnected(const std::shared_ptr<TaggedGraph> &);
+    TransformDisconnected(const std::shared_ptr<TaggedGraph> &, const std::vector<std::vector<Graph::Vertex>> &);
 
     Tag m_tag;
     std::vector<std::unique_ptr<Graph::SubGraph>> m_components;

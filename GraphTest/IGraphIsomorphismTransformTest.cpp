@@ -73,11 +73,7 @@ TEST(IGraphIsomorphismTransformTest, DisconnectedComplementPath2)
     const auto graph = UndirectedGraph::CreateComplement(*graphComplement);
     const auto tgraph = std::make_shared<TaggedGraph>(graph);
     const auto transform = TransformDisconnected::tryCreate(tgraph);
-    ASSERT_NE(transform.get(), nullptr);
-    TestInterface(*transform);
-    ASSERT_EQ(transform->getTagOfTransform(), (Tag{2, 1, 1}));
-    ASSERT_EQ(transform->getDescription(), "Disconnected graph with components of order: 1 1");
-    ASSERT_EQ(transform->getChildren().size(), 2);
+    ASSERT_EQ(transform.get(), nullptr);
 }
 
 TEST(IGraphIsomorphismTransformTest, DisconnectedComplementDiamond)
@@ -88,9 +84,9 @@ TEST(IGraphIsomorphismTransformTest, DisconnectedComplementDiamond)
     const auto transform = TransformDisconnected::tryCreate(tgraph);
     ASSERT_NE(transform.get(), nullptr);
     TestInterface(*transform);
-    ASSERT_EQ(transform->getTagOfTransform(), (Tag{2, 1, 1, 2}));
-    ASSERT_EQ(transform->getDescription(), "Disconnected graph with components of order: 1 1 2");
-    ASSERT_EQ(transform->getChildren().size(), 3);
+    ASSERT_EQ(transform->getTagOfTransform(), (Tag{2, 2, 2}));
+    ASSERT_EQ(transform->getDescription(), "Disconnected graph with components of order: 2 2");
+    ASSERT_EQ(transform->getChildren().size(), 2);
 }
 
 TEST(IGraphIsomorphismTransformTest, DisconnectedPath2)

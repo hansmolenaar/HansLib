@@ -90,9 +90,9 @@ TEST(GraphIsomorphismDecomposeNodeTest, CoDiamond)
     const auto tgraph = std::make_shared<TaggedGraph>(graph);
     const auto decomposeNode = DecomposeNode::Create(tgraph);
     const auto descr = decomposeNode->getDescription();
-    ASSERT_EQ(descr, "Disconnected graph with components of order: 1 1 2");
+    ASSERT_EQ(descr, "Disconnected graph with components of order: 2 2");
     const auto &groupingChildren = decomposeNode->getGroupingChildren();
-    ASSERT_EQ(groupingChildren.getGroupSizes(), (std::vector<size_t>{2, 1}));
+    ASSERT_EQ(groupingChildren.getGroupSizes(), (std::vector<size_t>{1, 1}));
     TestInterface(*decomposeNode);
-    ASSERT_EQ(decomposeNode->getTag(), (Tag{2, 1, 1, 2}));
+    ASSERT_EQ(decomposeNode->getTag(), (Tag{2, 2, 2}));
 }

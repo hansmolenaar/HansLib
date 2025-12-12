@@ -111,32 +111,27 @@ const std::vector<std::shared_ptr<TaggedGraph>> &TransformFailure::getChildren()
 // !!!!!!!!!!!!! TransformDisconnected
 std::unique_ptr<TransformDisconnected> TransformDisconnected::tryCreate(const std::shared_ptr<TaggedGraph> &tgraph)
 {
-    if (tgraph->getGraph().isConnected())
+    const auto components = getComponentsJoinSingletons(tgraph->getGraph());
+    if (components.size() < 2)
     {
         return {};
     }
 
-    return std::unique_ptr<TransformDisconnected>(new TransformDisconnected(tgraph));
+    return std::unique_ptr<TransformDisconnected>(new TransformDisconnected(tgraph, components));
 }
 
-TransformDisconnected::TransformDisconnected(const std::shared_ptr<TaggedGraph> &tgraph)
+TransformDisconnected::TransformDisconnected(const std::shared_ptr<TaggedGraph> &tgraph,
+                                             const std::vector<std::vector<Graph::Vertex>> &components)
     : ITransform(tgraph), m_tag{ITransform::Type::Disconnected}
 {
     const auto &graph = tgraph->getGraph();
-    std::map<Vertex, std::set<Vertex>> components;
-    Vertex vertex = 0;
-    for (auto c : graph.getConnectedComponents())
-    {
-        components[c].insert(vertex);
-        ++vertex;
-    }
     MyAssert(components.size() > 1);
 
     for (const auto &cmp : components)
     {
-        m_components.emplace_back(std::make_unique<SubGraph>(graph, cmp.second));
+        m_components.emplace_back(std::make_unique<SubGraph>(graph, std::set<Vertex>(cmp.begin(), cmp.end())));
         m_taggedGraphs.emplace_back(std::make_shared<TaggedGraph>(*m_components.back()));
-        m_tag.push_back(cmp.second.size());
+        m_tag.push_back(cmp.size());
     }
     std::sort(m_tag.begin() + 1, m_tag.end());
 }
