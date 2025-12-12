@@ -160,3 +160,40 @@ std::string TransformDisconnected::getDescription() const
     }
     return result;
 }
+
+std::vector<std::vector<Graph::Vertex>> TransformDisconnected::getComponentsJoinSingletons(const Graph::IGraphUs &graph)
+{
+    const auto numVertices = graph.getNumVertices();
+    if (numVertices == 0)
+    {
+        return {};
+    }
+
+    const auto components = graph.getConnectedComponents();
+    const auto numComponents = *str::max_element(components) + 1;
+    std::vector<std::vector<Vertex>> result(numComponents);
+
+    for (Vertex v = 0; v < numVertices; ++v)
+    {
+        result[components.at(v)].push_back(v);
+    }
+
+    // Collect singletons
+    std::vector<Vertex> singletons;
+    for (const auto &comp : result)
+    {
+        if (comp.size() == 1)
+        {
+            singletons.push_back(comp.front());
+        }
+    }
+
+    // Join singletons
+    if (singletons.size() > 1)
+    {
+        std::erase_if(result, [](const std::vector<Vertex> &comp) { return comp.size() == 1; });
+        result.push_back(singletons);
+    }
+
+    return result;
+}

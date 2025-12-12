@@ -46,6 +46,11 @@ static constexpr char X84[] = "ElD?";
 //          2
 //
 
+static constexpr char X197[] = "EgC";
+//          5
+//       3 ---4
+//     0 -- 1 -- 2
+
 static constexpr char butterfly[] = "D{c";
 //
 //

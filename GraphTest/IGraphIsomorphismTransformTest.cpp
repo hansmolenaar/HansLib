@@ -100,3 +100,46 @@ TEST(IGraphIsomorphismTransformTest, DisconnectedPath2)
     const auto transform = TransformDisconnected::tryCreate(tgraph);
     ASSERT_EQ(transform.get(), nullptr);
 }
+TEST(IGraphIsomorphismTransformTest, GetComponentsJoinSingletons_Null)
+{
+    const auto graph = UndirectedGraphLibrary::Get_Null();
+    auto retval = TransformDisconnected::getComponentsJoinSingletons(*graph);
+    ASSERT_TRUE(retval.empty());
+}
+
+TEST(IGraphIsomorphismTransformTest, GetComponentsJoinSingletons_Disconnected1)
+{
+    const auto graph = UndirectedGraphLibrary::Get_DisconnectedGraph(1);
+    const auto retval = TransformDisconnected::getComponentsJoinSingletons(*graph);
+    ASSERT_EQ(Single(Single(retval)), 0);
+}
+
+TEST(IGraphIsomorphismTransformTest, GetComponentsJoinSingletons_CoDiamond)
+{
+    const auto cograph = UndirectedGraphLibrary::Get_Diamond();
+    const auto graph = UndirectedGraph::CreateComplement(*cograph);
+    const auto retval = TransformDisconnected::getComponentsJoinSingletons(graph);
+    ASSERT_EQ(retval.size(), 2);
+    ASSERT_EQ(retval.at(0), (std::vector<Vertex>{0, 3}));
+    ASSERT_EQ(retval.at(1), (std::vector<Vertex>{1, 2}));
+}
+
+TEST(IGraphIsomorphismTransformTest, GetComponentsJoinSingletons_CoPan3)
+{
+    const auto cograph = UndirectedGraphFromG6::Create(UndirectedGraphFromG6::pan3);
+    const auto graph = UndirectedGraph::CreateComplement(*cograph);
+    const auto retval = TransformDisconnected::getComponentsJoinSingletons(graph);
+    ASSERT_EQ(retval.size(), 2);
+    ASSERT_EQ(retval.at(0), (std::vector<Vertex>{0, 1, 3}));
+    ASSERT_EQ(retval.at(1), (std::vector<Vertex>{2}));
+}
+
+TEST(IGraphIsomorphismTransformTest, GetComponentsJoinSingletons_X197)
+{
+    const auto graph = UndirectedGraphFromG6::Create(UndirectedGraphFromG6::X197);
+    const auto retval = TransformDisconnected::getComponentsJoinSingletons(*graph);
+    ASSERT_EQ(retval.size(), 3);
+    ASSERT_EQ(retval.at(0), (std::vector<Vertex>{0, 1, 2}));
+    ASSERT_EQ(retval.at(1), (std::vector<Vertex>{3, 4}));
+    ASSERT_EQ(retval.at(2), (std::vector<Vertex>{5}));
+}

@@ -82,6 +82,8 @@ class TransformDisconnected : public ITransform
     std::string getDescription() const override;
     const std::vector<std::shared_ptr<TaggedGraph>> &getChildren() const override;
 
+    static std::vector<std::vector<Graph::Vertex>> getComponentsJoinSingletons(const Graph::IGraphUs &);
+
   private:
     TransformDisconnected(const std::shared_ptr<TaggedGraph> &);
 
