@@ -1,9 +1,6 @@
 #include <gtest/gtest.h>
 
-// #include "Defines.h"
 #include "GraphIsomorphismTaggedGraph.h"
-// #include "GraphIsomorphismTaggerNumbers.h"
-// #include "GraphIsomorphismUtils.h"
 #include "GraphIsomorphismDecomposeTree.h"
 #include "Single.h"
 #include "UndirectedGraphFromG6.h"
@@ -60,7 +57,7 @@ void CheckDecompose(const DecomposeTree &decomposeTree, int expectNumLeaves = -1
         const auto permutation = Permutation::CreateRandomShuffle(trivial, n);
         const auto graphPermuted = UndirectedGraph::CreatePermuted(graph, permutation);
         const auto decomposedPermuted = IDecompose::Create(graphPermuted);
-        const GraphIsomorphism::ToParentMap decomposeTreePermuted(decomposed.get());
+        const DecomposeTree decomposeTreePermuted(decomposed.get());
         CheckVertexConservation(decomposeTreePermuted, expectNumLeaves);
         const auto cmp = decomposeTree <=> decomposeTreePermuted;
         ASSERT_TRUE(cmp == std::weak_ordering::equivalent);
@@ -81,14 +78,14 @@ void CheckDecomposeList(const std::vector<std::string> &g6list, Tag expectMultip
     str::transform(graphs, decomposedGraphs.begin(),
                    [](const auto &g) { return GraphIsomorphism::IDecompose::Create(*g); });
 
-    std::vector<GraphIsomorphism::ToParentMap> decomposeTreeMaps;
+    std::vector<DecomposeTree> decomposeTreeMaps;
     str::transform(decomposedGraphs, std::back_inserter(decomposeTreeMaps),
-                   [](const auto &dg) { return GraphIsomorphism::ToParentMap(dg.get()); });
+                   [](const auto &dg) { return DecomposeTree(dg.get()); });
 
-    std::map<GraphIsomorphism::ToParentMap, size_t> multiplicityMap;
+    std::map<DecomposeTree, size_t> multiplicityMap;
     for (const auto &dg : decomposedGraphs)
     {
-        const GraphIsomorphism::ToParentMap tpm(dg.get());
+        const DecomposeTree tpm(dg.get());
         multiplicityMap[tpm] += 1;
     }
 
@@ -108,14 +105,14 @@ void PrintMultipleDecompositions(const std::vector<std::string> &g6list)
     str::transform(graphs, decomposedGraphs.begin(),
                    [](const auto &g) { return GraphIsomorphism::IDecompose::Create(*g); });
 
-    std::vector<GraphIsomorphism::ToParentMap> decomposeTreeMaps;
+    std::vector<DecomposeTree> decomposeTreeMaps;
     str::transform(decomposedGraphs, std::back_inserter(decomposeTreeMaps),
-                   [](const auto &dg) { return GraphIsomorphism::ToParentMap(dg.get()); });
+                   [](const auto &dg) { return DecomposeTree(dg.get()); });
 
-    std::map<GraphIsomorphism::ToParentMap, std::vector<GraphIsomorphism::ToParentMap>> multiplicityMap;
+    std::map<DecomposeTree, std::vector<DecomposeTree>> multiplicityMap;
     for (const auto &dg : decomposedGraphs)
     {
-        const GraphIsomorphism::ToParentMap tpm(dg.get());
+        const DecomposeTree tpm(dg.get());
         multiplicityMap[tpm].emplace_back(tpm);
     }
 
@@ -171,7 +168,7 @@ TEST(GraphIsomorphismDecomposeTreeTest, EdgePlusVertex)
     const auto graph = UndirectedGraphFromG6::Create("BO");
     const auto decomposed = IDecompose::Create(*graph);
     ASSERT_EQ(decomposed->getTag(), (Tag{1, 1, 2}));
-    const ToParentMap decomposeTree(decomposed.get());
+    const DecomposeTree decomposeTree(decomposed.get());
 
     const auto &grouping = decomposed->getGroupingChildren()();
     ASSERT_EQ(grouping.size(), 2);
@@ -204,7 +201,7 @@ TEST(GraphIsomorphismDecomposeTreeTest, Pan3)
 {
     const auto graph = UndirectedGraphFromG6::Create(UndirectedGraphFromG6::pan3);
     const auto decomposed = IDecompose::Create(*graph);
-    const ToParentMap decomposeTree(decomposed.get());
+    const DecomposeTree decomposeTree(decomposed.get());
     const auto leaves = decomposeTree.groupLeaves();
     ASSERT_EQ(leaves().size(), 3);
     ASSERT_EQ(leaves().at(0).size(), 1);
@@ -262,7 +259,7 @@ TEST(GraphIsomorphismDecomposeTreeTest, ComplementKnownCycle3)
     const auto complement = std::make_shared<UndirectedGraph>(UndirectedGraph::CreateComplement(*graph));
     const auto decomposed = DecomposeComplementKnown::tryCreate(*graph, complement);
     ASSERT_TRUE(static_cast<bool>(decomposed));
-    const ToParentMap decomposeTree(decomposed.get());
+    const DecomposeTree decomposeTree(decomposed.get());
     ASSERT_EQ(decomposeTree.size(), 2);
     CheckDecompose(*graph, 1);
 }
@@ -271,7 +268,7 @@ TEST(GraphIsomorphismDecomposeTreeTest, ComplementKnownSpecialCase1)
 {
     const auto graph = UndirectedGraphFromG6::Create("GJOg~{");
     const auto decomposed = IDecompose::Create(*graph);
-    const ToParentMap decomposeTree(decomposed.get());
+    const DecomposeTree decomposeTree(decomposed.get());
     const auto descr = decomposeTree.getDescriptions();
     CheckDecompose(*graph, 3);
 }
@@ -282,7 +279,7 @@ TEST(GraphIsomorphismDecomposeTreeTest, ComplementDisconnectedPath2)
     const auto complement = std::make_shared<UndirectedGraph>(UndirectedGraph::CreateComplement(*graph));
     const auto decomposed = DecomposeComplementDisconnected::tryCreate(*graph, complement);
     ASSERT_TRUE(static_cast<bool>(decomposed));
-    const ToParentMap decomposeTree(decomposed.get());
+    const DecomposeTree decomposeTree(decomposed.get());
     ASSERT_EQ(decomposeTree.size(), 4);
 }
 
@@ -292,7 +289,7 @@ TEST(GraphIsomorphismDecomposeTreeTest, ComplementDisconnectedClaw)
     const auto complement = std::make_shared<UndirectedGraph>(UndirectedGraph::CreateComplement(*graph));
     const auto decomposed = DecomposeComplementDisconnected::tryCreate(*graph, complement);
     ASSERT_TRUE(static_cast<bool>(decomposed));
-    const ToParentMap decomposeTree(decomposed.get());
+    const DecomposeTree decomposeTree(decomposed.get());
     ASSERT_EQ(decomposeTree.size(), 4);
 }
 
@@ -310,8 +307,8 @@ TEST(GraphIsomorphismDecomposeTreeTest, SpecialCase1)
 
     const auto decompose0 = IDecompose::Create(*g0);
     const auto decompose1 = IDecompose::Create(*g1);
-    const ToParentMap map0(decompose0.get());
-    const ToParentMap map1(decompose1.get());
+    const DecomposeTree map0(decompose0.get());
+    const DecomposeTree map1(decompose1.get());
     const auto cmp = map0 <=> map1;
     ASSERT_TRUE(cmp != 0);
 }
@@ -327,8 +324,8 @@ TEST(GraphIsomorphismDecomposeTreeTest, SpecialCase2)
 
     const auto decompose0 = IDecompose::Create(*g0);
     const auto decompose1 = IDecompose::Create(*g1);
-    const ToParentMap map0(decompose0.get());
-    const ToParentMap map1(decompose1.get());
+    const DecomposeTree map0(decompose0.get());
+    const DecomposeTree map1(decompose1.get());
     const auto cmp = map0 <=> map1;
     ASSERT_TRUE(cmp != 0);
 }
@@ -339,7 +336,7 @@ TEST(GraphIsomorphismDecomposeTreeTest, SpecialCase3)
     const auto decompose = IDecompose::Create(*graph);
     ASSERT_FALSE(decompose->isLeaf());
 
-    const ToParentMap decomposeTree(decompose.get());
+    const DecomposeTree decomposeTree(decompose.get());
     const auto leaves = decomposeTree.getLeaves();
     ASSERT_EQ(leaves.size(), 2);
     const auto grouping = decomposeTree.groupLeaves();
@@ -355,7 +352,7 @@ TEST(GraphIsomorphismDecomposeTreeTest, SpecialCase4)
     const auto decompose = IDecompose::Create(*graph);
     ASSERT_FALSE(decompose->isLeaf());
 
-    const ToParentMap decomposeTree(decompose.get());
+    const DecomposeTree decomposeTree(decompose.get());
     const auto leaves = decomposeTree.getLeaves();
     ASSERT_EQ(leaves.size(), 2);
     const auto grouping = decomposeTree.groupLeaves();
@@ -381,7 +378,7 @@ TEST(GraphIsomorphismDecomposeTreeTest, SpecialCase5)
     const auto decompose = IDecompose::Create(*graph);
     ASSERT_FALSE(decompose->isLeaf());
 
-    const ToParentMap decomposeTree(decompose.get());
+    const DecomposeTree decomposeTree(decompose.get());
     const auto leaves = decomposeTree.getLeaves();
     ASSERT_EQ(leaves.size(), 3);
     const auto grouping = decomposeTree.groupLeaves();
@@ -412,8 +409,8 @@ TEST(GraphIsomorphismDecomposeTreeTest, SpecialCase6)
 
     const auto decompose0 = IDecompose::Create(*g0);
     const auto decompose1 = IDecompose::Create(*g1);
-    const ToParentMap map0(decompose0.get());
-    const ToParentMap map1(decompose1.get());
+    const DecomposeTree map0(decompose0.get());
+    const DecomposeTree map1(decompose1.get());
 
     auto tmp0 = map0.getDescriptions();
     auto tmp1 = map1.getDescriptions();
@@ -461,7 +458,7 @@ TEST(GraphIsomorphismDecomposeTreeTest, OmitEdgesDiamond)
 {
     const auto graph = UndirectedGraphLibrary::Get_Bull();
     const auto decomposed = DecomposeOmitEdges::tryCreate(*graph);
-    const ToParentMap decomposeTree(decomposed.get());
+    const DecomposeTree decomposeTree(decomposed.get());
     const auto descr = decomposeTree.getDescriptions();
     ASSERT_EQ(decomposeTree.size(), 2);
     // Leaf: path of length 5
@@ -474,7 +471,7 @@ TEST(GraphIsomorphismDecomposeTreeTest, OmitEdgesH)
 {
     const auto graph = UndirectedGraphFromG6::Create("EgSG");
     const auto decomposed = DecomposeOmitEdges::tryCreate(*graph);
-    const ToParentMap decomposeTree(decomposed.get());
+    const DecomposeTree decomposeTree(decomposed.get());
     const auto descr = decomposeTree.getDescriptions();
     ASSERT_EQ(decomposeTree.size(), 4);
     // Leaves: 2 paths of length 3
