@@ -8,6 +8,7 @@ namespace GraphIsomorphism
 class DecomposeTree
 {
   public:
+    DecomposeTree(const Graph::IGraphUs &);
     DecomposeTree(std::unique_ptr<DecomposeNode> &&);
     const DecomposeNode &getRoot() const;
     std::vector<const DecomposeNode *> getLeaves() const;
@@ -20,10 +21,10 @@ class DecomposeTree
     std::weak_ordering operator<=>(const DecomposeTree &) const;
 
     const DecomposeNode *getParent(const DecomposeNode *) const;
+    std::vector<Tag> collectDecomposeTagsForLeaf(const DecomposeNode *) const;
 
   private:
     std::unique_ptr<DecomposeNode> m_root;
-    std::vector<Tag> collectDecomposeTagsForLeaf(const DecomposeNode *) const;
 
     std::map<const DecomposeNode *, const DecomposeNode *> m_toParent;
 };

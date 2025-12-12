@@ -26,6 +26,12 @@ void AddToParentMapRecur(const DecomposeNode *current, const DecomposeNode *pare
 
 } // namespace
 
+DecomposeTree::DecomposeTree(const Graph::IGraphUs &graph)
+    : DecomposeTree(DecomposeNode::Create(std::make_shared<TaggedGraph>(graph)))
+{
+    // Empty
+}
+
 DecomposeTree::DecomposeTree(std::unique_ptr<DecomposeNode> &&root) : m_root(std::move(root))
 {
     AddToParentMapRecur(m_root.get(), nullptr, m_toParent);
@@ -45,8 +51,6 @@ const DecomposeNode *DecomposeTree::getParent(const DecomposeNode *ptr) const
 {
     return m_toParent.at(ptr);
 }
-
-
 
 std::vector<const DecomposeNode *> DecomposeTree::getLeaves() const
 {
