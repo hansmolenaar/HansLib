@@ -198,14 +198,41 @@ TEST(GraphIsomorphismDecomposeTreeTest, EdgePlusVertex)
     CheckDecompose(*graph, 2);
 }
 
-#if false
 TEST(GraphIsomorphismDecomposeTreeTest, Diamond)
 {
     const auto graph = UndirectedGraphLibrary::Get_Diamond();
-    const auto decomposed = IDecompose::Create(*graph);
-    CheckDecompose(*graph, 2);
+    const DecomposeTree decomposeTree(*graph);
+
+    const auto grouping = decomposeTree.groupLeaves()();
+    ASSERT_EQ(grouping.size(), 2);
+
+    const auto *child0 = Single(grouping.at(0));
+    ASSERT_EQ(child0->getGraph().getNumVertices(), 2);
+    ASSERT_EQ(child0->getTag(), (Tag{1, 1, 2}));
+    ASSERT_TRUE(child0->isLeaf());
+
+    const auto *child1 = Single(grouping.at(1));
+    ASSERT_EQ(child1->getGraph().getNumVertices(), 2);
+    ASSERT_EQ(child1->getTag(), (Tag{1, 4, 2}));
+    ASSERT_TRUE(child1->isLeaf());
+
+    const auto tag0 = decomposeTree.collectDecomposeTagsForLeaf(child0);
+    const auto tag1 = decomposeTree.collectDecomposeTagsForLeaf(child1);
+    ASSERT_EQ(tag0, (std::vector<Tag>{Tag{1, 1, 2}, Tag{3, 2, 2}}));
+    ASSERT_EQ(tag1, (std::vector<Tag>{Tag{1, 4, 2}, Tag{3, 2, 2}}));
+
+    const auto descr = decomposeTree.getDescriptions();
+    ASSERT_EQ(descr.size(), 2);
+    ASSERT_EQ(descr.at(0), "Known graph: completely disconnected graph of order 2 -> Complement is disconnected graph "
+                           "with components of order: 2 2");
+    ASSERT_EQ(
+        descr.at(1),
+        "Known graph: complete graph of order 2 -> Complement is disconnected graph with components of order: 2 2");
+
+    CheckDecompose(decomposeTree, 2);
 }
 
+#if false
 TEST(GraphIsomorphismDecomposeTreeTest, Pan3)
 {
     const auto graph = UndirectedGraphFromG6::Create(UndirectedGraphFromG6::pan3);

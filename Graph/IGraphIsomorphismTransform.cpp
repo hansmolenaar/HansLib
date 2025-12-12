@@ -34,6 +34,12 @@ std::unique_ptr<ITransform> ITransform::Create(const std::shared_ptr<TaggedGraph
         return transformDisconnected;
     }
 
+    auto transformComplementDisconnected = TransformComplementDisconnected::tryCreate(tgraph);
+    if (transformComplementDisconnected)
+    {
+        return transformComplementDisconnected;
+    }
+
     // Return failure
     return std::make_unique<TransformFailure>(tgraph);
 }

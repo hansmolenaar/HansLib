@@ -52,7 +52,7 @@ TEST(IGraphIsomorphismTransformTest, KnownPath4)
 
 TEST(IGraphIsomorphismTransformTest, UnKnown)
 {
-    const auto graph = UndirectedGraphLibrary::Get_Butterfly();
+    const auto graph = UndirectedGraphFromG6::Create(UndirectedGraphFromG6::X84);
     const auto tgraph = std::make_shared<TaggedGraph>(*graph);
 
     const auto transformKnown = TransformKnown::tryCreate(tgraph);
@@ -63,7 +63,7 @@ TEST(IGraphIsomorphismTransformTest, UnKnown)
     TestInterface(*transform);
 
     ASSERT_EQ(transform->getTagOfTransform(), (Tag{0}));
-    ASSERT_EQ(transform->getDescription(), "Graph of order 5 cannot be transformed");
+    ASSERT_EQ(transform->getDescription(), "Graph of order 6 cannot be transformed");
     ASSERT_TRUE(transform->getChildren().empty());
 }
 
