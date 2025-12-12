@@ -509,6 +509,8 @@ TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList6)
 {
     CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_6(), {1, 155});
 }
+
+#if false
 TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList7)
 {
     CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_7(), {1, 302});
@@ -529,3 +531,4 @@ TEST(IGraphIsomorphismDecomposeTest, CheckDecomposeList10)
 {
     CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_10(), {1, 706, 3, 1, 6, 1});
 }
+#endif

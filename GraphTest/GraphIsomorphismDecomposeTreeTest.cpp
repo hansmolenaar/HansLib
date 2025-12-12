@@ -232,26 +232,37 @@ TEST(GraphIsomorphismDecomposeTreeTest, Diamond)
     CheckDecompose(decomposeTree, 2);
 }
 
-#if false
 TEST(GraphIsomorphismDecomposeTreeTest, Pan3)
 {
     const auto graph = UndirectedGraphFromG6::Create(UndirectedGraphFromG6::pan3);
-    const auto decomposed = IDecompose::Create(*graph);
-    const DecomposeTree decomposeTree(decomposed.get());
+    const DecomposeTree decomposeTree(*graph);
     const auto leaves = decomposeTree.groupLeaves();
     ASSERT_EQ(leaves().size(), 3);
+
+    const auto descr = decomposeTree.getDescriptions();
+    ASSERT_EQ(descr.size(), 3);
+    ASSERT_EQ(descr.at(0), "Known graph: complete graph of order 1 -> Disconnected graph with components of order: 1 2 "
+                           "-> Complement is disconnected graph with components of order: 1 3");
+    ASSERT_EQ(
+        descr.at(1),
+        "Known graph: complete graph of order 1 -> Complement is disconnected graph with components of order: 1 3");
+    ASSERT_EQ(descr.at(2), "Known graph: complete graph of order 2 -> Disconnected graph with components of order: 1 2 "
+                           "-> Complement is disconnected graph with components of order: 1 3");
+
     ASSERT_EQ(leaves().at(0).size(), 1);
     ASSERT_EQ(leaves().at(1).size(), 1);
     ASSERT_EQ(leaves().at(2).size(), 1);
-    ASSERT_EQ(leaves().at(0).front()->getTag(), (Tag{3, 1, 1}));
-    ASSERT_EQ(leaves().at(1).front()->getTag(), (Tag{3, 1, 1}));
-    ASSERT_EQ(leaves().at(2).front()->getTag(), (Tag{3, 1, 2}));
-    ASSERT_EQ(decomposeTree.getVertexInRoot(0, leaves().at(0).front()), 3);
-    ASSERT_EQ(decomposeTree.getVertexInRoot(0, leaves().at(1).front()), 2);
-    ASSERT_EQ(decomposeTree.getVertexInRoot(0, leaves().at(2).front()), 0);
-    ASSERT_EQ(decomposeTree.getVertexInRoot(1, leaves().at(2).front()), 1);
+    ASSERT_EQ(leaves().at(0).front()->getTag(), (Tag{1, 1, 1}));
+    ASSERT_EQ(leaves().at(1).front()->getTag(), (Tag{1, 1, 1}));
+    ASSERT_EQ(leaves().at(2).front()->getTag(), (Tag{1, 1, 2}));
+    ASSERT_EQ(decomposeTree.getVertexInRoot(0, *leaves().at(0).front()), 3);
+    ASSERT_EQ(decomposeTree.getVertexInRoot(0, *leaves().at(1).front()), 2);
+    ASSERT_EQ(decomposeTree.getVertexInRoot(0, *leaves().at(2).front()), 0);
+    ASSERT_EQ(decomposeTree.getVertexInRoot(1, *leaves().at(2).front()), 1);
+    CheckDecompose(decomposeTree, 3);
 }
 
+#if false
 TEST(GraphIsomorphismDecomposeTreeTest, Paw)
 {
     const auto graph = UndirectedGraphFromG6::Create("Cx");
