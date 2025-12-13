@@ -62,6 +62,9 @@ std::vector<const DecomposeNode *> DecomposeTree::getLeaves() const
             result.push_back(itr.first);
         }
     }
+    auto compare = [](const DecomposeNode *child1, const DecomposeNode *child2) { return *child1 < *child2; };
+    str::sort(result, compare);
+
     return result;
 }
 

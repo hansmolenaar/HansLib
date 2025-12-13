@@ -45,10 +45,10 @@ void CheckVertexConservation(const GraphIsomorphism::DecomposeTree &decomposeTre
 
 void CheckDecompose(const DecomposeTree &decomposeTree, int expectNumLeaves = -1)
 {
+    const auto &graph = decomposeTree.getRoot().getGraph();
     expectNumLeaves = expectNumLeaves > 0 ? expectNumLeaves : decomposeTree.getLeaves().size();
     CheckVertexConservation(decomposeTree, expectNumLeaves);
 
-#if false
     // Try some permutations
     constexpr size_t numPermutation = 3;
     const Permutation trivial = Permutation::CreateTrivial(graph.getNumVertices());
@@ -56,13 +56,11 @@ void CheckDecompose(const DecomposeTree &decomposeTree, int expectNumLeaves = -1
     {
         const auto permutation = Permutation::CreateRandomShuffle(trivial, n);
         const auto graphPermuted = UndirectedGraph::CreatePermuted(graph, permutation);
-        const auto decomposedPermuted = IDecompose::Create(graphPermuted);
-        const DecomposeTree decomposeTreePermuted(decomposed.get());
+        const DecomposeTree decomposeTreePermuted(graphPermuted);
         CheckVertexConservation(decomposeTreePermuted, expectNumLeaves);
         const auto cmp = decomposeTree <=> decomposeTreePermuted;
         ASSERT_TRUE(cmp == std::weak_ordering::equivalent);
     }
-#endif
 }
 
 #if false
@@ -192,9 +190,9 @@ TEST(GraphIsomorphismDecomposeTreeTest, EdgePlusVertex)
     const auto descr = decomposeTree.getDescriptions();
     ASSERT_EQ(descr.size(), 2);
     ASSERT_EQ(descr.at(0),
-              "Known graph: complete graph of order 2 -> Disconnected graph with components of order: 1 2");
-    ASSERT_EQ(descr.at(1),
               "Known graph: complete graph of order 1 -> Disconnected graph with components of order: 1 2");
+    ASSERT_EQ(descr.at(1),
+              "Known graph: complete graph of order 2 -> Disconnected graph with components of order: 1 2");
     CheckDecompose(*graph, 2);
 }
 
@@ -223,11 +221,11 @@ TEST(GraphIsomorphismDecomposeTreeTest, Diamond)
 
     const auto descr = decomposeTree.getDescriptions();
     ASSERT_EQ(descr.size(), 2);
-    ASSERT_EQ(descr.at(0), "Known graph: completely disconnected graph of order 2 -> Complement is disconnected graph "
-                           "with components of order: 2 2");
     ASSERT_EQ(
-        descr.at(1),
+        descr.at(0),
         "Known graph: complete graph of order 2 -> Complement is disconnected graph with components of order: 2 2");
+    ASSERT_EQ(descr.at(1), "Known graph: completely disconnected graph of order 2 -> Complement is disconnected graph "
+                           "with components of order: 2 2");
 
     CheckDecompose(decomposeTree, 2);
 }
@@ -241,11 +239,11 @@ TEST(GraphIsomorphismDecomposeTreeTest, Pan3)
 
     const auto descr = decomposeTree.getDescriptions();
     ASSERT_EQ(descr.size(), 3);
-    ASSERT_EQ(descr.at(0), "Known graph: complete graph of order 1 -> Disconnected graph with components of order: 1 2 "
-                           "-> Complement is disconnected graph with components of order: 1 3");
     ASSERT_EQ(
-        descr.at(1),
+        descr.at(0),
         "Known graph: complete graph of order 1 -> Complement is disconnected graph with components of order: 1 3");
+    ASSERT_EQ(descr.at(1), "Known graph: complete graph of order 1 -> Disconnected graph with components of order: 1 2 "
+                           "-> Complement is disconnected graph with components of order: 1 3");
     ASSERT_EQ(descr.at(2), "Known graph: complete graph of order 2 -> Disconnected graph with components of order: 1 2 "
                            "-> Complement is disconnected graph with components of order: 1 3");
 
