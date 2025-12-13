@@ -40,6 +40,13 @@ std::unique_ptr<ITransform> ITransform::Create(const std::shared_ptr<TaggedGraph
         return transformComplementDisconnected;
     }
 
+    auto transformComplementKnown = TransformComplementKnown::tryCreate(tgraph);
+    if (transformComplementKnown)
+    {
+        return transformComplementKnown;
+    }
+
+
     // Return failure
     return std::make_unique<TransformFailure>(tgraph);
 }
@@ -250,4 +257,43 @@ std::string TransformComplementDisconnected::getDescription() const
         result += " " + std::to_string(*itr);
     }
     return result;
+}
+
+// !!!!!!!!!!!!! TransformComplemntKnown
+
+std::unique_ptr<TransformComplementKnown> TransformComplementKnown::tryCreate(
+    const std::shared_ptr<TaggedGraph> &tgraph)
+{
+    const std::unique_ptr<UndirectedGraph> complement =
+        std::make_unique<UndirectedGraph>(UndirectedGraph::CreateComplement(tgraph->getGraph()));
+   const TaggerKnown taggerKnown(*complement);
+    if (taggerKnown.getGraphTag().front() == TaggerKnown::KnownType::Unknown)
+    {
+        return {};
+    }
+    return std::unique_ptr<TransformComplementKnown>(new TransformComplementKnown(tgraph, taggerKnown));
+}
+
+TransformComplementKnown::TransformComplementKnown(
+    const std::shared_ptr<TaggedGraph> &tgraph, const TaggerKnown& tagger)
+    : ITransform(tgraph), m_taggerKnown(std::move(tagger)),  m_tag{ITransform::Type::ComplementKnown}
+{
+  const auto &tag = m_taggerKnown.getGraphTag();
+    MyAssert(tag.front() != TaggerKnown::KnownType::Unknown);
+    m_tag.insert(m_tag.end(), tag.begin(), tag.end());
+}
+
+const Tag &TransformComplementKnown::getTagOfTransform() const
+{
+    return m_tag;
+}
+
+const std::vector<std::shared_ptr<TaggedGraph>> &TransformComplementKnown::getChildren() const
+{
+    return s_noChildren;
+}
+
+std::string TransformComplementKnown::getDescription() const
+{
+    return "Complement is known graph: " + m_taggerKnown.getDescription();
 }

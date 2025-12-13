@@ -193,7 +193,7 @@ TEST(GraphIsomorphismDecomposeTreeTest, EdgePlusVertex)
               "Known graph: complete graph of order 1 -> Disconnected graph with components of order: 1 2");
     ASSERT_EQ(descr.at(1),
               "Known graph: complete graph of order 2 -> Disconnected graph with components of order: 1 2");
-    CheckDecompose(*graph, 2);
+    CheckDecompose(decomposeTree, 2);
 }
 
 TEST(GraphIsomorphismDecomposeTreeTest, Diamond)
@@ -260,64 +260,64 @@ TEST(GraphIsomorphismDecomposeTreeTest, Pan3)
     CheckDecompose(decomposeTree, 3);
 }
 
-#if false
-TEST(GraphIsomorphismDecomposeTreeTest, Paw)
-{
-    const auto graph = UndirectedGraphFromG6::Create("Cx");
-    const auto decomposed = IDecompose::Create(*graph);
-    CheckDecompose(*graph, 3);
-}
-
 TEST(GraphIsomorphismDecomposeTreeTest, Dart)
 {
     const auto graph = UndirectedGraphFromG6::Create("DvC");
-    const auto decomposed = IDecompose::Create(*graph);
-    CheckDecompose(*graph, 3);
+    const DecomposeTree decomposeTree(*graph);
+    CheckDecompose(decomposeTree, 3);
 }
 
 TEST(GraphIsomorphismDecomposeTreeTest, K5MinE)
 {
     const auto graph = UndirectedGraphFromG6::Create("D~k");
-    const auto decomposed = IDecompose::Create(*graph);
-    CheckDecompose(*graph, 2);
+    const DecomposeTree decomposeTree(*graph);
+    CheckDecompose(decomposeTree, 2);
 }
 
 TEST(GraphIsomorphismDecomposeTreeTest, Gem)
 {
     const auto graph = UndirectedGraphFromG6::Create("Dh{");
-    const auto decomposed = IDecompose::Create(*graph);
-    CheckDecompose(*graph, 2);
+    const DecomposeTree decomposeTree(*graph);
+    CheckDecompose(decomposeTree, 2);
+}
+
+TEST(GraphIsomorphismDecomposeTreeTest, ComplementKnownCycle6)
+{
+    const auto graph = UndirectedGraphLibrary::Get_Cycle(6);
+    const auto complement = std::make_shared<UndirectedGraph>(UndirectedGraph::CreateComplement(*graph));
+    const DecomposeTree decomposeTree(*complement);
+    CheckDecompose(decomposeTree, 1);
+    const auto descr = decomposeTree.getDescriptions();
+    ASSERT_EQ(Single(descr), "Complement is known graph: cycle of order 6");
+    const auto tag = decomposeTree.collectDecomposeTagsForLeaf(&decomposeTree.getRoot());
+    ASSERT_EQ(Single(tag), (Tag{4, 2, 6}));
 }
 
 TEST(GraphIsomorphismDecomposeTreeTest, ComplementKnownHouse)
 {
     const auto house = UndirectedGraphFromG6::Create("DUw");
     const auto complement = std::make_shared<UndirectedGraph>(UndirectedGraph::CreateComplement(*house));
-    const auto decomposed = DecomposeComplementKnown::tryCreate(*house, complement);
-    ASSERT_TRUE(static_cast<bool>(decomposed));
-    CheckDecompose(*house, 1);
-}
-
-TEST(GraphIsomorphismDecomposeTreeTest, ComplementKnownCycle3)
-{
-    const auto graph = UndirectedGraphLibrary::Get_Cycle(3);
-    const auto complement = std::make_shared<UndirectedGraph>(UndirectedGraph::CreateComplement(*graph));
-    const auto decomposed = DecomposeComplementKnown::tryCreate(*graph, complement);
-    ASSERT_TRUE(static_cast<bool>(decomposed));
-    const DecomposeTree decomposeTree(decomposed.get());
-    ASSERT_EQ(decomposeTree.size(), 2);
-    CheckDecompose(*graph, 1);
+    const DecomposeTree decomposeTree(*complement);
+    CheckDecompose(decomposeTree, 1);
 }
 
 TEST(GraphIsomorphismDecomposeTreeTest, ComplementKnownSpecialCase1)
 {
     const auto graph = UndirectedGraphFromG6::Create("GJOg~{");
-    const auto decomposed = IDecompose::Create(*graph);
-    const DecomposeTree decomposeTree(decomposed.get());
+    const DecomposeTree decomposeTree(*graph);
+    CheckDecompose(decomposeTree, 3);
     const auto descr = decomposeTree.getDescriptions();
-    CheckDecompose(*graph, 3);
+    ASSERT_EQ(descr.size(), 3);
+    ASSERT_EQ(descr.at(0), "Known graph: complete graph of order 1 -> Disconnected graph with components of order: 1 6 "
+                           "-> Complement is disconnected graph with components of order: 1 7");
+    ASSERT_EQ(
+        descr.at(1),
+        "Known graph: complete graph of order 1 -> Complement is disconnected graph with components of order: 1 7");
+    ASSERT_EQ(descr.at(2), "Complement is known graph: cycle of order 6 -> Disconnected graph with components of "
+                           "order: 1 6 -> Complement is disconnected graph with components of order: 1 7");
 }
 
+#if false
 TEST(GraphIsomorphismDecomposeTreeTest, ComplementDisconnectedPath2)
 {
     const auto graph = UndirectedGraphLibrary::Get_Path(2);

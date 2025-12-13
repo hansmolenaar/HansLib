@@ -8,8 +8,8 @@ namespace GraphIsomorphism
 class DecomposeTree
 {
   public:
-    DecomposeTree(const Graph::IGraphUs &);
-    DecomposeTree(std::unique_ptr<DecomposeNode> &&);
+    explicit DecomposeTree(const Graph::IGraphUs &);
+    explicit DecomposeTree(std::unique_ptr<DecomposeNode> &&);
     const DecomposeNode &getRoot() const;
     std::vector<const DecomposeNode *> getLeaves() const;
     size_t size() const;
