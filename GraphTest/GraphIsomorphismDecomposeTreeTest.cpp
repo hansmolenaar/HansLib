@@ -333,17 +333,14 @@ TEST(GraphIsomorphismDecomposeTreeTest, X100)
                            "Complement is disconnected graph with components of order: 1 6");
 }
 
-#if false
 TEST(GraphIsomorphismDecomposeTreeTest, SpecialCase1)
 {
     const auto g0 = UndirectedGraphFromG6::CreateConnected("F@h^w");
     const auto g1 = UndirectedGraphFromG6::CreateConnected("F?lvw");
 
-    const auto decompose0 = IDecompose::Create(*g0);
-    const auto decompose1 = IDecompose::Create(*g1);
-    const DecomposeTree map0(decompose0.get());
-    const DecomposeTree map1(decompose1.get());
-    const auto cmp = map0 <=> map1;
+    const DecomposeTree decomposeTree0(*g0);
+    const DecomposeTree decomposeTree1(*g1);
+    const auto cmp = decomposeTree0 <=> decomposeTree1;
     ASSERT_TRUE(cmp != 0);
 }
 
@@ -356,63 +353,67 @@ TEST(GraphIsomorphismDecomposeTreeTest, SpecialCase2)
     const auto tgCompare = tg0 <=> tg1;
     ASSERT_TRUE(tgCompare != 0);
 
-    const auto decompose0 = IDecompose::Create(*g0);
-    const auto decompose1 = IDecompose::Create(*g1);
-    const DecomposeTree map0(decompose0.get());
-    const DecomposeTree map1(decompose1.get());
-    const auto cmp = map0 <=> map1;
+    const DecomposeTree decomposeTree0(*g0);
+    const DecomposeTree decomposeTree1(*g1);
+    const auto cmp = decomposeTree0 <=> decomposeTree1;
     ASSERT_TRUE(cmp != 0);
 }
 
 TEST(GraphIsomorphismDecomposeTreeTest, SpecialCase3)
 {
     const auto graph = UndirectedGraphFromG6::Create("D]w");
-    const auto decompose = IDecompose::Create(*graph);
-    ASSERT_FALSE(decompose->isLeaf());
+    const DecomposeTree decomposeTree(*graph);
+    CheckDecompose(decomposeTree, 3);
 
-    const DecomposeTree decomposeTree(decompose.get());
     const auto leaves = decomposeTree.getLeaves();
-    ASSERT_EQ(leaves.size(), 2);
+    ASSERT_EQ(leaves.size(), 3);
     const auto grouping = decomposeTree.groupLeaves();
-    ASSERT_EQ(grouping().size(), 2);
-    ASSERT_EQ(grouping().at(0).front()->getTag(), (Tag{3, 1, 2}));
-    ASSERT_EQ(grouping().at(1).front()->getTag(), (Tag{3, 1, 3}));
+    ASSERT_EQ(grouping().size(), 3);
+    ASSERT_EQ(grouping().at(0).front()->getTag(), (Tag{1, 1, 1}));
+    ASSERT_EQ(grouping().at(1).front()->getTag(), (Tag{1, 1, 2}));
+    ASSERT_EQ(grouping().at(2).front()->getTag(), (Tag{1, 4, 2}));
+
+    const auto descr = decomposeTree.getDescriptions();
+    ASSERT_EQ(descr.size(), 3);
+    ASSERT_EQ(descr.at(0), "Known graph: complete graph of order 1 -> Disconnected graph with components of order: 1 2 "
+                           "-> Complement is disconnected graph with components of order: 2 3");
+    ASSERT_EQ(descr.at(1), "Known graph: complete graph of order 2 -> Disconnected graph with components of order: 1 2 "
+                           "-> Complement is disconnected graph with components of order: 2 3");
+    ASSERT_EQ(descr.at(2), "Known graph: completely disconnected graph of order 2 -> Complement is disconnected graph "
+                           "with components of order: 2 3");
 }
 
 TEST(GraphIsomorphismDecomposeTreeTest, SpecialCase4)
 {
     // Bipartite (2,3)
     const auto graph = UndirectedGraphFromG6::Create("DFw");
-    const auto decompose = IDecompose::Create(*graph);
-    ASSERT_FALSE(decompose->isLeaf());
+    const DecomposeTree decomposeTree(*graph);
+    CheckDecompose(decomposeTree, 2);
 
-    const DecomposeTree decomposeTree(decompose.get());
     const auto leaves = decomposeTree.getLeaves();
     ASSERT_EQ(leaves.size(), 2);
     const auto grouping = decomposeTree.groupLeaves();
     ASSERT_EQ(grouping().size(), 2);
     const auto *leaf2 = Single(grouping().at(0));
     const auto *leaf3 = Single(grouping().at(1));
-    ASSERT_EQ(leaf2->getTag(), (Tag{3, 1, 2}));
-    ASSERT_EQ(leaf3->getTag(), (Tag{3, 1, 3}));
-    ASSERT_EQ(decomposeTree.collectDecomposeTagsForLeaf(leaf2), (std::vector<Tag>{{3, 1, 2}, {1, 2, 3}, {6}}));
-    ASSERT_EQ(decomposeTree.collectDecomposeTagsForLeaf(leaf3), (std::vector<Tag>{{3, 1, 3}, {1, 2, 3}, {6}}));
-    ASSERT_EQ(decomposeTree.getVertexInRoot(0, leaf2), 3);
-    ASSERT_EQ(decomposeTree.getVertexInRoot(1, leaf2), 4);
-    ASSERT_EQ(decomposeTree.getVertexInRoot(0, leaf3), 0);
-    ASSERT_EQ(decomposeTree.getVertexInRoot(1, leaf3), 1);
-    ASSERT_EQ(decomposeTree.getVertexInRoot(2, leaf3), 2);
-    CheckVertexConservation(decomposeTree, 2);
+    ASSERT_EQ(leaf2->getTag(), (Tag{1, 4, 2}));
+    ASSERT_EQ(leaf3->getTag(), (Tag{1, 4, 3}));
+    ASSERT_EQ(decomposeTree.collectDecomposeTagsForLeaf(leaf2), (std::vector<Tag>{{1, 4, 2}, {3, 2, 3}}));
+    ASSERT_EQ(decomposeTree.collectDecomposeTagsForLeaf(leaf3), (std::vector<Tag>{{1, 4, 3}, {3, 2, 3}}));
+    ASSERT_EQ(decomposeTree.getVertexInRoot(0, *leaf2), 3);
+    ASSERT_EQ(decomposeTree.getVertexInRoot(1, *leaf2), 4);
+    ASSERT_EQ(decomposeTree.getVertexInRoot(0, *leaf3), 0);
+    ASSERT_EQ(decomposeTree.getVertexInRoot(1, *leaf3), 1);
+    ASSERT_EQ(decomposeTree.getVertexInRoot(2, *leaf3), 2);
 }
 
 TEST(GraphIsomorphismDecomposeTreeTest, SpecialCase5)
 {
-    // Bipartite (2,3) + singletom
+    // Bipartite (2,3) + singleton
     const auto graph = UndirectedGraphFromG6::Create("E?\\o");
-    const auto decompose = IDecompose::Create(*graph);
-    ASSERT_FALSE(decompose->isLeaf());
+    const DecomposeTree decomposeTree(*graph);
+    CheckDecompose(decomposeTree, 3);
 
-    const DecomposeTree decomposeTree(decompose.get());
     const auto leaves = decomposeTree.getLeaves();
     ASSERT_EQ(leaves.size(), 3);
     const auto grouping = decomposeTree.groupLeaves();
@@ -420,18 +421,18 @@ TEST(GraphIsomorphismDecomposeTreeTest, SpecialCase5)
     const auto *leaf1 = Single(grouping().at(0));
     const auto *leaf2 = Single(grouping().at(1));
     const auto *leaf3 = Single(grouping().at(2));
-    ASSERT_EQ(decomposeTree.collectDecomposeTagsForLeaf(leaf1), (std::vector<Tag>{{3, 1, 1}, {1, 1, 5}}));
-    ASSERT_EQ(decomposeTree.collectDecomposeTagsForLeaf(leaf2), (std::vector<Tag>{{3, 1, 2}, {1, 2, 3}, {6}, {1, 1, 5}}));
-    ASSERT_EQ(decomposeTree.collectDecomposeTagsForLeaf(leaf3), (std::vector<Tag>{{3, 1, 3}, {1, 2, 3}, {6}, {1, 1, 5}}));
-    ASSERT_EQ(decomposeTree.getVertexInRoot(0, leaf1), 0);
-    ASSERT_EQ(decomposeTree.getVertexInRoot(0, leaf2), 4);
-    ASSERT_EQ(decomposeTree.getVertexInRoot(1, leaf2), 5);
-    ASSERT_EQ(decomposeTree.getVertexInRoot(0, leaf3), 1);
-    ASSERT_EQ(decomposeTree.getVertexInRoot(1, leaf3), 2);
-    ASSERT_EQ(decomposeTree.getVertexInRoot(2, leaf3), 3);
-    CheckVertexConservation(decomposeTree, 3);
+    ASSERT_EQ(decomposeTree.collectDecomposeTagsForLeaf(leaf1), (std::vector<Tag>{{1, 1, 1}, {2, 1, 5}}));
+    ASSERT_EQ(decomposeTree.collectDecomposeTagsForLeaf(leaf2), (std::vector<Tag>{{1, 4, 2}, {3, 2, 3}, {2, 1, 5}}));
+    ASSERT_EQ(decomposeTree.collectDecomposeTagsForLeaf(leaf3), (std::vector<Tag>{{1, 4, 3}, {3, 2, 3}, {2, 1, 5}}));
+    ASSERT_EQ(decomposeTree.getVertexInRoot(0, *leaf1), 0);
+    ASSERT_EQ(decomposeTree.getVertexInRoot(0, *leaf2), 4);
+    ASSERT_EQ(decomposeTree.getVertexInRoot(1, *leaf2), 5);
+    ASSERT_EQ(decomposeTree.getVertexInRoot(0, *leaf3), 1);
+    ASSERT_EQ(decomposeTree.getVertexInRoot(1, *leaf3), 2);
+    ASSERT_EQ(decomposeTree.getVertexInRoot(2, *leaf3), 3);
 }
 
+#if false
 TEST(GraphIsomorphismDecomposeTreeTest, SpecialCase6)
 {
     const auto g0 = UndirectedGraphFromG6::Create("HR]~Mv~");
