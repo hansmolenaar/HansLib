@@ -432,43 +432,31 @@ TEST(GraphIsomorphismDecomposeTreeTest, SpecialCase5)
     ASSERT_EQ(decomposeTree.getVertexInRoot(2, *leaf3), 3);
 }
 
-#if false
 TEST(GraphIsomorphismDecomposeTreeTest, SpecialCase6)
 {
     const auto g0 = UndirectedGraphFromG6::Create("HR]~Mv~");
     const auto g1 = UndirectedGraphFromG6::Create("HRl~Mv~");
-    const TaggedGraph tg0(*g0);
-    const TaggedGraph tg1(*g1);
-    const auto tgCompare = tg0 <=> tg1;
-    ASSERT_TRUE(tgCompare == 0); // TODO :
 
-    const auto decompose0 = IDecompose::Create(*g0);
-    const auto decompose1 = IDecompose::Create(*g1);
-    const DecomposeTree map0(decompose0.get());
-    const DecomposeTree map1(decompose1.get());
+    const DecomposeTree decompose0(*g0);
+    const DecomposeTree decompose1(*g1);
 
-    auto tmp0 = map0.getDescriptions();
-    auto tmp1 = map1.getDescriptions();
-    for (const auto *leaf : map0.getLeaves())
-    {
-        if (leaf->getGraph().getNumVertices() > 2)
-        {
-            const auto grouping = leaf->getTaggedGraph().getVertexGrouping();
-            // GraphIsomorphism::toEdgeList(leaf->getGraph(), std::cout);
-        }
-    }
-    // std::cout << "\n\n\n";
+    auto descr0 = decompose0.getDescriptions();
+    EXPECT_EQ(descr0.size(), 2);
+    EXPECT_EQ(descr0.at(0), "Graph of order 8 cannot be transformed -> Omit 7 edges -> Complement is disconnected "
+                            "graph with components of order: 1 8");
+    EXPECT_EQ(
+        descr0.at(1),
+        "Known graph: complete graph of order 1 -> Complement is disconnected graph with components of order: 1 8");
 
-    for (const auto *leaf : map1.getLeaves())
-    {
-        if (leaf->getGraph().getNumVertices() > 2)
-        {
-            const auto grouping = leaf->getTaggedGraph().getVertexGrouping();
-            // GraphIsomorphism::toEdgeList(leaf->getGraph(), std::cout);
-        }
-    }
+    auto descr1 = decompose1.getDescriptions();
+    EXPECT_EQ(descr1.size(), 2);
+    EXPECT_EQ(descr1.at(0), "Graph of order 8 cannot be transformed -> Omit 7 edges -> Complement is disconnected "
+                            "graph with components of order: 1 8");
+    EXPECT_EQ(
+        descr1.at(1),
+        "Known graph: complete graph of order 1 -> Complement is disconnected graph with components of order: 1 8");
 
-    const auto cmp = map0 <=> map1;
+    const auto cmp = decompose0 <=> decompose1;
     ASSERT_TRUE(cmp != 0);
 }
 
@@ -482,42 +470,7 @@ TEST(GraphIsomorphismDecomposeTreeTest, SpecialCase7)
     ASSERT_TRUE(tgCompare != 0);
 }
 
-TEST(GraphIsomorphismDecomposeTreeTest, BullIsSelfComplement)
-{
-    const auto graph = UndirectedGraphLibrary::Get_Bull();
-    const auto decompose = IDecompose::Create(*graph);
-    ASSERT_FALSE(decompose->isLeaf());
-}
-
-TEST(GraphIsomorphismDecomposeTreeTest, OmitEdgesDiamond)
-{
-    const auto graph = UndirectedGraphLibrary::Get_Bull();
-    const auto decomposed = DecomposeOmitEdges::tryCreate(*graph);
-    const DecomposeTree decomposeTree(decomposed.get());
-    const auto descr = decomposeTree.getDescriptions();
-    ASSERT_EQ(decomposeTree.size(), 2);
-    // Leaf: path of length 5
-    const auto *leaf = Single(decomposeTree.getLeaves());
-    const auto tag = leaf->getTag();
-    ASSERT_EQ(tag, (std::vector<TagEntry>{3, 3, 5}));
-}
-
-TEST(GraphIsomorphismDecomposeTreeTest, OmitEdgesH)
-{
-    const auto graph = UndirectedGraphFromG6::Create("EgSG");
-    const auto decomposed = DecomposeOmitEdges::tryCreate(*graph);
-    const DecomposeTree decomposeTree(decomposed.get());
-    const auto descr = decomposeTree.getDescriptions();
-    ASSERT_EQ(decomposeTree.size(), 4);
-    // Leaves: 2 paths of length 3
-    const auto leaves = decomposeTree.getLeaves();
-    ASSERT_EQ(leaves.size(), 2);
-    ASSERT_EQ(leaves[0]->getTag(), (std::vector<TagEntry>{3, 3, 3}));
-    ASSERT_EQ(leaves[1]->getTag(), (std::vector<TagEntry>{3, 3, 3}));
-    const auto leafRoot = decomposeTree.getRoot()->getTag();
-    ASSERT_EQ(leafRoot, (std::vector<TagEntry>{4, 5, 1}));
-}
-
+#if false
 TEST(GraphIsomorphismDecomposeTreeTest, CheckDecomposeList3)
 {
     CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_3(), Tag{1, 4});

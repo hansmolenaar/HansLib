@@ -25,7 +25,10 @@ class ITransform
         Disconnected,
         ComplementDisconnected,
         ComplementKnown,
+        OmitEdges,
     };
+
+    static constexpr size_t numType = 6;
 
     virtual ~ITransform() = default;
 
@@ -124,13 +127,29 @@ class TransformComplementKnown : public ITransform
     std::string getDescription() const override;
     const std::vector<std::shared_ptr<TaggedGraph>> &getChildren() const override;
 
-    static std::vector<std::vector<Graph::Vertex>> getComponentsJoinSingletons(const Graph::IGraphUs &);
-
   private:
-    TransformComplementKnown(const std::shared_ptr<TaggedGraph> &, const TaggerKnown& tagger);
+    TransformComplementKnown(const std::shared_ptr<TaggedGraph> &, const TaggerKnown &tagger);
 
     TaggerKnown m_taggerKnown;
     Tag m_tag;
+};
+
+class TransformOmitEdges : public ITransform
+{
+  public:
+    static std::unique_ptr<TransformOmitEdges> tryCreate(const std::shared_ptr<TaggedGraph> &);
+
+    const Tag &getTagOfTransform() const override;
+    std::string getDescription() const override;
+    const std::vector<std::shared_ptr<TaggedGraph>> &getChildren() const override;
+
+  private:
+    TransformOmitEdges(const std::shared_ptr<TaggedGraph> &, const std::vector<std::vector<Graph::Vertex>> &);
+
+    Graph::Edge m_numOmittedEdges = 0;
+    Tag m_tag;
+    std::unique_ptr<Graph::UndirectedGraph> m_child;
+    std::vector<std::shared_ptr<TaggedGraph>> m_taggedGraphs;
 };
 
 } // namespace GraphIsomorphism

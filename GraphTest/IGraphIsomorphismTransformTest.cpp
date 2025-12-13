@@ -21,8 +21,16 @@ void TestInterface(const GraphIsomorphism::ITransform &transform)
     if (children.empty())
     {
         const bool isKnown = dynamic_cast<const GraphIsomorphism::TransformKnown *>(&transform) != nullptr;
+        const bool isComplementKnown =
+            dynamic_cast<const GraphIsomorphism::TransformComplementKnown *>(&transform) != nullptr;
         const bool isFailure = dynamic_cast<const GraphIsomorphism::TransformFailure *>(&transform) != nullptr;
-        ASSERT_TRUE(isKnown || isFailure);
+        ASSERT_TRUE(isKnown || isFailure || isComplementKnown);
+    }
+    else if (children.size() == 1)
+    {
+        const auto *subGraph = dynamic_cast<const Graph::SubGraph *>(&Single(children)->getGraph());
+        ASSERT_TRUE(subGraph == nullptr);
+        ASSERT_EQ(transform.getGraph().getNumVertices(), Single(children)->getGraph().getNumVertices());
     }
     else
     {
@@ -36,6 +44,28 @@ void TestInterface(const GraphIsomorphism::ITransform &transform)
         ASSERT_EQ(transform.getGraph().getNumVertices(), numVertices);
     }
 }
+
+void TestList(const std::vector<std::string> &g6list,
+              std::array<size_t, GraphIsomorphism::ITransform::numType> expectCountPerType)
+{
+    const std::vector<std::unique_ptr<Graph::IGraphUs>> graphs = UndirectedGraphFromG6::getGraphs(g6list);
+    size_t numFailure = 0;
+    std::array<size_t, GraphIsomorphism::ITransform::numType> count{0, 0, 0, 0, 0, 0};
+    for (const auto &ug : graphs)
+    {
+        const auto tgraph = std::make_shared<TaggedGraph>(*ug);
+        const auto transform = ITransform::Create(tgraph);
+        count[transform->getTagOfTransform().front()] += 1;
+        if (transform->getTagOfTransform().front() == ITransform::Type::Failure)
+        {
+            // std::cout << ug->getName() << std::endl;
+            numFailure += 1;
+        }
+        TestInterface(*transform);
+    }
+    ASSERT_EQ(count, expectCountPerType);
+}
+
 } // namespace
 
 TEST(IGraphIsomorphismTransformTest, KnownPath4)
@@ -141,14 +171,55 @@ TEST(IGraphIsomorphismTransformTest, GetComponentsJoinSingletons_X197)
     ASSERT_EQ(retval.at(2), (std::vector<Vertex>{5}));
 }
 
-TEST(IGraphIsomorphismTransformTest, ComplemntDisconnectedPath3)
+TEST(IGraphIsomorphismTransformTest, ComplemntKnownPath10)
 {
-    const auto graph = UndirectedGraphLibrary::Get_Path(3);
-    const auto tgraph = std::make_shared<TaggedGraph>(*graph);
-    const auto transform = TransformComplementDisconnected::tryCreate(tgraph);
+    const auto complement = UndirectedGraphLibrary::Get_Path(10);
+    const auto graph = UndirectedGraph::CreateComplement(*complement);
+    const auto tgraph = std::make_shared<TaggedGraph>(graph);
+    const auto transform = TransformComplementKnown::tryCreate(tgraph);
     ASSERT_NE(transform.get(), nullptr);
+    ASSERT_EQ(transform->getTagOfTransform(), (Tag{4, 3, 10}));
+    ASSERT_EQ(transform->getDescription(), "Complement is known graph: path of order 10");
+    ASSERT_EQ(transform->getChildren().size(), 0);
+
     TestInterface(*transform);
-    ASSERT_EQ(transform->getTagOfTransform(), (Tag{3, 1, 2}));
-    ASSERT_EQ(transform->getDescription(), "Complement is disconnected graph with components of order: 1 2");
-    ASSERT_EQ(transform->getChildren().size(), 2);
+}
+
+TEST(IGraphIsomorphismTransformTest, OmitEdgesH)
+{
+    const auto graph = UndirectedGraphFromG6::Create("EgSG");
+    const auto tgraph = std::make_shared<TaggedGraph>(*graph);
+    const auto transform = TransformOmitEdges::tryCreate(tgraph);
+    ASSERT_NE(transform.get(), nullptr);
+
+    ASSERT_EQ(transform->getTagOfTransform(), (Tag{5, 1}));
+    ASSERT_EQ(transform->getDescription(), "Omit 1 edges");
+    ASSERT_EQ(transform->getChildren().size(), 1);
+
+    TestInterface(*transform);
+}
+
+TEST(IGraphIsomorphismTransformTest, List3)
+{
+    TestList(UndirectedGraphFromG6::getListNumVertices_3(), {0, 3, 1, 0, 0, 0});
+}
+
+TEST(IGraphIsomorphismTransformTest, List4)
+{
+    TestList(UndirectedGraphFromG6::getListNumVertices_4(), {0, 4, 4, 3, 0, 0});
+}
+
+TEST(IGraphIsomorphismTransformTest, List5)
+{
+    TestList(UndirectedGraphFromG6::getListNumVertices_5(), {3, 4, 12, 12, 1, 2});
+}
+
+TEST(IGraphIsomorphismTransformTest, List6)
+{
+    TestList(UndirectedGraphFromG6::getListNumVertices_6(), {31, 4, 42, 43, 2, 33});
+}
+
+TEST(IGraphIsomorphismTransformTest, List7)
+{
+    TestList(UndirectedGraphFromG6::getListNumVertices_7(), {81, 4, 34, 98, 1, 84});
 }
