@@ -317,34 +317,23 @@ TEST(GraphIsomorphismDecomposeTreeTest, ComplementKnownSpecialCase1)
                            "order: 1 6 -> Complement is disconnected graph with components of order: 1 7");
 }
 
-#if false
-TEST(GraphIsomorphismDecomposeTreeTest, ComplementDisconnectedPath2)
-{
-    const auto graph = UndirectedGraphLibrary::Get_Path(2);
-    const auto complement = std::make_shared<UndirectedGraph>(UndirectedGraph::CreateComplement(*graph));
-    const auto decomposed = DecomposeComplementDisconnected::tryCreate(*graph, complement);
-    ASSERT_TRUE(static_cast<bool>(decomposed));
-    const DecomposeTree decomposeTree(decomposed.get());
-    ASSERT_EQ(decomposeTree.size(), 4);
-}
-
-TEST(GraphIsomorphismDecomposeTreeTest, ComplementDisconnectedClaw)
-{
-    const auto graph = UndirectedGraphLibrary::Get_Claw();
-    const auto complement = std::make_shared<UndirectedGraph>(UndirectedGraph::CreateComplement(*graph));
-    const auto decomposed = DecomposeComplementDisconnected::tryCreate(*graph, complement);
-    ASSERT_TRUE(static_cast<bool>(decomposed));
-    const DecomposeTree decomposeTree(decomposed.get());
-    ASSERT_EQ(decomposeTree.size(), 4);
-}
-
 TEST(GraphIsomorphismDecomposeTreeTest, X100)
 {
     const auto graph = UndirectedGraphFromG6::Create("FgCNw");
-    const auto decomposed = IDecompose::Create(*graph);
-    CheckDecompose(*graph, 3);
+    const DecomposeTree decomposeTree(*graph);
+    CheckDecompose(decomposeTree, 3);
+    const auto descr = decomposeTree.getDescriptions();
+    ASSERT_EQ(descr.size(), 3);
+    ASSERT_EQ(
+        descr.at(0),
+        "Known graph: complete graph of order 1 -> Complement is disconnected graph with components of order: 1 6");
+    ASSERT_EQ(descr.at(1), "Known graph: path of order 3 -> Disconnected graph with components of order: 3 3 -> "
+                           "Complement is disconnected graph with components of order: 1 6");
+    ASSERT_EQ(descr.at(2), "Known graph: path of order 3 -> Disconnected graph with components of order: 3 3 -> "
+                           "Complement is disconnected graph with components of order: 1 6");
 }
 
+#if false
 TEST(GraphIsomorphismDecomposeTreeTest, SpecialCase1)
 {
     const auto g0 = UndirectedGraphFromG6::CreateConnected("F@h^w");
