@@ -2,6 +2,7 @@
 
 #include "GraphIsomorphismDecomposeTree.h"
 #include "GraphIsomorphismTaggedGraph.h"
+#include "GraphIsomorphismUtils.h"
 #include "Single.h"
 #include "UndirectedGraphFromG6.h"
 #include "UndirectedGraphLibrary.h"
@@ -63,28 +64,25 @@ void CheckDecompose(const DecomposeTree &decomposeTree, int expectNumLeaves = -1
     }
 }
 
-#if false
 void CheckDecomposeList(const std::vector<std::string> &g6list, Tag expectMultiplicities)
 {
-    std::vector<std::unique_ptr<Graph::IGraphUs>> graphs = UndirectedGraphFromG6::getGraphs(g6list);
+    std::vector<std::unique_ptr<IGraphUs>> graphs = UndirectedGraphFromG6::getGraphs(g6list);
+    std::vector<std::unique_ptr<DecomposeTree>> decompositions;
     for (const auto &graph : graphs)
     {
-        CheckDecompose(*graph);
+        decompositions.emplace_back(std::make_unique<DecomposeTree>(*graph));
     }
 
-    std::vector<std::unique_ptr<GraphIsomorphism::IDecompose>> decomposedGraphs(graphs.size());
-    str::transform(graphs, decomposedGraphs.begin(),
-                   [](const auto &g) { return GraphIsomorphism::IDecompose::Create(*g); });
-
-    std::vector<DecomposeTree> decomposeTreeMaps;
-    str::transform(decomposedGraphs, std::back_inserter(decomposeTreeMaps),
-                   [](const auto &dg) { return DecomposeTree(dg.get()); });
-
-    std::map<DecomposeTree, size_t> multiplicityMap;
-    for (const auto &dg : decomposedGraphs)
+  for (const auto &tree : decompositions)
     {
-        const DecomposeTree tpm(dg.get());
-        multiplicityMap[tpm] += 1;
+        CheckDecompose(*tree);
+    }
+
+    auto  decomposeTreeLess = [](const DecomposeTree* lhs, const DecomposeTree* rhs){ return *lhs < *rhs; };
+    std::map<const DecomposeTree*, size_t, decltype(decomposeTreeLess)> multiplicityMap(decomposeTreeLess);
+    for (const auto &dg : decompositions)
+    {
+        multiplicityMap[dg.get()] += 1;
     }
 
     std::vector<size_t> multiplicities;
@@ -96,6 +94,7 @@ void CheckDecomposeList(const std::vector<std::string> &g6list, Tag expectMultip
     ASSERT_EQ(tag, expectMultiplicities);
 }
 
+#if false
 void PrintMultipleDecompositions(const std::vector<std::string> &g6list)
 {
     std::vector<std::unique_ptr<Graph::IGraphUs>> graphs = UndirectedGraphFromG6::getGraphs(g6list);
@@ -470,7 +469,6 @@ TEST(GraphIsomorphismDecomposeTreeTest, SpecialCase7)
     ASSERT_TRUE(tgCompare != 0);
 }
 
-#if false
 TEST(GraphIsomorphismDecomposeTreeTest, CheckDecomposeList3)
 {
     CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_3(), Tag{1, 4});
@@ -510,4 +508,3 @@ TEST(GraphIsomorphismDecomposeTreeTest, CheckDecomposeList10)
 {
     CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_10(), {1, 706, 3, 1, 6, 1});
 }
-#endif
