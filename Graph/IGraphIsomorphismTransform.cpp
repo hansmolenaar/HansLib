@@ -308,6 +308,7 @@ std::unique_ptr<TransformOmitEdges> TransformOmitEdges::tryCreate(const std::sha
 {
     const Grouping<Graph::Vertex> &vertexGrouping = tgraph->getVertexGrouping();
     std::vector<std::vector<Vertex>> cliques;
+    std::vector<Vertex> identifiedVertices;
 
     for (const auto &group : vertexGrouping())
     {
@@ -315,7 +316,17 @@ std::unique_ptr<TransformOmitEdges> TransformOmitEdges::tryCreate(const std::sha
         {
             cliques.emplace_back(group);
         }
+        else if (group.size() == 1)
+        {
+            identifiedVertices.push_back(group.front());
+        }
     }
+#if false // TODO does this make any difference?
+    if (identifiedVertices.size() > 1)
+    {
+        cliques.push_back(identifiedVertices);
+    }
+#endif
 
     if (cliques.empty())
     {
