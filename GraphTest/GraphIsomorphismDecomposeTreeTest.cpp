@@ -64,10 +64,9 @@ void CheckDecompose(const DecomposeTree &decomposeTree, int expectNumLeaves = -1
     }
 }
 
-void CheckDecomposeList(const std::vector<std::string> &g6list, Tag expectMultiplicities,
-                        bool printMultipleDecompositions = false)
+void CheckDecomposeGraphList(const std::vector<std::unique_ptr<IGraphUs>> &graphs, Tag expectMultiplicities,
+                             bool printMultipleDecompositions)
 {
-    std::vector<std::unique_ptr<IGraphUs>> graphs = UndirectedGraphFromG6::getGraphs(g6list);
     std::vector<std::unique_ptr<DecomposeTree>> decompositions;
     for (const auto &graph : graphs)
     {
@@ -129,6 +128,13 @@ void CheckDecomposeList(const std::vector<std::string> &g6list, Tag expectMultip
 
     const auto tag = CondenseSizeSequence(multiplicities);
     ASSERT_EQ(tag, expectMultiplicities);
+}
+
+void CheckDecomposeList(const std::vector<std::string> &g6list, Tag expectMultiplicities,
+                        bool printMultipleDecompositions = false)
+{
+    std::vector<std::unique_ptr<IGraphUs>> graphs = UndirectedGraphFromG6::getGraphs(g6list);
+    CheckDecomposeGraphList(graphs, expectMultiplicities, printMultipleDecompositions);
 }
 
 #if false
@@ -508,6 +514,92 @@ TEST(GraphIsomorphismDecomposeTreeTest, SpecialCase7)
     const TaggedGraph tg1(*g1);
     const auto tgCompare = tg0 <=> tg1;
     ASSERT_TRUE(tgCompare != 0);
+}
+
+TEST(GraphIsomorphismDecomposeTreeTest, SpecialCase8_411)
+{
+    UndirectedGraph cycle4(6);
+    cycle4.addEdge(0, 1);
+    cycle4.addEdge(1, 2);
+    cycle4.addEdge(2, 3);
+    cycle4.addEdge(3, 0);
+
+    UndirectedGraph g0 = cycle4;
+    UndirectedGraph g1 = cycle4;
+
+    // g0
+    g0.addEdge(4, 0);
+    g0.addEdge(4, 3);
+    g0.addEdge(5, 1);
+    g0.addEdge(5, 2);
+
+    // g1
+    g1.addEdge(4, 1);
+    g1.addEdge(4, 3);
+    g1.addEdge(5, 0);
+    g1.addEdge(5, 2);
+
+    const TaggedGraph tg0(g0);
+    const TaggedGraph tg1(g1);
+    const auto tgCompare = tg0 <=> tg1;
+    ASSERT_TRUE(tgCompare != 0);
+}
+
+TEST(GraphIsomorphismDecomposeTreeTest, SpecialCase8_422)
+{
+    UndirectedGraph base(8);
+    // cyle 4
+    base.addEdge(0, 1);
+    base.addEdge(1, 2);
+    base.addEdge(2, 3);
+    base.addEdge(3, 0);
+
+    // 2 edges
+    base.addEdge(4, 5);
+    base.addEdge(6, 7);
+
+    base.addEdge(0, 4);
+    base.addEdge(0, 5);
+    base.addEdge(0, 7);
+
+    UndirectedGraph g0 = base;
+    UndirectedGraph g1 = base;
+
+    // g0
+    g0.addEdge(1, 4);
+    g0.addEdge(1, 5);
+    g0.addEdge(1, 6);
+
+    g0.addEdge(2, 6);
+    g0.addEdge(2, 7);
+    g0.addEdge(2, 4);
+
+    g0.addEdge(3, 6);
+    g0.addEdge(3, 7);
+    g0.addEdge(3, 5);
+
+    // g1
+    g1.addEdge(2, 4);
+    g1.addEdge(2, 5);
+    g1.addEdge(2, 6);
+
+    g1.addEdge(1, 6);
+    g1.addEdge(1, 7);
+    g1.addEdge(1, 4);
+
+    g1.addEdge(3, 6);
+    g1.addEdge(3, 7);
+    g1.addEdge(3, 5);
+
+    const TaggedGraph tg0(g0);
+    const TaggedGraph tg1(g1);
+    const auto tgCompare = tg0 <=> tg1;
+    ASSERT_TRUE(tgCompare == 0);
+
+    std::vector<std::unique_ptr<IGraphUs>> graphs;
+    graphs.emplace_back(std::make_unique<UndirectedGraph>(g0));
+    graphs.emplace_back(std::make_unique<UndirectedGraph>(g1));
+    CheckDecomposeGraphList(graphs, Tag{2, 1}, false);
 }
 
 TEST(GraphIsomorphismDecomposeTreeTest, CheckDecomposeList3)
