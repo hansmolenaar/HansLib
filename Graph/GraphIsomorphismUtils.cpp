@@ -63,6 +63,47 @@ std::ostream &operator<<(std::ostream &os, const GraphIsomorphism::GraphTags &ta
     return os;
 }
 
+std::ostream &operator<<(std::ostream &os, const std::vector<Graph::Vertex> &vertices)
+{
+    os << "{";
+    bool first = true;
+    for (auto v : vertices)
+    {
+        if (first)
+        {
+            first = false;
+        }
+        else
+        {
+            os << ", ";
+        }
+        os << std::to_string(v);
+    }
+    os << "}";
+    return os;
+}
+
+std::ostream &operator<<(std::ostream &os, const GraphIsomorphism::Grouping<Graph::Vertex> &grouping)
+{
+    // Print all on one line
+    os << "{";
+    bool first = true;
+    for (auto group : grouping())
+    {
+        if (first)
+        {
+            first = false;
+        }
+        else
+        {
+            os << " ";
+        }
+        os << group;
+    }
+    os << "}\n";
+    return os;
+}
+
 std::vector<std::unique_ptr<ITagger>> GraphIsomorphism::getAllTaggers(const Graph::IGraphUs &graph)
 {
     std::vector<std::unique_ptr<ITagger>> result;
@@ -114,12 +155,12 @@ void GraphIsomorphism::toAdjacentyList(const Graph::IGraphUs &graph, std::ostrea
     }
 }
 
-void GraphIsomorphism::toEdgeList(const Graph::IGraphUs &graph, std::ostream &os)
+void GraphIsomorphism::toEdgeList(const Graph::IGraphUs &graph, std::ostream &os, Graph::Vertex offset)
 {
     std::vector<Vertex> ngbs;
 
     for (auto edge : graph.getAllSortedEdges())
     {
-        os << edge[0] + 1 << "-" << edge[1] + 1 << "\n";
+        os << edge[0] + offset << "-" << edge[1] + offset << "\n";
     }
 }

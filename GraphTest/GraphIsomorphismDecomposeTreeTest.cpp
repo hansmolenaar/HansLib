@@ -64,7 +64,8 @@ void CheckDecompose(const DecomposeTree &decomposeTree, int expectNumLeaves = -1
     }
 }
 
-void CheckDecomposeList(const std::vector<std::string> &g6list, Tag expectMultiplicities)
+void CheckDecomposeList(const std::vector<std::string> &g6list, Tag expectMultiplicities,
+                        bool printMultipleDecompositions = false)
 {
     std::vector<std::unique_ptr<IGraphUs>> graphs = UndirectedGraphFromG6::getGraphs(g6list);
     std::vector<std::unique_ptr<DecomposeTree>> decompositions;
@@ -73,23 +74,59 @@ void CheckDecomposeList(const std::vector<std::string> &g6list, Tag expectMultip
         decompositions.emplace_back(std::make_unique<DecomposeTree>(*graph));
     }
 
-  for (const auto &tree : decompositions)
+    for (const auto &tree : decompositions)
     {
         CheckDecompose(*tree);
     }
 
-    auto  decomposeTreeLess = [](const DecomposeTree* lhs, const DecomposeTree* rhs){ return *lhs < *rhs; };
-    std::map<const DecomposeTree*, size_t, decltype(decomposeTreeLess)> multiplicityMap(decomposeTreeLess);
+    auto decomposeTreeLess = [](const DecomposeTree *lhs, const DecomposeTree *rhs) { return *lhs < *rhs; };
+    std::map<const DecomposeTree *, std::vector<const DecomposeTree *>, decltype(decomposeTreeLess)> multiplicityMap(
+        decomposeTreeLess);
     for (const auto &dg : decompositions)
     {
-        multiplicityMap[dg.get()] += 1;
+        multiplicityMap[dg.get()].push_back(dg.get());
     }
 
     std::vector<size_t> multiplicities;
     for (const auto &itr : multiplicityMap)
     {
-        multiplicities.push_back(itr.second);
+        multiplicities.push_back(itr.second.size());
     }
+
+    if (printMultipleDecompositions)
+    {
+        for (const auto &itr : multiplicityMap)
+        {
+            if (itr.second.size() > 1)
+            {
+                std::cout << "size = " << itr.second.size() << "\n";
+                for (const auto &tpm : itr.second)
+                {
+                    std::cout << tpm->getRoot().getGraph().getName() << "\n";
+                    for (const auto &d : tpm->getDescriptions())
+                    {
+                        std::cout << d << "\n";
+                    }
+                    std::cout << "\n";
+                    for (const auto *leaf : tpm->getLeaves())
+                    {
+                        GraphIsomorphism::toEdgeList(leaf->getGraph(), std::cout);
+                    }
+                    std::cout << "\n";
+                    std::cout << "Vertex groups\n";
+                    for (const auto *leaf : tpm->getLeaves())
+                    {
+                        std::cout << leaf->getTaggedGraph().getVertexGrouping();
+                    }
+
+                    std::cout << "\n";
+                }
+                std::cout << "\n";
+                std::cout << "\n";
+            }
+        }
+    }
+
     const auto tag = CondenseSizeSequence(multiplicities);
     ASSERT_EQ(tag, expectMultiplicities);
 }
@@ -121,6 +158,10 @@ void PrintMultipleDecompositions(const std::vector<std::string> &g6list)
             for (const auto &tpm : itr.second)
             {
                 std::cout << tpm.getRoot()->getGraph().getName() << "\n";
+                for (const auto& d = tpm->getDescriptions())
+{
+ std::cout << d << "\n";
+}
             }
             std::cout << "\n";
             std::cout << "\n";
@@ -491,7 +532,6 @@ TEST(GraphIsomorphismDecomposeTreeTest, CheckDecomposeList6)
 TEST(GraphIsomorphismDecomposeTreeTest, CheckDecomposeList7)
 {
     CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_7(), {1, 302});
-    // PrintMultipleDecompositions(UndirectedGraphFromG6::getListNumVertices_7());
 }
 
 TEST(GraphIsomorphismDecomposeTreeTest, CheckDecomposeList8)
@@ -501,8 +541,7 @@ TEST(GraphIsomorphismDecomposeTreeTest, CheckDecomposeList8)
 
 TEST(GraphIsomorphismDecomposeTreeTest, CheckDecomposeList9)
 {
-    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_9(), {1, 479, 2, 1});
-    // PrintMultipleDecompositions(UndirectedGraphFromG6::getListNumVertices_9());
+    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_9(), {1, 479, 2, 1}, false);
 }
 TEST(GraphIsomorphismDecomposeTreeTest, CheckDecomposeList10)
 {

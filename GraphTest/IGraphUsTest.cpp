@@ -37,7 +37,7 @@ TEST(IGraphUsTest, isClique)
 {
     ASSERT_FALSE(UndirectedGraphLibrary::Get_Null()->isClique(std::vector<Vertex>{}));
     ASSERT_FALSE(UndirectedGraphLibrary::Get_Singleton()->isClique(std::vector<Vertex>{0}));
-    ASSERT_FALSE(UndirectedGraphLibrary::Get_Path(2)->isClique(std::vector<Vertex>{ 1}));
+    ASSERT_FALSE(UndirectedGraphLibrary::Get_Path(2)->isClique(std::vector<Vertex>{1}));
     ASSERT_TRUE(UndirectedGraphLibrary::Get_Path(2)->isClique(std::vector<Vertex>{0, 1}));
     ASSERT_TRUE(UndirectedGraphLibrary::Get_Cycle(3)->isClique(std::vector<Vertex>{0, 2}));
     ASSERT_TRUE(UndirectedGraphLibrary::Get_Path(3)->isClique(std::vector<Vertex>{1, 2}));
