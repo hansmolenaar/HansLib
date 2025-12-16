@@ -45,36 +45,3 @@ TEST(GraphIsomorphismTaggerTrianglesTest, Diamond)
     ASSERT_EQ(vcompare->compareOtherGraph(0, *vcompare, 1), std::weak_ordering::less);
     ASSERT_EQ(vcompare->compareOtherGraph(2, *vcompare, 3), std::weak_ordering::greater);
 }
-#if 0
-TEST(GraphIsomorphismTaggerTrianglesTest, Complete4)
-{
-    const auto graph = UndirectedGraphLibrary::Get_CompleteGraph(4);
-    const auto allTriangles = TaggerTriangles::getAllTriangles(*graph);
-    const std::vector<std::array<Vertex, 3>> expect = {
-        std::array<Vertex, 3>{0, 1, 2},
-        std::array<Vertex, 3>{0, 1, 3},
-        std::array<Vertex, 3>{0, 2, 3},
-        std::array<Vertex, 3>{1, 2, 3},
-    };
-    ASSERT_EQ(allTriangles, expect);
-
-    const TaggerTriangles tagger(*graph);
-    ASSERT_EQ(tagger.getGraphTag(), (Tag{3, 4}));
-}
-
-TEST(GraphIsomorphismTaggerTrianglesTest, Complete5)
-{
-    const auto graph = UndirectedGraphLibrary::Get_CompleteGraph(5);
-    const auto allTriangles = TaggerTriangles::getAllTriangles(*graph);
-    const std::vector<std::array<Vertex, 3>> expect = {
-        std::array<Vertex, 3>{0, 1, 2}, std::array<Vertex, 3>{0, 1, 3}, std::array<Vertex, 3>{0, 1, 4},
-        std::array<Vertex, 3>{0, 2, 3}, std::array<Vertex, 3>{0, 2, 4}, std::array<Vertex, 3>{0, 3, 4},
-        std::array<Vertex, 3>{1, 2, 3}, std::array<Vertex, 3>{1, 2, 4}, std::array<Vertex, 3>{1, 3, 4},
-        std::array<Vertex, 3>{2, 3, 4},
-    };
-    ASSERT_EQ(allTriangles, expect);
-
-    const TaggerTriangles tagger(*graph);
-    ASSERT_EQ(tagger.getGraphTag(), (Tag{6, 5}));
-}
-#endif

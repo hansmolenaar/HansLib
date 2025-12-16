@@ -137,44 +137,6 @@ void CheckDecomposeList(const std::vector<std::string> &g6list, Tag expectMultip
     CheckDecomposeGraphList(graphs, expectMultiplicities, printMultipleDecompositions);
 }
 
-#if false
-void PrintMultipleDecompositions(const std::vector<std::string> &g6list)
-{
-    std::vector<std::unique_ptr<Graph::IGraphUs>> graphs = UndirectedGraphFromG6::getGraphs(g6list);
-    std::vector<std::unique_ptr<GraphIsomorphism::IDecompose>> decomposedGraphs(graphs.size());
-    str::transform(graphs, decomposedGraphs.begin(),
-                   [](const auto &g) { return GraphIsomorphism::IDecompose::Create(*g); });
-
-    std::vector<DecomposeTree> decomposeTreeMaps;
-    str::transform(decomposedGraphs, std::back_inserter(decomposeTreeMaps),
-                   [](const auto &dg) { return DecomposeTree(dg.get()); });
-
-    std::map<DecomposeTree, std::vector<DecomposeTree>> multiplicityMap;
-    for (const auto &dg : decomposedGraphs)
-    {
-        const DecomposeTree tpm(dg.get());
-        multiplicityMap[tpm].emplace_back(tpm);
-    }
-
-    for (const auto &itr : multiplicityMap)
-    {
-        if (itr.second.size() > 1)
-        {
-            std::cout << "size = " << itr.second.size() << "\n";
-            for (const auto &tpm : itr.second)
-            {
-                std::cout << tpm.getRoot()->getGraph().getName() << "\n";
-                for (const auto& d = tpm->getDescriptions())
-{
- std::cout << d << "\n";
-}
-            }
-            std::cout << "\n";
-            std::cout << "\n";
-        }
-    }
-}
-#endif
 } // namespace
 
 TEST(GraphIsomorphismDecomposeTreeTest, Singleton)
