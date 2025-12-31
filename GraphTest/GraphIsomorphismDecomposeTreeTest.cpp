@@ -511,10 +511,7 @@ TEST(GraphIsomorphismDecomposeTreeTest, SpecialCase8_422)
 {
     UndirectedGraph base(8);
     // cyle 4
-    base.addEdge(0, 1);
-    base.addEdge(1, 2);
-    base.addEdge(2, 3);
-    base.addEdge(3, 0);
+    base.addWalk({0, 1, 2, 3, 0});
 
     // 2 edges
     base.addEdge(4, 5);
@@ -555,13 +552,42 @@ TEST(GraphIsomorphismDecomposeTreeTest, SpecialCase8_422)
 
     const TaggedGraph tg0(g0);
     const TaggedGraph tg1(g1);
-    const auto tgCompare = tg0 <=> tg1;
-    ASSERT_TRUE(tgCompare == 0);
+    auto tgCompare = tg0 <=> tg1;
+    ASSERT_EQ(tgCompare, std::weak_ordering::equivalent);
 
     std::vector<std::unique_ptr<IGraphUs>> graphs;
     graphs.emplace_back(std::make_unique<UndirectedGraph>(g0));
     graphs.emplace_back(std::make_unique<UndirectedGraph>(g1));
     CheckDecomposeGraphList(graphs, Tag{2, 1}, false);
+
+    const auto g0c = UndirectedGraph::CreateComplement(g0);
+    const auto g1c = UndirectedGraph::CreateComplement(g1);
+    const TaggedGraph tg0c(g0c);
+    const TaggedGraph tg1c(g1c);
+    tgCompare = tg0c <=> tg1c;
+    ASSERT_NE(tgCompare, std::weak_ordering::equivalent);
+    graphs.clear();
+    graphs.emplace_back(std::make_unique<UndirectedGraph>(g0c));
+    graphs.emplace_back(std::make_unique<UndirectedGraph>(g1c));
+    CheckDecomposeGraphList(graphs, Tag{1, 2}, false);
+}
+
+TEST(GraphIsomorphismDecomposeTreeTest, SpecialCase9)
+{
+    UndirectedGraph g0(8);
+    g0.addWalk({0, 1, 2, 3, 0});
+    auto g1 = g0;
+
+    g0.addWalk({0, 4, 5, 1});
+    g0.addWalk({2, 6, 7, 3});
+
+    g1.addWalk({0, 4, 5, 2});
+    g1.addWalk({1, 6, 7, 3});
+
+    const TaggedGraph tg0(g0);
+    const TaggedGraph tg1(g1);
+    const auto tgCompare = tg0 <=> tg1;
+    ASSERT_NE(tgCompare, std::weak_ordering::equivalent);
 }
 
 TEST(GraphIsomorphismDecomposeTreeTest, CheckDecomposeList3)
@@ -599,5 +625,5 @@ TEST(GraphIsomorphismDecomposeTreeTest, CheckDecomposeList9)
 }
 TEST(GraphIsomorphismDecomposeTreeTest, CheckDecomposeList10)
 {
-    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_10(), {1, 706, 3, 1, 6, 1});
+    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_10(), {1, 706, 3, 1, 6, 1}, false);
 }

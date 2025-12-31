@@ -15,6 +15,7 @@ class UndirectedGraph : public Graph::IGraphUs
     explicit UndirectedGraph(Vertex, std::string = "");
     void addEdge(Vertex, Vertex);
     void addEdge(VertexPair);
+    void addWalk(std::initializer_list<Vertex> walk);
 
     Vertex getNumVertices() const override;
     Edge getNumEdges() const override;

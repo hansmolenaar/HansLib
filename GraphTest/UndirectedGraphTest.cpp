@@ -53,6 +53,7 @@ void CheckCyclesPaths(const UndirectedGraph &graph, std::span<const Vertex> cycl
     CheckSequenceAfterSorting(GetCyclePathSize(cyclesAndPaths.Paths), pathSizesExpect);
 }
 } // namespace
+
 TEST(UndirectedGraphTest, ConnectedComponents)
 {
     UndirectedGraph ug(3);
@@ -216,6 +217,17 @@ TEST(UndirectedGraphTest, AddEdgeDuplicate)
     ug.addEdge(1, 0);
 
     ASSERT_EQ(ug.getNumEdges(), 1);
+}
+
+TEST(UndirectedGraphTest, AddWalk)
+{
+    UndirectedGraph ug(4);
+    ug.addWalk({0, 1, 2, 3, 0});
+
+    ASSERT_EQ(ug.getNumEdges(), 4);
+    ASSERT_TRUE(ug.areAdjacent(0, 3));
+    ASSERT_FALSE(ug.areAdjacent(0, 2));
+    ASSERT_FALSE(ug.areAdjacent(1, 3));
 }
 
 TEST(UndirectedGraphTest, AreAdjacent)

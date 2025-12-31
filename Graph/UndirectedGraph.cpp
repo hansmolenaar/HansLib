@@ -83,6 +83,25 @@ void UndirectedGraph::addEdge(VertexPair edge)
     addEdge(edge[0], edge[1]);
 }
 
+void UndirectedGraph::addWalk(std::initializer_list<Vertex> walk)
+{
+    auto size = walk.size();
+    if (size < 2)
+    {
+        return;
+    }
+    auto cur = walk.begin();
+    auto nxt = cur + 1;
+    --size;
+    while (size > 0)
+    {
+        addEdge(*cur, *nxt);
+        cur = nxt;
+        nxt = cur + 1;
+        --size;
+    }
+}
+
 Vertex UndirectedGraph::getNumVertices() const
 {
     return boost::num_vertices(m_graph);
