@@ -41,9 +41,7 @@ GraphIsomorphism::Grouping<T> Grouping<T>::Combine(const Grouping<T> &grouping0,
     std::vector<T> vertices(size);
     str::iota(vertices, static_cast<T>(0));
     auto cmp = [&map0, &map1](Vertex v0, Vertex v1) {
-        if (map0.at(v0) < map0.at(v1))
-            return true;
-        return map1.at(v0) < map1.at(v1);
+        return std::make_pair(map0.at(v0), map1.at(v0)) < std::make_pair(map0.at(v1), map1.at(v1));
     };
     return Grouping<T>(vertices, cmp);
 }

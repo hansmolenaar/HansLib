@@ -17,8 +17,6 @@ class TaggedGraphs
 
     const Grouping<Graph::Vertex> &getVertexGrouping() const;
 
-    static Grouping<Graph::Vertex> Combine(const Grouping<Graph::Vertex> &, const Grouping<Graph::Vertex> &);
-
   private:
     Graph::UndirectedGraph m_complement;
     std::shared_ptr<TaggedGraph> m_taggedGraph;

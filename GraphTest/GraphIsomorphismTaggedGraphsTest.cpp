@@ -3,6 +3,7 @@
 #include "Defines.h"
 #include "GraphIsomorphismGrouping.h"
 #include "GraphIsomorphismTaggedGraphs.h"
+#include "UndirectedGraphFromG6.h"
 
 using namespace GraphIsomorphism;
 using namespace Graph;
@@ -22,4 +23,15 @@ TEST(GraphIsomorphismTaggedGraphsTest, Combine)
     ASSERT_EQ(grouping.size(), 4);
     ASSERT_EQ(grouping.getGroupSizes(), (std::vector<size_t>{1, 1, 2}));
     ASSERT_EQ(grouping().at(2), (std::vector<Graph::Vertex>{1, 3}));
+}
+
+TEST(GraphIsomorphismTaggedGraphsTest, Test6)
+{
+    const auto graph = UndirectedGraphFromG6::Create("EQzg");
+    const TaggedGraph tg(*graph);
+    const TaggedGraphs tgs(*graph);
+    const auto grouping_tg = tg.getVertexGrouping();
+    ASSERT_EQ(grouping_tg.countUnique(), 2);
+    const auto grouping_tgs = tgs.getVertexGrouping();
+    ASSERT_EQ(grouping_tgs.countUnique(), 6);
 }
