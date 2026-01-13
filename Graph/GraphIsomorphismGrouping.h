@@ -70,6 +70,8 @@ template <typename T> class Grouping
                                [](size_t acc, const std::vector<T> &g) { return acc + g.size(); });
     }
 
+    static Grouping<T> Combine(const Grouping<T> &, const Grouping<T> &);
+
   private:
     std::vector<std::vector<T>> m_groups;
 };
