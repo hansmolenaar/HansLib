@@ -9,7 +9,8 @@ class DecomposeNode
 {
   public:
     const Graph::IGraphUs &getGraph() const;
-public:
+
+  public:
     const Tag &getTag() const;
     std::string getDescription() const;
     const Grouping<const DecomposeNode *> &getGroupingChildren() const;

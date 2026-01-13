@@ -64,6 +64,12 @@ template <typename T> class Grouping
         return str::count_if(m_groups, [](const auto &itr) { return itr.size() == 1; });
     }
 
+    size_t size() const
+    {
+        return std::accumulate(m_groups.begin(), m_groups.end(), 0UZ,
+                               [](size_t acc, const std::vector<T> &g) { return acc + g.size(); });
+    }
+
   private:
     std::vector<std::vector<T>> m_groups;
 };
