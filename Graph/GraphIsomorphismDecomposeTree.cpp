@@ -127,9 +127,7 @@ std::weak_ordering DecomposeTree::compareLeaves(const DecomposeNode *leaf1, cons
     const DecomposeNode *d2 = leaf2;
     while (d1 != d2)
     {
-        const TaggedGraph &tg1(d1->getTaggedGraph());
-        const TaggedGraph &tg2(d2->getTaggedGraph());
-        result = tg1 <=> tg2;
+        result = (*d1 <=> *d2);
         if (result != 0)
         {
             return result;
@@ -194,9 +192,7 @@ std::weak_ordering DecomposeTree::operator<=>(const DecomposeTree &map2) const
                 break;
             }
             done.insert(graphPair);
-            const TaggedGraph &tg1(decomp1->getTaggedGraph());
-            const TaggedGraph &tg2(decomp2->getTaggedGraph());
-            result = tg1 <=> tg2;
+            result = (*decomp1 <=> *decomp2);
             if (result != 0)
             {
                 return result;

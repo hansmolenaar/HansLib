@@ -111,11 +111,12 @@ void CheckDecomposeGraphList(const std::vector<std::unique_ptr<IGraphUs>> &graph
                     {
                         GraphIsomorphism::toEdgeList(leaf->getGraph(), std::cout);
                     }
+
                     std::cout << "\n";
                     std::cout << "Vertex groups\n";
                     for (const auto *leaf : tpm->getLeaves())
                     {
-                        std::cout << leaf->getTaggedGraph().getVertexGrouping();
+                        std::cout << leaf->getVertexGrouping();
                     }
 
                     std::cout << "\n";

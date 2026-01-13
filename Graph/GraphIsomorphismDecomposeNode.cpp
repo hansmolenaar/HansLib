@@ -1,5 +1,6 @@
 #include "GraphIsomorphismDecomposeNode.h"
 #include "SubGraph.h"
+#include "GraphIsomorphismTaggedGraph.h"
 
 #include "MyAssert.h"
 
@@ -85,6 +86,12 @@ std::weak_ordering DecomposeNode::operator<=>(const DecomposeNode &other) const
     {
         return result;
     }
+   
+    result = getTaggedGraph() <=> other.getTaggedGraph();
+    if (result != std::weak_ordering::equivalent)
+    {
+        return result;
+    }
 
     if (isLeaf())
     {
@@ -106,4 +113,9 @@ std::weak_ordering DecomposeNode::operator<=>(const DecomposeNode &other) const
         }
     }
     return result;
+}
+
+const Grouping<Graph::Vertex> &DecomposeNode::getVertexGrouping() const
+{
+return getTaggedGraph().getVertexGrouping(); 
 }

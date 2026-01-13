@@ -9,11 +9,12 @@ class DecomposeNode
 {
   public:
     const Graph::IGraphUs &getGraph() const;
-    const TaggedGraph &getTaggedGraph() const;
+public:
     const Tag &getTag() const;
     std::string getDescription() const;
     const Grouping<const DecomposeNode *> &getGroupingChildren() const;
     Graph::Vertex getVertexInParent(Graph::Vertex vertex) const;
+    const Grouping<Graph::Vertex> &getVertexGrouping() const;
 
     std::weak_ordering operator<=>(const DecomposeNode &) const;
     bool isLeaf() const;
@@ -22,6 +23,7 @@ class DecomposeNode
 
   private:
     DecomposeNode(std::unique_ptr<ITransform> &&);
+    const TaggedGraph &getTaggedGraph() const;
 
     std::unique_ptr<ITransform> m_transform;
     std::vector<std::unique_ptr<DecomposeNode>> m_childDecomposes;
