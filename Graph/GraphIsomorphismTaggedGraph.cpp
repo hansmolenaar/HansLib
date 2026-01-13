@@ -40,28 +40,6 @@ bool TaggedGraph::operator==(const TaggedGraph &rhs) const
     return (*this <=> rhs) == 0;
 }
 
-Status TaggedGraph::tryConnect(const TaggedGraph &tg0, const TaggedGraph &tg1)
-{
-    const auto numVertices = tg0.getGraph().getNumVertices();
-    Status result(numVertices);
-
-    if (tg0 != tg1)
-    {
-        result.setFlag(Flag::NotIsomorphic);
-        return result;
-    }
-
-    const auto uniqueValues0 = tg0.m_grouping.getUniqueValues();
-    const auto uniqueValues1 = tg1.m_grouping.getUniqueValues();
-    MyAssert(uniqueValues0.size() == uniqueValues1.size());
-    for (const auto vertex01 : stv::zip(uniqueValues0, uniqueValues1))
-    {
-        result.addPair({std::get<0>(vertex01), std::get<1>(vertex01)});
-    }
-
-    return result;
-}
-
 const Grouping<Vertex> &TaggedGraph::getVertexGrouping() const
 {
     return m_grouping;

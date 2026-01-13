@@ -19,7 +19,6 @@ class TaggedGraph
     bool operator==(const TaggedGraph &) const;
 
     const Grouping<Graph::Vertex> &getVertexGrouping() const;
-    static Status tryConnect(const TaggedGraph &, const TaggedGraph &);
 
   private:
     const Graph::IGraphUs &m_graph;

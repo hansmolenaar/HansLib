@@ -123,8 +123,8 @@ TEST(GraphIsomorphismTaggedGraphTest, DegreePath2and3)
     const auto g1 = UndirectedGraphLibrary::Get_Path(3);
     const TaggedGraph tg0(*g0);
     const TaggedGraph tg1(*g1);
-    const auto status = TaggedGraph::tryConnect(tg0, tg1);
-    ASSERT_EQ(status.getFlag(), Flag::NotIsomorphic);
+    const auto cmp = tg0 <=> tg1;
+    ASSERT_EQ( cmp, std::weak_ordering::less);
 }
 
 TEST(GraphIsomorphismTaggedGraphTest, DegreePath3)
@@ -133,8 +133,8 @@ TEST(GraphIsomorphismTaggedGraphTest, DegreePath3)
     const auto g1 = UndirectedGraphLibrary::Get_Path(3);
     const TaggedGraph tg0(*g0);
     const TaggedGraph tg1(*g1);
-    const auto status = TaggedGraph::tryConnect(tg0, tg1);
-    ASSERT_EQ(status.getFlag(), Flag::Isomorphic);
+    const auto cmp = tg0 <=> tg1;
+    ASSERT_EQ( cmp, std::weak_ordering::equivalent);
 }
 
 TEST(GraphIsomorphismTaggedGraphTest, DegreeStar123)
@@ -143,8 +143,8 @@ TEST(GraphIsomorphismTaggedGraphTest, DegreeStar123)
     const auto g1 = UndirectedGraphLibrary::Get_Star({3, 1, 2});
     const TaggedGraph tg0(*g0);
     const TaggedGraph tg1(*g1);
-    const auto status = TaggedGraph::tryConnect(tg0, tg1);
-    ASSERT_EQ(status.getFlag(), Flag::Isomorphic);
+    const auto cmp = tg0 <=> tg1;
+    ASSERT_EQ( cmp, std::weak_ordering::equivalent);
 }
 
 TEST(GraphIsomorphismTaggedGraphTest, DegreePan3)
@@ -153,8 +153,8 @@ TEST(GraphIsomorphismTaggedGraphTest, DegreePan3)
     const auto g1 = GraphUsc::CreatePermuted(*g0, {2, 1, 0, 3});
     const TaggedGraph tg0(*g0);
     const TaggedGraph tg1(g1);
-    const auto status = TaggedGraph::tryConnect(tg0, tg1);
-    ASSERT_EQ(status.getFlag(), Flag::Isomorphic);
+    const auto cmp = tg0 <=> tg1;
+    ASSERT_EQ( cmp, std::weak_ordering::equivalent);
 }
 
 TEST(GraphIsomorphismTaggedGraphTest, SpecialCase1)
@@ -163,7 +163,8 @@ TEST(GraphIsomorphismTaggedGraphTest, SpecialCase1)
     const auto g1 = UndirectedGraphFromG6::CreateConnected("FDxZg");
     const TaggedGraph tg0(*g0);
     const TaggedGraph tg1(*g1);
-    const auto status = TaggedGraph::tryConnect(tg0, tg1);
+    const auto cmp = tg0 <=> tg1;
+    ASSERT_EQ( cmp, std::weak_ordering::greater);
 
     const TaggerTriangles taggerTriangles0(std::make_shared<UndirectedGraphTriangles>(*g0));
     const TaggerTriangles taggerTriangles1(std::make_shared<UndirectedGraphTriangles>(*g1));
