@@ -39,3 +39,13 @@ const Grouping<Graph::Vertex> &TaggedGraphs::getVertexGrouping() const
 {
     return m_grouping;
 }
+
+const Graph::IGraphUs &TaggedGraphs::getGraph() const
+{
+    return m_taggedGraph->getGraph();
+}
+
+const Graph::IGraphUs &TaggedGraphs::getGraphComplement() const
+{
+    return m_taggedGraphComplement->getGraph();
+}

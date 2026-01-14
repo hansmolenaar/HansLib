@@ -16,6 +16,8 @@ class TaggedGraphs
     bool operator==(const TaggedGraphs &) const;
 
     const Grouping<Graph::Vertex> &getVertexGrouping() const;
+    const Graph::IGraphUs &getGraph() const;
+    const Graph::IGraphUs &getGraphComplement() const;
 
   private:
     Graph::UndirectedGraph m_complement;

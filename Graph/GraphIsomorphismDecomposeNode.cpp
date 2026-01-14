@@ -28,14 +28,14 @@ DecomposeNode::DecomposeNode(std::unique_ptr<ITransform> &&transform) : m_transf
     m_groupingChildren = Grouping<const DecomposeNode *>(allChildren, compare);
 }
 
-std::unique_ptr<DecomposeNode> DecomposeNode::Create(const std::shared_ptr<TaggedGraph> &tgraph)
+std::unique_ptr<DecomposeNode> DecomposeNode::Create(const std::shared_ptr<TaggedGraphs> &tgraphs)
 {
-    return std::unique_ptr<DecomposeNode>(new DecomposeNode(std::move(ITransform::Create(tgraph))));
+    return std::unique_ptr<DecomposeNode>(new DecomposeNode(std::move(ITransform::Create(tgraphs))));
 }
 
-const TaggedGraph &DecomposeNode::getTaggedGraph() const
+const TaggedGraphs &DecomposeNode::getTaggedGraphs() const
 {
-    return m_transform->getTaggedGraph();
+    return m_transform->getTaggedGraphs();
 }
 
 const Graph::IGraphUs &DecomposeNode::getGraph() const
@@ -87,7 +87,7 @@ std::weak_ordering DecomposeNode::operator<=>(const DecomposeNode &other) const
         return result;
     }
 
-    result = getTaggedGraph() <=> other.getTaggedGraph();
+    result = getTaggedGraphs() <=> other.getTaggedGraphs();
     if (result != std::weak_ordering::equivalent)
     {
         return result;
@@ -117,5 +117,5 @@ std::weak_ordering DecomposeNode::operator<=>(const DecomposeNode &other) const
 
 const Grouping<Graph::Vertex> &DecomposeNode::getVertexGrouping() const
 {
-    return getTaggedGraph().getVertexGrouping();
+    return getTaggedGraphs().getVertexGrouping();
 }

@@ -27,7 +27,7 @@ void AddToParentMapRecur(const DecomposeNode *current, const DecomposeNode *pare
 } // namespace
 
 DecomposeTree::DecomposeTree(const Graph::IGraphUs &graph)
-    : DecomposeTree(DecomposeNode::Create(std::make_shared<TaggedGraph>(graph)))
+    : DecomposeTree(DecomposeNode::Create(std::make_shared<TaggedGraphs>(graph)))
 {
     // Empty
 }

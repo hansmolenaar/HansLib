@@ -289,13 +289,17 @@ TEST(UndirectedGraphTest, Permut)
 TEST(UndirectedGraphTest, Complement_Null)
 {
     const auto graph = UndirectedGraphLibrary::Get_Null();
-    ASSERT_ANY_THROW(UndirectedGraph::CreateComplement(*graph));
+    const auto complement = UndirectedGraph::CreateComplement(*graph);
+    ASSERT_EQ(complement.getNumVertices(), 0);
+    ASSERT_EQ(complement.getNumEdges(), 0);
 }
 
 TEST(UndirectedGraphTest, Complement_Singleton)
 {
     const auto graph = UndirectedGraphLibrary::Get_Singleton();
-    ASSERT_ANY_THROW(UndirectedGraph::CreateComplement(*graph));
+    const auto complement = UndirectedGraph::CreateComplement(*graph);
+    ASSERT_EQ(complement.getNumVertices(), 1);
+    ASSERT_EQ(complement.getNumEdges(), 0);
 }
 
 TEST(UndirectedGraphTest, Complement_Path2)

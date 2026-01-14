@@ -1,6 +1,6 @@
 #include "IGraphIsomorphismTransform.h"
 
-#include "GraphIsomorphismTaggedGraph.h"
+#include "GraphIsomorphismTaggedGraphs.h"
 #include "IGraphUs.h"
 #include "MyAssert.h"
 #include "UndirectedGraph.h"
@@ -11,16 +11,16 @@ using namespace Utilities;
 
 namespace
 {
-const std::vector<std::shared_ptr<TaggedGraph>> s_noChildren;
+const std::vector<std::shared_ptr<TaggedGraphs>> s_noChildren;
 }
 
 // !!!!!!!!!!!!! ITransform
 
-ITransform::ITransform(std::shared_ptr<TaggedGraph> tgraph) : m_taggedGraph(std::move(tgraph))
+ITransform::ITransform(std::shared_ptr<TaggedGraphs> tgraph) : m_taggedGraphs(std::move(tgraph))
 {
 }
 
-std::unique_ptr<ITransform> ITransform::Create(const std::shared_ptr<TaggedGraph> &tgraph)
+std::unique_ptr<ITransform> ITransform::Create(const std::shared_ptr<TaggedGraphs> &tgraph)
 {
     auto transformKnown = TransformKnown::tryCreate(tgraph);
     if (transformKnown)
@@ -56,23 +56,23 @@ std::unique_ptr<ITransform> ITransform::Create(const std::shared_ptr<TaggedGraph
     return std::make_unique<TransformFailure>(tgraph);
 }
 
-const TaggedGraph &ITransform::getTaggedGraph() const
+const TaggedGraphs &ITransform::getTaggedGraphs() const
 {
-    return *m_taggedGraph;
+    return *m_taggedGraphs;
 }
 
 const Graph::IGraphUs &ITransform::getGraph() const
 {
-    return m_taggedGraph->getGraph();
+    return m_taggedGraphs->getGraph();
 }
 
-const std::shared_ptr<TaggedGraph> ITransform::getTaggedGraphPtr() const
+const std::shared_ptr<TaggedGraphs> ITransform::getTaggedGraphsPtr() const
 {
-    return m_taggedGraph;
+    return m_taggedGraphs;
 }
 // !!!!!!!!!!!!! TransformKnown
 
-TransformKnown::TransformKnown(const std::shared_ptr<TaggedGraph> &tgraph, TaggerKnown tagger)
+TransformKnown::TransformKnown(const std::shared_ptr<TaggedGraphs> &tgraph, TaggerKnown tagger)
     : ITransform(tgraph), m_taggerKnown(std::move(tagger)), m_tag{ITransform::Type::Known}
 {
     const auto &tag = m_taggerKnown.getGraphTag();
@@ -90,12 +90,12 @@ std::string TransformKnown::getDescription() const
     return "Known graph: " + m_taggerKnown.getDescription();
 }
 
-const std::vector<std::shared_ptr<TaggedGraph>> &TransformKnown::getChildren() const
+const std::vector<std::shared_ptr<TaggedGraphs>> &TransformKnown::getChildren() const
 {
     return s_noChildren;
 }
 
-std::unique_ptr<TransformKnown> TransformKnown::tryCreate(const std::shared_ptr<TaggedGraph> &tgraph)
+std::unique_ptr<TransformKnown> TransformKnown::tryCreate(const std::shared_ptr<TaggedGraphs> &tgraph)
 {
     const TaggerKnown taggerKnown(tgraph->getGraph());
     if (taggerKnown.getGraphTag().front() == TaggerKnown::KnownType::Unknown)
@@ -107,7 +107,7 @@ std::unique_ptr<TransformKnown> TransformKnown::tryCreate(const std::shared_ptr<
 
 // !!!!!!!!!!!!! TransformFailure
 
-TransformFailure::TransformFailure(const std::shared_ptr<TaggedGraph> &tgraph)
+TransformFailure::TransformFailure(const std::shared_ptr<TaggedGraphs> &tgraph)
     : ITransform(tgraph), m_tag{ITransform::Type::Failure}
 {
 }
@@ -122,13 +122,13 @@ std::string TransformFailure::getDescription() const
     return "Graph of order " + std::to_string(getGraph().getNumVertices()) + " cannot be transformed";
 }
 
-const std::vector<std::shared_ptr<TaggedGraph>> &TransformFailure::getChildren() const
+const std::vector<std::shared_ptr<TaggedGraphs>> &TransformFailure::getChildren() const
 {
     return s_noChildren;
 }
 
 // !!!!!!!!!!!!! TransformDisconnected
-std::unique_ptr<TransformDisconnected> TransformDisconnected::tryCreate(const std::shared_ptr<TaggedGraph> &tgraph)
+std::unique_ptr<TransformDisconnected> TransformDisconnected::tryCreate(const std::shared_ptr<TaggedGraphs> &tgraph)
 {
     const auto components = getComponentsJoinSingletons(tgraph->getGraph());
     if (components.size() < 2)
@@ -139,7 +139,7 @@ std::unique_ptr<TransformDisconnected> TransformDisconnected::tryCreate(const st
     return std::unique_ptr<TransformDisconnected>(new TransformDisconnected(tgraph, components));
 }
 
-TransformDisconnected::TransformDisconnected(const std::shared_ptr<TaggedGraph> &tgraph,
+TransformDisconnected::TransformDisconnected(const std::shared_ptr<TaggedGraphs> &tgraph,
                                              const std::vector<std::vector<Graph::Vertex>> &components)
     : ITransform(tgraph), m_tag{ITransform::Type::Disconnected}
 {
@@ -149,7 +149,7 @@ TransformDisconnected::TransformDisconnected(const std::shared_ptr<TaggedGraph> 
     for (const auto &cmp : components)
     {
         m_components.emplace_back(std::make_unique<SubGraph>(graph, std::set<Vertex>(cmp.begin(), cmp.end())));
-        m_taggedGraphs.emplace_back(std::make_shared<TaggedGraph>(*m_components.back()));
+        m_taggedGraphs.emplace_back(std::make_shared<TaggedGraphs>(*m_components.back()));
         m_tag.push_back(cmp.size());
     }
     std::sort(m_tag.begin() + 1, m_tag.end());
@@ -160,7 +160,7 @@ const Tag &TransformDisconnected::getTagOfTransform() const
     return m_tag;
 }
 
-const std::vector<std::shared_ptr<TaggedGraph>> &TransformDisconnected::getChildren() const
+const std::vector<std::shared_ptr<TaggedGraphs>> &TransformDisconnected::getChildren() const
 {
     return m_taggedGraphs;
 }
@@ -215,7 +215,7 @@ std::vector<std::vector<Graph::Vertex>> TransformDisconnected::getComponentsJoin
 // !!!!!!!!!!!!! TransformComplemntDisconnected
 
 std::unique_ptr<TransformComplementDisconnected> TransformComplementDisconnected::tryCreate(
-    const std::shared_ptr<TaggedGraph> &tgraph)
+    const std::shared_ptr<TaggedGraphs> &tgraph)
 {
     const std::unique_ptr<UndirectedGraph> complement =
         std::make_unique<UndirectedGraph>(UndirectedGraph::CreateComplement(tgraph->getGraph()));
@@ -229,7 +229,7 @@ std::unique_ptr<TransformComplementDisconnected> TransformComplementDisconnected
 }
 
 TransformComplementDisconnected::TransformComplementDisconnected(
-    const std::shared_ptr<TaggedGraph> &tgraph, const std::vector<std::vector<Graph::Vertex>> &components)
+    const std::shared_ptr<TaggedGraphs> &tgraph, const std::vector<std::vector<Graph::Vertex>> &components)
     : ITransform(tgraph), m_tag{ITransform::Type::ComplementDisconnected}
 {
     const auto &graph = tgraph->getGraph();
@@ -238,7 +238,7 @@ TransformComplementDisconnected::TransformComplementDisconnected(
     for (const auto &cmp : components)
     {
         m_components.emplace_back(std::make_unique<SubGraph>(graph, std::set<Vertex>(cmp.begin(), cmp.end())));
-        m_taggedGraphs.emplace_back(std::make_shared<TaggedGraph>(*m_components.back()));
+        m_taggedGraphs.emplace_back(std::make_shared<TaggedGraphs>(*m_components.back()));
         m_tag.push_back(cmp.size());
     }
     std::sort(m_tag.begin() + 1, m_tag.end());
@@ -249,7 +249,7 @@ const Tag &TransformComplementDisconnected::getTagOfTransform() const
     return m_tag;
 }
 
-const std::vector<std::shared_ptr<TaggedGraph>> &TransformComplementDisconnected::getChildren() const
+const std::vector<std::shared_ptr<TaggedGraphs>> &TransformComplementDisconnected::getChildren() const
 {
     return m_taggedGraphs;
 }
@@ -267,7 +267,7 @@ std::string TransformComplementDisconnected::getDescription() const
 // !!!!!!!!!!!!! TransformComplemntKnown
 
 std::unique_ptr<TransformComplementKnown> TransformComplementKnown::tryCreate(
-    const std::shared_ptr<TaggedGraph> &tgraph)
+    const std::shared_ptr<TaggedGraphs> &tgraph)
 {
     const std::unique_ptr<UndirectedGraph> complement =
         std::make_unique<UndirectedGraph>(UndirectedGraph::CreateComplement(tgraph->getGraph()));
@@ -279,7 +279,7 @@ std::unique_ptr<TransformComplementKnown> TransformComplementKnown::tryCreate(
     return std::unique_ptr<TransformComplementKnown>(new TransformComplementKnown(tgraph, taggerKnown));
 }
 
-TransformComplementKnown::TransformComplementKnown(const std::shared_ptr<TaggedGraph> &tgraph,
+TransformComplementKnown::TransformComplementKnown(const std::shared_ptr<TaggedGraphs> &tgraph,
                                                    const TaggerKnown &tagger)
     : ITransform(tgraph), m_taggerKnown(std::move(tagger)), m_tag{ITransform::Type::ComplementKnown}
 {
@@ -293,7 +293,7 @@ const Tag &TransformComplementKnown::getTagOfTransform() const
     return m_tag;
 }
 
-const std::vector<std::shared_ptr<TaggedGraph>> &TransformComplementKnown::getChildren() const
+const std::vector<std::shared_ptr<TaggedGraphs>> &TransformComplementKnown::getChildren() const
 {
     return s_noChildren;
 }
@@ -304,7 +304,7 @@ std::string TransformComplementKnown::getDescription() const
 }
 
 // !!!!!!!!!!!!! TransformOmitEdges
-std::unique_ptr<TransformOmitEdges> TransformOmitEdges::tryCreate(const std::shared_ptr<TaggedGraph> &tgraph)
+std::unique_ptr<TransformOmitEdges> TransformOmitEdges::tryCreate(const std::shared_ptr<TaggedGraphs> &tgraph)
 {
     const Grouping<Graph::Vertex> &vertexGrouping = tgraph->getVertexGrouping();
     std::vector<std::vector<Vertex>> cliques;
@@ -330,7 +330,7 @@ std::unique_ptr<TransformOmitEdges> TransformOmitEdges::tryCreate(const std::sha
     return retval;
 }
 
-TransformOmitEdges::TransformOmitEdges(const std::shared_ptr<TaggedGraph> &tgraph,
+TransformOmitEdges::TransformOmitEdges(const std::shared_ptr<TaggedGraphs> &tgraph,
                                        const std::vector<std::vector<Graph::Vertex>> &cliques)
     : ITransform(tgraph), m_tag{OmitEdges}
 {
@@ -343,7 +343,7 @@ TransformOmitEdges::TransformOmitEdges(const std::shared_ptr<TaggedGraph> &tgrap
     }
 
     m_tag.push_back(m_numOmittedEdges);
-    m_taggedGraphs.emplace_back(std::make_shared<TaggedGraph>(*m_child));
+    m_taggedGraphs.emplace_back(std::make_shared<TaggedGraphs>(*m_child));
 }
 const Tag &TransformOmitEdges::getTagOfTransform() const
 {
@@ -355,7 +355,7 @@ std::string TransformOmitEdges::getDescription() const
     return "Omit " + std::to_string(m_numOmittedEdges) + " edges";
 }
 
-const std::vector<std::shared_ptr<TaggedGraph>> &TransformOmitEdges::getChildren() const
+const std::vector<std::shared_ptr<TaggedGraphs>> &TransformOmitEdges::getChildren() const
 {
     return m_taggedGraphs;
 }

@@ -50,7 +50,7 @@ void TestInterface(const DecomposeNode &decomposeNode)
 TEST(GraphIsomorphismDecomposeNodeTest, Cycle5)
 {
     const auto graph = UndirectedGraphLibrary::Get_Cycle(5);
-    const auto tgraph = std::make_shared<TaggedGraph>(*graph);
+    const auto tgraph = std::make_shared<TaggedGraphs>(*graph);
     const auto decomposeNode = DecomposeNode::Create(tgraph);
     TestInterface(*decomposeNode);
     ASSERT_EQ(graph->getName(), decomposeNode->getGraph().getName());
@@ -61,7 +61,7 @@ TEST(GraphIsomorphismDecomposeNodeTest, NotTransformable)
 {
     // May change
     const auto graph = UndirectedGraphLibrary::Get_Star({3, 5, 7});
-    const auto tgraph = std::make_shared<TaggedGraph>(*graph);
+    const auto tgraph = std::make_shared<TaggedGraphs>(*graph);
     const auto decomposeNode = DecomposeNode::Create(tgraph);
     TestInterface(*decomposeNode);
     ASSERT_EQ(graph->getName(), decomposeNode->getGraph().getName());
@@ -72,7 +72,7 @@ TEST(GraphIsomorphismDecomposeNodeTest, TwoEdges)
 {
     const auto graphComplement = UndirectedGraphLibrary::Get_Cycle(4);
     const auto graph = UndirectedGraph::CreateComplement(*graphComplement);
-    const auto tgraph = std::make_shared<TaggedGraph>(graph);
+    const auto tgraph = std::make_shared<TaggedGraphs>(graph);
     const auto decomposeNode = DecomposeNode::Create(tgraph);
     const auto descr = decomposeNode->getDescription();
     ASSERT_EQ(descr, "Disconnected graph with components of order: 2 2");
@@ -87,7 +87,7 @@ TEST(GraphIsomorphismDecomposeNodeTest, CoDiamond)
 {
     const auto graphComplement = UndirectedGraphLibrary::Get_Diamond();
     const auto graph = UndirectedGraph::CreateComplement(*graphComplement);
-    const auto tgraph = std::make_shared<TaggedGraph>(graph);
+    const auto tgraph = std::make_shared<TaggedGraphs>(graph);
     const auto decomposeNode = DecomposeNode::Create(tgraph);
     const auto descr = decomposeNode->getDescription();
     ASSERT_EQ(descr, "Disconnected graph with components of order: 2 2");

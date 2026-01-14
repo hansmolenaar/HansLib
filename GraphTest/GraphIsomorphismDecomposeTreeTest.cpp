@@ -143,7 +143,7 @@ void CheckDecomposeList(const std::vector<std::string> &g6list, Tag expectMultip
 TEST(GraphIsomorphismDecomposeTreeTest, Singleton)
 {
     const auto graph = UndirectedGraphLibrary::Get_Singleton();
-    const auto tgraph = std::make_shared<TaggedGraph>(*graph);
+    const auto tgraph = std::make_shared<TaggedGraphs>(*graph);
     auto decomposed = DecomposeNode::Create(tgraph);
     ASSERT_EQ(decomposed->getTag(), (Tag{1, 1, 1}));
     const DecomposeTree decomposeTree(std::move(decomposed));
@@ -317,12 +317,12 @@ TEST(GraphIsomorphismDecomposeTreeTest, ComplementKnownSpecialCase1)
     CheckDecompose(decomposeTree, 3);
     const auto descr = decomposeTree.getDescriptions();
     ASSERT_EQ(descr.size(), 3);
-    ASSERT_EQ(descr.at(0), "Known graph: complete graph of order 1 -> Disconnected graph with components of order: 1 6 "
-                           "-> Complement is disconnected graph with components of order: 1 7");
-    ASSERT_EQ(
-        descr.at(1),
+    EXPECT_EQ(
+        descr.at(0),
         "Known graph: complete graph of order 1 -> Complement is disconnected graph with components of order: 1 7");
-    ASSERT_EQ(descr.at(2), "Complement is known graph: cycle of order 6 -> Disconnected graph with components of "
+    EXPECT_EQ(descr.at(1), "Known graph: complete graph of order 1 -> Disconnected graph with components of order: 1 6 "
+                           "-> Complement is disconnected graph with components of order: 1 7");
+    EXPECT_EQ(descr.at(2), "Complement is known graph: cycle of order 6 -> Disconnected graph with components of "
                            "order: 1 6 -> Complement is disconnected graph with components of order: 1 7");
 }
 
@@ -451,7 +451,7 @@ TEST(GraphIsomorphismDecomposeTreeTest, SpecialCase6)
 
     auto descr0 = decompose0.getDescriptions();
     EXPECT_EQ(descr0.size(), 2);
-    EXPECT_EQ(descr0.at(0), "Graph of order 8 cannot be transformed -> Omit 7 edges -> Complement is disconnected "
+    EXPECT_EQ(descr0.at(0), "Graph of order 8 cannot be transformed -> Omit 3 edges -> Complement is disconnected "
                             "graph with components of order: 1 8");
     EXPECT_EQ(
         descr0.at(1),
@@ -459,8 +459,8 @@ TEST(GraphIsomorphismDecomposeTreeTest, SpecialCase6)
 
     auto descr1 = decompose1.getDescriptions();
     EXPECT_EQ(descr1.size(), 2);
-    EXPECT_EQ(descr1.at(0), "Graph of order 8 cannot be transformed -> Omit 7 edges -> Complement is disconnected "
-                            "graph with components of order: 1 8");
+    EXPECT_EQ(descr1.at(0), "Graph of order 8 cannot be transformed -> Omit 1 edges -> Omit 2 edges -> Complement is "
+                            "disconnected graph with components of order: 1 8");
     EXPECT_EQ(
         descr1.at(1),
         "Known graph: complete graph of order 1 -> Complement is disconnected graph with components of order: 1 8");
@@ -559,7 +559,7 @@ TEST(GraphIsomorphismDecomposeTreeTest, SpecialCase8_422)
     std::vector<std::unique_ptr<IGraphUs>> graphs;
     graphs.emplace_back(std::make_unique<UndirectedGraph>(g0));
     graphs.emplace_back(std::make_unique<UndirectedGraph>(g1));
-    CheckDecomposeGraphList(graphs, Tag{2, 1}, false);
+    CheckDecomposeGraphList(graphs, Tag{1, 2}, false);
 
     const auto g0c = UndirectedGraph::CreateComplement(g0);
     const auto g1c = UndirectedGraph::CreateComplement(g1);
@@ -622,9 +622,9 @@ TEST(GraphIsomorphismDecomposeTreeTest, CheckDecomposeList8)
 
 TEST(GraphIsomorphismDecomposeTreeTest, CheckDecomposeList9)
 {
-    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_9(), {1, 479, 2, 1}, false);
+    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_9(), {1, 481}, false);
 }
 TEST(GraphIsomorphismDecomposeTreeTest, CheckDecomposeList10)
 {
-    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_10(), {1, 706, 3, 1, 6, 1}, false);
+    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_10(), {1, 709, 3, 2}, false);
 }

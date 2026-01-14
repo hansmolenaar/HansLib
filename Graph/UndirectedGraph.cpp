@@ -282,8 +282,11 @@ std::string UndirectedGraph::toString() const
 UndirectedGraph UndirectedGraph::CreateComplement(const IGraphUs &graph)
 {
     const auto nVertices = graph.getNumVertices();
-    MyAssert(nVertices > 1);
     UndirectedGraph result(nVertices, "Complement of: " + graph.getName());
+    if (nVertices <= 1)
+    {
+        return result;
+    }
 
     std::vector<Vertex> vertices(nVertices);
     str::iota(vertices, 0);
