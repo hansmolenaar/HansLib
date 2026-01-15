@@ -28,12 +28,12 @@ DecomposeNode::DecomposeNode(std::unique_ptr<ITransform> &&transform) : m_transf
     m_groupingChildren = Grouping<const DecomposeNode *>(allChildren, compare);
 }
 
-std::unique_ptr<DecomposeNode> DecomposeNode::Create(const std::shared_ptr<TaggedGraphs> &tgraphs)
+std::unique_ptr<DecomposeNode> DecomposeNode::Create(const std::shared_ptr<XGraph> &tgraphs)
 {
     return std::unique_ptr<DecomposeNode>(new DecomposeNode(std::move(ITransform::Create(tgraphs))));
 }
 
-const TaggedGraphs &DecomposeNode::getTaggedGraphs() const
+const XGraph &DecomposeNode::getTaggedGraphs() const
 {
     return m_transform->getTaggedGraphs();
 }

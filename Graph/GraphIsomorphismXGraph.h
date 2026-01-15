@@ -7,13 +7,13 @@
 namespace GraphIsomorphism
 {
 
-class TaggedGraphs
+class XGraph
 {
   public:
-    explicit TaggedGraphs(const Graph::IGraphUs &);
+    explicit XGraph(const Graph::IGraphUs &);
 
-    std::weak_ordering operator<=>(const TaggedGraphs &) const;
-    bool operator==(const TaggedGraphs &) const;
+    std::weak_ordering operator<=>(const XGraph &) const;
+    bool operator==(const XGraph &) const;
 
     const Grouping<Graph::Vertex> &getVertexGrouping() const;
     const Graph::IGraphUs &getGraph() const;

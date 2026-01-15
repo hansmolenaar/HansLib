@@ -29,7 +29,7 @@ TEST(GraphIsomorphismXGraphTest, Test6)
 {
     const auto graph = UndirectedGraphFromG6::Create("EQzg");
     const TaggedGraph tg(*graph);
-    const TaggedGraphs tgs(*graph);
+    const XGraph tgs(*graph);
     const auto grouping_tg = tg.getVertexGrouping();
     ASSERT_EQ(grouping_tg.countUnique(), 2);
     const auto grouping_tgs = tgs.getVertexGrouping();

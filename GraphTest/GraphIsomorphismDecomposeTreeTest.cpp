@@ -143,7 +143,7 @@ void CheckDecomposeList(const std::vector<std::string> &g6list, Tag expectMultip
 TEST(GraphIsomorphismDecomposeTreeTest, Singleton)
 {
     const auto graph = UndirectedGraphLibrary::Get_Singleton();
-    const auto tgraph = std::make_shared<TaggedGraphs>(*graph);
+    const auto tgraph = std::make_shared<XGraph>(*graph);
     auto decomposed = DecomposeNode::Create(tgraph);
     ASSERT_EQ(decomposed->getTag(), (Tag{1, 1, 1}));
     const DecomposeTree decomposeTree(std::move(decomposed));

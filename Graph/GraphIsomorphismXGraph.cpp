@@ -5,7 +5,7 @@
 using namespace Graph;
 using namespace GraphIsomorphism;
 
-TaggedGraphs::TaggedGraphs(const Graph::IGraphUs &graph)
+XGraph::XGraph(const Graph::IGraphUs &graph)
     : m_complement(UndirectedGraph::CreateComplement(graph)), m_taggedGraph(std::make_shared<TaggedGraph>(graph)),
       m_taggedGraphComplement(std::make_shared<TaggedGraph>(m_complement)),
       m_grouping(
@@ -13,7 +13,7 @@ TaggedGraphs::TaggedGraphs(const Graph::IGraphUs &graph)
 {
 }
 
-std::weak_ordering TaggedGraphs::operator<=>(const TaggedGraphs &other) const
+std::weak_ordering XGraph::operator<=>(const XGraph &other) const
 {
     std::weak_ordering result = *m_taggedGraph <=> *other.m_taggedGraph;
     if (result != std::weak_ordering::equivalent)
@@ -25,7 +25,7 @@ std::weak_ordering TaggedGraphs::operator<=>(const TaggedGraphs &other) const
     return result;
 }
 
-bool TaggedGraphs::operator==(const TaggedGraphs &other) const
+bool XGraph::operator==(const XGraph &other) const
 {
     if (!(*m_taggedGraph == *other.m_taggedGraph))
     {
@@ -35,17 +35,17 @@ bool TaggedGraphs::operator==(const TaggedGraphs &other) const
     return *m_taggedGraphComplement == *other.m_taggedGraphComplement;
 }
 
-const Grouping<Graph::Vertex> &TaggedGraphs::getVertexGrouping() const
+const Grouping<Graph::Vertex> &XGraph::getVertexGrouping() const
 {
     return m_grouping;
 }
 
-const Graph::IGraphUs &TaggedGraphs::getGraph() const
+const Graph::IGraphUs &XGraph::getGraph() const
 {
     return m_taggedGraph->getGraph();
 }
 
-const Graph::IGraphUs &TaggedGraphs::getGraphComplement() const
+const Graph::IGraphUs &XGraph::getGraphComplement() const
 {
     return m_taggedGraphComplement->getGraph();
 }

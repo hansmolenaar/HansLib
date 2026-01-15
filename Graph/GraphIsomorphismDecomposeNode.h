@@ -19,11 +19,11 @@ class DecomposeNode
     std::weak_ordering operator<=>(const DecomposeNode &) const;
     bool isLeaf() const;
 
-    static std::unique_ptr<DecomposeNode> Create(const std::shared_ptr<TaggedGraphs> &);
+    static std::unique_ptr<DecomposeNode> Create(const std::shared_ptr<XGraph> &);
 
   private:
     DecomposeNode(std::unique_ptr<ITransform> &&);
-    const TaggedGraphs &getTaggedGraphs() const;
+    const XGraph &getTaggedGraphs() const;
 
     std::unique_ptr<ITransform> m_transform;
     std::vector<std::unique_ptr<DecomposeNode>> m_childDecomposes;
