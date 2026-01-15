@@ -53,8 +53,8 @@ void TestList(const std::vector<std::string> &g6list,
     std::array<size_t, GraphIsomorphism::ITransform::numType> count{0, 0, 0, 0, 0, 0};
     for (const auto &ug : graphs)
     {
-        const auto tgraph = std::make_shared<XGraph>(*ug);
-        const auto transform = ITransform::Create(tgraph);
+        const auto xgraph = std::make_shared<XGraph>(*ug);
+        const auto transform = ITransform::Create(xgraph);
         count[transform->getTagOfTransform().front()] += 1;
         if (transform->getTagOfTransform().front() == ITransform::Type::Failure)
         {
@@ -71,8 +71,8 @@ void TestList(const std::vector<std::string> &g6list,
 TEST(IGraphIsomorphismTransformTest, KnownPath4)
 {
     const auto graph = UndirectedGraphLibrary::Get_Path(4);
-    const auto tgraph = std::make_shared<XGraph>(*graph);
-    const auto transform = TransformKnown::tryCreate(tgraph);
+    const auto xgraph = std::make_shared<XGraph>(*graph);
+    const auto transform = TransformKnown::tryCreate(xgraph);
     ASSERT_NE(transform.get(), nullptr);
     TestInterface(*transform);
     ASSERT_EQ(transform->getTagOfTransform(), (Tag{1, 3, 4}));
@@ -83,12 +83,12 @@ TEST(IGraphIsomorphismTransformTest, KnownPath4)
 TEST(IGraphIsomorphismTransformTest, UnKnown)
 {
     const auto graph = UndirectedGraphFromG6::Create(UndirectedGraphFromG6::X84);
-    const auto tgraph = std::make_shared<XGraph>(*graph);
+    const auto xgraph = std::make_shared<XGraph>(*graph);
 
-    const auto transformKnown = TransformKnown::tryCreate(tgraph);
+    const auto transformKnown = TransformKnown::tryCreate(xgraph);
     ASSERT_TRUE(!transformKnown);
 
-    const auto transform = ITransform::Create(tgraph);
+    const auto transform = ITransform::Create(xgraph);
     ASSERT_TRUE(!!transform);
     TestInterface(*transform);
 
@@ -101,8 +101,8 @@ TEST(IGraphIsomorphismTransformTest, DisconnectedComplementPath2)
 {
     const auto graphComplement = UndirectedGraphLibrary::Get_Path(2);
     const auto graph = UndirectedGraph::CreateComplement(*graphComplement);
-    const auto tgraph = std::make_shared<XGraph>(graph);
-    const auto transform = TransformDisconnected::tryCreate(tgraph);
+    const auto xgraph = std::make_shared<XGraph>(graph);
+    const auto transform = TransformDisconnected::tryCreate(xgraph);
     ASSERT_EQ(transform.get(), nullptr);
 }
 
@@ -110,8 +110,8 @@ TEST(IGraphIsomorphismTransformTest, DisconnectedComplementDiamond)
 {
     const auto graphComplement = UndirectedGraphLibrary::Get_Diamond();
     const auto graph = UndirectedGraph::CreateComplement(*graphComplement);
-    const auto tgraph = std::make_shared<XGraph>(graph);
-    const auto transform = TransformDisconnected::tryCreate(tgraph);
+    const auto xgraph = std::make_shared<XGraph>(graph);
+    const auto transform = TransformDisconnected::tryCreate(xgraph);
     ASSERT_NE(transform.get(), nullptr);
     TestInterface(*transform);
     ASSERT_EQ(transform->getTagOfTransform(), (Tag{2, 2, 2}));
@@ -122,8 +122,8 @@ TEST(IGraphIsomorphismTransformTest, DisconnectedComplementDiamond)
 TEST(IGraphIsomorphismTransformTest, DisconnectedPath2)
 {
     const auto graph = UndirectedGraphLibrary::Get_Path(2);
-    const auto tgraph = std::make_shared<XGraph>(*graph);
-    const auto transform = TransformDisconnected::tryCreate(tgraph);
+    const auto xgraph = std::make_shared<XGraph>(*graph);
+    const auto transform = TransformDisconnected::tryCreate(xgraph);
     ASSERT_EQ(transform.get(), nullptr);
 }
 
@@ -175,8 +175,8 @@ TEST(IGraphIsomorphismTransformTest, ComplemntKnownPath10)
 {
     const auto complement = UndirectedGraphLibrary::Get_Path(10);
     const auto graph = UndirectedGraph::CreateComplement(*complement);
-    const auto tgraph = std::make_shared<XGraph>(graph);
-    const auto transform = TransformComplementKnown::tryCreate(tgraph);
+    const auto xgraph = std::make_shared<XGraph>(graph);
+    const auto transform = TransformComplementKnown::tryCreate(xgraph);
     ASSERT_NE(transform.get(), nullptr);
     ASSERT_EQ(transform->getTagOfTransform(), (Tag{4, 3, 10}));
     ASSERT_EQ(transform->getDescription(), "Complement is known graph: path of order 10");
@@ -188,8 +188,8 @@ TEST(IGraphIsomorphismTransformTest, ComplemntKnownPath10)
 TEST(IGraphIsomorphismTransformTest, OmitEdgesH)
 {
     const auto graph = UndirectedGraphFromG6::Create("EgSG");
-    const auto tgraph = std::make_shared<XGraph>(*graph);
-    const auto transform = TransformOmitEdges::tryCreate(tgraph);
+    const auto xgraph = std::make_shared<XGraph>(*graph);
+    const auto transform = TransformOmitEdges::tryCreate(xgraph);
     ASSERT_NE(transform.get(), nullptr);
 
     ASSERT_EQ(transform->getTagOfTransform(), (Tag{5, 1}));

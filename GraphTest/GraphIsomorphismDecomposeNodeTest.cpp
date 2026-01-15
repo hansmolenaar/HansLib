@@ -50,8 +50,8 @@ void TestInterface(const DecomposeNode &decomposeNode)
 TEST(GraphIsomorphismDecomposeNodeTest, Cycle5)
 {
     const auto graph = UndirectedGraphLibrary::Get_Cycle(5);
-    const auto tgraph = std::make_shared<XGraph>(*graph);
-    const auto decomposeNode = DecomposeNode::Create(tgraph);
+    const auto xgraph = std::make_shared<XGraph>(*graph);
+    const auto decomposeNode = DecomposeNode::Create(xgraph);
     TestInterface(*decomposeNode);
     ASSERT_EQ(graph->getName(), decomposeNode->getGraph().getName());
     ASSERT_EQ(decomposeNode->getTag(), (Tag{1, 2, 5}));
@@ -61,8 +61,8 @@ TEST(GraphIsomorphismDecomposeNodeTest, NotTransformable)
 {
     // May change
     const auto graph = UndirectedGraphLibrary::Get_Star({3, 5, 7});
-    const auto tgraph = std::make_shared<XGraph>(*graph);
-    const auto decomposeNode = DecomposeNode::Create(tgraph);
+    const auto xgraph = std::make_shared<XGraph>(*graph);
+    const auto decomposeNode = DecomposeNode::Create(xgraph);
     TestInterface(*decomposeNode);
     ASSERT_EQ(graph->getName(), decomposeNode->getGraph().getName());
     ASSERT_EQ(decomposeNode->getTag(), (Tag{0}));
@@ -72,8 +72,8 @@ TEST(GraphIsomorphismDecomposeNodeTest, TwoEdges)
 {
     const auto graphComplement = UndirectedGraphLibrary::Get_Cycle(4);
     const auto graph = UndirectedGraph::CreateComplement(*graphComplement);
-    const auto tgraph = std::make_shared<XGraph>(graph);
-    const auto decomposeNode = DecomposeNode::Create(tgraph);
+    const auto xgraph = std::make_shared<XGraph>(graph);
+    const auto decomposeNode = DecomposeNode::Create(xgraph);
     const auto descr = decomposeNode->getDescription();
     ASSERT_EQ(descr, "Disconnected graph with components of order: 2 2");
     TestInterface(*decomposeNode);
@@ -87,8 +87,8 @@ TEST(GraphIsomorphismDecomposeNodeTest, CoDiamond)
 {
     const auto graphComplement = UndirectedGraphLibrary::Get_Diamond();
     const auto graph = UndirectedGraph::CreateComplement(*graphComplement);
-    const auto tgraph = std::make_shared<XGraph>(graph);
-    const auto decomposeNode = DecomposeNode::Create(tgraph);
+    const auto xgraph = std::make_shared<XGraph>(graph);
+    const auto decomposeNode = DecomposeNode::Create(xgraph);
     const auto descr = decomposeNode->getDescription();
     ASSERT_EQ(descr, "Disconnected graph with components of order: 2 2");
     const auto &groupingChildren = decomposeNode->getGroupingChildren();

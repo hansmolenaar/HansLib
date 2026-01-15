@@ -23,7 +23,7 @@ class DecomposeNode
 
   private:
     DecomposeNode(std::unique_ptr<ITransform> &&);
-    const XGraph &getTaggedGraphs() const;
+    const XGraph &getXGraph() const;
 
     std::unique_ptr<ITransform> m_transform;
     std::vector<std::unique_ptr<DecomposeNode>> m_childDecomposes;

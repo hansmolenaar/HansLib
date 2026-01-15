@@ -34,8 +34,7 @@ class ITransform
     virtual ~ITransform() = default;
 
     const Graph::IGraphUs &getGraph() const;
-    const XGraph &getTaggedGraphs() const;
-    const std::shared_ptr<XGraph> getTaggedGraphsPtr() const;
+    const XGraph &getXGraph() const;
 
     virtual const Tag &getTagOfTransform() const = 0;
     virtual std::string getDescription() const = 0;
@@ -47,7 +46,7 @@ class ITransform
     explicit ITransform(std::shared_ptr<XGraph>);
 
   private:
-    std::shared_ptr<XGraph> m_taggedGraphs;
+    std::shared_ptr<XGraph> m_xgraph;
 };
 
 class TransformKnown : public ITransform
@@ -95,7 +94,7 @@ class TransformDisconnected : public ITransform
 
     Tag m_tag;
     std::vector<std::unique_ptr<Graph::SubGraph>> m_components;
-    std::vector<std::shared_ptr<XGraph>> m_taggedGraphs;
+    std::vector<std::shared_ptr<XGraph>> m_xgraph;
 };
 ;
 
@@ -111,12 +110,11 @@ class TransformComplementDisconnected : public ITransform
     static std::vector<std::vector<Graph::Vertex>> getComponentsJoinSingletons(const Graph::IGraphUs &);
 
   private:
-    TransformComplementDisconnected(const std::shared_ptr<XGraph> &,
-                                    const std::vector<std::vector<Graph::Vertex>> &);
+    TransformComplementDisconnected(const std::shared_ptr<XGraph> &, const std::vector<std::vector<Graph::Vertex>> &);
 
     Tag m_tag;
     std::vector<std::unique_ptr<Graph::SubGraph>> m_components;
-    std::vector<std::shared_ptr<XGraph>> m_taggedGraphs;
+    std::vector<std::shared_ptr<XGraph>> m_xgraph;
 };
 
 class TransformComplementKnown : public ITransform
@@ -150,7 +148,7 @@ class TransformOmitEdges : public ITransform
     Graph::Edge m_numOmittedEdges = 0;
     Tag m_tag;
     std::unique_ptr<Graph::UndirectedGraph> m_child;
-    std::vector<std::shared_ptr<XGraph>> m_taggedGraphs;
+    std::vector<std::shared_ptr<XGraph>> m_xgraph;
 };
 
 } // namespace GraphIsomorphism
