@@ -2,13 +2,13 @@
 
 #include "Defines.h"
 #include "GraphIsomorphismGrouping.h"
-#include "GraphIsomorphismTaggedGraphs.h"
+#include "GraphIsomorphismXGraph.h"
 #include "UndirectedGraphFromG6.h"
 
 using namespace GraphIsomorphism;
 using namespace Graph;
 
-TEST(GraphIsomorphismTaggedGraphsTest, Combine)
+TEST(GraphIsomorphismXGraphTest, Combine)
 {
     const std::vector<Vertex> vertices{0, 1, 2, 3};
     const VertexTags vtag0{{1}, {2}, {1}, {2}};
@@ -25,7 +25,7 @@ TEST(GraphIsomorphismTaggedGraphsTest, Combine)
     ASSERT_EQ(grouping().at(2), (std::vector<Graph::Vertex>{1, 3}));
 }
 
-TEST(GraphIsomorphismTaggedGraphsTest, Test6)
+TEST(GraphIsomorphismXGraphTest, Test6)
 {
     const auto graph = UndirectedGraphFromG6::Create("EQzg");
     const TaggedGraph tg(*graph);

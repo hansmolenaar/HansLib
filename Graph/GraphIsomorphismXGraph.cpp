@@ -1,4 +1,4 @@
-#include "GraphIsomorphismTaggedGraphs.h"
+#include "GraphIsomorphismXGraph.h"
 #include "GraphIsomorphismGrouping.h"
 #include "MyAssert.h"
 

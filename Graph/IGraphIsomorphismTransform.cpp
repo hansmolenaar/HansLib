@@ -1,6 +1,6 @@
 #include "IGraphIsomorphismTransform.h"
 
-#include "GraphIsomorphismTaggedGraphs.h"
+#include "GraphIsomorphismXGraph.h"
 #include "IGraphUs.h"
 #include "MyAssert.h"
 #include "UndirectedGraph.h"

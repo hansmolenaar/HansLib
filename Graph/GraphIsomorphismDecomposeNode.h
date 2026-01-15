@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GraphIsomorphismTaggedGraphs.h"
+#include "GraphIsomorphismXGraph.h"
 #include "IGraphIsomorphismTransform.h"
 
 namespace GraphIsomorphism
