@@ -217,9 +217,8 @@ std::vector<std::vector<Graph::Vertex>> TransformDisconnected::getComponentsJoin
 std::unique_ptr<TransformComplementDisconnected> TransformComplementDisconnected::tryCreate(
     const std::shared_ptr<TaggedGraphs> &tgraph)
 {
-    const std::unique_ptr<UndirectedGraph> complement =
-        std::make_unique<UndirectedGraph>(UndirectedGraph::CreateComplement(tgraph->getGraph()));
-    const auto components = TransformDisconnected::getComponentsJoinSingletons(*complement);
+    const auto& complement = tgraph->getGraphComplement();
+    const auto components = TransformDisconnected::getComponentsJoinSingletons(complement);
     if (components.size() < 2)
     {
         return {};
@@ -269,9 +268,8 @@ std::string TransformComplementDisconnected::getDescription() const
 std::unique_ptr<TransformComplementKnown> TransformComplementKnown::tryCreate(
     const std::shared_ptr<TaggedGraphs> &tgraph)
 {
-    const std::unique_ptr<UndirectedGraph> complement =
-        std::make_unique<UndirectedGraph>(UndirectedGraph::CreateComplement(tgraph->getGraph()));
-    const TaggerKnown taggerKnown(*complement);
+    const auto& complement = tgraph->getGraphComplement();
+    const TaggerKnown taggerKnown(complement);
     if (taggerKnown.getGraphTag().front() == TaggerKnown::KnownType::Unknown)
     {
         return {};
