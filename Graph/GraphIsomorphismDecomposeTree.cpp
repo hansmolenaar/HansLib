@@ -1,5 +1,4 @@
 #include "GraphIsomorphismDecomposeTree.h"
-#include "GraphIsomorphismTaggedGraph.h"
 #include "MyAssert.h"
 
 using namespace Graph;

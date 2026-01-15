@@ -13,7 +13,6 @@ class IGraphUs;
 namespace GraphIsomorphism
 {
 
-class TaggedGraph;
 class XGraph;
 
 class ITransform
