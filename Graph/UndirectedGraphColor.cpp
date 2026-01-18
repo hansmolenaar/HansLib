@@ -1,0 +1,94 @@
+#include "UndirectedGraphColor.h"
+#include "MyAssert.h"
+
+using namespace Graph;
+using namespace Utilities;
+
+namespace
+{
+constexpr UndirectedGraphColor::Color ColorUndefined = std::numeric_limits<UndirectedGraphColor::Color>::max();
+constexpr UndirectedGraphColor::Color ColorFirst = 0;
+
+bool ColorRecur(Vertex v, UndirectedGraphColor::Color c, const Graph::IGraphUs &graph,
+                std::vector<UndirectedGraphColor::Color> &result)
+{ 
+    if (result.at(v) != ColorUndefined)
+    {
+        return result[v] == c;
+    }
+
+    result[v] = c;
+
+    std::vector<Vertex> ngbs;
+    graph.setAdjacentVertices(v, ngbs);
+    for (auto ngb : ngbs)
+    {
+        constexpr UndirectedGraphColor::Color ColorSecond = 1;
+        const auto otherColor = (c == ColorFirst ? ColorSecond : ColorFirst);
+        if (!ColorRecur(ngb, otherColor, graph, result))
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+std::vector<UndirectedGraphColor::Color> GetColoring2(const Graph::IGraphUs &graph)
+{
+    constexpr UndirectedGraphColor::Color ColorSecond = 1;
+    const auto numVertices = graph.getNumVertices();
+    std::vector<UndirectedGraphColor::Color> result(numVertices, ColorUndefined);
+
+    for (Vertex current = 0UZ; current < numVertices; ++current)
+    {
+
+        if (result.at(current) != ColorUndefined)
+        {
+            continue;
+        }
+        if (!ColorRecur(current, ColorFirst, graph, result))
+        {
+            return {};
+        }
+    }
+
+    return result;
+}
+
+} // namespace
+
+UndirectedGraphColor::UndirectedGraphColor(const Graph::IGraphUs &graph) : m_graph(graph)
+{
+    const auto numVertices = m_graph.getNumVertices();
+    if (numVertices == 0)
+    {
+        m_chromaticNumber = 0;
+        return;
+    }
+
+    const auto colors = GetColoring2(m_graph);
+    if (colors.empty())
+    {
+        return;
+    }
+
+    m_chromaticNumber = *str::max_element(colors) + 1;
+
+    if (m_chromaticNumber == 2)
+    {
+        m_colors = colors;
+    }
+}
+
+std::vector<UndirectedGraphColor::Color> UndirectedGraphColor::getColoring2() const
+{
+    MyAssert(m_chromaticNumber.has_value());
+    MyAssert(m_chromaticNumber == 2);
+    return m_colors;
+}
+
+std::optional<UndirectedGraphColor::Color> UndirectedGraphColor::getChromaticNumber() const
+{
+    return m_chromaticNumber;
+}
