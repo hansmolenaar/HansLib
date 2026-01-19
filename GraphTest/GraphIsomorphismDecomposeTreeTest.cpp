@@ -317,11 +317,11 @@ TEST(GraphIsomorphismDecomposeTreeTest, ComplementKnownSpecialCase1)
     CheckDecompose(decomposeTree, 3);
     const auto descr = decomposeTree.getDescriptions();
     ASSERT_EQ(descr.size(), 3);
-    EXPECT_EQ(
-        descr.at(0),
-        "Known graph: complete graph of order 1 -> Complement is disconnected graph with components of order: 1 7");
-    EXPECT_EQ(descr.at(1), "Known graph: complete graph of order 1 -> Disconnected graph with components of order: 1 6 "
+    EXPECT_EQ(descr.at(0), "Known graph: complete graph of order 1 -> Disconnected graph with components of order: 1 6 "
                            "-> Complement is disconnected graph with components of order: 1 7");
+    EXPECT_EQ(
+        descr.at(1),
+        "Known graph: complete graph of order 1 -> Complement is disconnected graph with components of order: 1 7");
     EXPECT_EQ(descr.at(2), "Complement is known graph: cycle of order 6 -> Disconnected graph with components of "
                            "order: 1 6 -> Complement is disconnected graph with components of order: 1 7");
 }
@@ -626,5 +626,5 @@ TEST(GraphIsomorphismDecomposeTreeTest, CheckDecomposeList9)
 }
 TEST(GraphIsomorphismDecomposeTreeTest, CheckDecomposeList10)
 {
-    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_10(), {1, 709, 3, 2}, true);
+    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_10(), { 1, 711, 2, 2 }, true);
 }

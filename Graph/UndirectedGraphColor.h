@@ -10,6 +10,7 @@ class UndirectedGraphColor
 {
   public:
     using Color = unsigned int;
+    static constexpr UndirectedGraphColor::Color ColorFirst = 0;
 
     explicit UndirectedGraphColor(const Graph::IGraphUs &);
     const Graph::IGraphUs &getGraph() const;

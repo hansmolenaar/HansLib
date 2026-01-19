@@ -2,6 +2,7 @@
 
 #include "Defines.h"
 #include "GraphIsomorphismTaggerChains.h"
+#include "GraphIsomorphismTaggerColor.h"
 #include "GraphIsomorphismTaggerComponents.h"
 #include "GraphIsomorphismTaggerDegree.h"
 #include "GraphIsomorphismTaggerDistance.h"
@@ -118,6 +119,7 @@ std::vector<std::unique_ptr<ITagger>> GraphIsomorphism::getAllTaggers(const Grap
     result.emplace_back(std::make_unique<TaggerKnown>(graph));
     result.emplace_back(std::make_unique<TaggerMaxDegree>(graph));
     result.emplace_back(std::make_unique<TaggerTriangles>(triangles));
+    result.emplace_back(std::make_unique<TaggerColor>(graph));
     return result;
 }
 

@@ -7,7 +7,6 @@ using namespace Utilities;
 namespace
 {
 constexpr UndirectedGraphColor::Color ColorUndefined = std::numeric_limits<UndirectedGraphColor::Color>::max();
-constexpr UndirectedGraphColor::Color ColorFirst = 0;
 
 bool ColorRecur(Vertex v, UndirectedGraphColor::Color c, const Graph::IGraphUs &graph,
                 std::vector<UndirectedGraphColor::Color> &result)
@@ -24,7 +23,8 @@ bool ColorRecur(Vertex v, UndirectedGraphColor::Color c, const Graph::IGraphUs &
     for (auto ngb : ngbs)
     {
         constexpr UndirectedGraphColor::Color ColorSecond = 1;
-        const auto otherColor = (c == ColorFirst ? ColorSecond : ColorFirst);
+        const auto otherColor =
+            (c == UndirectedGraphColor::ColorFirst ? ColorSecond : UndirectedGraphColor::ColorFirst);
         if (!ColorRecur(ngb, otherColor, graph, result))
         {
             return false;
@@ -47,7 +47,7 @@ std::vector<UndirectedGraphColor::Color> GetColoring2(const Graph::IGraphUs &gra
         {
             continue;
         }
-        if (!ColorRecur(current, ColorFirst, graph, result))
+        if (!ColorRecur(current, UndirectedGraphColor::ColorFirst, graph, result))
         {
             return {};
         }
