@@ -14,7 +14,7 @@ bool ColorRecur(Vertex v, UndirectedGraphColor::Color c, const Graph::IGraphUs &
 {
     if (result.at(v) != ColorUndefined)
     {
-        return result[v] == c;
+        return (result[v] == c);
     }
 
     result[v] = c;

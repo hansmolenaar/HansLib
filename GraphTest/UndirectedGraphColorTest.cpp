@@ -39,6 +39,7 @@ void TestColoringSingle(const IGraphUs &graph, const std::optional<UndirectedGra
         std::vector<Vertex> ngbs;
         for (Vertex v = 0; v < graph.getNumVertices(); ++v)
         {
+            ASSERT_LE(coloring2.at(v), 2);
             graph.setAdjacentVertices(v, ngbs);
             for (auto ngb : ngbs)
             {
@@ -115,12 +116,14 @@ TEST(UndirectedGraphColorTest, Cycles)
 TEST(UndirectedGraphColorTest, InterestingCases)
 {
     TestColoring(*UndirectedGraphFromG6::Create("H???XjA"), 2);
+    TestColoring(*UndirectedGraphFromG6::Create("H????N}"), 2);
     TestColoring(*UndirectedGraphFromG6::Create("H????F|"), 2);
     TestColoring(*UndirectedGraphFromG6::Create("Is?AXW[[?"), 2);
     TestColoring(*UndirectedGraphFromG6::Create("Is?HGtcU?"), 3);
     TestColoring(*UndirectedGraphFromG6::Create("Is?@WxcU?"), 2);
     TestColoring(*UndirectedGraphFromG6::Create("I?AAHGICW"), 3);
     TestColoring(*UndirectedGraphFromG6::Create("I@`??CBNG"), {}); // 5
+    TestColoring(*UndirectedGraphFromG6::Create("F?dXw"), {});     // 4
     TestColoring(*UndirectedGraphFromG6::Create("I?COPHAw?"), 3);
 }
 
