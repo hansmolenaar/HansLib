@@ -41,6 +41,8 @@ class UndirectedGraph : public Graph::IGraphUs
     // Only keep edges between vertices in the same group
     static UndirectedGraph CreateEdgesKeep(const IGraphUs &, const std::vector<std::vector<Vertex>> &);
 
+    static UndirectedGraph CreateRandomShuffled(const IGraphUs &, Permutation::Entry);
+
     struct CyclesAndPaths
     {
         std::vector<std::vector<Vertex>> Cycles;

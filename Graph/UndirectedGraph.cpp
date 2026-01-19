@@ -374,3 +374,11 @@ UndirectedGraph UndirectedGraph::CreateEdgesKeep(const IGraphUs &graph, const st
 
     return result;
 }
+
+UndirectedGraph UndirectedGraph::CreateRandomShuffled(const IGraphUs &graph, Permutation::Entry seed)
+{
+    const auto nVertices = graph.getNumVertices();
+    const Permutation trivial = Permutation::CreateTrivial(nVertices);
+    const auto permutation = Permutation::CreateRandomShuffle(trivial, seed);
+    return UndirectedGraph::CreatePermuted(graph, permutation);
+}

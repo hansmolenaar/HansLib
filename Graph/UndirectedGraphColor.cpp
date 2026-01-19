@@ -11,7 +11,7 @@ constexpr UndirectedGraphColor::Color ColorFirst = 0;
 
 bool ColorRecur(Vertex v, UndirectedGraphColor::Color c, const Graph::IGraphUs &graph,
                 std::vector<UndirectedGraphColor::Color> &result)
-{ 
+{
     if (result.at(v) != ColorUndefined)
     {
         return result[v] == c;
@@ -56,6 +56,29 @@ std::vector<UndirectedGraphColor::Color> GetColoring2(const Graph::IGraphUs &gra
     return result;
 }
 
+std::optional<UndirectedGraphColor::Color> Test3ColoredBrooks(const IGraphUs &graph)
+{
+    // We know the graph is not 2-colorable, now check if it is 3 colorable using Brooks theorem
+    if (graph.isConnected())
+    {
+        const auto degreeSequence = graph.getSortedDegreeSequence();
+        const auto degreeMin = degreeSequence.front();
+        const auto degreeMax = degreeSequence.back();
+        MyAssert(degreeMin <= degreeMax);
+        MyAssert(degreeMax >= 2);
+        if (degreeMin + 1 == graph.getNumVertices())
+        {
+            // Complete graph
+            return degreeMin + 1;
+        }
+        else if (degreeMax == 3)
+        {
+            return 3;
+        }
+    }
+    return {};
+}
+
 } // namespace
 
 UndirectedGraphColor::UndirectedGraphColor(const Graph::IGraphUs &graph) : m_graph(graph)
@@ -70,6 +93,8 @@ UndirectedGraphColor::UndirectedGraphColor(const Graph::IGraphUs &graph) : m_gra
     const auto colors = GetColoring2(m_graph);
     if (colors.empty())
     {
+        // Maybe it is 3 colored or complete
+        m_chromaticNumber = Test3ColoredBrooks(m_graph);
         return;
     }
 
