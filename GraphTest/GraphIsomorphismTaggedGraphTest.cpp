@@ -22,7 +22,7 @@ void CheckAgainsPermutations(const TaggedGraph &tg)
     constexpr int numPermutations = 5;
     const auto &graph = tg.getGraph();
     const Permutation trivial = Permutation::CreateTrivial(graph.getNumVertices());
-    for (int n = 0; n < numPermutations; ++n)
+    for (auto n : Iota::GetRange(numPermutations))
     {
         const auto permutation = Permutation::CreateRandomShuffle(trivial, n);
         const auto graphPermuted = UndirectedGraph::CreatePermuted(graph, permutation);

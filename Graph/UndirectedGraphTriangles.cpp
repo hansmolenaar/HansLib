@@ -9,7 +9,7 @@ std::vector<std::array<Vertex, 3>> GetAllTriangles(const Graph::IGraphUs &graph)
 {
     const auto nVertices = graph.getNumVertices();
     std::vector<std::vector<Vertex>> allNeighbors(nVertices);
-    for (Vertex v = 0; v < nVertices; ++v)
+    for (Vertex v : Iota::GetRange(nVertices))
     {
         graph.setAdjacentVertices(v, allNeighbors.at(v));
     }

@@ -64,10 +64,9 @@ std::vector<Vertex> IGraphUs::getUniversalVertices() const
 
 std::vector<std::array<Vertex, 2>> IGraphUs::getAllSortedEdges() const
 {
-    const auto nVertices = getNumVertices();
     std::vector<std::array<Vertex, 2>> result;
     std::vector<Vertex> neighbors;
-    for (Vertex v = 0; v < nVertices; ++v)
+    for (Vertex v : getVertexRange())
     {
         setAdjacentVertices(v, neighbors);
         for (Vertex ngb : neighbors)

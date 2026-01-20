@@ -230,7 +230,7 @@ UndirectedGraph UndirectedGraph::CreatePermuted(const IGraphUs &graph, const Per
     MyAssert(nVertices == permut.getCardinality());
     UndirectedGraph result(nVertices);
     std::vector<Vertex> ngbs;
-    for (Vertex v0 = 0; v0 < nVertices; ++v0)
+    for (Vertex v0 : Iota::GetRange(nVertices))
     {
         const auto v1 = permut(v0);
         graph.setAdjacentVertices(v0, ngbs);
@@ -260,7 +260,7 @@ std::string UndirectedGraph::toString() const
     std::stringstream retval;
     retval << "#vertices " << nVertices << "\n";
     std::vector<Vertex> ngbs;
-    for (Vertex v = 0; v < nVertices - 1; ++v)
+    for (Vertex v : Iota::GetRange(nVertices - 1))
     {
         setAdjacentVertices(v, ngbs);
         for (auto ngb : ngbs)
@@ -287,7 +287,7 @@ UndirectedGraph UndirectedGraph::CreateComplement(const IGraphUs &graph)
     str::iota(vertices, 0);
     std::vector<Vertex> ngbs;
     std::vector<Vertex> newEdges;
-    for (Vertex v = 0; v < nVertices; ++v)
+    for (Vertex v : Iota::GetRange(nVertices))
     {
         graph.setAdjacentVertices(v, ngbs);
         newEdges.clear();
@@ -312,7 +312,7 @@ UndirectedGraph UndirectedGraph::CreateEdgesOmitted(const IGraphUs &graph,
     UndirectedGraph result(graph.getNumVertices());
     std::map<Vertex, size_t> vertex2group;
 
-    for (size_t group = 0; group < omitEdgesBetween.size(); ++group)
+    for (size_t group : Iota::GetRange(omitEdgesBetween.size()))
     {
         for (Vertex v : omitEdgesBetween.at(group))
         {
@@ -347,7 +347,7 @@ UndirectedGraph UndirectedGraph::CreateEdgesKeep(const IGraphUs &graph, const st
     UndirectedGraph result(graph.getNumVertices());
     std::map<Vertex, size_t> vertex2group;
 
-    for (size_t group = 0; group < groups.size(); ++group)
+    for (size_t group : Iota::GetRange(groups.size()))
     {
         for (Vertex v : groups.at(group))
         {

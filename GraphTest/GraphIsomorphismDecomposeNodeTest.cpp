@@ -28,7 +28,7 @@ void TestInterface(const DecomposeNode &decomposeNode)
         {
             for (const auto *part : group)
             {
-                for (Vertex vertex = 0; vertex < part->getGraph().getNumVertices(); ++vertex)
+                for (Vertex vertex : part->getGraph().getVertexRange())
                 {
                     verticesInParent.push_back(part->getVertexInParent(vertex));
                 }

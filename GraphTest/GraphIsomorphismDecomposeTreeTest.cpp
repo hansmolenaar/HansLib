@@ -22,8 +22,7 @@ void CheckVertexConservation(const GraphIsomorphism::DecomposeTree &decomposeTre
     {
         numLeaves += 1;
         const IGraphUs &graph = leaf->getGraph();
-        const auto numVertices = graph.getNumVertices();
-        for (Vertex v = 0; v < numVertices; ++v)
+        for (Vertex v : graph.getVertexRange())
         {
             vertices.emplace_back(decomposeTree.getVertexInRoot(v, *leaf));
         }
@@ -53,7 +52,7 @@ void CheckDecompose(const DecomposeTree &decomposeTree, int expectNumLeaves = -1
     // Try some permutations
     constexpr size_t numPermutation = 3;
     const Permutation trivial = Permutation::CreateTrivial(graph.getNumVertices());
-    for (size_t n = 0; n < numPermutation; ++n)
+    for (size_t n : Iota::GetRange(numPermutation))
     {
         const auto permutation = Permutation::CreateRandomShuffle(trivial, n);
         const auto graphPermuted = UndirectedGraph::CreatePermuted(graph, permutation);

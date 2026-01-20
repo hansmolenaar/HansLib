@@ -157,9 +157,9 @@ std::unique_ptr<GraphUsc> UndirectedGraphLibrary::Get_CompleteBipartite(Vertex s
         throw MyException("CompleteBipartiteGraph: both sets muust have positive size");
     }
     UndirectedGraph ug(size0 + size1, CreateName("Complete Bipartite", {size0, size1}));
-    for (int n0 = 0; n0 < size0; ++n0)
+    for (Vertex n0 : Iota::GetRange(size0))
     {
-        for (int n1 = 0; n1 < size1; ++n1)
+        for (Vertex n1 : Iota::GetRange(size1))
         {
             ug.addEdge(n0, n1 + size0);
         }

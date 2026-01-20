@@ -114,7 +114,7 @@ TEST(UndirectedGraphTest, GetCycle)
         const auto graph = UndirectedGraphLibrary::Get_Cycle(numVertices);
         ASSERT_EQ(graph->getNumVertices(), numVertices);
         ASSERT_EQ(graph->getNumEdges(), numVertices);
-        for (Vertex v = 0; v < numVertices; ++v)
+        for (Vertex v : Iota::GetRange(numVertices))
         {
             ASSERT_EQ(graph->getDegree(v), 2);
         }
@@ -129,7 +129,7 @@ TEST(UndirectedGraphTest, GetCompleteGraph)
         const auto graph = UndirectedGraphLibrary::Get_CompleteGraph(numVertices);
         ASSERT_EQ(graph->getNumVertices(), numVertices);
         ASSERT_EQ(graph->getNumEdges(), numVertices * (numVertices - 1) / 2);
-        for (Vertex v = 0; v < numVertices; ++v)
+        for (Vertex v : Iota::GetRange(numVertices))
         {
             ASSERT_EQ(graph->getDegree(v), numVertices - 1);
         }
@@ -186,7 +186,7 @@ TEST(UndirectedGraphTest, SplitInCyclesAndPaths)
     graph = UndirectedGraph(*UndirectedGraphLibrary::Get_Butterfly());
     CheckCyclesPaths(graph, std::vector<Vertex>{3, 3}, std::vector<Vertex>{});
 
-    for (Vertex numVertices = 0; numVertices < 4; ++numVertices)
+    for (Vertex numVertices : Iota::GetRange(4))
     {
         graph = UndirectedGraph(*UndirectedGraphLibrary::Get_DisconnectedGraph(numVertices));
         CheckCyclesPaths(graph, std::vector<Vertex>{}, std::vector<Vertex>{});

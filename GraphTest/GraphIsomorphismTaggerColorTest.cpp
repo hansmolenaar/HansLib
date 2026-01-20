@@ -17,7 +17,7 @@ void CheckColoring(const IGraphUs &graph)
     constexpr size_t numPermutation = 5;
     const Permutation trivial = Permutation::CreateTrivial(graph.getNumVertices());
 
-    for (size_t n = 0; n < numPermutation; ++n)
+    for (size_t n : Iota::GetRange(numPermutation))
     {
         const auto permutation = Permutation::CreateRandomShuffle(trivial, n);
         const auto graphPermuted = UndirectedGraph::CreatePermuted(graph, permutation);

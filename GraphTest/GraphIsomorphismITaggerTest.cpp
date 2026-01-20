@@ -41,7 +41,7 @@ void CheckVertexCompareConsistency(const IGraphUs &graph, GraphIsomorphism::ITag
     }
 
     const Permutation trivial = Permutation::CreateTrivial(nVertices);
-    for (auto n = 0; n < numPermutations; ++n)
+    for (auto n : Iota::GetRange(numPermutations))
     {
         const auto permutation = Permutation::CreateRandomShuffle(trivial, n);
         const UndirectedGraph graphPermuted = UndirectedGraph::CreatePermuted(graph, permutation);
@@ -65,7 +65,7 @@ void CheckGraphTaggerConsistency(const Graph::IGraphUs &graph, ITaggerFactory &f
     const auto &tag = tagger->getGraphTag();
 
     const Permutation trivial = Permutation::CreateTrivial(nVertices);
-    for (auto n = 0; n < numPermutations; ++n)
+    for (auto n : Iota::GetRange(numPermutations))
     {
         const auto permutation = Permutation::CreateRandomShuffle(trivial, n);
         const UndirectedGraph graphPermuted = UndirectedGraph::CreatePermuted(graph, permutation);

@@ -50,10 +50,8 @@ UndirectedGraphDistance::UndirectedGraphDistance(const IGraphUs &graph) : m_grap
 {
     const auto nVertices = graph.getNumVertices();
     m_distances.reserve(nVertices);
-    for (Vertex v = 0; v < nVertices; ++v)
-    {
-        m_distances.emplace_back(Generate(graph, v));
-    }
+    str::transform(Iota::GetRange(nVertices), std::back_inserter(m_distances),
+                   [&graph](Vertex v) { return Generate(graph, v); });
 }
 
 const Graph::IGraphUs &UndirectedGraphDistance::getGraph() const

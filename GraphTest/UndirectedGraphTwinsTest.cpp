@@ -58,48 +58,30 @@ TEST(UndirectedGraphTwinTest, Claw)
     ASSERT_EQ(Single(twins.getFalseTwins()).size(), 3);
 }
 
-#if false
-TEST(UndirectedGraphTwinTest, Cycles)
+TEST(UndirectedGraphTwinTest, Butterfly)
 {
-    for (int size = 3; size < 10; ++size)
-    {
-        const auto graph = UndirectedGraphLibrary::Get_Cycle(size);
-        std::optional<UndirectedGraphColor::Color> expect;
-        if (size % 2 == 0)
-        {
-            expect = 2;
-        }
-        else if (size == 3)
-        {
-            expect = 3;
-        }
-        TestColoring(*graph, expect);
-    }
+    const auto graph = UndirectedGraphLibrary::Get_Butterfly();
+    const UndirectedGraphTwins twins(*graph);
+    ASSERT_TRUE(twins.getFalseTwins().empty());
+    ASSERT_EQ(twins.getTrueTwins().size(), 2);
+    ASSERT_EQ(twins.getTrueTwins().at(0), (std::vector<Vertex>{1, 2}));
+    ASSERT_EQ(twins.getTrueTwins().at(1), (std::vector<Vertex>{3, 4}));
 }
 
-TEST(UndirectedGraphTwinTest, InterestingCases)
+TEST(UndirectedGraphTwinTest, Fish)
 {
-    TestColoring(*UndirectedGraphFromG6::Create("H???XjA"), 2);
-    TestColoring(*UndirectedGraphFromG6::Create("H????N}"), 2);
-    TestColoring(*UndirectedGraphFromG6::Create("H????F|"), 2);
-    TestColoring(*UndirectedGraphFromG6::Create("Is?AXW[[?"), 2);
-    TestColoring(*UndirectedGraphFromG6::Create("Is?HGtcU?"), 3);
-    TestColoring(*UndirectedGraphFromG6::Create("Is?@WxcU?"), 2);
-    TestColoring(*UndirectedGraphFromG6::Create("I?AAHGICW"), 3);
-    TestColoring(*UndirectedGraphFromG6::Create("I@`??CBNG"), {}); // 5
-    TestColoring(*UndirectedGraphFromG6::Create("F?dXw"), {});     // 4
-    TestColoring(*UndirectedGraphFromG6::Create("I?COPHAw?"), 3);
+    const auto graph = UndirectedGraphFromG6::Create(UndirectedGraphFromG6::fish);
+    const UndirectedGraphTwins twins(*graph);
+    ASSERT_EQ(Single(twins.getFalseTwins()), (std::vector<Vertex>{1, 2}));
+    ASSERT_EQ(Single(twins.getTrueTwins()), (std::vector<Vertex>{4, 5}));
 }
-TEST(UndirectedGraphTwinTest, BiPartite)
+
+TEST(UndirectedGraphTwinTest, Cycle4)
 {
-    constexpr Vertex maxSize = 5;
-    for (Vertex v1 = 1; v1 < maxSize; ++v1)
-    {
-        for (Vertex v2 = v1; v2 < maxSize; ++v2)
-        {
-            const auto graph = UndirectedGraphLibrary::Get_CompleteBipartite(v1, v2);
-            TestColoring(*graph, 2);
-        }
-    }
+    const auto graph = UndirectedGraphLibrary::Get_Cycle(4);
+    const UndirectedGraphTwins twins(*graph);
+    ASSERT_TRUE(twins.getTrueTwins().empty());
+    ASSERT_EQ(twins.getFalseTwins().size(), 2);
+    ASSERT_EQ(twins.getFalseTwins().at(0), (std::vector<Vertex>{1, 3}));
+    ASSERT_EQ(twins.getFalseTwins().at(1), (std::vector<Vertex>{0, 2}));
 }
-#endif

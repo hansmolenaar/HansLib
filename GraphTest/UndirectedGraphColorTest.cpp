@@ -37,7 +37,7 @@ void TestColoringSingle(const IGraphUs &graph, const std::optional<UndirectedGra
         ASSERT_GT(graph.getNumEdges(), 0);
         const auto coloring2 = coloring.getColoring2();
         std::vector<Vertex> ngbs;
-        for (Vertex v = 0; v < graph.getNumVertices(); ++v)
+        for (Vertex v : graph.getVertexRange())
         {
             ASSERT_LE(coloring2.at(v), 2);
             graph.setAdjacentVertices(v, ngbs);
@@ -57,7 +57,7 @@ void TestColoringSingle(const IGraphUs &graph, const std::optional<UndirectedGra
 void TestColoring(const IGraphUs &graph, const std::optional<UndirectedGraphColor::Color> &expectChromaticNumber)
 {
     TestColoringSingle(graph, expectChromaticNumber);
-    for (Permutation::Entry seed = 0; seed < 5; ++seed)
+    for (Permutation::Entry seed : Iota::GetRange(5))
     {
         TestColoringSingle(UndirectedGraph::CreateRandomShuffled(graph, seed), expectChromaticNumber);
     }
