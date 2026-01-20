@@ -10,6 +10,7 @@
 #include "GraphIsomorphismTaggerMaxDegree.h"
 #include "GraphIsomorphismTaggerNumbers.h"
 #include "GraphIsomorphismTaggerTriangles.h"
+#include "GraphIsomorphismTaggerTwins.h"
 #include "UndirectedGraphDistance.h"
 
 using namespace Graph;
@@ -120,6 +121,7 @@ std::vector<std::unique_ptr<ITagger>> GraphIsomorphism::getAllTaggers(const Grap
     result.emplace_back(std::make_unique<TaggerMaxDegree>(graph));
     result.emplace_back(std::make_unique<TaggerTriangles>(triangles));
     result.emplace_back(std::make_unique<TaggerColor>(graph));
+    result.emplace_back(std::make_unique<TaggerTwins>(graph));
     return result;
 }
 

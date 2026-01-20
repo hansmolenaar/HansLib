@@ -227,7 +227,7 @@ TEST(GraphIsomorphismTaggedGraphTest, CheckTaggingList7)
 
 TEST(GraphIsomorphismTaggedGraphTest, CheckTaggingList8)
 {
-    CheckTaggingForList(UndirectedGraphFromG6::getListNumVertices_8(), {1, 744, 2, 1});
+    CheckTaggingForList(UndirectedGraphFromG6::getListNumVertices_8(), {1, 746});
 }
 TEST(GraphIsomorphismConstructTest, Disconnected5)
 {

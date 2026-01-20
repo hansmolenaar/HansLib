@@ -16,11 +16,11 @@ void SetVertexTags(const std::vector<std::vector<Vertex>> &allTwins, size_t pos,
     {
         for (Vertex v : twins)
         {
-             if (!tagMap.contains(v))
-{
-            tagMap[v] = Tag(2);
-}
- tagMap.at(v).at(pos) = twins.size();
+            if (!tagMap.contains(v))
+            {
+                tagMap[v] = Tag(2);
+            }
+            tagMap.at(v).at(pos) = twins.size();
         }
     }
 }

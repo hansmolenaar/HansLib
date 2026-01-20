@@ -422,3 +422,14 @@ TEST(UndirectedGraphTest, CreateEdgesKeep_ErrorIncomplete)
     const std::vector<std::vector<Vertex>> groups{{0}, {2}};
     ASSERT_THROW(UndirectedGraph::CreateEdgesKeep(*graph, groups), MyException);
 }
+
+#if false
+TEST(UndirectedGraphTest, TestList)
+{
+    for (const auto &graph : UndirectedGraphFromG6::getGraphs(UndirectedGraphFromG6::getListNumVertices_11_connected()))
+    {
+        ASSERT_EQ(graph->getNumVertices(), 11);
+        ASSERT_TRUE(graph->isConnected());
+    }
+}
+#endif

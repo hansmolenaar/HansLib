@@ -407,6 +407,56 @@ std::vector<std::string> ListNumVertices_10 = {
     "I{O_w~~~w",  "IoFvQ{~~w",  "IWNVS|^~w",   "IxGW}nN~w",  "I{N?w|n~w",   "IqJTY{~~w",  "IANLfN~~w",   "IsOax~~~w",
     "Ik`rX}^~w",  "Is`rY{~~w",  "IqGTY~~~w"};
 
+std::vector<std::string> ListNumVertices_11_connected = {
+    "J???????F~_", "J?????A?^y?",  "J????CXXCK?",  "J??GGC@CNO?",  "J????[AcJ@?",  "J??@?_G@EF_", "J???OGQGUW?",
+    "J??GO__`QD?", "J?CGGC@GM_?",  "J???????N}_",  "J@GOOGAOKA?",  "J???C?@Php?",  "J??????@~o_", "J??????`zp?",
+    "J??CrJVjzv_", "J?AKagjXfo?",  "JQQCA?tIo{?",  "JsP@OkWHN~_",  "J?????bFE@_",  "J_CD`h]ZTY?", "JoCOPHA~~~?",
+    "JIGOSED^~~?", "J@GOUJBnz~?",  "J??[bRbN}~?",  "J??LIq^Zvf_",  "J??H]bLmzn_",  "J??IhnMj^f_", "J_Cw_ObwuN?",
+    "J_CcIJ_Mw~?", "J?ASZ@TIvo?",  "J_`?X?PK~w?",  "J_E?oG`W~w?",  "J@hO?F?iyn?",  "J?DAHf_iKw_", "J`@K?RoBpe_",
+    "J{CY@?B?wX_", "JwE?_Pw@oM_",  "JR`@GoBaYL_",  "J@GO[hIwEB_",  "J@GSgXHwEB_",  "JqhP?_B?wX_", "J?_ioaPXVB_",
+    "J@?KIKwqF__", "J`NCA?[GoF_",  "Jk?CX[WDJ@_",  "JK_I@BoDo]_",  "J@aAGRoPpq_",  "Jo?OPHBFfo_", "J?D@MQoFfB?",
+    "JsO?xHDE`B_", "JQ`?OJoEpM_",  "J_oH?boHom_",  "JfG_OJ?AwN_",  "JdW__R?@wN_",  "Jj_K??x@oM_", "JsGOpGBQiJ_",
+    "JRGOOJ?Q{N_", "J`?HaCDbNo_",  "J_oOHBoDpU_",  "JCO_w~?gJ@_",  "J`GOOGBo~w?",  "J???BGY`fo?", "J????gI@f?_",
+    "J?AAHGIC^o?", "J?A@?`?BGU?",  "JGECA?_?ww?",  "J?CGagi`f??",  "JG??g[[eF??",  "J?CP@TEbE_?", "J?CWaKaaN??",
+    "J?COSpEHf??", "J?COQgi`f??",  "J?CWcXAGn??",  "Jv{??KF@zK?",  "J??CQGKKhb?",  "J??EdPKL?F_", "J?AA@?OA?N_",
+    "J???AOcCc[?", "J????gaRCS?",  "J??A?EAJWz?",  "JoC?G{]XBC_",  "Jo?WwoXXJE_",  "J??GO_aPCA_", "J~~~~~~~~~_",
+    "J{S~~~~~~~_", "JJz\\~~~~~~_", "Js\\v~~~~~~_", "J~`HW~~~~~_",  "J`K~vnnv~~_",  "J~~fK}^^z~?", "Js`zrr~~~~_",
+    "J}h_okN~~~_", "J}op_[N~~~_",  "J`?gx{~r~~_",  "J`?Hx{~z}~_",  "J`?GW^~~~~_",  "J{dQXgj~~~_", "JJOg~ZZl~~_",
+    "J{`Ypgj~~~_", "JIWXm^rn^~_",  "JIOxvZZl~~_",  "J?A[y|^Nx~_",  "J???F~~~~~_",  "JwCOW{^|^V_", "J?rMXotK~~_",
+    "JwCOW{^{~Z_", "JTiZbdMRX~_",  "J`Ggonks~~_",  "J``HW~orx~_",  "Jr?G]^NNp|_",  "JILbGwZt|^_", "JGFDG\\\\Mz~_",
+    "JILbGwZr|n_", "JHP@Z{|fk|_",  "JGFDG\\ZNZ~_", "JTiZJHZUp~_",  "JoCOZB~~v}?",  "J`G_wzbvN~_", "Jr?G[}]Zz^?",
+    "Jq`@xw{x}v_", "J???w~Zlz^_",  "JILIPkut|^_",  "J}rE@{~N`{_",  "J?CW_SF~~~_",  "J??@X[^F}^_", "J?CO_[M~~~_",
+    "J????B~~~~_", "Jt?GW\\_SN~_", "Js?GW\\o[F~_", "JQK|A_NB}F_",  "JtPH?cJ@x~_",  "J??plPXjq|_", "JEudJ@`Fw~?",
+    "J`?GO^FLvr_", "JQK{b?NB}F_",  "JsPH@CYDV~_",  "JKcxuJAMYN_",  "JEqtR@`Fw~?",  "Js??wxgXF~_", "J`?GO]VXvr_",
+    "JB?AXY[B~f_", "JI??w][J^f_",  "JK??W\\]NVf_", "J??H`f{jq}_",  "JIK?KmNLq\\_", "JIK?KmNTh]_", "J??G\\@Pfz^_",
+    "J_[_GKFE{n_", "J`?G?CnF~f_",  "J??GONofz^_",  "J??G]K{Mhn_",  "J?CWtHbDw^_",  "J???FFbFw~_", "J???DtnVtl_",
+    "J???EejRxn_", "J???C\\lUxn_", "J???GN^nr}?",  "J????[NdzN_",  "J?`H[`PK^[?",  "J??pW~_sMP_", "J?@HW~_sL`_",
+    "J_B__V[KpU_", "J??G[``drL_",  "J?i]@d_SG^_",  "Jw??GM]VPu?",  "JII?GKRA{p_",  "J?rE@osK_^_", "JCS`@CVBuH_",
+    "JCQA?gIKxZ_", "JGCOY?`d[V_",  "J`G__b?Bw^_",  "JG?GSGR@zd_",  "J@?GSHB@x{_",  "JAG?GKFeJM_", "J?K?GNGHwn?",
+    "JGCOY?`c{Z_", "J??CACBnJx_",  "J???CTFN`{_",  "J?C??NeFo}?",  "J??GWSFcZB_",  "J??@}B?NXz?", "J???E^MN`{?",
+    "J?qcbDSM?^_", "J?GO?CNKu]_",  "J????A^Vp}?",  "J????BBHwv_",  "J??????fz^_",  "JGC?K?TAvK?", "J_?@OkcEM@_",
+    "J?ASR@_E?N_", "J???CdIHgy?",  "J???@qEP`p_",  "J??GO_F@v__",  "J??CIGwM?F_",  "J?????N{?]_", "J{d?`KMRHe?",
+    "JANDGLPI^o?", "JANDIGbE^o?",  "J?????qBUE?",  "J???Q?DKCD_",  "Jtk?ILEOxw?",  "Jtk?ILEPhq?", "J~zTaWjDw^_",
+    "Jg@OXCPaHo_", "J@`KACXHf_?",  "J?YX@CQC]F_",  "J~?GW^oB~}?",  "J~?GW{^zv\\?", "J~COW[Ny~N_", "J~?GX{}ru\\_",
+    "J~?G]]nVp|_", "JJ^em]uj[v_",  "J~cGW~mXzm_",  "J~BMXoxfz^?",  "J~?GW}^Zv[_",  "J~?GX[^zu|?", "J}dWw{nizN_",
+    "JxNEJo^F{|_", "J~iWW\\rYyn_", "JvohhmnRy}_",  "Jtsph|NR~L_",  "J`rN`w|mzn?",  "J`Kx~fksuX_", "JtPLa^{Np}_",
+    "J}ncrGZTx^_", "J}iZbTVJw~_",  "J}i[z`hTx^_",  "J~yuPhJDw^_",  "J}lcqlVJx^_",  "J~CWW[nw}}?", "J~?GW[N{^{?",
+    "J`{MMKvL~f_", "J~CWW[Nw~F_",  "JwC^~B`FWz_",  "J~?G]^NN`{_",  "J{dbJo^F{|_",  "JwCWw~rzV{?", "J`Kx}VF}Vh_",
+    "JwF]|yz^Rt_", "JwDX}yy~~~_",  "J{dbG{^~~~_",  "J~?G[|m~~~_",  "JwC^?~{~~~_",  "J}lah[^~~~_", "Jv~vVL^N~~_",
+    "Js`@IStU`w?", "Js_?wxb\\BW?", "J?AQXOoaIa?",  "J?DBCCLLDo?",  "J?GSQKoULH?",  "J?`HOhacV_?", "JG@PP`GdKU?",
+    "J_?QIoaiHw?", "J`aJA_EAX`_",  "JhdC??tAoM_",  "JiC_cKI@XP_",  "Jo@@@XQF?s_",  "JqQ@HcKEGF_", "JsOP?@LDpU?",
+    "Jo?Wq_hGaG_", "J??CzZw|Fw?",  "JoCOOGAGIA?",  "JMHCC?NKO[_",  "Js`bJ?]EOq_",  "Jsc?JLeFbo?", "Js|AHGTGod_",
+    "Js`AIK{M`q?", "Js_BJG]FRo?",  "J`?Ne[~~Fw_",  "JtPM@{~~f~_",  "JoCOGTIHR_?",  "Js`zrr~~v}?", "JqKDmY^\\bY_",
+    "J??GPmcSno?", "J???OGBFF@?",  "J@?G?CEEUB?",  "J??GH@GCt_?",  "J???OE@DJG?",  "J???O?DKUK?", "J??GG?`CuO?",
+    "J??Ethkbzf?", "J_GVUg{bzf?",  "J[O?g]uZ]u?",  "J???OMRW~w?",  "J???OMRW~}?",  "J???OMRW~x_", "J???OMRW~~_",
+    "J??E@_EA^w?", "J??@_XA_^x_",  "J???OKqoVx_",  "J??E@_EA^~_",  "J@MzvJJtnq?",  "J@??WEHPPb_", "J??E@OSB^f?",
+    "J?PP@aBa`w?", "JqGOGO??WD_",  "JqGOO?@?gI_",  "Jq?GP?O?gI_",  "JoD@?OO@GE_",  "JqGOO???wJ?", "JqGO?C?@WT?",
+    "JoCQ@??@gR?", "JK_PA??AWL?",  "JW?OS@?@op?",  "JGEC@@?DOT?",  "JC`@A?_CW[?",  "J??????~~~?", "J????B~~v}?",
+    "J???F~}~f{?", "J??F~z{~Fw?",  "JqKFMilVh}?",  "JAJe\\iZ^Ju?", "JoSv~~}~Vx_",  "JqKy~vu~^^?", "J{dXy{~{^[_",
+    "J???C_[Q`K?", "Juk?IKeTPT?",  "J}nDA{}Rhm_",  "J}nnnv{Vx~_",  "J??GUIaS`g?",  "J?BMP_oA^__", "J`r@xz~~v}_",
+    "JsSqHURZN}?", "Jr`M@KZN^{?",  "JrdcOtFH~w?",
+
+};
 }; // namespace
 
 namespace
@@ -986,6 +1036,11 @@ const std::vector<std::string> &UndirectedGraphFromG6::getListNumVertices_7()
 const std::vector<std::string> &UndirectedGraphFromG6::getListNumVertices_8_connected()
 {
     return ListNumVertices_8_connected;
+}
+
+const std::vector<std::string> &UndirectedGraphFromG6::getListNumVertices_11_connected()
+{
+    return ListNumVertices_11_connected;
 }
 
 const std::vector<std::string> &UndirectedGraphFromG6::getListNumVertices_8()

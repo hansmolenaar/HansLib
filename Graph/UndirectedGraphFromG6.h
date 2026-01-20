@@ -74,6 +74,7 @@ const std::vector<std::string> &getListNumVertices_5_connected();
 const std::vector<std::string> &getListNumVertices_6_connected();
 const std::vector<std::string> &getListNumVertices_7_connected();
 const std::vector<std::string> &getListNumVertices_8_connected();
+const std::vector<std::string> &getListNumVertices_11_connected();
 
 // Mix of connected and disconnected matrices
 const std::vector<std::string> &getListNumVertices_3();
