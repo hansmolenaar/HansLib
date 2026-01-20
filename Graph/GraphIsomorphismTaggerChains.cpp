@@ -135,10 +135,9 @@ std::pair<ChainId, Chain> GetChain(const IGraphUs &graph, Vertex vertex, std::se
 std::vector<std::pair<ChainTag, Chain>> GetChains(const IGraphUs &graph)
 {
     std::vector<std::pair<ChainTag, Chain>> retval;
-    const auto nVertices = graph.getNumVertices();
     std::vector<Vertex> ngbs;
     std::set<Vertex> done;
-    for (Vertex v = 0; v < nVertices; ++v)
+    for (Vertex v : graph.getVertexRange())
     {
         const auto degree = graph.getDegree(v);
         if (degree == 0)
@@ -179,7 +178,7 @@ std::pair<Tag, std::vector<Tag>> GenerateTags(const IGraphUs &graph)
         for (; currentItr != itrSameSize; ++currentItr, ++count)
         {
             chainCounts[std::make_pair<ChainId, size_t>(ChainId::PureCycle, currentSize)] += 1;
-            for (TagEntry n = 0; n < currentSize; ++n)
+            for (TagEntry n : Iota::GetRange(currentSize))
             {
                 // ( ChainId, cycle size, number of cycle with this size, position in cycle )
                 retval[currentItr->second.at(n)] = std::vector<TagEntry>{ChainId::PureCycle, currentSize, count, n};
@@ -199,7 +198,7 @@ std::pair<Tag, std::vector<Tag>> GenerateTags(const IGraphUs &graph)
         for (; currentItr != itrSameSize; ++currentItr, ++count)
         {
             chainCounts[std::make_pair<ChainId, size_t>(ChainId::PurePath, currentSize)] += 1;
-            for (TagEntry n = 0; n < currentSize; ++n)
+            for (TagEntry n : Iota::GetRange(currentSize))
             {
                 // ( ChainId, path size, number of path with this size, position in path )
                 retval[currentItr->second.at(n)] = std::vector<TagEntry>{ChainId::PurePath, currentSize, count, n};

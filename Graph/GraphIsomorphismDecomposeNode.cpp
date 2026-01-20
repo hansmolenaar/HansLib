@@ -101,7 +101,7 @@ std::weak_ordering DecomposeNode::operator<=>(const DecomposeNode &other) const
         const auto &groups0 = getGroupingChildren()();
         const auto &groups1 = other.getGroupingChildren()();
         MyAssert(groups0.size() == groups1.size());
-        for (size_t n = 0; n < groups0.size(); ++n)
+        for (size_t n : Iota::GetRange(groups0.size()))
         {
             // No recursion here
             result = groups0.at(n).front()->getTag() <=> groups1.at(n).front()->getTag();

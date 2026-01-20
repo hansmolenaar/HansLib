@@ -9,7 +9,7 @@ std::vector<Vertex> IGraphUs::getDegreeSequence() const
 {
     const auto numVertices = getNumVertices();
     std::vector<Vertex> result(numVertices);
-    for (Vertex v = 0; v < numVertices; ++v)
+    for (Vertex v : Iota::GetRange(numVertices))
     {
         result[v] = getDegree(v);
     }

@@ -19,8 +19,7 @@ bool Check::operator()(const IGraphUs &g0, const IGraphUs &g1) const
 
     std::vector<Vertex> adjacent0;
     std::vector<Vertex> adjacent1;
-    const auto nVertices = g0.getNumVertices();
-    for (Vertex v = 0; v < nVertices; ++v)
+    for (Vertex v : g0.getVertexRange())
     {
         g0.setAdjacentVertices(v, adjacent0);
         g1.setAdjacentVertices(v, adjacent1);
@@ -37,7 +36,7 @@ bool Check::operator()(const IGraphUs &g0, const std::vector<VertexPair> &perm01
 {
     const auto nVertices = g0.getNumVertices();
     std::vector<Permutation::Entry> perm0(nVertices);
-    for (size_t n = 0; n < nVertices; ++n)
+    for (Vertex n : Iota::GetRange(nVertices))
     {
         perm0.at(perm01.at(n)[0]) = perm01.at(n)[1];
     }

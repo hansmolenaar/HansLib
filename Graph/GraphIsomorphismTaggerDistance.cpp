@@ -14,14 +14,14 @@ GraphIsomorphism::TaggerDistance::TaggerDistance(std::shared_ptr<UndirectedGraph
     : m_distances(std::move(distances)), m_triangles(std::move(triangles))
 {
     const auto nVertices = m_distances->getNumVertices();
-    for (auto v = 0; v < nVertices; ++v)
+    for (auto v : Iota::GetRange(nVertices))
     {
         m_tags.emplace_back(getTag(v));
     }
 
     // Use maximum distances in the graph tag
     std::vector<size_t> maxDistances;
-    for (auto v = 0; v < nVertices; ++v)
+    for (auto v : Iota::GetRange(nVertices))
     {
         // Subtract 1, gives expected distance
         maxDistances.push_back((*m_distances)(v).size() - 1);
@@ -90,7 +90,7 @@ std::weak_ordering TaggerDistance::compareOtherGraph(Vertex vertex0, const IVert
         return retval;
     }
 
-    for (size_t s = 0; s < size0; ++s)
+    for (size_t s : Iota::GetRange(size0))
     {
         const auto &vertices0 = atDistance0.at(s);
         const auto &vertices1 = atDistance1.at(s);

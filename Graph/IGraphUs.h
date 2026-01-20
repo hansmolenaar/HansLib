@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Defines.h"
 #include "GraphDefines.h"
+#include "Iota.h"
 
 #include <string>
 
@@ -24,13 +24,9 @@ class IGraphUs
 
     virtual std::string getName() const = 0;
 
-    static auto getVertexRange(Vertex nVertices)
-    {
-        return stv::iota(Vertex{0}, nVertices);
-    }
     auto getVertexRange() const
     {
-        return getVertexRange(getNumVertices());
+        return Iota::GetRange<Vertex>(getNumVertices());
     }
     Vertex getNumberOfComponents() const;
     std::vector<Vertex> getDegreeSequence() const;

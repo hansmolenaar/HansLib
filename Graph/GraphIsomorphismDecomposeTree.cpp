@@ -160,7 +160,7 @@ std::weak_ordering DecomposeTree::operator<=>(const DecomposeTree &map2) const
     std::set<std::pair<const IGraphUs *, const IGraphUs *>> done;
 
     const auto nGroups = groups1().size();
-    for (size_t n = 0; n < nGroups; ++n)
+    for (size_t n : Iota::GetRange(nGroups))
     {
         const auto &group1 = groups1().at(n);
         const auto &group2 = groups2().at(n);

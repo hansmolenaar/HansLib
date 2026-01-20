@@ -183,7 +183,7 @@ std::vector<std::vector<Graph::Vertex>> TransformDisconnected::getComponentsJoin
     const auto numComponents = *str::max_element(components) + 1;
     std::vector<std::vector<Vertex>> result(numComponents);
 
-    for (Vertex v = 0; v < numVertices; ++v)
+    for (Vertex v : Iota::GetRange(numVertices))
     {
         result[components.at(v)].push_back(v);
     }

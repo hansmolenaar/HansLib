@@ -29,6 +29,10 @@ UndirectedGraphTwins::UndirectedGraphTwins(const Graph::IGraphUs &graph) : m_gra
     for (Vertex v = 0; v < nVertices; ++v)
     {
         m_graph.setAdjacentVertices(v, ngbs);
+        if (ngbs.empty())
+        {
+            continue;
+        }
         str::sort(ngbs);
         falseTwins[ngbs].push_back(v);
 

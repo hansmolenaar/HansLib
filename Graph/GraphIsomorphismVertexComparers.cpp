@@ -69,7 +69,7 @@ std::weak_ordering VertexComparers::compareOtherGraph(Vertex v0, const IVertexCo
     const auto nComparers = m_vertexComparers.size();
     std::weak_ordering result = std::weak_ordering::equivalent;
     MyAssert(other->m_vertexComparers.size() == nComparers);
-    for (size_t n = 0; n < nComparers; ++n)
+    for (size_t n : Iota::GetRange(nComparers))
     {
         const IVertexCompare *compare0 = m_vertexComparers.at(n);
         const IVertexCompare *compare1 = other->m_vertexComparers.at(n);
@@ -93,8 +93,7 @@ std::weak_ordering VertexComparers::operator<=>(const VertexComparers &other) co
     const auto &groups0 = m_grouping();
     const auto &groups1 = other.m_grouping();
 
-    const auto nGroups = groups0.size();
-    for (size_t n = 0; n < nGroups; ++n)
+    for (size_t n : Iota::GetRange(groups0.size()))
     {
         const Vertex v0 = groups0.at(n).front();
         const Vertex v1 = groups1.at(n).front();

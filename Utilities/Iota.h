@@ -1,6 +1,6 @@
 #pragma once
-#include <numeric>
-#include <vector>
+
+#include "Defines.h"
 
 namespace Iota
 {
@@ -14,5 +14,10 @@ template <typename T> inline std::vector<T> GenerateVector(size_t siz, T from = 
 inline std::vector<int> GenerateIntVector(size_t siz, int from = 0)
 {
     return GenerateVector<int>(siz, from);
+}
+
+template <typename T> inline auto GetRange(T siz, T from = 0)
+{
+    return stv::iota(from, siz);
 }
 } // namespace Iota

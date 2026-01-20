@@ -626,5 +626,5 @@ TEST(GraphIsomorphismDecomposeTreeTest, CheckDecomposeList9)
 }
 TEST(GraphIsomorphismDecomposeTreeTest, CheckDecomposeList10)
 {
-    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_10(), { 1, 711, 2, 2 }, true);
+    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_10(), {1, 711, 2, 2}, true);
 }

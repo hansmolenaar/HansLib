@@ -27,7 +27,7 @@ UndirectedGraph Generate(const IGraphUs &master, const std::vector<Vertex> &vert
     UndirectedGraph graph(nVertices, name);
 
     std::vector<Vertex> ngbs;
-    for (Vertex v = 0; v < master.getNumVertices(); ++v)
+    for (Vertex v : master.getVertexRange())
     {
         const auto vLocal = ToLocal(v, verticesInParent);
         if (!vLocal)

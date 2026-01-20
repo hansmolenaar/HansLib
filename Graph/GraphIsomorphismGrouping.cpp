@@ -1,5 +1,6 @@
 #include "GraphIsomorphismGrouping.h"
 #include "GraphDefines.h"
+#include "Iota.h"
 #include "MyAssert.h"
 
 using namespace Graph;
@@ -15,7 +16,7 @@ template <typename T> std::map<T, size_t> Invert(const Grouping<T> &grouping)
 {
     const auto size = grouping.size();
     std::map<T, size_t> result;
-    for (size_t g = 0UZ; g < grouping().size(); ++g)
+    for (size_t g : Iota::GetRange(grouping().size()))
     {
         for (Vertex vertex : grouping().at(g))
         {

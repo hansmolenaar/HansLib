@@ -23,7 +23,7 @@ std::string CreateName(std::string name, std::initializer_list<Vertex> sizes)
 
 void SetEdgesOfPath(UndirectedGraph &graph, Edge numEdges)
 {
-    for (Edge edge = 0; edge < numEdges; ++edge)
+    for (Edge edge : Iota::GetRange(numEdges))
     {
         graph.addEdge(edge, edge + 1);
     }
@@ -76,7 +76,7 @@ std::unique_ptr<GraphUsc> UndirectedGraphLibrary::Get_CompleteGraph(Vertex numVe
     MyAssert(numVertices >= 0); // Used to generate empty graph
     auto ug = std::make_unique<UndirectedGraph>(numVertices, CreateName("Complete", {numVertices}));
 
-    for (Vertex n0 = 0; n0 < numVertices; ++n0)
+    for (Vertex n0 : Iota::GetRange(numVertices))
     {
         for (Vertex n1 = n0 + 1; n1 < numVertices; ++n1)
         {
@@ -97,7 +97,7 @@ std::unique_ptr<GraphUsc> UndirectedGraphLibrary::Get_Star(std::initializer_list
     for (auto s : sizes)
     {
         ug->addEdge(0, cur);
-        for (Vertex v = 0; v < s - 1; ++v)
+        for (Vertex v : Iota::GetRange(s - 1))
         {
             ug->addEdge(cur + v, cur + v + 1);
         }

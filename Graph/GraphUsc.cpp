@@ -50,7 +50,7 @@ GraphUsc GraphUsc::CreatePermuted(const IGraphUsc &graph, const Permutation &per
     MyAssert(nVertices == permut.getCardinality());
     UndirectedGraph result(nVertices, "Permutation of " + graph.getName());
     std::vector<Vertex> ngbs;
-    for (Vertex v0 = 0; v0 < nVertices; ++v0)
+    for (Vertex v0 : Iota::GetRange(nVertices))
     {
         const auto v1 = permut(v0);
         graph.setAdjacentVertices(v0, ngbs);

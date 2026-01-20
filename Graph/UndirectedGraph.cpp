@@ -55,9 +55,8 @@ UndirectedGraph::UndirectedGraph(Vertex numVertices, std::string name) : m_graph
 UndirectedGraph::UndirectedGraph(const Graph::IGraphUs &graph)
     : m_graph(graph.getNumVertices()), m_name(graph.getName())
 {
-    const auto numVertices = graph.getNumVertices();
     std::vector<Vertex> ngbs;
-    for (Vertex v = 0; v < numVertices; ++v)
+    for (Vertex v : graph.getVertexRange())
     {
         graph.setAdjacentVertices(v, ngbs);
         for (Vertex n : ngbs)
@@ -140,7 +139,7 @@ std::vector<Vertex> UndirectedGraph::getDegreeSequence() const
 {
     const auto numVertices = getNumVertices();
     std::vector<Vertex> result(numVertices);
-    for (Vertex v = 0; v < numVertices; ++v)
+    for (Vertex v : Iota::GetRange(numVertices))
     {
         result[v] = getDegree(v);
     }
@@ -156,7 +155,7 @@ UndirectedGraph::CyclesAndPaths UndirectedGraph::SplitInCyclesAndPaths() const
     auto degreeSequence = getDegreeSequence();
     std::vector<Vertex> ngbVertices;
 
-    for (Vertex v = 0; v < vertexCount; ++v)
+    for (Vertex v : Iota::GetRange(vertexCount))
     {
         // Set degree sequence to -1 if done
         if (degreeSequence.at(v) != DegreeSequenceDone && degreeSequence.at(v) != 2)
@@ -185,7 +184,7 @@ UndirectedGraph::CyclesAndPaths UndirectedGraph::SplitInCyclesAndPaths() const
     }
 
     // But there is more: isolated loops
-    for (Vertex v = 0; v < vertexCount; ++v)
+    for (Vertex v : Iota::GetRange(vertexCount))
     {
         if (degreeSequence.at(v) == 2)
         {
@@ -217,11 +216,7 @@ bool UndirectedGraph::areAdjacent(Vertex v1, Vertex v2) const
 std::vector<Vertex> UndirectedGraph::getIsolatedVertices() const
 {
     std::vector<Vertex> result;
-    for (Vertex v = 0; v < getNumVertices(); ++v)
-    {
-        if (getDegree(v) == 0)
-            result.push_back(v);
-    }
+    str::copy_if(getVertexRange(), std::back_inserter(result), [this](Vertex v) { return getDegree(v) == 0; });
     return result;
 }
 UndirectedGraph UndirectedGraph::CreatePermuted(const IGraphUs &graph, std::initializer_list<Permutation::Entry> permut)

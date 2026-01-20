@@ -1,5 +1,6 @@
 #include "GraphIsomorphismStatus.h"
 #include "Defines.h"
+#include "Iota.h"
 #include "MyAssert.h"
 
 using namespace Graph;
@@ -39,7 +40,7 @@ void Status::addPair(VertexPair vp)
 std::vector<Graph::VertexPair> Status::getVertexPairs() const
 {
     std::vector<Graph::VertexPair> result;
-    for (size_t n = 0; n < m_vertexFirst.size(); ++n)
+    for (size_t n : Iota::GetRange(m_vertexFirst.size()))
     {
         result.emplace_back(VertexPair{m_vertexFirst.at(n), m_vertexSecond.at(n)});
     }

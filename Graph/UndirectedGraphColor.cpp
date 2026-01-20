@@ -40,7 +40,7 @@ std::vector<UndirectedGraphColor::Color> GetColoring2(const Graph::IGraphUs &gra
     const auto numVertices = graph.getNumVertices();
     std::vector<UndirectedGraphColor::Color> result(numVertices, ColorUndefined);
 
-    for (Vertex current = 0UZ; current < numVertices; ++current)
+    for (Vertex current : Iota::GetRange(numVertices))
     {
 
         if (result.at(current) != ColorUndefined)
