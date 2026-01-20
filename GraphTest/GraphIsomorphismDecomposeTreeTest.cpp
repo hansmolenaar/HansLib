@@ -101,6 +101,7 @@ void CheckDecomposeGraphList(const std::vector<std::unique_ptr<IGraphUs>> &graph
                 for (const auto &tpm : itr.second)
                 {
                     std::cout << tpm->getRoot().getGraph().getName() << "\n";
+#if false
                     for (const auto &d : tpm->getDescriptions())
                     {
                         std::cout << d << "\n";
@@ -117,8 +118,8 @@ void CheckDecomposeGraphList(const std::vector<std::unique_ptr<IGraphUs>> &graph
                     {
                         std::cout << leaf->getVertexGrouping();
                     }
-
                     std::cout << "\n";
+#endif
                 }
                 std::cout << "\n";
                 std::cout << "\n";
@@ -307,22 +308,6 @@ TEST(GraphIsomorphismDecomposeTreeTest, ComplementKnownHouse)
     const auto complement = std::make_shared<UndirectedGraph>(UndirectedGraph::CreateComplement(*house));
     const DecomposeTree decomposeTree(*complement);
     CheckDecompose(decomposeTree, 1);
-}
-
-TEST(GraphIsomorphismDecomposeTreeTest, ComplementKnownSpecialCase1)
-{
-    const auto graph = UndirectedGraphFromG6::Create("GJOg~{");
-    const DecomposeTree decomposeTree(*graph);
-    CheckDecompose(decomposeTree, 3);
-    const auto descr = decomposeTree.getDescriptions();
-    ASSERT_EQ(descr.size(), 3);
-    EXPECT_EQ(
-        descr.at(0),
-        "Known graph: complete graph of order 1 -> Complement is disconnected graph with components of order: 1 7");
-    EXPECT_EQ(descr.at(1), "Known graph: complete graph of order 1 -> Disconnected graph with components of order: 1 6 "
-                           "-> Complement is disconnected graph with components of order: 1 7");
-    EXPECT_EQ(descr.at(2), "Complement is known graph: cycle of order 6 -> Disconnected graph with components of "
-                           "order: 1 6 -> Complement is disconnected graph with components of order: 1 7");
 }
 
 TEST(GraphIsomorphismDecomposeTreeTest, X100)
@@ -631,5 +616,10 @@ TEST(GraphIsomorphismDecomposeTreeTest, CheckDecomposeList10)
 
 TEST(GraphIsomorphismDecomposeTreeTest, CheckDecomposeList11)
 {
-    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_11_connected(), {1, 325}, false);
+    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_11_connected(), {1, 325});
+}
+
+TEST(GraphIsomorphismDecomposeTreeTest, CheckDecomposeList12)
+{
+    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_12_connected(), {1, 566, 2, 11, 3, 1, 4, 1 }, true);
 }

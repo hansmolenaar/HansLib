@@ -423,12 +423,12 @@ TEST(UndirectedGraphTest, CreateEdgesKeep_ErrorIncomplete)
     ASSERT_THROW(UndirectedGraph::CreateEdgesKeep(*graph, groups), MyException);
 }
 
-#if false
+#if 12
 TEST(UndirectedGraphTest, TestList)
 {
-    for (const auto &graph : UndirectedGraphFromG6::getGraphs(UndirectedGraphFromG6::getListNumVertices_11_connected()))
+    for (const auto &graph : UndirectedGraphFromG6::getGraphs(UndirectedGraphFromG6::getListNumVertices_12_connected()))
     {
-        ASSERT_EQ(graph->getNumVertices(), 11);
+        ASSERT_EQ(graph->getNumVertices(), 12);
         ASSERT_TRUE(graph->isConnected());
     }
 }
