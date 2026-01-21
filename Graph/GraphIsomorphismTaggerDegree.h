@@ -28,4 +28,10 @@ class TaggerDegreeFactory : public ITaggerFactory
     std::unique_ptr<ITagger> createTagger(const Graph::IGraphUs &) override;
 };
 
+class CompareDegreeFactory : public ICompareFactory
+{
+  public:
+    std::unique_ptr<ICompare> createCompare(const Graph::IGraphUs &) override;
+};
+
 } // namespace GraphIsomorphism

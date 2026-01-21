@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "Defines.h"
+#include "GraphIsomorphismICompareTest.h"
 #include "GraphIsomorphismITaggerTest.h"
 #include "GraphIsomorphismTaggerChains.h"
 #include "GraphUsc.h"
@@ -18,6 +19,12 @@ TaggerChainsFactory factoryChains;
 TEST(GraphIsomorphismTaggerChainsTest, CheckTagger)
 {
     GraphTest::CheckTagger(factoryChains);
+}
+
+TEST(GraphIsomorphismTaggerChainsTest, CheckList)
+{
+    CompareChainsFactory factory;
+    GraphTest::CheckList(factory, UndirectedGraphFromG6::getListNumVertices_4(), Tag{1, 9, 2, 1});
 }
 
 TEST(GraphIsomorphismTaggerChainsTest, PureCycle3)

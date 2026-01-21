@@ -380,3 +380,8 @@ std::unique_ptr<ITagger> TaggerChainsFactory::createTagger(const IGraphUs &graph
 {
     return std::make_unique<TaggerChains>(graph);
 }
+
+std::unique_ptr<ICompare> CompareChainsFactory::createCompare(const Graph::IGraphUs &graph)
+{
+    return std::make_unique<TaggerChains>(graph);
+}

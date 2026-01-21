@@ -32,3 +32,8 @@ std::unique_ptr<ITagger> TaggerDegreeFactory::createTagger(const Graph::IGraphUs
 {
     return std::make_unique<TaggerDegree>(graph);
 }
+
+std::unique_ptr<ICompare> CompareDegreeFactory::createCompare(const Graph::IGraphUs &graph)
+{
+    return std::make_unique<TaggerDegree>(graph);
+}
