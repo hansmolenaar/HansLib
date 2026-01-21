@@ -22,32 +22,51 @@ void TestCompare(const IGraphUs &graph, ICompareFactory &factory, ICompare &comp
     ASSERT_NE(compare->getGraph().getNumVertices(), 0);
 }
 
+void CheckGraphCompareSymmetry(const IGraphCompare &compare0, const IGraphCompare &compare1)
+{
+    const auto cmp0 = compare0.compareOtherGraph(compare1);
+    const auto cmp1 = compare1.compareOtherGraph(compare0);
+
+    if (cmp0 == std::weak_ordering::equivalent)
+    {
+        ASSERT_EQ(cmp1, std::weak_ordering::equivalent);
+    }
+    else if (cmp0 == std::weak_ordering::less)
+    {
+        ASSERT_EQ(cmp1, std::weak_ordering::greater);
+    }
+    else if (cmp0 == std::weak_ordering::greater)
+    {
+        ASSERT_EQ(cmp1, std::weak_ordering::less);
+    }
+    else
+    {
+        ASSERT_TRUE(false);
+    }
+}
+
+void CheckSymmetryAgainstList(ICompareFactory &factory, const IGraphUs &graph,
+                              const std::vector<const IGraphCompare *> &list)
+{
+    const auto compare = factory.createCompare(graph);
+    for (const auto *p : list)
+    {
+        CheckGraphCompareSymmetry(*p, *compare->getGraphCompare());
+    }
+}
+
 void CheckListGraphCompareSymmetry(ICompareFactory &factory, const std::vector<const IGraphCompare *> &list)
 {
     // Test symmetry
-    const auto graph0 = UndirectedGraphLibrary::Get_Null();
-    const auto c0 = factory.createCompare(*graph0);
-    const auto &gc0 = *c0->getGraphCompare();
+    CheckSymmetryAgainstList(factory, *UndirectedGraphLibrary::Get_Null(), list);
+    CheckSymmetryAgainstList(factory, *UndirectedGraphLibrary::Get_Singleton(), list);
+    CheckSymmetryAgainstList(factory, *UndirectedGraphLibrary::Get_Path(2), list);
+    CheckSymmetryAgainstList(factory, *UndirectedGraphLibrary::Get_Cycle(3), list);
+
+    // Check self
     for (const auto *p : list)
     {
-        const auto cmp0 = gc0.compareOtherGraph(*p);
-        const auto cmp1 = p->compareOtherGraph(gc0);
-        if (cmp0 == std::weak_ordering::equivalent)
-        {
-            ASSERT_EQ(cmp1, std::weak_ordering::equivalent);
-        }
-        else if (cmp0 == std::weak_ordering::less)
-        {
-            ASSERT_EQ(cmp1, std::weak_ordering::greater);
-        }
-        else if (cmp0 == std::weak_ordering::greater)
-        {
-            ASSERT_EQ(cmp1, std::weak_ordering::less);
-        }
-        else
-        {
-            ASSERT_TRUE(false);
-        }
+        ASSERT_EQ(p->compareOtherGraph(*p), std::weak_ordering::equivalent);
     }
 }
 
