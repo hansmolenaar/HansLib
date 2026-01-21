@@ -6,7 +6,7 @@ using namespace GraphIsomorphism;
 using namespace Utilities;
 
 GraphIsomorphism::TaggerKnown::TaggerKnown(const Graph::IGraphUs &graph)
-    : m_tag{KnownType::Unknown}, m_description{"Unknown"}
+    : m_graph(graph), m_tag{KnownType::Unknown}, m_description{"Unknown"}
 {
     const auto nVertices = graph.getNumVertices();
 
@@ -51,6 +51,11 @@ GraphIsomorphism::TaggerKnown::TaggerKnown(const Graph::IGraphUs &graph)
     MyAssert(degreeSequence.at(2) == 2);
     m_tag = {KnownType::Path, static_cast<TagEntry>(nVertices)};
     m_description = "path of order " + std::to_string(nVertices);
+}
+
+const Graph::IGraphUs &TaggerKnown::getGraph() const 
+{
+ return m_graph;
 }
 
 const Tag &TaggerKnown::getGraphTag() const

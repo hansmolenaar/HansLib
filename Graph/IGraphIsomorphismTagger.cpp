@@ -17,3 +17,13 @@ std::weak_ordering IVertexCompare::compare(Vertex lhs, Vertex rhs) const
 {
     return compareOtherGraph(lhs, *this, rhs);
 }
+
+const IGraphCompare *ICompare::getGraphCompare() const
+{
+    return dynamic_cast<const IGraphCompare *>(this);
+}
+
+const IVertexCompare *ICompare::getVertexCompare() const
+{
+    return dynamic_cast<const IVertexCompare *>(this);
+}

@@ -12,10 +12,12 @@ class TaggerComponents : public IGraphTagger
   public:
     explicit TaggerComponents(const Graph::IGraphUs &);
 
+    const Graph::IGraphUs &getGraph() const override;
     const Tag &getGraphTag() const override;
     bool isConnected() const;
 
   private:
+    const Graph::IGraphUs &m_graph;
     bool m_isConnected;
     Tag m_graphTag;
 };

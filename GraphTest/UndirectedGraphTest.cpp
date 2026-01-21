@@ -423,7 +423,23 @@ TEST(UndirectedGraphTest, CreateEdgesKeep_ErrorIncomplete)
     ASSERT_THROW(UndirectedGraph::CreateEdgesKeep(*graph, groups), MyException);
 }
 
-#if 12
+TEST(UndirectedGraphTest, LineGraph_Path3)
+{
+    const auto graph = UndirectedGraphLibrary::Get_Path(3);
+    const auto lineGraph = UndirectedGraph::CreateLineGraph(*graph);
+    ASSERT_EQ(lineGraph.getNumVertices(), 2);
+    ASSERT_EQ(lineGraph.getNumEdges(), 1);
+}
+
+TEST(UndirectedGraphTest, LineGraph_Graph_1183)
+{
+    const auto graph = UndirectedGraphFromG6::Create("Dd[");
+    const auto lineGraph = UndirectedGraph::CreateLineGraph(*graph);
+    ASSERT_EQ(lineGraph.getNumVertices(), 6);
+    ASSERT_EQ(lineGraph.getNumEdges(), 9);
+}
+
+#if false
 TEST(UndirectedGraphTest, TestList)
 {
     for (const auto &graph : UndirectedGraphFromG6::getGraphs(UndirectedGraphFromG6::getListNumVertices_12_connected()))

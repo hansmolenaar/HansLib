@@ -15,6 +15,11 @@ const Tag &TaggerNumbers::getGraphTag() const
     return m_numbers;
 }
 
+const Graph::IGraphUs &TaggerNumbers::getGraph() const 
+{
+ return m_graph;
+}
+
 // !!!!!!!!!!!!! FACTORY
 
 std::unique_ptr<ITagger> TaggerNumbersFactory::createTagger(const Graph::IGraphUs &graph)

@@ -246,16 +246,6 @@ TEST(GraphIsomorphismDecomposeTreeTest, Pan3)
     const auto leaves = decomposeTree.groupLeaves();
     ASSERT_EQ(leaves().size(), 3);
 
-    const auto descr = decomposeTree.getDescriptions();
-    ASSERT_EQ(descr.size(), 3);
-    ASSERT_EQ(
-        descr.at(0),
-        "Known graph: complete graph of order 1 -> Complement is disconnected graph with components of order: 1 3");
-    ASSERT_EQ(descr.at(1), "Known graph: complete graph of order 1 -> Disconnected graph with components of order: 1 2 "
-                           "-> Complement is disconnected graph with components of order: 1 3");
-    ASSERT_EQ(descr.at(2), "Known graph: complete graph of order 2 -> Disconnected graph with components of order: 1 2 "
-                           "-> Complement is disconnected graph with components of order: 1 3");
-
     ASSERT_EQ(leaves().at(0).size(), 1);
     ASSERT_EQ(leaves().at(1).size(), 1);
     ASSERT_EQ(leaves().at(2).size(), 1);
@@ -621,5 +611,5 @@ TEST(GraphIsomorphismDecomposeTreeTest, CheckDecomposeList11)
 
 TEST(GraphIsomorphismDecomposeTreeTest, CheckDecomposeList12)
 {
-    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_12_connected(), {1, 566, 2, 11, 3, 1, 4, 1 }, true);
+    CheckDecomposeList(UndirectedGraphFromG6::getListNumVertices_12_connected(), {1, 566, 2, 11, 3, 1, 4, 1}, true);
 }

@@ -301,6 +301,32 @@ UndirectedGraph UndirectedGraph::CreateComplement(const IGraphUs &graph)
     return result;
 }
 
+UndirectedGraph UndirectedGraph::CreateLineGraph(const IGraphUs &graph)
+{
+    UndirectedGraph result(graph.getNumEdges(), "Line graph of: " + graph.getName());
+    const auto edges = graph.getAllSortedEdges();
+    std::vector<Vertex> ngbs;
+    for (auto vertex : graph.getVertexRange())
+    {
+        graph.setAdjacentVertices(vertex, ngbs);
+        for (size_t n0 = 0; n0 < ngbs.size(); ++n0)
+        {
+            const Vertex v0 = ngbs.at(n0);
+            const std::array<Vertex, 2> edge0{std::min(vertex, v0), std::max(vertex, v0)};
+            const auto pos0 = std::distance(edges.begin(), str::find(edges, edge0));
+            for (size_t n1 = n0 + 1; n1 < ngbs.size(); ++n1)
+            {
+                const Vertex v1 = ngbs.at(n1);
+                const std::array<Vertex, 2> edge1{std::min(vertex, v1), std::max(vertex, v1)};
+                const auto pos1 = std::distance(edges.begin(), str::find(edges, edge1));
+                result.addEdge(pos0, pos1);
+            }
+        }
+    }
+
+    return result;
+}
+
 std::string UndirectedGraph::getName() const
 {
     return m_name;
