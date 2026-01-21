@@ -34,11 +34,10 @@ const Tag &TaggerComponents::getGraphTag() const
     return m_graphTag;
 }
 
-const Graph::IGraphUs &TaggerComponents::getGraph() const 
+const Graph::IGraphUs &TaggerComponents::getGraph() const
 {
- return m_graph;
+    return m_graph;
 }
-
 
 // !!!!!!!!!!!!!
 

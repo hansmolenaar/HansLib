@@ -53,9 +53,9 @@ GraphIsomorphism::TaggerKnown::TaggerKnown(const Graph::IGraphUs &graph)
     m_description = "path of order " + std::to_string(nVertices);
 }
 
-const Graph::IGraphUs &TaggerKnown::getGraph() const 
+const Graph::IGraphUs &TaggerKnown::getGraph() const
 {
- return m_graph;
+    return m_graph;
 }
 
 const Tag &TaggerKnown::getGraphTag() const
