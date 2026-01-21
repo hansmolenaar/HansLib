@@ -73,3 +73,8 @@ std::unique_ptr<ITagger> TaggerKnownFactory::createTagger(const Graph::IGraphUs 
 {
     return std::make_unique<TaggerKnown>(graph);
 }
+
+std::unique_ptr<ICompare> CompareKnownFactory::createCompare(const Graph::IGraphUs &graph)
+{
+    return std::make_unique<TaggerKnown>(graph);
+}

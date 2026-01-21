@@ -45,3 +45,8 @@ std::unique_ptr<ITagger> TaggerComponentFactory::createTagger(const Graph::IGrap
 {
     return std::make_unique<TaggerComponents>(graph);
 }
+
+std::unique_ptr<ICompare> CompareComponentsFactory::createCompare(const Graph::IGraphUs &graph)
+{
+    return std::make_unique<TaggerComponents>(graph);
+}

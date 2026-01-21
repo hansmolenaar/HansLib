@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "Defines.h"
+#include "GraphIsomorphismICompareTest.h"
 #include "GraphIsomorphismITaggerTest.h"
 #include "GraphIsomorphismStatus.h"
 #include "GraphIsomorphismTaggerKnown.h"
@@ -12,6 +13,12 @@ using namespace GraphIsomorphism;
 namespace
 {
 } // namespace
+
+TEST(GraphIsomorphismTaggerKnownTest, CheckList)
+{
+    CompareKnownFactory factory;
+    GraphTest::CheckList(factory, UndirectedGraphFromG6::getListNumVertices_4(), Tag{1, 4, 7, 1});
+}
 
 TEST(GraphIsomorphismTaggerKnownTest, Singleton)
 {
