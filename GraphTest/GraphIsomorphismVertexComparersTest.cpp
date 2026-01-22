@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "Defines.h"
+#include "GraphIsomorphismAllCompareFactories.h"
 #include "GraphIsomorphismGrouping.h"
 #include "GraphIsomorphismTaggerDegree.h"
 #include "GraphIsomorphismTaggerTriangles.h"
@@ -72,7 +73,7 @@ TEST(GraphIsomorphismVertexComparersTest, Fish)
 TEST(GraphIsomorphismVertexComparersTest, Diamond)
 {
     const auto graph = UndirectedGraphFromG6::CreateConnected(UndirectedGraphFromG6::diamond);
-    const auto allComparers = getAllComparers(*graph);
+    const auto allComparers = AllCompareFactories().getAllComparers(*graph);
     const std::vector<const IVertexCompare *> allVertexCompare = selectVertexCompare(allComparers);
     const VertexComparers comparers(allVertexCompare);
 
@@ -84,7 +85,7 @@ TEST(GraphIsomorphismVertexComparersTest, Diamond)
 TEST(GraphIsomorphismVertexComparersTest, HardCase)
 {
     const auto graph = UndirectedGraphFromG6::Create("FJ\\~w");
-    const auto allComparers = getAllComparers(*graph);
+    const auto allComparers = AllCompareFactories().getAllComparers(*graph);
     const std::vector<const IVertexCompare *> allVertexCompare = selectVertexCompare(allComparers);
     const VertexComparers comparers(allVertexCompare);
 

@@ -108,11 +108,6 @@ std::ostream &operator<<(std::ostream &os, const GraphIsomorphism::Grouping<Grap
     return os;
 }
 
-std::vector<std::unique_ptr<ICompare>> GraphIsomorphism::getAllComparers(const Graph::IGraphUs &graph)
-{
-    return AllCompareFactories().getAllComparers(graph);
-}
-
 std::vector<const IGraphTagger *> GraphIsomorphism::selectGraphTaggers(
     const std::vector<std::unique_ptr<ICompare>> &comparers)
 {

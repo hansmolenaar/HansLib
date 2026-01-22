@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "Defines.h"
+#include "GraphIsomorphismAllCompareFactories.h"
 #include "GraphIsomorphismGrouping.h"
 #include "GraphIsomorphismTaggedGraph.h"
 #include "GraphIsomorphismTaggerChains.h"
@@ -85,7 +86,7 @@ void CheckUniquenessGraphTaggers(const std::vector<const Graph::IGraphUs *> &gra
     {
         ASSERT_TRUE(!g->isConnected());
         std::vector<Tag> tags;
-        const auto allComparers = GraphIsomorphism::getAllComparers(*g);
+        const auto allComparers = AllCompareFactories().getAllComparers(*g);
         const auto graphTaggers = GraphIsomorphism::selectGraphTaggers(allComparers);
         for (const auto *graphTagger : graphTaggers)
         {

@@ -1,5 +1,6 @@
 #include "GraphIsomorphismTaggedGraph.h"
 #include "Defines.h"
+#include "GraphIsomorphismAllCompareFactories.h"
 #include "GraphIsomorphismUtils.h"
 #include "MyAssert.h"
 #include "Single.h"
@@ -9,7 +10,8 @@ using namespace GraphIsomorphism;
 using namespace Utilities;
 
 TaggedGraph::TaggedGraph(const Graph::IGraphUs &graph)
-    : m_graph(graph), m_comparers(getAllComparers(m_graph)), m_vertexComparers(selectVertexCompare(m_comparers)),
+    : m_graph(graph), m_comparers(AllCompareFactories().getAllComparers(m_graph)),
+      m_vertexComparers(selectVertexCompare(m_comparers)),
       m_grouping(graph.getVertexRange(), VertexLess{m_vertexComparers})
 {
     for (const auto *graphTagger : selectGraphTaggers(m_comparers))
