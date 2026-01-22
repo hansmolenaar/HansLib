@@ -6,10 +6,12 @@
 #include "GraphIsomorphismUtils.h"
 #include "UndirectedGraphFromG6.h"
 #include "UndirectedGraphLibrary.h"
+#include "UniquePointer.h"
 
 using namespace Graph;
 using namespace GraphTest;
 using namespace GraphIsomorphism;
+using namespace Utilities;
 
 namespace
 {
@@ -69,12 +71,9 @@ void CheckListGraphCompareSymmetry(ICompareFactory &factory, const std::vector<c
     }
 }
 
-void CheckListGraphCompare(ICompareFactory &factory, const std::vector<const ICompare *> &list,
+void CheckListGraphCompare(ICompareFactory &factory, const std::vector<const IGraphCompare *> &gcomparers,
                            Tag expectGraphTagMultiplicities)
 {
-    std::vector<const IGraphCompare *> gcomparers(list.size());
-    str::transform(list, gcomparers.begin(), [](const auto &c) { return dynamic_cast<const IGraphCompare *>(c); });
-
     CheckListGraphCompareSymmetry(factory, gcomparers);
 
     auto cmp = [](const IGraphCompare *p1, const IGraphCompare *p2) {
@@ -95,17 +94,16 @@ void GraphTest::CheckList(ICompareFactory &factory, const std::vector<std::strin
     ASSERT_EQ(compare0->getGraph().getNumVertices(), 0);
 
     const auto graphs = UndirectedGraphFromG6::getGraphs(g6list);
-    std::vector<std::unique_ptr<ICompare>> comparers_up;
-    str::transform(graphs, std::back_inserter(comparers_up),
+    std::vector<std::unique_ptr<ICompare>> comparers;
+    str::transform(graphs, std::back_inserter(comparers),
                    [&factory](const auto &upg) { return factory.createCompare(*upg); });
-    std::vector<const ICompare *> comparers(g6list.size());
-    str::transform(comparers_up, comparers.begin(), [](const auto &cmp) { return cmp.get(); });
 
     if (compare0->getGraphCompare() != nullptr)
     {
         ASSERT_EQ(compare0->getGraphCompare()->compareOtherGraph(*compare0->getGraphCompare()),
                   std::weak_ordering::equivalent);
-        CheckListGraphCompare(factory, comparers, expectGraphTagMultiplicities);
+        const std::vector<const IGraphCompare *> graphComparers = getCastPointers<const IGraphCompare>(comparers);
+        CheckListGraphCompare(factory, graphComparers, expectGraphTagMultiplicities);
     }
     else
     {

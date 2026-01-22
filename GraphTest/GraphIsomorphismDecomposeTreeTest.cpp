@@ -6,6 +6,7 @@
 #include "Single.h"
 #include "UndirectedGraphFromG6.h"
 #include "UndirectedGraphLibrary.h"
+#include "UniquePointer.h"
 
 using namespace Graph;
 using namespace GraphIsomorphism;
@@ -63,7 +64,7 @@ void CheckDecompose(const DecomposeTree &decomposeTree, int expectNumLeaves = -1
     }
 }
 
-void CheckDecomposeGraphList(const std::vector<std::unique_ptr<IGraphUs>> &graphs, Tag expectMultiplicities,
+void CheckDecomposeGraphList(const std::vector<const IGraphUs *> &graphs, Tag expectMultiplicities,
                              bool printMultipleDecompositions)
 {
     std::vector<std::unique_ptr<DecomposeTree>> decompositions;
@@ -135,7 +136,7 @@ void CheckDecomposeList(const std::vector<std::string> &g6list, Tag expectMultip
                         bool printMultipleDecompositions = false)
 {
     std::vector<std::unique_ptr<IGraphUs>> graphs = UndirectedGraphFromG6::getGraphs(g6list);
-    CheckDecomposeGraphList(graphs, expectMultiplicities, printMultipleDecompositions);
+    CheckDecomposeGraphList(getCPointers(graphs), expectMultiplicities, printMultipleDecompositions);
 }
 
 } // namespace
@@ -533,7 +534,7 @@ TEST(GraphIsomorphismDecomposeTreeTest, SpecialCase8_422)
     std::vector<std::unique_ptr<IGraphUs>> graphs;
     graphs.emplace_back(std::make_unique<UndirectedGraph>(g0));
     graphs.emplace_back(std::make_unique<UndirectedGraph>(g1));
-    CheckDecomposeGraphList(graphs, Tag{1, 2}, false);
+    CheckDecomposeGraphList(getCPointers(graphs), Tag{1, 2}, false);
 
     const auto g0c = UndirectedGraph::CreateComplement(g0);
     const auto g1c = UndirectedGraph::CreateComplement(g1);
@@ -544,7 +545,7 @@ TEST(GraphIsomorphismDecomposeTreeTest, SpecialCase8_422)
     graphs.clear();
     graphs.emplace_back(std::make_unique<UndirectedGraph>(g0c));
     graphs.emplace_back(std::make_unique<UndirectedGraph>(g1c));
-    CheckDecomposeGraphList(graphs, Tag{1, 2}, false);
+    CheckDecomposeGraphList(getCPointers(graphs), Tag{1, 2}, false);
 }
 
 TEST(GraphIsomorphismDecomposeTreeTest, SpecialCase9)

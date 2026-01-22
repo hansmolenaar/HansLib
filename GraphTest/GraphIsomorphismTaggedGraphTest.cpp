@@ -9,6 +9,7 @@
 #include "Single.h"
 #include "UndirectedGraphFromG6.h"
 #include "UndirectedGraphLibrary.h"
+#include "UniquePointer.h"
 
 using namespace GraphIsomorphism;
 using namespace Graph;
@@ -75,7 +76,7 @@ void PrintMultipleTags(const std::vector<std::string> &g6list)
     }
 }
 
-void CheckUniquenessGraphTaggers(const std::vector<std::unique_ptr<Graph::IGraphUs>> &graphs, int expectNumGraphs,
+void CheckUniquenessGraphTaggers(const std::vector<const Graph::IGraphUs *> &graphs, int expectNumGraphs,
                                  int expectNumUniqueTags)
 {
     ASSERT_EQ(graphs.size(), expectNumGraphs);
@@ -232,29 +233,29 @@ TEST(GraphIsomorphismTaggedGraphTest, CheckTaggingList8)
 TEST(GraphIsomorphismConstructTest, Disconnected5)
 {
     const auto graphs = UndirectedGraphFromG6::getDisconnectedGraphs(UndirectedGraphFromG6::getListNumVertices_5());
-    CheckUniquenessGraphTaggers(graphs, 13, 13);
+    CheckUniquenessGraphTaggers(getCPointers(graphs), 13, 13);
 }
 
 TEST(GraphIsomorphismTaggedGraphTest, Disconnected6)
 {
     const auto graphs = UndirectedGraphFromG6::getDisconnectedGraphs(UndirectedGraphFromG6::getListNumVertices_6());
-    CheckUniquenessGraphTaggers(graphs, 43, 43);
+    CheckUniquenessGraphTaggers(getCPointers(graphs), 43, 43);
 }
 
 TEST(GraphIsomorphismTaggedGraphTest, Disconnected7)
 {
     const auto graphs = UndirectedGraphFromG6::getDisconnectedGraphs(UndirectedGraphFromG6::getListNumVertices_7());
-    CheckUniquenessGraphTaggers(graphs, 35, 35);
+    CheckUniquenessGraphTaggers(getCPointers(graphs), 35, 35);
 }
 
 TEST(GraphIsomorphismTaggedGraphTest, Disconnected8)
 {
     const auto graphs = UndirectedGraphFromG6::getDisconnectedGraphs(UndirectedGraphFromG6::getListNumVertices_8());
-    CheckUniquenessGraphTaggers(graphs, 17, 17);
+    CheckUniquenessGraphTaggers(getCPointers(graphs), 17, 17);
 }
 
 TEST(GraphIsomorphismTaggedGraphTest, Disconnected9)
 {
     const auto graphs = UndirectedGraphFromG6::getDisconnectedGraphs(UndirectedGraphFromG6::getListNumVertices_9());
-    CheckUniquenessGraphTaggers(graphs, 18, 18);
+    CheckUniquenessGraphTaggers(getCPointers(graphs), 18, 18);
 }
