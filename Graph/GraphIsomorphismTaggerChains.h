@@ -15,7 +15,7 @@ class TaggerChains : public IGraphTagger, public IVertexCompare
     const Tag &getGraphTag() const override;
 
     const Graph::IGraphUs &getGraph() const override;
-    std::weak_ordering compareOtherGraph(Graph::Vertex, const IVertexCompare &, Graph::Vertex) const override;
+    std::weak_ordering compareVertexOtherGraph(Graph::Vertex, const IVertexCompare &, Graph::Vertex) const override;
 
   private:
     const Graph::IGraphUs &m_graph;

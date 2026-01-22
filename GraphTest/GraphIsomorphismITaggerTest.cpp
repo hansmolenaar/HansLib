@@ -102,7 +102,7 @@ void CheckTaggerBasics(GraphIsomorphism::ICompareFactory &factory, const IGraphU
         if (nVertices > 0)
         {
             ASSERT_EQ(vertexComparer->compare(0, 0), std::weak_ordering::equivalent);
-            ASSERT_EQ(vertexComparer->compareOtherGraph(0, *vertexComparer, 0), std::weak_ordering::equivalent);
+            ASSERT_EQ(vertexComparer->compareVertexOtherGraph(0, *vertexComparer, 0), std::weak_ordering::equivalent);
         }
     }
 

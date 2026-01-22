@@ -29,8 +29,8 @@ TEST(GraphIsomorphismVertexComparersTest, DegreeButterfly)
     ASSERT_EQ(comparers.compare(2, 1), std::weak_ordering::equivalent); // equal
 
     const VertexComparers other(taggers);
-    ASSERT_EQ(comparers.compareOtherGraph(0, other, 1), std::weak_ordering::greater);
-    ASSERT_EQ(comparers.compareOtherGraph(1, other, 0), std::weak_ordering::less);
+    ASSERT_EQ(comparers.compareVertexOtherGraph(0, other, 1), std::weak_ordering::greater);
+    ASSERT_EQ(comparers.compareVertexOtherGraph(1, other, 0), std::weak_ordering::less);
 
     const Grouping<Vertex> grouping(graph->getVertexRange(), VertexLess{comparers});
     ASSERT_EQ(grouping.countUnique(), 1);
@@ -61,8 +61,8 @@ TEST(GraphIsomorphismVertexComparersTest, Fish)
     ASSERT_FALSE(less(4, 0));
 
     const VertexComparers other(taggers);
-    ASSERT_EQ(comparers.compareOtherGraph(4, other, 0), std::weak_ordering::greater);
-    ASSERT_EQ(comparers.compareOtherGraph(0, other, 4), std::weak_ordering::less);
+    ASSERT_EQ(comparers.compareVertexOtherGraph(4, other, 0), std::weak_ordering::greater);
+    ASSERT_EQ(comparers.compareVertexOtherGraph(0, other, 4), std::weak_ordering::less);
 
     const Grouping<Vertex> grouping(graph->getVertexRange(), VertexLess{comparers});
     ASSERT_EQ(grouping.countUnique(), 1);

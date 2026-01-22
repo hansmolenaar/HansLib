@@ -12,7 +12,7 @@ class VertexComparers : public IVertexCompare
     explicit VertexComparers(std::vector<const IVertexCompare *>);
 
     const Graph::IGraphUs &getGraph() const override;
-    std::weak_ordering compareOtherGraph(Graph::Vertex, const IVertexCompare &, Graph::Vertex) const override;
+    std::weak_ordering compareVertexOtherGraph(Graph::Vertex, const IVertexCompare &, Graph::Vertex) const override;
     std::weak_ordering operator<=>(const VertexComparers &) const;
 
   private:

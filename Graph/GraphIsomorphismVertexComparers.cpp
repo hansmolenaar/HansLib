@@ -58,7 +58,8 @@ const IGraphUs &VertexComparers::getGraph() const
     return m_vertexComparers.front()->getGraph();
 }
 
-std::weak_ordering VertexComparers::compareOtherGraph(Vertex v0, const IVertexCompare &otherCompare, Vertex v1) const
+std::weak_ordering VertexComparers::compareVertexOtherGraph(Vertex v0, const IVertexCompare &otherCompare,
+                                                            Vertex v1) const
 {
     const VertexComparers *other = dynamic_cast<const VertexComparers *>(&otherCompare);
     if (this == other)
@@ -73,7 +74,7 @@ std::weak_ordering VertexComparers::compareOtherGraph(Vertex v0, const IVertexCo
     {
         const IVertexCompare *compare0 = m_vertexComparers.at(n);
         const IVertexCompare *compare1 = other->m_vertexComparers.at(n);
-        result = compare0->compareOtherGraph(v0, *compare1, v1);
+        result = compare0->compareVertexOtherGraph(v0, *compare1, v1);
         if (result != std::weak_ordering::equivalent)
         {
             return result;
@@ -97,7 +98,7 @@ std::weak_ordering VertexComparers::operator<=>(const VertexComparers &other) co
     {
         const Vertex v0 = groups0.at(n).front();
         const Vertex v1 = groups1.at(n).front();
-        result = compareOtherGraph(v0, other, v1);
+        result = compareVertexOtherGraph(v0, other, v1);
         if (result != std::weak_ordering::equivalent)
         {
             return result;

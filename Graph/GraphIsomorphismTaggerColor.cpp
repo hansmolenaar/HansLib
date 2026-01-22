@@ -54,8 +54,8 @@ TagEntry TaggerColor::getVertexTag(Graph::Vertex v) const
     return m_vertexColorTag.at(v);
 }
 
-std::weak_ordering TaggerColor::compareOtherGraph(Graph::Vertex vertex1, const IVertexCompare &other,
-                                                  Graph::Vertex vertex2) const
+std::weak_ordering TaggerColor::compareVertexOtherGraph(Graph::Vertex vertex1, const IVertexCompare &other,
+                                                        Graph::Vertex vertex2) const
 {
     const TaggerColor &cmp2 = dynamic_cast<const TaggerColor &>(other);
     return getVertexTag(vertex1) <=> cmp2.getVertexTag(vertex2);

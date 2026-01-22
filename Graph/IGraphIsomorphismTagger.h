@@ -44,7 +44,7 @@ class IVertexCompare : public virtual ICompare
 {
   public:
     ~IVertexCompare() = default;
-    virtual std::weak_ordering compareOtherGraph(Graph::Vertex, const IVertexCompare &, Graph::Vertex) const = 0;
+    virtual std::weak_ordering compareVertexOtherGraph(Graph::Vertex, const IVertexCompare &, Graph::Vertex) const = 0;
 
     std::weak_ordering compare(Graph::Vertex, Graph::Vertex) const;
 };

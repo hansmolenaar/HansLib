@@ -75,7 +75,8 @@ std::vector<ScalarVertexValues> CollectVertexValues(const std::vector<Vertex> &v
 }
 } // namespace
 
-std::weak_ordering TaggerDistance::compareOtherGraph(Vertex vertex0, const IVertexCompare &other, Vertex vertex1) const
+std::weak_ordering TaggerDistance::compareVertexOtherGraph(Vertex vertex0, const IVertexCompare &other,
+                                                           Vertex vertex1) const
 {
     const auto &tagger0 = *this;
     const auto &tagger1 = dynamic_cast<const TaggerDistance &>(other);

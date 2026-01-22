@@ -75,8 +75,8 @@ const Tag &TaggerTwins::getVertexTag(Graph::Vertex v) const
     return found->second;
 }
 
-std::weak_ordering TaggerTwins::compareOtherGraph(Graph::Vertex vertex1, const IVertexCompare &other,
-                                                  Graph::Vertex vertex2) const
+std::weak_ordering TaggerTwins::compareVertexOtherGraph(Graph::Vertex vertex1, const IVertexCompare &other,
+                                                        Graph::Vertex vertex2) const
 {
     const TaggerTwins &cmp2 = dynamic_cast<const TaggerTwins &>(other);
     return getVertexTag(vertex1) <=> cmp2.getVertexTag(vertex2);

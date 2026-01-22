@@ -5,7 +5,7 @@ using namespace GraphIsomorphism;
 
 std::weak_ordering IVertexCompare::compare(Vertex lhs, Vertex rhs) const
 {
-    return compareOtherGraph(lhs, *this, rhs);
+    return compareVertexOtherGraph(lhs, *this, rhs);
 }
 
 const IGraphCompare *ICompare::getGraphCompare() const

@@ -49,6 +49,6 @@ TEST(GraphIsomorphismTaggerTrianglesTest, Diamond)
     ASSERT_EQ(comparer->getGraphTagger()->getGraphTag(), (Tag{1, 2, 2, 2}));
 
     const auto *vcompare = comparer->getVertexCompare();
-    ASSERT_EQ(vcompare->compareOtherGraph(0, *vcompare, 1), std::weak_ordering::less);
-    ASSERT_EQ(vcompare->compareOtherGraph(2, *vcompare, 3), std::weak_ordering::greater);
+    ASSERT_EQ(vcompare->compareVertexOtherGraph(0, *vcompare, 1), std::weak_ordering::less);
+    ASSERT_EQ(vcompare->compareVertexOtherGraph(2, *vcompare, 3), std::weak_ordering::greater);
 }
