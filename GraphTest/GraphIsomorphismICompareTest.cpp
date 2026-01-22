@@ -85,16 +85,23 @@ void CheckListGraphCompare(ICompareFactory &factory, const std::vector<const IGr
     ASSERT_EQ(tag, expectGraphTagMultiplicities);
 }
 
+void CheckListGraphTagger(ICompareFactory &factory, const std::vector<std::unique_ptr<IGraphUs>> &graphs)
+{
+    for (const auto &graph : graphs)
+    {
+        GraphTest::CheckGraphTaggerConsistency(*graph, factory);
+    }
+}
+
 } // namespace
 
-void GraphTest::CheckList(ICompareFactory &factory, const std::vector<std::string> &g6list,
+void GraphTest::CheckList(ICompareFactory &factory, const std::vector<std::unique_ptr<Graph::IGraphUs>> &graphs,
                           Tag expectGraphTagMultiplicities)
 {
     const auto graph0 = UndirectedGraphLibrary::Get_Null();
     const auto compare0 = factory.createCompare(*graph0);
     ASSERT_EQ(compare0->getGraph().getNumVertices(), 0);
 
-    const auto graphs = UndirectedGraphFromG6::getGraphs(g6list);
     std::vector<std::unique_ptr<ICompare>> comparers;
     str::transform(graphs, std::back_inserter(comparers),
                    [&factory](const auto &upg) { return factory.createCompare(*upg); });
@@ -105,9 +112,19 @@ void GraphTest::CheckList(ICompareFactory &factory, const std::vector<std::strin
                   std::weak_ordering::equivalent);
         const std::vector<const IGraphCompare *> graphComparers = getCastPointers<const IGraphCompare>(comparers);
         CheckListGraphCompare(factory, graphComparers, expectGraphTagMultiplicities);
+        if (compare0->getGraphTagger() != nullptr)
+        {
+            CheckListGraphTagger(factory, graphs);
+        }
     }
     else
     {
         ASSERT_TRUE(expectGraphTagMultiplicities.empty());
     }
+}
+void GraphTest::CheckList(ICompareFactory &factory, const std::vector<std::string> &g6list,
+                          Tag expectGraphTagMultiplicities)
+{
+    const auto graphs = UndirectedGraphFromG6::getGraphs(g6list);
+    CheckList(factory, graphs, expectGraphTagMultiplicities);
 }

@@ -9,11 +9,12 @@
 namespace GraphIsomorphism
 {
 
-class TaggedGraph
+class TaggedGraph : public IGraphCompare
 {
   public:
     explicit TaggedGraph(const Graph::IGraphUs &);
-    const Graph::IGraphUs &getGraph() const;
+    const Graph::IGraphUs &getGraph() const override;
+    std::weak_ordering compareOtherGraph(const IGraphCompare &) const override;
 
     std::weak_ordering operator<=>(const TaggedGraph &) const;
     bool operator==(const TaggedGraph &) const;
@@ -23,9 +24,14 @@ class TaggedGraph
   private:
     const Graph::IGraphUs &m_graph;
     std::vector<std::unique_ptr<ICompare>> m_comparers;
-    GraphTags m_graphTags; // For quick testing
     VertexComparers m_vertexComparers;
     Grouping<Graph::Vertex> m_grouping;
+};
+
+class CompareTaggedGraphFactory : public ICompareFactory
+{
+  public:
+    std::unique_ptr<ICompare> createCompare(const Graph::IGraphUs &) override;
 };
 
 } // namespace GraphIsomorphism
