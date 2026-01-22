@@ -23,12 +23,6 @@ class TaggerMaxDegree : public IGraphTagger, public IVertexCompare
     Tag m_graphTag;
 };
 
-class TaggerMaxDegreeFactory : public ITaggerFactory
-{
-  public:
-    std::unique_ptr<ITagger> createTagger(const Graph::IGraphUs &) override;
-};
-
 class CompareMaxDegreeFactory : public ICompareFactory
 {
   public:

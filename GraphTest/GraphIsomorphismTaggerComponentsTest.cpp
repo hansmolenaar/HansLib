@@ -36,17 +36,15 @@ TEST(GraphIsomorphismTaggerComponentsTest, Path3)
 TEST(GraphIsomorphismTaggerComponentsTest, Disconneted)
 {
     const auto graph = UndirectedGraphFromG6::Create("Eh?G");
-    TaggerComponentFactory factory;
-    const auto gtagger = factory.createTagger(*graph);
-    const auto *tagger = gtagger->getGraphTagger();
+    CompareComponentsFactory factory;
+    const auto *tagger = factory.createCompare(*graph)->getGraphTagger();
     ASSERT_EQ(tagger->getGraphTag(), (Tag{2, 1, 4, 1}));
 }
 
 TEST(GraphIsomorphismTaggerComponentsTest, Disconneted100)
 {
     const auto graph = UndirectedGraphLibrary::Get_DisconnectedGraph(100);
-    TaggerComponentFactory factory;
-    const auto gtagger = factory.createTagger(*graph);
-    const auto *tagger = gtagger->getGraphTagger();
+    CompareComponentsFactory factory;
+    const auto *tagger = factory.createCompare(*graph)->getGraphTagger();
     ASSERT_EQ(tagger->getGraphTag(), (Tag{1, 100}));
 }

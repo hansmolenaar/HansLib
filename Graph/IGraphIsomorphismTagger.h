@@ -67,13 +67,6 @@ struct VertexLess
     const IVertexCompare &Compare;
 };
 
-class ITaggerFactory
-{
-  public:
-    virtual ~ITaggerFactory() = default;
-    virtual std::unique_ptr<ITagger> createTagger(const Graph::IGraphUs &) = 0;
-};
-
 class ICompareFactory
 {
   public:

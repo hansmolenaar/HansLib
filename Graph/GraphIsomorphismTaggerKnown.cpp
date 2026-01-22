@@ -69,11 +69,6 @@ std::string TaggerKnown::getDescription() const
 }
 // !!!!!!!!!!!!! FACTORY
 
-std::unique_ptr<ITagger> TaggerKnownFactory::createTagger(const Graph::IGraphUs &graph)
-{
-    return std::make_unique<TaggerKnown>(graph);
-}
-
 std::unique_ptr<ICompare> CompareKnownFactory::createCompare(const Graph::IGraphUs &graph)
 {
     return std::make_unique<TaggerKnown>(graph);

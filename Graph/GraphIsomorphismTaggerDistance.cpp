@@ -107,11 +107,6 @@ std::weak_ordering TaggerDistance::compareOtherGraph(Vertex vertex0, const IVert
 
 // !!!!!!!!!!!!! FACTORY
 
-std::unique_ptr<ITagger> TaggerDistanceFactory::createTagger(const Graph::IGraphUs &graph)
-{
-    return std::make_unique<TaggerDistance>(graph);
-}
-
 std::unique_ptr<ICompare> CompareDistanceFactory::createCompare(const Graph::IGraphUs &graph)
 {
     return std::make_unique<TaggerDistance>(graph);

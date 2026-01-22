@@ -41,12 +41,6 @@ class TaggerDistance : public IGraphTagger, public IVertexCompare
     Tag m_graphTag;
 };
 
-class TaggerDistanceFactory : public ITaggerFactory
-{
-  public:
-    std::unique_ptr<ITagger> createTagger(const Graph::IGraphUs &) override;
-};
-
 class CompareDistanceFactory : public ICompareFactory
 {
   public:

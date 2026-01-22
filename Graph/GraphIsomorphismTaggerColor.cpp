@@ -63,11 +63,6 @@ std::weak_ordering TaggerColor::compareOtherGraph(Graph::Vertex vertex1, const I
 
 // !!!!!!!!!!!!! FACTORY
 
-std::unique_ptr<ITagger> TaggerColorFactory::createTagger(const Graph::IGraphUs &graph)
-{
-    return std::make_unique<TaggerColor>(graph);
-}
-
 std::unique_ptr<ICompare> CompareColorFactory::createCompare(const Graph::IGraphUs &graph)
 {
     return std::make_unique<TaggerColor>(graph);

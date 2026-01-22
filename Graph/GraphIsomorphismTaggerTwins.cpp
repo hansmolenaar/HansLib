@@ -84,11 +84,6 @@ std::weak_ordering TaggerTwins::compareOtherGraph(Graph::Vertex vertex1, const I
 
 // !!!!!!!!!!!!! FACTORY
 
-std::unique_ptr<ITagger> TaggerTwinsFactory::createTagger(const Graph::IGraphUs &graph)
-{
-    return std::make_unique<TaggerTwins>(graph);
-}
-
 std::unique_ptr<ICompare> CompareTwinsFactory::createCompare(const Graph::IGraphUs &graph)
 {
     return std::make_unique<TaggerTwins>(graph);

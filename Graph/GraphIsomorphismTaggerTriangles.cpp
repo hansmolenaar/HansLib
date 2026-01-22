@@ -29,11 +29,6 @@ std::weak_ordering TaggerTriangles::compareOtherGraph(Vertex vertex0, const IVer
            dynamic_cast<const TaggerTriangles &>(other).m_triangles->numTrianglesAt(vertex1);
 }
 
-std::unique_ptr<ITagger> TaggerTrianglesFactory::createTagger(const Graph::IGraphUs &graph)
-{
-    return std::make_unique<TaggerTriangles>(std::make_shared<Graph::UndirectedGraphTriangles>(graph));
-}
-
 std::unique_ptr<ICompare> CompareTrianglesFactory::createCompare(const Graph::IGraphUs &graph)
 {
     return std::make_unique<TaggerTriangles>(std::make_shared<Graph::UndirectedGraphTriangles>(graph));

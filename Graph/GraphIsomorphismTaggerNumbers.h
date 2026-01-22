@@ -20,12 +20,6 @@ class TaggerNumbers : public IGraphTagger
     Tag m_numbers;
 };
 
-class TaggerNumbersFactory : public ITaggerFactory
-{
-  public:
-    std::unique_ptr<ITagger> createTagger(const Graph::IGraphUs &) override;
-};
-
 class CompareNumbersFactory : public ICompareFactory
 {
   public:

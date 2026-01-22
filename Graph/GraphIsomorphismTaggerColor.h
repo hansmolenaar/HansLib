@@ -22,12 +22,6 @@ class TaggerColor : public IGraphTagger, public IVertexCompare
     Tag m_graphTag;
 };
 
-class TaggerColorFactory : public ITaggerFactory
-{
-  public:
-    std::unique_ptr<ITagger> createTagger(const Graph::IGraphUs &) override;
-};
-
 class CompareColorFactory : public ICompareFactory
 {
   public:

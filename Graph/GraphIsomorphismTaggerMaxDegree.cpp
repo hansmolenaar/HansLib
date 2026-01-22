@@ -41,11 +41,6 @@ std::weak_ordering TaggerMaxDegree::compareOtherGraph(Vertex vertex0, const IVer
 
 // !!!!!!!!!!!!!!!!!
 
-std::unique_ptr<ITagger> TaggerMaxDegreeFactory::createTagger(const Graph::IGraphUs &graph)
-{
-    return std::make_unique<TaggerMaxDegree>(graph);
-}
-
 std::unique_ptr<ICompare> CompareMaxDegreeFactory::createCompare(const Graph::IGraphUs &graph)
 {
     return std::make_unique<TaggerMaxDegree>(graph);

@@ -22,12 +22,6 @@ class TaggerComponents : public IGraphTagger
     Tag m_graphTag;
 };
 
-class TaggerComponentFactory : public ITaggerFactory
-{
-  public:
-    std::unique_ptr<ITagger> createTagger(const Graph::IGraphUs &) override;
-};
-
 class CompareComponentsFactory : public ICompareFactory
 {
   public:

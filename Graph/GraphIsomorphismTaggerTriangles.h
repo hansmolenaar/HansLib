@@ -23,12 +23,6 @@ class TaggerTriangles : public IGraphTagger, public IVertexCompare
     Tag m_graphTag;
 };
 
-class TaggerTrianglesFactory : public ITaggerFactory
-{
-  public:
-    std::unique_ptr<ITagger> createTagger(const Graph::IGraphUs &) override;
-};
-
 class CompareTrianglesFactory : public ICompareFactory
 {
   public:

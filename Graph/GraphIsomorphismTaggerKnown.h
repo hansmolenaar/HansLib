@@ -31,12 +31,6 @@ class TaggerKnown : public IGraphTagger
     std::string m_description;
 };
 
-class TaggerKnownFactory : public ITaggerFactory
-{
-  public:
-    std::unique_ptr<ITagger> createTagger(const Graph::IGraphUs &) override;
-};
-
 class CompareKnownFactory : public ICompareFactory
 {
   public:

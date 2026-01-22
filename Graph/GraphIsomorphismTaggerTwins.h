@@ -22,12 +22,6 @@ class TaggerTwins : public IGraphTagger, public IVertexCompare
     Tag m_graphTag;
 };
 
-class TaggerTwinsFactory : public ITaggerFactory
-{
-  public:
-    std::unique_ptr<ITagger> createTagger(const Graph::IGraphUs &) override;
-};
-
 class CompareTwinsFactory : public ICompareFactory
 {
   public:
