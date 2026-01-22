@@ -1169,7 +1169,6 @@ const std::vector<std::string> &UndirectedGraphFromG6::getListNumVertices_10()
 std::vector<std::unique_ptr<Graph::IGraphUs>> UndirectedGraphFromG6::getDisconnectedGraphs(
     const std::vector<std::string> &list)
 {
-
     std::vector<std::unique_ptr<Graph::IGraphUs>> result;
     for (const auto &g6 : list)
     {
@@ -1184,10 +1183,7 @@ std::vector<std::unique_ptr<Graph::IGraphUs>> UndirectedGraphFromG6::getDisconne
 
 std::vector<std::unique_ptr<Graph::IGraphUs>> UndirectedGraphFromG6::getGraphs(const std::vector<std::string> &list)
 {
-    std::vector<std::unique_ptr<Graph::IGraphUs>> result;
-    for (const auto &g6 : list)
-    {
-        result.emplace_back(UndirectedGraphFromG6::Create(g6));
-    }
+    std::vector<std::unique_ptr<Graph::IGraphUs>> result(list.size());
+    str::transform(list, result.begin(), [](const std::string str) { return UndirectedGraphFromG6::Create(str); });
     return result;
 }

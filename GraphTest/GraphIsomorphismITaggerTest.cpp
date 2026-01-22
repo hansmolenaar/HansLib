@@ -54,27 +54,24 @@ void CheckVertexCompareConsistency(const IGraphUs &graph, GraphIsomorphism::ITag
         ASSERT_FALSE(comparerOrg < comparerPermuted);
     }
 }
+}; // namespace
 
-void CheckGraphTaggerConsistency(const Graph::IGraphUs &graph, ITaggerFactory &factory)
+void GraphTest::CheckGraphTaggerConsistency(const Graph::IGraphUs &graph, ITaggerFactory &factory)
 {
-    const auto nVertices = graph.getNumVertices();
     const auto gtagger = factory.createTagger(graph);
     const auto *tagger = gtagger->getGraphTagger();
     if (tagger == nullptr)
         return;
-    const auto &tag = tagger->getGraphTag();
 
-    const Permutation trivial = Permutation::CreateTrivial(nVertices);
+    const auto &tag = tagger->getGraphTag();
     for (auto n : Iota::GetRange(numPermutations))
     {
-        const auto permutation = Permutation::CreateRandomShuffle(trivial, n);
-        const UndirectedGraph graphPermuted = UndirectedGraph::CreatePermuted(graph, permutation);
+        const UndirectedGraph graphPermuted = UndirectedGraph::CreateRandomShuffled(graph, n);
         const auto gtaggerPermuted = factory.createTagger(graphPermuted);
         const auto *taggerPermuted = gtaggerPermuted->getGraphTagger();
         ASSERT_EQ(tag, taggerPermuted->getGraphTag());
     }
 }
-}; // namespace
 
 void GraphTest::CheckTaggerConsistency(const IGraphUs &graph, GraphIsomorphism::ITaggerFactory &factory,
                                        int expectNumUniqueVertices)

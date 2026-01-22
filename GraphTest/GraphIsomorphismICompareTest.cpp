@@ -3,6 +3,7 @@
 #include "GraphIsomorphismICompareTest.h"
 
 #include "GraphIsomorphismGrouping.h"
+#include "GraphIsomorphismITaggerTest.h"
 #include "GraphIsomorphismUtils.h"
 #include "UndirectedGraphFromG6.h"
 #include "UndirectedGraphLibrary.h"

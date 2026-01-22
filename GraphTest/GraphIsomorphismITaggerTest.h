@@ -11,4 +11,6 @@ void CheckTaggerConsistency(const Graph::IGraphUs &, GraphIsomorphism::ITaggerFa
 
 void CheckTagger(GraphIsomorphism::ITaggerFactory &);
 
+void CheckGraphTaggerConsistency(const Graph::IGraphUs &, GraphIsomorphism::ITaggerFactory &);
+
 } // namespace GraphTest
