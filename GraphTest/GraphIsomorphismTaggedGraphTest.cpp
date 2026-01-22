@@ -85,8 +85,8 @@ void CheckUniquenessGraphTaggers(const std::vector<const Graph::IGraphUs *> &gra
     {
         ASSERT_TRUE(!g->isConnected());
         std::vector<Tag> tags;
-        const auto allTaggers = GraphIsomorphism::getAllTaggers(*g);
-        const auto graphTaggers = GraphIsomorphism::selectGraphTaggers(allTaggers);
+        const auto allComparers = GraphIsomorphism::getAllComparers(*g);
+        const auto graphTaggers = GraphIsomorphism::selectGraphTaggers(allComparers);
         for (const auto *graphTagger : graphTaggers)
         {
             tags.emplace_back(graphTagger->getGraphTag());

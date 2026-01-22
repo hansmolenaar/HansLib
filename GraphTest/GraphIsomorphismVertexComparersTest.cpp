@@ -72,8 +72,8 @@ TEST(GraphIsomorphismVertexComparersTest, Fish)
 TEST(GraphIsomorphismVertexComparersTest, Diamond)
 {
     const auto graph = UndirectedGraphFromG6::CreateConnected(UndirectedGraphFromG6::diamond);
-    const auto taggers = getAllTaggers(*graph);
-    const std::vector<const IVertexCompare *> allVertexCompare = selectVertexCompare(taggers);
+    const auto allComparers = getAllComparers(*graph);
+    const std::vector<const IVertexCompare *> allVertexCompare = selectVertexCompare(allComparers);
     const VertexComparers comparers(allVertexCompare);
 
     const Grouping<Vertex> grouping(graph->getVertexRange(), VertexLess{comparers});
@@ -84,8 +84,8 @@ TEST(GraphIsomorphismVertexComparersTest, Diamond)
 TEST(GraphIsomorphismVertexComparersTest, HardCase)
 {
     const auto graph = UndirectedGraphFromG6::Create("FJ\\~w");
-    const auto taggers = getAllTaggers(*graph);
-    const std::vector<const IVertexCompare *> allVertexCompare = selectVertexCompare(taggers);
+    const auto allComparers = getAllComparers(*graph);
+    const std::vector<const IVertexCompare *> allVertexCompare = selectVertexCompare(allComparers);
     const VertexComparers comparers(allVertexCompare);
 
     const Grouping<Vertex> grouping(graph->getVertexRange(), VertexLess{comparers});

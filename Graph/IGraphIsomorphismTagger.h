@@ -39,6 +39,8 @@ class ITagger : public virtual ICompare
     virtual ~ITagger() = default;
 
     const IGraphTagger *getGraphTagger() const;
+
+  private:
     const IVertexCompare *getVertexCompare() const;
 };
 
@@ -49,7 +51,7 @@ class IGraphTagger : public virtual ITagger, public virtual IGraphCompare
     std::weak_ordering compareOtherGraph(const IGraphCompare &gc) const override;
 };
 
-class IVertexCompare : public virtual ITagger
+class IVertexCompare : public virtual ICompare
 {
   public:
     ~IVertexCompare() = default;

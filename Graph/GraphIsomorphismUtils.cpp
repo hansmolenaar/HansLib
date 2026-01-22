@@ -12,6 +12,7 @@
 #include "GraphIsomorphismTaggerTriangles.h"
 #include "GraphIsomorphismTaggerTwins.h"
 #include "UndirectedGraphDistance.h"
+#include "UniquePointer.h"
 
 using namespace Graph;
 using namespace GraphIsomorphism;
@@ -106,9 +107,9 @@ std::ostream &operator<<(std::ostream &os, const GraphIsomorphism::Grouping<Grap
     return os;
 }
 
-std::vector<std::unique_ptr<ITagger>> GraphIsomorphism::getAllTaggers(const Graph::IGraphUs &graph)
+std::vector<std::unique_ptr<ICompare>> GraphIsomorphism::getAllComparers(const Graph::IGraphUs &graph)
 {
-    std::vector<std::unique_ptr<ITagger>> result;
+    std::vector<std::unique_ptr<ICompare>> result;
     auto triangles = std::make_shared<Graph::UndirectedGraphTriangles>(graph);
     auto distances = std::make_shared<Graph::UndirectedGraphDistance>(graph);
 
@@ -126,19 +127,17 @@ std::vector<std::unique_ptr<ITagger>> GraphIsomorphism::getAllTaggers(const Grap
 }
 
 std::vector<const IGraphTagger *> GraphIsomorphism::selectGraphTaggers(
-    const std::vector<std::unique_ptr<ITagger>> &taggers)
+    const std::vector<std::unique_ptr<ICompare>> &comparers)
 {
-    std::vector<const IGraphTagger *> result(taggers.size());
-    str::transform(taggers, result.begin(), [](const auto &tagger) { return tagger->getGraphTagger(); });
+    std::vector<const IGraphTagger *> result = Utilities::getCastPointers<const IGraphTagger>(comparers);
     result.erase(std::remove(result.begin(), result.end(), nullptr), result.end());
     return result;
 }
 
 std::vector<const IVertexCompare *> GraphIsomorphism::selectVertexCompare(
-    const std::vector<std::unique_ptr<ITagger>> &taggers)
+    const std::vector<std::unique_ptr<ICompare>> &comparers)
 {
-    std::vector<const IVertexCompare *> result(taggers.size());
-    str::transform(taggers, result.begin(), [](const auto &tagger) { return tagger->getVertexCompare(); });
+    std::vector<const IVertexCompare *> result = Utilities::getCastPointers<const IVertexCompare>(comparers);
     result.erase(std::remove(result.begin(), result.end(), nullptr), result.end());
     return result;
 }

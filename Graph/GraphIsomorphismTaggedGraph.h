@@ -22,7 +22,7 @@ class TaggedGraph
 
   private:
     const Graph::IGraphUs &m_graph;
-    std::vector<std::unique_ptr<ITagger>> m_taggers;
+    std::vector<std::unique_ptr<ICompare>> m_taggers;
     GraphTags m_graphTags; // For quick testing
     VertexComparers m_vertexComparers;
     Grouping<Graph::Vertex> m_grouping;
