@@ -37,14 +37,14 @@ TEST(GraphIsomorphismTaggerComponentsTest, Disconneted)
 {
     const auto graph = UndirectedGraphFromG6::Create("Eh?G");
     CompareComponentsFactory factory;
-    const auto *tagger = factory.createCompare(*graph)->getGraphTagger();
-    ASSERT_EQ(tagger->getGraphTag(), (Tag{2, 1, 4, 1}));
+    const auto compare = factory.createCompare(*graph);
+    ASSERT_EQ(compare->getGraphTagger()->getGraphTag(), (Tag{2, 1, 4, 1}));
 }
 
 TEST(GraphIsomorphismTaggerComponentsTest, Disconneted100)
 {
     const auto graph = UndirectedGraphLibrary::Get_DisconnectedGraph(100);
     CompareComponentsFactory factory;
-    const auto *tagger = factory.createCompare(*graph)->getGraphTagger();
-    ASSERT_EQ(tagger->getGraphTag(), (Tag{1, 100}));
+    const auto compare = factory.createCompare(*graph);
+    ASSERT_EQ(compare->getGraphTagger()->getGraphTag(), (Tag{1, 100}));
 }
