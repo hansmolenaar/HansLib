@@ -32,3 +32,8 @@ std::weak_ordering IGraphTagger::compareOtherGraph(const IGraphCompare &gc) cons
 {
     return getGraphTag() <=> dynamic_cast<const IGraphTagger *>(&gc)->getGraphTag();
 };
+
+const IGraphTagger *ICompare::getGraphTagger() const
+{
+    return dynamic_cast<const IGraphTagger *>(getGraphCompare());
+}

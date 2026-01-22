@@ -15,7 +15,7 @@ namespace
 
 TEST(GraphIsomorphismTaggerDegreeTest, CheckTagger)
 {
-    TaggerDegreeFactory factory;
+    CompareDegreeFactory factory;
     GraphTest::CheckTagger(factory);
 }
 
@@ -28,7 +28,7 @@ TEST(GraphIsomorphismTaggerDegreeTest, CheckList)
 TEST(GraphIsomorphismTaggerDegreeTest, Path3)
 {
     const auto graph = UndirectedGraphLibrary::Get_Path(3);
-    TaggerDegreeFactory factory;
+    CompareDegreeFactory factory;
     GraphTest::CheckTaggerConsistency(*graph, factory);
 
     const TaggerDegree tagger(*graph);
@@ -38,7 +38,7 @@ TEST(GraphIsomorphismTaggerDegreeTest, Path3)
 TEST(GraphIsomorphismTaggerDegreeTest, Star111)
 {
     const auto graph = UndirectedGraphLibrary::Get_Star({1, 2, 1});
-    TaggerDegreeFactory factory;
+    CompareDegreeFactory factory;
     GraphTest::CheckTaggerConsistency(*graph, factory);
 
     const auto tagger = TaggerDegree(*graph);

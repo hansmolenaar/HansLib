@@ -7,10 +7,10 @@
 
 namespace GraphTest
 {
-void CheckTaggerConsistency(const Graph::IGraphUs &, GraphIsomorphism::ITaggerFactory &, int = -1);
+void CheckTaggerConsistency(const Graph::IGraphUs &, GraphIsomorphism::ICompareFactory &, int = -1);
 
-void CheckTagger(GraphIsomorphism::ITaggerFactory &);
+void CheckTagger(GraphIsomorphism::ICompareFactory &);
 
-void CheckGraphTaggerConsistency(const Graph::IGraphUs &, GraphIsomorphism::ITaggerFactory &);
+void CheckGraphTaggerConsistency(const Graph::IGraphUs &, GraphIsomorphism::ICompareFactory &);
 
 } // namespace GraphTest

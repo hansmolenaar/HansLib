@@ -21,14 +21,14 @@ TEST(GraphIsomorphismTaggerNumbersTest, CheckList)
 
 TEST(GraphIsomorphismTaggerNumbersTest, CheckTagger)
 {
-    TaggerNumbersFactory factory;
+    CompareNumbersFactory factory;
     GraphTest::CheckTagger(factory);
 }
 
 TEST(GraphIsomorphismTaggerNumbersTest, Path3)
 {
     const auto graph = UndirectedGraphLibrary::Get_Path(3);
-    TaggerNumbersFactory factory;
+    CompareNumbersFactory factory;
     GraphTest::CheckTaggerConsistency(*graph, factory);
 
     const TaggerNumbers tagger(*graph);
@@ -38,7 +38,7 @@ TEST(GraphIsomorphismTaggerNumbersTest, Path3)
 TEST(GraphIsomorphismTaggerNumbersTest, Cycle3)
 {
     const auto graph = UndirectedGraphLibrary::Get_Cycle(3);
-    TaggerNumbersFactory factory;
+    CompareNumbersFactory factory;
     GraphTest::CheckTaggerConsistency(*graph, factory);
 
     const TaggerNumbers tagger(*graph);

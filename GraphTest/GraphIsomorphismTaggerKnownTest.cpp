@@ -103,6 +103,6 @@ TEST(GraphIsomorphismTaggerKnownTest, Disconnected5)
 
 TEST(GraphIsomorphismTaggerKnownTest, CheckTagger)
 {
-    TaggerKnownFactory factory;
+    CompareKnownFactory factory;
     GraphTest::CheckTagger(factory);
 }

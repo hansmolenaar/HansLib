@@ -36,7 +36,7 @@ void CheckColoring(const IGraphUs &graph)
 
 TEST(GraphIsomorphismTaggerColorTest, CheckTagger)
 {
-    TaggerColorFactory factory;
+    CompareColorFactory factory;
     GraphTest::CheckTagger(factory);
 }
 
@@ -49,7 +49,7 @@ TEST(GraphIsomorphismTaggerColorTest, CheckList)
 TEST(GraphIsomorphismTaggerColorTest, Path3)
 {
     const auto graph = UndirectedGraphLibrary::Get_Path(3);
-    TaggerColorFactory factory;
+    CompareColorFactory factory;
     GraphTest::CheckTaggerConsistency(*graph, factory, 1);
 
     const TaggerColor tagger(*graph);
@@ -67,7 +67,7 @@ TEST(GraphIsomorphismTaggerColorTest, Path3)
 TEST(GraphIsomorphismTaggerColorTest, Cycle3)
 {
     const auto graph = UndirectedGraphLibrary::Get_Cycle(3);
-    TaggerColorFactory factory;
+    CompareColorFactory factory;
     GraphTest::CheckTaggerConsistency(*graph, factory, 0);
 
     const TaggerColor tagger(*graph);
@@ -84,7 +84,7 @@ TEST(GraphIsomorphismTaggerColorTest, Cycle3)
 TEST(GraphIsomorphismTaggerColorTest, Claw)
 {
     const auto graph = UndirectedGraphLibrary::Get_Claw();
-    TaggerColorFactory factory;
+    CompareColorFactory factory;
     GraphTest::CheckTaggerConsistency(*graph, factory, 1);
 
     const TaggerColor tagger(*graph);

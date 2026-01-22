@@ -22,6 +22,7 @@ class ICompare
     virtual const Graph::IGraphUs &getGraph() const = 0;
 
     const IGraphCompare *getGraphCompare() const;
+    const IGraphTagger *getGraphTagger() const;
     const IVertexCompare *getVertexCompare() const;
 };
 

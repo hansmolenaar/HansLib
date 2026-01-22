@@ -12,7 +12,7 @@ using namespace Graph;
 
 TEST(GraphIsomorphismTaggerTwinsTest, CheckTagger)
 {
-    TaggerTwinsFactory factory;
+    CompareTwinsFactory factory;
     GraphTest::CheckTagger(factory);
 }
 
@@ -25,7 +25,7 @@ TEST(GraphIsomorphismTaggerTwinsTest, CheckList)
 TEST(GraphIsomorphismTaggerTwinsTest, Path3)
 {
     const auto graph = UndirectedGraphLibrary::Get_Path(3);
-    TaggerTwinsFactory factory;
+    CompareTwinsFactory factory;
     GraphTest::CheckTaggerConsistency(*graph, factory, 1);
 
     const TaggerTwins tagger(*graph);
@@ -41,7 +41,7 @@ TEST(GraphIsomorphismTaggerTwinsTest, Path3)
 TEST(GraphIsomorphismTaggerTwinsTest, Cycle3)
 {
     const auto graph = UndirectedGraphLibrary::Get_Cycle(3);
-    TaggerTwinsFactory factory;
+    CompareTwinsFactory factory;
     GraphTest::CheckTaggerConsistency(*graph, factory, 0);
 
     const TaggerTwins tagger(*graph);
@@ -61,7 +61,7 @@ TEST(GraphIsomorphismTaggerTwinsTest, Cycle3)
 TEST(GraphIsomorphismTaggerTwinsTest, Claw)
 {
     const auto graph = UndirectedGraphLibrary::Get_Claw();
-    TaggerTwinsFactory factory;
+    CompareTwinsFactory factory;
     GraphTest::CheckTaggerConsistency(*graph, factory, 1);
 
     const TaggerTwins tagger(*graph);

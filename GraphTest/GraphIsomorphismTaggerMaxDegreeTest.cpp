@@ -17,7 +17,7 @@ namespace
 
 TEST(GraphIsomorphismTaggerMaxDegreeTest, CheckTagger)
 {
-    TaggerMaxDegreeFactory factory;
+    CompareMaxDegreeFactory factory;
     GraphTest::CheckTagger(factory);
 }
 
@@ -30,7 +30,7 @@ TEST(GraphIsomorphismTaggerMaxDegreeTest, CheckList)
 TEST(GraphIsomorphismTaggerMaxDegreeTest, Path3)
 {
     const auto graph = UndirectedGraphLibrary::Get_Path(3);
-    TaggerMaxDegreeFactory factory;
+    CompareMaxDegreeFactory factory;
     GraphTest::CheckTaggerConsistency(*graph, factory, 1);
 
     const TaggerMaxDegree tagger(*graph);
@@ -43,7 +43,7 @@ TEST(GraphIsomorphismTaggerMaxDegreeTest, Path3)
 TEST(GraphIsomorphismTaggerMaxDegreeTest, Diamond)
 {
     const auto graph = UndirectedGraphLibrary::Get_Diamond();
-    TaggerMaxDegreeFactory factory;
+    CompareMaxDegreeFactory factory;
     GraphTest::CheckTaggerConsistency(*graph, factory, 2);
 
     const TaggerMaxDegree tagger(*graph);

@@ -20,7 +20,7 @@ namespace
 
 TEST(GraphIsomorphismTaggerDistanceTest, CheckTagger)
 {
-    TaggerDistanceFactory factory;
+    CompareDistanceFactory factory;
     GraphTest::CheckTagger(factory);
 }
 
@@ -33,7 +33,7 @@ TEST(GraphIsomorphismTaggerDistanceTest, CheckList)
 TEST(GraphIsomorphismTaggerDistanceTest, Path3)
 {
     const auto graph = UndirectedGraphLibrary::Get_Path(3);
-    TaggerDistanceFactory factory;
+    CompareDistanceFactory factory;
     GraphTest::CheckTaggerConsistency(GraphUsc(*graph), factory, 1);
 
     auto distances = std::make_shared<UndirectedGraphDistance>(GraphUsc(*graph));
@@ -50,7 +50,7 @@ TEST(GraphIsomorphismTaggerDistanceTest, Path3)
 TEST(GraphIsomorphismTaggerDistanceTest, Star121)
 {
     const auto graph = UndirectedGraphLibrary::Get_Star({1, 2, 1});
-    TaggerDistanceFactory factory;
+    CompareDistanceFactory factory;
     GraphTest::CheckTaggerConsistency(*graph, factory, 3);
 
     TaggerDistance tagger(*graph);
@@ -85,7 +85,7 @@ TEST(GraphIsomorphismTaggerDistanceTest, NumVertices5)
     {
         const auto graph = UndirectedGraphFromG6::CreateConnected(g6);
         ASSERT_EQ(graph->getNumVertices(), 5);
-        TaggerDistanceFactory factory;
+        CompareDistanceFactory factory;
         GraphTest::CheckTaggerConsistency(*graph, factory);
     }
 }
@@ -96,7 +96,7 @@ TEST(GraphIsomorphismTaggerDistanceTest, NumVertices6)
     {
         const auto graph = UndirectedGraphFromG6::CreateConnected(g6);
         ASSERT_EQ(graph->getNumVertices(), 6);
-        TaggerDistanceFactory factory;
+        CompareDistanceFactory factory;
         GraphTest::CheckTaggerConsistency(*graph, factory);
     }
 }
@@ -107,7 +107,7 @@ TEST(GraphIsomorphismTaggerDistanceTest, NumVertices7)
     {
         const auto graph = UndirectedGraphFromG6::CreateConnected(g6);
         ASSERT_EQ(graph->getNumVertices(), 7);
-        TaggerDistanceFactory factory;
+        CompareDistanceFactory factory;
         GraphTest::CheckTaggerConsistency(*graph, factory);
     }
 }

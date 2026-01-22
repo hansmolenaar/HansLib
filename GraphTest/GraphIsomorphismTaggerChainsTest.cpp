@@ -13,7 +13,7 @@ using namespace Graph;
 
 namespace
 {
-TaggerChainsFactory factoryChains;
+CompareChainsFactory factoryChains;
 } // namespace
 
 TEST(GraphIsomorphismTaggerChainsTest, CheckTagger)
