@@ -1,6 +1,7 @@
 #include "GraphIsomorphismUtils.h"
 
 #include "Defines.h"
+#include "GraphIsomorphismAllCompareFactories.h"
 #include "GraphIsomorphismTaggerChains.h"
 #include "GraphIsomorphismTaggerColor.h"
 #include "GraphIsomorphismTaggerComponents.h"
@@ -109,21 +110,7 @@ std::ostream &operator<<(std::ostream &os, const GraphIsomorphism::Grouping<Grap
 
 std::vector<std::unique_ptr<ICompare>> GraphIsomorphism::getAllComparers(const Graph::IGraphUs &graph)
 {
-    std::vector<std::unique_ptr<ICompare>> result;
-    auto triangles = std::make_shared<Graph::UndirectedGraphTriangles>(graph);
-    auto distances = std::make_shared<Graph::UndirectedGraphDistance>(graph);
-
-    result.emplace_back(std::make_unique<TaggerNumbers>(graph));
-    result.emplace_back(std::make_unique<TaggerComponents>(graph));
-    result.emplace_back(std::make_unique<TaggerDegree>(graph));
-    result.emplace_back(std::make_unique<TaggerChains>(graph));
-    result.emplace_back(std::make_unique<TaggerDistance>(distances, triangles));
-    result.emplace_back(std::make_unique<TaggerKnown>(graph));
-    result.emplace_back(std::make_unique<TaggerMaxDegree>(graph));
-    result.emplace_back(std::make_unique<TaggerTriangles>(triangles));
-    result.emplace_back(std::make_unique<TaggerColor>(graph));
-    result.emplace_back(std::make_unique<TaggerTwins>(graph));
-    return result;
+    return AllCompareFactories().getAllComparers(graph);
 }
 
 std::vector<const IGraphTagger *> GraphIsomorphism::selectGraphTaggers(
