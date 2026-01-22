@@ -9,10 +9,10 @@ using namespace GraphIsomorphism;
 using namespace Utilities;
 
 TaggedGraph::TaggedGraph(const Graph::IGraphUs &graph)
-    : m_graph(graph), m_taggers(getAllComparers(m_graph)), m_vertexComparers(selectVertexCompare(m_taggers)),
+    : m_graph(graph), m_comparers(getAllComparers(m_graph)), m_vertexComparers(selectVertexCompare(m_comparers)),
       m_grouping(graph.getVertexRange(), VertexLess{m_vertexComparers})
 {
-    for (const auto *graphTagger : selectGraphTaggers(m_taggers))
+    for (const auto *graphTagger : selectGraphTaggers(m_comparers))
     {
         m_graphTags.emplace_back(graphTagger->getGraphTag());
     }

@@ -31,24 +31,24 @@ TEST(GraphIsomorphismTaggerTrianglesTest, CheckList)
 TEST(GraphIsomorphismTaggerTrianglesTest, House)
 {
     const auto graph = UndirectedGraphFromG6::CreateConnected(UndirectedGraphFromG6::house);
-    const auto tagger = s_factory.createCompare(*graph);
-    ASSERT_EQ(tagger->getGraphTagger()->getGraphTag(), (Tag{0, 2, 1, 3}));
+    const auto comparer = s_factory.createCompare(*graph);
+    ASSERT_EQ(comparer->getGraphTagger()->getGraphTag(), (Tag{0, 2, 1, 3}));
 }
 
 TEST(GraphIsomorphismTaggerTrianglesTest, Butterfly)
 {
     const auto graph = UndirectedGraphFromG6::CreateConnected(UndirectedGraphFromG6::butterfly);
-    const auto tagger = s_factory.createCompare(*graph);
-    ASSERT_EQ(tagger->getGraphTagger()->getGraphTag(), (Tag{1, 4, 2, 1}));
+    const auto comparer = s_factory.createCompare(*graph);
+    ASSERT_EQ(comparer->getGraphTagger()->getGraphTag(), (Tag{1, 4, 2, 1}));
 }
 
 TEST(GraphIsomorphismTaggerTrianglesTest, Diamond)
 {
     const auto graph = UndirectedGraphFromG6::CreateConnected(UndirectedGraphFromG6::diamond);
-    const auto tagger = s_factory.createCompare(*graph);
-    ASSERT_EQ(tagger->getGraphTagger()->getGraphTag(), (Tag{1, 2, 2, 2}));
+    const auto comparer = s_factory.createCompare(*graph);
+    ASSERT_EQ(comparer->getGraphTagger()->getGraphTag(), (Tag{1, 2, 2, 2}));
 
-    const auto *vcompare = tagger->getVertexCompare();
+    const auto *vcompare = comparer->getVertexCompare();
     ASSERT_EQ(vcompare->compareOtherGraph(0, *vcompare, 1), std::weak_ordering::less);
     ASSERT_EQ(vcompare->compareOtherGraph(2, *vcompare, 3), std::weak_ordering::greater);
 }

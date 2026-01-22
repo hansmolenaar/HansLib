@@ -21,14 +21,14 @@ const int numPermutations = 10;
 void CheckVertexCompareConsistency(const IGraphUs &graph, GraphIsomorphism::ICompareFactory &factory,
                                    int expectNumUniqueVertices)
 {
-    const auto gtagger = factory.createCompare(graph);
-    const auto *vertexCompare = gtagger->getVertexCompare();
+    const auto comparer = factory.createCompare(graph);
+    const auto *vertexCompare = comparer->getVertexCompare();
     if (vertexCompare == nullptr)
     {
         return;
     }
     const auto nVertices = graph.getNumVertices();
-    const VertexComparers comparerOrg(std::vector<const IVertexCompare *>{vertexCompare});
+    const VertexComparers comparersOrg(std::vector<const IVertexCompare *>{vertexCompare});
     const Grouping<Vertex> grouping(graph.getVertexRange(), VertexLess{*vertexCompare});
 
     if (expectNumUniqueVertices >= 0)
@@ -45,21 +45,21 @@ void CheckVertexCompareConsistency(const IGraphUs &graph, GraphIsomorphism::ICom
     {
         const auto permutation = Permutation::CreateRandomShuffle(trivial, n);
         const UndirectedGraph graphPermuted = UndirectedGraph::CreatePermuted(graph, permutation);
-        const auto gtaggerPermuted = factory.createCompare(graphPermuted);
-        const auto *vertexComparePermuted = gtaggerPermuted->getVertexCompare();
+        const auto gcomparerPermuted = factory.createCompare(graphPermuted);
+        const auto *vertexComparePermuted = gcomparerPermuted->getVertexCompare();
         const Grouping<Vertex> groupingPermuted(graph.getVertexRange(), VertexLess{*vertexComparePermuted});
         ASSERT_EQ(groupingPermuted.countUnique(), expectNumUniqueVertices);
 
-        const VertexComparers comparerPermuted(std::vector<const IVertexCompare *>{vertexComparePermuted});
-        ASSERT_FALSE(comparerOrg < comparerPermuted);
+        const VertexComparers comparersPermuted(std::vector<const IVertexCompare *>{vertexComparePermuted});
+        ASSERT_FALSE(comparersOrg < comparersPermuted);
     }
 }
 }; // namespace
 
 void GraphTest::CheckGraphTaggerConsistency(const Graph::IGraphUs &graph, ICompareFactory &factory)
 {
-    const auto gtagger = factory.createCompare(graph);
-    const auto *tagger = gtagger->getGraphTagger();
+    const auto comparer = factory.createCompare(graph);
+    const auto *tagger = comparer->getGraphTagger();
     if (tagger == nullptr)
         return;
 
@@ -67,8 +67,8 @@ void GraphTest::CheckGraphTaggerConsistency(const Graph::IGraphUs &graph, ICompa
     for (auto n : Iota::GetRange(numPermutations))
     {
         const UndirectedGraph graphPermuted = UndirectedGraph::CreateRandomShuffled(graph, n);
-        const auto gtaggerPermuted = factory.createCompare(graphPermuted);
-        const auto *taggerPermuted = gtaggerPermuted->getGraphTagger();
+        const auto comparerPermuted = factory.createCompare(graphPermuted);
+        const auto *taggerPermuted = comparerPermuted->getGraphTagger();
         ASSERT_EQ(tag, taggerPermuted->getGraphTag());
     }
 }
@@ -86,16 +86,16 @@ namespace
 void CheckTaggerBasics(GraphIsomorphism::ICompareFactory &factory, const IGraphUs &graph)
 {
     const auto nVertices = graph.getNumVertices();
-    const auto tagger = factory.createCompare(graph);
+    const auto comparer = factory.createCompare(graph);
     Tag tag;
-    const auto *graphChecker = tagger->getGraphTagger();
+    const auto *graphChecker = comparer->getGraphTagger();
 
     if (graphChecker != nullptr)
     {
         EXPECT_NO_THROW(tag = graphChecker->getGraphTag());
     }
 
-    const IVertexCompare *vertexComparer = tagger->getVertexCompare();
+    const IVertexCompare *vertexComparer = comparer->getVertexCompare();
     if (vertexComparer != nullptr)
     {
         ASSERT_EQ(&vertexComparer->getGraph(), &graph);
