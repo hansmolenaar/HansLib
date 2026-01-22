@@ -111,3 +111,8 @@ std::unique_ptr<ITagger> TaggerDistanceFactory::createTagger(const Graph::IGraph
 {
     return std::make_unique<TaggerDistance>(graph);
 }
+
+std::unique_ptr<ICompare> CompareDistanceFactory::createCompare(const Graph::IGraphUs &graph)
+{
+    return std::make_unique<TaggerDistance>(graph);
+}

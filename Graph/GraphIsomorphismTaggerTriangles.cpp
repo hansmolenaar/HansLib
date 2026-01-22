@@ -33,3 +33,8 @@ std::unique_ptr<ITagger> TaggerTrianglesFactory::createTagger(const Graph::IGrap
 {
     return std::make_unique<TaggerTriangles>(std::make_shared<Graph::UndirectedGraphTriangles>(graph));
 }
+
+std::unique_ptr<ICompare> CompareTrianglesFactory::createCompare(const Graph::IGraphUs &graph)
+{
+    return std::make_unique<TaggerTriangles>(std::make_shared<Graph::UndirectedGraphTriangles>(graph));
+}

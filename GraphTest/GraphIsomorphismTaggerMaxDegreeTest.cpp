@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "Defines.h"
+#include "GraphIsomorphismICompareTest.h"
 #include "GraphIsomorphismITaggerTest.h"
 #include "GraphIsomorphismTaggerMaxDegree.h"
 #include "GraphUsc.h"
@@ -18,6 +19,12 @@ TEST(GraphIsomorphismTaggerMaxDegreeTest, CheckTagger)
 {
     TaggerMaxDegreeFactory factory;
     GraphTest::CheckTagger(factory);
+}
+
+TEST(GraphIsomorphismTaggerMaxDegreeTest, CheckList)
+{
+    CompareMaxDegreeFactory factory;
+    GraphTest::CheckList(factory, UndirectedGraphFromG6::getListNumVertices_5(), Tag{1, 2, 2, 1, 7, 1, 23, 1});
 }
 
 TEST(GraphIsomorphismTaggerMaxDegreeTest, Path3)

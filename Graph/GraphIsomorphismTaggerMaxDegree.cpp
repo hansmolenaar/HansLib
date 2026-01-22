@@ -45,3 +45,8 @@ std::unique_ptr<ITagger> TaggerMaxDegreeFactory::createTagger(const Graph::IGrap
 {
     return std::make_unique<TaggerMaxDegree>(graph);
 }
+
+std::unique_ptr<ICompare> CompareMaxDegreeFactory::createCompare(const Graph::IGraphUs &graph)
+{
+    return std::make_unique<TaggerMaxDegree>(graph);
+}

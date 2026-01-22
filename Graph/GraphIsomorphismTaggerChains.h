@@ -35,4 +35,10 @@ class CompareChainsFactory : public ICompareFactory
     std::unique_ptr<ICompare> createCompare(const Graph::IGraphUs &) override;
 };
 
+class CompareChaninssFactory : public ICompareFactory
+{
+  public:
+    std::unique_ptr<ICompare> createCompare(const Graph::IGraphUs &) override;
+};
+
 } // namespace GraphIsomorphism

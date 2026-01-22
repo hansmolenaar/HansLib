@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 
+#include "GraphIsomorphismICompareTest.h"
 #include "GraphIsomorphismITaggerTest.h"
 #include "GraphIsomorphismTaggerTriangles.h"
 #include "Single.h"
@@ -19,6 +20,12 @@ TEST(GraphIsomorphismTaggerTrianglesTest, CheckTagger)
 {
     TaggerTrianglesFactory factory;
     GraphTest::CheckTagger(factory);
+}
+
+TEST(GraphIsomorphismTaggerTrianglesTest, CheckList)
+{
+    CompareTrianglesFactory factory;
+    GraphTest::CheckList(factory, UndirectedGraphFromG6::getListNumVertices_5(), Tag{1, 7, 2, 1, 4, 1, 7, 1, 14, 1});
 }
 
 TEST(GraphIsomorphismTaggerTrianglesTest, House)

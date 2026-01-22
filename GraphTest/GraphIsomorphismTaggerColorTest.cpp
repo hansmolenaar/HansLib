@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "Defines.h"
+#include "GraphIsomorphismICompareTest.h"
 #include "GraphIsomorphismITaggerTest.h"
 #include "GraphIsomorphismTaggerColor.h"
 #include "UndirectedGraphFromG6.h"
@@ -37,6 +38,12 @@ TEST(GraphIsomorphismTaggerColorTest, CheckTagger)
 {
     TaggerColorFactory factory;
     GraphTest::CheckTagger(factory);
+}
+
+TEST(GraphIsomorphismTaggerColorTest, CheckList)
+{
+    CompareColorFactory factory;
+    GraphTest::CheckList(factory, UndirectedGraphFromG6::getListNumVertices_5(), Tag{1, 3, 4, 1, 5, 1, 7, 1, 15, 1});
 }
 
 TEST(GraphIsomorphismTaggerColorTest, Path3)

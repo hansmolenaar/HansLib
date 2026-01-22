@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "Defines.h"
+#include "GraphIsomorphismICompareTest.h"
 #include "GraphIsomorphismITaggerTest.h"
 #include "GraphIsomorphismTaggerDistance.h"
 #include "GraphIsomorphismVertexComparers.h"
@@ -21,6 +22,12 @@ TEST(GraphIsomorphismTaggerDistanceTest, CheckTagger)
 {
     TaggerDistanceFactory factory;
     GraphTest::CheckTagger(factory);
+}
+
+TEST(GraphIsomorphismTaggerDistanceTest, CheckList)
+{
+    CompareDistanceFactory factory;
+    GraphTest::CheckList(factory, UndirectedGraphFromG6::getListNumVertices_5(), Tag{1, 8, 2, 6, 3, 1, 4, 1, 7, 1});
 }
 
 TEST(GraphIsomorphismTaggerDistanceTest, Path3)

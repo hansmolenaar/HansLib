@@ -67,3 +67,8 @@ std::unique_ptr<ITagger> TaggerColorFactory::createTagger(const Graph::IGraphUs 
 {
     return std::make_unique<TaggerColor>(graph);
 }
+
+std::unique_ptr<ICompare> CompareColorFactory::createCompare(const Graph::IGraphUs &graph)
+{
+    return std::make_unique<TaggerColor>(graph);
+}
