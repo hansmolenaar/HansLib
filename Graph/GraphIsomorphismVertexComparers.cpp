@@ -106,3 +106,8 @@ std::weak_ordering VertexComparers::operator<=>(const VertexComparers &other) co
     }
     return result;
 }
+
+const Grouping<Graph::Vertex> &VertexComparers::getVertexGrouping() const
+{
+    return m_grouping;
+}

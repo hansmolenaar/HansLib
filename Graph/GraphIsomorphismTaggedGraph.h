@@ -25,7 +25,6 @@ class TaggedGraph : public IGraphCompare
     const Graph::IGraphUs &m_graph;
     std::vector<std::unique_ptr<ICompare>> m_comparers;
     VertexComparers m_vertexComparers;
-    Grouping<Graph::Vertex> m_grouping;
 };
 
 class CompareTaggedGraphFactory : public ICompareFactory

@@ -12,8 +12,7 @@ using namespace Utilities;
 
 TaggedGraph::TaggedGraph(const Graph::IGraphUs &graph)
     : m_graph(graph), m_comparers(AllCompareFactories().getAllComparers(m_graph)),
-      m_vertexComparers(selectVertexCompare(m_comparers)),
-      m_grouping(graph.getVertexRange(), VertexLess{m_vertexComparers})
+      m_vertexComparers(selectVertexCompare(m_comparers))
 {
 }
 
@@ -60,7 +59,7 @@ bool TaggedGraph::operator==(const TaggedGraph &rhs) const
 
 const Grouping<Vertex> &TaggedGraph::getVertexGrouping() const
 {
-    return m_grouping;
+    return m_vertexComparers.getVertexGrouping();
 }
 
 std::unique_ptr<ICompare> CompareTaggedGraphFactory::createCompare(const Graph::IGraphUs &graph)
