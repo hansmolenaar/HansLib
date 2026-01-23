@@ -3,7 +3,6 @@
 #include "GraphIsomorphismICompareTest.h"
 
 #include "GraphIsomorphismGrouping.h"
-#include "GraphIsomorphismITaggerTest.h"
 #include "GraphIsomorphismUtils.h"
 #include "UndirectedGraphFromG6.h"
 #include "UndirectedGraphLibrary.h"
@@ -195,4 +194,16 @@ void GraphTest::CheckGraphTaggerConsistency(const IGraphUs &graph, ICompareFacto
             ASSERT_EQ(tag, taggerPermuted->getGraphTag());
         }
     }
+}
+
+void GraphTest::CheckComparerBasics(GraphIsomorphism::ICompareFactory &factory, Tag expectGraphTagMultiplicities)
+{
+    // Test some tiny graphs
+    auto graphs = UndirectedGraphFromG6::getGraphs(UndirectedGraphFromG6::getListNumVertices_3());
+    graphs.emplace_back(UndirectedGraphLibrary::Get_Null());
+    graphs.emplace_back(UndirectedGraphLibrary::Get_Singleton());
+    graphs.emplace_back(UndirectedGraphLibrary::Get_Path(2));
+    graphs.emplace_back(UndirectedGraphLibrary::Get_DisconnectedGraph(2));
+
+    CheckList(factory, graphs, expectGraphTagMultiplicities);
 }

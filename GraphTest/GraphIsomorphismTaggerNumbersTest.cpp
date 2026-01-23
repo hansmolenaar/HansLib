@@ -3,7 +3,6 @@
 #include "Defines.h"
 #include "GraphIsomorphismGrouping.h"
 #include "GraphIsomorphismICompareTest.h"
-#include "GraphIsomorphismITaggerTest.h"
 #include "GraphIsomorphismStatus.h"
 #include "GraphIsomorphismTaggerNumbers.h"
 #include "GraphIsomorphismUtils.h"
@@ -22,14 +21,14 @@ TEST(GraphIsomorphismTaggerNumbersTest, CheckList)
 TEST(GraphIsomorphismTaggerNumbersTest, CheckTagger)
 {
     CompareNumbersFactory factory;
-    GraphTest::CheckTagger(factory);
+    GraphTest::CheckComparerBasics(factory, Tag{1, 8});
 }
 
 TEST(GraphIsomorphismTaggerNumbersTest, Path3)
 {
     const auto graph = UndirectedGraphLibrary::Get_Path(3);
     CompareNumbersFactory factory;
-    GraphTest::CheckTaggerConsistency(*graph, factory);
+    GraphTest::CheckVertexCompareConsistency(*graph, factory);
 
     const TaggerNumbers tagger(*graph);
     ASSERT_TRUE(str::equal(tagger.getGraphTag(), Tag{3, 2}));
@@ -39,7 +38,7 @@ TEST(GraphIsomorphismTaggerNumbersTest, Cycle3)
 {
     const auto graph = UndirectedGraphLibrary::Get_Cycle(3);
     CompareNumbersFactory factory;
-    GraphTest::CheckTaggerConsistency(*graph, factory);
+    GraphTest::CheckVertexCompareConsistency(*graph, factory);
 
     const TaggerNumbers tagger(*graph);
     ASSERT_TRUE(str::equal(tagger.getGraphTag(), Tag{3, 3}));

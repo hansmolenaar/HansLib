@@ -1,7 +1,6 @@
 #include <gtest/gtest.h>
 
 #include "GraphIsomorphismICompareTest.h"
-#include "GraphIsomorphismITaggerTest.h"
 #include "GraphIsomorphismTaggerTriangles.h"
 #include "Single.h"
 #include "UndirectedGraphFromG6.h"
@@ -19,7 +18,7 @@ CompareTrianglesFactory s_factory;
 TEST(GraphIsomorphismTaggerTrianglesTest, CheckTagger)
 {
     CompareTrianglesFactory factory;
-    GraphTest::CheckTagger(factory);
+    GraphTest::CheckComparerBasics(factory, Tag{1, 3, 2, 1, 3, 1});
 }
 
 TEST(GraphIsomorphismTaggerTrianglesTest, CheckList)

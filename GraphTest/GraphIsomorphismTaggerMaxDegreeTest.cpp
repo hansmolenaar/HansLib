@@ -2,7 +2,6 @@
 
 #include "Defines.h"
 #include "GraphIsomorphismICompareTest.h"
-#include "GraphIsomorphismITaggerTest.h"
 #include "GraphIsomorphismTaggerMaxDegree.h"
 #include "GraphUsc.h"
 #include "UndirectedGraphFromG6.h"
@@ -18,7 +17,7 @@ namespace
 TEST(GraphIsomorphismTaggerMaxDegreeTest, CheckTagger)
 {
     CompareMaxDegreeFactory factory;
-    GraphTest::CheckTagger(factory);
+    GraphTest::CheckComparerBasics(factory, Tag{1, 2, 2, 1, 4, 1});
 }
 
 TEST(GraphIsomorphismTaggerMaxDegreeTest, CheckList)
@@ -31,7 +30,7 @@ TEST(GraphIsomorphismTaggerMaxDegreeTest, Path3)
 {
     const auto graph = UndirectedGraphLibrary::Get_Path(3);
     CompareMaxDegreeFactory factory;
-    GraphTest::CheckTaggerConsistency(*graph, factory, 1);
+    GraphTest::CheckVertexCompareConsistency(*graph, factory, 1);
 
     const TaggerMaxDegree tagger(*graph);
     ASSERT_EQ(tagger.getGraphTag(), (Tag{1}));
@@ -44,7 +43,7 @@ TEST(GraphIsomorphismTaggerMaxDegreeTest, Diamond)
 {
     const auto graph = UndirectedGraphLibrary::Get_Diamond();
     CompareMaxDegreeFactory factory;
-    GraphTest::CheckTaggerConsistency(*graph, factory, 2);
+    GraphTest::CheckVertexCompareConsistency(*graph, factory, 2);
 
     const TaggerMaxDegree tagger(*graph);
     ASSERT_EQ(tagger.getGraphTag(), (Tag{2}));

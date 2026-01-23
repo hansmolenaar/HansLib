@@ -2,7 +2,6 @@
 
 #include "Defines.h"
 #include "GraphIsomorphismICompareTest.h"
-#include "GraphIsomorphismITaggerTest.h"
 #include "GraphIsomorphismTaggerComponents.h"
 #include "UndirectedGraphFromG6.h"
 #include "UndirectedGraphLibrary.h"
@@ -16,7 +15,7 @@ namespace
 TEST(GraphIsomorphismTaggerComponentsTest, CheckTagger)
 {
     CompareComponentsFactory factory;
-    GraphTest::CheckTagger(factory);
+    GraphTest::CheckComparerBasics(factory, Tag{1, 6, 2, 1});
 }
 
 TEST(GraphIsomorphismTaggerComponentsTest, CheckList)

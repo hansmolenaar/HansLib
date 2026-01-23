@@ -2,7 +2,6 @@
 
 #include "Defines.h"
 #include "GraphIsomorphismICompareTest.h"
-#include "GraphIsomorphismITaggerTest.h"
 #include "GraphIsomorphismTaggerTwins.h"
 #include "UndirectedGraphFromG6.h"
 #include "UndirectedGraphLibrary.h"
@@ -13,7 +12,7 @@ using namespace Graph;
 TEST(GraphIsomorphismTaggerTwinsTest, CheckTagger)
 {
     CompareTwinsFactory factory;
-    GraphTest::CheckTagger(factory);
+    GraphTest::CheckComparerBasics(factory, Tag{1, 8});
 }
 
 TEST(GraphIsomorphismTaggerTwinsTest, CheckList)
@@ -26,7 +25,7 @@ TEST(GraphIsomorphismTaggerTwinsTest, Path3)
 {
     const auto graph = UndirectedGraphLibrary::Get_Path(3);
     CompareTwinsFactory factory;
-    GraphTest::CheckTaggerConsistency(*graph, factory, 1);
+    GraphTest::CheckVertexCompareConsistency(*graph, factory, 1);
 
     const TaggerTwins tagger(*graph);
     ASSERT_EQ(tagger.getGraphTag(), (Tag{{0, 1, 2, 2, 0, 3}}));
@@ -42,7 +41,7 @@ TEST(GraphIsomorphismTaggerTwinsTest, Cycle3)
 {
     const auto graph = UndirectedGraphLibrary::Get_Cycle(3);
     CompareTwinsFactory factory;
-    GraphTest::CheckTaggerConsistency(*graph, factory, 0);
+    GraphTest::CheckVertexCompareConsistency(*graph, factory, 0);
 
     const TaggerTwins tagger(*graph);
     ASSERT_EQ(tagger.getGraphTag(), (Tag{{
@@ -62,7 +61,7 @@ TEST(GraphIsomorphismTaggerTwinsTest, Claw)
 {
     const auto graph = UndirectedGraphLibrary::Get_Claw();
     CompareTwinsFactory factory;
-    GraphTest::CheckTaggerConsistency(*graph, factory, 1);
+    GraphTest::CheckVertexCompareConsistency(*graph, factory, 1);
 
     const TaggerTwins tagger(*graph);
     ASSERT_EQ(tagger.getGraphTag(), (Tag{{

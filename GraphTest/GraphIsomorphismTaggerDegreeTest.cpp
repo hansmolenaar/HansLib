@@ -2,7 +2,6 @@
 
 #include "Defines.h"
 #include "GraphIsomorphismICompareTest.h"
-#include "GraphIsomorphismITaggerTest.h"
 #include "GraphIsomorphismTaggerDegree.h"
 #include "UndirectedGraphFromG6.h"
 #include "UndirectedGraphLibrary.h"
@@ -16,7 +15,7 @@ namespace
 TEST(GraphIsomorphismTaggerDegreeTest, CheckTagger)
 {
     CompareDegreeFactory factory;
-    GraphTest::CheckTagger(factory);
+    GraphTest::CheckComparerBasics(factory, Tag{1, 8});
 }
 
 TEST(GraphIsomorphismTaggerDegreeTest, CheckList)
@@ -29,7 +28,7 @@ TEST(GraphIsomorphismTaggerDegreeTest, Path3)
 {
     const auto graph = UndirectedGraphLibrary::Get_Path(3);
     CompareDegreeFactory factory;
-    GraphTest::CheckTaggerConsistency(*graph, factory);
+    GraphTest::CheckVertexCompareConsistency(*graph, factory);
 
     const TaggerDegree tagger(*graph);
     ASSERT_TRUE(str::equal(tagger.getGraphTag(), Tag{1, 2, 2, 1}));
@@ -39,7 +38,7 @@ TEST(GraphIsomorphismTaggerDegreeTest, Star111)
 {
     const auto graph = UndirectedGraphLibrary::Get_Star({1, 2, 1});
     CompareDegreeFactory factory;
-    GraphTest::CheckTaggerConsistency(*graph, factory);
+    GraphTest::CheckVertexCompareConsistency(*graph, factory);
 
     const auto tagger = TaggerDegree(*graph);
     ASSERT_TRUE(str::equal(tagger.getGraphTag(), Tag{1, 3, 2, 1, 3, 1}));

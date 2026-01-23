@@ -2,7 +2,6 @@
 
 #include "Defines.h"
 #include "GraphIsomorphismICompareTest.h"
-#include "GraphIsomorphismITaggerTest.h"
 #include "GraphIsomorphismTaggerColor.h"
 #include "UndirectedGraphFromG6.h"
 #include "UndirectedGraphLibrary.h"
@@ -37,7 +36,7 @@ void CheckColoring(const IGraphUs &graph)
 TEST(GraphIsomorphismTaggerColorTest, CheckTagger)
 {
     CompareColorFactory factory;
-    GraphTest::CheckTagger(factory);
+    GraphTest::CheckComparerBasics(factory, Tag{1, 5, 3, 1});
 }
 
 TEST(GraphIsomorphismTaggerColorTest, CheckList)
@@ -50,7 +49,7 @@ TEST(GraphIsomorphismTaggerColorTest, Path3)
 {
     const auto graph = UndirectedGraphLibrary::Get_Path(3);
     CompareColorFactory factory;
-    GraphTest::CheckTaggerConsistency(*graph, factory, 1);
+    GraphTest::CheckVertexCompareConsistency(*graph, factory, 1);
 
     const TaggerColor tagger(*graph);
     ASSERT_EQ(tagger.getGraphTag(), (Tag{2, 1, 2}));
@@ -68,7 +67,7 @@ TEST(GraphIsomorphismTaggerColorTest, Cycle3)
 {
     const auto graph = UndirectedGraphLibrary::Get_Cycle(3);
     CompareColorFactory factory;
-    GraphTest::CheckTaggerConsistency(*graph, factory, 0);
+    GraphTest::CheckVertexCompareConsistency(*graph, factory, 0);
 
     const TaggerColor tagger(*graph);
     ASSERT_EQ(tagger.getGraphTag(), (Tag{3}));
@@ -85,7 +84,7 @@ TEST(GraphIsomorphismTaggerColorTest, Claw)
 {
     const auto graph = UndirectedGraphLibrary::Get_Claw();
     CompareColorFactory factory;
-    GraphTest::CheckTaggerConsistency(*graph, factory, 1);
+    GraphTest::CheckVertexCompareConsistency(*graph, factory, 1);
 
     const TaggerColor tagger(*graph);
     ASSERT_EQ(tagger.getGraphTag(), (Tag{2, 1, 3}));

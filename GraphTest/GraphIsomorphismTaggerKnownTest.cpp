@@ -2,7 +2,6 @@
 
 #include "Defines.h"
 #include "GraphIsomorphismICompareTest.h"
-#include "GraphIsomorphismITaggerTest.h"
 #include "GraphIsomorphismStatus.h"
 #include "GraphIsomorphismTaggerKnown.h"
 #include "UndirectedGraphFromG6.h"
@@ -104,5 +103,5 @@ TEST(GraphIsomorphismTaggerKnownTest, Disconnected5)
 TEST(GraphIsomorphismTaggerKnownTest, CheckTagger)
 {
     CompareKnownFactory factory;
-    GraphTest::CheckTagger(factory);
+    GraphTest::CheckComparerBasics(factory, Tag{1, 6, 2, 1});
 }
