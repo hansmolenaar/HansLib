@@ -1,9 +1,11 @@
 #include <gtest/gtest.h>
 
+#include "GraphIsomorphismITaggerTest.h"
+
 #include "Defines.h"
 #include "GraphIsomorphismCheck.h"
 #include "GraphIsomorphismDefines.h"
-#include "GraphIsomorphismITaggerTest.h"
+#include "GraphIsomorphismICompareTest.h"
 #include "GraphIsomorphismVertexComparers.h"
 #include "GraphUsc.h"
 #include "Permutation.h"
@@ -17,43 +19,6 @@ using namespace GraphIsomorphism;
 namespace
 {
 const int numPermutations = 10;
-
-void CheckVertexCompareConsistency(const IGraphUs &graph, GraphIsomorphism::ICompareFactory &factory,
-                                   int expectNumUniqueVertices)
-{
-    const auto comparer = factory.createCompare(graph);
-    const auto *vertexCompare = comparer->getVertexCompare();
-    if (vertexCompare == nullptr)
-    {
-        return;
-    }
-    const auto nVertices = graph.getNumVertices();
-    const VertexComparers comparersOrg(std::vector<const IVertexCompare *>{vertexCompare});
-    const Grouping<Vertex> grouping(graph.getVertexRange(), VertexLess{*vertexCompare});
-
-    if (expectNumUniqueVertices >= 0)
-    {
-        ASSERT_EQ(grouping.countUnique(), expectNumUniqueVertices);
-    }
-    else
-    {
-        expectNumUniqueVertices = grouping.countUnique();
-    }
-
-    const Permutation trivial = Permutation::CreateTrivial(nVertices);
-    for (auto n : Iota::GetRange(numPermutations))
-    {
-        const auto permutation = Permutation::CreateRandomShuffle(trivial, n);
-        const UndirectedGraph graphPermuted = UndirectedGraph::CreatePermuted(graph, permutation);
-        const auto gcomparerPermuted = factory.createCompare(graphPermuted);
-        const auto *vertexComparePermuted = gcomparerPermuted->getVertexCompare();
-        const Grouping<Vertex> groupingPermuted(graph.getVertexRange(), VertexLess{*vertexComparePermuted});
-        ASSERT_EQ(groupingPermuted.countUnique(), expectNumUniqueVertices);
-
-        const VertexComparers comparersPermuted(std::vector<const IVertexCompare *>{vertexComparePermuted});
-        ASSERT_FALSE(comparersOrg < comparersPermuted);
-    }
-}
 }; // namespace
 
 void GraphTest::CheckGraphTaggerConsistency(const Graph::IGraphUs &graph, ICompareFactory &factory)

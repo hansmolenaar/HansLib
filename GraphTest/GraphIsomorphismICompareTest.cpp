@@ -93,6 +93,14 @@ void CheckListGraphTagger(ICompareFactory &factory, const std::vector<std::uniqu
     }
 }
 
+void CheckListVertexCompare(ICompareFactory &factory, const std::vector<std::unique_ptr<IGraphUs>> &graphs)
+{
+    for (const auto &graph : graphs)
+    {
+        CheckVertexCompareConsistency(*graph, factory);
+    }
+}
+
 } // namespace
 
 void GraphTest::CheckList(ICompareFactory &factory, const std::vector<std::unique_ptr<Graph::IGraphUs>> &graphs,
@@ -121,10 +129,42 @@ void GraphTest::CheckList(ICompareFactory &factory, const std::vector<std::uniqu
     {
         ASSERT_TRUE(expectGraphTagMultiplicities.empty());
     }
+
+    if (compare0->getVertexCompare() != nullptr)
+    {
+        CheckListVertexCompare(factory, graphs);
+    }
 }
 void GraphTest::CheckList(ICompareFactory &factory, const std::vector<std::string> &g6list,
                           Tag expectGraphTagMultiplicities)
 {
     const auto graphs = UndirectedGraphFromG6::getGraphs(g6list);
     CheckList(factory, graphs, expectGraphTagMultiplicities);
+}
+
+void GraphTest::CheckVertexCompareConsistency(const IGraphUs &graph, GraphIsomorphism::ICompareFactory &factory,
+                                              int expectNumUniqueVertices)
+{
+    const Permutation::Entry numPermutations = 10;
+    const auto comparer = factory.createCompare(graph);
+    const auto *vertexCompare = comparer->getVertexCompare();
+    if (vertexCompare == nullptr)
+    {
+        return;
+    }
+    const Grouping<Vertex> grouping(graph.getVertexRange(), VertexLess{*vertexCompare});
+
+    if (expectNumUniqueVertices >= 0)
+    {
+        ASSERT_EQ(grouping.countUnique(), expectNumUniqueVertices);
+    }
+
+    for (auto n : Iota::GetRange(numPermutations))
+    {
+        const UndirectedGraph graphPermuted = UndirectedGraph::CreateRandomShuffled(graph, n);
+        const auto gcomparerPermuted = factory.createCompare(graphPermuted);
+        const auto *vertexComparePermuted = gcomparerPermuted->getVertexCompare();
+        const Grouping<Vertex> groupingPermuted(graph.getVertexRange(), VertexLess{*vertexComparePermuted});
+        ASSERT_EQ(groupingPermuted.getGroupSizes(), grouping.getGroupSizes());
+    }
 }

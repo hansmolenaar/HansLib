@@ -12,4 +12,6 @@ void CheckList(GraphIsomorphism::ICompareFactory &, const std::vector<std::strin
 void CheckList(GraphIsomorphism::ICompareFactory &, const std::vector<std::unique_ptr<Graph::IGraphUs>> &,
                GraphIsomorphism::Tag);
 
+void CheckVertexCompareConsistency(const Graph::IGraphUs &, GraphIsomorphism::ICompareFactory &, int = -1);
+
 } // namespace GraphTest
