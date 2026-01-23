@@ -21,23 +21,6 @@ namespace
 const int numPermutations = 10;
 }; // namespace
 
-void GraphTest::CheckGraphTaggerConsistency(const Graph::IGraphUs &graph, ICompareFactory &factory)
-{
-    const auto comparer = factory.createCompare(graph);
-    const auto *tagger = comparer->getGraphTagger();
-    if (tagger == nullptr)
-        return;
-
-    const auto &tag = tagger->getGraphTag();
-    for (auto n : Iota::GetRange(numPermutations))
-    {
-        const UndirectedGraph graphPermuted = UndirectedGraph::CreateRandomShuffled(graph, n);
-        const auto comparerPermuted = factory.createCompare(graphPermuted);
-        const auto *taggerPermuted = comparerPermuted->getGraphTagger();
-        ASSERT_EQ(tag, taggerPermuted->getGraphTag());
-    }
-}
-
 void GraphTest::CheckTaggerConsistency(const IGraphUs &graph, GraphIsomorphism::ICompareFactory &factory,
                                        int expectNumUniqueVertices)
 {

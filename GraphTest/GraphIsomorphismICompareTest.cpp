@@ -135,6 +135,7 @@ void GraphTest::CheckList(ICompareFactory &factory, const std::vector<std::uniqu
         CheckListVertexCompare(factory, graphs);
     }
 }
+
 void GraphTest::CheckList(ICompareFactory &factory, const std::vector<std::string> &g6list,
                           Tag expectGraphTagMultiplicities)
 {
@@ -166,5 +167,32 @@ void GraphTest::CheckVertexCompareConsistency(const IGraphUs &graph, GraphIsomor
         const auto *vertexComparePermuted = gcomparerPermuted->getVertexCompare();
         const Grouping<Vertex> groupingPermuted(graph.getVertexRange(), VertexLess{*vertexComparePermuted});
         ASSERT_EQ(groupingPermuted.getGroupSizes(), grouping.getGroupSizes());
+    }
+}
+
+void GraphTest::CheckGraphTaggerConsistency(const IGraphUs &graph, ICompareFactory &factory)
+{
+    const Permutation::Entry numPermutations = 10;
+    const auto comparer = factory.createCompare(graph);
+    const auto *graphComparer = comparer->getGraphCompare();
+
+    if (graphComparer == nullptr)
+        return;
+
+    const auto *tagger = comparer->getGraphTagger();
+    const Tag tag = tagger != nullptr ? tagger->getGraphTag() : Tag{};
+
+    for (auto n : Iota::GetRange(numPermutations))
+    {
+        const UndirectedGraph graphPermuted = UndirectedGraph::CreateRandomShuffled(graph, n);
+        const auto comparerPermuted = factory.createCompare(graphPermuted);
+        ASSERT_EQ(graphComparer->compareOtherGraph(*comparerPermuted->getGraphCompare()),
+                  std::weak_ordering::equivalent);
+
+        const auto *taggerPermuted = comparerPermuted->getGraphTagger();
+        if (taggerPermuted != nullptr)
+        {
+            ASSERT_EQ(tag, taggerPermuted->getGraphTag());
+        }
     }
 }
