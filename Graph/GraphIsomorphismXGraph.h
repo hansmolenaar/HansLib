@@ -1,7 +1,7 @@
 #pragma once
 
 #include "GraphIsomorphismGrouping.h"
-#include "GraphIsomorphismTaggedGraph.h"
+#include "GraphIsomorphismComparers.h"
 #include "UndirectedGraph.h"
 
 namespace GraphIsomorphism
@@ -21,8 +21,8 @@ class XGraph
 
   private:
     Graph::UndirectedGraph m_complement;
-    std::shared_ptr<TaggedGraph> m_taggedGraph;
-    std::shared_ptr<TaggedGraph> m_taggedGraphComplement;
+    std::shared_ptr<Comparers> m_comparers;
+    std::shared_ptr<Comparers> m_comparesComplement;
     Grouping<Graph::Vertex> m_grouping;
 };
 
