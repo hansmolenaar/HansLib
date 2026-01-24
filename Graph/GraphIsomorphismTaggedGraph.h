@@ -22,7 +22,7 @@ class TaggedGraph : public IGraphCompare, public IVertexCompare
     const Grouping<Graph::Vertex> &getVertexGrouping() const;
 
   private:
-    std::unique_ptr<Comparers> m_compare;
+    Comparers m_compare;
 };
 
 class CompareTaggedGraphFactory : public ICompareFactory

@@ -10,6 +10,7 @@ class Comparers : public IGraphCompare, public IVertexCompare
 {
   public:
     explicit Comparers(std::vector<std::unique_ptr<ICompare>> &&);
+    explicit Comparers(const Graph::IGraphUs &);
 
     const Graph::IGraphUs &getGraph() const override;
     std::weak_ordering compareOtherGraph(const IGraphCompare &) const override;
