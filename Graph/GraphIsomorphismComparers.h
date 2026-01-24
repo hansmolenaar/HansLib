@@ -18,6 +18,7 @@ class Comparers : public IGraphCompare, public IVertexCompare
     const Grouping<Graph::Vertex> &getVertexGrouping() const;
 
     std::weak_ordering operator<=>(const Comparers &) const;
+    bool operator==(const Comparers &) const;
 
   private:
     std::vector<std::unique_ptr<ICompare>> m_comparers;

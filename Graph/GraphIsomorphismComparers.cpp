@@ -46,3 +46,8 @@ std::weak_ordering Comparers::operator<=>(const Comparers &other) const
     }
     return m_vertexComparers <=> other.m_vertexComparers;
 }
+
+bool Comparers::operator==(const Comparers &other) const
+{
+    return *this <=> other == std::weak_ordering::equivalent;
+}
