@@ -116,6 +116,14 @@ std::vector<const IGraphTagger *> GraphIsomorphism::selectGraphTaggers(
     return result;
 }
 
+std::vector<const IGraphCompare *> GraphIsomorphism::selectGraphCompare(
+    const std::vector<std::unique_ptr<ICompare>> &comparers)
+{
+    std::vector<const IGraphCompare *> result = Utilities::getCastPointers<const IGraphCompare>(comparers);
+    result.erase(std::remove(result.begin(), result.end(), nullptr), result.end());
+    return result;
+}
+
 std::vector<const IVertexCompare *> GraphIsomorphism::selectVertexCompare(
     const std::vector<std::unique_ptr<ICompare>> &comparers)
 {

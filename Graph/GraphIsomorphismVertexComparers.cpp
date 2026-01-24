@@ -40,7 +40,7 @@ GraphIsomorphism::Grouping<Vertex> CreateGrouping(std::vector<const GraphIsomorp
 } // namespace
 
 VertexComparers::VertexComparers(std::vector<const IVertexCompare *> comparers)
-    : m_vertexComparers(comparers), m_grouping(CreateGrouping(comparers))
+    : m_vertexComparers(std::move(comparers)), m_grouping(CreateGrouping(m_vertexComparers))
 {
     size_t groupPos = 0;
     for (const auto &group : m_grouping())
