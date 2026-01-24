@@ -5,7 +5,6 @@
 #include "GraphIsomorphismComparersFactory.h"
 #include "GraphIsomorphismGrouping.h"
 #include "GraphIsomorphismICompareTest.h"
-#include "GraphIsomorphismTaggedGraph.h"
 #include "GraphIsomorphismTaggerChains.h"
 #include "GraphIsomorphismTaggerTriangles.h"
 #include "GraphIsomorphismUtils.h"
@@ -18,7 +17,7 @@ using namespace GraphIsomorphism;
 using namespace Graph;
 using namespace Utilities;
 
-TEST(GraphIsomorphismTaggedGraphTest, Singleton)
+TEST(GraphIsomorphismComparersTest, Singleton)
 {
     const auto graph = UndirectedGraphLibrary::Get_Singleton();
     const Comparers tg(*graph);
@@ -27,7 +26,7 @@ TEST(GraphIsomorphismTaggedGraphTest, Singleton)
     ASSERT_FALSE(tg > tg);
 }
 
-TEST(GraphIsomorphismTaggedGraphTest, Path2)
+TEST(GraphIsomorphismComparersTest, Path2)
 {
     const auto graph = UndirectedGraphLibrary::Get_Path(2);
     const auto permuted = UndirectedGraph::CreatePermuted(*graph, Permutation::Create({1, 0}));
@@ -38,7 +37,7 @@ TEST(GraphIsomorphismTaggedGraphTest, Path2)
     ASSERT_FALSE(tg > pg);
 }
 
-TEST(GraphIsomorphismTaggedGraphTest, DegreePath2and3)
+TEST(GraphIsomorphismComparersTest, DegreePath2and3)
 {
     const auto g0 = UndirectedGraphLibrary::Get_Path(2);
     const auto g1 = UndirectedGraphLibrary::Get_Path(3);
@@ -48,7 +47,7 @@ TEST(GraphIsomorphismTaggedGraphTest, DegreePath2and3)
     ASSERT_EQ(cmp, std::weak_ordering::less);
 }
 
-TEST(GraphIsomorphismTaggedGraphTest, DegreePath3)
+TEST(GraphIsomorphismComparersTest, DegreePath3)
 {
     const auto g0 = UndirectedGraphLibrary::Get_Path(3);
     const auto g1 = UndirectedGraphLibrary::Get_Path(3);
@@ -58,7 +57,7 @@ TEST(GraphIsomorphismTaggedGraphTest, DegreePath3)
     ASSERT_EQ(cmp, std::weak_ordering::equivalent);
 }
 
-TEST(GraphIsomorphismTaggedGraphTest, DegreeStar123)
+TEST(GraphIsomorphismComparersTest, DegreeStar123)
 {
     const auto g0 = UndirectedGraphLibrary::Get_Star({1, 2, 3});
     const auto g1 = UndirectedGraphLibrary::Get_Star({3, 1, 2});
@@ -68,7 +67,7 @@ TEST(GraphIsomorphismTaggedGraphTest, DegreeStar123)
     ASSERT_EQ(cmp, std::weak_ordering::equivalent);
 }
 
-TEST(GraphIsomorphismTaggedGraphTest, DegreePan3)
+TEST(GraphIsomorphismComparersTest, DegreePan3)
 {
     const auto g0 = UndirectedGraphFromG6::CreateConnected(UndirectedGraphFromG6::pan3);
     const auto g1 = GraphUsc::CreatePermuted(*g0, {2, 1, 0, 3});
@@ -78,7 +77,7 @@ TEST(GraphIsomorphismTaggedGraphTest, DegreePan3)
     ASSERT_EQ(cmp, std::weak_ordering::equivalent);
 }
 
-TEST(GraphIsomorphismTaggedGraphTest, SpecialCase1)
+TEST(GraphIsomorphismComparersTest, SpecialCase1)
 {
     const auto g0 = UndirectedGraphFromG6::CreateConnected("FMhXw");
     const auto g1 = UndirectedGraphFromG6::CreateConnected("FDxZg");
@@ -105,7 +104,7 @@ TEST(GraphIsomorphismTaggedGraphTest, SpecialCase1)
     ASSERT_TRUE(tg0 != tg1);
 }
 
-TEST(GraphIsomorphismTaggedGraphTest, SpecialCase2)
+TEST(GraphIsomorphismComparersTest, SpecialCase2)
 {
     const auto g0 = UndirectedGraphFromG6::Create("G}hPW{");
     const auto g1 = UndirectedGraphFromG6::Create("G~`HW{");
@@ -120,37 +119,37 @@ TEST(GraphIsomorphismTaggedGraphTest, SpecialCase2)
     ASSERT_TRUE(tgCompare != std::weak_ordering::equivalent);
 }
 
-TEST(GraphIsomorphismTaggedGraphTest, CheckTaggingList3)
+TEST(GraphIsomorphismComparersTest, CheckTaggingList3)
 {
     ComparersFactory factory;
     GraphTest::CheckList(factory, UndirectedGraphFromG6::getListNumVertices_3(), Tag{1, 4});
 }
 
-TEST(GraphIsomorphismTaggedGraphTest, CheckTaggingList4)
+TEST(GraphIsomorphismComparersTest, CheckTaggingList4)
 {
     ComparersFactory factory;
     GraphTest::CheckList(factory, UndirectedGraphFromG6::getListNumVertices_4(), Tag{1, 11});
 }
 
-TEST(GraphIsomorphismTaggedGraphTest, CheckTaggingList5)
+TEST(GraphIsomorphismComparersTest, CheckTaggingList5)
 {
     ComparersFactory factory;
     GraphTest::CheckList(factory, UndirectedGraphFromG6::getListNumVertices_5(), {1, 34});
 }
 
-TEST(GraphIsomorphismTaggedGraphTest, CheckTaggingList6)
+TEST(GraphIsomorphismComparersTest, CheckTaggingList6)
 {
     ComparersFactory factory;
     GraphTest::CheckList(factory, UndirectedGraphFromG6::getListNumVertices_6(), {1, 155});
 }
 
-TEST(GraphIsomorphismTaggedGraphTest, CheckTaggingList7)
+TEST(GraphIsomorphismComparersTest, CheckTaggingList7)
 {
     ComparersFactory factory;
     GraphTest::CheckList(factory, UndirectedGraphFromG6::getListNumVertices_7(), {1, 298, 2, 2});
 }
 
-TEST(GraphIsomorphismTaggedGraphTest, CheckTaggingList8)
+TEST(GraphIsomorphismComparersTest, CheckTaggingList8)
 {
     ComparersFactory factory;
     GraphTest::CheckList(factory, UndirectedGraphFromG6::getListNumVertices_8(), {1, 722, 2, 12});
@@ -163,28 +162,28 @@ TEST(GraphIsomorphismConstructTest, Disconnected5)
     GraphTest::CheckList(factory, graphs, {1, 13});
 }
 
-TEST(GraphIsomorphismTaggedGraphTest, Disconnected6)
+TEST(GraphIsomorphismComparersTest, Disconnected6)
 {
     ComparersFactory factory;
     const auto graphs = UndirectedGraphFromG6::getDisconnectedGraphs(UndirectedGraphFromG6::getListNumVertices_6());
     GraphTest::CheckList(factory, graphs, {1, 43});
 }
 
-TEST(GraphIsomorphismTaggedGraphTest, Disconnected7)
+TEST(GraphIsomorphismComparersTest, Disconnected7)
 {
     ComparersFactory factory;
     const auto graphs = UndirectedGraphFromG6::getDisconnectedGraphs(UndirectedGraphFromG6::getListNumVertices_7());
     GraphTest::CheckList(factory, graphs, {1, 35});
 }
 
-TEST(GraphIsomorphismTaggedGraphTest, Disconnected8)
+TEST(GraphIsomorphismComparersTest, Disconnected8)
 {
     ComparersFactory factory;
     const auto graphs = UndirectedGraphFromG6::getDisconnectedGraphs(UndirectedGraphFromG6::getListNumVertices_8());
     GraphTest::CheckList(factory, graphs, {1, 17});
 }
 
-TEST(GraphIsomorphismTaggedGraphTest, Disconnected9)
+TEST(GraphIsomorphismComparersTest, Disconnected9)
 {
     ComparersFactory factory;
     const auto graphs = UndirectedGraphFromG6::getDisconnectedGraphs(UndirectedGraphFromG6::getListNumVertices_9());
