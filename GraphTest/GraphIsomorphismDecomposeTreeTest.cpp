@@ -1,7 +1,6 @@
 #include <gtest/gtest.h>
 
 #include "GraphIsomorphismDecomposeTree.h"
-#include "GraphIsomorphismTaggedGraph.h"
 #include "GraphIsomorphismUtils.h"
 #include "Single.h"
 #include "UndirectedGraphFromG6.h"
@@ -332,8 +331,8 @@ TEST(GraphIsomorphismDecomposeTreeTest, SpecialCase2)
 {
     const auto g0 = UndirectedGraphFromG6::Create("DR{");
     const auto g1 = UndirectedGraphFromG6::Create("DAK");
-    const TaggedGraph tg0(*g0);
-    const TaggedGraph tg1(*g1);
+    const Comparers tg0(*g0);
+    const Comparers tg1(*g1);
     const auto tgCompare = tg0 <=> tg1;
     ASSERT_TRUE(tgCompare != 0);
 
@@ -448,8 +447,8 @@ TEST(GraphIsomorphismDecomposeTreeTest, SpecialCase7)
 {
     const auto g0 = UndirectedGraphFromG6::Create("F?~vg");
     const auto g1 = UndirectedGraphFromG6::Create("F@~v_");
-    const TaggedGraph tg0(*g0);
-    const TaggedGraph tg1(*g1);
+    const Comparers tg0(*g0);
+    const Comparers tg1(*g1);
     const auto tgCompare = tg0 <=> tg1;
     ASSERT_TRUE(tgCompare != 0);
 }
@@ -477,8 +476,8 @@ TEST(GraphIsomorphismDecomposeTreeTest, SpecialCase8_411)
     g1.addEdge(5, 0);
     g1.addEdge(5, 2);
 
-    const TaggedGraph tg0(g0);
-    const TaggedGraph tg1(g1);
+    const Comparers tg0(g0);
+    const Comparers tg1(g1);
     const auto tgCompare = tg0 <=> tg1;
     ASSERT_TRUE(tgCompare != 0);
 }
@@ -526,8 +525,8 @@ TEST(GraphIsomorphismDecomposeTreeTest, SpecialCase8_422)
     g1.addEdge(3, 7);
     g1.addEdge(3, 5);
 
-    const TaggedGraph tg0(g0);
-    const TaggedGraph tg1(g1);
+    const Comparers tg0(g0);
+    const Comparers tg1(g1);
     auto tgCompare = tg0 <=> tg1;
     ASSERT_EQ(tgCompare, std::weak_ordering::equivalent);
 
@@ -538,8 +537,8 @@ TEST(GraphIsomorphismDecomposeTreeTest, SpecialCase8_422)
 
     const auto g0c = UndirectedGraph::CreateComplement(g0);
     const auto g1c = UndirectedGraph::CreateComplement(g1);
-    const TaggedGraph tg0c(g0c);
-    const TaggedGraph tg1c(g1c);
+    const Comparers tg0c(g0c);
+    const Comparers tg1c(g1c);
     tgCompare = tg0c <=> tg1c;
     ASSERT_NE(tgCompare, std::weak_ordering::equivalent);
     graphs.clear();
@@ -560,8 +559,8 @@ TEST(GraphIsomorphismDecomposeTreeTest, SpecialCase9)
     g1.addWalk({0, 4, 5, 2});
     g1.addWalk({1, 6, 7, 3});
 
-    const TaggedGraph tg0(g0);
-    const TaggedGraph tg1(g1);
+    const Comparers tg0(g0);
+    const Comparers tg1(g1);
     const auto tgCompare = tg0 <=> tg1;
     ASSERT_NE(tgCompare, std::weak_ordering::equivalent);
 }

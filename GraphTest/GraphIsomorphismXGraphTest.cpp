@@ -28,7 +28,7 @@ TEST(GraphIsomorphismXGraphTest, Combine)
 TEST(GraphIsomorphismXGraphTest, Test6)
 {
     const auto graph = UndirectedGraphFromG6::Create("EQzg");
-    const TaggedGraph tg(*graph);
+    const Comparers tg(*graph);
     const XGraph xg(*graph);
     const auto grouping_tg = tg.getVertexGrouping();
     ASSERT_EQ(grouping_tg.countUnique(), 2);
