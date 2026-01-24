@@ -1,6 +1,6 @@
 #include "GraphIsomorphismTaggedGraph.h"
 #include "Defines.h"
-#include "GraphIsomorphismAllCompareFactories.h"
+#include "GraphIsomorphismComparersFactory.h"
 #include "GraphIsomorphismUtils.h"
 #include "Iota.h"
 #include "MyAssert.h"
@@ -10,46 +10,29 @@ using namespace Graph;
 using namespace GraphIsomorphism;
 using namespace Utilities;
 
-TaggedGraph::TaggedGraph(const Graph::IGraphUs &graph)
-    : m_graph(graph), m_comparers(AllCompareFactories().getAllComparers(m_graph)),
-      m_vertexComparers(selectVertexCompare(m_comparers))
+TaggedGraph::TaggedGraph(const Graph::IGraphUs &graph) : m_compare(ComparersFactory().create(graph))
 {
 }
 
 std::weak_ordering TaggedGraph::compareOtherGraph(const IGraphCompare &other) const
 {
-    std::weak_ordering result = std::weak_ordering::equivalent;
-    const auto &tg = dynamic_cast<const TaggedGraph &>(other);
-    const auto taggers0 = selectGraphTaggers(m_comparers);
-    const auto taggers1 = selectGraphTaggers(tg.m_comparers);
-    Utilities::MyAssert(taggers0.size() == taggers1.size());
-    for (size_t n : Iota::GetRange(taggers0.size()))
-    {
-        result = taggers0.at(n)->getGraphTag() <=> taggers1.at(n)->getGraphTag();
-        if (result != std::weak_ordering::equivalent)
-        {
-            return result;
-        }
-    }
-
-    return result;
+    return m_compare->compareOtherGraph(*dynamic_cast<const TaggedGraph &>(other).m_compare);
 }
 
 const Graph::IGraphUs &TaggedGraph::getGraph() const
 {
-    return m_graph;
+    return m_compare->getGraph();
+}
+
+std::weak_ordering TaggedGraph::compareVertexOtherGraph(Vertex v0, const IVertexCompare &otherCompare, Vertex v1) const
+{
+    const TaggedGraph &otherTaggedGraph = dynamic_cast<const TaggedGraph &>(otherCompare);
+    return m_compare->compareVertexOtherGraph(v0, *otherTaggedGraph.m_compare, v1);
 }
 
 std::weak_ordering TaggedGraph::operator<=>(const TaggedGraph &rhs) const
 {
-    const auto &lhs = *this;
-    std::weak_ordering result = compareOtherGraph(dynamic_cast<const IGraphCompare &>(rhs));
-    if (result != std::weak_ordering::equivalent)
-    {
-        return result;
-    }
-
-    return lhs.m_vertexComparers <=> rhs.m_vertexComparers;
+    return *m_compare <=> *rhs.m_compare;
 }
 
 bool TaggedGraph::operator==(const TaggedGraph &rhs) const
@@ -59,7 +42,7 @@ bool TaggedGraph::operator==(const TaggedGraph &rhs) const
 
 const Grouping<Vertex> &TaggedGraph::getVertexGrouping() const
 {
-    return m_vertexComparers.getVertexGrouping();
+    return m_compare->getVertexGrouping();
 }
 
 std::unique_ptr<ICompare> CompareTaggedGraphFactory::createCompare(const Graph::IGraphUs &graph)

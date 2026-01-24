@@ -10,3 +10,34 @@ Comparers::Comparers(std::vector<std::unique_ptr<ICompare>> &&comparers)
       m_vertexComparers(selectVertexCompare(m_comparers))
 {
 }
+
+const Grouping<Vertex> &Comparers::getVertexGrouping() const
+{
+    return m_vertexComparers.getVertexGrouping();
+}
+
+const Graph::IGraphUs &Comparers::getGraph() const
+{
+    return m_graphComparers.getGraph();
+}
+
+std::weak_ordering Comparers::compareOtherGraph(const IGraphCompare &other) const
+{
+    return m_graphComparers.compareOtherGraph(dynamic_cast<const Comparers &>(other).m_graphComparers);
+}
+
+std::weak_ordering Comparers::compareVertexOtherGraph(Graph::Vertex v0, const IVertexCompare &other,
+                                                      Graph::Vertex v1) const
+{
+    return m_vertexComparers.compareVertexOtherGraph(v0, dynamic_cast<const Comparers &>(other).m_vertexComparers, v1);
+}
+
+std::weak_ordering Comparers::operator<=>(const Comparers &other) const
+{
+    auto result = m_graphComparers.compareOtherGraph(other.m_graphComparers);
+    if (result != std::weak_ordering::equivalent)
+    {
+        return result;
+    }
+    return m_vertexComparers <=> other.m_vertexComparers;
+}

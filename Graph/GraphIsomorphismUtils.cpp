@@ -1,7 +1,6 @@
 #include "GraphIsomorphismUtils.h"
 
 #include "Defines.h"
-#include "GraphIsomorphismAllCompareFactories.h"
 #include "GraphIsomorphismTaggerChains.h"
 #include "GraphIsomorphismTaggerColor.h"
 #include "GraphIsomorphismTaggerComponents.h"

@@ -1,5 +1,6 @@
-#include "GraphIsomorphismAllCompareFactories.h"
+#include "GraphIsomorphismComparersFactory.h"
 
+#include "GraphIsomorphismComparers.h"
 #include "GraphIsomorphismTaggerChains.h"
 #include "GraphIsomorphismTaggerColor.h"
 #include "GraphIsomorphismTaggerComponents.h"
@@ -10,7 +11,6 @@
 #include "GraphIsomorphismTaggerNumbers.h"
 #include "GraphIsomorphismTaggerTriangles.h"
 #include "GraphIsomorphismTaggerTwins.h"
-#include "IGraphIsomorphismTagger.h"
 #include "MyAssert.h"
 
 using namespace GraphIsomorphism;
@@ -36,12 +36,32 @@ std::vector<ICompareFactory *> allFactories{
 
 } // namespace
 
-std::vector<std::unique_ptr<ICompare>> AllCompareFactories::getAllComparers(const Graph::IGraphUs &graph) const
+ComparersFactory::ComparersFactory(std::vector<ICompareFactory *> factories) : m_factories(std::move(factories))
 {
-    constexpr size_t expectedNumFactories = 10;
-    Utilities::MyAssert(allFactories.size() == expectedNumFactories);
+}
 
-    std::vector<std::unique_ptr<ICompare>> result(expectedNumFactories);
-    str::transform(allFactories, result.begin(), [&graph](const auto &f) { return f->createCompare(graph); });
-    return result;
-};
+ComparersFactory::ComparersFactory() : ComparersFactory(getAllSimpleFactories())
+{
+}
+
+std::unique_ptr<ICompare> ComparersFactory::createCompare(const Graph::IGraphUs &graph)
+{
+    return create(graph);
+}
+
+std::unique_ptr<Comparers> ComparersFactory::create(const Graph::IGraphUs &graph)
+
+{
+    std::vector<std::unique_ptr<ICompare>> comparers;
+    for (auto *factory : m_factories)
+    {
+        comparers.emplace_back(factory->createCompare(graph));
+    }
+
+    return std::make_unique<Comparers>(std::move(comparers));
+}
+
+std::vector<ICompareFactory *> ComparersFactory::getAllSimpleFactories()
+{
+    return allFactories;
+}
