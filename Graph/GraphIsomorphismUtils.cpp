@@ -1,17 +1,7 @@
 #include "GraphIsomorphismUtils.h"
 
 #include "Defines.h"
-#include "GraphIsomorphismTaggerChains.h"
-#include "GraphIsomorphismTaggerColor.h"
-#include "GraphIsomorphismTaggerComponents.h"
-#include "GraphIsomorphismTaggerDegree.h"
-#include "GraphIsomorphismTaggerDistance.h"
-#include "GraphIsomorphismTaggerKnown.h"
-#include "GraphIsomorphismTaggerMaxDegree.h"
-#include "GraphIsomorphismTaggerNumbers.h"
-#include "GraphIsomorphismTaggerTriangles.h"
-#include "GraphIsomorphismTaggerTwins.h"
-#include "UndirectedGraphDistance.h"
+#include "IGraphUs.h"
 #include "UniquePointer.h"
 
 using namespace Graph;

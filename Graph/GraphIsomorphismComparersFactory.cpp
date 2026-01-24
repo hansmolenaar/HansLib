@@ -14,6 +14,7 @@
 #include "MyAssert.h"
 
 using namespace GraphIsomorphism;
+using namespace Utilities;
 
 namespace
 {
@@ -38,6 +39,7 @@ std::vector<ICompareFactory *> allFactories{
 
 ComparersFactory::ComparersFactory(std::vector<ICompareFactory *> factories) : m_factories(std::move(factories))
 {
+    MyAssert(!m_factories.empty());
 }
 
 ComparersFactory::ComparersFactory() : ComparersFactory(getAllSimpleFactories())

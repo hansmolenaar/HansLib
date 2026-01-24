@@ -18,12 +18,6 @@ using namespace GraphIsomorphism;
 using namespace Graph;
 using namespace Utilities;
 
-namespace
-{
-ComparersFactory comparersFactory;
-
-} // namespace
-
 TEST(GraphIsomorphismTaggedGraphTest, Singleton)
 {
     const auto graph = UndirectedGraphLibrary::Get_Singleton();
@@ -128,60 +122,71 @@ TEST(GraphIsomorphismTaggedGraphTest, SpecialCase2)
 
 TEST(GraphIsomorphismTaggedGraphTest, CheckTaggingList3)
 {
-    GraphTest::CheckList(comparersFactory, UndirectedGraphFromG6::getListNumVertices_3(), Tag{1, 4});
+    ComparersFactory factory;
+    GraphTest::CheckList(factory, UndirectedGraphFromG6::getListNumVertices_3(), Tag{1, 4});
 }
 
 TEST(GraphIsomorphismTaggedGraphTest, CheckTaggingList4)
 {
-    GraphTest::CheckList(comparersFactory, UndirectedGraphFromG6::getListNumVertices_4(), Tag{1, 11});
+    ComparersFactory factory;
+    GraphTest::CheckList(factory, UndirectedGraphFromG6::getListNumVertices_4(), Tag{1, 11});
 }
 
 TEST(GraphIsomorphismTaggedGraphTest, CheckTaggingList5)
 {
-    GraphTest::CheckList(comparersFactory, UndirectedGraphFromG6::getListNumVertices_5(), {1, 34});
+    ComparersFactory factory;
+    GraphTest::CheckList(factory, UndirectedGraphFromG6::getListNumVertices_5(), {1, 34});
 }
 
 TEST(GraphIsomorphismTaggedGraphTest, CheckTaggingList6)
 {
-    GraphTest::CheckList(comparersFactory, UndirectedGraphFromG6::getListNumVertices_6(), {1, 155});
+    ComparersFactory factory;
+    GraphTest::CheckList(factory, UndirectedGraphFromG6::getListNumVertices_6(), {1, 155});
 }
 
 TEST(GraphIsomorphismTaggedGraphTest, CheckTaggingList7)
 {
-    GraphTest::CheckList(comparersFactory, UndirectedGraphFromG6::getListNumVertices_7(), {1, 298, 2, 2});
+    ComparersFactory factory;
+    GraphTest::CheckList(factory, UndirectedGraphFromG6::getListNumVertices_7(), {1, 298, 2, 2});
 }
 
 TEST(GraphIsomorphismTaggedGraphTest, CheckTaggingList8)
 {
-    GraphTest::CheckList(comparersFactory, UndirectedGraphFromG6::getListNumVertices_8(), {1, 722, 2, 12});
+    ComparersFactory factory;
+    GraphTest::CheckList(factory, UndirectedGraphFromG6::getListNumVertices_8(), {1, 722, 2, 12});
 }
 
 TEST(GraphIsomorphismConstructTest, Disconnected5)
 {
+    ComparersFactory factory;
     const auto graphs = UndirectedGraphFromG6::getDisconnectedGraphs(UndirectedGraphFromG6::getListNumVertices_5());
-    GraphTest::CheckList(comparersFactory, graphs, {1, 13});
+    GraphTest::CheckList(factory, graphs, {1, 13});
 }
 
 TEST(GraphIsomorphismTaggedGraphTest, Disconnected6)
 {
+    ComparersFactory factory;
     const auto graphs = UndirectedGraphFromG6::getDisconnectedGraphs(UndirectedGraphFromG6::getListNumVertices_6());
-    GraphTest::CheckList(comparersFactory, graphs, {1, 43});
+    GraphTest::CheckList(factory, graphs, {1, 43});
 }
 
 TEST(GraphIsomorphismTaggedGraphTest, Disconnected7)
 {
+    ComparersFactory factory;
     const auto graphs = UndirectedGraphFromG6::getDisconnectedGraphs(UndirectedGraphFromG6::getListNumVertices_7());
-    GraphTest::CheckList(comparersFactory, graphs, {1, 35});
+    GraphTest::CheckList(factory, graphs, {1, 35});
 }
 
 TEST(GraphIsomorphismTaggedGraphTest, Disconnected8)
 {
+    ComparersFactory factory;
     const auto graphs = UndirectedGraphFromG6::getDisconnectedGraphs(UndirectedGraphFromG6::getListNumVertices_8());
-    GraphTest::CheckList(comparersFactory, graphs, {1, 17});
+    GraphTest::CheckList(factory, graphs, {1, 17});
 }
 
 TEST(GraphIsomorphismTaggedGraphTest, Disconnected9)
 {
+    ComparersFactory factory;
     const auto graphs = UndirectedGraphFromG6::getDisconnectedGraphs(UndirectedGraphFromG6::getListNumVertices_9());
-    GraphTest::CheckList(comparersFactory, graphs, {1, 18});
+    GraphTest::CheckList(factory, graphs, {1, 18});
 }
