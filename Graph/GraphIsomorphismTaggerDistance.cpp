@@ -14,10 +14,6 @@ GraphIsomorphism::TaggerDistance::TaggerDistance(std::shared_ptr<UndirectedGraph
     : m_distances(std::move(distances)), m_triangles(std::move(triangles))
 {
     const auto nVertices = m_distances->getNumVertices();
-    for (auto v : Iota::GetRange(nVertices))
-    {
-        m_tags.emplace_back(getTag(v));
-    }
 
     // Use maximum distances in the graph tag
     std::vector<size_t> maxDistances;
@@ -27,26 +23,13 @@ GraphIsomorphism::TaggerDistance::TaggerDistance(std::shared_ptr<UndirectedGraph
         maxDistances.push_back((*m_distances)(v).size() - 1);
     }
     m_graphTag = CondenseSizeSequence(maxDistances);
+    m_vertexGrouping = VertexGrouping(Iota::GetRange(nVertices), VertexLess{*this});
 }
 
 TaggerDistance::TaggerDistance(const Graph::IGraphUs &graph)
     : TaggerDistance(std::make_shared<UndirectedGraphDistance>(graph),
                      std::make_shared<UndirectedGraphTriangles>(graph))
 {
-}
-
-Tag TaggerDistance::getTag(Vertex v) const
-{
-    const auto &atDistance = (*m_distances)(v);
-    // Skip first entry, always 1
-    Tag retval(atDistance.size() - 1);
-    std::transform(atDistance.begin() + 1, atDistance.end(), retval.begin(), [](const auto &ad) { return ad.size(); });
-    return retval;
-}
-
-const Tag &TaggerDistance::getVertexTag(Vertex v) const
-{
-    return m_tags.at(v);
 }
 
 const Tag &TaggerDistance::getGraphTag() const
@@ -57,6 +40,11 @@ const Tag &TaggerDistance::getGraphTag() const
 const IGraphUs &TaggerDistance::getGraph() const
 {
     return m_distances->getGraph();
+}
+
+const VertexGrouping &TaggerDistance::getVertexGrouping() const
+{
+    return m_vertexGrouping;
 }
 
 namespace

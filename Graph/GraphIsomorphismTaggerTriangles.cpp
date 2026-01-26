@@ -11,6 +11,7 @@ TaggerTriangles::TaggerTriangles(std::shared_ptr<Graph::UndirectedGraphTriangles
 
 {
     m_graphTag = CondenseSizeSequence(m_triangles->getSequence());
+    m_vertexGrouping = VertexGrouping(m_triangles->getGraph().getVertexRange(), VertexLess{*this});
 }
 
 const Tag &TaggerTriangles::getGraphTag() const
@@ -29,6 +30,13 @@ std::weak_ordering TaggerTriangles::compareVertexOtherGraph(Vertex vertex0, cons
     return m_triangles->numTrianglesAt(vertex0) <=>
            dynamic_cast<const TaggerTriangles &>(other).m_triangles->numTrianglesAt(vertex1);
 }
+
+const VertexGrouping &TaggerTriangles::getVertexGrouping() const
+{
+    return m_vertexGrouping;
+}
+
+// !!!!!!!!!!!!! FACTORY
 
 std::unique_ptr<ICompare> CompareTrianglesFactory::createCompare(const Graph::IGraphUs &graph)
 {

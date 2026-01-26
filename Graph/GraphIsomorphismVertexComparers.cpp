@@ -15,7 +15,7 @@ struct CompareAll
     {
         for (const auto *c : Comparers)
         {
-            const auto cmp = c->compare(v0, v1);
+            const auto cmp = c->compareVertexOtherGraph(v0, *c, v1);
             if (cmp == std::weak_ordering::less)
             {
                 return true;

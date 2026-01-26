@@ -15,11 +15,13 @@ class TaggerTwins : public IGraphTagger, public IVertexCompare
     const Tag &getVertexTag(Graph::Vertex) const;
     const Graph::IGraphUs &getGraph() const override;
     std::weak_ordering compareVertexOtherGraph(Graph::Vertex, const IVertexCompare &, Graph::Vertex) const override;
+    const VertexGrouping &getVertexGrouping() const override;
 
   private:
     const Graph::IGraphUs &m_graph;
     std::map<Graph::Vertex, Tag> m_vertexTwinsTag;
     Tag m_graphTag;
+    VertexGrouping m_vertexGrouping;
 };
 
 class CompareTwinsFactory : public ICompareFactory

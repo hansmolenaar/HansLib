@@ -16,10 +16,12 @@ class TaggerDegree : public IGraphTagger, public IVertexCompare
 
     const Graph::IGraphUs &getGraph() const override;
     std::weak_ordering compareVertexOtherGraph(Graph::Vertex, const IVertexCompare &, Graph::Vertex) const override;
+    const VertexGrouping &getVertexGrouping() const override;
 
   private:
     const Graph::IGraphUs &m_graph;
     Tag m_degreeSequenceTag;
+    VertexGrouping m_vertexGrouping;
 };
 
 class CompareDegreeFactory : public ICompareFactory

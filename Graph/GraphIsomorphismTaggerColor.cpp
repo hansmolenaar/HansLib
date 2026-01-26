@@ -6,7 +6,8 @@ using namespace Graph;
 using namespace GraphIsomorphism;
 using namespace Utilities;
 
-TaggerColor::TaggerColor(const Graph::IGraphUs &graph) : m_graph(graph)
+TaggerColor::TaggerColor(const Graph::IGraphUs &graph)
+    : m_graph(graph), m_vertexGrouping(m_graph.getVertexRange(), [](Vertex v0, Vertex v1) { return false; })
 {
     const UndirectedGraphColor coloring(m_graph);
     const auto chromaticNumber = coloring.getChromaticNumber();
@@ -32,6 +33,8 @@ TaggerColor::TaggerColor(const Graph::IGraphUs &graph) : m_graph(graph)
                                return c == UndirectedGraphColor::ColorFirst ? numColorFirst : numColorSecond;
                            });
         }
+
+        m_vertexGrouping = VertexGrouping(m_graph.getVertexRange(), VertexLess{*this});
     }
 }
 
@@ -59,6 +62,11 @@ std::weak_ordering TaggerColor::compareVertexOtherGraph(Graph::Vertex vertex1, c
 {
     const TaggerColor &cmp2 = dynamic_cast<const TaggerColor &>(other);
     return getVertexTag(vertex1) <=> cmp2.getVertexTag(vertex2);
+}
+
+const VertexGrouping &TaggerColor::getVertexGrouping() const
+{
+    return m_vertexGrouping;
 }
 
 // !!!!!!!!!!!!! FACTORY

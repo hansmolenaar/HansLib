@@ -52,6 +52,7 @@ TaggerTwins::TaggerTwins(const Graph::IGraphUs &graph) : m_graph(graph)
 
     SetVertexTags(twins.getFalseTwins(), 0, m_vertexTwinsTag);
     SetVertexTags(twins.getTrueTwins(), 1, m_vertexTwinsTag);
+    m_vertexGrouping = VertexGrouping(m_graph.getVertexRange(), VertexLess{*this});
 }
 
 const Tag &TaggerTwins::getGraphTag() const
@@ -80,6 +81,11 @@ std::weak_ordering TaggerTwins::compareVertexOtherGraph(Graph::Vertex vertex1, c
 {
     const TaggerTwins &cmp2 = dynamic_cast<const TaggerTwins &>(other);
     return getVertexTag(vertex1) <=> cmp2.getVertexTag(vertex2);
+}
+
+const VertexGrouping &TaggerTwins::getVertexGrouping() const
+{
+    return m_vertexGrouping;
 }
 
 // !!!!!!!!!!!!! FACTORY

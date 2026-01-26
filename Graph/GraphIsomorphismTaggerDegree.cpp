@@ -9,6 +9,7 @@ using namespace GraphIsomorphism;
 GraphIsomorphism::TaggerDegree::TaggerDegree(const Graph::IGraphUs &graph) : m_graph(graph)
 {
     str::copy(CondenseSizeSequence(graph.getDegreeSequence()), std::back_inserter(m_degreeSequenceTag));
+    m_vertexGrouping = VertexGrouping(graph.getVertexRange(), VertexLess{*this});
 }
 
 const Tag &TaggerDegree::getGraphTag() const
@@ -27,6 +28,10 @@ std::weak_ordering TaggerDegree::compareVertexOtherGraph(Vertex vertex0, const I
     return m_graph.getDegree(vertex0) <=> dynamic_cast<const TaggerDegree &>(other).m_graph.getDegree(vertex1);
 }
 
+const VertexGrouping &TaggerDegree::getVertexGrouping() const
+{
+    return m_vertexGrouping;
+}
 // !!!!!!!!!!!!! FACTORY
 
 std::unique_ptr<ICompare> CompareDegreeFactory::createCompare(const Graph::IGraphUs &graph)

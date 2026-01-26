@@ -48,6 +48,7 @@ class IVertexCompare : public virtual ICompare
   public:
     ~IVertexCompare() = default;
     virtual std::weak_ordering compareVertexOtherGraph(Graph::Vertex, const IVertexCompare &, Graph::Vertex) const = 0;
+    virtual const VertexGrouping &getVertexGrouping() const = 0;
 
     std::weak_ordering compare(Graph::Vertex, Graph::Vertex) const;
 };
@@ -56,7 +57,7 @@ struct VertexLess
 {
     bool operator()(Graph::Vertex v0, Graph::Vertex v1) const
     {
-        return Compare.compare(v0, v1) < 0;
+        return Compare.compareVertexOtherGraph(v0, Compare, v1) == std::weak_ordering::less;
     }
     const IVertexCompare &Compare;
 };

@@ -13,6 +13,7 @@ TaggerMaxDegree::TaggerMaxDegree(const Graph::IGraphUs &graph) : m_graph(graph)
         m_universal2id[v] = m_universal2id.size() + 1;
     }
     m_graphTag = TagFlyweight::getSingleEntryTag(m_universal2id.size());
+    m_vertexGrouping = VertexGrouping(m_graph.getVertexRange(), VertexLess{*this});
 }
 
 TagEntry TaggerMaxDegree::getVertexTag(Vertex v) const
@@ -38,6 +39,11 @@ std::weak_ordering TaggerMaxDegree::compareVertexOtherGraph(Vertex vertex0, cons
                                                             Vertex vertex1) const
 {
     return getVertexTag(vertex0) <=> dynamic_cast<const TaggerMaxDegree &>(other).getVertexTag(vertex1);
+}
+
+const VertexGrouping &TaggerMaxDegree::getVertexGrouping() const
+{
+    return m_vertexGrouping;
 }
 
 // !!!!!!!!!!!!!!!!!

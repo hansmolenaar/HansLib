@@ -153,20 +153,26 @@ void GraphTest::CheckVertexCompareConsistency(const IGraphUs &graph, GraphIsomor
     {
         return;
     }
-    const VertexGrouping grouping(graph.getVertexRange(), VertexLess{*vertexCompare});
+    const VertexGrouping &grouping = vertexCompare->getVertexGrouping();
+    ASSERT_EQ(graph.getNumVertices(), grouping.size());
 
     if (expectNumUniqueVertices >= 0)
     {
         ASSERT_EQ(grouping.countUnique(), expectNumUniqueVertices);
     }
 
+    auto groupSizes = vertexCompare->getVertexGrouping().getGroupSizes();
+    str::sort(groupSizes);
     for (auto n : Iota::GetRange(numPermutations))
     {
         const UndirectedGraph graphPermuted = UndirectedGraph::CreateRandomShuffled(graph, n);
         const auto gcomparerPermuted = factory.createCompare(graphPermuted);
         const auto *vertexComparePermuted = gcomparerPermuted->getVertexCompare();
         const VertexGrouping groupingPermuted(graph.getVertexRange(), VertexLess{*vertexComparePermuted});
-        ASSERT_EQ(groupingPermuted.getGroupSizes(), grouping.getGroupSizes());
+        auto groupSizesPermuted = groupingPermuted.getGroupSizes();
+        str::sort(groupSizesPermuted);
+        ASSERT_EQ(groupSizes, groupSizesPermuted);
+        ASSERT_EQ(grouping.countUnique(), groupingPermuted.countUnique());
     }
 }
 

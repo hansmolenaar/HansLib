@@ -17,10 +17,12 @@ class TaggerTriangles : public IGraphTagger, public IVertexCompare
 
     const Graph::IGraphUs &getGraph() const override;
     std::weak_ordering compareVertexOtherGraph(Graph::Vertex, const IVertexCompare &, Graph::Vertex) const override;
+    const VertexGrouping &getVertexGrouping() const override;
 
   private:
     std::shared_ptr<Graph::UndirectedGraphTriangles> m_triangles;
     Tag m_graphTag;
+    VertexGrouping m_vertexGrouping;
 };
 
 class CompareTrianglesFactory : public ICompareFactory

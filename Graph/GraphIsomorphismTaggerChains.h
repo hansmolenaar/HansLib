@@ -16,11 +16,13 @@ class TaggerChains : public IGraphTagger, public IVertexCompare
 
     const Graph::IGraphUs &getGraph() const override;
     std::weak_ordering compareVertexOtherGraph(Graph::Vertex, const IVertexCompare &, Graph::Vertex) const override;
+    const VertexGrouping &getVertexGrouping() const override;
 
   private:
     const Graph::IGraphUs &m_graph;
     Tag m_graphTag;
     std::vector<Tag> m_vertexTags;
+    VertexGrouping m_vertexGrouping;
 };
 
 class CompareChainsFactory : public ICompareFactory

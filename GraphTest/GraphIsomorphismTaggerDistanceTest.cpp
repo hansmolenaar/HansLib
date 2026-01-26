@@ -38,9 +38,13 @@ TEST(GraphIsomorphismTaggerDistanceTest, Path3)
     auto distances = std::make_shared<UndirectedGraphDistance>(GraphUsc(*graph));
     auto triangles = std::make_shared<UndirectedGraphTriangles>(*graph);
     const TaggerDistance tagger(distances, triangles);
-    ASSERT_TRUE(str::equal(tagger.getVertexTag(0), Tag{1, 1}));
-    ASSERT_TRUE(str::equal(tagger.getVertexTag(1), Tag{2}));
-    ASSERT_TRUE(str::equal(tagger.getVertexTag(2), Tag{1, 1}));
+    ASSERT_EQ(tagger.compareVertexOtherGraph(0, tagger, 2), std::weak_ordering::equivalent);
+    ASSERT_EQ(tagger.compareVertexOtherGraph(2, tagger, 0), std::weak_ordering::equivalent);
+    ASSERT_EQ(tagger.compareVertexOtherGraph(1, tagger, 2), std::weak_ordering::less);
+    ASSERT_EQ(tagger.compareVertexOtherGraph(2, tagger, 1), std::weak_ordering::greater);
+    const auto &grouping = tagger.getVertexGrouping();
+    ASSERT_EQ(grouping.size(), 3);
+    ASSERT_EQ(grouping.getGroupSizes(), (std::vector<size_t>{1, 2}));
 
     const auto &graphTag = tagger.getGraphTag();
     ASSERT_EQ(graphTag, (Tag{1, 1, 2, 2}));
@@ -53,14 +57,24 @@ TEST(GraphIsomorphismTaggerDistanceTest, Star121)
     GraphTest::CheckVertexCompareConsistency(*graph, factory, 3);
 
     TaggerDistance tagger(*graph);
-    ASSERT_TRUE(str::equal(tagger.getVertexTag(0), Tag{3, 1}));
-    ASSERT_TRUE(str::equal(tagger.getVertexTag(1), Tag{1, 2, 1}));
-    ASSERT_TRUE(str::equal(tagger.getVertexTag(2), Tag{2, 2}));
-    ASSERT_TRUE(str::equal(tagger.getVertexTag(3), Tag{1, 1, 2}));
-    ASSERT_TRUE(str::equal(tagger.getVertexTag(4), Tag{1, 2, 1}));
+    EXPECT_EQ(tagger.compare(0, 1), std::weak_ordering::less);
+    EXPECT_EQ(tagger.compare(0, 2), std::weak_ordering::greater);
+    EXPECT_EQ(tagger.compare(0, 3), std::weak_ordering::less);
+    EXPECT_EQ(tagger.compare(0, 4), std::weak_ordering::less);
+    EXPECT_EQ(tagger.compare(1, 2), std::weak_ordering::greater);
+    EXPECT_EQ(tagger.compare(1, 3), std::weak_ordering::greater);
+    EXPECT_EQ(tagger.compare(1, 4), std::weak_ordering::equivalent);
+    EXPECT_EQ(tagger.compare(2, 3), std::weak_ordering::less);
+    EXPECT_EQ(tagger.compare(2, 4), std::weak_ordering::less);
+    EXPECT_EQ(tagger.compare(3, 4), std::weak_ordering::less);
 
     const auto graphTag = tagger.getGraphTag();
     ASSERT_EQ(graphTag, (Tag{2, 2, 3, 3}));
+
+    const auto &grouping = tagger.getVertexGrouping();
+    auto sizes = grouping.getGroupSizes();
+    str::sort(sizes);
+    ASSERT_EQ(sizes, (std::vector<size_t>{1, 1, 1, 2}));
 }
 
 TEST(GraphIsomorphismTaggerDistanceTest, SpecialCase1)
@@ -119,7 +133,6 @@ TEST(GraphIsomorphismTaggerDistanceTest, Disconnected3)
     const auto &graphTag = tagger.getGraphTag();
     ASSERT_EQ(graphTag, (Tag{0, 3}));
 
-    ASSERT_EQ(tagger.getVertexTag(0), Tag{});
-    ASSERT_EQ(tagger.getVertexTag(1), Tag{});
-    ASSERT_EQ(tagger.getVertexTag(2), Tag{});
+    const auto &grouping = tagger.getVertexGrouping();
+    ASSERT_EQ(grouping.getGroupSizes(), (std::vector<size_t>{3}));
 }

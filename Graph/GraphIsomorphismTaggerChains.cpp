@@ -352,6 +352,7 @@ TaggerChains::TaggerChains(const IGraphUs &graph) : m_graph(graph)
     const auto allTags = GenerateTags(graph);
     m_graphTag = allTags.first;
     m_vertexTags = allTags.second;
+    m_vertexGrouping = VertexGrouping(graph.getVertexRange(), VertexLess{*this});
 }
 
 const Tag &TaggerChains::getVertexTag(Vertex v) const
@@ -373,6 +374,11 @@ std::weak_ordering TaggerChains::compareVertexOtherGraph(Vertex vertex0, const I
                                                          Vertex vertex1) const
 {
     return getVertexTag(vertex0) <=> dynamic_cast<const TaggerChains &>(other).getVertexTag(vertex1);
+}
+
+const VertexGrouping &TaggerChains::getVertexGrouping() const
+{
+    return m_vertexGrouping;
 }
 
 // !!!!!!!!!!!!! FACTORY
