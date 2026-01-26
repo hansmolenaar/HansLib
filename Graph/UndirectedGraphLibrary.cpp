@@ -29,28 +29,6 @@ void SetEdgesOfPath(UndirectedGraph &graph, Edge numEdges)
     }
 }
 
-std::unique_ptr<UndirectedGraph> Create(std::initializer_list<std::pair<Vertex, Vertex>> edges)
-{
-    std::set<Vertex> vertices;
-    for (auto edge : edges)
-    {
-        vertices.insert(edge.first);
-        vertices.insert(edge.second);
-    }
-
-    if (vertices.empty())
-        return std::make_unique<UndirectedGraph>(0);
-
-    const auto numVertices = *vertices.rbegin() + 1;
-    auto result = std::make_unique<UndirectedGraph>(numVertices);
-
-    for (auto edge : edges)
-    {
-        result->addEdge(edge.first, edge.second);
-    }
-    return result;
-}
-
 } // namespace
 
 std::unique_ptr<GraphUsc> UndirectedGraphLibrary::Get_Path(Vertex numVertices)
@@ -107,29 +85,35 @@ std::unique_ptr<GraphUsc> UndirectedGraphLibrary::Get_Star(std::initializer_list
     return std::make_unique<GraphUsc>(*ug);
 }
 
-//      2
-//    /    \
-//   0 ----  3
-//     \    /
-//       1
+/*
+        2
+      /    \
+     0 ----  3
+       \    /
+         1
+*/
 std::unique_ptr<GraphUsc> UndirectedGraphLibrary::Get_Diamond()
 {
     return UndirectedGraphFromG6::CreateConnected(UndirectedGraphFromG6::diamond);
 }
 
-//    0 -- 2 -- 1
-//         |
-//         3
+/*
+      0 -- 2 -- 1
+           |
+           3
+*/
 std::unique_ptr<GraphUsc> UndirectedGraphLibrary::Get_Claw()
 {
     return UndirectedGraphFromG6::CreateConnected("Cs");
 }
 
-//     1  -- 3
-//   / |
-//  0  |
-//   \ |
-//      2 -- 4
+/*
+       1  -- 3
+     / |
+    0  |
+     \ |
+        2 -- 4
+*/
 std::unique_ptr<GraphUsc> UndirectedGraphLibrary::Get_Bull()
 {
     return UndirectedGraphFromG6::CreateConnected("D{O");

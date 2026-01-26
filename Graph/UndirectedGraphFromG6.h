@@ -14,61 +14,65 @@ std::unique_ptr<Graph::UndirectedGraph> Create(std::string);
 std::unique_ptr<Graph::GraphUsc> CreateConnected(std::string);
 
 static constexpr char pan3[] = "Cx";
-//      1
-//    / |
-// 3 -2  |
-//    \ |
-//      0
+/*
+        1
+      / |
+   3 -2  |
+      \ |
+        0
+*/
 
 static constexpr char house[] = "Dd[";
-//        2
-//     /     \
-//    3 ------ 4
-//    |        |
-//    0 ------ 1
+/*
+          2
+       /     \
+      3 ------ 4
+      |        |
+      0 ------ 1
+*/
 
 static constexpr char fish[] = "ErCW";
-//
-//
-//          1    4
-//        /  \  /|
-//       0    3  |
-//        \  / \ |
-//          2    5
+/*
+            1    4
+          /  \  /|
+         0    3  |
+          \  / \ |
+            2    5
+*/
 
 static constexpr char X84[] = "ElD?";
-//
-//
-//          0
-//        /  \
-//   5 - 1    3 - 4
-//        \  /
-//          2
-//
+/*
+            0
+          /  \
+     5 - 1    3 - 4
+          \  /
+            2
+*/
 
 static constexpr char X197[] = "EgC";
-//          5
-//       3 ---4
-//     0 -- 1 -- 2
+/*
+            5
+         3 ---4
+       0 -- 1 -- 2
+*/
 
 static constexpr char butterfly[] = "D{c";
-//
-//
-//          1    4
-//          |\  /|
-//          | 0  |
-//          |/ \ |
-//          2    3
+/*
+            1    4
+            |\  /|
+            | 0  |
+            |/ \ |
+            2    3
+*/
 
 static constexpr char diamond[] = "Cz";
-//
-//
-//          1
-//        / |\
-//       0  | 3
-//        \ |/
-//          2
-//
+/*
+            1
+          / |\
+         0  | 3
+          \ |/
+            2
+*/
 
 const std::vector<std::string> &getListNumVertices_5_connected();
 const std::vector<std::string> &getListNumVertices_6_connected();

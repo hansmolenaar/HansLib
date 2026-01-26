@@ -16,13 +16,6 @@ using namespace Utilities;
 namespace
 {
 
-void TestCompare(const IGraphUs &graph, ICompareFactory &factory, ICompare &compare0)
-{
-    ASSERT_EQ(compare0.getGraph().getNumVertices(), 0);
-    const auto compare = factory.createCompare(graph);
-    ASSERT_NE(compare->getGraph().getNumVertices(), 0);
-}
-
 void CheckGraphCompareSymmetry(const ICharacteristicsCompare &compare0, const ICharacteristicsCompare &compare1)
 {
     const auto cmp0 = compare0.compareCharacteristics(compare1);

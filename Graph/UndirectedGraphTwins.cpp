@@ -25,7 +25,6 @@ UndirectedGraphTwins::UndirectedGraphTwins(const Graph::IGraphUs &graph) : m_gra
     std::map<std::vector<Vertex>, std::vector<Vertex>> falseTwins;
     std::vector<Vertex> ngbs;
 
-    const auto nVertices = m_graph.getNumVertices();
     for (Vertex v : m_graph.getVertexRange())
     {
         m_graph.setAdjacentVertices(v, ngbs);

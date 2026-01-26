@@ -36,7 +36,6 @@ bool ColorRecur(Vertex v, UndirectedGraphColor::Color c, const Graph::IGraphUs &
 
 std::vector<UndirectedGraphColor::Color> GetColoring2(const Graph::IGraphUs &graph)
 {
-    constexpr UndirectedGraphColor::Color ColorSecond = 1;
     const auto numVertices = graph.getNumVertices();
     std::vector<UndirectedGraphColor::Color> result(numVertices, ColorUndefined);
 

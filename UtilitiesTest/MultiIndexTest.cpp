@@ -48,7 +48,7 @@ TEST(MultiIndexTest, FourD)
     ASSERT_EQ(mi.getNumDimensions(), 4);
     ASSERT_EQ(mi.getFlatSize(), 210);
     std::vector<int> multiplet(4);
-    for (int n = 0; n < mi.getFlatSize(); ++n)
+    for (size_t n = 0; n < mi.getFlatSize(); ++n)
     {
         mi.toMultiplet(n, multiplet);
         ASSERT_EQ(mi.toFlat(multiplet), n);

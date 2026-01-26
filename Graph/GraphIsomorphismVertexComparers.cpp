@@ -62,11 +62,6 @@ std::weak_ordering VertexComparers::compareVertexOtherGraph(Vertex v0, const IVe
                                                             Vertex v1) const
 {
     const VertexComparers *other = dynamic_cast<const VertexComparers *>(&otherCompare);
-    if (this == other)
-    {
-        return m_vertex2group.at(v0) <=> m_vertex2group.at(v1);
-    }
-
     const auto nComparers = m_vertexComparers.size();
     std::weak_ordering result = std::weak_ordering::equivalent;
     MyAssert(other->m_vertexComparers.size() == nComparers);

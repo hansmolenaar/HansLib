@@ -31,7 +31,7 @@ template <typename T> std::array<T, 2> Indexer2<T>::FromFlat(size_t flat)
     const double md = std::floor(std::sqrt(flat + 0.1));
     const T m = static_cast<T>(md);
     const T diag = m * m + m;
-    if (flat <= diag)
+    if (static_cast<T>(flat) <= diag)
         return std::array<T, 2>{static_cast<T>(flat - m * m), m};
     return std::array<T, 2>{m, static_cast<T>(m * m + 2 * m - flat)};
 }

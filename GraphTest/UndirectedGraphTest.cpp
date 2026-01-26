@@ -17,10 +17,6 @@ void CheckSequenceAfterSorting(std::span<const Vertex> actual, std::span<const V
 {
     std::vector<Vertex> actualSorted(actual.begin(), actual.end());
     str::sort(actualSorted);
-    if (!std::equal(actualSorted.begin(), actualSorted.end(), expectSorted.begin(), expectSorted.end()))
-    {
-        int hello = 1;
-    }
     ASSERT_TRUE(std::equal(actualSorted.begin(), actualSorted.end(), expectSorted.begin(), expectSorted.end()));
 }
 

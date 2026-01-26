@@ -666,8 +666,6 @@ WORDSIZE-x-1 (numbered) bits are 1 and the rest 0 (0 <= x < WORDSIZE) */
 #define SEEK_CUR SEEK_CURRENT
 #endif
 
-static long ogf_linelen;
-
 /************************************************************************/
 
 static void gt_abort(const char *msg) /* Write message and halt. */
@@ -974,9 +972,6 @@ static void stringtograph(const char *s, graph *g, int m)
 
 #define LABELORG 0 /* number of first vertex (any integer >= 0) */
 #define LINELEN 78 /* max characters per line (0 = no limit) */
-
-static FILE *infile, *outfile;
-static long nin;
 
 /*****************************************************************************
  *                                                                            *
