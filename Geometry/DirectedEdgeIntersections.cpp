@@ -1,11 +1,14 @@
 #include "DirectedEdgeIntersections.h"
 #include "DirectedEdge.h"
 
-using namespace Geometry;
-
+namespace Geometry
+{
 template class DirectedEdgeIntersections<double, 1>;
 template class DirectedEdgeIntersections<double, 2>;
 template class DirectedEdgeIntersections<double, 3>;
+}
+
+using namespace Geometry;
 
 template <typename T, size_t N>
 DirectedEdgeIntersections<T, N>::DirectedEdgeIntersections(const DirectedEdgeIntersection<T, N> &intersection)

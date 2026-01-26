@@ -1,8 +1,12 @@
 #include "Sphere3AsManifold2.h"
 
+namespace Geometry
+{
+template class Sphere3AsManifold2<double>;
+}
+
 using namespace Geometry;
 
-template class Sphere3AsManifold2<double>;
 
 template <typename T>
 Sphere3AsManifold2<T>::Sphere3AsManifold2(Sphere<T, GeomDim3> sphere, std::string name)

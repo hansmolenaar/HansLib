@@ -4,10 +4,14 @@
 #include "Polygon2D.h"
 #include "UnitVector.h"
 
+namespace Geometry
+{
+template class Polygon2AsRegion<double>;
+}
+
 using namespace Utilities;
 using namespace Geometry;
 
-template class Polygon2AsRegion<double>;
 
 template <typename T>
 Polygon2AsRegion<T>::Polygon2AsRegion(std::span<const Point<T, 2>> polygon, std::string name)

@@ -42,7 +42,7 @@ UniquePointCollectionBinning<N>::UniquePointCollectionBinning(const IGeometryPre
                                                               const std::vector<Point<double, N>> &points)
     : m_predicate(predicate)
 {
-    for (int n = 0; n < N; ++n)
+    for (size_t n = 0; n < N; ++n)
     {
         std::vector<double> values(points.size());
         str::transform(points, values.begin(), [n](const Point<double, N> &p) { return p.data()[n]; });
@@ -70,14 +70,14 @@ template <size_t N>
 std::optional<PointIndex> UniquePointCollectionBinning<N>::tryGetClosePoint(const Point<double, N> &p) const
 {
     std::array<TrialBinsInDir, N> candidatesInDir;
-    for (int n = 0; n < N; ++n)
+    for (size_t n = 0; n < N; ++n)
     {
         candidatesInDir[n] =
             GetCandidateBinsInDirection(p.at(n), m_bins.at(n), m_predicate.getSmallLengthInDirection(n));
     }
 
     std::array<size_t, N> dimensions;
-    for (int n = 0; n < N; ++n)
+    for (size_t n = 0; n < N; ++n)
         dimensions.at(n) = candidatesInDir[n].size();
     const auto multiIndex = MultiIndex<size_t>::Create(dimensions);
     const auto numCandidateBins = multiIndex.getFlatSize();
@@ -86,7 +86,7 @@ std::optional<PointIndex> UniquePointCollectionBinning<N>::tryGetClosePoint(cons
         std::array<size_t, N> candidate;
         multiIndex.toMultiplet(c, candidate);
         std::array<size_t, N> singleBin;
-        for (int n = 0; n < N; ++n)
+        for (size_t n = 0; n < N; ++n)
         {
             singleBin[n] = candidatesInDir[n].at(candidate.at(n));
         }
@@ -128,7 +128,7 @@ UniquePointCollectionBinning<N>::BinSpecifier UniquePointCollectionBinning<N>::l
     const Point<double, N> &point) const
 {
     std::array<size_t, N> bins;
-    for (int n = 0; n < N; ++n)
+    for (size_t n = 0; n < N; ++n)
     {
         bins[n] = m_bins.at(n).find(point.at(n));
     }

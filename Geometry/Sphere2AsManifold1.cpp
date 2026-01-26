@@ -1,8 +1,11 @@
 #include "Sphere2AsManifold1.h"
 
-using namespace Geometry;
-
+namespace Geometry
+{
 template class Sphere2AsManifold1<double>;
+}
+
+using namespace Geometry;
 
 template <typename T>
 Sphere2AsManifold1<T>::Sphere2AsManifold1(Sphere<T, GeomDim2> sphere, std::string name)

@@ -28,7 +28,7 @@ template <size_t N> class UniquePointCollectionBinning : public IDynamicUniquePo
     {
         const std::string sep = "  ";
         os << "UniquePointCollectionBinning  NDIR=" << N << sep << "NPOINTS=" << bins.getNumPoints() << '\n';
-        for (int n = 0; n < N; ++n)
+        for (size_t n = 0; n < N; ++n)
         {
             os << "DIR=" << n << sep << "->" << sep << bins.m_bins.at(n) << '\n';
         }

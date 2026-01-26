@@ -1,11 +1,14 @@
 #include "DirectedEdgePoint.h"
 #include "DirectedEdge.h"
 
-using namespace Geometry;
-
+namespace Geometry
+{
 template class DirectedEdgePoint<double, GeomDim1>;
 template class DirectedEdgePoint<double, GeomDim2>;
 template class DirectedEdgePoint<double, GeomDim3>;
+}
+
+using namespace Geometry;
 
 template <typename T, size_t N> DirectedEdgePoint<T, N>::DirectedEdgePoint()
 {

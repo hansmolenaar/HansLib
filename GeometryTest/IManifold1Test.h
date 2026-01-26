@@ -16,7 +16,7 @@ template <typename T, size_t N> std::vector<Point<T, N>> GenerateSomePoints(int 
 {
     std::vector<Point<T, N>> result;
     std::vector<T> values(N * numPointToGenerate);
-    for (int n = 0; n < N * numPointToGenerate; ++n)
+    for (size_t n = 0; n < N * numPointToGenerate; ++n)
     {
         values[n] = n + 1;
     }
@@ -28,7 +28,7 @@ template <typename T, size_t N> std::vector<Point<T, N>> GenerateSomePoints(int 
     for (int n = 0; n < numPointToGenerate; ++n)
     {
         Point<T, N> point;
-        for (int d = 0; d < N; ++d)
+        for (size_t d = 0; d < N; ++d)
         {
             point[d] = values.at(n * N + d);
         }
