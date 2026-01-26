@@ -7,7 +7,7 @@ using namespace Graph;
 using namespace GraphIsomorphism;
 
 Comparers::Comparers(std::vector<std::unique_ptr<ICompare>> &&comparers)
-    : m_comparers(std::move(comparers)), m_graphComparers(selectCharacteristicsCompare(m_comparers)),
+    : m_comparers(std::move(comparers)), m_characteristicsComparers(selectCharacteristicsCompare(m_comparers)),
       m_vertexComparers(selectVertexCompare(m_comparers))
 {
 }
@@ -23,12 +23,13 @@ const Grouping<Vertex> &Comparers::getVertexGrouping() const
 
 const Graph::IGraphUs &Comparers::getGraph() const
 {
-    return m_graphComparers.getGraph();
+    return m_characteristicsComparers.getGraph();
 }
 
 std::weak_ordering Comparers::compareCharacteristics(const ICharacteristicsCompare &other) const
 {
-    return m_graphComparers.compareCharacteristics(dynamic_cast<const Comparers &>(other).m_graphComparers);
+    return m_characteristicsComparers.compareCharacteristics(
+        dynamic_cast<const Comparers &>(other).m_characteristicsComparers);
 }
 
 std::weak_ordering Comparers::compareVertexOtherGraph(Graph::Vertex v0, const IVertexCompare &other,
@@ -39,7 +40,7 @@ std::weak_ordering Comparers::compareVertexOtherGraph(Graph::Vertex v0, const IV
 
 std::weak_ordering Comparers::operator<=>(const Comparers &other) const
 {
-    auto result = m_graphComparers.compareCharacteristics(other.m_graphComparers);
+    auto result = m_characteristicsComparers.compareCharacteristics(other.m_characteristicsComparers);
     if (result != std::weak_ordering::equivalent)
     {
         return result;

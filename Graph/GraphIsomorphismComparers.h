@@ -22,7 +22,7 @@ class Comparers : public ICharacteristicsCompare, public IVertexCompare
 
   private:
     std::vector<std::unique_ptr<ICompare>> m_comparers;
-    CharacteristicsComparers m_graphComparers;
+    CharacteristicsComparers m_characteristicsComparers;
     VertexComparers m_vertexComparers;
 };
 

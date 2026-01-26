@@ -1,7 +1,7 @@
 #pragma once
 
-#include "GraphIsomorphismGrouping.h"
 #include "GraphIsomorphismComparers.h"
+#include "GraphIsomorphismGrouping.h"
 #include "UndirectedGraph.h"
 
 namespace GraphIsomorphism

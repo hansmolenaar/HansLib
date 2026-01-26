@@ -15,7 +15,7 @@ class CharacteristicsComparers : public ICharacteristicsCompare
     std::weak_ordering compareCharacteristics(const ICharacteristicsCompare &) const override;
 
   private:
-    std::vector<const ICharacteristicsCompare *> m_graphComparers;
+    std::vector<const ICharacteristicsCompare *> m_characteristicsComparers;
 };
 
 } // namespace GraphIsomorphism

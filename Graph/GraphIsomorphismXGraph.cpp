@@ -8,8 +8,7 @@ using namespace GraphIsomorphism;
 XGraph::XGraph(const Graph::IGraphUs &graph)
     : m_complement(UndirectedGraph::CreateComplement(graph)), m_comparers(std::make_shared<Comparers>(graph)),
       m_comparesComplement(std::make_shared<Comparers>(m_complement)),
-      m_grouping(
-          Grouping<Vertex>::Combine(m_comparers->getVertexGrouping(), m_comparesComplement->getVertexGrouping()))
+      m_grouping(Grouping<Vertex>::Combine(m_comparers->getVertexGrouping(), m_comparesComplement->getVertexGrouping()))
 {
 }
 

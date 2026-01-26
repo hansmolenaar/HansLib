@@ -117,8 +117,9 @@ void GraphTest::CheckList(ICompareFactory &factory, const std::vector<std::uniqu
     {
         ASSERT_EQ(compare0->getCharacteristicsCompare()->compareCharacteristics(*compare0->getCharacteristicsCompare()),
                   std::weak_ordering::equivalent);
-        const std::vector<const ICharacteristicsCompare *> graphComparers = getCastPointers<const ICharacteristicsCompare>(comparers);
-        CheckListGraphCompare(factory, graphComparers, expectGraphTagMultiplicities);
+        const std::vector<const ICharacteristicsCompare *> characteristicsComparers =
+            getCastPointers<const ICharacteristicsCompare>(comparers);
+        CheckListGraphCompare(factory, characteristicsComparers, expectGraphTagMultiplicities);
         if (compare0->getGraphTagger() != nullptr)
         {
             CheckListGraphTagger(factory, graphs);
@@ -173,9 +174,9 @@ void GraphTest::CheckGraphTaggerConsistency(const IGraphUs &graph, ICompareFacto
 {
     const Permutation::Entry numPermutations = 10;
     const auto comparer = factory.createCompare(graph);
-    const auto *graphComparer = comparer->getCharacteristicsCompare();
+    const auto *characteristicsComparers = comparer->getCharacteristicsCompare();
 
-    if (graphComparer == nullptr)
+    if (characteristicsComparers == nullptr)
         return;
 
     const auto *tagger = comparer->getGraphTagger();
@@ -185,7 +186,7 @@ void GraphTest::CheckGraphTaggerConsistency(const IGraphUs &graph, ICompareFacto
     {
         const UndirectedGraph graphPermuted = UndirectedGraph::CreateRandomShuffled(graph, n);
         const auto comparerPermuted = factory.createCompare(graphPermuted);
-        ASSERT_EQ(graphComparer->compareCharacteristics(*comparerPermuted->getCharacteristicsCompare()),
+        ASSERT_EQ(characteristicsComparers->compareCharacteristics(*comparerPermuted->getCharacteristicsCompare()),
                   std::weak_ordering::equivalent);
 
         const auto *taggerPermuted = comparerPermuted->getGraphTagger();
