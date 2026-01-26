@@ -6,10 +6,10 @@
 namespace GraphIsomorphism
 {
 
-class GraphComparers : public ICharacteristicsCompare
+class CharacteristicsComparers : public ICharacteristicsCompare
 {
   public:
-    explicit GraphComparers(std::vector<const ICharacteristicsCompare *>);
+    explicit CharacteristicsComparers(std::vector<const ICharacteristicsCompare *>);
 
     const Graph::IGraphUs &getGraph() const override;
     std::weak_ordering compareCharacteristics(const ICharacteristicsCompare &) const override;

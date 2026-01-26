@@ -105,7 +105,7 @@ std::vector<const IGraphTagger *> GraphIsomorphism::selectGraphTaggers(
     return result;
 }
 
-std::vector<const ICharacteristicsCompare *> GraphIsomorphism::selectGraphCompare(
+std::vector<const ICharacteristicsCompare *> GraphIsomorphism::selectCharacteristicsCompare(
     const std::vector<std::unique_ptr<ICompare>> &comparers)
 {
     std::vector<const ICharacteristicsCompare *> result = Utilities::getCastPointers<const ICharacteristicsCompare>(comparers);
