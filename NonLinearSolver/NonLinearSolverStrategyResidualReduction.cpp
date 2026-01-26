@@ -15,7 +15,7 @@ NonLinearSolverStrategyResidualReduction::NonLinearSolverStrategyResidualReducti
 
 NonLinearSolverStatus NonLinearSolverStrategyResidualReduction::GetStatus(int iter, std::span<const double> rsd)
 {
-    if (iter != m_residuals.size())
+    if (iter != static_cast<int>(m_residuals.size()))
     {
         const std::string msg = "NonLinearSolverStrategyResidualReduction::GetStatus rsd should have size " +
                                 std::to_string(iter) + ", but is " + std::to_string(m_residuals.size());

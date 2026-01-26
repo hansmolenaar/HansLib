@@ -18,7 +18,7 @@ NonLinearSolverStatus NonLinearSolver::Solve(std::span<const double> fx, std::sp
 {
     const auto dim = fx.size();
     Utilities::MyAssert(x.size() == dim);
-    Utilities::MyAssert(GetDimension(m_problem) == dim);
+    Utilities::MyAssert(GetDimension(m_problem) == static_cast<int>(dim));
 
     std::vector<double> rsd(dim);
     std::vector<double> cor(dim);

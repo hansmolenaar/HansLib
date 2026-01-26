@@ -33,8 +33,8 @@ void RealFunctionCheckDerivative::Check(const IRealFunction &system, std::span<c
 {
     const int numEqn = system.GetRangeDimension();
     const int numVar = system.GetDomainDimension();
-    Utilities::MyAssert(x.size() == numVar);
-    Utilities::MyAssert(delx.size() == numVar);
+    Utilities::MyAssert(static_cast<int>(x.size()) == numVar);
+    Utilities::MyAssert(static_cast<int>(delx.size()) == numVar);
     std::vector<double> y(numEqn);
     MatrixDense jacobian(numEqn, numVar);
     for (int eqn = 0; eqn < numEqn; ++eqn)
@@ -98,7 +98,7 @@ void RealFunctionCheckDerivative::CheckExtrapolation(const IRealFunction &system
 
     const int numEqn = system.GetRangeDimension();
     const int numVar = system.GetDomainDimension();
-    Utilities::MyAssert(x.size() == numVar);
+    Utilities::MyAssert(static_cast<int>(x.size()) == numVar);
     std::vector<double> residuals(nSteps);
     std::vector<double> y(numEqn);
     MatrixDense jacobian(numEqn, numVar);

@@ -21,7 +21,7 @@ void CollocationPointsToFile(std::string functionName, const HierApproximation &
 {
     const size_t dim = approx.getFactory().getDimension();
     std::ofstream ofs(Plotting::GetTextFile(functionName));
-    for (auto d = 0; d < dim; ++d)
+    for (size_t d = 0; d < dim; ++d)
     {
         if (d > 0)
             ofs << " , ";
@@ -32,7 +32,7 @@ void CollocationPointsToFile(std::string functionName, const HierApproximation &
     for (const auto &xvec : approx.getCollocationPoints())
     {
 
-        for (auto d = 0; d < dim; ++d)
+        for (size_t d = 0; d < dim; ++d)
         {
             if (d > 0)
                 ofs << " , ";
@@ -154,7 +154,6 @@ TEST(SparseGridOptimizerTest, Square2D_AlphaHalf)
     constexpr int maxLevel = 10;
     IterativeMinimizationConvergenceCritMaxStep maxStep(maxLevel);
     const auto result = IterativeMinimizationController::Iterate(optimizer, maxStep);
-    const auto &approx = optimizer.getApproximation();
 
     ASSERT_EQ(optimizer.getApproximation().getAllTreeNodesRO().size(), 117);
     ASSERT_EQ(problem.getOriginalProblem().Function->getNumEvaluations(), 117);
@@ -188,7 +187,7 @@ TEST(SparseGridOptimizerTest, Camel)
     ASSERT_TRUE(areCloseEval(result.BestEval, problem.getMinimumOnUnitInfo().Extremum));
 }
 
-#if true
+#if false
 TEST(SparseGridOptimizerTest, PlayGround)
 {
     auto problem = MinimizationExamples::Rosenbrock2();
@@ -203,8 +202,7 @@ TEST(SparseGridOptimizerTest, PlayGround)
     constexpr int maxLevel = 8;
     IterativeMinimizationConvergenceCritMaxStep maxStep(maxLevel);
     const auto result = IterativeMinimizationController::Iterate(optimizer, maxStep);
-    const auto &approx = optimizer.getApproximation();
-    const auto numEvaluations = problem.getOriginalProblem().Function->getNumEvaluations();
+    auto numEvaluations = problem.getOriginalProblem().Function->getNumEvaluations();
 
     // CollocationPointsToFile("SparseGridOptimizerTest_PlayGround", approx);
 }

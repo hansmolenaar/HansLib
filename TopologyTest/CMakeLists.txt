@@ -1,7 +1,5 @@
 project(TopologyTest)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wno-long-long -pedantic")
-
 file(GLOB SOURCES CONFIGURE_DEPENDS "*.cpp")
 add_executable(${PROJECT_NAME} ${SOURCES})
 
