@@ -55,7 +55,7 @@ ColorInAllComponents SolverSweepBiValueLinksSingleValue::GetColoring(const Poten
 
     // Get the active fields
     std::unordered_set<FieldIndex> activeFields;
-    for (const auto& a : adjacencies)
+    for (const auto &a : adjacencies)
     {
         activeFields.insert(a.first);
         activeFields.insert(a.second);
@@ -82,7 +82,7 @@ ColorInAllComponents SolverSweepBiValueLinksSingleValue::GetColoring(const Poten
     const auto numVertices = boost::num_vertices(g);
 
     // Set edges
-    for (const auto& a : adjacencies)
+    for (const auto &a : adjacencies)
     {
         const auto v1 = field2vd.at(a.first);
         const auto v2 = field2vd.at(a.second);

@@ -11,7 +11,6 @@ template class MeshingSettingsStandard<2>;
 
 using namespace MeshGeneration;
 
-
 template <size_t N>
 MeshingSettingsStandard<N>::MeshingSettingsStandard(int maxLevel, double initBbMultiplier)
     : m_refinementPredicateFactory(maxLevel), m_bbGenerator(InitialBoundingboxGenerator<N>::Create(initBbMultiplier))

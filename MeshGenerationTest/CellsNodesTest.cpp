@@ -100,6 +100,9 @@ TEST(CellsNodesTest, GetEdgeConnectedNodes)
     CellsNodes<TriangleNodesOriented> tnodes;
     std::vector<NodeIndex> result;
 
+    tnodes.addCell(TriangleNodesOriented(42, 999, 0));
+    tnodes.addCell(TriangleNodesOriented(999, 42, 1));
+
     tnodes.getEdgeConnectedNodes(result, 1);
     ASSERT_TRUE(str::equal(result, std::vector<PointIndex>{42, 999}));
 
@@ -132,6 +135,7 @@ TEST(CellsNodesTest, TryGetTriangle)
 {
     CellsNodes<TriangleNodesOriented> tnodes;
     std::vector<CellIndex> cellIds;
+    tnodes.addCell(TriangleNodesOriented(42, 999, 0));
     const auto triangle1 = tnodes.addCell(TriangleNodesOriented(999, 42, 1));
 
     const auto found_42_1_999 = tnodes.tryGetCellFromOrderedNodes(std::array<NodeIndex, 3>{1, 999, 42});
@@ -147,7 +151,7 @@ TEST(CellsNodesTest, TryGetTriangle)
 TEST(CellsNodesTest, TriangleContainsNode)
 {
     CellsNodes<TriangleNodesOriented> tnodes;
-
+    tnodes.addCell(TriangleNodesOriented(42, 999, 0));
     const auto triangle1 = tnodes.addCell(TriangleNodesOriented(999, 42, 1));
 
     ASSERT_TRUE(tnodes.cellContainsNode(triangle1, 1));
@@ -189,16 +193,20 @@ TEST(CellsNodesTest, GetAllEdges)
     tnodes.getAlEdges(allEdges);
     ASSERT_TRUE(allEdges.empty());
 
+    tnodes.addCell(TriangleNodesOriented(42, 999, 0));
     tnodes.getAlEdges(allEdges);
     ASSERT_TRUE(str::equal(allEdges, std::vector<EdgeNodesSorted>{{0, 42}, {0, 999}, {42, 999}}));
-
+    tnodes.addCell(TriangleNodesOriented(42, 0, 2));
     tnodes.getAlEdges(allEdges);
     ASSERT_TRUE(str::equal(allEdges, std::vector<EdgeNodesSorted>{{0, 2}, {0, 42}, {0, 999}, {2, 42}, {42, 999}}));
 }
 
 TEST(CellsNodesTest, GetAllNodes)
 {
+
     CellsNodes<TriangleNodesOriented> tnodes;
+    tnodes.addCell(TriangleNodesOriented(2, 1, 999));
+    tnodes.addCell(TriangleNodesOriented(1, 2, 42));
     const auto nodes = tnodes.getAllNodes();
     ASSERT_TRUE(str::equal(nodes, std::vector<NodeIndex>{1, 2, 42, 999}));
 }

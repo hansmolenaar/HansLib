@@ -7,7 +7,7 @@ template class RefineRegionToMaxLevel<2>;
 template class RefineRegionToMaxLevel<3>;
 template class RefineRegionToMaxLevelFactory<2>;
 template class RefineRegionToMaxLevelFactory<3>;
-}
+} // namespace MeshGeneration
 
 using namespace MeshGeneration;
 

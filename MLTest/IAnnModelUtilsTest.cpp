@@ -30,7 +30,7 @@ class NumericalCheck : public ISingleVariableRealValuedFunction
   public:
     NumericalCheck(const ML::IAnnModel &model, const ML::IAnnDataSet &dataSet, size_t layer, size_t param,
                    const ML::IParameterSet &parameterSet);
-    //double Evaluate((double parameterValue) const;
+    // double Evaluate((double parameterValue) const;
     double EvaluateDefault() const;
 
     double Evaluate(double x) const override;
