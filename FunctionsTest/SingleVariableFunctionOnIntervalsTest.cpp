@@ -19,18 +19,17 @@ TEST(SingleVariableFunctionsOnInterval, Simple)
     ASSERT_FALSE(function.HasDerivative());
     ASSERT_THROW(function.Derivative(3.0), MyException);
 
-    ASSERT_TRUE(areClose(function(0.5), 0.5));
-    ASSERT_TRUE(areClose(function(1.5), 999.0));
-    ASSERT_TRUE(areClose(function(2.5), 6.25));
+    ASSERT_TRUE(areClose(function.Evaluate(0.5), 0.5));
+    ASSERT_TRUE(areClose(function.Evaluate(1.5), 999.0));
+    ASSERT_TRUE(areClose(function.Evaluate(2.5), 6.25));
 }
 
 TEST(SingleVariableFunctionsOnInterval, exception)
 {
-    constexpr Functors::AreClose areClose;
     const Interval<double> domain1(-1, 1);
     auto monomial1 = std::make_shared<SingleVariableMonomial>(1);
     auto function1 = std::make_shared<SingleVariableFunctionOnInterval>(monomial1, domain1);
     const SingleVariableFunctionOnIntervals function(
         std::vector<std::shared_ptr<SingleVariableFunctionOnInterval>>{function1});
-    ASSERT_THROW(function(3.0), MyException);
+    ASSERT_THROW(function.Evaluate(3.0), MyException);
 }

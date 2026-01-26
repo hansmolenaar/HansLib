@@ -64,7 +64,6 @@ TEST(MultiVariablePolynomialTest, Test2)
     std::array<double, 2> x = {2.0, 3.0};
     std::array<double, 2> deriv;
 
-    auto tmp = Evaluate(fie, x);
     ASSERT_EQ(Evaluate(fie, x), 16.0);
     Derivative(fie, x, deriv);
     ASSERT_EQ(deriv[0], 10.0);

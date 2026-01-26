@@ -14,7 +14,7 @@ HierLevelIndex HierBasisFunction1D_ExtendedLevelOneBC::getLevelIndex() const
 
 double HierBasisFunction1D_ExtendedLevelOneBC::operator()(double x) const
 {
-    return HatFunction()(Pow2()(m_levelIndex.getLevel()) * x - m_levelIndex.getIndex());
+    return HatFunction().Evaluate(Pow2()(m_levelIndex.getLevel()) * x - m_levelIndex.getIndex());
 }
 
 Interval<double> HierBasisFunction1D_ExtendedLevelOneBC::getSupport() const

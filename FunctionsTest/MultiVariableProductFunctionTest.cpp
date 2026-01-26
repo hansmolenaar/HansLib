@@ -31,7 +31,7 @@ TEST(MultiVariableProductFunctionTest, Test1)
     ASSERT_NEAR(deriv[0], 32.0, c_eps);
 
     std::array<double, 1> delx = {0.01};
-    (fie, x, delx);
+     RealFunctionCheckDerivative::Check(fie, x, delx);
 }
 
 TEST(MultiVariableProductFunctionTest, Test3)

@@ -72,11 +72,11 @@ void RealFunctionCheckDerivative::CheckExtrapolation(ISingleVariableRealValuedFu
 {
     const auto siz = residuals.size();
     Utilities::MyAssert(siz > 1);
-    const double val0 = fie(x);
+    const double val0 = fie.Evaluate(x);
     const double deriv = fie.Derivative(x);
     for (size_t n = 0; n < siz; ++n)
     {
-        const double val = fie(x + delx);
+        const double val = fie.Evaluate(x + delx);
         residuals[n] = std::abs(val0 + deriv * delx - val);
         delx /= 2.0;
     }

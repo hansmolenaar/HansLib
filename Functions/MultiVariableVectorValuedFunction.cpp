@@ -9,7 +9,7 @@ MultiVariableVectorValuedFunction::MultiVariableVectorValuedFunction(
     : m_components(components.begin(), components.end())
 {
     const int numVar = m_components[0]->GetDomainDimension();
-    for (const auto cmp : m_components)
+    for (const auto& cmp : m_components)
     {
         Utilities::MyAssert(cmp->GetDomainDimension() == numVar);
     }
@@ -41,7 +41,7 @@ void MultiVariableVectorValuedFunction::Evaluate(std::span<const double> x, std:
     int eqn = 0;
     double eval;
     std::span<double> evalWrapper(&eval, 1);
-    for (const auto cmp : m_components)
+    for (const auto& cmp : m_components)
     {
         cmp->Evaluate(x, evalWrapper);
         fx[eqn] = eval;
@@ -57,7 +57,7 @@ void MultiVariableVectorValuedFunction::Derivative(std::span<const double> x, IM
     Utilities::MyAssert(dfdx.GetColDimension() == numVar);
     std::vector<double> deriv(numVar);
     int eqn = 0;
-    for (const auto cmp : m_components)
+    for (const auto& cmp : m_components)
     {
         ::Derivative(*cmp, x, deriv);
         for (int var = 0; var < numVar; ++var)

@@ -12,7 +12,7 @@ MultiVariableFunctionEvaluateFrom01::MultiVariableFunctionEvaluateFrom01(
     : m_function(std::move(fie)), m_targetIntervals(std::move(targetIntervals))
 
 {
-    if (m_function->getDimension() != m_targetIntervals.size())
+    if (m_function->getDimension() != static_cast<int>(m_targetIntervals.size()))
     {
         throw MyException(
             "MultiVariableFunctionEvaluateFrom01::MultiVariableFunctionEvaluateFrom01( dimension mismatch");

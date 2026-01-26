@@ -46,7 +46,7 @@ void RealFunctionAdd::Evaluate(std::span<const double> x, std::span<double> y) c
     m_fie1.Evaluate(x, y);
     std::vector<double> yy(y.size());
     m_fie2.Evaluate(x, yy);
-    for (auto n = 0; n < y.size(); ++n)
+    for (size_t n = 0; n < y.size(); ++n)
     {
         y[n] += yy[n];
     }

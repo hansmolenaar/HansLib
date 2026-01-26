@@ -38,7 +38,7 @@ Interval<double> HierBasisFunction1D_HomogenousBC::getSupport() const
 
 double HierBasisFunction1D_HomogenousBC::Evaluate(const HierLevelIndex &levelIndex, double x)
 {
-    return HatFunction()(Pow2()(levelIndex.getLevel()) * x - levelIndex.getIndex());
+    return HatFunction().Evaluate(Pow2()(levelIndex.getLevel()) * x - levelIndex.getIndex());
 }
 
 Interval<double> HierBasisFunction1D_HomogenousBC::GetSupport(const HierLevelIndex &levelIndex)

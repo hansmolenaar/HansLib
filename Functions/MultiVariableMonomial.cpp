@@ -31,13 +31,13 @@ bool MultiVariableMonomial::HasDerivative() const
 
 bool MultiVariableMonomial::DerivativeAlwaysZero(int var) const
 {
-    Utilities::MyAssert(var >= 0 && var < m_powers.size());
+    Utilities::MyAssert(var >= 0 && var < static_cast<int>(m_powers.size()));
     return m_powers[var].GetPower() == 0;
 }
 
 double MultiVariableMonomial::Evaluate(std::span<const double> x) const
 {
-    Utilities::MyAssert(x.size() == GetDomainDimension());
+    Utilities::MyAssert(static_cast<int>(x.size()) == GetDomainDimension());
     double result = 1;
     int pos = 0;
     for (auto &factor : m_powers)
@@ -52,8 +52,8 @@ void MultiVariableMonomial::Derivative(std::span<const double> x, std::span<doub
 {
     const int dim = GetDomainDimension();
 
-    Utilities::MyAssert(x.size() == GetDomainDimension());
-    Utilities::MyAssert(dfdx.size() == dim);
+    Utilities::MyAssert(static_cast<int>(x.size()) == GetDomainDimension());
+    Utilities::MyAssert(static_cast<int>(dfdx.size()) == dim);
 
     for (int var = 0; var < dim; ++var)
     {
