@@ -73,8 +73,7 @@ TEST(PointTest, Times)
 TEST(PointTest, Bounds)
 {
     const IntPoint2 p{1, 2};
-    int i;
-    ASSERT_ANY_THROW(i = p.at(2));
+    ASSERT_ANY_THROW( p.at(2));
 }
 
 TEST(PointTest, HashIntPoint1)

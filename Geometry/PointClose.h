@@ -31,7 +31,7 @@ template <typename T, size_t N> bool PointClose<T, N>::samePoints(Point<T, N> p0
 template <typename T, size_t N> T PointClose<T, N>::getSmallLengthInDirection(int n) const
 {
     Utilities::MyAssert(n >= 0);
-    Utilities::MyAssert(n < N);
+    Utilities::MyAssert(static_cast<size_t>(n) < N);
     return m_smallInDirection;
 }
 

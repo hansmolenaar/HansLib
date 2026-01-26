@@ -73,7 +73,7 @@ template <typename T, size_t N> UnitVector<T, N> UnitVector<T, N>::Create(std::s
         return {};
     const T norm = std::sqrt(norm2);
     std::array<T, N> values;
-    for (int n = 0; n < N; ++n)
+    for (size_t n = 0; n < N; ++n)
     {
         values[n] = cors[n] / norm;
     }

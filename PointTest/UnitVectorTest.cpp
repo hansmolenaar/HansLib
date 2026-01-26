@@ -32,8 +32,7 @@ TEST(UnitVectorTest, Bounds)
     const Point1 p{{2}};
     const auto uv = UnitVector<double, GeomDim1>::Create(p);
     ASSERT_NEAR(uv[0], 1.0, crit);
-    double val;
-    ASSERT_ANY_THROW(val = uv[1]);
+    ASSERT_ANY_THROW(uv[1]);
 }
 
 TEST(UnitVectorTest, InnerProduct)
