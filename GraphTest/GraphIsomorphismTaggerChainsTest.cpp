@@ -60,12 +60,12 @@ TEST(GraphIsomorphismTaggerChainsTest, PurePath3)
     ASSERT_EQ(tagger.getGraphTag(), (Tag{1, 3, 1}));
 
     ASSERT_EQ(&tagger.getGraph(), graph.get());
-    ASSERT_EQ(tagger.compare(0, 1), std::weak_ordering::less);
-    ASSERT_EQ(tagger.compare(1, 0), std::weak_ordering::greater);
-    ASSERT_EQ(tagger.compare(0, 2), std::weak_ordering::less);
-    ASSERT_EQ(tagger.compare(2, 0), std::weak_ordering::greater);
-    ASSERT_EQ(tagger.compare(1, 2), std::weak_ordering::less);
-    ASSERT_EQ(tagger.compare(2, 1), std::weak_ordering::greater);
+    ASSERT_EQ(tagger.compareVertexOtherGraph(0, tagger, 1), std::weak_ordering::less);
+    ASSERT_EQ(tagger.compareVertexOtherGraph(1, tagger, 0), std::weak_ordering::greater);
+    ASSERT_EQ(tagger.compareVertexOtherGraph(0, tagger, 2), std::weak_ordering::less);
+    ASSERT_EQ(tagger.compareVertexOtherGraph(2, tagger, 0), std::weak_ordering::greater);
+    ASSERT_EQ(tagger.compareVertexOtherGraph(1, tagger, 2), std::weak_ordering::less);
+    ASSERT_EQ(tagger.compareVertexOtherGraph(2, tagger, 1), std::weak_ordering::greater);
 }
 
 TEST(GraphIsomorphismTaggerChainsTest, Pan3)

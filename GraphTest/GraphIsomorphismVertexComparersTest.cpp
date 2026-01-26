@@ -22,11 +22,11 @@ TEST(GraphIsomorphismVertexComparersTest, DegreeButterfly)
 
     ASSERT_EQ(&comparers.getGraph(), graph.get());
 
-    ASSERT_EQ(comparers.compare(0, 1), std::weak_ordering::greater);
-    ASSERT_EQ(comparers.compare(1, 0), std::weak_ordering::less);
+    ASSERT_EQ(comparers.compareVertexOtherGraph(0, comparers, 1), std::weak_ordering::greater);
+    ASSERT_EQ(comparers.compareVertexOtherGraph(1, comparers, 0), std::weak_ordering::less);
 
-    ASSERT_EQ(comparers.compare(1, 2), std::weak_ordering::equivalent); // equal
-    ASSERT_EQ(comparers.compare(2, 1), std::weak_ordering::equivalent); // equal
+    ASSERT_EQ(comparers.compareVertexOtherGraph(1, comparers, 2), std::weak_ordering::equivalent); // equal
+    ASSERT_EQ(comparers.compareVertexOtherGraph(2, comparers, 1), std::weak_ordering::equivalent); // equal
 
     const VertexComparers other(taggers);
     ASSERT_EQ(comparers.compareVertexOtherGraph(0, other, 1), std::weak_ordering::greater);
@@ -50,11 +50,11 @@ TEST(GraphIsomorphismVertexComparersTest, Fish)
     const std::vector<const IVertexCompare *> taggers{&taggerDegree, &taggerTriangles};
     const VertexComparers comparers(taggers);
 
-    ASSERT_EQ(comparers.compare(4, 0), std::weak_ordering::greater);
-    ASSERT_EQ(comparers.compare(0, 4), std::weak_ordering::less);
+    ASSERT_EQ(comparers.compareVertexOtherGraph(4, comparers, 0), std::weak_ordering::greater);
+    ASSERT_EQ(comparers.compareVertexOtherGraph(0, comparers, 4), std::weak_ordering::less);
 
-    ASSERT_EQ(comparers.compare(4, 5), std::weak_ordering::equivalent); // equal
-    ASSERT_EQ(comparers.compare(5, 4), std::weak_ordering::equivalent); // equal
+    ASSERT_EQ(comparers.compareVertexOtherGraph(4, comparers, 5), std::weak_ordering::equivalent); // equal
+    ASSERT_EQ(comparers.compareVertexOtherGraph(5, comparers, 4), std::weak_ordering::equivalent); // equal
 
     const VertexLess less{comparers};
     ASSERT_TRUE(less(0, 4));

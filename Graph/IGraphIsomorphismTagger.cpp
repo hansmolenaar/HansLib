@@ -3,11 +3,6 @@
 using namespace Graph;
 using namespace GraphIsomorphism;
 
-std::weak_ordering IVertexCompare::compare(Vertex lhs, Vertex rhs) const
-{
-    return compareVertexOtherGraph(lhs, *this, rhs);
-}
-
 const ICharacteristicsCompare *ICompare::getCharacteristicsCompare() const
 {
     return dynamic_cast<const ICharacteristicsCompare *>(this);
