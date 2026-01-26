@@ -12,7 +12,7 @@ HierLevelIndex HierBasisFunction1D_ExtraplolateBC::getLevelIndex() const
     return m_levelIndex;
 }
 
-double HierBasisFunction1D_ExtraplolateBC::operator()(double x) const
+double HierBasisFunction1D_ExtraplolateBC::Evaluate(double x) const
 {
     if (x < 0.0 || x > 1.0)
         return 0.0;
@@ -37,7 +37,7 @@ double HierBasisFunction1D_ExtraplolateBC::operator()(double x) const
         return pow2Level * x + 1 - index;
     }
 
-    return HierBasisFunction1D_HomogenousBC::Evaluate(m_levelIndex, x);
+    return HierBasisFunction1D_HomogenousBC::EvaluateAt(m_levelIndex, x);
 }
 
 Interval<double> HierBasisFunction1D_ExtraplolateBC::getSupport() const

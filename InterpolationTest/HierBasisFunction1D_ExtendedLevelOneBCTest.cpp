@@ -20,13 +20,13 @@ TEST(HierBasisFunction1D_ExtendedLevelOneBCTest, Basis_0_0)
 
     IHierBasisFunction1DTest_Interface(fie);
 
-    ASSERT_NEAR(fie(-1.0), 0.0, Epsilon);
-    ASSERT_NEAR(fie(0.0), 1.0, Epsilon);
-    ASSERT_NEAR(fie(0.25), 0.75, Epsilon);
-    ASSERT_NEAR(fie(0.5), 0.5, Epsilon);
-    ASSERT_NEAR(fie(0.75), 0.25, Epsilon);
-    ASSERT_NEAR(fie(1.0), 0.0, Epsilon);
-    ASSERT_NEAR(fie(2.0), 0.0, Epsilon);
+    ASSERT_NEAR(fie.Evaluate(-1.0), 0.0, Epsilon);
+    ASSERT_NEAR(fie.Evaluate(0.0), 1.0, Epsilon);
+    ASSERT_NEAR(fie.Evaluate(0.25), 0.75, Epsilon);
+    ASSERT_NEAR(fie.Evaluate(0.5), 0.5, Epsilon);
+    ASSERT_NEAR(fie.Evaluate(0.75), 0.25, Epsilon);
+    ASSERT_NEAR(fie.Evaluate(1.0), 0.0, Epsilon);
+    ASSERT_NEAR(fie.Evaluate(2.0), 0.0, Epsilon);
 }
 
 TEST(HierBasisFunction1D_ExtendedLevelOneBCTest, Basis_0_1)
@@ -39,13 +39,13 @@ TEST(HierBasisFunction1D_ExtendedLevelOneBCTest, Basis_0_1)
 
     IHierBasisFunction1DTest_Interface(fie);
 
-    ASSERT_NEAR(fie(-1.0), 0.0, Epsilon);
-    ASSERT_NEAR(fie(0.0), 0.0, Epsilon);
-    ASSERT_NEAR(fie(0.25), 0.25, Epsilon);
-    ASSERT_NEAR(fie(0.5), 0.5, Epsilon);
-    ASSERT_NEAR(fie(0.75), 0.75, Epsilon);
-    ASSERT_NEAR(fie(1.0), 1.0, Epsilon);
-    ASSERT_NEAR(fie(2.0), 0.0, Epsilon);
+    ASSERT_NEAR(fie.Evaluate(-1.0), 0.0, Epsilon);
+    ASSERT_NEAR(fie.Evaluate(0.0), 0.0, Epsilon);
+    ASSERT_NEAR(fie.Evaluate(0.25), 0.25, Epsilon);
+    ASSERT_NEAR(fie.Evaluate(0.5), 0.5, Epsilon);
+    ASSERT_NEAR(fie.Evaluate(0.75), 0.75, Epsilon);
+    ASSERT_NEAR(fie.Evaluate(1.0), 1.0, Epsilon);
+    ASSERT_NEAR(fie.Evaluate(2.0), 0.0, Epsilon);
 }
 
 TEST(HierBasisFunction1D_ExtendedLevelOneBCTest, Basis_1_1)
@@ -58,11 +58,11 @@ TEST(HierBasisFunction1D_ExtendedLevelOneBCTest, Basis_1_1)
 
     IHierBasisFunction1DTest_Interface(fie);
 
-    ASSERT_NEAR(fie(-1.0), 0.0, Epsilon);
-    ASSERT_NEAR(fie(0.0), 0.0, Epsilon);
-    ASSERT_NEAR(fie(0.25), 0.5, Epsilon);
-    ASSERT_NEAR(fie(0.5), 1.0, Epsilon);
-    ASSERT_NEAR(fie(0.75), 0.5, Epsilon);
-    ASSERT_NEAR(fie(1.0), 0.0, Epsilon);
-    ASSERT_NEAR(fie(2.0), 0.0, Epsilon);
+    ASSERT_NEAR(fie.Evaluate(-1.0), 0.0, Epsilon);
+    ASSERT_NEAR(fie.Evaluate(0.0), 0.0, Epsilon);
+    ASSERT_NEAR(fie.Evaluate(0.25), 0.5, Epsilon);
+    ASSERT_NEAR(fie.Evaluate(0.5), 1.0, Epsilon);
+    ASSERT_NEAR(fie.Evaluate(0.75), 0.5, Epsilon);
+    ASSERT_NEAR(fie.Evaluate(1.0), 0.0, Epsilon);
+    ASSERT_NEAR(fie.Evaluate(2.0), 0.0, Epsilon);
 }

@@ -12,7 +12,7 @@ HierLevelIndex HierBasisFunction1D_ExtendedLevelOneBC::getLevelIndex() const
     return m_levelIndex;
 }
 
-double HierBasisFunction1D_ExtendedLevelOneBC::operator()(double x) const
+double HierBasisFunction1D_ExtendedLevelOneBC::Evaluate(double x) const
 {
     return HatFunction().Evaluate(Pow2()(m_levelIndex.getLevel()) * x - m_levelIndex.getIndex());
 }

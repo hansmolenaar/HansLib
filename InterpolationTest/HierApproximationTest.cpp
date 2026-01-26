@@ -47,32 +47,6 @@ void TestCollocationPoints(const IMultiVariableRealValuedFunction &expect, const
     }
 }
 
-void CollocationPointsToFile(std::string functionName, const HierApproximation &approx)
-{
-    const size_t dim = approx.getFactory().getDimension();
-    std::ofstream ofs(Plotting::GetFile(functionName));
-    for (auto d = 0; d < dim; ++d)
-    {
-        if (d > 0)
-            ofs << " , ";
-        ofs << "x" << std::to_string(d);
-    }
-    ofs << "\n";
-
-    for (const auto &xvec : approx.getCollocationPoints())
-    {
-
-        for (auto d = 0; d < dim; ++d)
-        {
-            if (d > 0)
-                ofs << " , ";
-            ofs << xvec.at(d);
-        }
-        ofs << "\n";
-    }
-    ofs.close();
-}
-
 } // namespace
 
 TEST(HierApproximationTest, GetSomePolynomial_1)
@@ -155,7 +129,6 @@ TEST(HierApproximationTest, Linear)
         NodeRefinePredicateFactoryByLevel refineOnLevel(level);
         auto approximation = HierApproximation::Create(*linear, factory, refineOnLevel);
         ASSERT_NO_THROW(TestCollocationPoints(*linear, *approximation));
-        const double dif = std::abs((*approximation)(xin)-expect);
         const Functors::AreClose close;
         ASSERT_TRUE(close((*approximation)(xin), expect));
     }
@@ -163,9 +136,7 @@ TEST(HierApproximationTest, Linear)
 
 TEST(HierApproximationTest, TestConvergence)
 {
-    const std::array<double, 2> xin{0.52, 0.53};
     const auto fie = GetSomePolynomial();
-    const double expect = fie->Evaluate(xin);
 
     HierBasisFunction1D_HomogenousBC_Factory factory1D;
     HierBasisFunction_Factory factory(size_t{2}, &factory1D);

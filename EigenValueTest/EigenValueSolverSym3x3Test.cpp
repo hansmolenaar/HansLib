@@ -32,8 +32,7 @@ void CheckCalculationSingleMatrix(const MatrixKelvinRepr3 &matrix,
     std::sort(eigenvalues.begin(), eigenvalues.end());
     for (int n = 0; n < 3; ++n)
     {
-        const double dif = std::abs(eigenvalues[n] - expectedSortedEigenValues[n]);
-        Utilities::MyAssert(std::abs(eigenvalues[n] - expectedSortedEigenValues[n]) < tol);
+ASSERT_LE(std::abs(eigenvalues[n] - expectedSortedEigenValues[n]) , tol);
     }
 
     ASSERT_NEAR(eigenvalues[0], expectedSortedEigenValues[0], tol);
@@ -453,7 +452,6 @@ TEST(EigenValueSolverSym3x3Test, TestDetAMinQI_2)
     matrix.Set(0, 1, 4.53436);
     matrix.Set(0, 2, 5.7);
     matrix.Set(1, 2, 6.0);
-    const double eval = fie.Evaluate(matrix.Vector());
 
     std::vector<double> delx(6, 0.1);
     RealFunctionCheckDerivative::Check(fie, matrix.Vector(), delx);
