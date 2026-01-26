@@ -8,18 +8,10 @@
 class IHierBasisFunction1D : public ISingleVariableRealValuedFunction
 {
   public:
-    //virtual double Evaluate(double x) const = 0;
-
     virtual HierLevelIndex getLevelIndex() const = 0;
     virtual Interval<double> getSupport() const = 0;
 
     // Implementation ISingleVariableRealValuedFunction
-#if false
-    inline double Evaluate(double x) const override
-    {
-        return (*this)(x);
-    }
-#endif
     inline double Derivative(double x) const override
     {
         throw MyException("IHierBasisFunction1D: no derivative");

@@ -6,10 +6,10 @@
 
 using namespace Topology;
 
-/* 
+/*
 
 Local vertex ordering of the tetrahedron
-  
+
         3
       / | \
      /  0   \

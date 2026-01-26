@@ -6,7 +6,7 @@ namespace Geometry
 template class DirectedEdgeIntersections<double, 1>;
 template class DirectedEdgeIntersections<double, 2>;
 template class DirectedEdgeIntersections<double, 3>;
-}
+} // namespace Geometry
 
 using namespace Geometry;
 

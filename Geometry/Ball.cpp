@@ -8,10 +8,9 @@ template class Ball<int, 3>;
 template class Ball<double, 1>;
 template class Ball<double, 2>;
 template class Ball<double, 3>;
-}
+} // namespace Geometry
 
 using namespace Geometry;
-
 
 template <typename T, size_t N>
 Ball<T, N>::Ball(Point<T, N> center, T radius)

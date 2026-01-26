@@ -5,10 +5,9 @@ namespace Geometry
 template class Sphere<double, 1>;
 template class Sphere<double, 2>;
 template class Sphere<double, 3>;
-}
+} // namespace Geometry
 
 using namespace Geometry;
-
 
 template <typename T, size_t N> Sphere<T, N>::Sphere(Point<T, N> center, T radius) : m_ball(std::move(center), radius)
 {
@@ -29,7 +28,7 @@ template <typename T, size_t N>
 std::optional<Point<T, N>> Sphere<T, N>::TryGetFirstIntersectionWithDirectedEdge(
     const Geometry::DirectedEdge<T, N> &edge, const IGeometryPredicate<T, N> &predicate) const
 {
-const auto &point1 = edge.point1();
+    const auto &point1 = edge.point1();
     const auto [pos0, pos1] = m_ball.getPositions(edge, predicate);
 
     if (pos0 == BallPosition::Inside && pos1 == BallPosition::Inside)

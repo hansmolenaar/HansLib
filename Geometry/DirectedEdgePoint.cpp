@@ -6,7 +6,7 @@ namespace Geometry
 template class DirectedEdgePoint<double, GeomDim1>;
 template class DirectedEdgePoint<double, GeomDim2>;
 template class DirectedEdgePoint<double, GeomDim3>;
-}
+} // namespace Geometry
 
 using namespace Geometry;
 

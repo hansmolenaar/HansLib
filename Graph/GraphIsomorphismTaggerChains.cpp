@@ -148,8 +148,8 @@ std::vector<std::pair<ChainTag, Chain>> GetChains(const IGraphUs &graph)
         {
             const auto idAndChain = GetChain(graph, v, done);
             const auto &chain = idAndChain.second;
-            retval.emplace_back(
-                std::make_pair(ChainTag{idAndChain.first, static_cast<TagEntry>(chain.size()), chain.front(), chain.back()}, chain));
+            retval.emplace_back(std::make_pair(
+                ChainTag{idAndChain.first, static_cast<TagEntry>(chain.size()), chain.front(), chain.back()}, chain));
         }
         done.insert(v);
     }

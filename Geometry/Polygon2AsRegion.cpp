@@ -12,7 +12,6 @@ template class Polygon2AsRegion<double>;
 using namespace Utilities;
 using namespace Geometry;
 
-
 template <typename T>
 Polygon2AsRegion<T>::Polygon2AsRegion(std::span<const Point<T, 2>> polygon, std::string name)
     : m_polygon(polygon.size()), m_bb(BoundingBox<T, 2>::CreateFromList(polygon)), m_name(std::move(name))

@@ -8,7 +8,6 @@ template class Ball2AsRegion<double>;
 
 using namespace Geometry;
 
-
 namespace
 {
 template <typename T> class BallManifolds : public IRegionManifolds<T, 2>

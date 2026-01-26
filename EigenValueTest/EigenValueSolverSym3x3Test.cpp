@@ -32,7 +32,7 @@ void CheckCalculationSingleMatrix(const MatrixKelvinRepr3 &matrix,
     std::sort(eigenvalues.begin(), eigenvalues.end());
     for (int n = 0; n < 3; ++n)
     {
-ASSERT_LE(std::abs(eigenvalues[n] - expectedSortedEigenValues[n]) , tol);
+        ASSERT_LE(std::abs(eigenvalues[n] - expectedSortedEigenValues[n]), tol);
     }
 
     ASSERT_NEAR(eigenvalues[0], expectedSortedEigenValues[0], tol);

@@ -8,7 +8,6 @@ template class DirectedEdge2AsManifold1<double>;
 
 using namespace Geometry;
 
-
 template <typename T>
 DirectedEdge2AsManifold1<T>::DirectedEdge2AsManifold1(DirectedEdge<T, GeomDim2> edge, std::string name)
     : m_name(std::move(name)), m_edge(std::move(edge)), m_line(m_edge.point0(), m_edge.point1()),

@@ -7,7 +7,6 @@ template class Sphere3AsManifold2<double>;
 
 using namespace Geometry;
 
-
 template <typename T>
 Sphere3AsManifold2<T>::Sphere3AsManifold2(Sphere<T, GeomDim3> sphere, std::string name)
     : m_sphere(std::move(sphere)), m_name(std::move(name))
