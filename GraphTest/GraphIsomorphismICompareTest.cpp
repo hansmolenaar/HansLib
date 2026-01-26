@@ -25,8 +25,8 @@ void TestCompare(const IGraphUs &graph, ICompareFactory &factory, ICompare &comp
 
 void CheckGraphCompareSymmetry(const IGraphCompare &compare0, const IGraphCompare &compare1)
 {
-    const auto cmp0 = compare0.compareOtherGraph(compare1);
-    const auto cmp1 = compare1.compareOtherGraph(compare0);
+    const auto cmp0 = compare0.compareCharacteristics(compare1);
+    const auto cmp1 = compare1.compareCharacteristics(compare0);
 
     if (cmp0 == std::weak_ordering::equivalent)
     {
@@ -67,7 +67,7 @@ void CheckListGraphCompareSymmetry(ICompareFactory &factory, const std::vector<c
     // Check self
     for (const auto *p : list)
     {
-        ASSERT_EQ(p->compareOtherGraph(*p), std::weak_ordering::equivalent);
+        ASSERT_EQ(p->compareCharacteristics(*p), std::weak_ordering::equivalent);
     }
 }
 
@@ -77,7 +77,7 @@ void CheckListGraphCompare(ICompareFactory &factory, const std::vector<const IGr
     CheckListGraphCompareSymmetry(factory, gcomparers);
 
     auto cmp = [](const IGraphCompare *p1, const IGraphCompare *p2) {
-        return p1->compareOtherGraph(*p2) == std::weak_ordering::less;
+        return p1->compareCharacteristics(*p2) == std::weak_ordering::less;
     };
     const Grouping<const IGraphCompare *> grouping(gcomparers, cmp);
     const auto tag = CondenseSizeSequence(grouping.getGroupSizes());
@@ -115,7 +115,7 @@ void GraphTest::CheckList(ICompareFactory &factory, const std::vector<std::uniqu
 
     if (compare0->getGraphCompare() != nullptr)
     {
-        ASSERT_EQ(compare0->getGraphCompare()->compareOtherGraph(*compare0->getGraphCompare()),
+        ASSERT_EQ(compare0->getGraphCompare()->compareCharacteristics(*compare0->getGraphCompare()),
                   std::weak_ordering::equivalent);
         const std::vector<const IGraphCompare *> graphComparers = getCastPointers<const IGraphCompare>(comparers);
         CheckListGraphCompare(factory, graphComparers, expectGraphTagMultiplicities);
@@ -185,7 +185,7 @@ void GraphTest::CheckGraphTaggerConsistency(const IGraphUs &graph, ICompareFacto
     {
         const UndirectedGraph graphPermuted = UndirectedGraph::CreateRandomShuffled(graph, n);
         const auto comparerPermuted = factory.createCompare(graphPermuted);
-        ASSERT_EQ(graphComparer->compareOtherGraph(*comparerPermuted->getGraphCompare()),
+        ASSERT_EQ(graphComparer->compareCharacteristics(*comparerPermuted->getGraphCompare()),
                   std::weak_ordering::equivalent);
 
         const auto *taggerPermuted = comparerPermuted->getGraphTagger();

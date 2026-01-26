@@ -26,9 +26,9 @@ const Graph::IGraphUs &Comparers::getGraph() const
     return m_graphComparers.getGraph();
 }
 
-std::weak_ordering Comparers::compareOtherGraph(const IGraphCompare &other) const
+std::weak_ordering Comparers::compareCharacteristics(const IGraphCompare &other) const
 {
-    return m_graphComparers.compareOtherGraph(dynamic_cast<const Comparers &>(other).m_graphComparers);
+    return m_graphComparers.compareCharacteristics(dynamic_cast<const Comparers &>(other).m_graphComparers);
 }
 
 std::weak_ordering Comparers::compareVertexOtherGraph(Graph::Vertex v0, const IVertexCompare &other,
@@ -39,7 +39,7 @@ std::weak_ordering Comparers::compareVertexOtherGraph(Graph::Vertex v0, const IV
 
 std::weak_ordering Comparers::operator<=>(const Comparers &other) const
 {
-    auto result = m_graphComparers.compareOtherGraph(other.m_graphComparers);
+    auto result = m_graphComparers.compareCharacteristics(other.m_graphComparers);
     if (result != std::weak_ordering::equivalent)
     {
         return result;

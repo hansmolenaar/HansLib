@@ -17,6 +17,12 @@ using namespace GraphIsomorphism;
 using namespace Graph;
 using namespace Utilities;
 
+TEST(GraphIsomorphismComparersTest, CheckBasics)
+{
+    ComparersFactory factory;
+    GraphTest::CheckComparerBasics(factory, Tag{1, 8});
+}
+
 TEST(GraphIsomorphismComparersTest, Singleton)
 {
     const auto graph = UndirectedGraphLibrary::Get_Singleton();

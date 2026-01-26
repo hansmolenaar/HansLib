@@ -12,7 +12,7 @@ class GraphComparers : public IGraphCompare
     explicit GraphComparers(std::vector<const IGraphCompare *>);
 
     const Graph::IGraphUs &getGraph() const override;
-    std::weak_ordering compareOtherGraph(const IGraphCompare &) const override;
+    std::weak_ordering compareCharacteristics(const IGraphCompare &) const override;
 
   private:
     std::vector<const IGraphCompare *> m_graphComparers;

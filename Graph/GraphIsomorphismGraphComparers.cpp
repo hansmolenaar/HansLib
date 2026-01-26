@@ -15,7 +15,7 @@ const IGraphUs &GraphComparers::getGraph() const
     return m_graphComparers.front()->getGraph();
 }
 
-std::weak_ordering GraphComparers::compareOtherGraph(const IGraphCompare &other) const
+std::weak_ordering GraphComparers::compareCharacteristics(const IGraphCompare &other) const
 {
     const auto &compararers0 = m_graphComparers;
     const auto &compararers1 = dynamic_cast<const GraphComparers &>(other).m_graphComparers;
@@ -23,7 +23,7 @@ std::weak_ordering GraphComparers::compareOtherGraph(const IGraphCompare &other)
     std::weak_ordering result = std::weak_ordering::equivalent;
     for (size_t n : Iota::GetRange(compararers0.size()))
     {
-        result = compararers0.at(n)->compareOtherGraph(*compararers1.at(n));
+        result = compararers0.at(n)->compareCharacteristics(*compararers1.at(n));
         if (result != std::weak_ordering::equivalent)
         {
             return result;

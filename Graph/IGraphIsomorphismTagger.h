@@ -30,14 +30,14 @@ class IGraphCompare : public virtual ICompare
 {
   public:
     virtual ~IGraphCompare() = default;
-    virtual std::weak_ordering compareOtherGraph(const IGraphCompare &) const = 0;
+    virtual std::weak_ordering compareCharacteristics(const IGraphCompare &) const = 0;
 };
 
 class IGraphTagger : public virtual IGraphCompare
 {
   public:
     virtual const Tag &getGraphTag() const = 0;
-    std::weak_ordering compareOtherGraph(const IGraphCompare &gc) const override;
+    std::weak_ordering compareCharacteristics(const IGraphCompare &gc) const override;
 };
 
 class IVertexCompare : public virtual ICompare
