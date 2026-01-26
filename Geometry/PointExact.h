@@ -26,7 +26,7 @@ template <typename T, size_t N> bool PointExact<T, N>::samePoints(Point<T, N> p0
 template <typename T, size_t N> T PointExact<T, N>::getSmallLengthInDirection(int n) const
 {
     Utilities::MyAssert(n >= 0);
-    Utilities::MyAssert(n < N);
+    Utilities::MyAssert(n < static_cast<int>(N));
     return 0;
 }
 

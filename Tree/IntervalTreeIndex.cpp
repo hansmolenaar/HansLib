@@ -45,7 +45,7 @@ template <size_t N> BoundingBox<Rational, N> Index<N>::getBbOfCell() const
 {
     std::array<Rational, N> pointLwr;
     std::array<Rational, N> pointUpr;
-    for (int n = 0; n < N; ++n)
+    for (size_t n = 0; n < N; ++n)
     {
         const auto &intv = getInterval(n);
         pointLwr[n] = intv.getLower();

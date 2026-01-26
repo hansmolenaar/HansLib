@@ -86,7 +86,7 @@ BoundingBox<T, N>::BoundingBox(const std::span<const T> &values)
     : m_intervals(MakeArray<Interval<T>, N>(Interval<T>(T{})))
 {
     Utilities::MyAssert(values.size() == N);
-    for (int n = 0; n < N; ++n)
+    for (size_t n = 0; n < N; ++n)
     {
         m_intervals.at(n) = Interval<T>(values[n]);
     }
@@ -95,7 +95,7 @@ BoundingBox<T, N>::BoundingBox(const std::span<const T> &values)
 template <typename T, size_t N> void BoundingBox<T, N>::Add(const std::span<const T> &values)
 
 {
-    for (auto n = 0; n < N; ++n)
+    for (size_t n = 0; n < N; ++n)
     {
         m_intervals.at(n).add(values[n]);
     }
@@ -128,7 +128,6 @@ template <typename Container, typename F>
 BoundingBox<T, N> BoundingBox<T, N>::CreateFromListTransformed(const Container &container, F fun)
 {
     auto itr = std::begin(container);
-    std::array<int, 1> tmp = fun(*itr);
     BoundingBox<T, N> result = BoundingBox<T, N>::Create(fun(*itr));
     ++itr;
     for (; itr != std::end(container); ++itr)
@@ -152,7 +151,7 @@ template <typename TScale>
 Point<T, N> BoundingBox<T, N>::scaleFromPoint01(const Point<TScale, N> &scale) const
 {
     Point<T, N> point;
-    for (int n = 0; n < N; ++n)
+    for (size_t n = 0; n < N; ++n)
     {
         const T lwr = m_intervals[n].getLower();
         const T upr = m_intervals[n].getUpper();
@@ -187,7 +186,7 @@ template <typename T, size_t N> T BoundingBox<T, N>::getUpper(int d) const
 
 template <typename T, size_t N> bool BoundingBox<T, N>::contains(const Point<T, N> &point) const
 {
-    for (int d = 0; d < N; ++d)
+    for (size_t d = 0; d < N; ++d)
     {
         if (!m_intervals.at(d).contains(point.at(d)))
             return false;
@@ -201,7 +200,7 @@ std::optional<BoundingBox<T, N>> BoundingBox<T, N>::TryGetOverlap(const Bounding
 {
     std::array<T, N> lwr;
     std::array<T, N> upr;
-    for (int n = 0; n < N; ++n)
+    for (size_t n = 0; n < N; ++n)
     {
         if (!Interval<T>::TryIntersect(bb1.getInterval(n), bb2.getInterval(n), lwr[n], upr[n]))
         {
@@ -228,7 +227,7 @@ template <typename T, size_t N> T BoundingBox<T, N>::getLengthDiagonalSquared() 
 template <typename T, size_t N> T BoundingBox<T, N>::getMeasure() const
 {
     T result = 1;
-    for (int n = 0; n < N; ++n)
+    for (size_t n = 0; n < N; ++n)
     {
         result *= (getUpper(n) - getLower(n));
     }
