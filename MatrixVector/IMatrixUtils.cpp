@@ -62,8 +62,8 @@ void Clear(IMatrix &matrix)
 
 void MatrixTimesVector(const IMatrix &matrix, std::span<const double> vecin, std::span<double> vecout)
 {
-    Utilities::MyAssert(matrix.GetRowDimension() == vecout.size());
-    Utilities::MyAssert(matrix.GetColDimension() == vecin.size());
+    Utilities::MyAssert(matrix.GetRowDimension() == static_cast<int>(vecout.size()));
+    Utilities::MyAssert(matrix.GetColDimension() == static_cast<int>(vecin.size()));
     for (int row = 0; row < matrix.GetRowDimension(); ++row)
     {
         double sum = 0;

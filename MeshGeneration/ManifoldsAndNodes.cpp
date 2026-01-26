@@ -1,12 +1,16 @@
 #include "ManifoldsAndNodes.h"
 #include "Defines.h"
 
+namespace MeshGeneration
+{
+template class ManifoldsAndNodes<GeomDim2>;
+template class ManifoldsAndNodes<GeomDim3>;
+}
+
 using namespace MeshGeneration;
 using namespace Geometry;
 using namespace Topology;
 
-template class ManifoldsAndNodes<GeomDim2>;
-template class ManifoldsAndNodes<GeomDim3>;
 
 namespace
 {

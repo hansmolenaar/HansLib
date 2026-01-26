@@ -80,8 +80,6 @@ TEST(IMatrixSquareUtilsTest, TestDeterminantDerivs2)
     ASSERT_NEAR(-2.0, GetDeterminantDerivative(matrix, 1, 0), c_eps);
 
     const int dim = 2;
-    std::array<double, dim> roots;
-    std::array<double, dim> derivs;
 
     for (int row = 0; row < dim; ++row)
     {

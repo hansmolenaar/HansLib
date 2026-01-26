@@ -101,8 +101,8 @@ TEST(TrianglesNodesTest, GetEdgeConnectedNodes)
 {
     TrianglesNodes tnodes;
 
-    const auto triangle0 = tnodes.addTriangle(TriangleNodesOriented(42, 999, 0));
-    const auto triangle1 = tnodes.addTriangle(TriangleNodesOriented(999, 42, 1));
+    tnodes.addTriangle(TriangleNodesOriented(42, 999, 0));
+    tnodes.addTriangle(TriangleNodesOriented(999, 42, 1));
 
     const auto found_1 = tnodes.getEdgeConnectedNodes(1);
     ASSERT_TRUE(str::equal(found_1, std::vector<PointIndex>{42, 999}));
@@ -135,7 +135,7 @@ TEST(TrianglesNodesTest, TryGetTriangle)
 {
     TrianglesNodes tnodes;
 
-    const auto triangle0 = tnodes.addTriangle(TriangleNodesOriented(42, 999, 0));
+    tnodes.addTriangle(TriangleNodesOriented(42, 999, 0));
     const auto triangle1 = tnodes.addTriangle(TriangleNodesOriented(999, 42, 1));
 
     const auto found_42_1_999 = tnodes.tryGetTriangle(1, 999, 42);
@@ -152,7 +152,7 @@ TEST(TrianglesNodesTest, TriangleContainsNode)
 {
     TrianglesNodes tnodes;
 
-    const auto triangle0 = tnodes.addTriangle(TriangleNodesOriented(42, 999, 0));
+    tnodes.addTriangle(TriangleNodesOriented(42, 999, 0));
     const auto triangle1 = tnodes.addTriangle(TriangleNodesOriented(999, 42, 1));
 
     ASSERT_TRUE(tnodes.triangleContainsNode(triangle1, 1));
@@ -193,12 +193,12 @@ TEST(TrianglesNodesTest, GetAllEdges)
     auto allEdges = tnodes.getAllSortedEdges();
     ASSERT_TRUE(allEdges.empty());
 
-    const auto triangle0 = tnodes.addTriangle(TriangleNodesOriented(42, 999, 0));
+    tnodes.addTriangle(TriangleNodesOriented(42, 999, 0));
     allEdges = tnodes.getAllSortedEdges();
     ASSERT_TRUE(str::equal(allEdges, std::vector<EdgeNodesSorted>{EdgeNodesSorted{0, 42}, EdgeNodesSorted{0, 999},
                                                                   EdgeNodesSorted{42, 999}}));
 
-    const auto triangle1 = tnodes.addTriangle(TriangleNodesOriented(42, 0, 2));
+    tnodes.addTriangle(TriangleNodesOriented(42, 0, 2));
     allEdges = tnodes.getAllSortedEdges();
     ASSERT_TRUE(str::equal(allEdges, std::vector<EdgeNodesSorted>{{0, 2}, {0, 42}, {0, 999}, {2, 42}, {42, 999}}));
 }
@@ -209,12 +209,12 @@ TEST(TrianglesNodesTest, ToString)
     os << tnodes;
     ASSERT_EQ(os.str(), "TriangleNodes NUMNODES=0 NUMTRIANGLES=0");
 
-    const auto triangle0 = tnodes.addTriangle(TriangleNodesOriented(42, 999, 0));
+    tnodes.addTriangle(TriangleNodesOriented(42, 999, 0));
     os.str("");
     os << tnodes;
     ASSERT_EQ(os.str(), "TriangleNodes NUMNODES=3 NUMTRIANGLES=1");
 
-    const auto triangle1 = tnodes.addTriangle(TriangleNodesOriented(999, 42, 1));
+    tnodes.addTriangle(TriangleNodesOriented(999, 42, 1));
     os.str("");
     os << tnodes;
     ASSERT_EQ(os.str(), "TriangleNodes NUMNODES=4 NUMTRIANGLES=2");
@@ -222,8 +222,8 @@ TEST(TrianglesNodesTest, ToString)
 TEST(TrianglesNodesTest, GetAllNodes)
 {
     TrianglesNodes tnodes;
-    const auto triangle0 = tnodes.addTriangle(TriangleNodesOriented(2, 1, 999));
-    const auto triangle1 = tnodes.addTriangle(TriangleNodesOriented(1, 2, 42));
+    tnodes.addTriangle(TriangleNodesOriented(2, 1, 999));
+    tnodes.addTriangle(TriangleNodesOriented(1, 2, 42));
     const auto nodes = tnodes.getAllNodes();
     ASSERT_TRUE(str::equal(nodes, std::vector<NodeIndex>{1, 2, 42, 999}));
 }

@@ -54,7 +54,7 @@ template <size_t N> class Index
     friend std::ostream &operator<<(std::ostream &os, const Index &ind)
     {
         os << "(" << *(ind.m_factory1(ind.m_keys[0]));
-        for (int n = 1; n < N; ++n)
+        for (size_t n = 1; n < N; ++n)
         {
             os << ", " << *(ind.m_factory1(ind.m_keys[n]));
         }

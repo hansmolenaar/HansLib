@@ -52,7 +52,6 @@ struct ContainsPoint
 TEST(IndexTreeToSimplices3Test, RootToVtk)
 {
     IndexTree<GeomDim3> tree;
-    const auto &root = tree.getRoot();
 
     const auto tets = IndexTreeToSimplices3::Create(tree);
     ASSERT_EQ(ReferenceShapeCube::numTetsInStandardSplit, tets.size());
@@ -81,7 +80,6 @@ TEST(IndexTreeToSimplices3Test, RootToVtk)
 TEST(IndexTreeToSimplices3Test, Level1ToVtk)
 {
     IndexTree<GeomDim3> tree;
-    const auto &root = tree.getRoot();
     RefineToMaxLevel<GeomDim3> doRefine1{1};
     tree.refineLeaves(doRefine1);
 
@@ -121,7 +119,7 @@ TEST(IndexTreeToSimplices3Test, GetCubeFromIndex)
     const auto cube = IndexTreeToSimplices3::getCubeFromIndex(tree.getRoot());
     const auto *adjacencyC2E =
         *ReferenceShapeCube::getInstance().getAdjacencies().getAdjacency(Topology::Corner, Topology::Edge);
-    for (int edge = 0; edge < Topology::NumEdgesOnCube; ++edge)
+    for (size_t edge = 0; edge < Topology::NumEdgesOnCube; ++edge)
     {
         const auto &edgePoints = adjacencyC2E->getConnectedLowers(edge);
         ASSERT_EQ(edgePoints.size(), 2);

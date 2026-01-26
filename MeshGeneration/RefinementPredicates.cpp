@@ -1,12 +1,15 @@
 #include "RefinementPredicates.h"
 #include "IGeometryPredicate.h"
 
-using namespace MeshGeneration;
-
+namespace MeshGeneration
+{
 template class RefineRegionToMaxLevel<2>;
 template class RefineRegionToMaxLevel<3>;
 template class RefineRegionToMaxLevelFactory<2>;
 template class RefineRegionToMaxLevelFactory<3>;
+}
+
+using namespace MeshGeneration;
 
 template <size_t N>
 RefineRegionToMaxLevel<N>::RefineRegionToMaxLevel(int maxLevel, const Geometry::IGeometryRegion<double, N> &region,

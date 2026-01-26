@@ -111,8 +111,8 @@ TEST(TetrahedronsNodesTest, GetEdgeConnectedNodes)
 {
     TetrahedronsNodes tnodes;
 
-    const auto tetId0 = tnodes.addTetrahedron(TetrahedronNodesOriented(42, 999, 0, 2));
-    const auto tetId1 = tnodes.addTetrahedron(TetrahedronNodesOriented(999, 42, 1, 3));
+    tnodes.addTetrahedron(TetrahedronNodesOriented(42, 999, 0, 2));
+    tnodes.addTetrahedron(TetrahedronNodesOriented(999, 42, 1, 3));
 
     const auto found_1 = tnodes.getEdgeConnectedNodes(1);
     ASSERT_TRUE(str::equal(found_1, std::vector<NodeIndex>{3, 42, 999}));
@@ -145,7 +145,7 @@ TEST(TetrahedronsNodesTest, tryGetTetrahedronFromOrientedNodes)
 {
     TetrahedronsNodes tnodes;
 
-    const auto tetId0 = tnodes.addTetrahedron(TetrahedronNodesOriented(42, 999, 0, 4));
+    tnodes.addTetrahedron(TetrahedronNodesOriented(42, 999, 0, 4));
     const auto tetId1 = tnodes.addTetrahedron(TetrahedronNodesOriented(999, 42, 1, 3));
 
     auto found = tnodes.tryGetTetrahedronFromOrientedNodes({1, 3, 999, 42});
@@ -167,7 +167,7 @@ TEST(TetrahedronsNodesTest, TetrahedronContainsNode)
 {
     TetrahedronsNodes tnodes;
 
-    const auto tetId0 = tnodes.addTetrahedron(TetrahedronNodesOriented(42, 999, 0, 3));
+    tnodes.addTetrahedron(TetrahedronNodesOriented(42, 999, 0, 3));
     const auto tetId1 = tnodes.addTetrahedron(TetrahedronNodesOriented(999, 42, 1, 3));
 
     ASSERT_TRUE(tnodes.tetrahedronContainsNode(tetId1, 1));
@@ -208,14 +208,14 @@ TEST(TetrahedronsNodesTest, GetAllEdges)
     auto allEdges = tnodes.getAllSortedEdges();
     ASSERT_TRUE(allEdges.empty());
 
-    const auto tetId0 = tnodes.addTetrahedron(TetrahedronNodesOriented(42, 999, 0, 1));
+    tnodes.addTetrahedron(TetrahedronNodesOriented(42, 999, 0, 1));
     allEdges = tnodes.getAllSortedEdges();
     const std::vector<EdgeNodesSorted> expect{EdgeNodesSorted(0, 1),   EdgeNodesSorted(0, 42),
                                               EdgeNodesSorted(0, 999), EdgeNodesSorted(1, 42),
                                               EdgeNodesSorted(1, 999), EdgeNodesSorted(42, 999)};
     ASSERT_TRUE(str::equal(allEdges, expect));
 
-    const auto tetId1 = tnodes.addTetrahedron(TetrahedronNodesOriented(42, 3, 5, 1));
+    tnodes.addTetrahedron(TetrahedronNodesOriented(42, 3, 5, 1));
     allEdges = tnodes.getAllSortedEdges();
     ASSERT_EQ(allEdges.size(), 11);
 }
@@ -223,8 +223,8 @@ TEST(TetrahedronsNodesTest, GetAllEdges)
 TEST(TetrahedronsNodesTest, TwoTets)
 {
     TetrahedronsNodes tnodes;
-    const auto tetId1 = tnodes.addTetrahedron(TetrahedronNodesOriented(1, 2, 3, 4));
-    const auto tetId2 = tnodes.addTetrahedron(TetrahedronNodesOriented(1, 3, 2, 5));
+    tnodes.addTetrahedron(TetrahedronNodesOriented(1, 2, 3, 4));
+    tnodes.addTetrahedron(TetrahedronNodesOriented(1, 3, 2, 5));
     ASSERT_EQ(tnodes.getNumTetrahedrons(), 2);
 
     const auto boundaryFaces = tnodes.getBoundaryFaces();
@@ -240,12 +240,12 @@ TEST(TetrahedronsNodesTest, ToString)
     os << tnodes;
     ASSERT_EQ(os.str(), "TetrahedronNodes NUMNODES=0 NUMTETRAHEDRONS=0");
 
-    const auto tetId0 = tnodes.addTetrahedron(TetrahedronNodesOriented(42, 999, 0, 2));
+    tnodes.addTetrahedron(TetrahedronNodesOriented(42, 999, 0, 2));
     os.str("");
     os << tnodes;
     ASSERT_EQ(os.str(), "TetrahedronNodes NUMNODES=4 NUMTETRAHEDRONS=1");
 
-    const auto tetId1 = tnodes.addTetrahedron(TetrahedronNodesOriented(999, 42, 1, 3));
+    tnodes.addTetrahedron(TetrahedronNodesOriented(999, 42, 1, 3));
     os.str("");
     os << tnodes;
     ASSERT_EQ(os.str(), "TetrahedronNodes NUMNODES=6 NUMTETRAHEDRONS=2");
@@ -254,8 +254,8 @@ TEST(TetrahedronsNodesTest, ToString)
 TEST(TetrahedronsNodesTest, GetAllNodes)
 {
     TetrahedronsNodes tnodes;
-    const auto tetId0 = tnodes.addTetrahedron(TetrahedronNodesOriented(2, 1, 999, 3));
-    const auto tetId1 = tnodes.addTetrahedron(TetrahedronNodesOriented(1, 2, 4, 42));
+    tnodes.addTetrahedron(TetrahedronNodesOriented(2, 1, 999, 3));
+    tnodes.addTetrahedron(TetrahedronNodesOriented(1, 2, 4, 42));
     const auto nodes = tnodes.getAllNodes();
     ASSERT_TRUE(str::equal(nodes, std::vector<NodeIndex>{1, 2, 3, 4, 42, 999}));
 }

@@ -35,7 +35,6 @@ TEST(SubMatrixTest, Test1)
 
 TEST(SubMatrixTest, TestErrors)
 {
-    const double eps = 1.0e-10;
     const int dim = 8;
     MatrixSquare mat(dim);
 

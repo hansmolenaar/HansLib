@@ -4,9 +4,13 @@
 #include "InitialBoundingboxGenerator.h"
 #include "RefinementPredicates.h"
 
+namespace MeshGeneration
+{
+template class MeshingSettingsStandard<2>;
+}
+
 using namespace MeshGeneration;
 
-template class MeshingSettingsStandard<2>;
 
 template <size_t N>
 MeshingSettingsStandard<N>::MeshingSettingsStandard(int maxLevel, double initBbMultiplier)
