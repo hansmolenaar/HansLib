@@ -11,14 +11,6 @@ namespace
 {
 static const auto IsPositive = BoundsCheck<int>::CreateIsPositive();
 
-void CheckEdge2Corner(const ITopologicalAdjacency &e2c)
-{
-    if (e2c.getDimensionLow() != Corner)
-        throw MyException("CheckEdge2Corner low dime");
-    if (e2c.getDimensionHigh() != Edge)
-        throw MyException("CheckEdge2Corner high dime");
-}
-
 void CheckInputAdjacency(TopologyDimension maxDim, const std::map<TopologyDimension, int> &count,
                          const ITopologicalAdjacency &adjacency)
 {

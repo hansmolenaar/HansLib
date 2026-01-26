@@ -9,7 +9,6 @@ TEST(PointTransformationFromGroupActionTest, Trivial)
 {
     const ActionRotate2D groupAction(4);
     const Point2 point{2, 0};
-    const IFinitePointGroupAction<2> &tmp = groupAction;
     const PointTransformationFromGroupAction<2> ga{groupAction, 2};
     const auto retval = ga(point);
     const PointClose<double, 2> areClose;

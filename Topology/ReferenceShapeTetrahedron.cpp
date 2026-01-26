@@ -6,12 +6,15 @@
 
 using namespace Topology;
 
-// Local vertex ordering of the tetrahedron
-//
-//      3
-//    / | \
-//   /  0   \
-//  1 - ----  2
+/* 
+
+Local vertex ordering of the tetrahedron
+  
+        3
+      / | \
+     /  0   \
+    1 - ----  2
+*/
 
 namespace
 {

@@ -7,7 +7,6 @@ bool SameFiniteGroupPredicate::operator()(const IFiniteGroup &other) const
         return false;
     if (group.getIdentity() != other.getIdentity())
         return false;
-    const int order = group.getOrder();
     const auto &elements = IFiniteGroupUtils::GetElements(group);
     for (auto elm : elements)
     {

@@ -81,7 +81,6 @@ std::array<NodeIndex, NumCornersOnTetrahedron> TetrahedronNodesOriented::orient(
 
     int numSwaps = 0;
     auto mm = str::minmax_element(result);
-    auto tmp = *mm.min;
     if (mm.min != result.begin())
     {
         // Keep track of the max-element if we are about to move it

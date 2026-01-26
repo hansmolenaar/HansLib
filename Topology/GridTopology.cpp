@@ -25,7 +25,7 @@ GridTopology::GridTopology(const std::vector<int> &cellDimensions)
     const auto cornerInCellIndexer = MultiIndex<int>::Create(std::vector<int>(maxdim, 2));
     std::vector<int> cellMultiplet(cellDimensions.size());
     std::vector<int> crnrMultiplet(maxdim);
-    for (int cellId = 0; cellId < numCells; ++cellId)
+    for (size_t cellId = 0; cellId < numCells; ++cellId)
     {
         cellIndexer.toMultiplet(cellId, cellMultiplet);
         cellToCorner.emplace(cellId, std::vector<int>{});

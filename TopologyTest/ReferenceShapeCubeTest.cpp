@@ -17,7 +17,7 @@ TEST(ReferenceShapeCubeTest, ReferenceShapeCubeBase)
     // Every node connected to 3 edges and faces?
     const auto *adjacencyC2E = *adjacencies.getAdjacency(Topology::Corner, Topology::Edge);
     const auto *adjacencyC2F = *adjacencies.getAdjacency(Topology::Corner, Topology::Face);
-    for (int c = 0; c < NumCornersOnCube; ++c)
+    for (size_t c = 0; c < NumCornersOnCube; ++c)
     {
         ASSERT_EQ(adjacencyC2E->getConnectedHighers(c).size(), 3);
         ASSERT_EQ(adjacencyC2F->getConnectedHighers(c).size(), 3);
@@ -25,7 +25,7 @@ TEST(ReferenceShapeCubeTest, ReferenceShapeCubeBase)
 
     // Every edge connected to 2 faces?
     const auto *adjacencyE2F = *adjacencies.getAdjacency(Topology::Edge, Topology::Face);
-    for (int e = 0; e < NumEdgesOnCube; ++e)
+    for (size_t e = 0; e < NumEdgesOnCube; ++e)
     {
         const auto tmp = adjacencyE2F->getConnectedHighers(e);
         ASSERT_EQ(adjacencyE2F->getConnectedHighers(e).size(), 2);
