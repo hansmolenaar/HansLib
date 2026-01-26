@@ -6,7 +6,7 @@ using namespace Graph;
 using namespace Utilities;
 using namespace GraphIsomorphism;
 
-GraphComparers::GraphComparers(std::vector<const IGraphCompare *> comparers) : m_graphComparers(std::move(comparers))
+GraphComparers::GraphComparers(std::vector<const ICharacteristicsCompare *> comparers) : m_graphComparers(std::move(comparers))
 {
 }
 
@@ -15,7 +15,7 @@ const IGraphUs &GraphComparers::getGraph() const
     return m_graphComparers.front()->getGraph();
 }
 
-std::weak_ordering GraphComparers::compareCharacteristics(const IGraphCompare &other) const
+std::weak_ordering GraphComparers::compareCharacteristics(const ICharacteristicsCompare &other) const
 {
     const auto &compararers0 = m_graphComparers;
     const auto &compararers1 = dynamic_cast<const GraphComparers &>(other).m_graphComparers;

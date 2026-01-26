@@ -26,7 +26,7 @@ const Graph::IGraphUs &Comparers::getGraph() const
     return m_graphComparers.getGraph();
 }
 
-std::weak_ordering Comparers::compareCharacteristics(const IGraphCompare &other) const
+std::weak_ordering Comparers::compareCharacteristics(const ICharacteristicsCompare &other) const
 {
     return m_graphComparers.compareCharacteristics(dynamic_cast<const Comparers &>(other).m_graphComparers);
 }

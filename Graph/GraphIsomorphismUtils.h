@@ -12,7 +12,7 @@ namespace GraphIsomorphism
 template <typename T> GraphIsomorphism::Tag CondenseSizeSequence(const std::vector<T> &);
 
 std::vector<const IGraphTagger *> selectGraphTaggers(const std::vector<std::unique_ptr<ICompare>> &);
-std::vector<const IGraphCompare *> selectGraphCompare(const std::vector<std::unique_ptr<ICompare>> &);
+std::vector<const ICharacteristicsCompare *> selectGraphCompare(const std::vector<std::unique_ptr<ICompare>> &);
 std::vector<const IVertexCompare *> selectVertexCompare(const std::vector<std::unique_ptr<ICompare>> &);
 
 void toAdjacentyList(const Graph::IGraphUs &, std::ostream &);

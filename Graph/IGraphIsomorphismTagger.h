@@ -13,7 +13,7 @@ namespace GraphIsomorphism
 
 class IGraphTagger;
 class IVertexCompare;
-class IGraphCompare;
+class ICharacteristicsCompare;
 
 class ICompare
 {
@@ -21,23 +21,23 @@ class ICompare
     virtual ~ICompare() = default;
     virtual const Graph::IGraphUs &getGraph() const = 0;
 
-    const IGraphCompare *getGraphCompare() const;
+    const ICharacteristicsCompare *getCharacteristicsCompare() const;
     const IGraphTagger *getGraphTagger() const;
     const IVertexCompare *getVertexCompare() const;
 };
 
-class IGraphCompare : public virtual ICompare
+class ICharacteristicsCompare : public virtual ICompare
 {
   public:
-    virtual ~IGraphCompare() = default;
-    virtual std::weak_ordering compareCharacteristics(const IGraphCompare &) const = 0;
+    virtual ~ICharacteristicsCompare() = default;
+    virtual std::weak_ordering compareCharacteristics(const ICharacteristicsCompare &) const = 0;
 };
 
-class IGraphTagger : public virtual IGraphCompare
+class IGraphTagger : public virtual ICharacteristicsCompare
 {
   public:
     virtual const Tag &getGraphTag() const = 0;
-    std::weak_ordering compareCharacteristics(const IGraphCompare &gc) const override;
+    std::weak_ordering compareCharacteristics(const ICharacteristicsCompare &gc) const override;
 };
 
 class IVertexCompare : public virtual ICompare
