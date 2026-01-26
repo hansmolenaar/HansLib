@@ -45,17 +45,6 @@ std::ostream &operator<<(std::ostream &os, const GraphIsomorphism::Tag &tag)
     return os;
 }
 
-std::ostream &operator<<(std::ostream &os, const GraphIsomorphism::GraphTags &tags)
-{
-    os << "{";
-    for (const auto &tag : tags)
-    {
-        os << " " << tag;
-    }
-    os << " }";
-    return os;
-}
-
 std::ostream &operator<<(std::ostream &os, const std::vector<Graph::Vertex> &vertices)
 {
     os << "{";

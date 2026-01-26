@@ -22,6 +22,5 @@ void toEdgeList(const Graph::IGraphUs &, std::ostream &, Graph::Vertex offset = 
 } // namespace GraphIsomorphism
 
 std::ostream &operator<<(std::ostream &, const GraphIsomorphism::Tag &);
-std::ostream &operator<<(std::ostream &, const GraphIsomorphism::GraphTags &);
 std::ostream &operator<<(std::ostream &, const std::vector<Graph::Vertex> &);
 std::ostream &operator<<(std::ostream &, const GraphIsomorphism::VertexGrouping &);

@@ -38,8 +38,8 @@ TEST(GraphIsomorphismGrouping, CustomCompare)
 TEST(GraphIsomorphismGrouping, Combine_1)
 {
     const std::vector<Vertex> vertices{0, 1, 2, 3, 4};
-    const VertexTags vtag0{{1}, {2}, {1}, {2}, {2}};
-    const VertexTags vtag1{{1}, {1}, {2}, {1}, {1}};
+    const std::vector<Tag> vtag0{{1}, {2}, {1}, {2}, {2}};
+    const std::vector<Tag> vtag1{{1}, {1}, {2}, {1}, {1}};
     auto cmp0 = [&vtag0](Vertex v0, Vertex v1) { return vtag0.at(v0) < vtag0.at(v1); };
     const VertexGrouping grouping0(vertices, cmp0);
     auto cmp1 = [&vtag1](Vertex v0, Vertex v1) { return vtag1.at(v0) < vtag1.at(v1); };
@@ -106,8 +106,8 @@ TEST(GraphIsomorphismGrouping, Combine_3)
 TEST(GraphIsomorphismGrouping, Combine_4)
 {
     const std::vector<Vertex> vertices{0, 1, 2, 3, 4, 5};
-    const VertexTags vtag0{{0}, {1}, {0}, {3}, {4}, {4}};
-    const VertexTags vtag1{{1}, {0}, {5}, {3}, {4}, {2}};
+    const std::vector<Tag> vtag0{{0}, {1}, {0}, {3}, {4}, {4}};
+    const std::vector<Tag> vtag1{{1}, {0}, {5}, {3}, {4}, {2}};
     auto cmp0 = [&vtag0](Vertex v0, Vertex v1) { return vtag0.at(v0) < vtag0.at(v1); };
     const VertexGrouping grouping0(vertices, cmp0);
     auto cmp1 = [&vtag1](Vertex v0, Vertex v1) { return vtag1.at(v0) < vtag1.at(v1); };
