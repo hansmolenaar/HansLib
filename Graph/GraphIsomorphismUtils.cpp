@@ -76,7 +76,7 @@ std::ostream &operator<<(std::ostream &os, const std::vector<Graph::Vertex> &ver
     return os;
 }
 
-std::ostream &operator<<(std::ostream &os, const GraphIsomorphism::Grouping<Graph::Vertex> &grouping)
+std::ostream &operator<<(std::ostream &os, const GraphIsomorphism::VertexGrouping &grouping)
 {
     // Print all on one line
     os << "{";

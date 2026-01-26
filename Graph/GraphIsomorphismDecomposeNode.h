@@ -14,7 +14,7 @@ class DecomposeNode
     std::string getDescription() const;
     const Grouping<const DecomposeNode *> &getGroupingChildren() const;
     Graph::Vertex getVertexInParent(Graph::Vertex vertex) const;
-    const Grouping<Graph::Vertex> &getVertexGrouping() const;
+    const VertexGrouping &getVertexGrouping() const;
 
     std::weak_ordering operator<=>(const DecomposeNode &) const;
     bool isLeaf() const;

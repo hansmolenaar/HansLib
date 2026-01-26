@@ -15,7 +15,7 @@ class XGraph
     std::weak_ordering operator<=>(const XGraph &) const;
     bool operator==(const XGraph &) const;
 
-    const Grouping<Graph::Vertex> &getVertexGrouping() const;
+    const VertexGrouping &getVertexGrouping() const;
     const Graph::IGraphUs &getGraph() const;
     const Graph::IGraphUs &getGraphComplement() const;
 
@@ -23,7 +23,7 @@ class XGraph
     Graph::UndirectedGraph m_complement;
     std::shared_ptr<Comparers> m_comparers;
     std::shared_ptr<Comparers> m_comparesComplement;
-    Grouping<Graph::Vertex> m_grouping;
+    VertexGrouping m_grouping;
 };
 
 } // namespace GraphIsomorphism

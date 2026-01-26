@@ -1,6 +1,7 @@
 #pragma once
 
 #include "GraphIsomorphismDefines.h"
+#include "GraphIsomorphismGrouping.h"
 
 namespace Graph
 {
@@ -14,6 +15,8 @@ namespace GraphIsomorphism
 class IGraphTagger;
 class IVertexCompare;
 class ICharacteristicsCompare;
+
+using VertexGrouping = Grouping<Graph::Vertex>;
 
 class ICompare
 {

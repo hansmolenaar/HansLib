@@ -114,7 +114,7 @@ std::weak_ordering DecomposeNode::operator<=>(const DecomposeNode &other) const
     return result;
 }
 
-const Grouping<Graph::Vertex> &DecomposeNode::getVertexGrouping() const
+const VertexGrouping &DecomposeNode::getVertexGrouping() const
 {
     return getXGraph().getVertexGrouping();
 }

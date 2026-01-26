@@ -16,7 +16,7 @@ Comparers::Comparers(const Graph::IGraphUs &graph) : Comparers(ComparersFactory(
 {
 }
 
-const Grouping<Vertex> &Comparers::getVertexGrouping() const
+const VertexGrouping &Comparers::getVertexGrouping() const
 {
     return m_vertexComparers.getVertexGrouping();
 }

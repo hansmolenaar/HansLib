@@ -31,10 +31,10 @@ struct CompareAll
     const std::vector<const IVertexCompare *> Comparers;
 };
 
-GraphIsomorphism::Grouping<Vertex> CreateGrouping(std::vector<const GraphIsomorphism::IVertexCompare *> comparers)
+GraphIsomorphism::VertexGrouping CreateGrouping(std::vector<const GraphIsomorphism::IVertexCompare *> comparers)
 {
     const auto &graph = comparers.front()->getGraph();
-    return GraphIsomorphism::Grouping<Vertex>(graph.getVertexRange(), CompareAll{comparers});
+    return GraphIsomorphism::VertexGrouping(graph.getVertexRange(), CompareAll{comparers});
 }
 
 } // namespace
@@ -107,7 +107,7 @@ std::weak_ordering VertexComparers::operator<=>(const VertexComparers &other) co
     return result;
 }
 
-const Grouping<Graph::Vertex> &VertexComparers::getVertexGrouping() const
+const VertexGrouping &VertexComparers::getVertexGrouping() const
 {
     return m_grouping;
 }

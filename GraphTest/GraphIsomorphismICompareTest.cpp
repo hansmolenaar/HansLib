@@ -153,7 +153,7 @@ void GraphTest::CheckVertexCompareConsistency(const IGraphUs &graph, GraphIsomor
     {
         return;
     }
-    const Grouping<Vertex> grouping(graph.getVertexRange(), VertexLess{*vertexCompare});
+    const VertexGrouping grouping(graph.getVertexRange(), VertexLess{*vertexCompare});
 
     if (expectNumUniqueVertices >= 0)
     {
@@ -165,7 +165,7 @@ void GraphTest::CheckVertexCompareConsistency(const IGraphUs &graph, GraphIsomor
         const UndirectedGraph graphPermuted = UndirectedGraph::CreateRandomShuffled(graph, n);
         const auto gcomparerPermuted = factory.createCompare(graphPermuted);
         const auto *vertexComparePermuted = gcomparerPermuted->getVertexCompare();
-        const Grouping<Vertex> groupingPermuted(graph.getVertexRange(), VertexLess{*vertexComparePermuted});
+        const VertexGrouping groupingPermuted(graph.getVertexRange(), VertexLess{*vertexComparePermuted});
         ASSERT_EQ(groupingPermuted.getGroupSizes(), grouping.getGroupSizes());
     }
 }

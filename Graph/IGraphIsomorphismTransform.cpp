@@ -298,7 +298,7 @@ std::string TransformComplementKnown::getDescription() const
 // !!!!!!!!!!!!! TransformOmitEdges
 std::unique_ptr<TransformOmitEdges> TransformOmitEdges::tryCreate(const std::shared_ptr<XGraph> &xgraph)
 {
-    const Grouping<Graph::Vertex> &vertexGrouping = xgraph->getVertexGrouping();
+    const VertexGrouping &vertexGrouping = xgraph->getVertexGrouping();
     std::vector<std::vector<Vertex>> cliques;
 
     for (const auto &group : vertexGrouping())

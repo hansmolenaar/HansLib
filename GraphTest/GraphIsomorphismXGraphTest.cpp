@@ -14,11 +14,11 @@ TEST(GraphIsomorphismXGraphTest, Combine)
     const VertexTags vtag0{{1}, {2}, {1}, {2}};
     const VertexTags vtag1{{1}, {1}, {2}, {1}};
     auto cmp0 = [&vtag0](Vertex v0, Vertex v1) { return vtag0.at(v0) < vtag0.at(v1); };
-    const Grouping<Graph::Vertex> grouping0(vertices, cmp0);
+    const VertexGrouping grouping0(vertices, cmp0);
     auto cmp1 = [&vtag1](Vertex v0, Vertex v1) { return vtag1.at(v0) < vtag1.at(v1); };
-    const Grouping<Graph::Vertex> grouping1(vertices, cmp1);
+    const VertexGrouping grouping1(vertices, cmp1);
 
-    const auto grouping = Grouping<Vertex>::Combine(grouping0, grouping1);
+    const auto grouping = VertexGrouping::Combine(grouping0, grouping1);
 
     ASSERT_EQ(grouping.size(), 4);
     ASSERT_EQ(grouping.getGroupSizes(), (std::vector<size_t>{1, 1, 2}));

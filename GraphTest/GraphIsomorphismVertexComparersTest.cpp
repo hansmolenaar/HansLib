@@ -32,7 +32,7 @@ TEST(GraphIsomorphismVertexComparersTest, DegreeButterfly)
     ASSERT_EQ(comparers.compareVertexOtherGraph(0, other, 1), std::weak_ordering::greater);
     ASSERT_EQ(comparers.compareVertexOtherGraph(1, other, 0), std::weak_ordering::less);
 
-    const Grouping<Vertex> grouping(graph->getVertexRange(), VertexLess{comparers});
+    const VertexGrouping grouping(graph->getVertexRange(), VertexLess{comparers});
     ASSERT_EQ(grouping.countUnique(), 1);
     ASSERT_EQ(grouping.getUniqueValues(), std::vector<Vertex>{0});
     ASSERT_EQ(grouping.getGroupSizes(), (std::vector<size_t>{4, 1}));
@@ -64,7 +64,7 @@ TEST(GraphIsomorphismVertexComparersTest, Fish)
     ASSERT_EQ(comparers.compareVertexOtherGraph(4, other, 0), std::weak_ordering::greater);
     ASSERT_EQ(comparers.compareVertexOtherGraph(0, other, 4), std::weak_ordering::less);
 
-    const Grouping<Vertex> grouping(graph->getVertexRange(), VertexLess{comparers});
+    const VertexGrouping grouping(graph->getVertexRange(), VertexLess{comparers});
     ASSERT_EQ(grouping.countUnique(), 1);
     ASSERT_EQ(grouping.getUniqueValues(), std::vector<Vertex>{3});
     ASSERT_EQ(grouping.getGroupSizes(), (std::vector<size_t>{3, 2, 1}));
@@ -74,7 +74,7 @@ TEST(GraphIsomorphismVertexComparersTest, Diamond)
 {
     const auto graph = UndirectedGraphFromG6::CreateConnected(UndirectedGraphFromG6::diamond);
     const auto comparers = ComparersFactory().create(*graph);
-    const Grouping<Vertex> grouping = comparers->getVertexGrouping();
+    const VertexGrouping grouping = comparers->getVertexGrouping();
     ASSERT_EQ(grouping.countUnique(), 4);
     ASSERT_EQ(grouping.getGroupSizes(), (std::vector<size_t>{1, 1, 1, 1}));
 }
@@ -83,6 +83,6 @@ TEST(GraphIsomorphismVertexComparersTest, HardCase)
 {
     const auto graph = UndirectedGraphFromG6::Create("FJ\\~w");
     const auto comparers = ComparersFactory().create(*graph);
-    const Grouping<Vertex> grouping = comparers->getVertexGrouping();
+    const VertexGrouping grouping = comparers->getVertexGrouping();
     ASSERT_EQ(grouping.countUnique(), 2);
 }
