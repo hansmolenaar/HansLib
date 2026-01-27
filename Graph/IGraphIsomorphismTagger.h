@@ -33,6 +33,13 @@ class IGraphCompare : public IHasGraph
     virtual const VertexGrouping &getVertexGrouping() const = 0;
 };
 
+class IGraphCompareFactory
+{
+  public:
+    virtual ~IGraphCompareFactory() = default;
+    virtual std::unique_ptr<IGraphCompare> createGraphCompare(const Graph::IGraphUs &) = 0;
+};
+
 class ICompare : public IHasGraph
 {
   public:

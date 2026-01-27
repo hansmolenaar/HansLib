@@ -2,11 +2,18 @@
 
 #include "Defines.h"
 #include "GraphIsomorphismGrouping.h"
+#include "GraphIsomorphismIGraphCompareTest.h"
 #include "GraphIsomorphismXGraph.h"
 #include "UndirectedGraphFromG6.h"
 
 using namespace GraphIsomorphism;
 using namespace Graph;
+
+TEST(GraphIsomorphismXGraphTest, Basics)
+{
+    XGraphFactory factory;
+    GraphTest::CheckComparerBasics(factory);
+}
 
 TEST(GraphIsomorphismXGraphTest, Combine)
 {

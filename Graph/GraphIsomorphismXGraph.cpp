@@ -40,3 +40,10 @@ const Graph::IGraphUs &XGraph::getGraphComplement() const
 {
     return m_comparesComplement->getGraph();
 }
+
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Factory
+
+std::unique_ptr<IGraphCompare> XGraphFactory::createGraphCompare(const Graph::IGraphUs &graph)
+{
+    return std::make_unique<XGraph>(graph);
+}

@@ -36,6 +36,10 @@ GraphIsomorphism::Grouping<T> Grouping<T>::Combine(const Grouping<T> &grouping0,
 {
     const auto size = grouping0.size();
     Utilities::MyAssert(size == grouping1.size());
+    if (size == 0)
+    {
+        return {};
+    }
 
     const auto map0 = Invert(grouping0);
     const auto map1 = Invert(grouping1);
