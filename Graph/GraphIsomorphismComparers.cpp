@@ -38,7 +38,7 @@ std::weak_ordering Comparers::compareVertexOtherGraph(Graph::Vertex v0, const IV
     return m_vertexComparers.compareVertexOtherGraph(v0, dynamic_cast<const Comparers &>(other).m_vertexComparers, v1);
 }
 
-std::weak_ordering Comparers::compareGraph(const Comparers &other) const
+std::weak_ordering Comparers::compareGraph(const IGraphCompare &other) const
 {
     const auto &lhs = *this;
     const auto &rhs = dynamic_cast<const Comparers &>(other);

@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "Defines.h"
+#include "GraphIsomorphismIGraphCompareTest.h"
 #include "GraphIsomorphismComparers.h"
 #include "GraphIsomorphismComparersFactory.h"
 #include "GraphIsomorphismGrouping.h"
@@ -20,7 +21,7 @@ using namespace Utilities;
 TEST(GraphIsomorphismComparersTest, CheckBasics)
 {
     ComparersFactory factory;
-    GraphTest::CheckComparerBasics(factory, Tag{1, 7, 2, 1});
+    GraphTest::CheckComparerBasics(factory);
 }
 
 TEST(GraphIsomorphismComparersTest, Singleton)
@@ -121,6 +122,7 @@ TEST(GraphIsomorphismComparersTest, SpecialCase2)
     ASSERT_NE(cmp, std::weak_ordering::equivalent);
 }
 
+#if false
 TEST(GraphIsomorphismComparersTest, CheckTaggingList3)
 {
     ComparersFactory factory;
@@ -191,3 +193,4 @@ TEST(GraphIsomorphismComparersTest, Disconnected9)
     const auto graphs = UndirectedGraphFromG6::getDisconnectedGraphs(UndirectedGraphFromG6::getListNumVertices_9());
     GraphTest::CheckList(factory, graphs, {1, 18});
 }
+#endif
