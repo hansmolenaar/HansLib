@@ -42,3 +42,9 @@ TEST(GraphIsomorphismXGraphTest, Test6)
     const auto grouping_xg = xg.getVertexGrouping();
     ASSERT_EQ(grouping_xg.countUnique(), 6);
 }
+
+TEST(GraphIsomorphismXGraphTest, CheckList3)
+{
+    XGraphFactory factory;
+    GraphTest::CheckList(factory, UndirectedGraphFromG6::getListNumVertices_3(), Tag{1, 4});
+}

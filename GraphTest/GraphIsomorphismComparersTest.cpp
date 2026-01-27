@@ -122,22 +122,16 @@ TEST(GraphIsomorphismComparersTest, SpecialCase2)
     ASSERT_NE(cmp, std::weak_ordering::equivalent);
 }
 
-TEST(GraphIsomorphismComparersTest, CheckList3)
+TEST(GraphIsomorphismComparersTest, CheckList345)
 {
     ComparersFactory factory;
-    GraphTest::CheckList(factory, UndirectedGraphFromG6::getListNumVertices_3(), Tag{1, 4});
-}
+    auto list = UndirectedGraphFromG6::getListNumVertices_3();
+    const auto list4 = UndirectedGraphFromG6::getListNumVertices_4();
+    const auto list5 = UndirectedGraphFromG6::getListNumVertices_5();
 
-TEST(GraphIsomorphismComparersTest, CheckList4)
-{
-    ComparersFactory factory;
-    GraphTest::CheckList(factory, UndirectedGraphFromG6::getListNumVertices_4(), Tag{1, 11});
-}
-
-TEST(GraphIsomorphismComparersTest, CheckList5)
-{
-    ComparersFactory factory;
-    GraphTest::CheckList(factory, UndirectedGraphFromG6::getListNumVertices_5(), {1, 34});
+    list.insert(list.end(), list4.begin(), list4.end());
+    list.insert(list.end(), list5.begin(), list5.end());
+    GraphTest::CheckList(factory, list, Tag{1, 49});
 }
 
 TEST(GraphIsomorphismComparersTest, CheckList6)
