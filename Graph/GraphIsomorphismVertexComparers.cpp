@@ -78,30 +78,6 @@ std::weak_ordering VertexComparers::compareVertexOtherGraph(Vertex v0, const IVe
     return result;
 }
 
-std::weak_ordering VertexComparers::operator<=>(const VertexComparers &other) const
-{
-    std::weak_ordering result = m_grouping.getGroupSizes() <=> other.m_grouping.getGroupSizes();
-    if (result != std::weak_ordering::equivalent)
-    {
-        return result;
-    }
-
-    const auto &groups0 = m_grouping();
-    const auto &groups1 = other.m_grouping();
-
-    for (size_t n : Iota::GetRange(groups0.size()))
-    {
-        const Vertex v0 = groups0.at(n).front();
-        const Vertex v1 = groups1.at(n).front();
-        result = compareVertexOtherGraph(v0, other, v1);
-        if (result != std::weak_ordering::equivalent)
-        {
-            return result;
-        }
-    }
-    return result;
-}
-
 const VertexGrouping &VertexComparers::getVertexGrouping() const
 {
     return m_grouping;

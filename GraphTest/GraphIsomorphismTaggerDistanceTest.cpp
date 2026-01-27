@@ -89,7 +89,7 @@ TEST(GraphIsomorphismTaggerDistanceTest, SpecialCase1)
     const VertexComparers compare0(std::vector<const IVertexCompare *>{&tagger0});
     const VertexComparers compare1(std::vector<const IVertexCompare *>{&tagger1});
 
-    ASSERT_TRUE(compare0 < compare1);
+    ASSERT_EQ(compare0.compareGraph(compare1), std::weak_ordering::less);
 }
 
 TEST(GraphIsomorphismTaggerDistanceTest, NumVertices5)

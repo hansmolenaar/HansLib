@@ -86,3 +86,15 @@ TEST(GraphIsomorphismVertexComparersTest, HardCase)
     const VertexGrouping grouping = comparers->getVertexGrouping();
     ASSERT_EQ(grouping.countUnique(), 2);
 }
+
+TEST(GraphIsomorphismVertexComparersTest, DifferentGroups)
+{
+    const auto graph1 = UndirectedGraphLibrary::Get_DisconnectedGraph(3);
+    const auto graph2 = UndirectedGraphLibrary::Get_Cycle(3);
+    const TaggerDegree comparer1(*graph1);
+    const TaggerDegree comparer2(*graph2);
+    const IVertexCompare &vcomparer1 = comparer1;
+    const IVertexCompare &vcomparer2 = comparer2;
+    ASSERT_EQ(vcomparer1.getVertexGrouping()(), vcomparer2.getVertexGrouping()());
+    ASSERT_EQ(vcomparer1.compareGraph(vcomparer2), std::weak_ordering::less);
+}

@@ -15,8 +15,6 @@ class VertexComparers : public IVertexCompare
     std::weak_ordering compareVertexOtherGraph(Graph::Vertex, const IVertexCompare &, Graph::Vertex) const override;
     const VertexGrouping &getVertexGrouping() const override;
 
-    std::weak_ordering operator<=>(const VertexComparers &) const;
-
   private:
     std::vector<const IVertexCompare *> m_vertexComparers;
     std::map<Graph::Vertex, size_t> m_vertex2group;

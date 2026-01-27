@@ -35,5 +35,5 @@ std::weak_ordering Comparers::compareGraph(const IGraphCompare &other) const
     {
         return result;
     }
-    return lhs.m_vertexComparers <=> rhs.m_vertexComparers;
+    return lhs.m_vertexComparers.compareGraph(rhs.m_vertexComparers);
 }
