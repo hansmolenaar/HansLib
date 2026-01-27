@@ -122,41 +122,40 @@ TEST(GraphIsomorphismComparersTest, SpecialCase2)
     ASSERT_NE(cmp, std::weak_ordering::equivalent);
 }
 
-TEST(GraphIsomorphismComparersTest, CheckTaggingList3)
+TEST(GraphIsomorphismComparersTest, CheckList3)
 {
     ComparersFactory factory;
     GraphTest::CheckList(factory, UndirectedGraphFromG6::getListNumVertices_3(), Tag{1, 4});
 }
 
-#if false
-TEST(GraphIsomorphismComparersTest, CheckTaggingList4)
+TEST(GraphIsomorphismComparersTest, CheckList4)
 {
     ComparersFactory factory;
     GraphTest::CheckList(factory, UndirectedGraphFromG6::getListNumVertices_4(), Tag{1, 11});
 }
 
-TEST(GraphIsomorphismComparersTest, CheckTaggingList5)
+TEST(GraphIsomorphismComparersTest, CheckList5)
 {
     ComparersFactory factory;
     GraphTest::CheckList(factory, UndirectedGraphFromG6::getListNumVertices_5(), {1, 34});
 }
 
-TEST(GraphIsomorphismComparersTest, CheckTaggingList6)
+TEST(GraphIsomorphismComparersTest, CheckList6)
 {
     ComparersFactory factory;
     GraphTest::CheckList(factory, UndirectedGraphFromG6::getListNumVertices_6(), {1, 155});
 }
 
-TEST(GraphIsomorphismComparersTest, CheckTaggingList7)
+TEST(GraphIsomorphismComparersTest, CheckList7)
 {
     ComparersFactory factory;
-    GraphTest::CheckList(factory, UndirectedGraphFromG6::getListNumVertices_7(), {1, 298, 2, 2});
+    GraphTest::CheckList(factory, UndirectedGraphFromG6::getListNumVertices_7(), {1, 302});
 }
 
-TEST(GraphIsomorphismComparersTest, CheckTaggingList8)
+TEST(GraphIsomorphismComparersTest, CheckList8)
 {
     ComparersFactory factory;
-    GraphTest::CheckList(factory, UndirectedGraphFromG6::getListNumVertices_8(), {1, 722, 2, 12});
+    GraphTest::CheckList(factory, UndirectedGraphFromG6::getListNumVertices_8(), {1, 746});
 }
 
 TEST(GraphIsomorphismConstructTest, Disconnected5)
@@ -193,4 +192,3 @@ TEST(GraphIsomorphismComparersTest, Disconnected9)
     const auto graphs = UndirectedGraphFromG6::getDisconnectedGraphs(UndirectedGraphFromG6::getListNumVertices_9());
     GraphTest::CheckList(factory, graphs, {1, 18});
 }
-#endif
