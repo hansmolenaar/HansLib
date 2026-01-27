@@ -18,7 +18,7 @@ CompareTrianglesFactory s_factory;
 TEST(GraphIsomorphismTaggerTrianglesTest, CheckTagger)
 {
     CompareTrianglesFactory factory;
-    GraphTest::CheckComparerBasics(factory, Tag{1, 3, 2, 1, 3, 1});
+    GraphTest::CheckComparerBasics(factory, Tag{1, 2, 2, 2, 3, 1});
 }
 
 TEST(GraphIsomorphismTaggerTrianglesTest, CheckList)

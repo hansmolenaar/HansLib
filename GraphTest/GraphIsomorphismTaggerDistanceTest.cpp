@@ -20,7 +20,7 @@ namespace
 TEST(GraphIsomorphismTaggerDistanceTest, CheckTagger)
 {
     CompareDistanceFactory factory;
-    GraphTest::CheckComparerBasics(factory, Tag{1, 8});
+    GraphTest::CheckComparerBasics(factory, Tag{1, 7, 2, 1});
 }
 
 TEST(GraphIsomorphismTaggerDistanceTest, CheckList)

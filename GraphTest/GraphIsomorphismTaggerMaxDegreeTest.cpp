@@ -17,7 +17,7 @@ namespace
 TEST(GraphIsomorphismTaggerMaxDegreeTest, CheckTagger)
 {
     CompareMaxDegreeFactory factory;
-    GraphTest::CheckComparerBasics(factory, Tag{1, 2, 2, 1, 4, 1});
+    GraphTest::CheckComparerBasics(factory, Tag{1, 1, 2, 2, 4, 1});
 }
 
 TEST(GraphIsomorphismTaggerMaxDegreeTest, CheckList)

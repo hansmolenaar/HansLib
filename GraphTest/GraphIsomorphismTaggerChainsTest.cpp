@@ -17,7 +17,7 @@ CompareChainsFactory factoryChains;
 
 TEST(GraphIsomorphismTaggerChainsTest, CheckTagger)
 {
-    GraphTest::CheckComparerBasics(factoryChains, Tag{1, 2, 2, 1, 4, 1});
+    GraphTest::CheckComparerBasics(factoryChains, Tag{1, 1, 2, 2, 4, 1});
 }
 
 TEST(GraphIsomorphismTaggerChainsTest, CheckList)

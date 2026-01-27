@@ -12,7 +12,7 @@ using namespace Graph;
 TEST(GraphIsomorphismTaggerTwinsTest, CheckTagger)
 {
     CompareTwinsFactory factory;
-    GraphTest::CheckComparerBasics(factory, Tag{1, 8});
+    GraphTest::CheckComparerBasics(factory, Tag{1, 7, 2, 1});
 }
 
 TEST(GraphIsomorphismTaggerTwinsTest, CheckList)

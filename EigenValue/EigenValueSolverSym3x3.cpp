@@ -160,7 +160,8 @@ bool EigenValueSolverSym3x3Utils::AuxilaryEquationRoots::DerivativeAlwaysZero(in
 {
     return false;
 }
-void EigenValueSolverSym3x3Utils::AuxilaryEquationRoots::EvaluateFunction(std::span<const double> x, std::span<double> y) const
+void EigenValueSolverSym3x3Utils::AuxilaryEquationRoots::EvaluateFunction(std::span<const double> x,
+                                                                          std::span<double> y) const
 {
     Utilities::MyAssert(x.size() == 1);
     const double detB = ClipDetB(x[0]);

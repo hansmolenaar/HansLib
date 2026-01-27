@@ -20,7 +20,7 @@ using namespace Utilities;
 TEST(GraphIsomorphismComparersTest, CheckBasics)
 {
     ComparersFactory factory;
-    GraphTest::CheckComparerBasics(factory, Tag{1, 8});
+    GraphTest::CheckComparerBasics(factory, Tag{1, 7, 2, 1});
 }
 
 TEST(GraphIsomorphismComparersTest, Singleton)

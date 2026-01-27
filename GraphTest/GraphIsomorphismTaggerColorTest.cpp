@@ -36,7 +36,7 @@ void CheckColoring(const IGraphUs &graph)
 TEST(GraphIsomorphismTaggerColorTest, CheckTagger)
 {
     CompareColorFactory factory;
-    GraphTest::CheckComparerBasics(factory, Tag{1, 5, 3, 1});
+    GraphTest::CheckComparerBasics(factory, Tag{1, 4, 2, 1, 3, 1});
 }
 
 TEST(GraphIsomorphismTaggerColorTest, CheckList)

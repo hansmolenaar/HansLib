@@ -15,7 +15,7 @@ namespace
 TEST(GraphIsomorphismTaggerComponentsTest, CheckTagger)
 {
     CompareComponentsFactory factory;
-    GraphTest::CheckComparerBasics(factory, Tag{1, 6, 2, 1});
+    GraphTest::CheckComparerBasics(factory, Tag{1, 6, 3, 1});
 }
 
 TEST(GraphIsomorphismTaggerComponentsTest, CheckList)

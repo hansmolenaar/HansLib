@@ -204,6 +204,7 @@ void GraphTest::CheckComparerBasics(GraphIsomorphism::ICompareFactory &factory, 
     graphs.emplace_back(UndirectedGraphLibrary::Get_Singleton());
     graphs.emplace_back(UndirectedGraphLibrary::Get_Path(2));
     graphs.emplace_back(UndirectedGraphLibrary::Get_DisconnectedGraph(2));
+    graphs.emplace_back(UndirectedGraphLibrary::Get_Cycle(3));
 
     CheckList(factory, graphs, expectGraphTagMultiplicities);
 }
