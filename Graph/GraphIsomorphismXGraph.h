@@ -7,16 +7,15 @@
 namespace GraphIsomorphism
 {
 
-class XGraph
+class XGraph : public IGraphCompare
 {
   public:
     explicit XGraph(const Graph::IGraphUs &);
 
-    std::weak_ordering operator<=>(const XGraph &) const;
-    bool operator==(const XGraph &) const;
+    const Graph::IGraphUs &getGraph() const override;
+    std::weak_ordering compareGraph(const IGraphCompare &other) const override;
 
-    const VertexGrouping &getVertexGrouping() const;
-    const Graph::IGraphUs &getGraph() const;
+    const VertexGrouping &getVertexGrouping() const override;
     const Graph::IGraphUs &getGraphComplement() const;
 
   private:

@@ -86,7 +86,7 @@ std::weak_ordering DecomposeNode::operator<=>(const DecomposeNode &other) const
         return result;
     }
 
-    result = getXGraph() <=> other.getXGraph();
+    result = getXGraph().compareGraph((other.getXGraph()));
     if (result != std::weak_ordering::equivalent)
     {
         return result;

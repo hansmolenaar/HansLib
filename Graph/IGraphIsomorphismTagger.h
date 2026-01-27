@@ -18,11 +18,25 @@ class ICharacteristicsCompare;
 
 using VertexGrouping = Grouping<Graph::Vertex>;
 
-class ICompare
+class IHasGraph
+{
+  public:
+    virtual ~IHasGraph() = default;
+    virtual const Graph::IGraphUs &getGraph() const = 0;
+};
+
+class IGraphCompare : public IHasGraph
+{
+  public:
+    virtual ~IGraphCompare() = default;
+    virtual std::weak_ordering compareGraph(const IGraphCompare &) const = 0;
+    virtual const VertexGrouping &getVertexGrouping() const = 0;
+};
+
+class ICompare : public IHasGraph
 {
   public:
     virtual ~ICompare() = default;
-    virtual const Graph::IGraphUs &getGraph() const = 0;
 
     const ICharacteristicsCompare *getCharacteristicsCompare() const;
     const IGraphTagger *getGraphTagger() const;

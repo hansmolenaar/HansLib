@@ -12,26 +12,18 @@ XGraph::XGraph(const Graph::IGraphUs &graph)
 {
 }
 
-std::weak_ordering XGraph::operator<=>(const XGraph &other) const
+std::weak_ordering XGraph::compareGraph(const IGraphCompare &other) const
 {
-    std::weak_ordering result = *m_comparers <=> *other.m_comparers;
+    const XGraph &lhs = *this;
+    const XGraph &rhs = dynamic_cast<const XGraph &>(other);
+    std::weak_ordering result = *lhs.m_comparers <=> *rhs.m_comparers;
     if (result != std::weak_ordering::equivalent)
     {
         return result;
     }
 
-    result = *m_comparesComplement <=> *other.m_comparesComplement;
+    result = *lhs.m_comparesComplement <=> *rhs.m_comparesComplement;
     return result;
-}
-
-bool XGraph::operator==(const XGraph &other) const
-{
-    if (!(*m_comparers == *other.m_comparers))
-    {
-        return false;
-    }
-
-    return *m_comparesComplement == *other.m_comparesComplement;
 }
 
 const VertexGrouping &XGraph::getVertexGrouping() const
