@@ -47,7 +47,7 @@ TEST(RealFunctionComposeTest, Test1)
 
     const double x[] = {1, 2};
     double y[3];
-    fie.Evaluate(x, y);
+    fie.EvaluateFunction(x, y);
     ASSERT_NEAR(y[0], 0.0, c_eps);
     ASSERT_NEAR(y[1], 4.0, c_eps);
     ASSERT_NEAR(y[2], 0.0, c_eps);
@@ -89,7 +89,7 @@ TEST(RealFunctionComposeTest, Test2)
 
     const double x[] = {2};
     double y[2];
-    fie.Evaluate(x, y);
+    fie.EvaluateFunction(x, y);
     ASSERT_NEAR(y[0], 16.0, c_eps);
     ASSERT_NEAR(y[1], 64.0, c_eps);
 
@@ -131,7 +131,7 @@ TEST(RealFunctionComposeTest, Test3)
 
     const double x[] = {1, 2};
     double y[1];
-    fie.Evaluate(x, y);
+    fie.EvaluateFunction(x, y);
     ASSERT_NEAR(y[0], 14.0, c_eps);
 
     MatrixDense jac(1, 2);

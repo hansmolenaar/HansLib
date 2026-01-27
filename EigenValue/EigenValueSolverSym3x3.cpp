@@ -160,7 +160,7 @@ bool EigenValueSolverSym3x3Utils::AuxilaryEquationRoots::DerivativeAlwaysZero(in
 {
     return false;
 }
-void EigenValueSolverSym3x3Utils::AuxilaryEquationRoots::Evaluate(std::span<const double> x, std::span<double> y) const
+void EigenValueSolverSym3x3Utils::AuxilaryEquationRoots::EvaluateFunction(std::span<const double> x, std::span<double> y) const
 {
     Utilities::MyAssert(x.size() == 1);
     const double detB = ClipDetB(x[0]);
@@ -374,7 +374,7 @@ bool EigenValueSolverSym3x3::HasDerivative() const
     return true;
 }
 
-void EigenValueSolverSym3x3::Evaluate(std::span<const double> x, std::span<double> eigenValues) const
+void EigenValueSolverSym3x3::EvaluateFunction(std::span<const double> x, std::span<double> eigenValues) const
 {
     const double c_eps = 1.0e-10;
     Utilities::MyAssert(x.size() == 6);
@@ -389,7 +389,7 @@ void EigenValueSolverSym3x3::Evaluate(std::span<const double> x, std::span<doubl
 
         EigenValueSolverSym3x3Utils::AuxilaryEquationRoots auxSolver;
         std::array<double, 3> roots;
-        auxSolver.Evaluate(std::span<const double>(&detB, 1), roots);
+        auxSolver.EvaluateFunction(std::span<const double>(&detB, 1), roots);
 
         for (int n = 0; n < 3; ++n)
         {
@@ -427,7 +427,7 @@ void EigenValueSolverSym3x3::Derivative(std::span<const double> x, IMatrix &dfdx
 
         EigenValueSolverSym3x3Utils::AuxilaryEquationRoots auxSolver;
         std::array<double, 3> roots;
-        auxSolver.Evaluate(std::span<const double>(&detB, 1), roots);
+        auxSolver.EvaluateFunction(std::span<const double>(&detB, 1), roots);
         MatrixDense rootsDerivs(3, 1);
         auxSolver.Derivative(std::span<const double>(&detB, 1), rootsDerivs);
 
@@ -464,5 +464,5 @@ void EigenValueSolverSym3x3::Derivative(std::span<const double> x, IMatrix &dfdx
 
 void EigenValueSolverSym3x3::CalculateEigenvalues3x3(const MatrixKelvinRepr3 &matrix, std::span<double> eigenValues)
 {
-    EigenValueSolverSym3x3().Evaluate(matrix.Vector(), eigenValues);
+    EigenValueSolverSym3x3().EvaluateFunction(matrix.Vector(), eigenValues);
 }

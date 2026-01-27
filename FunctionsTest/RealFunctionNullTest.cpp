@@ -15,7 +15,7 @@ TEST(RealFunctionNullTest, Test1)
     ASSERT_TRUE(fie.DerivativeAlwaysZero(numEqn - 1, numVar - 1));
     double x[numVar] = {1, 2};
     double y[numEqn] = {1, 1, 1};
-    fie.Evaluate(x, y);
+    fie.EvaluateFunction(x, y);
     ASSERT_EQ(0.0, y[0]);
     ASSERT_EQ(0.0, y[1]);
     ASSERT_EQ(0.0, y[2]);

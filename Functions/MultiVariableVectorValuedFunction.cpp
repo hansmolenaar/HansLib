@@ -36,14 +36,14 @@ int MultiVariableVectorValuedFunction::GetDomainDimension() const
     return m_components[0]->GetDomainDimension();
 }
 
-void MultiVariableVectorValuedFunction::Evaluate(std::span<const double> x, std::span<double> fx) const
+void MultiVariableVectorValuedFunction::EvaluateFunction(std::span<const double> x, std::span<double> fx) const
 {
     int eqn = 0;
     double eval;
     std::span<double> evalWrapper(&eval, 1);
     for (const auto &cmp : m_components)
     {
-        cmp->Evaluate(x, evalWrapper);
+        cmp->EvaluateFunction(x, evalWrapper);
         fx[eqn] = eval;
         ++eqn;
     }

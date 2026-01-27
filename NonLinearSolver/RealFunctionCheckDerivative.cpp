@@ -52,7 +52,7 @@ void RealFunctionCheckDerivative::Check(const IRealFunction &system, std::span<c
             {
                 std::function<double(double)> evaluate = [&](double xx) {
                     vals[var] = xx;
-                    system.Evaluate(vals, y);
+                    system.EvaluateFunction(vals, y);
                     return y[eqn];
                 };
                 std::function<double(double)> derivative = [&](double xx) {
@@ -110,7 +110,7 @@ void RealFunctionCheckDerivative::CheckExtrapolation(const IRealFunction &system
             std::vector<double> vals(x.begin(), x.end());
             std::function<double(double)> evaluate = [&](double xx) {
                 vals[var] = xx;
-                system.Evaluate(vals, y);
+                system.EvaluateFunction(vals, y);
                 return y[eqn];
             };
             std::function<double(double)> derivative = [&](double xx) {

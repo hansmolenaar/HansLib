@@ -46,7 +46,7 @@ TEST(EigenValueSolverSym2x2Test, Identity)
 
     str::fill(eigenvalues, 0.0);
     EigenValueSolverSym2x2 solver;
-    solver.Evaluate(mat.Vector(), eigenvalues);
+    solver.EvaluateFunction(mat.Vector(), eigenvalues);
     ASSERT_NEAR(eigenvalues[0], 1, eps);
     ASSERT_NEAR(eigenvalues[1], 1, eps);
 
@@ -61,7 +61,7 @@ TEST(EigenValueSolverSym2x2Test, Diagonal)
 
     std::vector<double> eigenvalues{0, 0};
     EigenValueSolverSym2x2 solver;
-    solver.Evaluate(mat.Vector(), eigenvalues);
+    solver.EvaluateFunction(mat.Vector(), eigenvalues);
     ASSERT_NEAR(eigenvalues[0], 1, eps);
     ASSERT_NEAR(eigenvalues[1], 2, eps);
 
@@ -77,7 +77,7 @@ TEST(EigenValueSolverSym2x2Test, General)
 
     std::vector<double> eigenvalues{0, 0};
     EigenValueSolverSym2x2 solver;
-    solver.Evaluate(mat.Vector(), eigenvalues);
+    solver.EvaluateFunction(mat.Vector(), eigenvalues);
     ASSERT_NEAR(eigenvalues[0], 5 - std::sqrt(10.0), eps);
     ASSERT_NEAR(eigenvalues[1], 5 + std::sqrt(10.0), eps);
 

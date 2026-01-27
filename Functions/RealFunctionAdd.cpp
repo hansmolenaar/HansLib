@@ -41,11 +41,11 @@ void RealFunctionAdd::Derivative(std::span<const double> x, IMatrix &dfdx) const
     }
 }
 
-void RealFunctionAdd::Evaluate(std::span<const double> x, std::span<double> y) const
+void RealFunctionAdd::EvaluateFunction(std::span<const double> x, std::span<double> y) const
 {
-    m_fie1.Evaluate(x, y);
+    m_fie1.EvaluateFunction(x, y);
     std::vector<double> yy(y.size());
-    m_fie2.Evaluate(x, yy);
+    m_fie2.EvaluateFunction(x, yy);
     for (size_t n = 0; n < y.size(); ++n)
     {
         y[n] += yy[n];

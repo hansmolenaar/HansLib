@@ -63,7 +63,7 @@ bool EigenValueSolverSym2x2::HasDerivative() const
 
 // ( a c )
 // ( c b )
-void EigenValueSolverSym2x2::Evaluate(std::span<const double> x, std::span<double> eigenValues) const
+void EigenValueSolverSym2x2::EvaluateFunction(std::span<const double> x, std::span<double> eigenValues) const
 {
     Utilities::MyAssert(x.size() == 3);
     Utilities::MyAssert(eigenValues.size() == 2);
@@ -109,5 +109,5 @@ void EigenValueSolverSym2x2::Derivative(std::span<const double> x, IMatrix &dfdx
 
 void EigenValueSolverSym2x2::CalculateEigenvalues2x2(const MatrixKelvinRepr2 &matrix, std::span<double> eigenValues)
 {
-    EigenValueSolverSym2x2().Evaluate(matrix.Vector(), eigenValues);
+    EigenValueSolverSym2x2().EvaluateFunction(matrix.Vector(), eigenValues);
 }

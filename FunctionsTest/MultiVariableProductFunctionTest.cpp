@@ -23,7 +23,7 @@ TEST(MultiVariableProductFunctionTest, Test1)
     ASSERT_NEAR(fie.Evaluate(x), 16.0, c_eps);
 
     double y[] = {0};
-    fie.IMultiVariableRealValuedFunction::Evaluate(x, y);
+    fie.IMultiVariableRealValuedFunction::EvaluateFunction(x, y);
     ASSERT_NEAR(y[0], 16.0, c_eps);
 
     std::vector<double> deriv(1);

@@ -69,7 +69,7 @@ TEST(EigenValueSolverSym3x3Test, Identity)
 
     str::fill(eigenvalues, 0.0);
     EigenValueSolverSym3x3 solver;
-    solver.Evaluate(mat.Vector(), eigenvalues);
+    solver.EvaluateFunction(mat.Vector(), eigenvalues);
     ASSERT_NEAR(eigenvalues[0], 1, eps);
     ASSERT_NEAR(eigenvalues[1], 1, eps);
 

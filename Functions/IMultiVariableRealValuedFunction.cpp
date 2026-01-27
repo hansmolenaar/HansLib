@@ -8,7 +8,7 @@ int IMultiVariableRealValuedFunction::GetRangeDimension() const
     return 1;
 }
 
-void IMultiVariableRealValuedFunction::Evaluate(std::span<const double> x, std::span<double> y) const
+void IMultiVariableRealValuedFunction::EvaluateFunction(std::span<const double> x, std::span<double> y) const
 {
     Utilities::MyAssert(y.size() == 1);
     y[0] = Evaluate(x);

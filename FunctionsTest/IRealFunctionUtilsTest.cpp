@@ -39,7 +39,7 @@ TEST(IRealFunctionUtilsTest, TestAdd)
 
     double x[] = {1, 2, 3};
     double y[1];
-    fie.Evaluate(x, y);
+    fie.EvaluateFunction(x, y);
     ASSERT_NEAR(y[0], 28.0, c_eps);
 
     MatrixDense deriv(1, 3);

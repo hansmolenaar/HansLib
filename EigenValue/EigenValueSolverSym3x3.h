@@ -13,7 +13,7 @@ class EigenValueSolverSym3x3 : public IRealFunction
     int GetRangeDimension() const override;
     int GetDomainDimension() const override;
     bool DerivativeAlwaysZero(int eqn, int var) const override;
-    void Evaluate(std::span<const double> x, std::span<double> y) const override;
+    void EvaluateFunction(std::span<const double> x, std::span<double> y) const override;
     // TODO derivatives are buggy!
     // TODO Fix tests
     void Derivative(std::span<const double> x, IMatrix &dfdx) const override;
@@ -36,7 +36,7 @@ class AuxilaryEquationRoots : public IRealFunction
     bool HasDerivative() const override;
 
     // Roots of:  x^3 -3x - detB = 0
-    void Evaluate(std::span<const double> x, std::span<double> y) const override;
+    void EvaluateFunction(std::span<const double> x, std::span<double> y) const override;
 
     // Derivatives wrt detB
     void Derivative(std::span<const double> x, IMatrix &dfdx) const override;

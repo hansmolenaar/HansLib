@@ -20,7 +20,7 @@ int GetDimension(const IRealFunction &fie)
 double Evaluate(const IRealFunction &fie, std::span<const double> x)
 {
     double result;
-    fie.Evaluate(x, std::span(&result, 1));
+    fie.EvaluateFunction(x, std::span(&result, 1));
     return result;
 }
 

@@ -15,7 +15,7 @@
 double ISingleVariableRealValuedFunctionUtils::Evaluate(ISingleVariableRealValuedFunction &fie, double x)
 {
     double result;
-    fie.Evaluate(std::span<const double>(&x, 1), std::span<double>(&result, 1));
+    fie.EvaluateFunction(std::span<const double>(&x, 1), std::span<double>(&result, 1));
     return result;
 }
 
