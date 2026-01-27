@@ -1,11 +1,11 @@
 #include <gtest/gtest.h>
 
 #include "Defines.h"
-#include "GraphIsomorphismIGraphCompareTest.h"
 #include "GraphIsomorphismComparers.h"
 #include "GraphIsomorphismComparersFactory.h"
 #include "GraphIsomorphismGrouping.h"
 #include "GraphIsomorphismICompareTest.h"
+#include "GraphIsomorphismIGraphCompareTest.h"
 #include "GraphIsomorphismTaggerChains.h"
 #include "GraphIsomorphismTaggerTriangles.h"
 #include "GraphIsomorphismUtils.h"
