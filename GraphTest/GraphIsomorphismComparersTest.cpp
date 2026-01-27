@@ -122,13 +122,13 @@ TEST(GraphIsomorphismComparersTest, SpecialCase2)
     ASSERT_NE(cmp, std::weak_ordering::equivalent);
 }
 
-#if false
 TEST(GraphIsomorphismComparersTest, CheckTaggingList3)
 {
     ComparersFactory factory;
     GraphTest::CheckList(factory, UndirectedGraphFromG6::getListNumVertices_3(), Tag{1, 4});
 }
 
+#if false
 TEST(GraphIsomorphismComparersTest, CheckTaggingList4)
 {
     ComparersFactory factory;

@@ -78,7 +78,32 @@ void CheckConsistencyList(IGraphCompareFactory &factory, const std::vector<const
     }
 }
 
+void CheckGraphGrouping(const std::vector<const IGraphCompare *> &comparers, Tag expectMultiplicities)
+{
+    const Grouping<const IGraphCompare *> grouping(comparers, [](const IGraphCompare *lhs, const IGraphCompare *rhs) {
+        return lhs->compareGraph(*rhs) == std::weak_ordering::less;
+    });
+    const auto multiplicities = CondenseSizeSequence(grouping.getGroupSizes());
+    ASSERT_EQ(multiplicities, expectMultiplicities);
+}
+
 } // namespace
+
+void GraphTest::CheckList(IGraphCompareFactory &factory, const std::vector<std::unique_ptr<Graph::IGraphUs>> &graphs,
+                          Tag expectMultiplicities)
+{
+    std::vector<std::unique_ptr<IGraphCompare>> comparers;
+    str::transform(graphs, std::back_inserter(comparers),
+                   [&factory](const auto &upg) { return factory.createGraphCompare(*upg); });
+    CheckGraphGrouping(getCastPointers<const IGraphCompare>(comparers), expectMultiplicities);
+}
+
+void GraphTest::CheckList(IGraphCompareFactory &factory, const std::vector<std::string> &g6list,
+                          Tag expectGraphTagMultiplicities)
+{
+    const auto graphs = UndirectedGraphFromG6::getGraphs(g6list);
+    CheckList(factory, graphs, expectGraphTagMultiplicities);
+}
 
 void GraphTest::CheckComparerBasics(GraphIsomorphism::IGraphCompareFactory &factory)
 {
