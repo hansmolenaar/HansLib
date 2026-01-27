@@ -333,13 +333,13 @@ TEST(GraphIsomorphismDecomposeTreeTest, SpecialCase2)
     const auto g1 = UndirectedGraphFromG6::Create("DAK");
     const Comparers tg0(*g0);
     const Comparers tg1(*g1);
-    const auto tgCompare = tg0 <=> tg1;
-    ASSERT_TRUE(tgCompare != 0);
+    const auto cmp = tg0.compareGraph(tg1);
+    ASSERT_NE(cmp, std::weak_ordering::equivalent);
 
     const DecomposeTree decomposeTree0(*g0);
     const DecomposeTree decomposeTree1(*g1);
-    const auto cmp = decomposeTree0 <=> decomposeTree1;
-    ASSERT_TRUE(cmp != 0);
+    const auto cmpTree = decomposeTree0 <=> decomposeTree1;
+    ASSERT_TRUE(cmpTree != 0);
 }
 
 TEST(GraphIsomorphismDecomposeTreeTest, SpecialCase3)
@@ -449,8 +449,8 @@ TEST(GraphIsomorphismDecomposeTreeTest, SpecialCase7)
     const auto g1 = UndirectedGraphFromG6::Create("F@~v_");
     const Comparers tg0(*g0);
     const Comparers tg1(*g1);
-    const auto tgCompare = tg0 <=> tg1;
-    ASSERT_TRUE(tgCompare != 0);
+    const auto cmp = tg0.compareGraph(tg1);
+    ASSERT_NE(cmp, std::weak_ordering::equivalent);
 }
 
 TEST(GraphIsomorphismDecomposeTreeTest, SpecialCase8_411)
@@ -478,8 +478,8 @@ TEST(GraphIsomorphismDecomposeTreeTest, SpecialCase8_411)
 
     const Comparers tg0(g0);
     const Comparers tg1(g1);
-    const auto tgCompare = tg0 <=> tg1;
-    ASSERT_TRUE(tgCompare != 0);
+    const auto cmp = tg0.compareGraph(tg1);
+    ASSERT_NE(cmp, std::weak_ordering::equivalent);
 }
 
 TEST(GraphIsomorphismDecomposeTreeTest, SpecialCase8_422)
@@ -527,8 +527,8 @@ TEST(GraphIsomorphismDecomposeTreeTest, SpecialCase8_422)
 
     const Comparers tg0(g0);
     const Comparers tg1(g1);
-    auto tgCompare = tg0 <=> tg1;
-    ASSERT_EQ(tgCompare, std::weak_ordering::equivalent);
+    auto cmp = tg0.compareGraph(tg1);
+    ASSERT_EQ(cmp, std::weak_ordering::equivalent);
 
     std::vector<std::unique_ptr<IGraphUs>> graphs;
     graphs.emplace_back(std::make_unique<UndirectedGraph>(g0));
@@ -539,8 +539,8 @@ TEST(GraphIsomorphismDecomposeTreeTest, SpecialCase8_422)
     const auto g1c = UndirectedGraph::CreateComplement(g1);
     const Comparers tg0c(g0c);
     const Comparers tg1c(g1c);
-    tgCompare = tg0c <=> tg1c;
-    ASSERT_NE(tgCompare, std::weak_ordering::equivalent);
+    cmp = tg0c.compareGraph(tg1c);
+    ASSERT_NE(cmp, std::weak_ordering::equivalent);
     graphs.clear();
     graphs.emplace_back(std::make_unique<UndirectedGraph>(g0c));
     graphs.emplace_back(std::make_unique<UndirectedGraph>(g1c));
@@ -561,8 +561,8 @@ TEST(GraphIsomorphismDecomposeTreeTest, SpecialCase9)
 
     const Comparers tg0(g0);
     const Comparers tg1(g1);
-    const auto tgCompare = tg0 <=> tg1;
-    ASSERT_NE(tgCompare, std::weak_ordering::equivalent);
+    const auto cmp = tg0.compareGraph(tg1);
+    ASSERT_NE(cmp, std::weak_ordering::equivalent);
 }
 
 TEST(GraphIsomorphismDecomposeTreeTest, CheckDecomposeList3)

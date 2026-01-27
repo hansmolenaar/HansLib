@@ -29,7 +29,6 @@ void CheckSelfConsistency(IGraphCompareFactory &factory, const IGraphCompare &co
 {
     const Permutation::Entry numPermutations = 5;
     const auto &graph = compare.getGraph();
-    ASSERT_EQ(compare.getGraph().getNumVertices(), graph.getNumVertices());
     ASSERT_EQ(compare.compareGraph(compare), std::weak_ordering::equivalent);
     const auto grouping = compare.getVertexGrouping();
     const auto groupSizes = CondenseSizeSequence(grouping.getGroupSizes());
@@ -55,6 +54,7 @@ void CheckSymmetry(const IGraphCompare &compare1, const IGraphCompare &compare2)
     {
         ASSERT_EQ(compare2.compareGraph(compare1), std::weak_ordering::equivalent);
         ASSERT_EQ(compare1.getVertexGrouping()(), compare2.getVertexGrouping()());
+        ASSERT_EQ(compare1.getVertexGrouping().countUnique(), compare2.getVertexGrouping().countUnique());
     }
     else if (cmp == std::weak_ordering::less)
     {

@@ -16,13 +16,13 @@ std::weak_ordering XGraph::compareGraph(const IGraphCompare &other) const
 {
     const XGraph &lhs = *this;
     const XGraph &rhs = dynamic_cast<const XGraph &>(other);
-    std::weak_ordering result = *lhs.m_comparers <=> *rhs.m_comparers;
+    std::weak_ordering result = lhs.m_comparers->compareGraph(*rhs.m_comparers);
     if (result != std::weak_ordering::equivalent)
     {
         return result;
     }
 
-    result = *lhs.m_comparesComplement <=> *rhs.m_comparesComplement;
+    result = lhs.m_comparesComplement->compareGraph(*rhs.m_comparesComplement);
     return result;
 }
 

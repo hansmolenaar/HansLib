@@ -27,9 +27,8 @@ TEST(GraphIsomorphismComparersTest, Singleton)
 {
     const auto graph = UndirectedGraphLibrary::Get_Singleton();
     const Comparers tg(*graph);
-    ASSERT_TRUE(tg == tg);
-    ASSERT_FALSE(tg < tg);
-    ASSERT_FALSE(tg > tg);
+    const auto cmp = tg.compareGraph(tg);
+    ASSERT_EQ(cmp, std::weak_ordering::equivalent);
 }
 
 TEST(GraphIsomorphismComparersTest, Path2)
@@ -38,9 +37,8 @@ TEST(GraphIsomorphismComparersTest, Path2)
     const auto permuted = UndirectedGraph::CreatePermuted(*graph, Permutation::Create({1, 0}));
     const Comparers tg(*graph);
     const Comparers pg(permuted);
-    ASSERT_TRUE(tg == pg);
-    ASSERT_FALSE(tg < pg);
-    ASSERT_FALSE(tg > pg);
+    const auto cmp = tg.compareGraph(pg);
+    ASSERT_EQ(cmp, std::weak_ordering::equivalent);
 }
 
 TEST(GraphIsomorphismComparersTest, DegreePath2and3)
@@ -49,7 +47,7 @@ TEST(GraphIsomorphismComparersTest, DegreePath2and3)
     const auto g1 = UndirectedGraphLibrary::Get_Path(3);
     const Comparers tg0(*g0);
     const Comparers tg1(*g1);
-    const auto cmp = tg0 <=> tg1;
+    const auto cmp = tg0.compareGraph(tg1);
     ASSERT_EQ(cmp, std::weak_ordering::less);
 }
 
@@ -59,7 +57,7 @@ TEST(GraphIsomorphismComparersTest, DegreePath3)
     const auto g1 = UndirectedGraphLibrary::Get_Path(3);
     const Comparers tg0(*g0);
     const Comparers tg1(*g1);
-    const auto cmp = tg0 <=> tg1;
+    const auto cmp = tg0.compareGraph(tg1);
     ASSERT_EQ(cmp, std::weak_ordering::equivalent);
 }
 
@@ -69,7 +67,7 @@ TEST(GraphIsomorphismComparersTest, DegreeStar123)
     const auto g1 = UndirectedGraphLibrary::Get_Star({3, 1, 2});
     const Comparers tg0(*g0);
     const Comparers tg1(*g1);
-    const auto cmp = tg0 <=> tg1;
+    const auto cmp = tg0.compareGraph(tg1);
     ASSERT_EQ(cmp, std::weak_ordering::equivalent);
 }
 
@@ -79,7 +77,7 @@ TEST(GraphIsomorphismComparersTest, DegreePan3)
     const auto g1 = GraphUsc::CreatePermuted(*g0, {2, 1, 0, 3});
     const Comparers tg0(*g0);
     const Comparers tg1(g1);
-    const auto cmp = tg0 <=> tg1;
+    const auto cmp = tg0.compareGraph(tg1);
     ASSERT_EQ(cmp, std::weak_ordering::equivalent);
 }
 
@@ -89,7 +87,7 @@ TEST(GraphIsomorphismComparersTest, SpecialCase1)
     const auto g1 = UndirectedGraphFromG6::CreateConnected("FDxZg");
     const Comparers tg0(*g0);
     const Comparers tg1(*g1);
-    const auto cmp = tg0 <=> tg1;
+    const auto cmp = tg0.compareGraph(tg1);
     ASSERT_EQ(cmp, std::weak_ordering::greater);
 
     const TaggerTriangles taggerTriangles0(std::make_shared<UndirectedGraphTriangles>(*g0));
@@ -106,8 +104,6 @@ TEST(GraphIsomorphismComparersTest, SpecialCase1)
 
     ASSERT_EQ(taggerChains1.getVertexTag(3), (Tag{4, 3}));
     ASSERT_EQ(taggerChains1.getVertexTag(4), (Tag{4, 3}));
-
-    ASSERT_TRUE(tg0 != tg1);
 }
 
 TEST(GraphIsomorphismComparersTest, SpecialCase2)
@@ -121,8 +117,8 @@ TEST(GraphIsomorphismComparersTest, SpecialCase2)
     ASSERT_TRUE(grouping0.getUniqueValues().empty());
     ASSERT_TRUE(grouping1.getUniqueValues().empty());
 
-    const auto tgCompare = tg0 <=> tg1;
-    ASSERT_TRUE(tgCompare != std::weak_ordering::equivalent);
+    const auto cmp = tg0.compareGraph(tg1);
+    ASSERT_NE(cmp, std::weak_ordering::equivalent);
 }
 
 TEST(GraphIsomorphismComparersTest, CheckTaggingList3)
