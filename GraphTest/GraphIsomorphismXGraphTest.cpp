@@ -43,8 +43,21 @@ TEST(GraphIsomorphismXGraphTest, Test6)
     ASSERT_EQ(grouping_xg.countUnique(), 6);
 }
 
-TEST(GraphIsomorphismXGraphTest, CheckList3)
+TEST(GraphIsomorphismXGraphTest, CheckList345)
 {
     XGraphFactory factory;
-    GraphTest::CheckList(factory, UndirectedGraphFromG6::getListNumVertices_3(), Tag{1, 4});
+    auto list = UndirectedGraphFromG6::getListNumVertices_3();
+    const auto list4 = UndirectedGraphFromG6::getListNumVertices_4();
+    const auto list5 = UndirectedGraphFromG6::getListNumVertices_5();
+
+    list.insert(list.end(), list4.begin(), list4.end());
+    list.insert(list.end(), list5.begin(), list5.end());
+    GraphTest::CheckList(factory, list, Tag{1, 49});
+}
+
+TEST(GraphIsomorphismXGraphTest, CheckList12)
+{
+    XGraphFactory factory;
+    GraphTest::CheckList(factory, UndirectedGraphFromG6::getListNumVertices_12_connected(),
+                         {1, 562, 2, 13, 3, 1, 4, 1});
 }

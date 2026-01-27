@@ -152,6 +152,13 @@ TEST(GraphIsomorphismComparersTest, CheckList8)
     GraphTest::CheckList(factory, UndirectedGraphFromG6::getListNumVertices_8(), {1, 746});
 }
 
+TEST(GGraphIsomorphismComparersTest, CheckList12)
+{
+    ComparersFactory factory;
+    GraphTest::CheckList(factory, UndirectedGraphFromG6::getListNumVertices_12_connected(),
+                         {1, 547, 2, 14, 3, 4, 4, 2});
+}
+
 TEST(GraphIsomorphismConstructTest, Disconnected5)
 {
     ComparersFactory factory;
