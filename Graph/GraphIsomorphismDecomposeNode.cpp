@@ -29,7 +29,7 @@ DecomposeNode::DecomposeNode(std::unique_ptr<ITransform> &&transform) : m_transf
 
 std::unique_ptr<DecomposeNode> DecomposeNode::Create(const std::shared_ptr<XGraph> &xgraph)
 {
-    return std::unique_ptr<DecomposeNode>(new DecomposeNode(std::move(ITransform::Create(xgraph))));
+    return std::unique_ptr<DecomposeNode>(new DecomposeNode(ITransform::Create(xgraph)));
 }
 
 const XGraph &DecomposeNode::getXGraph() const
