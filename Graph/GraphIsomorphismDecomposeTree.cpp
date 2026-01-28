@@ -128,7 +128,7 @@ std::weak_ordering DecomposeTree::compareLeaves(const DecomposeNode *leaf1, cons
     const DecomposeNode *d2 = leaf2;
     while (d1 != d2)
     {
-        result = (d1->compareGraph(*d2));
+        result = d1->compareGraph(*d2);
         if (result != 0)
         {
             return result;

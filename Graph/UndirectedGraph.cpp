@@ -403,3 +403,34 @@ UndirectedGraph UndirectedGraph::CreateRandomShuffled(const IGraphUs &graph, Per
     const auto permutation = Permutation::CreateRandomShuffle(trivial, seed);
     return UndirectedGraph::CreatePermuted(graph, permutation);
 }
+
+UndirectedGraph UndirectedGraph::CreateDisjointedUnion(const IGraphUs &g0, const IGraphUs &g1)
+{
+    const auto n0 = g0.getNumVertices();
+    const auto nVertices = n0 + g1.getNumVertices();
+    UndirectedGraph result(nVertices);
+    std::vector<Vertex> ngbs;
+    for (Vertex v : g0.getVertexRange())
+    {
+        g0.setAdjacentVertices(v, ngbs);
+        for (Vertex n : ngbs)
+        {
+            if (n > v)
+            {
+                result.addEdge(n, v);
+            }
+        }
+    }
+    for (Vertex v : g1.getVertexRange())
+    {
+        g1.setAdjacentVertices(v, ngbs);
+        for (Vertex n : ngbs)
+        {
+            if (n > v)
+            {
+                result.addEdge(n + n0, v + n0);
+            }
+        }
+    }
+    return result;
+}

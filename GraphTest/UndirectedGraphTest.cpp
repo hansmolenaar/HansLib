@@ -435,6 +435,37 @@ TEST(UndirectedGraphTest, LineGraph_Graph_1183)
     ASSERT_EQ(lineGraph.getNumEdges(), 9);
 }
 
+TEST(UndirectedGraphTest, DisjointUnion1)
+{
+    const auto g0 = UndirectedGraphLibrary::Get_Singleton();
+    const auto g1 = UndirectedGraphLibrary::Get_Path(2);
+    const auto du1 = UndirectedGraph::CreateDisjointedUnion(*g0, *g1);
+    const auto du2 = UndirectedGraph::CreateDisjointedUnion(*g0, *g1);
+    ASSERT_EQ(du1.getNumVertices(), 3);
+    ASSERT_EQ(du2.getNumVertices(), 3);
+    ASSERT_EQ(du1.getNumEdges(), 1);
+    ASSERT_EQ(du2.getNumEdges(), 1);
+
+    const auto c1 = UndirectedGraph::CreateComplement(du1);
+    const auto c2 = UndirectedGraph::CreateComplement(du2);
+    const TaggerKnown tagger1(c1);
+    const TaggerKnown tagger2(c2);
+    ASSERT_EQ(tagger1.getGraphTag(), (Tag{TaggerKnown::KnownType::Path, 3}));
+    ASSERT_EQ(tagger2.getGraphTag(), (Tag{TaggerKnown::KnownType::Path, 3}));
+}
+
+TEST(UndirectedGraphTest, DisjointUnion2)
+{
+    const auto g0 = UndirectedGraphLibrary::Get_Path(2);
+    const auto du = UndirectedGraph::CreateDisjointedUnion(*g0, *g0);
+    ASSERT_EQ(du.getNumVertices(), 4);
+    ASSERT_EQ(du.getNumEdges(), 2);
+
+    const auto cmp = UndirectedGraph::CreateComplement(du);
+    const TaggerKnown tagger(cmp);
+    ASSERT_EQ(tagger.getGraphTag(), (Tag{TaggerKnown::KnownType::Cycle, 4}));
+}
+
 #if false
 TEST(UndirectedGraphTest, TestList)
 {

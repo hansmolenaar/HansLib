@@ -35,6 +35,7 @@ class UndirectedGraph : public Graph::IGraphUs
     static UndirectedGraph CreatePermuted(const IGraphUs &, std::initializer_list<Permutation::Entry>);
     static UndirectedGraph CreateComplement(const IGraphUs &);
     static UndirectedGraph CreateLineGraph(const IGraphUs &);
+    static UndirectedGraph CreateDisjointedUnion(const IGraphUs &, const IGraphUs &);
 
     // Remove all edges between vertices in the same group
     static UndirectedGraph CreateEdgesOmitted(const IGraphUs &, const std::vector<std::vector<Vertex>> &);
