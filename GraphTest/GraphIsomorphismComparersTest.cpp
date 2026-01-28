@@ -122,6 +122,64 @@ TEST(GraphIsomorphismComparersTest, SpecialCase2)
     ASSERT_NE(cmp, std::weak_ordering::equivalent);
 }
 
+TEST(GraphIsomorphismComparersTest, PrismSingleTwist)
+{
+    for (Vertex n = 3; n < 10; ++n)
+    {
+        const auto g0 = UndirectedGraphLibrary::Get_Prism(n);
+        auto twister = [](const Vertex v) {
+            if (v < 2)
+            {
+                return (v + 1) % 2;
+            }
+            else
+            {
+                return v;
+            }
+        };
+        const auto g1 = UndirectedGraphLibrary::Get_DistortedPrism(n, twister);
+        const Comparers cmp0(g0);
+        const Comparers cmp1(g1);
+        const auto retval = cmp0.compareGraph(cmp1);
+        ASSERT_EQ(retval == std::weak_ordering::equivalent, n == 3);
+    }
+}
+
+TEST(GraphIsomorphismComparersTest, PrismDoubleTwist)
+{
+    for (Vertex n = 6; n < 15; ++n)
+    {
+        const auto g0 = UndirectedGraphLibrary::Get_Prism(n);
+        auto twister = [](const Vertex v) {
+            if (v == 0)
+            {
+                return Vertex{1};
+            }
+            else if (v == 1)
+            {
+                return Vertex{0};
+            }
+            else if (v == 4)
+            {
+                return Vertex{5};
+            }
+            else if (v == 5)
+            {
+                return Vertex{4};
+            }
+            else
+            {
+                return v;
+            }
+        };
+        const auto g1 = UndirectedGraphLibrary::Get_DistortedPrism(n, twister);
+        const Comparers cmp0(g0);
+        const Comparers cmp1(g1);
+        const auto retval = cmp0.compareGraph(cmp1);
+        ASSERT_NE(retval, std::weak_ordering::equivalent);
+    }
+}
+
 TEST(GraphIsomorphismComparersTest, CheckList345)
 {
     ComparersFactory factory;

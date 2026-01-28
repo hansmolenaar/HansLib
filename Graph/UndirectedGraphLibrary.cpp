@@ -176,3 +176,19 @@ std::vector<std::unique_ptr<Graph::IGraphUs>> UndirectedGraphLibrary::Get_Graphs
     graphs.emplace_back(UndirectedGraphLibrary::Get_DisconnectedGraph(2));
     return graphs;
 }
+
+UndirectedGraph UndirectedGraphLibrary::Get_DistortedPrism(Vertex numVerticesCycle, Vertex (*connectTo)(Vertex))
+{
+    const auto cycle = Get_Cycle(numVerticesCycle);
+    auto result = UndirectedGraph::CreateDisjointedUnion(*cycle, *cycle);
+    for (Vertex v : Iota::GetRange(numVerticesCycle))
+    {
+        result.addEdge(v, connectTo(v) + numVerticesCycle);
+    }
+    return result;
+}
+
+UndirectedGraph UndirectedGraphLibrary::Get_Prism(Graph::Vertex numVerticesCycle)
+{
+    return Get_DistortedPrism(numVerticesCycle, [](Vertex v) { return v; });
+}

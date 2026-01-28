@@ -466,6 +466,13 @@ TEST(UndirectedGraphTest, DisjointUnion2)
     ASSERT_EQ(tagger.getGraphTag(), (Tag{TaggerKnown::KnownType::Cycle, 4}));
 }
 
+TEST(UndirectedGraphTest, Prism5)
+{
+    const auto prism = UndirectedGraphLibrary::Get_Prism(5);
+    ASSERT_EQ(prism.getNumVertices(), 10);
+    ASSERT_EQ(prism.getNumEdges(), 15);
+}
+
 #if false
 TEST(UndirectedGraphTest, TestList)
 {

@@ -217,7 +217,6 @@ const Graph::IGraphUs &DecomposeTree::getGraph() const
     return getRoot().getGraph();
 }
 
-
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Factory
 
 std::unique_ptr<IGraphCompare> DecomposeTreeFactory::createGraphCompare(const Graph::IGraphUs &graph)
