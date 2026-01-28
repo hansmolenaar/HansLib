@@ -5,11 +5,16 @@
 namespace GraphIsomorphism
 {
 
-class DecomposeTree
+class DecomposeTree : public IGraphCompare
 {
   public:
     explicit DecomposeTree(const Graph::IGraphUs &);
     explicit DecomposeTree(std::unique_ptr<DecomposeNode> &&);
+
+    std::weak_ordering compareGraph(const IGraphCompare &) const override;
+    const VertexGrouping &getVertexGrouping() const override;
+    const Graph::IGraphUs &getGraph() const override;
+
     const DecomposeNode &getRoot() const;
     std::vector<const DecomposeNode *> getLeaves() const;
     size_t size() const;
@@ -18,7 +23,6 @@ class DecomposeTree
 
     std::weak_ordering compareLeaves(const DecomposeNode *, const DecomposeNode *) const;
     GraphIsomorphism::Grouping<const DecomposeNode *> groupLeaves() const;
-    std::weak_ordering operator<=>(const DecomposeTree &) const;
 
     const DecomposeNode *getParent(const DecomposeNode *) const;
     std::vector<Tag> collectDecomposeTagsForLeaf(const DecomposeNode *) const;
@@ -27,6 +31,11 @@ class DecomposeTree
     std::unique_ptr<DecomposeNode> m_root;
 
     std::map<const DecomposeNode *, const DecomposeNode *> m_toParent;
+};
+
+class DecomposeTreeFactory : public IGraphCompareFactory
+{
+    std::unique_ptr<IGraphCompare> createGraphCompare(const Graph::IGraphUs &) override;
 };
 
 } // namespace GraphIsomorphism

@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "GraphIsomorphismDecomposeTree.h"
+#include "GraphIsomorphismIGraphCompareTest.h"
 #include "GraphIsomorphismUtils.h"
 #include "Single.h"
 #include "UndirectedGraphFromG6.h"
@@ -58,7 +59,7 @@ void CheckDecompose(const DecomposeTree &decomposeTree, int expectNumLeaves = -1
         const auto graphPermuted = UndirectedGraph::CreatePermuted(graph, permutation);
         const DecomposeTree decomposeTreePermuted(graphPermuted);
         CheckVertexConservation(decomposeTreePermuted, expectNumLeaves);
-        const auto cmp = decomposeTree <=> decomposeTreePermuted;
+        const auto cmp = decomposeTree.compareGraph(decomposeTreePermuted);
         ASSERT_TRUE(cmp == std::weak_ordering::equivalent);
     }
 }
@@ -77,7 +78,9 @@ void CheckDecomposeGraphList(const std::vector<const IGraphUs *> &graphs, Tag ex
         CheckDecompose(*tree);
     }
 
-    auto decomposeTreeLess = [](const DecomposeTree *lhs, const DecomposeTree *rhs) { return *lhs < *rhs; };
+    auto decomposeTreeLess = [](const DecomposeTree *lhs, const DecomposeTree *rhs) {
+        return lhs->compareGraph(*rhs) == std::weak_ordering::less;
+    };
     std::map<const DecomposeTree *, std::vector<const DecomposeTree *>, decltype(decomposeTreeLess)> multiplicityMap(
         decomposeTreeLess);
     for (const auto &dg : decompositions)
@@ -139,6 +142,19 @@ void CheckDecomposeList(const std::vector<std::string> &g6list, Tag expectMultip
 }
 
 } // namespace
+
+TEST(GraphIsomorphismDecomposeTreeTest, Basics)
+{
+    DecomposeTreeFactory factory;
+    GraphTest::CheckComparerBasics(factory);
+}
+
+TEST(GraphIsomorphismDecomposeTreeTest, CheckListUpTo5)
+{
+    DecomposeTreeFactory factory;
+    const auto graphs = UndirectedGraphLibrary::Get_GraphsOrderLE5();
+    GraphTest::CheckList(factory, graphs, Tag{1, 53});
+}
 
 TEST(GraphIsomorphismDecomposeTreeTest, Singleton)
 {
@@ -323,7 +339,7 @@ TEST(GraphIsomorphismDecomposeTreeTest, SpecialCase1)
 
     const DecomposeTree decomposeTree0(*g0);
     const DecomposeTree decomposeTree1(*g1);
-    const auto cmp = decomposeTree0 <=> decomposeTree1;
+    const auto cmp = decomposeTree0.compareGraph(decomposeTree1);
     ASSERT_TRUE(cmp != 0);
 }
 
@@ -338,7 +354,7 @@ TEST(GraphIsomorphismDecomposeTreeTest, SpecialCase2)
 
     const DecomposeTree decomposeTree0(*g0);
     const DecomposeTree decomposeTree1(*g1);
-    const auto cmpTree = decomposeTree0 <=> decomposeTree1;
+    const auto cmpTree = decomposeTree0.compareGraph(decomposeTree1);
     ASSERT_TRUE(cmpTree != 0);
 }
 
@@ -439,7 +455,7 @@ TEST(GraphIsomorphismDecomposeTreeTest, SpecialCase6)
         descr1.at(1),
         "Known graph: complete graph of order 1 -> Complement is disconnected graph with components of order: 1 8");
 
-    const auto cmp = decompose0 <=> decompose1;
+    const auto cmp = decompose0.compareGraph(decompose1);
     ASSERT_TRUE(cmp != 0);
 }
 

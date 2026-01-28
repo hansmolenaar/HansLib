@@ -148,11 +148,13 @@ Grouping<const DecomposeNode *> DecomposeTree::groupLeaves() const
     return grouping;
 }
 
-std::weak_ordering DecomposeTree::operator<=>(const DecomposeTree &map2) const
+std::weak_ordering DecomposeTree::compareGraph(const IGraphCompare &other) const
 {
-    const auto &map1 = *this;
-    const auto groups1 = map1.groupLeaves();
-    const auto groups2 = map2.groupLeaves();
+    const auto &lhs = *this;
+    const auto &rhs = dynamic_cast<const DecomposeTree &>(other);
+
+    const auto groups1 = lhs.groupLeaves();
+    const auto groups2 = rhs.groupLeaves();
     std::weak_ordering result = groups1.getGroupSizes() <=> groups2.getGroupSizes();
     if (result != 0)
     {
@@ -169,8 +171,8 @@ std::weak_ordering DecomposeTree::operator<=>(const DecomposeTree &map2) const
         const auto *leaf1 = group1.front();
         const auto *leaf2 = group2.front();
 
-        const auto pathTags1 = map1.collectDecomposeTagsForLeaf(leaf1);
-        const auto pathTags2 = map2.collectDecomposeTagsForLeaf(leaf2);
+        const auto pathTags1 = lhs.collectDecomposeTagsForLeaf(leaf1);
+        const auto pathTags2 = rhs.collectDecomposeTagsForLeaf(leaf2);
         result = pathTags1 <=> pathTags2;
         if (result != 0)
         {
@@ -198,9 +200,27 @@ std::weak_ordering DecomposeTree::operator<=>(const DecomposeTree &map2) const
             {
                 return result;
             }
-            decomp1 = map1.getParent(decomp1);
-            decomp2 = map2.getParent(decomp2);
+            decomp1 = lhs.getParent(decomp1);
+            decomp2 = rhs.getParent(decomp2);
         }
     }
     return result;
+}
+
+const VertexGrouping &DecomposeTree::getVertexGrouping() const
+{
+    return getRoot().getVertexGrouping();
+}
+
+const Graph::IGraphUs &DecomposeTree::getGraph() const
+{
+    return getRoot().getGraph();
+}
+
+
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Factory
+
+std::unique_ptr<IGraphCompare> DecomposeTreeFactory::createGraphCompare(const Graph::IGraphUs &graph)
+{
+    return std::make_unique<DecomposeTree>(graph);
 }
