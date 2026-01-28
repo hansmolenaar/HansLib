@@ -23,7 +23,9 @@ DecomposeNode::DecomposeNode(std::unique_ptr<ITransform> &&transform) : m_transf
         allChildren.push_back(m_childDecomposes.back().get());
     }
 
-    auto compare = [](const DecomposeNode *child1, const DecomposeNode *child2) { return *child1 < *child2; };
+    auto compare = [](const DecomposeNode *child1, const DecomposeNode *child2) {
+        return child1->compareGraph(*child2) == std::weak_ordering::less;
+    };
     m_groupingChildren = Grouping<const DecomposeNode *>(allChildren, compare);
 }
 
@@ -72,34 +74,36 @@ const Grouping<const DecomposeNode *> &DecomposeNode::getGroupingChildren() cons
     return m_groupingChildren;
 }
 
-std::weak_ordering DecomposeNode::operator<=>(const DecomposeNode &other) const
+std::weak_ordering DecomposeNode::compareGraph(const IGraphCompare &other) const
 {
-    std::weak_ordering result = getGroupingChildren().getGroupSizes() <=> other.getGroupingChildren().getGroupSizes();
+    const DecomposeNode &lhs = *this;
+    const DecomposeNode &rhs = dynamic_cast<const DecomposeNode &>(other);
+    std::weak_ordering result = lhs.getGroupingChildren().getGroupSizes() <=> rhs.getGroupingChildren().getGroupSizes();
     if (result != std::weak_ordering::equivalent)
     {
         return result;
     }
 
-    result = getTag() <=> other.getTag();
+    result = lhs.getTag() <=> rhs.getTag();
     if (result != std::weak_ordering::equivalent)
     {
         return result;
     }
 
-    result = getXGraph().compareGraph((other.getXGraph()));
+    result = lhs.getXGraph().compareGraph((rhs.getXGraph()));
     if (result != std::weak_ordering::equivalent)
     {
         return result;
     }
 
-    if (isLeaf())
+    if (lhs.isLeaf())
     {
-        MyAssert(other.isLeaf());
+        MyAssert(rhs.isLeaf());
     }
     else
     {
-        const auto &groups0 = getGroupingChildren()();
-        const auto &groups1 = other.getGroupingChildren()();
+        const auto &groups0 = lhs.getGroupingChildren()();
+        const auto &groups1 = rhs.getGroupingChildren()();
         MyAssert(groups0.size() == groups1.size());
         for (size_t n : Iota::GetRange(groups0.size()))
         {
@@ -117,4 +121,11 @@ std::weak_ordering DecomposeNode::operator<=>(const DecomposeNode &other) const
 const VertexGrouping &DecomposeNode::getVertexGrouping() const
 {
     return getXGraph().getVertexGrouping();
+}
+
+// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Factory
+
+std::unique_ptr<IGraphCompare> DecomposeNodeFactory::createGraphCompare(const Graph::IGraphUs &graph)
+{
+    return DecomposeNode::Create(std::make_shared<XGraph>(graph));
 }

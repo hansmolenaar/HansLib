@@ -160,3 +160,19 @@ std::unique_ptr<Graph::IGraphUsc> UndirectedGraphLibrary::Get_Singleton()
 {
     return Get_CompleteGraph(1);
 }
+
+std::vector<std::unique_ptr<Graph::IGraphUs>> UndirectedGraphLibrary::Get_GraphsOrderLE5()
+{
+    auto list = UndirectedGraphFromG6::getListNumVertices_3();
+    const auto list4 = UndirectedGraphFromG6::getListNumVertices_4();
+    const auto list5 = UndirectedGraphFromG6::getListNumVertices_5();
+    list.insert(list.end(), list4.begin(), list4.end());
+    list.insert(list.end(), list5.begin(), list5.end());
+
+    auto graphs = UndirectedGraphFromG6::getGraphs(list);
+    graphs.emplace_back(UndirectedGraphLibrary::Get_Null());
+    graphs.emplace_back(UndirectedGraphLibrary::Get_Singleton());
+    graphs.emplace_back(UndirectedGraphLibrary::Get_Path(2));
+    graphs.emplace_back(UndirectedGraphLibrary::Get_DisconnectedGraph(2));
+    return graphs;
+}

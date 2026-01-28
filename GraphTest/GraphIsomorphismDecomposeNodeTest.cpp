@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "GraphIsomorphismDecomposeNode.h"
+#include "GraphIsomorphismIGraphCompareTest.h"
 #include "UndirectedGraphFromG6.h"
 #include "UndirectedGraphLibrary.h"
 
@@ -41,11 +42,30 @@ void TestInterface(const DecomposeNode &decomposeNode)
         ASSERT_EQ(verticesInParent.size(), nVertices);
     }
 
-    ASSERT_EQ(decomposeNode <=> decomposeNode, std::weak_ordering::equivalent);
+    ASSERT_EQ(decomposeNode.compareGraph(decomposeNode), std::weak_ordering::equivalent);
 }
 
 } // namespace
 
+TEST(GraphIsomorphismDecomposeNodeTest, Basics)
+{
+    DecomposeNodeFactory factory;
+    GraphTest::CheckComparerBasics(factory);
+}
+
+TEST(GraphIsomorphismDecomposeNodeTest, CheckListUpTo5)
+{
+    DecomposeNodeFactory factory;
+    const auto graphs = UndirectedGraphLibrary::Get_GraphsOrderLE5();
+    GraphTest::CheckList(factory, graphs, Tag{1, 53});
+}
+
+TEST(GraphIsomorphismDecomposeNodeTest, CheckList12)
+{
+    DecomposeNodeFactory factory;
+    GraphTest::CheckList(factory, UndirectedGraphFromG6::getListNumVertices_12_connected(),
+                         {1, 562, 2, 13, 3, 1, 4, 1});
+}
 TEST(GraphIsomorphismDecomposeNodeTest, Cycle5)
 {
     const auto graph = UndirectedGraphLibrary::Get_Cycle(5);

@@ -61,7 +61,9 @@ std::vector<const DecomposeNode *> DecomposeTree::getLeaves() const
             result.push_back(itr.first);
         }
     }
-    auto compare = [](const DecomposeNode *child1, const DecomposeNode *child2) { return *child1 < *child2; };
+    auto compare = [](const DecomposeNode *child1, const DecomposeNode *child2) {
+        return child1->compareGraph(*child2) == std::weak_ordering::less;
+    };
     str::sort(result, compare);
 
     return result;
@@ -126,7 +128,7 @@ std::weak_ordering DecomposeTree::compareLeaves(const DecomposeNode *leaf1, cons
     const DecomposeNode *d2 = leaf2;
     while (d1 != d2)
     {
-        result = (*d1 <=> *d2);
+        result = (d1->compareGraph(*d2));
         if (result != 0)
         {
             return result;
@@ -191,7 +193,7 @@ std::weak_ordering DecomposeTree::operator<=>(const DecomposeTree &map2) const
                 break;
             }
             done.insert(graphPair);
-            result = (*decomp1 <=> *decomp2);
+            result = decomp1->compareGraph(*decomp2);
             if (result != 0)
             {
                 return result;

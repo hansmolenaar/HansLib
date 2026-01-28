@@ -20,4 +20,7 @@ std::unique_ptr<Graph::GraphUsc> Get_Paw();
 
 std::unique_ptr<Graph::IGraphUsc> Get_Null();
 std::unique_ptr<Graph::IGraphUsc> Get_Singleton();
+
+std::vector<std::unique_ptr<Graph::IGraphUs>> Get_GraphsOrderLE5();
+
 } // namespace UndirectedGraphLibrary

@@ -5,6 +5,7 @@
 #include "GraphIsomorphismIGraphCompareTest.h"
 #include "GraphIsomorphismXGraph.h"
 #include "UndirectedGraphFromG6.h"
+#include "UndirectedGraphLibrary.h"
 
 using namespace GraphIsomorphism;
 using namespace Graph;
@@ -43,16 +44,11 @@ TEST(GraphIsomorphismXGraphTest, Test6)
     ASSERT_EQ(grouping_xg.countUnique(), 6);
 }
 
-TEST(GraphIsomorphismXGraphTest, CheckList345)
+TEST(GraphIsomorphismXGraphTest, CheckListUpTo5)
 {
     XGraphFactory factory;
-    auto list = UndirectedGraphFromG6::getListNumVertices_3();
-    const auto list4 = UndirectedGraphFromG6::getListNumVertices_4();
-    const auto list5 = UndirectedGraphFromG6::getListNumVertices_5();
-
-    list.insert(list.end(), list4.begin(), list4.end());
-    list.insert(list.end(), list5.begin(), list5.end());
-    GraphTest::CheckList(factory, list, Tag{1, 49});
+    const auto graphs = UndirectedGraphLibrary::Get_GraphsOrderLE5();
+    GraphTest::CheckList(factory, graphs, Tag{1, 53});
 }
 
 TEST(GraphIsomorphismXGraphTest, CheckList12)
