@@ -17,7 +17,7 @@ static constexpr char pan3[] = "Cx";
 /*
         1
       / |
-   3 -2  |
+  3 -2  |
       \ |
         0
 */
