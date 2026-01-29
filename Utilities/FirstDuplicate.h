@@ -1,10 +1,9 @@
 #pragma once
 
+#include "Defines.h"
 #include "MyException.h"
-#include <algorithm>
 #include <optional>
 #include <sstream>
-#include <vector>
 
 namespace Utilities
 {
@@ -39,12 +38,10 @@ template <typename C> std::optional<typename C::value_type> firstDuplicate(const
 
     std::vector<typename C::value_type> sorted(values.begin(), values.end());
     std::sort(sorted.begin(), sorted.end());
-    for (size_t n = 1; n < sorted.size(); ++n)
+    const auto found = str::adjacent_find(sorted);
+    if (found != sorted.end())
     {
-        if (sorted.at(n - 1) == sorted.at(n))
-        {
-            return {sorted.at(n)};
-        }
+        return *found;
     }
     return {};
 }

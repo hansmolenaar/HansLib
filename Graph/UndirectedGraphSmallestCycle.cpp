@@ -41,8 +41,10 @@ Vertex CheckLoop(const std::map<Vertex, Vertex> &vertex2from, Vertex start, Vert
         v = vertex2from.at(v);
         loop.push_back(v);
     }
-    // TODO no need to copy
-    if (firstDuplicate(loop).has_value())
+
+    // Check for duplicates
+    str::sort(loop);
+    if (str::adjacent_find(loop) != loop.end())
     {
         return UndirectedGraphSmallestCycle::noCycleLength;
     }
@@ -89,11 +91,7 @@ Vertex UndirectedGraphSmallestCycle::getSmallestCycleLength(const IGraphUs &grap
             }
         }
 
-        // TODO
-        for (Vertex c : cur)
-        {
-            done.insert(c);
-        }
+        str::copy(cur, std::inserter(done, done.end()));
         cur.clear();
         std::swap(cur, nxt);
     }
