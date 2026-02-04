@@ -9,6 +9,7 @@
 #include "GraphIsomorphismTaggerKnown.h"
 #include "GraphIsomorphismTaggerMaxDegree.h"
 #include "GraphIsomorphismTaggerNumbers.h"
+#include "GraphIsomorphismTaggerShortestCycle.h"
 #include "GraphIsomorphismTaggerTriangles.h"
 #include "GraphIsomorphismTaggerTwins.h"
 #include "MyAssert.h"
@@ -28,11 +29,12 @@ CompareColorFactory compareColorFactory;
 CompareDistanceFactory compareDistanceFactory;
 CompareTrianglesFactory compareTrianglesFactory;
 CompareTwinsFactory compareTwinsFactory;
+CompareShortestCycleFactory compareShortestCycleFactory;
 
 std::vector<ICompareFactory *> allFactories{
-    &compareNumbersFactory,   &compareKnownFactory,  &compareDegreeFactory, &compareComponentsFactory,
-    &compareMaxDegreeFactory, &compareChainsFactory, &compareColorFactory,  &compareDistanceFactory,
-    &compareTrianglesFactory, &compareTwinsFactory,
+    &compareNumbersFactory,   &compareKnownFactory,  &compareDegreeFactory,        &compareComponentsFactory,
+    &compareMaxDegreeFactory, &compareChainsFactory, &compareColorFactory,         &compareDistanceFactory,
+    &compareTrianglesFactory, &compareTwinsFactory,  &compareShortestCycleFactory,
 };
 
 } // namespace

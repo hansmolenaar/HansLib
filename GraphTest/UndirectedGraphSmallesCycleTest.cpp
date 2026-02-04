@@ -151,3 +151,19 @@ TEST(UndirectedGraphSmallestCycleTest, Stuff)
     sizes = CondenseSizeSequence(UndirectedGraphSmallestCycle(*graph).getSmallestCycleLengths());
     ASSERT_EQ(sizes, (Tag{0, 1, 3, 3, 5, 3}));
 }
+
+TEST(UndirectedGraphSmallestCycleTest, Permutations)
+{
+    auto graph = UndirectedGraphFromG6::Create("Dr[");
+    const UndirectedGraphSmallestCycle smallesCycles(*graph);
+    const std::vector<TagEntry> expectSizes{3, 4, 4, 1};
+    const auto sizes = CondenseSizeSequence(UndirectedGraphSmallestCycle(*graph).getSmallestCycleLengths());
+    ASSERT_EQ(sizes, expectSizes);
+    for (Permutation::Entry seed : Iota::GetRange(10))
+    {
+        const auto pgraph = UndirectedGraph::CreateRandomShuffled(*graph, seed);
+        const UndirectedGraphSmallestCycle psmallesCycles(pgraph);
+        const auto psizes = CondenseSizeSequence(psmallesCycles.getSmallestCycleLengths());
+        ASSERT_EQ(psizes, expectSizes);
+    }
+}

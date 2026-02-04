@@ -32,6 +32,7 @@ const VertexGrouping &TaggerDegree::getVertexGrouping() const
 {
     return m_vertexGrouping;
 }
+
 // !!!!!!!!!!!!! FACTORY
 
 std::unique_ptr<ICompare> CompareDegreeFactory::createCompare(const Graph::IGraphUs &graph)
