@@ -16,7 +16,7 @@ class UndirectedGraphSmallestCycle
     const std::vector<Graph::Vertex> &getSmallestCycleLengths() const;
 
   private:
-    static Graph::Vertex getSmallestCycleLength(const Graph::IGraphUs &, Graph::Vertex);
+    static std::optional<Vertex> getSmallestCycleLength(const Graph::IGraphUs &, Graph::Vertex);
 
     const Graph::IGraphUs &m_graph;
     std::vector<Graph::Vertex> m_lengths;

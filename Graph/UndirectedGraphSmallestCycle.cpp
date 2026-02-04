@@ -9,8 +9,10 @@ using namespace Utilities;
 UndirectedGraphSmallestCycle::UndirectedGraphSmallestCycle(const Graph::IGraphUs &graph)
     : m_graph(graph), m_lengths(m_graph.getNumVertices())
 {
-    str::transform(m_graph.getVertexRange(), m_lengths.begin(),
-                   [&graph](Vertex v) { return getSmallestCycleLength(graph, v); });
+    str::transform(m_graph.getVertexRange(), m_lengths.begin(), [&graph](Vertex v) {
+        const auto retval = getSmallestCycleLength(graph, v);
+        return retval.has_value() ? retval.value() : noCycleLength;
+    });
 }
 
 const IGraphUs &UndirectedGraphSmallestCycle::getGraph() const
@@ -25,7 +27,7 @@ const std::vector<Graph::Vertex> &UndirectedGraphSmallestCycle::getSmallestCycle
 
 namespace
 {
-Vertex CheckLoop(const std::map<Vertex, Vertex> &vertex2from, Vertex start, Vertex end0, Vertex end1)
+std::optional<Vertex> CheckLoop(const std::map<Vertex, Vertex> &vertex2from, Vertex start, Vertex end0, Vertex end1)
 {
     std::vector<Vertex> loop;
     Vertex v = end0;
@@ -46,22 +48,20 @@ Vertex CheckLoop(const std::map<Vertex, Vertex> &vertex2from, Vertex start, Vert
     str::sort(loop);
     if (str::adjacent_find(loop) != loop.end())
     {
-        return UndirectedGraphSmallestCycle::noCycleLength;
+        return {};
     }
     return loop.size() + 3;
 }
 } // namespace
 
-Vertex UndirectedGraphSmallestCycle::getSmallestCycleLength(const IGraphUs &graph, Vertex start)
+std::optional<Vertex> UndirectedGraphSmallestCycle::getSmallestCycleLength(const IGraphUs &graph, Vertex start)
 {
     std::map<Vertex, Vertex> vertex2from;
 
     std::vector<Vertex> cur{start};
     std::vector<Vertex> nxt;
     std::vector<Vertex> ngbs;
-    std::set<Vertex> done;
-    constexpr Vertex lengthUndefined = std::numeric_limits<Vertex>::max();
-    Vertex optimal = lengthUndefined;
+    std::optional<Vertex> optimal;
 
     while (!cur.empty())
     {
@@ -70,7 +70,7 @@ Vertex UndirectedGraphSmallestCycle::getSmallestCycleLength(const IGraphUs &grap
             graph.setAdjacentVertices(c, ngbs);
             for (Vertex n : ngbs)
             {
-                if (done.contains(n))
+                if (vertex2from.contains(c) && vertex2from.find(c)->second == n)
                 {
                     // Back edge, continue
                     continue;
@@ -78,9 +78,9 @@ Vertex UndirectedGraphSmallestCycle::getSmallestCycleLength(const IGraphUs &grap
                 if (vertex2from.contains(n))
                 {
                     const auto len = CheckLoop(vertex2from, start, c, n);
-                    if (len != noCycleLength)
+                    if (len.has_value())
                     {
-                        optimal = std::min(optimal, len);
+                        optimal = optimal.has_value() ? std::min(*optimal, *len) : *len;
                     }
                 }
                 else
@@ -91,15 +91,14 @@ Vertex UndirectedGraphSmallestCycle::getSmallestCycleLength(const IGraphUs &grap
             }
         }
 
-        if (optimal != lengthUndefined)
+        if (optimal.has_value())
         {
             return optimal;
         }
 
-        str::copy(cur, std::inserter(done, done.end()));
         cur.clear();
         std::swap(cur, nxt);
     }
 
-    return noCycleLength;
+    return {};
 }
