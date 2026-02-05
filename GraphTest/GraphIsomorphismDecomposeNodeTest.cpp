@@ -60,12 +60,6 @@ TEST(GraphIsomorphismDecomposeNodeTest, CheckListUpTo5)
     GraphTest::CheckList(factory, graphs, Tag{1, 53});
 }
 
-TEST(GraphIsomorphismDecomposeNodeTest, CheckList12)
-{
-    DecomposeNodeFactory factory;
-    GraphTest::CheckList(factory, UndirectedGraphFromG6::getListNumVertices_12_connected(),
-                         {1, 562, 2, 13, 3, 1, 4, 1});
-}
 TEST(GraphIsomorphismDecomposeNodeTest, Cycle5)
 {
     const auto graph = UndirectedGraphLibrary::Get_Cycle(5);

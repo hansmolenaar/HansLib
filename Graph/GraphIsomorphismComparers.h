@@ -17,6 +17,8 @@ class Comparers : public IGraphCompare
     std::weak_ordering compareGraph(const IGraphCompare &) const override;
     const VertexGrouping &getVertexGrouping() const override;
 
+    std::weak_ordering compareCharacteristics(const IGraphCompare &) const;
+
   private:
     std::vector<std::unique_ptr<ICompare>> m_comparers;
     CharacteristicsComparers m_characteristicsComparers;

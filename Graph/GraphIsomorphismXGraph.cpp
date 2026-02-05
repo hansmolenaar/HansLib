@@ -23,6 +23,12 @@ std::weak_ordering XGraph::compareGraph(const IGraphCompare &other) const
     }
 
     result = lhs.m_comparesComplement->compareGraph(*rhs.m_comparesComplement);
+    if (result != std::weak_ordering::equivalent)
+    {
+        return result;
+    }
+
+    result = lhs.getComparersLineGraph().compareCharacteristics(rhs.getComparersLineGraph());
     return result;
 }
 
@@ -39,6 +45,16 @@ const Graph::IGraphUs &XGraph::getGraph() const
 const Graph::IGraphUs &XGraph::getGraphComplement() const
 {
     return m_comparesComplement->getGraph();
+}
+
+const Comparers &XGraph::getComparersLineGraph() const
+{
+    if (!m_comparesLineGraph)
+    {
+        m_lineGraph = std::make_unique<UndirectedGraph>(UndirectedGraph::CreateLineGraph(getGraph()));
+        m_comparesLineGraph = std::make_unique<Comparers>(*m_lineGraph);
+    }
+    return *m_comparesLineGraph;
 }
 
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Factory

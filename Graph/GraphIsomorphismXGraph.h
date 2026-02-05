@@ -19,9 +19,12 @@ class XGraph : public IGraphCompare
     const Graph::IGraphUs &getGraphComplement() const;
 
   private:
+    const Comparers &getComparersLineGraph() const;
     Graph::UndirectedGraph m_complement;
     std::shared_ptr<Comparers> m_comparers;
     std::shared_ptr<Comparers> m_comparesComplement;
+    mutable std::unique_ptr<Graph::UndirectedGraph> m_lineGraph;
+    mutable std::unique_ptr<Comparers> m_comparesLineGraph;
     VertexGrouping m_grouping;
 };
 
