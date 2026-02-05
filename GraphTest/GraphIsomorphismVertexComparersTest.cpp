@@ -35,7 +35,7 @@ TEST(GraphIsomorphismVertexComparersTest, DegreeButterfly)
     const VertexGrouping grouping(graph->getVertexRange(), VertexLess{comparers});
     ASSERT_EQ(grouping.countUnique(), 1);
     ASSERT_EQ(grouping.getUniqueValues(), std::vector<Vertex>{0});
-    ASSERT_EQ(grouping.getGroupSizes(), (std::vector<size_t>{4, 1}));
+    ASSERT_EQ(grouping.getGroupSizes(), (std::vector<size_t>{1, 4}));
 
     const VertexLess less{comparers};
     ASSERT_TRUE(less(1, 0));
@@ -67,7 +67,7 @@ TEST(GraphIsomorphismVertexComparersTest, Fish)
     const VertexGrouping grouping(graph->getVertexRange(), VertexLess{comparers});
     ASSERT_EQ(grouping.countUnique(), 1);
     ASSERT_EQ(grouping.getUniqueValues(), std::vector<Vertex>{3});
-    ASSERT_EQ(grouping.getGroupSizes(), (std::vector<size_t>{3, 2, 1}));
+    ASSERT_EQ(grouping.getGroupSizes(), (std::vector<size_t>{1, 2, 3}));
 }
 
 TEST(GraphIsomorphismVertexComparersTest, Diamond)

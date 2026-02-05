@@ -43,6 +43,7 @@ template <typename T> class Grouping
     {
         std::vector<size_t> result(m_groups.size());
         str::transform(m_groups, result.begin(), [](const auto &g) { return g.size(); });
+        str::sort(result);
         return result;
     }
 

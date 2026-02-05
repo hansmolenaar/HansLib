@@ -32,7 +32,7 @@ TEST(GraphIsomorphismGrouping, CustomCompare)
     const std::vector<const int *> pointers{&values[0], &values[1], &values[2]};
     auto cmp = [](const int *p1, const int *p2) { return *p1 < *p2; };
     const Grouping<const int *> grouping(pointers, cmp);
-    ASSERT_EQ(grouping.getGroupSizes(), (std::vector<size_t>{2, 1}));
+    ASSERT_EQ(grouping.getGroupSizes(), (std::vector<size_t>{1, 2}));
 }
 
 TEST(GraphIsomorphismGrouping, Combine_1)
@@ -89,7 +89,7 @@ TEST(GraphIsomorphismGrouping, Combine_3)
     const auto grouping = VertexGrouping::Combine(grouping0, grouping1);
 
     ASSERT_EQ(grouping.size(), 4);
-    ASSERT_EQ(grouping.getGroupSizes(), (std::vector<size_t>{2, 1, 1}));
+    ASSERT_EQ(grouping.getGroupSizes(), (std::vector<size_t>{1, 1, 2}));
     std::set<Vertex> grouped;
     for (const auto &g : grouping())
     {

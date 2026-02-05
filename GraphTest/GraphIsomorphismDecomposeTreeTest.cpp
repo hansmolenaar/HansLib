@@ -104,6 +104,7 @@ void CheckDecomposeGraphList(const std::vector<const IGraphUs *> &graphs, Tag ex
                 for (const auto &tpm : itr.second)
                 {
                     std::cout << tpm->getRoot().getGraph().getName() << "\n";
+                    std::cout << tpm->getVertexGrouping() << "\n";
 #if false
                     for (const auto &d : tpm->getDescriptions())
                     {

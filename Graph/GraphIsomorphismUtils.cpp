@@ -67,22 +67,7 @@ std::ostream &operator<<(std::ostream &os, const std::vector<Graph::Vertex> &ver
 
 std::ostream &operator<<(std::ostream &os, const GraphIsomorphism::VertexGrouping &grouping)
 {
-    // Print all on one line
-    os << "{";
-    bool first = true;
-    for (auto group : grouping())
-    {
-        if (first)
-        {
-            first = false;
-        }
-        else
-        {
-            os << " ";
-        }
-        os << group;
-    }
-    os << "}\n";
+    os << "Vertex group sizes : " << grouping.getGroupSizes();
     return os;
 }
 
