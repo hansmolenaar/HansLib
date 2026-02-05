@@ -11,7 +11,7 @@ UndirectedGraphSmallestCycle::UndirectedGraphSmallestCycle(const Graph::IGraphUs
 {
     str::transform(m_graph.getVertexRange(), m_lengths.begin(), [&graph](Vertex v) {
         const auto retval = getSmallestCycleLength(graph, v);
-        return retval.has_value() ? retval.value() : noCycleLength;
+        return retval ? *retval : noCycleLength;
     });
 }
 
@@ -78,9 +78,9 @@ std::optional<Vertex> UndirectedGraphSmallestCycle::getSmallestCycleLength(const
                 if (vertex2from.contains(n))
                 {
                     const auto len = CheckLoop(vertex2from, start, c, n);
-                    if (len.has_value())
+                    if (len)
                     {
-                        optimal = optimal.has_value() ? std::min(*optimal, *len) : *len;
+                        optimal = optimal ? std::min(*optimal, *len) : *len;
                     }
                 }
                 else
@@ -91,7 +91,7 @@ std::optional<Vertex> UndirectedGraphSmallestCycle::getSmallestCycleLength(const
             }
         }
 
-        if (optimal.has_value())
+        if (optimal)
         {
             return optimal;
         }

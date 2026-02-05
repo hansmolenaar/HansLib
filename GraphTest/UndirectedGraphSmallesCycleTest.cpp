@@ -9,6 +9,25 @@
 using namespace Graph;
 using namespace GraphIsomorphism;
 
+namespace
+{
+void TestPermutations(const IGraphUs &graph, const std::vector<TagEntry> expectSizes)
+{
+    const UndirectedGraphSmallestCycle smallesCycles(graph);
+    const auto sizes = CondenseSizeSequence(UndirectedGraphSmallestCycle(graph).getSmallestCycleLengths());
+    ASSERT_EQ(sizes, expectSizes);
+    constexpr Permutation::Entry numPermutations = 10;
+    for (Permutation::Entry seed : Iota::GetRange(numPermutations))
+    {
+        const auto pgraph = UndirectedGraph::CreateRandomShuffled(graph, seed);
+        const UndirectedGraphSmallestCycle psmallesCycles(pgraph);
+        const auto psizes = CondenseSizeSequence(psmallesCycles.getSmallestCycleLengths());
+        ASSERT_EQ(psizes, expectSizes);
+    }
+}
+
+} // namespace
+
 TEST(UndirectedGraphSmallestCycleTest, Disconnected)
 {
     for (Vertex n : Iota::GetRange(5))
@@ -99,71 +118,60 @@ TEST(UndirectedGraphSmallestCycleTest, Cycles)
 
 TEST(UndirectedGraphSmallestCycleTest, Stuff)
 {
+    std::vector<TagEntry> expectSizes;
     auto graph = UndirectedGraphFromG6::Create("Ks?GOObDRCI_");
-    auto sizes = CondenseSizeSequence(UndirectedGraphSmallestCycle(*graph).getSmallestCycleLengths());
-    ASSERT_EQ(sizes, (Tag{4, 12}));
+    expectSizes = {4, 12};
+    TestPermutations(*graph, expectSizes);
 
     graph = UndirectedGraphFromG6::Create("Ks?GOgQPPDL?");
-    sizes = CondenseSizeSequence(UndirectedGraphSmallestCycle(*graph).getSmallestCycleLengths());
-    ASSERT_EQ(sizes, (Tag{3, 6, 4, 4, 5, 2}));
+    expectSizes = {3, 6, 4, 4, 5, 2};
+    TestPermutations(*graph, expectSizes);
 
     graph = UndirectedGraphFromG6::Create("G?`@pk");
-    sizes = CondenseSizeSequence(UndirectedGraphSmallestCycle(*graph).getSmallestCycleLengths());
-    ASSERT_EQ(sizes, (Tag{0, 4, 3, 4}));
+    expectSizes = {0, 4, 3, 4};
+    TestPermutations(*graph, expectSizes);
 
     graph = UndirectedGraphFromG6::Create("G??gv_");
-    sizes = CondenseSizeSequence(UndirectedGraphSmallestCycle(*graph).getSmallestCycleLengths());
-    ASSERT_EQ(sizes, (Tag{0, 2, 6, 6}));
+    expectSizes = {0, 2, 6, 6};
+    TestPermutations(*graph, expectSizes);
 
     graph = UndirectedGraphFromG6::Create("G`?KzW");
-    sizes = CondenseSizeSequence(UndirectedGraphSmallestCycle(*graph).getSmallestCycleLengths());
-    ASSERT_EQ(sizes, (Tag{3, 4, 5, 4}));
+    expectSizes = {3, 4, 5, 4};
+    TestPermutations(*graph, expectSizes);
 
     graph = UndirectedGraphFromG6::Create("G?DPTC");
-    sizes = CondenseSizeSequence(UndirectedGraphSmallestCycle(*graph).getSmallestCycleLengths());
-    ASSERT_EQ(sizes, (Tag{0, 5, 3, 3}));
+    expectSizes = {0, 5, 3, 3};
+    TestPermutations(*graph, expectSizes);
 
     graph = UndirectedGraphFromG6::Create("G?DPTC");
-    sizes = CondenseSizeSequence(UndirectedGraphSmallestCycle(*graph).getSmallestCycleLengths());
-    ASSERT_EQ(sizes, (Tag{0, 5, 3, 3}));
+    expectSizes = {0, 5, 3, 3};
+    TestPermutations(*graph, expectSizes);
 
     graph = UndirectedGraphFromG6::Create("I`?KQKSIG");
-    sizes = CondenseSizeSequence(UndirectedGraphSmallestCycle(*graph).getSmallestCycleLengths());
-    ASSERT_EQ(sizes, (Tag{4, 10}));
+    expectSizes = {4, 10};
+    TestPermutations(*graph, expectSizes);
 
     graph = UndirectedGraphFromG6::Create("JGECA?_?ww?");
-    sizes = CondenseSizeSequence(UndirectedGraphSmallestCycle(*graph).getSmallestCycleLengths());
-    ASSERT_EQ(sizes, (Tag{0, 3, 3, 3, 5, 5}));
+    expectSizes = {0, 3, 3, 3, 5, 5};
+    TestPermutations(*graph, expectSizes);
 
     graph = UndirectedGraphFromG6::Create("L??????BP`GW_g");
-    sizes = CondenseSizeSequence(UndirectedGraphSmallestCycle(*graph).getSmallestCycleLengths());
-    ASSERT_EQ(sizes, (Tag{0, 13}));
+    expectSizes = {0, 13};
+    TestPermutations(*graph, expectSizes);
 
     graph = UndirectedGraphFromG6::Create("L?AAHC@?G@_BE@");
-    sizes = CondenseSizeSequence(UndirectedGraphSmallestCycle(*graph).getSmallestCycleLengths());
-    ASSERT_EQ(sizes, (Tag{0, 9, 3, 4}));
+    expectSizes = {0, 9, 3, 4};
+    TestPermutations(*graph, expectSizes);
 
     graph = UndirectedGraphFromG6::Create("LQQ@?GGC???R?Y");
-    sizes = CondenseSizeSequence(UndirectedGraphSmallestCycle(*graph).getSmallestCycleLengths());
-    ASSERT_EQ(sizes, (Tag{8, 13}));
+    expectSizes = {8, 13};
+    TestPermutations(*graph, expectSizes);
 
     graph = UndirectedGraphFromG6::Create("FI_gw");
-    sizes = CondenseSizeSequence(UndirectedGraphSmallestCycle(*graph).getSmallestCycleLengths());
-    ASSERT_EQ(sizes, (Tag{0, 1, 3, 3, 5, 3}));
-}
+    expectSizes = {0, 1, 3, 3, 5, 3};
+    TestPermutations(*graph, expectSizes);
 
-TEST(UndirectedGraphSmallestCycleTest, Permutations)
-{
-    auto graph = UndirectedGraphFromG6::Create("Dr[");
-    const UndirectedGraphSmallestCycle smallesCycles(*graph);
-    const std::vector<TagEntry> expectSizes{3, 4, 4, 1};
-    const auto sizes = CondenseSizeSequence(UndirectedGraphSmallestCycle(*graph).getSmallestCycleLengths());
-    ASSERT_EQ(sizes, expectSizes);
-    for (Permutation::Entry seed : Iota::GetRange(10))
-    {
-        const auto pgraph = UndirectedGraph::CreateRandomShuffled(*graph, seed);
-        const UndirectedGraphSmallestCycle psmallesCycles(pgraph);
-        const auto psizes = CondenseSizeSequence(psmallesCycles.getSmallestCycleLengths());
-        ASSERT_EQ(psizes, expectSizes);
-    }
+    graph = UndirectedGraphFromG6::Create("Dr[");
+    expectSizes = {3, 4, 4, 1};
+    TestPermutations(*graph, expectSizes);
 }
