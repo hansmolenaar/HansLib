@@ -19,19 +19,19 @@ using namespace Utilities;
 
 namespace
 {
-CompareNumbersFactory compareNumbersFactory;
-CompareKnownFactory compareKnownFactory;
-CompareDegreeFactory compareDegreeFactory;
-CompareComponentsFactory compareComponentsFactory;
-CompareMaxDegreeFactory compareMaxDegreeFactory;
-CompareChainsFactory compareChainsFactory;
-CompareColorFactory compareColorFactory;
-CompareDistanceFactory compareDistanceFactory;
-CompareTrianglesFactory compareTrianglesFactory;
-CompareTwinsFactory compareTwinsFactory;
-CompareShortestCycleFactory compareShortestCycleFactory;
+const CompareNumbersFactory compareNumbersFactory;
+const CompareKnownFactory compareKnownFactory;
+const CompareDegreeFactory compareDegreeFactory;
+const CompareComponentsFactory compareComponentsFactory;
+const CompareMaxDegreeFactory compareMaxDegreeFactory;
+const CompareChainsFactory compareChainsFactory;
+const CompareColorFactory compareColorFactory;
+const CompareDistanceFactory compareDistanceFactory;
+const CompareTrianglesFactory compareTrianglesFactory;
+const CompareTwinsFactory compareTwinsFactory;
+const CompareShortestCycleFactory compareShortestCycleFactory;
 
-std::vector<ICompareFactory *> allFactories{
+std::vector<const ICompareFactory *> allFactories{
     &compareNumbersFactory,   &compareKnownFactory,  &compareDegreeFactory,        &compareComponentsFactory,
     &compareMaxDegreeFactory, &compareChainsFactory, &compareColorFactory,         &compareDistanceFactory,
     &compareTrianglesFactory, &compareTwinsFactory,  &compareShortestCycleFactory,
@@ -39,7 +39,7 @@ std::vector<ICompareFactory *> allFactories{
 
 } // namespace
 
-ComparersFactory::ComparersFactory(std::vector<ICompareFactory *> factories) : m_factories(std::move(factories))
+ComparersFactory::ComparersFactory(std::vector<const ICompareFactory *> factories) : m_factories(std::move(factories))
 {
     MyAssert(!m_factories.empty());
 }
@@ -48,7 +48,7 @@ ComparersFactory::ComparersFactory() : ComparersFactory(getAllSimpleFactories())
 {
 }
 
-std::vector<std::unique_ptr<ICompare>> ComparersFactory::getAllComparers(const Graph::IGraphUs &graph)
+std::vector<std::unique_ptr<ICompare>> ComparersFactory::getAllComparers(const Graph::IGraphUs &graph) const
 {
     std::vector<std::unique_ptr<ICompare>> comparers;
     for (auto *factory : m_factories)
@@ -58,18 +58,18 @@ std::vector<std::unique_ptr<ICompare>> ComparersFactory::getAllComparers(const G
     return comparers;
 }
 
-std::unique_ptr<IGraphCompare> ComparersFactory::createGraphCompare(const Graph::IGraphUs &graph)
+std::unique_ptr<IGraphCompare> ComparersFactory::createGraphCompare(const Graph::IGraphUs &graph) const
 {
     return create(graph);
 }
 
-std::unique_ptr<Comparers> ComparersFactory::create(const Graph::IGraphUs &graph)
+std::unique_ptr<Comparers> ComparersFactory::create(const Graph::IGraphUs &graph) const
 
 {
     return std::make_unique<Comparers>(getAllComparers(graph));
 }
 
-std::vector<ICompareFactory *> ComparersFactory::getAllSimpleFactories()
+std::vector<const ICompareFactory *> ComparersFactory::getAllSimpleFactories()
 {
     return allFactories;
 }

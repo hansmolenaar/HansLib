@@ -90,7 +90,7 @@ const VertexGrouping &TaggerTwins::getVertexGrouping() const
 
 // !!!!!!!!!!!!! FACTORY
 
-std::unique_ptr<ICompare> CompareTwinsFactory::createCompare(const Graph::IGraphUs &graph)
+std::unique_ptr<ICompare> CompareTwinsFactory::createCompare(const Graph::IGraphUs &graph) const
 {
     return std::make_unique<TaggerTwins>(graph);
 }

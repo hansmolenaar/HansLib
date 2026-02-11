@@ -41,7 +41,7 @@ const Graph::IGraphUs &TaggerComponents::getGraph() const
 
 // !!!!!!!!!!!!!
 
-std::unique_ptr<ICompare> CompareComponentsFactory::createCompare(const Graph::IGraphUs &graph)
+std::unique_ptr<ICompare> CompareComponentsFactory::createCompare(const Graph::IGraphUs &graph) const
 {
     return std::make_unique<TaggerComponents>(graph);
 }

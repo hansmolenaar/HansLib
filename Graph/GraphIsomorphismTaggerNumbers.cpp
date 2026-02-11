@@ -22,7 +22,7 @@ const Graph::IGraphUs &TaggerNumbers::getGraph() const
 
 // !!!!!!!!!!!!! FACTORY
 
-std::unique_ptr<ICompare> CompareNumbersFactory::createCompare(const Graph::IGraphUs &graph)
+std::unique_ptr<ICompare> CompareNumbersFactory::createCompare(const Graph::IGraphUs &graph) const
 {
     return std::make_unique<TaggerNumbers>(graph);
 }

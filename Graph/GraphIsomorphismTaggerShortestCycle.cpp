@@ -38,7 +38,7 @@ const VertexGrouping &TaggerShortestCycle::getVertexGrouping() const
 
 // !!!!!!!!!!!!! FACTORY
 
-std::unique_ptr<ICompare> CompareShortestCycleFactory::createCompare(const Graph::IGraphUs &graph)
+std::unique_ptr<ICompare> CompareShortestCycleFactory::createCompare(const Graph::IGraphUs &graph) const
 {
     return std::make_unique<TaggerShortestCycle>(graph);
 }

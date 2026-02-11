@@ -71,7 +71,7 @@ const VertexGrouping &TaggerColor::getVertexGrouping() const
 
 // !!!!!!!!!!!!! FACTORY
 
-std::unique_ptr<ICompare> CompareColorFactory::createCompare(const Graph::IGraphUs &graph)
+std::unique_ptr<ICompare> CompareColorFactory::createCompare(const Graph::IGraphUs &graph) const
 {
     return std::make_unique<TaggerColor>(graph);
 }

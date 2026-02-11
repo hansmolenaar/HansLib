@@ -8,6 +8,8 @@ using namespace GraphIsomorphism;
 XGraph::XGraph(const Graph::IGraphUs &graph)
     : m_complement(UndirectedGraph::CreateComplement(graph)), m_comparers(std::make_shared<Comparers>(graph)),
       m_comparesComplement(std::make_shared<Comparers>(m_complement)),
+      m_lineGraph(std::make_unique<UndirectedGraph>(UndirectedGraph::CreateLineGraph(getGraph()))),
+      m_comparesLineGraph(std::make_unique<Comparers>(*m_lineGraph)),
       m_grouping(VertexGrouping::Combine(m_comparers->getVertexGrouping(), m_comparesComplement->getVertexGrouping()))
 {
 }
@@ -49,17 +51,12 @@ const Graph::IGraphUs &XGraph::getGraphComplement() const
 
 const Comparers &XGraph::getComparersLineGraph() const
 {
-    if (!m_comparesLineGraph)
-    {
-        m_lineGraph = std::make_unique<UndirectedGraph>(UndirectedGraph::CreateLineGraph(getGraph()));
-        m_comparesLineGraph = std::make_unique<Comparers>(*m_lineGraph);
-    }
     return *m_comparesLineGraph;
 }
 
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Factory
 
-std::unique_ptr<IGraphCompare> XGraphFactory::createGraphCompare(const Graph::IGraphUs &graph)
+std::unique_ptr<IGraphCompare> XGraphFactory::createGraphCompare(const Graph::IGraphUs &graph) const
 {
     return std::make_unique<XGraph>(graph);
 }

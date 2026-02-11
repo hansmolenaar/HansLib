@@ -828,7 +828,7 @@ static void stringtograph(const char *s, graph *g, int m)
 /* Assumes g is big enough to hold it.   */
 {
     const char *p;
-    int n, i, j, k, v, x, nb, need;
+    int n, i, j, k, v, x = -1, nb, need;
     size_t ii;
     set *gi, *gj;
     boolean done;

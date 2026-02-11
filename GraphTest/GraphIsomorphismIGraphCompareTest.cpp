@@ -8,6 +8,9 @@
 #include "UndirectedGraphLibrary.h"
 #include "UniquePointer.h"
 
+#include <chrono>
+#include <execution>
+
 using namespace Graph;
 using namespace GraphTest;
 using namespace GraphIsomorphism;
@@ -16,7 +19,7 @@ using namespace Utilities;
 namespace
 {
 
-std::vector<std::unique_ptr<IGraphCompare>> CreateComparers(IGraphCompareFactory &factory,
+std::vector<std::unique_ptr<IGraphCompare>> CreateComparers(const IGraphCompareFactory &factory,
                                                             const std::vector<std::unique_ptr<IGraphUs>> &graphs)
 {
     std::vector<std::unique_ptr<IGraphCompare>> result;
@@ -25,7 +28,7 @@ std::vector<std::unique_ptr<IGraphCompare>> CreateComparers(IGraphCompareFactory
     return result;
 }
 
-void CheckSelfConsistency(IGraphCompareFactory &factory, const IGraphCompare &compare)
+void CheckSelfConsistency(const IGraphCompareFactory &factory, const IGraphCompare &compare)
 {
     const Permutation::Entry numPermutations = 5;
     const auto &graph = compare.getGraph();
@@ -66,7 +69,7 @@ void CheckSymmetry(const IGraphCompare &compare1, const IGraphCompare &compare2)
     }
 }
 
-void CheckConsistencyList(IGraphCompareFactory &factory, const std::vector<const IGraphCompare *> &comparers)
+void CheckConsistencyList(const IGraphCompareFactory &factory, const std::vector<const IGraphCompare *> &comparers)
 {
     for (const auto *cmp1 : comparers)
     {
@@ -78,34 +81,59 @@ void CheckConsistencyList(IGraphCompareFactory &factory, const std::vector<const
     }
 }
 
-void CheckGraphGrouping(const std::vector<const IGraphCompare *> &comparers, Tag expectMultiplicities)
+void CheckGraphGrouping(const std::vector<const IGraphCompare *> &comparers, Tag expectMultiplicities,
+                        bool printMultiples)
 {
     const Grouping<const IGraphCompare *> grouping(comparers, [](const IGraphCompare *lhs, const IGraphCompare *rhs) {
         return lhs->compareGraph(*rhs) == std::weak_ordering::less;
     });
     const auto multiplicities = CondenseSizeSequence(grouping.getGroupSizes());
     ASSERT_EQ(multiplicities, expectMultiplicities);
+
+    if (printMultiples)
+    {
+        for (const auto &group : grouping())
+        {
+            if (group.size() > 1)
+            {
+                std::cout << "Group of size " << group.size() << "\n";
+                for (const auto &g : group)
+                {
+                    std::cout << g->getGraph().getName() << "\n";
+                    std::cout << g->getVertexGrouping() << "\n";
+                }
+                std::cout << "\n\n";
+            }
+        }
+    }
 }
 
 } // namespace
 
-void GraphTest::CheckList(IGraphCompareFactory &factory, const std::vector<std::unique_ptr<Graph::IGraphUs>> &graphs,
-                          Tag expectMultiplicities)
+void GraphTest::CheckList(const IGraphCompareFactory &factory,
+                          const std::vector<std::unique_ptr<Graph::IGraphUs>> &graphs, Tag expectMultiplicities,
+                          bool printMultiples)
 {
-    std::vector<std::unique_ptr<IGraphCompare>> comparers;
-    str::transform(graphs, std::back_inserter(comparers),
+    const auto start = std::chrono::steady_clock::now();
+    std::vector<std::unique_ptr<IGraphCompare>> comparers(graphs.size());
+    std::transform(std::execution::par_unseq, graphs.begin(), graphs.end(), comparers.begin(),
                    [&factory](const auto &upg) { return factory.createGraphCompare(*upg); });
-    CheckGraphGrouping(getCastPointers<const IGraphCompare>(comparers), expectMultiplicities);
+    const auto finishCreation = std::chrono::steady_clock::now();
+    CheckGraphGrouping(getCastPointers<const IGraphCompare>(comparers), expectMultiplicities, printMultiples);
+    const auto finishGrouping = std::chrono::steady_clock::now();
+    std::cout << "Creation " << std::chrono::duration_cast<std::chrono::milliseconds>(finishCreation - start)
+              << " Grouping " << std::chrono::duration_cast<std::chrono::milliseconds>(finishGrouping - finishCreation)
+              << '\n';
 }
 
-void GraphTest::CheckList(IGraphCompareFactory &factory, const std::vector<std::string> &g6list,
-                          Tag expectGraphTagMultiplicities)
+void GraphTest::CheckList(const IGraphCompareFactory &factory, const std::vector<std::string> &g6list,
+                          Tag expectGraphTagMultiplicities, bool printMultiples)
 {
     const auto graphs = UndirectedGraphFromG6::getGraphs(g6list);
-    CheckList(factory, graphs, expectGraphTagMultiplicities);
+    CheckList(factory, graphs, expectGraphTagMultiplicities, printMultiples);
 }
 
-void GraphTest::CheckComparerBasics(GraphIsomorphism::IGraphCompareFactory &factory)
+void GraphTest::CheckComparerBasics(const GraphIsomorphism::IGraphCompareFactory &factory)
 {
     // Test some tiny graphs
     auto graphs = UndirectedGraphFromG6::getGraphs(UndirectedGraphFromG6::getListNumVertices_3());

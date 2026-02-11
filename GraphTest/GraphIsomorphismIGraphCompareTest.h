@@ -8,9 +8,10 @@
 namespace GraphTest
 {
 
-void CheckComparerBasics(GraphIsomorphism::IGraphCompareFactory &);
-void CheckList(GraphIsomorphism::IGraphCompareFactory &, const std::vector<std::string> &, GraphIsomorphism::Tag);
-void CheckList(GraphIsomorphism::IGraphCompareFactory &, const std::vector<std::unique_ptr<Graph::IGraphUs>> &,
-               GraphIsomorphism::Tag);
+void CheckComparerBasics(const GraphIsomorphism::IGraphCompareFactory &);
+void CheckList(const GraphIsomorphism::IGraphCompareFactory &, const std::vector<std::string> &, GraphIsomorphism::Tag,
+               bool printMultiples = false);
+void CheckList(const GraphIsomorphism::IGraphCompareFactory &, const std::vector<std::unique_ptr<Graph::IGraphUs>> &,
+               GraphIsomorphism::Tag, bool printMultiples = false);
 
 } // namespace GraphTest

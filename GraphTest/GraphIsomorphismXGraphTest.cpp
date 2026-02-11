@@ -51,8 +51,14 @@ TEST(GraphIsomorphismXGraphTest, CheckListUpTo5)
     GraphTest::CheckList(factory, graphs, Tag{1, 53});
 }
 
+TEST(GraphIsomorphismXGraphTest, CheckList11)
+{
+    XGraphFactory factory;
+    GraphTest::CheckList(factory, UndirectedGraphFromG6::getListNumVertices_11_connected(), {1, 325});
+}
+
 TEST(GraphIsomorphismXGraphTest, CheckList12)
 {
     XGraphFactory factory;
-    GraphTest::CheckList(factory, UndirectedGraphFromG6::getListNumVertices_12_connected(), {1, 577, 2, 9});
+    GraphTest::CheckList(factory, UndirectedGraphFromG6::getListNumVertices_12_connected(), {1, 577, 2, 9}, true);
 }

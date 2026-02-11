@@ -38,7 +38,7 @@ const VertexGrouping &TaggerTriangles::getVertexGrouping() const
 
 // !!!!!!!!!!!!! FACTORY
 
-std::unique_ptr<ICompare> CompareTrianglesFactory::createCompare(const Graph::IGraphUs &graph)
+std::unique_ptr<ICompare> CompareTrianglesFactory::createCompare(const Graph::IGraphUs &graph) const
 {
     return std::make_unique<TaggerTriangles>(std::make_shared<Graph::UndirectedGraphTriangles>(graph));
 }

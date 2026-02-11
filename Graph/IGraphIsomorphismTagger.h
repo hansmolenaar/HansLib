@@ -37,7 +37,7 @@ class IGraphCompareFactory
 {
   public:
     virtual ~IGraphCompareFactory() = default;
-    virtual std::unique_ptr<IGraphCompare> createGraphCompare(const Graph::IGraphUs &) = 0;
+    virtual std::unique_ptr<IGraphCompare> createGraphCompare(const Graph::IGraphUs &) const = 0;
 };
 
 class ICompare : public IHasGraph
@@ -86,7 +86,7 @@ class ICompareFactory
 {
   public:
     virtual ~ICompareFactory() = default;
-    virtual std::unique_ptr<ICompare> createCompare(const Graph::IGraphUs &) = 0;
+    virtual std::unique_ptr<ICompare> createCompare(const Graph::IGraphUs &) const = 0;
 };
 
 } // namespace GraphIsomorphism

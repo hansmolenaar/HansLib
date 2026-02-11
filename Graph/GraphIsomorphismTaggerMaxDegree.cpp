@@ -48,7 +48,7 @@ const VertexGrouping &TaggerMaxDegree::getVertexGrouping() const
 
 // !!!!!!!!!!!!!!!!!
 
-std::unique_ptr<ICompare> CompareMaxDegreeFactory::createCompare(const Graph::IGraphUs &graph)
+std::unique_ptr<ICompare> CompareMaxDegreeFactory::createCompare(const Graph::IGraphUs &graph) const
 {
     return std::make_unique<TaggerMaxDegree>(graph);
 }

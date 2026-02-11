@@ -27,7 +27,7 @@ class TaggerTwins : public IGraphTagger, public IVertexCompare
 class CompareTwinsFactory : public ICompareFactory
 {
   public:
-    std::unique_ptr<ICompare> createCompare(const Graph::IGraphUs &) override;
+    std::unique_ptr<ICompare> createCompare(const Graph::IGraphUs &) const override;
 };
 
 } // namespace GraphIsomorphism

@@ -10,15 +10,15 @@ class ComparersFactory : public IGraphCompareFactory
 {
   public:
     ComparersFactory(); // Uses all known factories
-    explicit ComparersFactory(std::vector<ICompareFactory *>);
+    explicit ComparersFactory(std::vector<const ICompareFactory *>);
 
-    std::unique_ptr<IGraphCompare> createGraphCompare(const Graph::IGraphUs &) override;
-    std::unique_ptr<Comparers> create(const Graph::IGraphUs &);
-    static std::vector<ICompareFactory *> getAllSimpleFactories();
-    std::vector<std::unique_ptr<ICompare>> getAllComparers(const Graph::IGraphUs &);
+    std::unique_ptr<IGraphCompare> createGraphCompare(const Graph::IGraphUs &) const override;
+    std::unique_ptr<Comparers> create(const Graph::IGraphUs &) const;
+    static std::vector<const ICompareFactory *> getAllSimpleFactories();
+    std::vector<std::unique_ptr<ICompare>> getAllComparers(const Graph::IGraphUs &) const;
 
   private:
-    std::vector<ICompareFactory *> m_factories;
+    std::vector<const ICompareFactory *> m_factories;
 };
 
 } // namespace GraphIsomorphism

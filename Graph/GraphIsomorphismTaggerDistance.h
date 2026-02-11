@@ -43,7 +43,7 @@ class TaggerDistance : public IGraphTagger, public IVertexCompare
 class CompareDistanceFactory : public ICompareFactory
 {
   public:
-    std::unique_ptr<ICompare> createCompare(const Graph::IGraphUs &) override;
+    std::unique_ptr<ICompare> createCompare(const Graph::IGraphUs &) const override;
 };
 
 } // namespace GraphIsomorphism

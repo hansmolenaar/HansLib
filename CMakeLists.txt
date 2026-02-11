@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.10)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wno-long-long -pedantic")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -Wno-long-long -pedantic")
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -Wall -Wno-long-long -pedantic")
 
 set(CMAKE_COMPILE_WARNING_AS_ERROR ON)
 set(BUILD_SHARED_LIBS OFF)
@@ -22,6 +23,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
 set(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR}/bin)
 set(CMAKE_INCLUDE_DIR ${CMAKE_SOURCE_DIR})
 
+message("CMAKE_CXX_FLAGS " ${CMAKE_CXX_FLAGS})
 message("CMAKE_BINARY_DIR " ${CMAKE_BINARY_DIR})
 message("CMAKE_SOURCE_DIR " ${CMAKE_SOURCE_DIR})
 message("CMAKE_INCLUDE_DIR " ${CMAKE_INCLUDE_DIR})
