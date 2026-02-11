@@ -2,6 +2,8 @@
 
 #include "MyAssert.h"
 
+#include <vector>
+
 class IMatrix
 {
   public:
@@ -11,6 +13,7 @@ class IMatrix
     virtual int GetColDimension() const = 0;
     virtual double operator()(int, int) const = 0;
     virtual double &operator()(int, int) = 0;
+    // virtual std::vector<double> timesVector(const std::vector<double>&) const = 0;
 
     inline void CopyFrom(const IMatrix &other);
 };

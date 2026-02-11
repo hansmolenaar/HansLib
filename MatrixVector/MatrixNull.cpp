@@ -21,3 +21,9 @@ double &MatrixNull::operator()(int row, int col)
 {
     throw std::runtime_error("Do not call me");
 }
+
+std::vector<double> MatrixNull::timesVector(const std::vector<double> &vecin) const
+{
+    Utilities::MyAssert(vecin.empty());
+    return {};
+}

@@ -46,3 +46,9 @@ double &IdentityMatrix::operator()(int row, int col)
 {
     throw std::runtime_error("Don't call me");
 }
+
+std::vector<double> IdentityMatrix::timesVector(const std::vector<double> &vecin) const
+{
+    Utilities::MyAssert(static_cast<int>(vecin.size()) == GetRowDimension());
+    return vecin;
+}

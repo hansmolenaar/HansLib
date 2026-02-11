@@ -10,6 +10,10 @@ TEST(MatrixNullTest, TestNull)
     ASSERT_EQ(0, mat.GetColDimension());
     ASSERT_ANY_THROW(mat(0, 0) = 0.0;);
     ASSERT_ANY_THROW(mat(0, 0););
+    std::vector<double> vecin;
+    ASSERT_TRUE(mat.timesVector(vecin).empty());
+    vecin.push_back(0.0);
+    ASSERT_ANY_THROW(mat.timesVector(vecin));
 }
 
 TEST(MatrixNullTest, TestInterface)

@@ -29,22 +29,30 @@ TEST(MatrixRotation2DTest, TestNull)
 TEST(MatrixRotation2DTest, TestTransform)
 {
     const MatrixRotation2D mat(MathConstants::PI_2);
-    std::array<double, 2> vec0 = {1, 0};
-    std::array<double, 2> vec1;
+    std::vector<double> vec0{1, 0};
+    std::vector<double> vec1(2);
 
     mat.Transform(vec0, vec1);
     ASSERT_NEAR(vec1[0], 0.0, eps);
     ASSERT_NEAR(vec1[1], 1.0, eps);
+    ASSERT_NEAR(mat.timesVector(vec0).at(0), 0.0, eps);
+    ASSERT_NEAR(mat.timesVector(vec0).at(1), 1.0, eps);
 
     mat.Transform(vec1, vec0);
     ASSERT_NEAR(vec0[0], -1.0, eps);
     ASSERT_NEAR(vec0[1], 0.0, eps);
+    ASSERT_NEAR(mat.timesVector(vec1).at(0), -1.0, eps);
+    ASSERT_NEAR(mat.timesVector(vec1).at(1), 0.0, eps);
 
     mat.Transform(vec0, vec1);
     ASSERT_NEAR(vec1[0], 0.0, eps);
     ASSERT_NEAR(vec1[1], -1.0, eps);
+    ASSERT_NEAR(mat.timesVector(vec0).at(0), 0.0, eps);
+    ASSERT_NEAR(mat.timesVector(vec0).at(1), -1.0, eps);
 
     mat.Transform(vec1, vec0);
     ASSERT_NEAR(vec0[0], 1.0, eps);
     ASSERT_NEAR(vec0[1], 0.0, eps);
+    ASSERT_NEAR(mat.timesVector(vec1).at(0), 1.0, eps);
+    ASSERT_NEAR(mat.timesVector(vec1).at(1), 0.0, eps);
 }

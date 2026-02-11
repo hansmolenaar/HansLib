@@ -39,4 +39,9 @@ TEST(IdentityMatrixTest, TestInstance)
 
     const IdentityMatrix &anotherMat2 = IdentityMatrix::GetInstance(2);
     ASSERT_EQ(&mat2, &anotherMat2);
+
+    const std::vector<double> vecin{1, 2};
+    const auto vecout = mat2.timesVector(vecin);
+    ASSERT_EQ(vecin[0], vecout[0]);
+    ASSERT_EQ(vecin[1], vecout[1]);
 }

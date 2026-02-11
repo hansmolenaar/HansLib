@@ -41,3 +41,24 @@ TEST(MatrixDenseTest, TestGetSet)
         }
     }
 }
+
+TEST(MatrixDenseTest, TimesVector)
+{
+    const int nRow = 2;
+    const int nCol = 3;
+    MatrixDense mat(nRow, nCol);
+    double val = 0.0;
+    for (int row = 0; row < nRow; ++row)
+    {
+        for (int col = 0; col < nCol; ++col)
+        {
+            val += 1.0;
+            mat(row, col) = val;
+        }
+    }
+
+    const std::vector<double> vecin{1, 2, 3};
+    const auto vecout = mat.timesVector(vecin);
+    ASSERT_NEAR(vecout.at(0), 14.0, 1.0e-10);
+    ASSERT_NEAR(vecout.at(1), 32.0, 1.0e-10);
+}

@@ -10,4 +10,6 @@ class MatrixNull : public IMatrix
 
     double operator()(int, int) const override;
     double &operator()(int, int) override;
+
+    std::vector<double> timesVector(const std::vector<double> &) const;
 };

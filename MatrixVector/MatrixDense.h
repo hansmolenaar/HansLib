@@ -17,6 +17,8 @@ class MatrixDense : public IMatrix
     double operator()(int, int) const override;
     double &operator()(int, int) override;
 
+    std::vector<double> timesVector(const std::vector<double> &) const;
+
   private:
     IndexerRowMajor<int> m_indexer;
     std::vector<double> m_entries;

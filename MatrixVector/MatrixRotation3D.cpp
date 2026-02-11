@@ -43,3 +43,10 @@ void MatrixRotation3D::Transform(std::span<const double> vin, std::span<double> 
 {
     MatrixTimesVector(m_matrix, vin, vout);
 }
+
+std::vector<double> MatrixRotation3D::timesVector(const std::vector<double> &vecin) const
+{
+    std::vector<double> retval(3);
+    Transform(vecin, retval);
+    return retval;
+}

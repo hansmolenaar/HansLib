@@ -13,6 +13,7 @@ class IdentityMatrix : public IMatrixSymmetric
     virtual double operator()(int, int) const override;
     virtual double &operator()(int, int) override;
     virtual ~IdentityMatrix() {};
+    std::vector<double> timesVector(const std::vector<double> &) const;
 
   private:
     int m_dimension;
