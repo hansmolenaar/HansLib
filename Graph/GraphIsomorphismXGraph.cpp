@@ -30,7 +30,7 @@ std::weak_ordering XGraph::compareGraph(const IGraphCompare &other) const
         return result;
     }
 
-    result = lhs.getComparersLineGraph().compareCharacteristics(rhs.getComparersLineGraph());
+    result = lhs.m_comparesLineGraph->compareGraph(*rhs.m_comparesLineGraph);
     return result;
 }
 

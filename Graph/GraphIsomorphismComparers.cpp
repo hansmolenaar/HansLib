@@ -37,10 +37,3 @@ std::weak_ordering Comparers::compareGraph(const IGraphCompare &other) const
     }
     return lhs.m_vertexComparers.compareGraph(rhs.m_vertexComparers);
 }
-
-std::weak_ordering Comparers::compareCharacteristics(const IGraphCompare &other) const
-{
-    const auto &lhs = *this;
-    const auto &rhs = dynamic_cast<const Comparers &>(other);
-    return lhs.m_characteristicsComparers.compareCharacteristics(rhs.m_characteristicsComparers);
-}
