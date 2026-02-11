@@ -16,7 +16,7 @@ TEST(IndexerRowMajorTest, TestToFlat)
 TEST(IndexerRowMajorTest, TestErrorToFlat)
 {
     IndexerRowMajor<int> ij({2, 3});
-    //ASSERT_ANY_THROW(ij.toFlat({1}););
+    // ASSERT_ANY_THROW(ij.toFlat({1}););
     ASSERT_ANY_THROW(ij.toFlat({1, 2, 3}););
     ASSERT_ANY_THROW(ij.toFlat({-1, 0}););
     ASSERT_ANY_THROW(ij.toFlat({2, 0}););

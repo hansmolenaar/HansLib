@@ -2,7 +2,6 @@
 
 #include "IMatrixKelvinReprTest.h"
 
-// #include "IMatrixTest.h"
 #include "IMatrixKelvinRepr.h"
 #include "IMatrixKelvinReprUtils.h"
 

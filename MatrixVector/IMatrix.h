@@ -5,14 +5,14 @@
 class IMatrix
 {
   public:
+    virtual ~IMatrix() = default;
+
     virtual int GetRowDimension() const = 0;
     virtual int GetColDimension() const = 0;
     virtual double operator()(int, int) const = 0;
     virtual double &operator()(int, int) = 0;
 
     inline void CopyFrom(const IMatrix &other);
-
-    virtual ~IMatrix() {};
 };
 
 void IMatrix::CopyFrom(const IMatrix &other)

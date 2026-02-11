@@ -67,16 +67,19 @@ TEST(IndexerSymmetricTest, Test2)
 
     ASSERT_EQ(2, indexer.toFlat({1, 1}));
     Check2(indexer);
+    ASSERT_EQ(indexer.getFlatSize(), 3);
 }
 
 TEST(IndexerSymmetricTest, Test3)
 {
     const IndexerSymmetric<unsigned int> indexer(3);
     Check3(indexer);
+    ASSERT_EQ(indexer.getFlatSize(), 6);
 }
 
 TEST(IndexerSymmetricTest, Test4)
 {
     const IndexerSymmetric<unsigned int> indexer(4);
     Check4(indexer);
+    ASSERT_EQ(indexer.getFlatSize(), 10);
 }

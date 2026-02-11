@@ -5,7 +5,7 @@
 TEST(MultiIndexTest, OneD)
 {
     const auto mi = MultiIndex<int>::Create(std::vector<int>{2});
-    ASSERT_EQ(mi.getNumDimensions(), 1);
+    ASSERT_EQ(mi.getNumberOfIndices(), 1);
     ASSERT_EQ(mi.getFlatSize(), 2);
     ASSERT_EQ(mi.at(0), 2);
 
@@ -19,7 +19,7 @@ TEST(MultiIndexTest, OneD)
 TEST(MultiIndexTest, Uno)
 {
     const auto mi = MultiIndex<int>::Create(std::vector<int>{1, 1, 1, 1});
-    ASSERT_EQ(mi.getNumDimensions(), 4);
+    ASSERT_EQ(mi.getNumberOfIndices(), 4);
     ASSERT_EQ(mi.getFlatSize(), 1);
 
     std::vector<int> multiplet(4);
@@ -31,7 +31,7 @@ TEST(MultiIndexTest, Uno)
 TEST(MultiIndexTest, TwoD)
 {
     const auto mi = MultiIndex<int>::Create(std::vector<int>{2, 3});
-    ASSERT_EQ(mi.getNumDimensions(), 2);
+    ASSERT_EQ(mi.getNumberOfIndices(), 2);
     ASSERT_EQ(mi.getFlatSize(), 6);
     ASSERT_EQ(mi.at(0), 2);
     ASSERT_EQ(mi.at(1), 3);
@@ -45,7 +45,7 @@ TEST(MultiIndexTest, TwoD)
 TEST(MultiIndexTest, FourD)
 {
     const auto mi = MultiIndex<int>::Create(std::vector<int>{2, 3, 5, 7});
-    ASSERT_EQ(mi.getNumDimensions(), 4);
+    ASSERT_EQ(mi.getNumberOfIndices(), 4);
     ASSERT_EQ(mi.getFlatSize(), 210);
     std::vector<int> multiplet(4);
     for (size_t n = 0; n < mi.getFlatSize(); ++n)
