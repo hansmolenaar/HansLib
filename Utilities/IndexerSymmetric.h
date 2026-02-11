@@ -1,16 +1,53 @@
 #pragma once
 
 #include "IIndexer.h"
+#include "MyAssert.h"
+
 #include <vector>
 
-class IndexerSymmetric : public IIndexer<unsigned int>
+template <typename I> 
+class IndexerSymmetric : public IIndexer<I>
 {
   public:
-    IndexerSymmetric(unsigned int dim);
-    size_t ToFlat(std::initializer_list<unsigned int> ijk) const override;
-    unsigned int numberOfIndices() const override;
-    size_t ToFlat(unsigned int, unsigned int) const;
+    IndexerSymmetric(I dim);
+    size_t toFlat(std::initializer_list<I> ijk) const override;
+    I numberOfIndices() const override;
+    size_t ToFlat(I, I) const;
 
   private:
-    unsigned int m_dim;
+    I m_dim;
 };
+
+
+template <typename I> 
+IndexerSymmetric<I>::IndexerSymmetric(I dim) : m_dim(dim)
+{
+    Utilities::MyAssert(dim > 0);
+}
+
+template <typename I> 
+size_t IndexerSymmetric<I>::toFlat(std::initializer_list<I> ijk) const
+{
+    Utilities::MyAssert(2 == ijk.size());
+    return ToFlat(*ijk.begin(), *(ijk.begin() + 1));
+}
+
+template <typename I> 
+size_t IndexerSymmetric<I>::ToFlat(I row, I col) const
+{
+    Utilities::MyAssert(row >= 0 && col >= 0 && row < m_dim && col < m_dim);
+    if (row < col)
+    {
+        return col * (col + 1) / 2 + row;
+    }
+    else
+    {
+        return row * (row + 1) / 2 + col;
+    }
+}
+
+template <typename I> 
+I IndexerSymmetric<I>::numberOfIndices() const
+{
+    return static_cast<I>(2);
+}

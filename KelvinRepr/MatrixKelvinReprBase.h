@@ -55,13 +55,13 @@ template <int Dimension> std::span<const double> MatrixKelvinReprBase<Dimension>
 template <int Dimension> double MatrixKelvinReprBase<Dimension>::Get(int row, int col) const
 {
     const double factor = (row == col ? 1 : MathConstants::SQRT1_2);
-    return factor * m_data[m_indexer.ToFlat({row, col})];
+    return factor * m_data[m_indexer.toFlat({row, col})];
 }
 
 template <int Dimension> void MatrixKelvinReprBase<Dimension>::Set(int row, int col, double val)
 {
     const double factor = (row == col ? 1 : MathConstants::SQRT2);
-    m_data[m_indexer.ToFlat({row, col})] = factor * val;
+    m_data[m_indexer.toFlat({row, col})] = factor * val;
 }
 
 template <int Dimension> void MatrixKelvinReprBase<Dimension>::CopyFrom(const MatrixKelvinReprBase<Dimension> &source)

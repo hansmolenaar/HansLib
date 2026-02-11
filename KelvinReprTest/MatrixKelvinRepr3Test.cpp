@@ -26,7 +26,7 @@ TEST(MatrixKelvinRepr3Test, TestInterface)
 TEST(MatrixKelvinRepr3Test, Test2)
 {
     auto matrix = MatrixKelvinRepr3::CreateEmpty();
-    IndexerSymmetric indexer(3);
+    IndexerSymmetric<int> indexer(3);
     for (int row = 0; row < 3; ++row)
     {
         for (int col = 0; col < 3; ++col)

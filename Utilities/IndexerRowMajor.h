@@ -4,11 +4,12 @@
 #include "MyAssert.h"
 #include <vector>
 
-template <typename I> class IndexerRowMajor : public IIndexer<I>
+template <typename I> 
+class IndexerRowMajor : public IIndexer<I>
 {
   public:
     IndexerRowMajor(I dimRow, I dimCol);
-    size_t ToFlat(std::initializer_list<I> ijk) const override;
+    size_t toFlat(std::initializer_list<I> ijk) const override;
     I numberOfIndices() const override;
     I GetRowDimension() const;
     I GetColDimension() const;
@@ -18,26 +19,31 @@ template <typename I> class IndexerRowMajor : public IIndexer<I>
     I m_dimCol;
 };
 
-template <typename I> I IndexerRowMajor<I>::numberOfIndices() const
+template <typename I> 
+I IndexerRowMajor<I>::numberOfIndices() const
 {
     return 2;
 }
 
-template <typename I> IndexerRowMajor<I>::IndexerRowMajor(I dimRow, I dimCol) : m_dimRow(dimRow), m_dimCol(dimCol)
+template <typename I> 
+IndexerRowMajor<I>::IndexerRowMajor(I dimRow, I dimCol) : m_dimRow(dimRow), m_dimCol(dimCol)
 {
 }
 
-template <typename I> I IndexerRowMajor<I>::GetRowDimension() const
+template <typename I> 
+I IndexerRowMajor<I>::GetRowDimension() const
 {
     return m_dimRow;
 }
 
-template <typename I> I IndexerRowMajor<I>::GetColDimension() const
+template <typename I> 
+I IndexerRowMajor<I>::GetColDimension() const
 {
     return m_dimCol;
 }
 
-template <typename I> size_t IndexerRowMajor<I>::ToFlat(std::initializer_list<I> ijk) const
+template <typename I> 
+size_t IndexerRowMajor<I>::toFlat(std::initializer_list<I> ijk) const
 {
     Utilities::MyAssert(2 == ijk.size());
 

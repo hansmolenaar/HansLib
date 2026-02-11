@@ -100,6 +100,6 @@ GroupElement GroupTable::getInverse(GroupElement elm) const
 
 GroupElement GroupTable::operator()(GroupElement elm1, GroupElement elm2) const
 {
-    const auto pos = m_indexer->ToFlat({elm1, elm2});
+    const auto pos = m_indexer->toFlat({elm1, elm2});
     return m_table.at(pos);
 }

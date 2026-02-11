@@ -16,10 +16,10 @@ int MatrixDense::GetColDimension() const
 
 double MatrixDense::operator()(int row, int col) const
 {
-    return m_entries[m_indexer.ToFlat({row, col})];
+    return m_entries[m_indexer.toFlat({row, col})];
 }
 
 double &MatrixDense::operator()(int row, int col)
 {
-    return m_entries[m_indexer.ToFlat({row, col})];
+    return m_entries[m_indexer.toFlat({row, col})];
 }

@@ -8,5 +8,5 @@ template <typename I> class IIndexer
   public:
     virtual ~IIndexer() = default;
     virtual I numberOfIndices() const = 0;
-    virtual size_t ToFlat(std::initializer_list<I> ijk) const = 0;
+    virtual size_t toFlat(std::initializer_list<I> ijk) const = 0;
 };
