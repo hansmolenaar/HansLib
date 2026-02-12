@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "Defines.h"
+#include "MatrixDense.h"
 #include "MatrixSquare.h"
 #include "SubMatrix.h"
 
@@ -46,4 +47,23 @@ TEST(SubMatrixTest, TestErrors)
     ASSERT_NO_THROW(SubMatrix(mat, 7, 7, 1, 1););
     ASSERT_ANY_THROW(SubMatrix(mat, 7, 7, 1, 2););
     ASSERT_ANY_THROW(SubMatrix(mat, 7, 7, 2, 1););
+}
+
+TEST(SubMatrixTest, timesVector)
+{
+    constexpr int rdim = 4;
+    constexpr int cdim = 3;
+    MatrixDense mat(rdim, cdim);
+    mat(1, 0) = 1;
+    mat(1, 1) = 2;
+    mat(2, 0) = 3;
+    mat(2, 1) = 4;
+
+    const SubMatrix subMatrix(mat, 2, 2, 1, 0);
+    std::array<double, 2> vecin{1, 2};
+    std::array<double, 2> vecout;
+    subMatrix.timesVector(vecin, vecout);
+
+    ASSERT_NEAR(vecout.at(0), 5.0, 1.0e-10);
+    ASSERT_NEAR(vecout.at(1), 11.0, 1.0e-10);
 }

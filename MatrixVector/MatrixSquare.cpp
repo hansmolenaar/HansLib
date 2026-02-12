@@ -1,5 +1,7 @@
 #include "MatrixSquare.h"
+#include "Defines.h"
 #include "IMatrixUtils.h"
+#include "Iota.h"
 #include "MyAssert.h"
 
 MatrixSquare::MatrixSquare(int dim)
@@ -266,4 +268,21 @@ bool MatrixSquare::Solve(std::span<const double> rhs, std::span<double> sol)
 const IIndexer<int> &MatrixSquare::GetIndexer()
 {
     return m_indexer;
+}
+
+void MatrixSquare::timesVector(std::span<const double> vecin, std::span<double> result) const
+{
+    const auto rdim = GetRowDimension();
+    const auto cdim = GetColDimension();
+    Utilities::MyAssert(static_cast<int>(vecin.size()) == cdim);
+    Utilities::MyAssert(static_cast<int>(result.size()) == rdim);
+    str::fill(result, 0.0);
+
+    for (auto r : Iota::GetRange(rdim))
+    {
+        for (auto c : Iota::GetRange(cdim))
+        {
+            result[r] += (*this)(r, c) * vecin[c];
+        }
+    }
 }

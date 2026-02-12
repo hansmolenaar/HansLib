@@ -140,3 +140,17 @@ TEST(MatrixSquareTest, TestClear)
     Clear(matrix);
     ASSERT_EQ(matrix(0, 0), 0.0);
 }
+
+TEST(MatrixSquareTest, timesVector)
+{
+    MatrixSquare matrix(2);
+    matrix(0, 0) = 1.0;
+    matrix(0, 1) = 2.0;
+    matrix(1, 0) = 3.0;
+    matrix(1, 1) = 4.0;
+    const std::vector<double> vecin{1, 2};
+    std::array<double, 2> vecout;
+    matrix.timesVector(vecin, vecout);
+    ASSERT_NEAR(vecout.at(0), 5.0, 1.0e-10);
+    ASSERT_NEAR(vecout.at(1), 11.0, 1.0e-10);
+}
