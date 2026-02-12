@@ -9,8 +9,6 @@ TEST(MatrixKelvinRepr3Test, Test1)
 {
     auto matrix = MatrixKelvinRepr3::CreateEmpty();
     ASSERT_EQ(3, matrix.GetDimension());
-    ASSERT_EQ(3, matrix.GetRowDimension());
-    ASSERT_EQ(3, matrix.GetColDimension());
     for (int n = 0; n < 6; ++n)
     {
         ASSERT_EQ(0.0, matrix.Vector()[n]);
@@ -34,6 +32,4 @@ TEST(MatrixKelvinRepr3Test, Test2)
             matrix.Set(row, col, indexer.ToFlat(row, col) * 1.0);
         }
     }
-
-    ASSERT_NEAR(GetDeterminant(matrix), 1.0, 1.0e-12);
 }

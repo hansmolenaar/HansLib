@@ -12,17 +12,17 @@ constexpr double c_eps = 1.0e-12;
 TEST(IMatrixKelvinReprUtilsTest, TestIdentity)
 {
     const auto id = MatrixKelvinRepr3::CreateIdentity();
-    ASSERT_EQ(1.0, id(0, 0));
-    ASSERT_EQ(1.0, id(1, 1));
-    ASSERT_EQ(1.0, id(2, 2));
+    ASSERT_EQ(1.0, id.Get(0, 0));
+    ASSERT_EQ(1.0, id.Get(1, 1));
+    ASSERT_EQ(1.0, id.Get(2, 2));
 
-    ASSERT_EQ(0.0, id(0, 1));
-    ASSERT_EQ(0.0, id(0, 2));
-    ASSERT_EQ(0.0, id(1, 2));
+    ASSERT_EQ(0.0, id.Get(0, 1));
+    ASSERT_EQ(0.0, id.Get(0, 2));
+    ASSERT_EQ(0.0, id.Get(1, 2));
 
-    ASSERT_EQ(0.0, id(1, 0));
-    ASSERT_EQ(0.0, id(2, 0));
-    ASSERT_EQ(0.0, id(2, 1));
+    ASSERT_EQ(0.0, id.Get(1, 0));
+    ASSERT_EQ(0.0, id.Get(2, 0));
+    ASSERT_EQ(0.0, id.Get(2, 1));
 }
 
 TEST(IMatrixKelvinReprUtilsTest, TestTimes)

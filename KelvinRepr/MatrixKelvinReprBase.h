@@ -15,11 +15,6 @@ template <int Dimension> class MatrixKelvinReprBase : public IMatrixKelvinRepr
     {
         return Dimension;
     }
-    double operator()(int row, int col) const override
-    {
-        return Get(row, col);
-    }
-    double &operator()(int, int) override;
     double Get(int, int) const override;
     void Set(int, int, double) override;
 
@@ -40,11 +35,6 @@ template <int Dimension>
 MatrixKelvinReprBase<Dimension>::MatrixKelvinReprBase(const IIndexer<int> &indexer) : m_indexer(indexer)
 {
     std::fill_n(m_data.begin(), VectorLength, 0.0);
-}
-
-template <int Dimension> double &MatrixKelvinReprBase<Dimension>::operator()(int, int)
-{
-    throw std::runtime_error("Don't call me, use Get(int,int) instead");
 }
 
 template <int Dimension> std::span<const double> MatrixKelvinReprBase<Dimension>::Vector() const
