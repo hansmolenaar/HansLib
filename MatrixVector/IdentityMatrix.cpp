@@ -1,5 +1,6 @@
 #include "IdentityMatrix.h"
 
+#include "Defines.h"
 #include "IMatrixUtils.h"
 #include "MyAssert.h"
 
@@ -47,8 +48,9 @@ double &IdentityMatrix::operator()(int row, int col)
     throw std::runtime_error("Don't call me");
 }
 
-std::vector<double> IdentityMatrix::timesVector(const std::vector<double> &vecin) const
+void IdentityMatrix::timesVector(std::span<const double> vecin, std::span<double> vecout) const
 {
     Utilities::MyAssert(static_cast<int>(vecin.size()) == GetRowDimension());
-    return vecin;
+    Utilities::MyAssert(static_cast<int>(vecout.size()) == GetRowDimension());
+    str::copy(vecin, vecout.begin());
 }

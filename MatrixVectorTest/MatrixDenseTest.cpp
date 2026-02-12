@@ -58,7 +58,8 @@ TEST(MatrixDenseTest, TimesVector)
     }
 
     const std::vector<double> vecin{1, 2, 3};
-    const auto vecout = mat.timesVector(vecin);
+    std::vector<double> vecout(2);
+    mat.timesVector(vecin, vecout);
     ASSERT_NEAR(vecout.at(0), 14.0, 1.0e-10);
     ASSERT_NEAR(vecout.at(1), 32.0, 1.0e-10);
 }

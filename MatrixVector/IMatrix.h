@@ -2,6 +2,7 @@
 
 #include "MyAssert.h"
 
+#include <span>
 #include <vector>
 
 class IMatrix

@@ -29,7 +29,7 @@ TEST(MatrixRotation2DTest, TestNull)
 TEST(MatrixRotation2DTest, TestTransform)
 {
     const MatrixRotation2D mat(MathConstants::PI_2);
-    std::array<double,2> vec0{1, 0};
+    std::array<double, 2> vec0{1, 0};
     std::vector<double> vec1(2);
 
     mat.timesVector(vec0, vec1);

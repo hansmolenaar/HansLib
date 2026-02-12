@@ -25,20 +25,19 @@ double &MatrixDense::operator()(int row, int col)
     return m_entries[m_indexer.toFlat({row, col})];
 }
 
-std::vector<double> MatrixDense::timesVector(const std::vector<double> &vecin) const
+void MatrixDense::timesVector(std::span<const double> vecin, std::span<double> result) const
 {
     const auto rdim = GetRowDimension();
     const auto cdim = GetColDimension();
     Utilities::MyAssert(static_cast<int>(vecin.size()) == cdim);
-    std::vector<double> result(rdim, 0.0);
+    Utilities::MyAssert(static_cast<int>(result.size()) == rdim);
+    str::fill(result, 0.0);
 
     for (auto r : Iota::GetRange(rdim))
     {
         for (auto c : Iota::GetRange(cdim))
         {
-            result[r] += (*this)(r, c) * vecin.at(c);
+            result[r] += (*this)(r, c) * vecin[c];
         }
     }
-
-    return result;
 }

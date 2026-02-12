@@ -1,6 +1,7 @@
 #pragma once
 
 #include "IMatrixSymmetric.h"
+#include <span>
 
 class IdentityMatrix : public IMatrixSymmetric
 {
@@ -13,7 +14,7 @@ class IdentityMatrix : public IMatrixSymmetric
     virtual double operator()(int, int) const override;
     virtual double &operator()(int, int) override;
     virtual ~IdentityMatrix() {};
-    std::vector<double> timesVector(const std::vector<double> &) const;
+    void timesVector(std::span<const double>, std::span<double>) const;
 
   private:
     int m_dimension;

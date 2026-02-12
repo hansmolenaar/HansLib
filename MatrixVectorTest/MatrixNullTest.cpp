@@ -11,9 +11,11 @@ TEST(MatrixNullTest, TestNull)
     ASSERT_ANY_THROW(mat(0, 0) = 0.0;);
     ASSERT_ANY_THROW(mat(0, 0););
     std::vector<double> vecin;
-    ASSERT_TRUE(mat.timesVector(vecin).empty());
+    std::vector<double> vecout;
+    mat.timesVector(vecin, vecout);
+    ASSERT_TRUE(vecout.empty());
     vecin.push_back(0.0);
-    ASSERT_ANY_THROW(mat.timesVector(vecin));
+    ASSERT_ANY_THROW(mat.timesVector(vecin, vecout));
 }
 
 TEST(MatrixNullTest, TestInterface)

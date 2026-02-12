@@ -52,7 +52,7 @@ TEST(MatrixRotation3DTest, TestPermute)
     const auto &mat = MatrixRotation3D::Create(axisz, 2 * MathConstants::PI / 3);
 
     const std::vector<double> vecin{1, 2, 3};
-    std::array<double,3> vecout;
+    std::array<double, 3> vecout;
 
     MatrixTimesVector(mat, vecin, vecout);
 
