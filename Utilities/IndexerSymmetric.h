@@ -8,7 +8,7 @@
 template <typename I> class IndexerSymmetric : public IIndexer<I>
 {
   public:
-    IndexerSymmetric(I dim);
+    explicit IndexerSymmetric(I dim);
     size_t toFlat(std::initializer_list<I> ijk) const override;
     I getNumberOfIndices() const override;
     size_t getFlatSize() const override;
