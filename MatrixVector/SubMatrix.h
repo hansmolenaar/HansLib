@@ -11,7 +11,7 @@ class SubMatrix : public IMatrix
     int GetColDimension() const override;
     double operator()(int, int) const override;
     double &operator()(int, int) override;
-    void timesVector(std::span<const double>, std::span<double>) const;
+    void timesVector(std::span<const double>, std::span<double>) const override;
 
   private:
     IMatrix &m_matrix;

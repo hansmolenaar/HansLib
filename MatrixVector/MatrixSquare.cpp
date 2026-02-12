@@ -272,17 +272,5 @@ const IIndexer<int> &MatrixSquare::GetIndexer()
 
 void MatrixSquare::timesVector(std::span<const double> vecin, std::span<double> result) const
 {
-    const auto rdim = GetRowDimension();
-    const auto cdim = GetColDimension();
-    Utilities::MyAssert(static_cast<int>(vecin.size()) == cdim);
-    Utilities::MyAssert(static_cast<int>(result.size()) == rdim);
-    str::fill(result, 0.0);
-
-    for (auto r : Iota::GetRange(rdim))
-    {
-        for (auto c : Iota::GetRange(cdim))
-        {
-            result[r] += (*this)(r, c) * vecin[c];
-        }
-    }
+    MatrixTimesVector(*this, vecin, result);
 }

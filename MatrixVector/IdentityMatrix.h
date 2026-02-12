@@ -14,7 +14,7 @@ class IdentityMatrix : public IMatrixSymmetric
     virtual double operator()(int, int) const override;
     virtual double &operator()(int, int) override;
     virtual ~IdentityMatrix() {};
-    void timesVector(std::span<const double>, std::span<double>) const;
+    void timesVector(std::span<const double>, std::span<double>) const override;
 
   private:
     int m_dimension;

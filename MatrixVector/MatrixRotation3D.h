@@ -13,7 +13,7 @@ class MatrixRotation3D : public IMatrixRotation
 
     double operator()(int, int) const override;
 
-    void timesVector(std::span<const double>, std::span<double>) const;
+    void timesVector(std::span<const double>, std::span<double>) const override;
 
   private:
     MatrixRotation3D(const UnitVector3 &, double);
