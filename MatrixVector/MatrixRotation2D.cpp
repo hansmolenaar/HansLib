@@ -39,14 +39,7 @@ MatrixRotation2D::MatrixRotation2D(double angle) : m_matrix(2, 2)
     m_matrix(1, 0) = sinx;
 }
 
-void MatrixRotation2D::Transform(std::span<const double> vin, std::span<double> vout) const
+void MatrixRotation2D::timesVector(std::span<const double> vin, std::span<double> vout) const
 {
     MatrixTimesVector(m_matrix, vin, vout);
-}
-
-std::vector<double> MatrixRotation2D::timesVector(const std::vector<double> &vecin) const
-{
-    std::vector<double> retval(2);
-    Transform(vecin, retval);
-    return retval;
 }

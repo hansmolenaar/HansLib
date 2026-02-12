@@ -39,14 +39,7 @@ MatrixRotation3D MatrixRotation3D::Create(const UnitVector3 &axis, double angle)
     return MatrixRotation3D(axis, angle);
 }
 
-void MatrixRotation3D::Transform(std::span<const double> vin, std::span<double> vout) const
+void MatrixRotation3D::timesVector(std::span<const double> vin, std::span<double> vout) const
 {
     MatrixTimesVector(m_matrix, vin, vout);
-}
-
-std::vector<double> MatrixRotation3D::timesVector(const std::vector<double> &vecin) const
-{
-    std::vector<double> retval(3);
-    Transform(vecin, retval);
-    return retval;
 }

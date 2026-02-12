@@ -52,15 +52,11 @@ TEST(MatrixRotation3DTest, TestPermute)
     const auto &mat = MatrixRotation3D::Create(axisz, 2 * MathConstants::PI / 3);
 
     const std::vector<double> vecin{1, 2, 3};
-    std::vector<double> vecout(3);
+    std::array<double,3> vecout;
 
     MatrixTimesVector(mat, vecin, vecout);
 
     ASSERT_NEAR(vecout[0], 3.0, eps);
     ASSERT_NEAR(vecout[1], 1.0, eps);
     ASSERT_NEAR(vecout[2], 2.0, eps);
-
-    ASSERT_NEAR(mat.timesVector(vecin)[0], 3.0, eps);
-    ASSERT_NEAR(mat.timesVector(vecin)[1], 1.0, eps);
-    ASSERT_NEAR(mat.timesVector(vecin)[2], 2.0, eps);
 }
