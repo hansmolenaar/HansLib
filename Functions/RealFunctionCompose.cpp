@@ -59,7 +59,7 @@ void RealFunctionCompose::Derivative(std::span<const double> x, IMatrix &dfdx) c
                 {
                     val += df(n, k) * dg(k, m);
                 }
-                dfdx(n, m) = val;
+                dfdx.set(n, m, val);
             }
         }
     }

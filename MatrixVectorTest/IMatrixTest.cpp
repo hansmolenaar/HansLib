@@ -64,17 +64,17 @@ void TestInterface(IMatrix &matrix)
     ASSERT_GT(rowDim, 0);
     ASSERT_GT(colDim, 0);
 
-    ASSERT_ANY_THROW(matrix(-1, 0) = 0;);
-    ASSERT_ANY_THROW(matrix(0, -1) = 0;);
-    ASSERT_ANY_THROW(matrix(rowDim, 0) = 0;);
-    ASSERT_ANY_THROW(matrix(0, colDim) = 0;);
+    ASSERT_ANY_THROW(matrix.set(-1, 0, 0););
+    ASSERT_ANY_THROW(matrix.set(0, -1, 0););
+    ASSERT_ANY_THROW(matrix.set(rowDim, 0, 0););
+    ASSERT_ANY_THROW(matrix.set(0, colDim, 0););
 
     for (int row = 0; row < rowDim; ++row)
     {
         for (int col = 0; col < colDim; ++col)
         {
             Clear(matrix);
-            matrix(row, col) = 1.0;
+            matrix.set(row, col, 1.0);
             ASSERT_EQ(matrix(row, col), 1.0);
         }
     }

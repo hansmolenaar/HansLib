@@ -182,7 +182,7 @@ void EigenValueSolverSym3x3Utils::AuxilaryEquationRoots::Derivative(std::span<co
     Clear(derivs);
     for (int n = 0; n < 3; ++n)
     {
-        derivs(n, 0) = -2 * std::sin(theta + c_angles[n]) * dThetadDetB;
+        derivs.set(n, 0, -2 * std::sin(theta + c_angles[n]) * dThetadDetB);
     }
 }
 
@@ -438,14 +438,14 @@ void EigenValueSolverSym3x3::Derivative(std::span<const double> x, IMatrix &dfdx
             // Constribution from q
             for (int n = 0; n < 3; ++n)
             {
-                dfdx(r, n) += 1.0 / 3.0;
+                dfdx.add(r, n, 1.0 / 3.0);
             }
 
             // Constribution from p*root
             for (int n = 0; n < 6; ++n)
             {
-                dfdx(r, n) += pDerivs[n] * roots[r];
-                dfdx(r, n) += pEval * rootsDerivs(r, 0) * derivDetB[n];
+                dfdx.add(r, n, pDerivs[n] * roots[r]);
+                dfdx.add(r, n, pEval * rootsDerivs(r, 0) * derivDetB[n]);
             }
         }
     }
@@ -457,7 +457,7 @@ void EigenValueSolverSym3x3::Derivative(std::span<const double> x, IMatrix &dfdx
         {
             for (int n1 = 0; n1 < 3; ++n1)
             {
-                dfdx(n0, n1) = 1.0 / 3.0;
+                dfdx.set(n0, n1, 1.0 / 3.0);
             }
         }
     }

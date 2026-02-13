@@ -20,7 +20,8 @@ class MatrixSquare : public IMatrixSquare
     void timesVector(std::span<const double>, std::span<double>) const override;
 
     double operator()(int, int) const override;
-    double &operator()(int, int) override;
+    void set(int, int, double) override;
+    double &operator()(int, int);
 
   private:
     std::vector<double> m_matrix;

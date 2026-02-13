@@ -35,7 +35,7 @@ void RealFunctionAdd::Derivative(std::span<const double> x, IMatrix &dfdx) const
         {
             if (!m_fie2.DerivativeAlwaysZero(eqn, var))
             {
-                dfdx(eqn, var) += dd(eqn, var);
+                dfdx.add(eqn, var, dd(eqn, var));
             }
         }
     }

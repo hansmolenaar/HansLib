@@ -17,7 +17,7 @@ double MatrixNull::operator()(int row, int col) const
     throw std::runtime_error("Do not call me");
 }
 
-double &MatrixNull::operator()(int row, int col)
+void MatrixNull::set(int, int, double)
 {
     throw std::runtime_error("Do not call me");
 }

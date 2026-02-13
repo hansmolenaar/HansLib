@@ -24,6 +24,11 @@ double &MatrixSquare::operator()(int row, int col)
     return m_matrix[row * m_dim + col];
 }
 
+void MatrixSquare::set(int row, int col, double value)
+{
+    (*this)(row, col) = value;
+}
+
 int MatrixSquare::GetDimension() const
 {
     return m_dim;

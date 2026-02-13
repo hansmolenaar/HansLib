@@ -31,10 +31,10 @@ double SubMatrix::operator()(int row, int col) const
     return m_matrix(row + m_ofset[0], col + m_ofset[1]);
 }
 
-double &SubMatrix::operator()(int row, int col)
+void SubMatrix::set(int row, int col, double value)
 {
     CheckRowCol(*this, row, col);
-    return m_matrix(row + m_ofset[0], col + m_ofset[1]);
+    m_matrix.set(row + m_ofset[0], col + m_ofset[1], value);
 }
 
 void SubMatrix::timesVector(std::span<const double> vecin, std::span<double> result) const

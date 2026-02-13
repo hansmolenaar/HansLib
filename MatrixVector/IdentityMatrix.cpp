@@ -22,16 +22,6 @@ const IdentityMatrix &IdentityMatrix::GetInstance(int dim)
     return *(matrices.find(dim)->second);
 }
 
-int IdentityMatrix::GetRowDimension() const
-{
-    return m_dimension;
-}
-
-int IdentityMatrix::GetColDimension() const
-{
-    return m_dimension;
-}
-
 int IdentityMatrix::GetDimension() const
 {
     return m_dimension;
@@ -43,7 +33,7 @@ double IdentityMatrix::operator()(int row, int col) const
     return (row == col ? 1 : 0);
 }
 
-double &IdentityMatrix::operator()(int row, int col)
+void IdentityMatrix::set(int, int, double)
 {
     throw std::runtime_error("Don't call me");
 }

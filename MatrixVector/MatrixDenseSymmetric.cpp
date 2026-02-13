@@ -22,6 +22,11 @@ double &MatrixDenseSymmetric::operator()(int row, int col)
     return m_matrix.at(m_indexer.ToFlat(row, col));
 }
 
+void MatrixDenseSymmetric::set(int row, int col, double value)
+{
+    (*this)(row, col) = value;
+}
+
 void MatrixDenseSymmetric::timesVector(std::span<const double> vecin, std::span<double> result) const
 {
     const auto dim = GetDimension();

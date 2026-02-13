@@ -1,9 +1,9 @@
 #include "MatrixKelvinRepr3.h"
 
 #include "IMatrixKelvinReprUtils.h"
+#include "IMatrixSymmetric.h"
 #include "IndexerKelvinRepr3.h"
 #include "MathConstants.h"
-#include "IMatrixSymmetric.h"
 #include "MyAssert.h"
 
 #include <exception>

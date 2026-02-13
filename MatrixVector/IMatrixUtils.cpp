@@ -23,7 +23,7 @@ IMatrix &operator*=(IMatrix &matrix, double factor)
     {
         for (int col = 0; col < matrix.GetColDimension(); ++col)
         {
-            matrix(row, col) = factor * matrix(row, col);
+            matrix.set(row, col, factor * matrix(row, col));
         }
     }
     return matrix;
@@ -38,7 +38,7 @@ IMatrix &operator+=(IMatrix &matrix, const IMatrix &matrixToAdd)
     {
         for (int col = 0; col < matrix.GetColDimension(); ++col)
         {
-            matrix(row, col) += matrixToAdd(row, col);
+            matrix.add(row, col, matrixToAdd(row, col));
         }
     }
     return matrix;
@@ -50,7 +50,7 @@ void SetAll(IMatrix &matrix, double value)
     {
         for (int col = 0; col < matrix.GetColDimension(); ++col)
         {
-            matrix(row, col) = value;
+            matrix.set(row, col, value);
         }
     }
 }
@@ -93,7 +93,7 @@ void MatrixTimesMatrix(const IMatrix &mat1, const IMatrix &mat2, IMatrix &mat3)
             {
                 sum += mat1(row, k) * mat2(k, col);
             }
-            mat3(row, col) = sum;
+            mat3.set(row, col, sum);
         }
     }
 }

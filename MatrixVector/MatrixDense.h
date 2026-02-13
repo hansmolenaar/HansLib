@@ -15,7 +15,8 @@ class MatrixDense : public IMatrix
     int GetColDimension() const override;
 
     double operator()(int, int) const override;
-    double &operator()(int, int) override;
+    double &operator()(int, int);
+    void set(int, int, double) override;
 
     void timesVector(std::span<const double>, std::span<double>) const override;
 

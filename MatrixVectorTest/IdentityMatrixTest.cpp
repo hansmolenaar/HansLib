@@ -25,7 +25,7 @@ TEST(IdentityMatrixTest, TestError)
     ASSERT_ANY_THROW(IdentityMatrix(0););
     ASSERT_ANY_THROW(IdentityMatrix(-1););
     IdentityMatrix mat(1);
-    ASSERT_ANY_THROW(mat(0, 0) = 2;);
+    ASSERT_ANY_THROW(mat.set(0, 0, 2););
 
     const IdentityMatrix cmat(2);
     IMatrixTest::TestConstInterface(mat);

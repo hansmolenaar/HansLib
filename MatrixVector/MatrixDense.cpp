@@ -26,6 +26,11 @@ double &MatrixDense::operator()(int row, int col)
     return m_entries[m_indexer.toFlat({row, col})];
 }
 
+void MatrixDense::set(int row, int col, double value)
+{
+    (*this)(row, col) = value;
+}
+
 void MatrixDense::timesVector(std::span<const double> vecin, std::span<double> result) const
 {
     MatrixTimesVector(*this, vecin, result);

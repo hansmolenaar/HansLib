@@ -62,7 +62,7 @@ void MultiVariableVectorValuedFunction::Derivative(std::span<const double> x, IM
         ::Derivative(*cmp, x, deriv);
         for (int var = 0; var < numVar; ++var)
         {
-            dfdx(eqn, var) = deriv[var];
+            dfdx.set(eqn, var, deriv[var]);
         }
         ++eqn;
     }

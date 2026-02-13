@@ -11,7 +11,7 @@ class IMatrixRotation : public IMatrixSquare
   public:
     virtual ~IMatrixRotation() = default;
 
-    double &operator()(int, int) override;
+    void set(int, int, double) override;
     using IMatrix::operator();
 
     static bool IsRotation(const IMatrixSquare &matrix, double tol = 1.0e-12);

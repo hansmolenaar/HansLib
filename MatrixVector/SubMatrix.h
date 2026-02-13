@@ -10,7 +10,7 @@ class SubMatrix : public IMatrix
     int GetRowDimension() const override;
     int GetColDimension() const override;
     double operator()(int, int) const override;
-    double &operator()(int, int) override;
+    void set(int, int, double) override;
     void timesVector(std::span<const double>, std::span<double>) const override;
 
   private:

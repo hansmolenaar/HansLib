@@ -27,7 +27,7 @@ TEST(SubMatrixTest, Test1)
     ASSERT_NEAR(submat(1, 1), 0.23, eps);
     ASSERT_NEAR(submat(1, 2), 0.24, eps);
 
-    submat(1, 1) = 1.0;
+    submat.set(1, 1, 1.0);
     ASSERT_NEAR(mat(2, 3), 1.0, eps);
 
     ASSERT_ANY_THROW(submat(2, 0););

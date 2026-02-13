@@ -2,7 +2,7 @@
 #include "IMatrixSquareUtils.h"
 #include "MyAssert.h"
 
-double &IMatrixRotation::operator()(int, int)
+void IMatrixRotation::set(int, int, double)
 {
     throw std::runtime_error("Don't call me, use const version instead");
 }
