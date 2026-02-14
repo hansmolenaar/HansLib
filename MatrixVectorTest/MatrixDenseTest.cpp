@@ -13,7 +13,7 @@ TEST(MatrixDenseTest, TestConstructor)
 TEST(MatrixDenseTest, TestInterface)
 {
     MatrixDense mat(2, 3);
-    IMatrixTest::TestConstInterface(mat);
+    IMatrixTest::TestInterface(mat, true);
 }
 
 TEST(MatrixDenseTest, TestGetSet)

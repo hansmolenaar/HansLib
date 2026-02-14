@@ -24,6 +24,4 @@ class MatrixDense : public IMatrix
 
   private:
     Eigen::MatrixXd m_matrix;
-    IndexerRowMajor<int> m_indexer;
-    std::vector<double> m_entries;
 };
