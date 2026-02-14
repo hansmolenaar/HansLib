@@ -20,10 +20,10 @@ TEST(MatrixRotation2DTest, TestNull)
 
     ASSERT_TRUE(IMatrixRotation::IsRotation(mat));
 
-    ASSERT_NEAR(mat(0, 0), MathConstants::SQRT1_2, eps);
-    ASSERT_NEAR(mat(1, 1), MathConstants::SQRT1_2, eps);
-    ASSERT_NEAR(mat(0, 1), -MathConstants::SQRT1_2, eps);
-    ASSERT_NEAR(mat(1, 0), MathConstants::SQRT1_2, eps);
+    ASSERT_NEAR(mat.get(0, 0), MathConstants::SQRT1_2, eps);
+    ASSERT_NEAR(mat.get(1, 1), MathConstants::SQRT1_2, eps);
+    ASSERT_NEAR(mat.get(0, 1), -MathConstants::SQRT1_2, eps);
+    ASSERT_NEAR(mat.get(1, 0), MathConstants::SQRT1_2, eps);
 }
 
 TEST(MatrixRotation2DTest, TestTransform)

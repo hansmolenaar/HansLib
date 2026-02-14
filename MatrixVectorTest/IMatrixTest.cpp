@@ -48,10 +48,10 @@ void TestConstInterface(const IMatrix &matrix)
     ASSERT_GE(rowDim, 0);
     ASSERT_GE(colDim, 0);
 
-    ASSERT_ANY_THROW(matrix(-1, 0););
-    ASSERT_ANY_THROW(matrix(0, -1););
-    ASSERT_ANY_THROW(matrix(rowDim, 0););
-    ASSERT_ANY_THROW(matrix(0, colDim););
+    ASSERT_ANY_THROW(matrix.get(-1, 0););
+    ASSERT_ANY_THROW(matrix.get(0, -1););
+    ASSERT_ANY_THROW(matrix.get(rowDim, 0););
+    ASSERT_ANY_THROW(matrix.get(0, colDim););
 }
 
 void TestInterface(IMatrix &matrix)
@@ -75,7 +75,7 @@ void TestInterface(IMatrix &matrix)
         {
             Clear(matrix);
             matrix.set(row, col, 1.0);
-            ASSERT_EQ(matrix(row, col), 1.0);
+            ASSERT_EQ(matrix.get(row, col), 1.0);
         }
     }
 }

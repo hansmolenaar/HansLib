@@ -24,7 +24,7 @@ int MatrixRotation2D::GetDimension() const
     return 2;
 }
 
-double MatrixRotation2D::operator()(int row, int col) const
+double MatrixRotation2D::get(int row, int col) const
 {
     return m_matrix(row, col);
 }

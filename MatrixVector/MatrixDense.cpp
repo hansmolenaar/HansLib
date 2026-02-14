@@ -26,6 +26,11 @@ double &MatrixDense::operator()(int row, int col)
     return m_entries[m_indexer.toFlat({row, col})];
 }
 
+double MatrixDense::get(int row, int col) const
+{
+    return (*this)(row, col);
+}
+
 void MatrixDense::set(int row, int col, double value)
 {
     (*this)(row, col) = value;

@@ -12,7 +12,7 @@ int MatrixNull::GetColDimension() const
     return 0;
 }
 
-double MatrixNull::operator()(int row, int col) const
+double MatrixNull::get(int row, int col) const
 {
     throw std::runtime_error("Do not call me");
 }

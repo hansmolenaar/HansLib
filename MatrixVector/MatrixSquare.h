@@ -19,7 +19,8 @@ class MatrixSquare : public IMatrixSquare
     int GetDimension() const override;
     void timesVector(std::span<const double>, std::span<double>) const override;
 
-    double operator()(int, int) const override;
+    double operator()(int, int) const;
+    double get(int, int) const override;
     void set(int, int, double) override;
     double &operator()(int, int);
 

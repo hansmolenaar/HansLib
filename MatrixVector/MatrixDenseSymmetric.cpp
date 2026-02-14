@@ -17,6 +17,11 @@ double MatrixDenseSymmetric::operator()(int row, int col) const
     return m_matrix.at(m_indexer.ToFlat(row, col));
 }
 
+double MatrixDenseSymmetric::get(int row, int col) const
+{
+    return (*this)(row, col);
+}
+
 double &MatrixDenseSymmetric::operator()(int row, int col)
 {
     return m_matrix.at(m_indexer.ToFlat(row, col));

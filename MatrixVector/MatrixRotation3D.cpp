@@ -6,7 +6,7 @@ int MatrixRotation3D::GetDimension() const
     return 3;
 }
 
-double MatrixRotation3D::operator()(int row, int col) const
+double MatrixRotation3D::get(int row, int col) const
 {
     return m_matrix(row, col);
 }

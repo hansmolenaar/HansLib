@@ -17,6 +17,11 @@ double MatrixSquare::operator()(int row, int col) const
     return m_matrix[row * m_dim + col];
 }
 
+double MatrixSquare::get(int row, int col) const
+{
+    return (*this)(row, col);
+}
+
 double &MatrixSquare::operator()(int row, int col)
 {
     CheckRowCol(*this, row, col);

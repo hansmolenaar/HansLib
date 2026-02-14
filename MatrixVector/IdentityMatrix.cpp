@@ -27,7 +27,7 @@ int IdentityMatrix::GetDimension() const
     return m_dimension;
 }
 
-double IdentityMatrix::operator()(int row, int col) const
+double IdentityMatrix::get(int row, int col) const
 {
     CheckRowCol(*this, row, col);
     return (row == col ? 1 : 0);

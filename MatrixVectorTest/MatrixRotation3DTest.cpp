@@ -22,10 +22,10 @@ TEST(MatrixRotation3DTest, TestBase)
 
     ASSERT_TRUE(IMatrixRotation::IsRotation(mat));
 
-    ASSERT_NEAR(mat(0, 0), MathConstants::SQRT1_2, eps);
-    ASSERT_NEAR(mat(1, 1), MathConstants::SQRT1_2, eps);
-    ASSERT_NEAR(mat(0, 1), -MathConstants::SQRT1_2, eps);
-    ASSERT_NEAR(mat(1, 0), MathConstants::SQRT1_2, eps);
+    ASSERT_NEAR(mat.get(0, 0), MathConstants::SQRT1_2, eps);
+    ASSERT_NEAR(mat.get(1, 1), MathConstants::SQRT1_2, eps);
+    ASSERT_NEAR(mat.get(0, 1), -MathConstants::SQRT1_2, eps);
+    ASSERT_NEAR(mat.get(1, 0), MathConstants::SQRT1_2, eps);
 }
 
 TEST(MatrixRotation3DTest, TestUnit)
@@ -35,15 +35,15 @@ TEST(MatrixRotation3DTest, TestUnit)
 
     ASSERT_TRUE(IMatrixRotation::IsRotation(mat));
 
-    ASSERT_NEAR(mat(0, 0), 1.0, eps);
-    ASSERT_NEAR(mat(1, 1), 1.0, eps);
-    ASSERT_NEAR(mat(2, 2), 1.0, eps);
-    ASSERT_NEAR(mat(0, 1), 0.0, eps);
-    ASSERT_NEAR(mat(1, 0), 0.0, eps);
-    ASSERT_NEAR(mat(0, 2), 0.0, eps);
-    ASSERT_NEAR(mat(2, 0), 0.0, eps);
-    ASSERT_NEAR(mat(1, 2), 0.0, eps);
-    ASSERT_NEAR(mat(2, 1), 0.0, eps);
+    ASSERT_NEAR(mat.get(0, 0), 1.0, eps);
+    ASSERT_NEAR(mat.get(1, 1), 1.0, eps);
+    ASSERT_NEAR(mat.get(2, 2), 1.0, eps);
+    ASSERT_NEAR(mat.get(0, 1), 0.0, eps);
+    ASSERT_NEAR(mat.get(1, 0), 0.0, eps);
+    ASSERT_NEAR(mat.get(0, 2), 0.0, eps);
+    ASSERT_NEAR(mat.get(2, 0), 0.0, eps);
+    ASSERT_NEAR(mat.get(1, 2), 0.0, eps);
+    ASSERT_NEAR(mat.get(2, 1), 0.0, eps);
 }
 
 TEST(MatrixRotation3DTest, TestPermute)

@@ -12,7 +12,7 @@ class MatrixRotation2D : public IMatrixRotation
     MatrixRotation2D(double);
     int GetDimension() const override;
 
-    double operator()(int, int) const override;
+    double get(int, int) const override;
 
     void timesVector(std::span<const double>, std::span<double>) const override;
 

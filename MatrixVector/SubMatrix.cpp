@@ -25,10 +25,10 @@ int SubMatrix::GetColDimension() const
     return m_dimension[1];
 }
 
-double SubMatrix::operator()(int row, int col) const
+double SubMatrix::get(int row, int col) const
 {
     CheckRowCol(*this, row, col);
-    return m_matrix(row + m_ofset[0], col + m_ofset[1]);
+    return m_matrix.get(row + m_ofset[0], col + m_ofset[1]);
 }
 
 void SubMatrix::set(int row, int col, double value)

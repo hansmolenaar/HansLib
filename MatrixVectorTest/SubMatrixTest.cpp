@@ -20,18 +20,18 @@ TEST(SubMatrixTest, Test1)
     }
 
     SubMatrix submat(mat, 2, 3, 1, 2);
-    ASSERT_NEAR(submat(0, 0), 0.12, eps);
-    ASSERT_NEAR(submat(0, 1), 0.13, eps);
-    ASSERT_NEAR(submat(0, 2), 0.14, eps);
-    ASSERT_NEAR(submat(1, 0), 0.22, eps);
-    ASSERT_NEAR(submat(1, 1), 0.23, eps);
-    ASSERT_NEAR(submat(1, 2), 0.24, eps);
+    ASSERT_NEAR(submat.get(0, 0), 0.12, eps);
+    ASSERT_NEAR(submat.get(0, 1), 0.13, eps);
+    ASSERT_NEAR(submat.get(0, 2), 0.14, eps);
+    ASSERT_NEAR(submat.get(1, 0), 0.22, eps);
+    ASSERT_NEAR(submat.get(1, 1), 0.23, eps);
+    ASSERT_NEAR(submat.get(1, 2), 0.24, eps);
 
     submat.set(1, 1, 1.0);
     ASSERT_NEAR(mat(2, 3), 1.0, eps);
 
-    ASSERT_ANY_THROW(submat(2, 0););
-    ASSERT_ANY_THROW(submat(0, 3););
+    ASSERT_ANY_THROW(submat.get(2, 0););
+    ASSERT_ANY_THROW(submat.get(0, 3););
 }
 
 TEST(SubMatrixTest, TestErrors)

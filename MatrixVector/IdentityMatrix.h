@@ -9,7 +9,7 @@ class IdentityMatrix : public IMatrixSymmetric
     explicit IdentityMatrix(int);
     static const IdentityMatrix &GetInstance(int);
     int GetDimension() const override;
-    double operator()(int, int) const override;
+    double get(int, int) const override;
     void set(int, int, double) override;
     void timesVector(std::span<const double>, std::span<double>) const override;
 
