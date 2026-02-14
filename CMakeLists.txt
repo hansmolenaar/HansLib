@@ -8,6 +8,7 @@ set(BUILD_SHARED_LIBS OFF)
 set (CMAKE_CXX_STANDARD 23)
 set(CMAKE_EXPORT_COMPILE_COMMANDS "ON")
 
+#Boost
 set(BOOST_ROOT "/home/hans/repos/boost/boost_1_82_0")
 #find_package( Boost REQUIRED COMPONENTS program_options regex )
 set(Boost_USE_STATIC_LIBS OFF) 
@@ -18,6 +19,9 @@ message("BOOST_ROOT " ${BOOST_ROOT})
 find_package(Boost REQUIRED)
 message("Boost_INCLUDE_DIRS " ${Boost_INCLUDE_DIRS})
 
+# Eigen
+set(Eigen_INCLUDE_DIRS "/home/hans/repos/Eigen")
+message("Eigen_INCLUDE_DIRS" ${Eigen_INCLUDE_DIRS})
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
 set(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR}/bin)

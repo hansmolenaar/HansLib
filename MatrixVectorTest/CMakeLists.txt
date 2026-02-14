@@ -11,6 +11,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 	${CMAKE_INCLUDE_DIR}/Functions
 	${CMAKE_INCLUDE_DIR}/NonLinearSolver
 	${CMAKE_INCLUDE_DIR}/Permutation
+        ${Eigen_INCLUDE_DIRS}
 )
 
 target_link_libraries(${PROJECT_NAME} MatrixVector NonLinearSolver Functions Utilities ${GTestLibs})

@@ -8,6 +8,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 	${CMAKE_INCLUDE_DIR}/Utilities
 	${CMAKE_INCLUDE_DIR}/MatrixVector
 	${CMAKE_INCLUDE_DIR}/Functions
+        ${Eigen_INCLUDE_DIRS}
 )
 
 target_link_libraries(${PROJECT_NAME} KelvinRepr Functions MatrixVector NonLinearSolver Utilities ${GTestLibs})

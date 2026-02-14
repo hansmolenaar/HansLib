@@ -5,6 +5,7 @@
 
 #include "IMatrixSquare.h"
 #include "IndexerRowMajor.h"
+#include <Eigen/Dense>
 
 class MatrixDense : public IMatrix
 {
@@ -22,6 +23,7 @@ class MatrixDense : public IMatrix
     void timesVector(std::span<const double>, std::span<double>) const override;
 
   private:
+    Eigen::MatrixXd m_matrix;
     IndexerRowMajor<int> m_indexer;
     std::vector<double> m_entries;
 };
