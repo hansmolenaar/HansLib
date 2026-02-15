@@ -52,7 +52,7 @@ bool MatrixSquare::Solve(std::span<const double> rhs, std::span<double> sol)
 {
     Utilities::MyAssert(static_cast<int>(rhs.size()) == GetDimension());
     Utilities::MyAssert(static_cast<int>(sol.size()) == GetDimension());
-    const double rhsNormSquared = Functors::SumOfSquares<double>()(rhs);
+    const double rhsNormSquared = Functors::SumOfSquares{}(rhs);
     constexpr double reallySmallPositiveValue = 10 * std::numeric_limits<double>::min();
     if (rhsNormSquared <= reallySmallPositiveValue)
     {
@@ -76,7 +76,7 @@ bool MatrixSquare::Solve(std::span<const double> rhs, std::span<double> sol)
     // Check solution
     constexpr double smallRelativeValue = 1.0e-10;
     std::transform(rsd.begin(), rsd.end(), rhs.begin(), rsd.begin(), std::minus<double>());
-    const auto rsdNormSquared = Functors::SumOfSquares<double>()(rsd);
+    const auto rsdNormSquared = Functors::SumOfSquares{}(rsd);
     return (rsdNormSquared / rhsNormSquared < smallRelativeValue);
 }
 

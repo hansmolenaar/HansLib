@@ -63,5 +63,11 @@ TEST(FunctorTest, AreCloseVectors)
 TEST(FunctorTest, SumOfSquares1)
 {
     const std::vector<double> x{3.0, 4.0};
-    ASSERT_NEAR(Functors::SumOfSquares<double>()(x), 25, 1.0e-10);
+    ASSERT_NEAR(Functors::SumOfSquares()(x), 25, 1.0e-10);
+}
+
+TEST(FunctorTest, SumOfSquares2)
+{
+    const std::vector<int> x{3, 4};
+    ASSERT_EQ(Functors::SumOfSquares()(x), 25);
 }

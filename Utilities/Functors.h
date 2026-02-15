@@ -89,12 +89,12 @@ struct PointerIsNotNull
     }
 };
 
-template <typename T> struct SumOfSquares
+struct SumOfSquares
 {
-    template <typename C> T operator()(const C &container) const
+    template <typename C> auto operator()(const C &container) const
     {
-        return std::accumulate(container.begin(), container.end(), static_cast<T>(0),
-                               [](T v0, T v1) { return v0 + v1 * v1; });
+        typename C::value_type init = 0;
+        return std::inner_product(container.begin(), container.end(), container.begin(), init);
     }
 };
 
