@@ -13,4 +13,5 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 	${CMAKE_INCLUDE_DIR}/Point
 	${CMAKE_INCLUDE_DIR}/Topology
 	${Boost_INCLUDE_DIRS}
+        ${Eigen_INCLUDE_DIRS}
 )

@@ -88,4 +88,14 @@ struct PointerIsNotNull
         return ptr != nullptr;
     }
 };
+
+template <typename T> struct SumOfSquares
+{
+    template <typename C> T operator()(const C &container) const
+    {
+        return std::accumulate(container.begin(), container.end(), static_cast<T>(0),
+                               [](T v0, T v1) { return v0 + v1 * v1; });
+    }
+};
+
 } // namespace Functors

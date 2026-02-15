@@ -11,4 +11,5 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 	${CMAKE_INCLUDE_DIR}/Interval
 	${CMAKE_INCLUDE_DIR}/MatrixVector
 	${Boost_INCLUDE_DIRS}
+        ${Eigen_INCLUDE_DIRS}
 )

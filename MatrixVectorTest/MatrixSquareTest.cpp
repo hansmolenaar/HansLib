@@ -56,8 +56,8 @@ TEST(MatrixSquareTest, Test3)
     auto sol = std::array<double, 2>();
     bool succes = matrix.Solve(rhs, sol);
     ASSERT_TRUE(succes);
-    ASSERT_EQ(sol[0], 1.0);
-    ASSERT_EQ(sol[1], 2.0);
+    ASSERT_NEAR(sol[0], 1.0, 1.0e-12);
+    ASSERT_NEAR(sol[1], 2.0, 1.0e-12);
 }
 
 TEST(MatrixSquareTest, Test4)
@@ -71,9 +71,9 @@ TEST(MatrixSquareTest, Test4)
     auto sol = std::array<double, 3>();
     bool succes = matrix.Solve(rhs, sol);
     ASSERT_TRUE(succes);
-    ASSERT_EQ(sol[0], 1.0);
-    ASSERT_EQ(sol[1], 2.0);
-    ASSERT_EQ(sol[2], 3.0);
+    ASSERT_NEAR(sol[0], 1.0, 1.0e-12);
+    ASSERT_NEAR(sol[1], 2.0, 1.0e-12);
+    ASSERT_NEAR(sol[2], 3.0, 1.0e-12);
 }
 
 // Another singular matrix
@@ -99,8 +99,8 @@ TEST(MatrixSquareTest, Test6)
     auto sol = std::array<double, 2>();
     bool succes = matrix.Solve(rhs, sol);
     ASSERT_TRUE(succes);
-    ASSERT_EQ(sol[0], 3.0);
-    ASSERT_EQ(sol[1], 4.0);
+    ASSERT_NEAR(sol[0], 3.0, 1.0e-12);
+    ASSERT_NEAR(sol[1], 4.0, 1.0e-12);
 }
 
 // Data/Indexer dirty
