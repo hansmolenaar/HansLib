@@ -2,9 +2,9 @@
 
 #include "IMatrixKelvinReprTest.h"
 
+#include "Functors.h"
 #include "IMatrixKelvinRepr.h"
 #include "IMatrixKelvinReprUtils.h"
-#include "Functors.h"
 
 #include <numeric>
 #include <ranges>

@@ -48,12 +48,19 @@ TEST(MatrixDenseSymmetricTest, timesVector2)
     MatrixDenseSymmetric matrix(2);
     matrix.set(0, 0, 1.0);
     matrix.set(0, 1, 2.0);
-    matrix.set(1, 1, 4.0);
-    const std::vector<double> vecin{1, 2};
+    matrix.set(1, 1, 5.0);
+    std::vector<double> vecin{1, 2};
     std::array<double, 2> vecout;
     matrix.timesVector(vecin, vecout);
     ASSERT_NEAR(vecout.at(0), 5.0, 1.0e-10);
-    ASSERT_NEAR(vecout.at(1), 10.0, 1.0e-10);
+    ASSERT_NEAR(vecout.at(1), 12.0, 1.0e-10);
+
+    // Round trip
+    str::fill(vecin, -1.0);
+    const bool succes = matrix.Solve(vecout, vecin);
+    ASSERT_TRUE(succes);
+    ASSERT_NEAR(vecin.at(0), 1.0, 1.0e-10);
+    ASSERT_NEAR(vecin.at(1), 2.0, 1.0e-10);
 }
 
 TEST(MatrixDenseSymmetricTest, timesVector3)
@@ -75,7 +82,8 @@ TEST(MatrixDenseSymmetricTest, timesVector3)
 
     // Round trip
     str::fill(vecin, -1.0);
-    matrix.Solve(vecout, vecin);
+    const bool succes = matrix.Solve(vecout, vecin);
+    ASSERT_TRUE(succes);
     ASSERT_NEAR(vecin.at(0), 3.0, 1.0e-10);
     ASSERT_NEAR(vecin.at(1), 2.0, 1.0e-10);
     ASSERT_NEAR(vecin.at(2), 1.0, 1.0e-10);
@@ -89,7 +97,27 @@ TEST(MatrixDenseSymmetricTest, solveIndefinite)
 
     const std::vector<double> rhs{3, 2};
     std::array<double, 2> sol;
-    matrix.Solve(rhs, sol);
+    const bool succes = matrix.Solve(rhs, sol);
+    ASSERT_TRUE(succes);
     ASSERT_NEAR(sol.at(0), 3.0, 1.0e-10);
     ASSERT_NEAR(sol.at(1), -2.0, 1.0e-10);
+}
+
+TEST(MatrixDenseSymmetricTest, singular)
+{
+    MatrixDenseSymmetric matrix(2);
+    matrix.set(0, 0, 1.0);
+    matrix.set(0, 1, 2.0);
+    matrix.set(1, 1, 4.0);
+    std::vector<double> vecin(2);
+    std::array<double, 2> vecout{5, 10}; // in kernel
+
+    // Round trip
+    str::fill(vecin, -1.0);
+    bool succes = matrix.Solve(vecout, vecin);
+    ASSERT_TRUE(succes);
+
+    vecout = {1, 3}; // Not in kernel
+    succes = matrix.Solve(vecout, vecin);
+    ASSERT_FALSE(succes);
 }
