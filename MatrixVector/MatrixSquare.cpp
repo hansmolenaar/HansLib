@@ -1,5 +1,6 @@
 #include "MatrixSquare.h"
 #include "Defines.h"
+#include "EigenTools.h"
 #include "Functors.h"
 #include "IMatrixUtils.h"
 #include "Iota.h"
@@ -82,8 +83,5 @@ bool MatrixSquare::Solve(std::span<const double> rhs, std::span<double> sol)
 
 void MatrixSquare::timesVector(std::span<const double> vecin, std::span<double> result) const
 {
-    EigenMapVectorType resultMapped(result.data(), result.size());
-    EigenMapVectorTypeConst vecinMapped(vecin.data(), vecin.size());
-
-    resultMapped = m_matrix * vecinMapped;
+    EigenTools::TimesVector(m_matrix, vecin, result);
 }

@@ -1,13 +1,7 @@
 #include "MatrixDense.h"
+#include "EigenTools.h"
 #include "IMatrixUtils.h"
 #include "Iota.h"
-
-namespace
-{
-using EigenColumnVector = Eigen::Matrix<double, Eigen::Dynamic, 1>;
-using EigenMapVectorType = Eigen::Map<EigenColumnVector>;
-using EigenMapVectorTypeConst = Eigen::Map<const EigenColumnVector>;
-} // namespace
 
 MatrixDense::MatrixDense(int numRows, int numCols) : m_matrix(numRows, numCols)
 {
@@ -46,8 +40,5 @@ void MatrixDense::set(int row, int col, double value)
 
 void MatrixDense::timesVector(std::span<const double> vecin, std::span<double> result) const
 {
-    EigenMapVectorType resultMapped(result.data(), result.size());
-    EigenMapVectorTypeConst vecinMapped(vecin.data(), vecin.size());
-
-    resultMapped = m_matrix * vecinMapped;
+    EigenTools::TimesVector(m_matrix, vecin, result);
 }

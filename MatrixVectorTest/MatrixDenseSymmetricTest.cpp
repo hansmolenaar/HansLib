@@ -13,7 +13,7 @@ TEST(MatrixDenseSymmetricTest, Test1)
     ASSERT_EQ(1, matrix.GetDimension());
     ASSERT_EQ(1, matrix.GetRowDimension());
     ASSERT_EQ(1, matrix.GetColDimension());
-    matrix(0, 0) = 2.0;
+    matrix.set(0, 0, 2.0);
     ASSERT_EQ(matrix(0, 0), 2.0);
 }
 
@@ -30,10 +30,10 @@ TEST(MatrixDenseSymmetricTest, Test3)
 {
     MatrixDenseSymmetric matrix(2);
     ASSERT_EQ(2, matrix.GetDimension());
-    matrix(0, 0) = 1.0;
-    matrix(0, 1) = 2.0;
-    matrix(1, 0) = 3.0;
-    matrix(1, 1) = 4.0;
+    matrix.set(0, 0, 1.0);
+    matrix.set(0, 1, 2.0);
+    matrix.set(1, 0, 3.0);
+    matrix.set(1, 1, 4.0);
 
     ASSERT_EQ(matrix(0, 0), 1.0);
     ASSERT_EQ(matrix(0, 1), 3.0);
@@ -44,9 +44,9 @@ TEST(MatrixDenseSymmetricTest, Test3)
 TEST(MatrixDenseSymmetricTest, timesVector2)
 {
     MatrixDenseSymmetric matrix(2);
-    matrix(0, 0) = 1.0;
-    matrix(0, 1) = 2.0;
-    matrix(1, 1) = 4.0;
+    matrix.set(0, 0, 1.0);
+    matrix.set(0, 1, 2.0);
+    matrix.set(1, 1, 4.0);
     const std::vector<double> vecin{1, 2};
     std::array<double, 2> vecout;
     matrix.timesVector(vecin, vecout);
@@ -57,12 +57,12 @@ TEST(MatrixDenseSymmetricTest, timesVector2)
 TEST(MatrixDenseSymmetricTest, timesVector3)
 {
     MatrixDenseSymmetric matrix(3);
-    matrix(0, 0) = 1.0;
-    matrix(0, 1) = 2.0;
-    matrix(0, 2) = 3.0;
-    matrix(1, 1) = 4.0;
-    matrix(1, 2) = 5.0;
-    matrix(2, 2) = 6.0;
+    matrix.set(0, 0, 1.0);
+    matrix.set(0, 1, 2.0);
+    matrix.set(0, 2, 3.0);
+    matrix.set(1, 1, 4.0);
+    matrix.set(1, 2, 5.0);
+    matrix.set(2, 2, 6.0);
 
     const std::vector<double> vecin{3, 2, 1};
     std::array<double, 3> vecout;

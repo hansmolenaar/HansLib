@@ -2,6 +2,7 @@
 
 #include "IMatrixSymmetric.h"
 #include "IndexerSymmetric.h"
+#include <Eigen/Dense>
 #include <span>
 #include <vector>
 
@@ -14,12 +15,9 @@ class MatrixDenseSymmetric : public IMatrixSymmetric
     void timesVector(std::span<const double>, std::span<double>) const override;
 
     double operator()(int, int) const;
-    double &operator()(int, int);
     double get(int, int) const override;
     void set(int, int, double) override;
 
   private:
-    int m_dim;
-    IndexerSymmetric<int> m_indexer;
-    std::vector<double> m_matrix;
+    Eigen::MatrixXd m_matrix;
 };

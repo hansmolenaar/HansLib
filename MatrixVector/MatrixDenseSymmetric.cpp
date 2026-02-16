@@ -1,20 +1,22 @@
 #include "MatrixDenseSymmetric.h"
 
+#include "EigenTools.h"
 #include "IMatrixUtils.h"
 #include "Iota.h"
 
-MatrixDenseSymmetric::MatrixDenseSymmetric(int dim) : m_dim(dim), m_indexer(dim), m_matrix(m_indexer.getFlatSize(), 0.0)
+MatrixDenseSymmetric::MatrixDenseSymmetric(int dim) : m_matrix(dim, dim)
 {
 }
 
 int MatrixDenseSymmetric::GetDimension() const
 {
-    return m_dim;
+    return m_matrix.rows();
 }
 
 double MatrixDenseSymmetric::operator()(int row, int col) const
 {
-    return m_matrix.at(m_indexer.ToFlat(row, col));
+    CheckRowCol(*this, row, col);
+    return m_matrix(row, col);
 }
 
 double MatrixDenseSymmetric::get(int row, int col) const
@@ -22,35 +24,14 @@ double MatrixDenseSymmetric::get(int row, int col) const
     return (*this)(row, col);
 }
 
-double &MatrixDenseSymmetric::operator()(int row, int col)
-{
-    return m_matrix.at(m_indexer.ToFlat(row, col));
-}
-
 void MatrixDenseSymmetric::set(int row, int col, double value)
 {
-    (*this)(row, col) = value;
+    CheckRowCol(*this, row, col);
+    m_matrix(row, col) = value;
+    m_matrix(col, row) = value;
 }
 
 void MatrixDenseSymmetric::timesVector(std::span<const double> vecin, std::span<double> result) const
 {
-    const auto dim = GetDimension();
-    Utilities::MyAssert(static_cast<int>(vecin.size()) == dim);
-    Utilities::MyAssert(static_cast<int>(result.size()) == dim);
-
-    // Diag
-    for (auto ind : Iota::GetRange(dim))
-    {
-        result[ind] = (*this)(ind, ind) * vecin[ind];
-    }
-
-    for (auto row : Iota::GetRange(dim))
-    {
-        for (auto col : Iota::GetRangeFromTo(row + 1, dim))
-        {
-            const double entry = (*this)(row, col);
-            result[row] += entry * vecin[col];
-            result[col] += entry * vecin[row];
-        }
-    }
+    EigenTools::TimesVector(m_matrix, vecin, result);
 }
