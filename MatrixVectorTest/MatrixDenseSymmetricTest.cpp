@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 
+#include "Defines.h"
 #include "IMatrixTest.h"
 #include "IMatrixUtils.h"
 #include "MatrixDenseSymmetric.h"
@@ -65,18 +66,19 @@ TEST(MatrixDenseSymmetricTest, timesVector3)
     matrix.set(1, 2, 5.0);
     matrix.set(2, 2, 6.0);
 
-    const std::vector<double> vecin{3, 2, 1};
+    std::vector<double> vecin{3, 2, 1};
     std::array<double, 3> vecout;
     matrix.timesVector(vecin, vecout);
     ASSERT_NEAR(vecout.at(0), 10.0, 1.0e-10);
     ASSERT_NEAR(vecout.at(1), 19.0, 1.0e-10);
     ASSERT_NEAR(vecout.at(2), 25.0, 1.0e-10);
 
-    std::vector<double> sol(3);
-    matrix.Solve(vecout, sol);
-    ASSERT_NEAR(sol.at(0), 3.0, 1.0e-10);
-    ASSERT_NEAR(sol.at(1), 2.0, 1.0e-10);
-    ASSERT_NEAR(sol.at(2), 1.0, 1.0e-10);
+    // Round trip
+    str::fill(vecin, -1.0);
+    matrix.Solve(vecout, vecin);
+    ASSERT_NEAR(vecin.at(0), 3.0, 1.0e-10);
+    ASSERT_NEAR(vecin.at(1), 2.0, 1.0e-10);
+    ASSERT_NEAR(vecin.at(2), 1.0, 1.0e-10);
 }
 
 TEST(MatrixDenseSymmetricTest, solveIndefinite)
