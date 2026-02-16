@@ -4,6 +4,7 @@
 
 #include "IMatrixKelvinRepr.h"
 #include "IMatrixKelvinReprUtils.h"
+#include "Functors.h"
 
 #include <numeric>
 #include <ranges>
@@ -45,8 +46,7 @@ void TestInterface(IMatrixKelvinRepr &matrix)
     }
     ASSERT_NEAR(sum, dim * dim, eps);
 
-    const auto &vec = matrix.Vector();
-    sum = std::inner_product(vec.begin(), vec.end(), vec.begin(), 0.0);
+    sum = Functors::SumOfSquares()(matrix.Vector());
     ASSERT_NEAR(sum, dim * dim, eps);
 }
 }; // namespace IMatrixKelvinReprTest
