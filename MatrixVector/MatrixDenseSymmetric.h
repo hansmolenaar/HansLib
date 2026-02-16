@@ -14,6 +14,8 @@ class MatrixDenseSymmetric : public IMatrixSymmetric
     int GetDimension() const override;
     void timesVector(std::span<const double>, std::span<double>) const override;
 
+    bool Solve(std::span<const double> rhs, std::span<double> sol); // Returns succes
+
     double operator()(int, int) const;
     double get(int, int) const override;
     void set(int, int, double) override;

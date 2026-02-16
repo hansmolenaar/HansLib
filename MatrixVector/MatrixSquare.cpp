@@ -53,32 +53,24 @@ bool MatrixSquare::Solve(std::span<const double> rhs, std::span<double> sol)
 {
     Utilities::MyAssert(static_cast<int>(rhs.size()) == GetDimension());
     Utilities::MyAssert(static_cast<int>(sol.size()) == GetDimension());
-    const double rhsNormSquared = Functors::SumOfSquares{}(rhs);
-    constexpr double reallySmallPositiveValue = 10 * std::numeric_limits<double>::min();
-    if (rhsNormSquared <= reallySmallPositiveValue)
+    if (EigenTools::CheckSolveRhsIsZero(m_matrix, rhs))
     {
         str::fill(sol, 0.0);
         return true;
     }
 
-    EigenMapVectorType solMapped(sol.data(), sol.size());
-    EigenMapVectorTypeConst rhsMapped(rhs.data(), rhs.size());
     const auto factorization = m_matrix.householderQr();
-
     if (factorization.info() != Eigen::ComputationInfo::Success)
     {
         return false;
     }
 
-    solMapped = m_matrix.colPivHouseholderQr().solve(rhsMapped);
-    std::vector<double> rsd(rhs.size());
-    timesVector(sol, rsd);
+    EigenMapVectorType solMapped(sol.data(), sol.size());
+    EigenMapVectorTypeConst rhsMapped(rhs.data(), rhs.size());
+    solMapped = factorization.solve(rhsMapped);
 
     // Check solution
-    constexpr double smallRelativeValue = 1.0e-10;
-    std::transform(rsd.begin(), rsd.end(), rhs.begin(), rsd.begin(), std::minus<double>());
-    const auto rsdNormSquared = Functors::SumOfSquares{}(rsd);
-    return (rsdNormSquared / rhsNormSquared < smallRelativeValue);
+    return EigenTools::CheckConvergenceSolve(m_matrix, sol, rhs);
 }
 
 void MatrixSquare::timesVector(std::span<const double> vecin, std::span<double> result) const
