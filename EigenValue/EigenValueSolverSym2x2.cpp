@@ -107,7 +107,9 @@ void EigenValueSolverSym2x2::Derivative(std::span<const double> x, IMatrix &dfdx
     dfdx *= 0.5;
 }
 
-void EigenValueSolverSym2x2::CalculateEigenvalues2x2(const MatrixKelvinRepr2 &matrix, std::span<double> eigenValues)
+EigenSolution EigenValueSolverSym2x2::CalculateEigenvalues2x2(const MatrixKelvinRepr2 &matrix)
 {
+    std::array<double, 2> eigenValues;
     EigenValueSolverSym2x2().EvaluateFunction(matrix.Vector(), eigenValues);
+    return EigenSolution{eigenValues};
 }

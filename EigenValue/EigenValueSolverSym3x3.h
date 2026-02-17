@@ -1,5 +1,6 @@
 #pragma once
 
+#include "EigenSolution.h"
 #include "MultiVariableRealValuedFunction.h"
 #include <array>
 #include <span>
@@ -19,7 +20,7 @@ class EigenValueSolverSym3x3 : public IRealFunction
     void Derivative(std::span<const double> x, IMatrix &dfdx) const override;
     bool HasDerivative() const override;
 
-    static void CalculateEigenvalues3x3(const MatrixKelvinRepr3 &, std::span<double>);
+    static EigenSolution CalculateEigenvalues3x3(const MatrixKelvinRepr3 &);
 };
 
 namespace EigenValueSolverSym3x3Utils

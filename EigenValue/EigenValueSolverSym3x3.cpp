@@ -463,7 +463,9 @@ void EigenValueSolverSym3x3::Derivative(std::span<const double> x, IMatrix &dfdx
     }
 }
 
-void EigenValueSolverSym3x3::CalculateEigenvalues3x3(const MatrixKelvinRepr3 &matrix, std::span<double> eigenValues)
+EigenSolution EigenValueSolverSym3x3::CalculateEigenvalues3x3(const MatrixKelvinRepr3 &matrix)
 {
+    std::array<double, 3> eigenValues;
     EigenValueSolverSym3x3().EvaluateFunction(matrix.Vector(), eigenValues);
+    return EigenSolution{eigenValues};
 }

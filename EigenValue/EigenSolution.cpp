@@ -27,8 +27,8 @@ EigenSolution::EigenSolution(std::span<const double> eigenValues, const std::vec
     str::sort(indices, [&eigenValues](size_t lhs, size_t rhs) { return eigenValues[lhs] < eigenValues[rhs]; });
     for (auto n : indices)
     {
-        m_eigenValues.emplace_back( eigenValues[n]);
-        m_eigenVectors.emplace_back( eigenVectors[n]);
+        m_eigenValues.emplace_back(eigenValues[n]);
+        m_eigenVectors.emplace_back(eigenVectors[n]);
     }
 }
 
