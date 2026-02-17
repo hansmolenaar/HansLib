@@ -4,7 +4,7 @@
 
 namespace Iota
 {
-template <typename T> inline std::vector<T> GenerateVector(size_t siz, T from = 0)
+template <typename T> inline std::vector<T> GenerateVector(T siz, T from = 0)
 {
     std::vector<T> result(siz);
     std::iota(result.begin(), result.end(), from);

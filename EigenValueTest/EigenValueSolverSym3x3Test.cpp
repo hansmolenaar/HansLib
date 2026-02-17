@@ -23,7 +23,7 @@ double RandomNumber()
 }
 
 void CheckCalculationSingleMatrix(const MatrixKelvinRepr3 &matrix,
-                                  const std::span<const double> &expectedSortedEigenValues, const bool checkDerivatives,
+                                  std::span<const double> expectedSortedEigenValues, const bool checkDerivatives,
                                   const double del)
 {
     const double tol = 1.0e-6;
@@ -84,8 +84,8 @@ TEST(EigenValueSolverSym3x3Test, TestEigenvaluesDiagnal)
     {
         tensor.Set(n, n, n + 1);
     }
-    const std::array<double, 3> eigenValues = {1, 2, 3};
 
+    const std::array<double, 3> eigenValues = {1, 2, 3};
     CheckCalculationSingleMatrix(tensor, eigenValues, false, 1.0e-3);
 }
 

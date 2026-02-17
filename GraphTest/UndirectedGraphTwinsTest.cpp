@@ -41,12 +41,12 @@ TEST(UndirectedGraphTwinTest, Disconnected5)
 
 TEST(UndirectedGraphTwinTest, Complete)
 {
-    for (int size = 2; size < 10; ++size)
+    for (Vertex size = 2; size < 10; ++size)
     {
         const auto graph = UndirectedGraphLibrary::Get_CompleteGraph(size);
         const UndirectedGraphTwins twins(*graph);
         ASSERT_TRUE(twins.getFalseTwins().empty());
-        ASSERT_EQ(Single(twins.getTrueTwins()), Iota::GenerateVector<Vertex>(size, 0));
+        ASSERT_EQ(Single(twins.getTrueTwins()), Iota::GenerateVector(size));
     }
 }
 

@@ -54,7 +54,7 @@ TEST(IotaTest, GenerateVector)
     std::vector<size_t> expect{0, 1};
     ASSERT_EQ(values, expect);
 
-    values = Iota::GenerateVector(2, size_t{3});
+    values = Iota::GenerateVector(2UZ, size_t{3});
     expect = {3, 4};
     ASSERT_EQ(values, expect);
 }
