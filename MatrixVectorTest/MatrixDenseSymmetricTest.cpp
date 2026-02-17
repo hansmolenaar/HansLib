@@ -109,15 +109,15 @@ TEST(MatrixDenseSymmetricTest, singular)
     matrix.set(0, 0, 1.0);
     matrix.set(0, 1, 2.0);
     matrix.set(1, 1, 4.0);
-    std::vector<double> vecin(2);
-    std::array<double, 2> vecout{5, 10}; // in kernel
-
-    // Round trip
-    str::fill(vecin, -1.0);
-    bool succes = matrix.Solve(vecout, vecin);
+    std::vector<double> sol{-1, -1};
+    std::array<double, 2> rhs{5, 10}; 
+    // In range of operator => infinitely many solutions
+    bool succes = matrix.Solve(rhs, sol);
     ASSERT_TRUE(succes);
 
-    vecout = {1, 3}; // Not in kernel
-    succes = matrix.Solve(vecout, vecin);
+    // Not in range => no solution
+    sol = {-1, -1};
+    rhs = {4, 10}; 
+    succes = matrix.Solve(rhs, sol);
     ASSERT_FALSE(succes);
 }
