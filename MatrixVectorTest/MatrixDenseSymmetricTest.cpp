@@ -110,14 +110,42 @@ TEST(MatrixDenseSymmetricTest, singular)
     matrix.set(0, 1, 2.0);
     matrix.set(1, 1, 4.0);
     std::vector<double> sol{-1, -1};
-    std::array<double, 2> rhs{5, 10}; 
+    std::array<double, 2> rhs{5, 10};
     // In range of operator => infinitely many solutions
     bool succes = matrix.Solve(rhs, sol);
     ASSERT_TRUE(succes);
 
     // Not in range => no solution
     sol = {-1, -1};
-    rhs = {4, 10}; 
+    rhs = {4, 10};
     succes = matrix.Solve(rhs, sol);
     ASSERT_FALSE(succes);
+}
+
+TEST(MatrixDenseSymmetricTest, eigensolver_1)
+{
+    constexpr double eps = 1.0e-12;
+    MatrixDenseSymmetric matrix(3);
+    matrix.set(0, 0, 2.0);
+    matrix.set(1, 1, 1.0);
+    matrix.set(2, 2, 3.0);
+
+    const auto eigenSolution = matrix.getEigenSolution();
+    ASSERT_NEAR(eigenSolution.getAvailableEigenValues()[0], 1.0, eps);
+    ASSERT_NEAR(eigenSolution.getAvailableEigenValues()[1], 2.0, eps);
+    ASSERT_NEAR(eigenSolution.getAvailableEigenValues()[2], 3.0, eps);
+}
+
+TEST(MatrixDenseSymmetricTest, eigensolver_2)
+{
+    constexpr double eps = 1.0e-12;
+    MatrixDenseSymmetric matrix(2);
+    matrix.set(0, 0, 1.0);
+    matrix.set(1, 1, 1.0);
+    matrix.set(0, 1, 2.0);
+
+    const auto eigenSolution = matrix.getEigenSolution();
+    const auto eigenvalues = eigenSolution.getAvailableEigenValues();
+    ASSERT_NEAR(eigenvalues[0], -1.0, eps);
+    ASSERT_NEAR(eigenvalues[1], 3.0, eps);
 }

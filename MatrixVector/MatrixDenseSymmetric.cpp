@@ -3,6 +3,9 @@
 #include "EigenTools.h"
 #include "IMatrixUtils.h"
 #include "Iota.h"
+#include "MyAssert.h"
+
+using namespace Utilities;
 
 namespace
 {
@@ -67,4 +70,17 @@ bool MatrixDenseSymmetric::Solve(std::span<const double> rhs, std::span<double> 
 
     // Check solution
     return EigenTools::CheckConvergenceSolve(m_matrix, sol, rhs);
+}
+
+EigenSolution MatrixDenseSymmetric::getEigenSolution()
+{
+    const auto dim = GetDimension();
+    Eigen::SelfAdjointEigenSolver<Eigen::MatrixXd> eigensolver(m_matrix);
+    MyAssert(eigensolver.info() == Eigen::Success);
+    std::vector<double> eigenvalues;
+    for (auto n : Iota::GetRange(dim))
+    {
+        eigenvalues.push_back(eigensolver.eigenvalues()(n));
+    }
+    return EigenSolution{eigenvalues};
 }

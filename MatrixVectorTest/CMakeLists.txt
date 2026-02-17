@@ -5,6 +5,7 @@ add_executable(${PROJECT_NAME} ${SOURCES})
 
 target_include_directories(${PROJECT_NAME} PRIVATE
 	${CMAKE_INCLUDE_DIR}/MatrixVector
+	${CMAKE_INCLUDE_DIR}/EigenValue
 	${CMAKE_INCLUDE_DIR}/Groups
 	${CMAKE_INCLUDE_DIR}/Point
 	${CMAKE_INCLUDE_DIR}/Utilities
@@ -14,5 +15,5 @@ target_include_directories(${PROJECT_NAME} PRIVATE
         ${Eigen_INCLUDE_DIRS}
 )
 
-target_link_libraries(${PROJECT_NAME} MatrixVector NonLinearSolver Functions Utilities ${GTestLibs})
+target_link_libraries(${PROJECT_NAME} MatrixVector EigenValue NonLinearSolver Functions Utilities ${GTestLibs})
 gtest_discover_tests(${PROJECT_NAME})
