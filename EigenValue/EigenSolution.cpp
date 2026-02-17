@@ -25,10 +25,10 @@ EigenSolution::EigenSolution(std::span<const double> eigenValues, const std::vec
 
     std::vector<size_t> indices(Iota::GenerateVector(numEigenValues));
     str::sort(indices, [&eigenValues](size_t lhs, size_t rhs) { return eigenValues[lhs] < eigenValues[rhs]; });
-    for (size_t n : Iota::GetRange(numEigenValues))
+    for (auto n : indices)
     {
-        m_eigenValues[n] = eigenValues[indices[n]];
-        m_eigenVectors[n] = eigenVectors[indices[n]];
+        m_eigenValues.emplace_back( eigenValues[n]);
+        m_eigenVectors.emplace_back( eigenVectors[n]);
     }
 }
 

@@ -13,7 +13,7 @@ class EigenSolution
     explicit EigenSolution(std::span<const double>);
     EigenSolution(std::span<const double>, const std::vector<std::vector<double>> &);
 
-    // Eigenvalues are sorted; need not contains all possible eigenvalues
+    // Eigenvalues are sorted increasingly; need not contains all possible eigenvalues
     std::span<const double> getAvailableEigenValues() const;
 
     bool hasEigenVectors() const;

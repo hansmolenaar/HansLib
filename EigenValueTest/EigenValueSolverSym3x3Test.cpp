@@ -22,9 +22,8 @@ double RandomNumber()
     return 2 * (randomNormalized - 0.5);
 }
 
-void CheckCalculationSingleMatrix(const MatrixKelvinRepr3 &matrix,
-                                  std::span<const double> expectedSortedEigenValues, const bool checkDerivatives,
-                                  const double del)
+void CheckCalculationSingleMatrix(const MatrixKelvinRepr3 &matrix, std::span<const double> expectedSortedEigenValues,
+                                  const bool checkDerivatives, const double del)
 {
     const double tol = 1.0e-6;
     std::vector<double> eigenvalues(3);
