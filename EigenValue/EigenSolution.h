@@ -22,6 +22,7 @@ class EigenSolution
     std::span<const double> getNthEigenVector(size_t) const;
 
   private:
+    size_t m_matrixDimension = 0;
     std::vector<double> m_eigenValues;
-    std::vector<std::vector<double>> m_eigenVectors;
+    std::vector<double> m_eigenVectors;
 };

@@ -17,18 +17,21 @@ EigenSolution::EigenSolution(std::span<const double> eigenValues, const std::vec
     MyAssert(!eigenValues.empty());
     const size_t numEigenValues = eigenValues.size();
     MyAssert(numEigenValues == eigenVectors.size());
-    const size_t matrixDim = eigenVectors.front().size();
+    m_matrixDimension = eigenVectors.front().size();
+    m_eigenVectors.resize(m_matrixDimension * numEigenValues);
     for (size_t n : Iota::GetRange(numEigenValues))
     {
-        MyAssert(eigenVectors.at(n).size() == matrixDim);
+        MyAssert(eigenVectors.at(n).size() == m_matrixDimension);
     }
 
     std::vector<size_t> indices(Iota::GenerateVector(numEigenValues));
     str::sort(indices, [&eigenValues](size_t lhs, size_t rhs) { return eigenValues[lhs] < eigenValues[rhs]; });
+    auto itr = m_eigenVectors.begin();
     for (auto n : indices)
     {
         m_eigenValues.emplace_back(eigenValues[n]);
-        m_eigenVectors.emplace_back(eigenVectors[n]);
+        str::copy(eigenVectors[n], itr);
+        itr += m_matrixDimension;
     }
 }
 
@@ -44,5 +47,6 @@ bool EigenSolution::hasEigenVectors() const
 
 std::span<const double> EigenSolution::getNthEigenVector(size_t n) const
 {
-    return m_eigenVectors.at(n);
+    MyAssert(n < m_eigenValues.size());
+    return {m_eigenVectors.data() + n * m_matrixDimension, m_matrixDimension};
 }

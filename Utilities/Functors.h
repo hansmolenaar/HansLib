@@ -6,6 +6,7 @@
 #include <numeric>
 #include <type_traits>
 #include <vector>
+#include <span>
 
 namespace Functors
 {
@@ -42,15 +43,31 @@ struct AreClose
 {
     double RelTolerance = 1.0e-12;
     double AbsTolerance = 1.0e-100;
-    mutable double Fraction = std::numeric_limits<double>::quiet_NaN();
+
     bool operator()(double x, double y) const
     {
         const double maxabs = std::max(std::abs(x), std::abs(y));
         if (maxabs < AbsTolerance)
             return true;
-        Fraction = std::abs(x - y) / maxabs;
         return std::abs(x - y) <= maxabs * RelTolerance;
     }
+
+    bool operator()(std::span<const double> a, std::span<const double> b) const
+    {
+        if (a.size() != b.size())
+            throw MyException("VectorDoubleLess dimension mismatch");
+        for (size_t n = 0; n < a.size(); ++n)
+        {
+            if (!(*this)(a[n], b[n]))
+            {
+               return false;
+            }
+        }
+
+        // Are close
+        return true;
+    }
+
 };
 
 struct VectorDoubleLess

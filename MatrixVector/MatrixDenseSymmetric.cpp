@@ -78,9 +78,14 @@ EigenSolution MatrixDenseSymmetric::getEigenSolution()
     Eigen::SelfAdjointEigenSolver<Eigen::MatrixXd> eigensolver(m_matrix);
     MyAssert(eigensolver.info() == Eigen::Success);
     std::vector<double> eigenvalues;
+    std::vector<std::vector<double>> eigenvectors(dim);
     for (auto n : Iota::GetRange(dim))
     {
         eigenvalues.push_back(eigensolver.eigenvalues()(n));
+        for (auto d : Iota::GetRange(dim))
+        {
+            eigenvectors[n].push_back(eigensolver.eigenvectors()(d, n));
+        }
     }
-    return EigenSolution{eigenvalues};
+    return EigenSolution{eigenvalues, eigenvectors};
 }
