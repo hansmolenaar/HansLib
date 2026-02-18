@@ -4,9 +4,9 @@
 
 #include <algorithm>
 #include <numeric>
+#include <span>
 #include <type_traits>
 #include <vector>
-#include <span>
 
 namespace Functors
 {
@@ -60,14 +60,13 @@ struct AreClose
         {
             if (!(*this)(a[n], b[n]))
             {
-               return false;
+                return false;
             }
         }
 
         // Are close
         return true;
     }
-
 };
 
 struct VectorDoubleLess

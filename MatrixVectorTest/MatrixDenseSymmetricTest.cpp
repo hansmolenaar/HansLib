@@ -12,17 +12,21 @@
 #include <numbers>
 #include <span>
 
-void CheckEigenSolver(MatrixDenseSymmetric &matrix)
+void CheckEigenSolver(MatrixDenseSymmetric &matrix, std::initializer_list<double> expectedEigenvalues = {})
 {
     const auto solution = matrix.getEigenSolution();
     ASSERT_TRUE(solution.hasEigenVectors());
     const auto dim = matrix.GetDimension();
     ASSERT_EQ(dim, solution.getAvailableEigenValues().size());
 
-    const Functors::AreClose areClose{1.0e-10, 1.0e-10};
+    const Functors::AreClose areClose{.AbsTolerance = 1.0e-10};
     for (auto n : Iota::GetRange(dim))
     {
         const double eigenValue = solution.getAvailableEigenValues()[n];
+        if (expectedEigenvalues.size() > 0)
+        {
+            ASSERT_TRUE(areClose(*(expectedEigenvalues.begin() + n), eigenValue));
+        }
         const auto eigenVector = solution.getNthEigenVector(n);
         std::vector<double> matTimesVector(dim);
         std::vector<double> lamTimesVector(eigenVector.begin(), eigenVector.end());
@@ -169,66 +173,100 @@ TEST(MatrixDenseSymmetricTest, eigensolver_1)
 
 TEST(MatrixDenseSymmetricTest, eigensolver_2)
 {
-    constexpr double eps = 1.0e-12;
     MatrixDenseSymmetric matrix(2);
     matrix.set(0, 0, 1.0);
     matrix.set(1, 1, 1.0);
     matrix.set(0, 1, 2.0);
 
-    const auto eigenSolution = matrix.getEigenSolution();
-    const auto eigenvalues = eigenSolution.getAvailableEigenValues();
-    ASSERT_NEAR(eigenvalues[0], -1.0, eps);
-    ASSERT_NEAR(eigenvalues[1], 3.0, eps);
+    CheckEigenSolver(matrix, {-1.0, 3.0});
 }
 
 TEST(MatrixDenseSymmetricTest, eigensolver_3)
 {
-    constexpr double eps = 1.0e-12;
     MatrixDenseSymmetric matrix(2);
     matrix.set(0, 0, 2.0);
     matrix.set(1, 1, 2.0);
     matrix.set(0, 1, 1.0);
 
-    const auto eigenSolution = matrix.getEigenSolution();
-    const auto eigenvalues = eigenSolution.getAvailableEigenValues();
-    ASSERT_NEAR(eigenvalues[0], 1.0, eps);
-    ASSERT_NEAR(eigenvalues[1], 3.0, eps);
-
-    const Functors::AreClose areClose;
-    constexpr double sqrtHalf = std::numbers::sqrt2 / 2;
-    ASSERT_TRUE(areClose(eigenSolution.getNthEigenVector(0), std::vector<double>{-sqrtHalf, sqrtHalf}));
-    ASSERT_TRUE(areClose(eigenSolution.getNthEigenVector(1), std::vector<double>{sqrtHalf, sqrtHalf}));
+    CheckEigenSolver(matrix, {1.0, 3.0});
 }
 
 TEST(MatrixDenseSymmetricTest, eigensolver_4)
 {
-    constexpr double eps = 1.0e-12;
     MatrixDenseSymmetric matrix(3);
     matrix.set(0, 0, 2.0);
     matrix.set(1, 1, 3.0);
     matrix.set(2, 2, 9.0);
     matrix.set(2, 1, 4.0);
 
-    const auto eigenSolution = matrix.getEigenSolution();
-    const auto eigenvalues = eigenSolution.getAvailableEigenValues();
-    ASSERT_NEAR(eigenvalues[0], 1.0, eps);
-    ASSERT_NEAR(eigenvalues[1], 2.0, eps);
-    ASSERT_NEAR(eigenvalues[2], 11.0, eps);
-
-    CheckEigenSolver(matrix);
+    CheckEigenSolver(matrix, {1.0, 2.0, 11.0});
 }
 
 TEST(MatrixDenseSymmetricTest, eigensolver_5)
 {
-    constexpr double eps = 1.0e-12;
     MatrixDenseSymmetric matrix(3);
     SetAll(matrix, 2.0);
+    CheckEigenSolver(matrix, {0.0, 0.0, 6.0});
+}
 
-    const auto eigenSolution = matrix.getEigenSolution();
-    const auto eigenvalues = eigenSolution.getAvailableEigenValues();
-    ASSERT_NEAR(eigenvalues[0], 0.0, eps);
-    ASSERT_NEAR(eigenvalues[1], 0.0, eps);
-    ASSERT_NEAR(eigenvalues[2], 6.0, eps);
+TEST(MatrixDenseSymmetricTest, eigensolver_6)
+{
+    MatrixDenseSymmetric matrix(3);
+    matrix.set(0, 0, 2.0);
+    matrix.set(1, 1, 2.0);
+    matrix.set(2, 2, 2.0);
+    matrix.set(0, 1, -1.0);
+    matrix.set(2, 1, -1.0);
 
-    CheckEigenSolver(matrix);
+    CheckEigenSolver(matrix, {2 - std::numbers::sqrt2, 2.0, 2 + std::numbers::sqrt2});
+}
+
+TEST(MatrixDenseSymmetricTest, eigensolver_7)
+{
+    MatrixDenseSymmetric matrix(3);
+    matrix.set(0, 1, 1.0);
+    matrix.set(0, 2, 1.0);
+    matrix.set(1, 2, 1.0);
+
+    CheckEigenSolver(matrix, {-1, -1, 2});
+}
+
+TEST(MatrixDenseSymmetricTest, eigensolver_8)
+{
+    MatrixDenseSymmetric matrix(2);
+    matrix.set(0, 0, 1.0);
+    matrix.set(1, 1, 1.0);
+    matrix.set(0, 1, -0.5);
+
+    CheckEigenSolver(matrix, {0.5, 1.5});
+}
+
+TEST(MatrixDenseSymmetricTest, eigensolver_9)
+{
+    // ( n  n )
+    // ( n  n ) => 0 and 2n
+    MatrixDenseSymmetric matrix(4);
+    matrix.set(0, 0, 2.0);
+    matrix.set(1, 1, 2.0);
+    matrix.set(0, 1, 2.0);
+
+    matrix.set(2, 2, 3.0);
+    matrix.set(3, 3, 3.0);
+    matrix.set(2, 3, 3.0);
+    CheckEigenSolver(matrix, {0.0, 0.0, 4.0, 6.0});
+}
+
+TEST(MatrixDenseSymmetricTest, eigensolver_10)
+{
+    // ( 4n  2n )
+    // ( 2n   n ) => 0 and 5n
+    MatrixDenseSymmetric matrix(4);
+    matrix.set(0, 0, 4.0);
+    matrix.set(1, 1, 1.0);
+    matrix.set(0, 1, 2.0);
+
+    matrix.set(2, 2, 8.0);
+    matrix.set(3, 3, 2.0);
+    matrix.set(2, 3, 4.0);
+    CheckEigenSolver(matrix, {0.0, 0.0, 5.0, 10.0});
 }
