@@ -333,3 +333,23 @@ TEST(MatrixDenseSymmetricTest, eigensolver_13)
 
     CheckEigenSolver(matrix, {-3.0, 0.0, 4.0});
 }
+
+TEST(MatrixDenseSymmetricTest, eigensolver_14)
+{
+    // integer matrix with integer eigenvalues
+    MatrixDenseSymmetric matrix(5);
+    matrix.set(0, 0, 2);
+    matrix.set(0, 1, 2);
+    matrix.set(0, 3, -2);
+    matrix.set(0, 4, 2);
+
+    matrix.set(1, 1, 2);
+    matrix.set(1, 3, 2);
+    matrix.set(1, 4, 2);
+
+    matrix.set(2, 3, -1);
+
+    matrix.set(4, 4, 2);
+
+    CheckEigenSolver(matrix, {-3.0, 0.0, 0.0, 3.0, 6.0});
+}
