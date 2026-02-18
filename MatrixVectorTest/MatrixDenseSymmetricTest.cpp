@@ -270,3 +270,66 @@ TEST(MatrixDenseSymmetricTest, eigensolver_10)
     matrix.set(2, 3, 4.0);
     CheckEigenSolver(matrix, {0.0, 0.0, 5.0, 10.0});
 }
+
+TEST(MatrixDenseSymmetricTest, eigensolver_11)
+{
+    MatrixDenseSymmetric matrix(4);
+    matrix.set(0, 0, 1.0);
+    matrix.set(1, 1, 9.0);
+    matrix.set(2, 2, 4.0);
+    matrix.set(3, 3, 1.0);
+
+    matrix.set(0, 1, -3.0);
+    matrix.set(0, 2, 2.0);
+    matrix.set(0, 3, -1.0);
+    matrix.set(1, 2, -6.0);
+    matrix.set(1, 3, 3.0);
+    matrix.set(2, 3, -2.0);
+    CheckEigenSolver(matrix, {0.0, 0.0, 0.0, 15.0});
+}
+
+TEST(MatrixDenseSymmetricTest, eigensolver_12)
+{
+    // integer matrix with integer eigenvalues
+    MatrixDenseSymmetric matrix(5);
+    // [ 1 -1  2  2 -1;
+    //  -1 -1  2  1  1;
+    //   2  2 -2  2  2;
+    //   2  1  2 -1  1;
+    //  -1  1  2  1 -1]
+    matrix.set(0, 0, 1);
+    matrix.set(0, 1, -1);
+    matrix.set(0, 2, 2);
+    matrix.set(0, 3, 2);
+    matrix.set(0, 4, -1);
+
+    matrix.set(1, 1, -1);
+    matrix.set(1, 2, 2);
+    matrix.set(1, 3, 1);
+    matrix.set(1, 4, 1);
+
+    matrix.set(2, 2, -2);
+    matrix.set(2, 3, 2);
+    matrix.set(2, 4, 2);
+
+    matrix.set(3, 3, -1);
+    matrix.set(3, 4, 1);
+
+    matrix.set(4, 4, -1);
+
+    CheckEigenSolver(matrix, {-5.0, -3.0, -2.0, 2.0, 4.0});
+}
+
+TEST(MatrixDenseSymmetricTest, eigensolver_13)
+{
+    // integer matrix with integer eigenvalues
+    MatrixDenseSymmetric matrix(3);
+    matrix.set(0, 0, 2);
+    matrix.set(0, 1, 2);
+    matrix.set(0, 2, 2);
+
+    matrix.set(1, 1, -2);
+    matrix.set(2, 2, 1);
+
+    CheckEigenSolver(matrix, {-3.0, 0.0, 4.0});
+}
