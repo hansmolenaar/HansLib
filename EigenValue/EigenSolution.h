@@ -1,5 +1,6 @@
 #pragma once
 
+#include <iostream>
 #include <optional>
 #include <span>
 #include <vector>
@@ -26,3 +27,5 @@ class EigenSolution
     std::vector<double> m_eigenValues;
     std::vector<double> m_eigenVectors;
 };
+
+std::ostream &operator<<(std::ostream &, const EigenSolution &);

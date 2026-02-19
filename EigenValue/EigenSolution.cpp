@@ -50,3 +50,44 @@ std::span<const double> EigenSolution::getNthEigenVector(size_t n) const
     MyAssert(n < m_eigenValues.size());
     return {m_eigenVectors.data() + n * m_matrixDimension, m_matrixDimension};
 }
+
+std::ostream &operator<<(std::ostream &os, const EigenSolution &solution)
+{
+    const auto eigenValues = solution.getAvailableEigenValues();
+
+    if (!solution.hasEigenVectors())
+    {
+        os << "Eigenvalues: ";
+        bool first = true;
+        for (double ev : eigenValues)
+        {
+            if (!first)
+            {
+                os << ", ";
+            }
+            first = false;
+            os << ev;
+        }
+        os << "\n";
+        return os;
+    }
+
+    os << "Eigenvalues and vectors:\n";
+    for (size_t n : Iota::GetRange(eigenValues.size()))
+    {
+        os << "   " << eigenValues[n] << " -> ( ";
+        bool first = true;
+        for (double ev : solution.getNthEigenVector(n))
+        {
+            if (!first)
+            {
+                os << ", ";
+            }
+            first = false;
+            os << ev;
+        }
+        os << " )\n";
+    }
+
+    return os;
+}
