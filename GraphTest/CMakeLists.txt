@@ -9,5 +9,5 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 	${CMAKE_INCLUDE_DIR}/Utilities
 )
 
-target_link_libraries(${PROJECT_NAME} Graph  Permutation Utilities    -ltbb ${GTestLibs})
+target_link_libraries(${PROJECT_NAME} Graph  Permutation MatrixVector EigenValue Utilities    -ltbb ${GTestLibs})
 gtest_discover_tests(${PROJECT_NAME})
