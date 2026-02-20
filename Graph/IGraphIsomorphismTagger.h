@@ -12,7 +12,6 @@ class IGraphUsc;
 namespace GraphIsomorphism
 {
 
-class IGraphTagger;
 class IVertexCompare;
 class ICharacteristicsCompare;
 
@@ -55,13 +54,6 @@ class ICharacteristicsCompare : public virtual ICompare, public virtual IGraphCo
     virtual ~ICharacteristicsCompare() = default;
     virtual std::weak_ordering compareCharacteristics(const ICharacteristicsCompare &) const = 0;
     std::weak_ordering compareGraph(const IGraphCompare &) const override;
-};
-
-class IGraphTagger : public virtual ICharacteristicsCompare
-{
-  public:
-    virtual const Tag &getGraphTag() const = 0;
-    std::weak_ordering compareCharacteristics(const ICharacteristicsCompare &gc) const override;
 };
 
 class IVertexCompare : public virtual ICompare
