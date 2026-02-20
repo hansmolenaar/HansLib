@@ -63,6 +63,12 @@ const Tag &TaggerKnown::getGraphTag() const
     return m_tag;
 }
 
+std::weak_ordering TaggerKnown::compareCharacteristics(const ICharacteristicsCompare &otherComparer) const
+{
+    const auto &other = dynamic_cast<const TaggerKnown &>(otherComparer);
+    return getGraphTag() <=> other.getGraphTag();
+}
+
 std::string TaggerKnown::getDescription() const
 {
     return m_description;

@@ -71,14 +71,6 @@ std::ostream &operator<<(std::ostream &os, const GraphIsomorphism::VertexGroupin
     return os;
 }
 
-std::vector<const IGraphTagger *> GraphIsomorphism::selectGraphTaggers(
-    const std::vector<std::unique_ptr<ICompare>> &comparers)
-{
-    std::vector<const IGraphTagger *> result = Utilities::getCastPointers<const IGraphTagger>(comparers);
-    result.erase(std::remove(result.begin(), result.end(), nullptr), result.end());
-    return result;
-}
-
 std::vector<const ICharacteristicsCompare *> GraphIsomorphism::selectCharacteristicsCompare(
     const std::vector<std::unique_ptr<ICompare>> &comparers)
 {
