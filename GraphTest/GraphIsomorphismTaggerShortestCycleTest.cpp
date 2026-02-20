@@ -21,8 +21,6 @@ TEST(GraphIsomorphismTaggerShortestCycleTest, CheckTagger)
 TEST(GraphIsomorphismTaggerShortestCycleTest, CheckList)
 {
     CompareShortestCycleFactory factory;
-    // TODO
-    // GraphTest::CheckList(factory, UndirectedGraphFromG6::getListNumVertices_4(), Tag{1, 1, 2, 2, 6, 1});
     GraphTest::CheckList(factory, UndirectedGraphFromG6::getListNumVertices_5_connected(), Tag{1, 5, 3, 3, 7, 1});
 }
 

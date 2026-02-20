@@ -104,26 +104,6 @@ void CheckDecomposeGraphList(const std::vector<const IGraphUs *> &graphs, Tag ex
                 for (const auto &tpm : itr.second)
                 {
                     std::cout << tpm->getRoot().getGraph().getName() << "\n";
-                    std::cout << tpm->getVertexGrouping() << "\n";
-#if false
-                    for (const auto &d : tpm->getDescriptions())
-                    {
-                        std::cout << d << "\n";
-                    }
-                    std::cout << "\n";
-                    for (const auto *leaf : tpm->getLeaves())
-                    {
-                        GraphIsomorphism::toEdgeList(leaf->getGraph(), std::cout);
-                    }
-
-                    std::cout << "\n";
-                    std::cout << "Vertex groups\n";
-                    for (const auto *leaf : tpm->getLeaves())
-                    {
-                        std::cout << leaf->getVertexGrouping();
-                    }
-                    std::cout << "\n";
-#endif
                 }
                 std::cout << "\n";
                 std::cout << "\n";

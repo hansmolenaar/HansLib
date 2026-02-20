@@ -15,7 +15,7 @@ class XGraph : public IGraphCompare
     const Graph::IGraphUs &getGraph() const override;
     std::weak_ordering compareGraph(const IGraphCompare &other) const override;
 
-    const VertexGrouping &getVertexGrouping() const override;
+    const VertexGrouping &getVertexGrouping() const;
     const Graph::IGraphUs &getGraphComplement() const;
 
   private:

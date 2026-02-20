@@ -15,18 +15,11 @@ TaggerSpectrum::TaggerSpectrum(const Graph::IGraphUs &graph)
                           ? std::make_unique<EigenSolution>(UndirectedGraphSpectrum(m_graph).getEigenSolution())
                           : std::unique_ptr<EigenSolution>())
 {
-    // Put all vertices in a single group
-    m_vertexGrouping = VertexGrouping(std::vector<int>(graph.getNumVertices(), 0));
 }
 
 const Graph::IGraphUs &TaggerSpectrum::getGraph() const
 {
     return m_graph;
-}
-
-const VertexGrouping &TaggerSpectrum::getVertexGrouping() const
-{
-    return m_vertexGrouping;
 }
 
 std::weak_ordering TaggerSpectrum::compareGraph(const IGraphCompare &other) const

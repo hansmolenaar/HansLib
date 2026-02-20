@@ -30,7 +30,6 @@ class IGraphCompare : public IHasGraph
   public:
     virtual ~IGraphCompare() = default;
     virtual std::weak_ordering compareGraph(const IGraphCompare &) const = 0;
-    virtual const VertexGrouping &getVertexGrouping() const = 0;
 };
 
 class IGraphCompareFactory

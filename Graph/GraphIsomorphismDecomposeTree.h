@@ -12,7 +12,7 @@ class DecomposeTree : public IGraphCompare
     explicit DecomposeTree(std::unique_ptr<DecomposeNode> &&);
 
     std::weak_ordering compareGraph(const IGraphCompare &) const override;
-    const VertexGrouping &getVertexGrouping() const override;
+    const VertexGrouping &getVertexGrouping() const;
     const Graph::IGraphUs &getGraph() const override;
 
     const DecomposeNode &getRoot() const;

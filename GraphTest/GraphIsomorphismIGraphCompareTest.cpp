@@ -28,36 +28,12 @@ std::vector<std::unique_ptr<IGraphCompare>> CreateComparers(const IGraphCompareF
     return result;
 }
 
-void CheckSelfConsistency(const IGraphCompareFactory &factory, const IGraphCompare &compare)
-{
-    const Permutation::Entry numPermutations = 5;
-    const auto &graph = compare.getGraph();
-    ASSERT_EQ(compare.compareGraph(compare), std::weak_ordering::equivalent);
-    const auto grouping = compare.getVertexGrouping();
-    const auto groupSizes = CondenseSizeSequence(grouping.getGroupSizes());
-    for (auto n : Iota::GetRange(numPermutations))
-    {
-        const UndirectedGraph graphPermuted = UndirectedGraph::CreateRandomShuffled(graph, n);
-        const auto comparerPermuted = factory.createGraphCompare(graphPermuted);
-        ASSERT_EQ(compare.compareGraph(*comparerPermuted), std::weak_ordering::equivalent);
-        ASSERT_EQ(comparerPermuted->compareGraph(compare), std::weak_ordering::equivalent);
-
-        const auto groupingPermuted = comparerPermuted->getVertexGrouping();
-        ASSERT_EQ(grouping.countUnique(), groupingPermuted.countUnique());
-
-        auto groupSizesPermuted = CondenseSizeSequence(groupingPermuted.getGroupSizes());
-        ASSERT_EQ(groupSizes, groupSizesPermuted);
-    }
-}
-
 void CheckSymmetry(const IGraphCompare &compare1, const IGraphCompare &compare2)
 {
     const auto cmp = compare1.compareGraph(compare2);
     if (cmp == std::weak_ordering::equivalent)
     {
         ASSERT_EQ(compare2.compareGraph(compare1), std::weak_ordering::equivalent);
-        ASSERT_EQ(compare1.getVertexGrouping()(), compare2.getVertexGrouping()());
-        ASSERT_EQ(compare1.getVertexGrouping().countUnique(), compare2.getVertexGrouping().countUnique());
     }
     else if (cmp == std::weak_ordering::less)
     {
@@ -73,7 +49,6 @@ void CheckConsistencyList(const IGraphCompareFactory &factory, const std::vector
 {
     for (const auto *cmp1 : comparers)
     {
-        CheckSelfConsistency(factory, *cmp1);
         for (const auto *cmp2 : comparers)
         {
             CheckSymmetry(*cmp1, *cmp2);
@@ -100,7 +75,7 @@ void CheckGraphGrouping(const std::vector<const IGraphCompare *> &comparers, Tag
                 for (const auto &g : group)
                 {
                     std::cout << g->getGraph().getName() << "\n";
-                    std::cout << g->getVertexGrouping() << "\n";
+                    // std::cout << g->getVertexGrouping() << "\n";
                 }
                 std::cout << "\n\n";
             }

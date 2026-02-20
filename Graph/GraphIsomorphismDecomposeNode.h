@@ -11,7 +11,7 @@ class DecomposeNode : public IGraphCompare
   public:
     const Graph::IGraphUs &getGraph() const override;
     std::weak_ordering compareGraph(const IGraphCompare &) const override;
-    const VertexGrouping &getVertexGrouping() const override;
+    const VertexGrouping &getVertexGrouping() const;
 
     const Tag &getTag() const;
     std::string getDescription() const;
