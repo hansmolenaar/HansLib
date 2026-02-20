@@ -25,7 +25,7 @@ class IHasGraph
     virtual const Graph::IGraphUs &getGraph() const = 0;
 };
 
-class IGraphCompare : public IHasGraph
+class IGraphCompare : public virtual IHasGraph
 {
   public:
     virtual ~IGraphCompare() = default;
@@ -39,7 +39,7 @@ class IGraphCompareFactory
     virtual std::unique_ptr<IGraphCompare> createGraphCompare(const Graph::IGraphUs &) const = 0;
 };
 
-class ICompare : public IHasGraph
+class ICompare : public virtual IHasGraph
 {
   public:
     virtual ~ICompare() = default;
@@ -47,13 +47,15 @@ class ICompare : public IHasGraph
     const ICharacteristicsCompare *getCharacteristicsCompare() const;
     const IGraphTagger *getGraphTagger() const;
     const IVertexCompare *getVertexCompare() const;
+    const IGraphCompare *getGraphCompare() const;
 };
 
-class ICharacteristicsCompare : public virtual ICompare
+class ICharacteristicsCompare : public virtual ICompare, public virtual IGraphCompare
 {
   public:
     virtual ~ICharacteristicsCompare() = default;
     virtual std::weak_ordering compareCharacteristics(const ICharacteristicsCompare &) const = 0;
+    std::weak_ordering compareGraph(const IGraphCompare &) const override;
 };
 
 class IGraphTagger : public virtual ICharacteristicsCompare

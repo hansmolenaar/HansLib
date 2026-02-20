@@ -7,12 +7,13 @@
 namespace GraphIsomorphism
 {
 
-class TaggerChains : public IGraphTagger, public IVertexCompare
+class TaggerChains : public ICharacteristicsCompare, public IVertexCompare
 {
   public:
     explicit TaggerChains(const Graph::IGraphUs &);
     const Tag &getVertexTag(Graph::Vertex) const;
-    const Tag &getGraphTag() const override;
+    const Tag &getGraphTag() const;
+    std::weak_ordering compareCharacteristics(const ICharacteristicsCompare &) const override;
 
     const Graph::IGraphUs &getGraph() const override;
     std::weak_ordering compareVertexOtherGraph(Graph::Vertex, const IVertexCompare &, Graph::Vertex) const override;

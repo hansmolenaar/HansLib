@@ -8,12 +8,13 @@
 namespace GraphIsomorphism
 {
 
-class TaggerTriangles : public IGraphTagger, public IVertexCompare
+class TaggerTriangles : public ICharacteristicsCompare, public IVertexCompare
 {
   public:
     explicit TaggerTriangles(std::shared_ptr<Graph::UndirectedGraphTriangles>);
 
-    const Tag &getGraphTag() const override;
+    const Tag &getGraphTag() const;
+    std::weak_ordering compareCharacteristics(const ICharacteristicsCompare &) const override;
 
     const Graph::IGraphUs &getGraph() const override;
     std::weak_ordering compareVertexOtherGraph(Graph::Vertex, const IVertexCompare &, Graph::Vertex) const override;

@@ -376,6 +376,12 @@ std::weak_ordering TaggerChains::compareVertexOtherGraph(Vertex vertex0, const I
     return getVertexTag(vertex0) <=> dynamic_cast<const TaggerChains &>(other).getVertexTag(vertex1);
 }
 
+std::weak_ordering TaggerChains::compareCharacteristics(const ICharacteristicsCompare &otherComparer) const
+{
+    const auto &other = dynamic_cast<const TaggerChains &>(otherComparer);
+    return getGraphTag() <=> other.getGraphTag();
+}
+
 const VertexGrouping &TaggerChains::getVertexGrouping() const
 {
     return m_vertexGrouping;

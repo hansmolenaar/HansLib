@@ -43,6 +43,12 @@ const Tag &TaggerColor::getGraphTag() const
     return m_graphTag;
 }
 
+std::weak_ordering TaggerColor::compareCharacteristics(const ICharacteristicsCompare &otherComparer) const
+{
+    const auto &other = dynamic_cast<const TaggerColor &>(otherComparer);
+    return getGraphTag() <=> other.getGraphTag();
+}
+
 const Graph::IGraphUs &TaggerColor::getGraph() const
 {
     return m_graph;

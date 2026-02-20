@@ -14,6 +14,17 @@ const IVertexCompare *ICompare::getVertexCompare() const
     return dynamic_cast<const IVertexCompare *>(this);
 }
 
+const IGraphCompare *ICompare::getGraphCompare() const
+{
+    return dynamic_cast<const IGraphCompare *>(this);
+}
+
+std::weak_ordering ICharacteristicsCompare::compareGraph(const IGraphCompare &otherCompare) const
+{
+    const auto &other = dynamic_cast<const ICharacteristicsCompare &>(otherCompare);
+    return compareCharacteristics(other);
+}
+
 std::weak_ordering IGraphTagger::compareCharacteristics(const ICharacteristicsCompare &gc) const
 {
     return getGraphTag() <=> dynamic_cast<const IGraphTagger *>(&gc)->getGraphTag();

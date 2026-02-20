@@ -31,6 +31,12 @@ const Tag &TaggerShortestCycle::getGraphTag() const
     return m_graphTag;
 }
 
+std::weak_ordering TaggerShortestCycle::compareCharacteristics(const ICharacteristicsCompare &otherComparer) const
+{
+    const auto &other = dynamic_cast<const TaggerShortestCycle &>(otherComparer);
+    return getGraphTag() <=> other.getGraphTag();
+}
+
 const VertexGrouping &TaggerShortestCycle::getVertexGrouping() const
 {
     return m_vertexGrouping;
