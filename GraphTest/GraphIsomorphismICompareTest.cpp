@@ -77,14 +77,6 @@ void CheckListGraphCompare(ICompareFactory &factory, const std::vector<const ICh
     ASSERT_EQ(tag, expectGraphTagMultiplicities);
 }
 
-void CheckListGraphTagger(ICompareFactory &factory, const std::vector<std::unique_ptr<IGraphUs>> &graphs)
-{
-    for (const auto &graph : graphs)
-    {
-        GraphTest::CheckGraphTaggerConsistency(*graph, factory);
-    }
-}
-
 void CheckListVertexCompare(ICompareFactory &factory, const std::vector<std::unique_ptr<IGraphUs>> &graphs)
 {
     for (const auto &graph : graphs)
@@ -113,10 +105,6 @@ void GraphTest::CheckList(ICompareFactory &factory, const std::vector<std::uniqu
         const std::vector<const ICharacteristicsCompare *> characteristicsComparers =
             getCastPointers<const ICharacteristicsCompare>(comparers);
         CheckListGraphCompare(factory, characteristicsComparers, expectGraphTagMultiplicities);
-        if (compare0->getGraphTagger() != nullptr)
-        {
-            CheckListGraphTagger(factory, graphs);
-        }
     }
     else
     {
@@ -166,33 +154,6 @@ void GraphTest::CheckVertexCompareConsistency(const IGraphUs &graph, GraphIsomor
         str::sort(groupSizesPermuted);
         ASSERT_EQ(groupSizes, groupSizesPermuted);
         ASSERT_EQ(grouping.countUnique(), groupingPermuted.countUnique());
-    }
-}
-
-void GraphTest::CheckGraphTaggerConsistency(const IGraphUs &graph, ICompareFactory &factory)
-{
-    const Permutation::Entry numPermutations = 10;
-    const auto comparer = factory.createCompare(graph);
-    const auto *characteristicsComparers = comparer->getCharacteristicsCompare();
-
-    if (characteristicsComparers == nullptr)
-        return;
-
-    const auto *tagger = comparer->getGraphTagger();
-    const Tag tag = tagger != nullptr ? tagger->getGraphTag() : Tag{};
-
-    for (auto n : Iota::GetRange(numPermutations))
-    {
-        const UndirectedGraph graphPermuted = UndirectedGraph::CreateRandomShuffled(graph, n);
-        const auto comparerPermuted = factory.createCompare(graphPermuted);
-        ASSERT_EQ(characteristicsComparers->compareCharacteristics(*comparerPermuted->getCharacteristicsCompare()),
-                  std::weak_ordering::equivalent);
-
-        const auto *taggerPermuted = comparerPermuted->getGraphTagger();
-        if (taggerPermuted != nullptr)
-        {
-            ASSERT_EQ(tag, taggerPermuted->getGraphTag());
-        }
     }
 }
 

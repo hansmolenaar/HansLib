@@ -45,7 +45,6 @@ class ICompare : public virtual IHasGraph
     virtual ~ICompare() = default;
 
     const ICharacteristicsCompare *getCharacteristicsCompare() const;
-    const IGraphTagger *getGraphTagger() const;
     const IVertexCompare *getVertexCompare() const;
     const IGraphCompare *getGraphCompare() const;
 };
