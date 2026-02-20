@@ -43,7 +43,7 @@ TEST(UndirectedGraphSpectrumTest, Path3)
     ASSERT_NEAR(eigenSolution.getAvailableEigenValues()[0], 0.0, 1.0e-12);
     ASSERT_NEAR(eigenSolution.getAvailableEigenValues()[1], 1.0, 1.0e-12);
     ASSERT_NEAR(eigenSolution.getAvailableEigenValues()[2], 3.0, 1.0e-12);
- std::cout << "Path3\n" << eigenSolution;
+    std::cout << "Path3\n" << eigenSolution;
 }
 
 TEST(UndirectedGraphSpectrumTest, Cycle3)
@@ -76,7 +76,7 @@ TEST(UndirectedGraphSpectrumTest, Claw)
     ASSERT_NEAR(eigenSolution.getAvailableEigenValues()[1], 1.0, 1.0e-12);
     ASSERT_NEAR(eigenSolution.getAvailableEigenValues()[2], 1.0, 1.0e-12);
     ASSERT_NEAR(eigenSolution.getAvailableEigenValues()[3], 4.0, 1.0e-12);
- std::cout << "Claw\n" << eigenSolution;
+    std::cout << "Claw\n" << eigenSolution;
 }
 
 TEST(UndirectedGraphSpectrumTest, RemoveMe)
@@ -87,7 +87,7 @@ TEST(UndirectedGraphSpectrumTest, RemoveMe)
     eigenSolution = UndirectedGraphSpectrum(*UndirectedGraphLibrary::Get_Diamond()).getEigenSolution();
     std::cout << "Diamond\n" << eigenSolution << "\n\n";
 
-    eigenSolution = UndirectedGraphSpectrum(*UndirectedGraphLibrary::Get_Star({1,2,3})).getEigenSolution();
+    eigenSolution = UndirectedGraphSpectrum(*UndirectedGraphLibrary::Get_Star({1, 2, 3})).getEigenSolution();
     std::cout << "Star123\n" << eigenSolution << "\n\n";
 
     eigenSolution = UndirectedGraphSpectrum(*UndirectedGraphLibrary::Get_Bull()).getEigenSolution();
@@ -96,15 +96,19 @@ TEST(UndirectedGraphSpectrumTest, RemoveMe)
     eigenSolution = UndirectedGraphSpectrum(*UndirectedGraphLibrary::Get_Butterfly()).getEigenSolution();
     std::cout << "Butterfly\n" << eigenSolution << "\n\n";
 
-    eigenSolution = UndirectedGraphSpectrum(*UndirectedGraphFromG6::Create(UndirectedGraphFromG6::fish)).getEigenSolution();
+    eigenSolution =
+        UndirectedGraphSpectrum(*UndirectedGraphFromG6::Create(UndirectedGraphFromG6::fish)).getEigenSolution();
     std::cout << "Fist\n" << eigenSolution << "\n\n";
 
-    eigenSolution = UndirectedGraphSpectrum(*UndirectedGraphFromG6::Create(UndirectedGraphFromG6::house)).getEigenSolution();
+    eigenSolution =
+        UndirectedGraphSpectrum(*UndirectedGraphFromG6::Create(UndirectedGraphFromG6::house)).getEigenSolution();
     std::cout << "House\n" << eigenSolution << "\n\n";
 
-    eigenSolution = UndirectedGraphSpectrum(*UndirectedGraphFromG6::Create(UndirectedGraphFromG6::X84)).getEigenSolution();
+    eigenSolution =
+        UndirectedGraphSpectrum(*UndirectedGraphFromG6::Create(UndirectedGraphFromG6::X84)).getEigenSolution();
     std::cout << "X84\n" << eigenSolution << "\n\n";
 
-    eigenSolution = UndirectedGraphSpectrum(*UndirectedGraphFromG6::Create(UndirectedGraphFromG6::pan3)).getEigenSolution();
+    eigenSolution =
+        UndirectedGraphSpectrum(*UndirectedGraphFromG6::Create(UndirectedGraphFromG6::pan3)).getEigenSolution();
     std::cout << "Pan3\n" << eigenSolution << "\n\n";
 }
