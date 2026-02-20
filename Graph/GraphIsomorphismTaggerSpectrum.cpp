@@ -63,6 +63,11 @@ std::weak_ordering TaggerSpectrum::compareGraph(const IGraphCompare &other) cons
     }
 }
 
+const EigenSolution *TaggerSpectrum::getEigenSolution() const
+{
+    return m_eigenSolution.get();
+}
+
 // !!!!!!!!!!!!! FACTORY
 
 std::unique_ptr<IGraphCompare> CompareSpectrumFactory::createGraphCompare(const Graph::IGraphUs &graph) const

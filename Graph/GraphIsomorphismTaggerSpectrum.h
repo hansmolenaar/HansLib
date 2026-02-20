@@ -19,6 +19,7 @@ class TaggerSpectrum : public IGraphCompare
     const Graph::IGraphUs &getGraph() const override;
     // std::weak_ordering compareVertexOtherGraph(Graph::Vertex, const IVertexCompare &, Graph::Vertex) const override;
     const VertexGrouping &getVertexGrouping() const override;
+    const EigenSolution *getEigenSolution() const; // handle empty matrix
 
   private:
     const Graph::IGraphUs &m_graph;
