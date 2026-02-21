@@ -63,7 +63,7 @@ const EigenSolution *TaggerSpectrum::getEigenSolution() const
 
 // !!!!!!!!!!!!! FACTORY
 
-std::unique_ptr<IGraphCompare> CompareSpectrumFactory::createGraphCompare(const Graph::IGraphUs &graph) const
+std::unique_ptr<ICompare> CompareSpectrumFactory::createCompare(const Graph::IGraphUs &graph) const
 {
     return std::make_unique<TaggerSpectrum>(graph);
 }

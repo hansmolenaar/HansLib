@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "Defines.h"
-#include "GraphIsomorphismIGraphCompareTest.h"
+#include "GraphIsomorphismICompareTest.h"
 #include "GraphIsomorphismTaggerSpectrum.h"
 #include "UndirectedGraphFromG6.h"
 #include "UndirectedGraphLibrary.h"
@@ -14,7 +14,7 @@ using namespace Graph;
 TEST(GraphIsomorphismTaggerSpectrumTest, CheckTagger)
 {
     CompareSpectrumFactory factory;
-    GraphTest::CheckComparerBasics(factory);
+    GraphTest::CheckComparerBasics(factory, Tag{1, 6, 3, 1});
 }
 
 TEST(GraphIsomorphismTaggerSpectrumTest, CheckList)
