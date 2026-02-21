@@ -47,14 +47,6 @@ class IGraphCompareFactory
     virtual std::unique_ptr<IGraphCompare> createGraphCompare(const Graph::IGraphUs &) const = 0;
 };
 
-class ICharacteristicsCompare : public virtual IGraphCompare
-{
-  public:
-    virtual ~ICharacteristicsCompare() = default;
-    virtual std::weak_ordering compareCharacteristics(const ICharacteristicsCompare &) const = 0;
-    std::weak_ordering compareGraph(const IGraphCompare &) const override;
-};
-
 class IVertexCompare : public virtual ICompare
 {
   public:
