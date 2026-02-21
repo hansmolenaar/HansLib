@@ -14,7 +14,6 @@ namespace GraphIsomorphism
 
 class IVertexCompare;
 class IGraphCompare;
-class ICharacteristicsCompare;
 
 using VertexGrouping = Grouping<Graph::Vertex>;
 
@@ -30,7 +29,6 @@ class ICompare : public virtual IHasGraph
   public:
     virtual ~ICompare() = default;
 
-    const ICharacteristicsCompare *getCharacteristicsCompare() const;
     const IVertexCompare *getVertexCompare() const;
     const IGraphCompare *getGraphCompare() const;
 };

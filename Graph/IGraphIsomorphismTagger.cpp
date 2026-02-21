@@ -4,11 +4,6 @@
 using namespace Graph;
 using namespace GraphIsomorphism;
 
-const ICharacteristicsCompare *ICompare::getCharacteristicsCompare() const
-{
-    return dynamic_cast<const ICharacteristicsCompare *>(this);
-}
-
 const IVertexCompare *ICompare::getVertexCompare() const
 {
     return dynamic_cast<const IVertexCompare *>(this);
