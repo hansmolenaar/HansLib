@@ -1,6 +1,5 @@
 #pragma once
 
-#include "GraphIsomorphismCharacteristicsComparers.h"
 #include "GraphIsomorphismVertexComparers.h"
 #include "IGraphIsomorphismTagger.h"
 
@@ -19,7 +18,7 @@ class Comparers : public IGraphCompare
 
   private:
     std::vector<std::unique_ptr<ICompare>> m_comparers;
-    CharacteristicsComparers m_characteristicsComparers;
+    std::vector<const IGraphCompare *> m_graphComparers;
     VertexComparers m_vertexComparers;
 };
 
