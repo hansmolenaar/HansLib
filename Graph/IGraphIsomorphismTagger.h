@@ -13,6 +13,7 @@ namespace GraphIsomorphism
 {
 
 class IVertexCompare;
+class IGraphCompare;
 class ICharacteristicsCompare;
 
 using VertexGrouping = Grouping<Graph::Vertex>;
@@ -24,7 +25,17 @@ class IHasGraph
     virtual const Graph::IGraphUs &getGraph() const = 0;
 };
 
-class IGraphCompare : public virtual IHasGraph
+class ICompare : public virtual IHasGraph
+{
+  public:
+    virtual ~ICompare() = default;
+
+    const ICharacteristicsCompare *getCharacteristicsCompare() const;
+    const IVertexCompare *getVertexCompare() const;
+    const IGraphCompare *getGraphCompare() const;
+};
+
+class IGraphCompare : public virtual ICompare
 {
   public:
     virtual ~IGraphCompare() = default;
@@ -36,16 +47,6 @@ class IGraphCompareFactory
   public:
     virtual ~IGraphCompareFactory() = default;
     virtual std::unique_ptr<IGraphCompare> createGraphCompare(const Graph::IGraphUs &) const = 0;
-};
-
-class ICompare : public virtual IHasGraph
-{
-  public:
-    virtual ~ICompare() = default;
-
-    const ICharacteristicsCompare *getCharacteristicsCompare() const;
-    const IVertexCompare *getVertexCompare() const;
-    const IGraphCompare *getGraphCompare() const;
 };
 
 class ICharacteristicsCompare : public virtual ICompare, public virtual IGraphCompare
