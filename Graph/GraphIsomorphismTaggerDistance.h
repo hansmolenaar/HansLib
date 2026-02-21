@@ -20,14 +20,14 @@ struct ScalarVertexValues
     auto operator<=>(const ScalarVertexValues &) const = default;
 };
 
-class TaggerDistance : public ICharacteristicsCompare, public IVertexCompare
+class TaggerDistance : public IGraphCompare, public IVertexCompare
 {
   public:
     explicit TaggerDistance(std::shared_ptr<Graph::UndirectedGraphDistance>,
                             std::shared_ptr<Graph::UndirectedGraphTriangles>);
     explicit TaggerDistance(const Graph::IGraphUs &);
     const Tag &getGraphTag() const;
-    std::weak_ordering compareCharacteristics(const ICharacteristicsCompare &) const override;
+    std::weak_ordering compareGraph(const IGraphCompare &) const override;
 
     const Graph::IGraphUs &getGraph() const override;
     std::weak_ordering compareVertexOtherGraph(Graph::Vertex, const IVertexCompare &, Graph::Vertex) const override;

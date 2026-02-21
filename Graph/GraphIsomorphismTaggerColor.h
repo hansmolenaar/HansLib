@@ -6,13 +6,13 @@
 namespace GraphIsomorphism
 {
 
-class TaggerColor : public ICharacteristicsCompare, public IVertexCompare
+class TaggerColor : public IGraphCompare, public IVertexCompare
 {
   public:
     explicit TaggerColor(const Graph::IGraphUs &);
 
     const Tag &getGraphTag() const;
-    std::weak_ordering compareCharacteristics(const ICharacteristicsCompare &) const override;
+    std::weak_ordering compareGraph(const IGraphCompare &) const override;
 
     TagEntry getVertexTag(Graph::Vertex) const;
     const Graph::IGraphUs &getGraph() const override;

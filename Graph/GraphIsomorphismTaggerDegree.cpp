@@ -17,7 +17,7 @@ const Tag &TaggerDegree::getGraphTag() const
     return m_degreeSequenceTag;
 }
 
-std::weak_ordering TaggerDegree::compareCharacteristics(const ICharacteristicsCompare &otherComparer) const
+std::weak_ordering TaggerDegree::compareGraph(const IGraphCompare &otherComparer) const
 {
     const auto &other = dynamic_cast<const TaggerDegree &>(otherComparer);
     return getGraphTag() <=> other.getGraphTag();
