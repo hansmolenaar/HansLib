@@ -7,14 +7,14 @@
 namespace GraphIsomorphism
 {
 
-class TaggerNumbers : public ICharacteristicsCompare
+class TaggerNumbers : public IGraphCompare
 {
   public:
     explicit TaggerNumbers(const Graph::IGraphUs &);
 
     const Tag &getGraphTag() const;
     const Graph::IGraphUs &getGraph() const override;
-    std::weak_ordering compareCharacteristics(const ICharacteristicsCompare &) const override;
+    std::weak_ordering compareGraph(const IGraphCompare &) const override;
 
   private:
     const Graph::IGraphUs &m_graph;

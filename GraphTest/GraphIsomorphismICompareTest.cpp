@@ -38,7 +38,29 @@ void CheckGraphCompareSymmetry(const ICharacteristicsCompare &compare0, const IC
         ASSERT_TRUE(false);
     }
 }
+void CheckGraphCompareSymmetry(const IGraphCompare &compare0, const IGraphCompare &compare1)
+{
+    const auto cmp0 = compare0.compareGraph(compare1);
+    const auto cmp1 = compare1.compareGraph(compare0);
+    if (cmp0 == std::weak_ordering::equivalent)
+    {
+        ASSERT_EQ(cmp1, std::weak_ordering::equivalent);
+    }
+    else if (cmp0 == std::weak_ordering::less)
+    {
+        ASSERT_EQ(cmp1, std::weak_ordering::greater);
+    }
+    else if (cmp0 == std::weak_ordering::greater)
+    {
+        ASSERT_EQ(cmp1, std::weak_ordering::less);
+    }
+    else
+    {
+        ASSERT_TRUE(false);
+    }
+}
 
+// TODO
 void CheckSymmetryAgainstList(ICompareFactory &factory, const IGraphUs &graph,
                               const std::vector<const ICharacteristicsCompare *> &list)
 {
@@ -48,7 +70,19 @@ void CheckSymmetryAgainstList(ICompareFactory &factory, const IGraphUs &graph,
         CheckGraphCompareSymmetry(*p, *compare->getCharacteristicsCompare());
     }
 }
+void CheckSymmetryAgainstList(ICompareFactory &factory, const IGraphUs &graph,
+                              const std::vector<const IGraphCompare *> &list)
+{
+    const auto compare = factory.createCompare(graph);
+    const auto &graphCompare = *compare->getGraphCompare();
+    ASSERT_EQ(graphCompare.compareGraph(graphCompare), std::weak_ordering::equivalent);
+    for (const auto *p : list)
+    {
+        CheckGraphCompareSymmetry(*p, *compare->getGraphCompare());
+    }
+}
 
+// TODO
 void CheckListGraphCompareSymmetry(ICompareFactory &factory, const std::vector<const ICharacteristicsCompare *> &list)
 {
     // Test symmetry
@@ -63,7 +97,16 @@ void CheckListGraphCompareSymmetry(ICompareFactory &factory, const std::vector<c
         ASSERT_EQ(p->compareCharacteristics(*p), std::weak_ordering::equivalent);
     }
 }
+void CheckListGraphCompareSymmetry(ICompareFactory &factory, const std::vector<const IGraphCompare *> &list)
+{
+    // Test symmetry
+    CheckSymmetryAgainstList(factory, *UndirectedGraphLibrary::Get_Null(), list);
+    CheckSymmetryAgainstList(factory, *UndirectedGraphLibrary::Get_Singleton(), list);
+    CheckSymmetryAgainstList(factory, *UndirectedGraphLibrary::Get_Path(2), list);
+    CheckSymmetryAgainstList(factory, *UndirectedGraphLibrary::Get_Cycle(3), list);
+}
 
+// TODO remove me
 void CheckListGraphCompare(ICompareFactory &factory, const std::vector<const ICharacteristicsCompare *> &gcomparers,
                            Tag expectGraphTagMultiplicities)
 {
@@ -73,6 +116,18 @@ void CheckListGraphCompare(ICompareFactory &factory, const std::vector<const ICh
         return p1->compareCharacteristics(*p2) == std::weak_ordering::less;
     };
     const Grouping<const ICharacteristicsCompare *> grouping(gcomparers, cmp);
+    const auto tag = CondenseSizeSequence(grouping.getGroupSizes());
+    ASSERT_EQ(tag, expectGraphTagMultiplicities);
+}
+void CheckListGraphCompare(ICompareFactory &factory, const std::vector<const IGraphCompare *> &gcomparers,
+                           Tag expectGraphTagMultiplicities)
+{
+    CheckListGraphCompareSymmetry(factory, gcomparers);
+
+    auto cmp = [](const IGraphCompare *p1, const IGraphCompare *p2) {
+        return p1->compareGraph(*p2) == std::weak_ordering::less;
+    };
+    const Grouping<const IGraphCompare *> grouping(gcomparers, cmp);
     const auto tag = CondenseSizeSequence(grouping.getGroupSizes());
     ASSERT_EQ(tag, expectGraphTagMultiplicities);
 }
@@ -106,8 +161,14 @@ void GraphTest::CheckList(ICompareFactory &factory, const std::vector<std::uniqu
             getCastPointers<const ICharacteristicsCompare>(comparers);
         CheckListGraphCompare(factory, characteristicsComparers, expectGraphTagMultiplicities);
     }
+    else if (compare0->getGraphCompare() != nullptr)
+    {
+        const std::vector<const IGraphCompare *> graphComparers = getCastPointers<const IGraphCompare>(comparers);
+        CheckListGraphCompare(factory, graphComparers, expectGraphTagMultiplicities);
+    }
     else
     {
+        // TODO
         ASSERT_TRUE(expectGraphTagMultiplicities.empty());
     }
 
