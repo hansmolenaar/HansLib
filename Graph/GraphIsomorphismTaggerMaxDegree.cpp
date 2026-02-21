@@ -30,7 +30,7 @@ const Tag &TaggerMaxDegree::getGraphTag() const
     return m_graphTag;
 }
 
-std::weak_ordering TaggerMaxDegree::compareCharacteristics(const ICharacteristicsCompare &otherComparer) const
+std::weak_ordering TaggerMaxDegree::compareGraph(const IGraphCompare &otherComparer) const
 {
     const auto &other = dynamic_cast<const TaggerMaxDegree &>(otherComparer);
     return getGraphTag() <=> other.getGraphTag();

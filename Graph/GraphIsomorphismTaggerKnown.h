@@ -7,7 +7,7 @@
 namespace GraphIsomorphism
 {
 
-class TaggerKnown : public ICharacteristicsCompare
+class TaggerKnown : public IGraphCompare
 {
   public:
     enum KnownType : TagEntry
@@ -21,7 +21,7 @@ class TaggerKnown : public ICharacteristicsCompare
 
     explicit TaggerKnown(const Graph::IGraphUs &);
 
-    std::weak_ordering compareCharacteristics(const ICharacteristicsCompare &) const override;
+    std::weak_ordering compareGraph(const IGraphCompare &) const override;
     const Graph::IGraphUs &getGraph() const override;
     const Tag &getGraphTag() const;
     std::string getDescription() const;
