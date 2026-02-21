@@ -34,7 +34,7 @@ const Tag &TaggerComponents::getGraphTag() const
     return m_graphTag;
 }
 
-std::weak_ordering TaggerComponents::compareCharacteristics(const ICharacteristicsCompare &otherComparer) const
+std::weak_ordering TaggerComponents::compareGraph(const IGraphCompare &otherComparer) const
 {
     const auto &other = dynamic_cast<const TaggerComponents &>(otherComparer);
     return getGraphTag() <=> other.getGraphTag();
