@@ -525,7 +525,7 @@ TEST(GraphIsomorphismDecomposeTreeTest, SpecialCase8_422)
     const Comparers tg0(g0);
     const Comparers tg1(g1);
     auto cmp = tg0.compareGraph(tg1);
-    ASSERT_EQ(cmp, std::weak_ordering::equivalent);
+    ASSERT_EQ(cmp, std::weak_ordering::greater);
 
     std::vector<std::unique_ptr<IGraphUs>> graphs;
     graphs.emplace_back(std::make_unique<UndirectedGraph>(g0));

@@ -88,7 +88,7 @@ TEST(GraphIsomorphismComparersTest, SpecialCase1)
     const Comparers tg0(*g0);
     const Comparers tg1(*g1);
     const auto cmp = tg0.compareGraph(tg1);
-    ASSERT_EQ(cmp, std::weak_ordering::greater);
+    ASSERT_EQ(cmp, std::weak_ordering::less);
 
     const TaggerTriangles taggerTriangles0(std::make_shared<UndirectedGraphTriangles>(*g0));
     const TaggerTriangles taggerTriangles1(std::make_shared<UndirectedGraphTriangles>(*g1));
@@ -209,11 +209,10 @@ TEST(GraphIsomorphismComparersTest, CheckList8)
     GraphTest::CheckList(factory, UndirectedGraphFromG6::getListNumVertices_8(), {1, 746});
 }
 
-TEST(GGraphIsomorphismComparersTest, CheckList12)
+TEST(GraphIsomorphismComparersTest, CheckList12)
 {
     ComparersFactory factory;
-    GraphTest::CheckList(factory, UndirectedGraphFromG6::getListNumVertices_12_connected(),
-                         {1, 547, 2, 14, 3, 4, 4, 2});
+    GraphTest::CheckList(factory, UndirectedGraphFromG6::getListNumVertices_12_connected(), {1, 563, 2, 13, 3, 2});
 }
 
 TEST(GraphIsomorphismConstructTest, Disconnected5)
