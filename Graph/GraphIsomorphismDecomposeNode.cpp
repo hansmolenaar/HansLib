@@ -125,7 +125,7 @@ const VertexGrouping &DecomposeNode::getVertexGrouping() const
 
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Factory
 
-std::unique_ptr<IGraphCompare> DecomposeNodeFactory::createGraphCompare(const Graph::IGraphUs &graph) const
+std::unique_ptr<ICompare> DecomposeNodeFactory::createCompare(const Graph::IGraphUs &graph) const
 {
     return DecomposeNode::Create(std::make_shared<XGraph>(graph));
 }

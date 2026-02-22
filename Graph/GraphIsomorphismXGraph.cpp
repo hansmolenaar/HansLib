@@ -56,7 +56,7 @@ const Comparers &XGraph::getComparersLineGraph() const
 
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Factory
 
-std::unique_ptr<IGraphCompare> XGraphFactory::createGraphCompare(const Graph::IGraphUs &graph) const
+std::unique_ptr<ICompare> XGraphFactory::createCompare(const Graph::IGraphUs &graph) const
 {
     return std::make_unique<XGraph>(graph);
 }

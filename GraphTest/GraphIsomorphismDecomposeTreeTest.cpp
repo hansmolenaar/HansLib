@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "GraphIsomorphismDecomposeTree.h"
-#include "GraphIsomorphismIGraphCompareTest.h"
+#include "GraphIsomorphismICompareTest.h"
 #include "GraphIsomorphismUtils.h"
 #include "Single.h"
 #include "UndirectedGraphFromG6.h"
@@ -127,7 +127,7 @@ void CheckDecomposeList(const std::vector<std::string> &g6list, Tag expectMultip
 TEST(GraphIsomorphismDecomposeTreeTest, Basics)
 {
     DecomposeTreeFactory factory;
-    GraphTest::CheckComparerBasics(factory);
+    GraphTest::CheckComparerBasics(factory, {1, 7, 2, 1});
 }
 
 TEST(GraphIsomorphismDecomposeTreeTest, CheckListUpTo5)

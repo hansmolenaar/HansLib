@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "GraphIsomorphismDecomposeNode.h"
-#include "GraphIsomorphismIGraphCompareTest.h"
+#include "GraphIsomorphismICompareTest.h"
 #include "UndirectedGraphFromG6.h"
 #include "UndirectedGraphLibrary.h"
 
@@ -50,7 +50,7 @@ void TestInterface(const DecomposeNode &decomposeNode)
 TEST(GraphIsomorphismDecomposeNodeTest, Basics)
 {
     DecomposeNodeFactory factory;
-    GraphTest::CheckComparerBasics(factory);
+    GraphTest::CheckComparerBasics(factory, {1, 7, 2, 1});
 }
 
 TEST(GraphIsomorphismDecomposeNodeTest, CheckListUpTo5)

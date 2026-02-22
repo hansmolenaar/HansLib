@@ -28,9 +28,9 @@ class XGraph : public IGraphCompare
     VertexGrouping m_grouping;
 };
 
-class XGraphFactory : public IGraphCompareFactory
+class XGraphFactory : public ICompareFactory
 {
-    std::unique_ptr<IGraphCompare> createGraphCompare(const Graph::IGraphUs &) const override;
+    std::unique_ptr<ICompare> createCompare(const Graph::IGraphUs &) const override;
 };
 
 } // namespace GraphIsomorphism

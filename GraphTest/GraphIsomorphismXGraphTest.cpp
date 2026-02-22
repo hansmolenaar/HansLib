@@ -2,7 +2,7 @@
 
 #include "Defines.h"
 #include "GraphIsomorphismGrouping.h"
-#include "GraphIsomorphismIGraphCompareTest.h"
+#include "GraphIsomorphismICompareTest.h"
 #include "GraphIsomorphismXGraph.h"
 #include "UndirectedGraphFromG6.h"
 #include "UndirectedGraphLibrary.h"
@@ -13,7 +13,7 @@ using namespace Graph;
 TEST(GraphIsomorphismXGraphTest, Basics)
 {
     XGraphFactory factory;
-    GraphTest::CheckComparerBasics(factory);
+    GraphTest::CheckComparerBasics(factory, {1, 7, 2, 1});
 }
 
 TEST(GraphIsomorphismXGraphTest, Combine)
@@ -60,5 +60,5 @@ TEST(GraphIsomorphismXGraphTest, CheckList11)
 TEST(GraphIsomorphismXGraphTest, CheckList12)
 {
     XGraphFactory factory;
-    GraphTest::CheckList(factory, UndirectedGraphFromG6::getListNumVertices_12_connected(), {1, 593, 2, 1}, true);
+    GraphTest::CheckList(factory, UndirectedGraphFromG6::getListNumVertices_12_connected(), {1, 593, 2, 1});
 }

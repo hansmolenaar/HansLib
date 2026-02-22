@@ -219,7 +219,7 @@ const Graph::IGraphUs &DecomposeTree::getGraph() const
 
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Factory
 
-std::unique_ptr<IGraphCompare> DecomposeTreeFactory::createGraphCompare(const Graph::IGraphUs &graph) const
+std::unique_ptr<ICompare> DecomposeTreeFactory::createCompare(const Graph::IGraphUs &graph) const
 {
     return std::make_unique<DecomposeTree>(graph);
 }

@@ -32,9 +32,9 @@ class DecomposeNode : public IGraphCompare
     std::string m_description;
 };
 
-class DecomposeNodeFactory : public IGraphCompareFactory
+class DecomposeNodeFactory : public ICompareFactory
 {
-    std::unique_ptr<IGraphCompare> createGraphCompare(const Graph::IGraphUs &) const override;
+    std::unique_ptr<ICompare> createCompare(const Graph::IGraphUs &) const override;
 };
 
 } // namespace GraphIsomorphism

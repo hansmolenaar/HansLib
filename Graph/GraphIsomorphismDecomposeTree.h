@@ -33,9 +33,9 @@ class DecomposeTree : public IGraphCompare
     std::map<const DecomposeNode *, const DecomposeNode *> m_toParent;
 };
 
-class DecomposeTreeFactory : public IGraphCompareFactory
+class DecomposeTreeFactory : public ICompareFactory
 {
-    std::unique_ptr<IGraphCompare> createGraphCompare(const Graph::IGraphUs &) const override;
+    std::unique_ptr<ICompare> createCompare(const Graph::IGraphUs &) const override;
 };
 
 } // namespace GraphIsomorphism
