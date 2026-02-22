@@ -40,13 +40,6 @@ class IGraphCompare : public virtual ICompare
     virtual std::weak_ordering compareGraph(const IGraphCompare &) const = 0;
 };
 
-class IGraphCompareFactory
-{
-  public:
-    virtual ~IGraphCompareFactory() = default;
-    virtual std::unique_ptr<IGraphCompare> createGraphCompare(const Graph::IGraphUs &) const = 0;
-};
-
 class IVertexCompare : public virtual ICompare
 {
   public:
