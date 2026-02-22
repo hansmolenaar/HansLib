@@ -5,7 +5,6 @@
 #include "GraphIsomorphismComparersFactory.h"
 #include "GraphIsomorphismGrouping.h"
 #include "GraphIsomorphismICompareTest.h"
-#include "GraphIsomorphismIGraphCompareTest.h"
 #include "GraphIsomorphismTaggerChains.h"
 #include "GraphIsomorphismTaggerTriangles.h"
 #include "GraphIsomorphismUtils.h"
@@ -21,7 +20,7 @@ using namespace Utilities;
 TEST(GraphIsomorphismComparersTest, CheckBasics)
 {
     ComparersFactory factory;
-    GraphTest::CheckComparerBasics(factory);
+    GraphTest::CheckComparerBasics(factory, {1, 7, 2, 1});
 }
 
 TEST(GraphIsomorphismComparersTest, Singleton)

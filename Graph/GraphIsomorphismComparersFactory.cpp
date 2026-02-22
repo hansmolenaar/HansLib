@@ -60,7 +60,7 @@ std::vector<std::unique_ptr<ICompare>> ComparersFactory::getAllComparers(const G
     return comparers;
 }
 
-std::unique_ptr<IGraphCompare> ComparersFactory::createGraphCompare(const Graph::IGraphUs &graph) const
+std::unique_ptr<ICompare> ComparersFactory::createCompare(const Graph::IGraphUs &graph) const
 {
     return create(graph);
 }

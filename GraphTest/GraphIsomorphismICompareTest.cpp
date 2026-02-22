@@ -60,7 +60,7 @@ void CheckListGraphCompareSymmetry(ICompareFactory &factory, const std::vector<c
 }
 
 void CheckListGraphCompare(ICompareFactory &factory, const std::vector<const IGraphCompare *> &gcomparers,
-                           Tag expectGraphTagMultiplicities)
+                           Tag expectGraphTagMultiplicities, bool printMultiples)
 {
     CheckListGraphCompareSymmetry(factory, gcomparers);
 
@@ -70,6 +70,22 @@ void CheckListGraphCompare(ICompareFactory &factory, const std::vector<const IGr
     const Grouping<const IGraphCompare *> grouping(gcomparers, cmp);
     const auto tag = CondenseSizeSequence(grouping.getGroupSizes());
     ASSERT_EQ(tag, expectGraphTagMultiplicities);
+    if (printMultiples)
+    {
+        for (const auto &group : grouping())
+        {
+            if (group.size() > 1)
+            {
+                std::cout << "Group of size " << group.size() << "\n";
+                for (const auto &g : group)
+                {
+                    std::cout << g->getGraph().getName() << "\n";
+                    // std::cout << g->getVertexGrouping() << "\n";
+                }
+                std::cout << "\n\n";
+            }
+        }
+    }
 }
 
 void CheckListVertexCompare(ICompareFactory &factory, const std::vector<std::unique_ptr<IGraphUs>> &graphs)
@@ -83,7 +99,7 @@ void CheckListVertexCompare(ICompareFactory &factory, const std::vector<std::uni
 } // namespace
 
 void GraphTest::CheckList(ICompareFactory &factory, const std::vector<std::unique_ptr<Graph::IGraphUs>> &graphs,
-                          Tag expectGraphTagMultiplicities)
+                          Tag expectGraphTagMultiplicities, bool printMultiples)
 {
     const auto graph0 = UndirectedGraphLibrary::Get_Null();
     const auto compare0 = factory.createCompare(*graph0);
@@ -96,7 +112,7 @@ void GraphTest::CheckList(ICompareFactory &factory, const std::vector<std::uniqu
     if (compare0->getGraphCompare() != nullptr)
     {
         const std::vector<const IGraphCompare *> graphComparers = getCastPointers<const IGraphCompare>(comparers);
-        CheckListGraphCompare(factory, graphComparers, expectGraphTagMultiplicities);
+        CheckListGraphCompare(factory, graphComparers, expectGraphTagMultiplicities, printMultiples);
     }
     else
     {
@@ -110,10 +126,10 @@ void GraphTest::CheckList(ICompareFactory &factory, const std::vector<std::uniqu
 }
 
 void GraphTest::CheckList(ICompareFactory &factory, const std::vector<std::string> &g6list,
-                          Tag expectGraphTagMultiplicities)
+                          Tag expectGraphTagMultiplicities, bool printMultiples)
 {
     const auto graphs = UndirectedGraphFromG6::getGraphs(g6list);
-    CheckList(factory, graphs, expectGraphTagMultiplicities);
+    CheckList(factory, graphs, expectGraphTagMultiplicities, printMultiples);
 }
 
 void GraphTest::CheckVertexCompareConsistency(const IGraphUs &graph, GraphIsomorphism::ICompareFactory &factory,
