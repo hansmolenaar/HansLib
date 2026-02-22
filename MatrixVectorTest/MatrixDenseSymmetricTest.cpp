@@ -33,7 +33,7 @@ void CheckEigenSolver(MatrixDenseSymmetric &matrix, std::initializer_list<double
 
         matrix.timesVector(eigenVector, matTimesVector);
         std::transform(lamTimesVector.begin(), lamTimesVector.end(), lamTimesVector.begin(),
-                       [eigenValue](double v) { return v * eigenValue; });
+                       Functors::TimesScalar{eigenValue});
 
         ASSERT_TRUE(areClose(matTimesVector, lamTimesVector));
     }

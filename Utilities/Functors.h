@@ -114,4 +114,13 @@ struct SumOfSquares
     }
 };
 
+template <typename T> struct TimesScalar
+{
+    T Scalar;
+    auto operator()(T value) const
+    {
+        return Scalar * value;
+    }
+};
+
 } // namespace Functors

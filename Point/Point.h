@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Defines.h"
+#include "Functors.h"
 #include "MyAssert.h"
 #include "Rational.h"
 
@@ -32,7 +33,7 @@ template <typename T, size_t N> std::array<T, N> operator-(std::array<T, N> lhs,
 
 template <typename T, size_t N> std::array<T, N> operator*(std::array<T, N> result, T factor)
 {
-    str::transform(result, result.begin(), [factor](T value) { return factor * value; });
+    str::transform(result, result.begin(), Functors::TimesScalar{factor});
     return result;
 }
 
