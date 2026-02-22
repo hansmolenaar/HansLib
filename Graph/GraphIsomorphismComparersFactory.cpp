@@ -36,7 +36,7 @@ const CompareSpectrumFactory compareSpectrumFactory;
 std::vector<const ICompareFactory *> allFactories{
     &compareNumbersFactory,   &compareKnownFactory,  &compareDegreeFactory,        &compareComponentsFactory,
     &compareMaxDegreeFactory, &compareChainsFactory, &compareColorFactory,         &compareDistanceFactory,
-    &compareTrianglesFactory, &compareTwinsFactory,  &compareShortestCycleFactory, // &compareSpectrumFactory,
+    &compareTrianglesFactory, &compareTwinsFactory,  &compareShortestCycleFactory, //&compareSpectrumFactory,
 };
 
 } // namespace

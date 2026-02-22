@@ -17,18 +17,12 @@ class IGraphCompare;
 
 using VertexGrouping = Grouping<Graph::Vertex>;
 
-class IHasGraph
-{
-  public:
-    virtual ~IHasGraph() = default;
-    virtual const Graph::IGraphUs &getGraph() const = 0;
-};
-
-class ICompare : public virtual IHasGraph
+class ICompare
 {
   public:
     virtual ~ICompare() = default;
 
+    virtual const Graph::IGraphUs &getGraph() const = 0;
     const IVertexCompare *getVertexCompare() const;
     const IGraphCompare *getGraphCompare() const;
 };
