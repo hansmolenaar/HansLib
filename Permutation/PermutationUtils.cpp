@@ -83,3 +83,4 @@ std::set<Permutation> PermutationUtils::generateAllPowerCombinations(std::span<c
 
     return result;
 }
+
