@@ -4,7 +4,7 @@ set(CMAKE_COMPILE_WARNING_AS_ERROR ON)
 set(BUILD_SHARED_LIBS OFF)
 set (CMAKE_CXX_STANDARD 23)
 
-set(BOOST_ROOT "/home/hans/repos/boost/boost_1_82_0")
+set(BOOST_ROOT "/home/hans/src/boost_1_91_0")
 #find_package( Boost REQUIRED COMPONENTS program_options regex )
 set(Boost_USE_STATIC_LIBS OFF) 
 #set(Boost_USE_MULTITHREADED ON)  
