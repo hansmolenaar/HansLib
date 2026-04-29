@@ -52,3 +52,4 @@ template <typename InputIt, typename OutputIt> void Permutation::apply(InputIt f
         ++first;
     }
 }
+
