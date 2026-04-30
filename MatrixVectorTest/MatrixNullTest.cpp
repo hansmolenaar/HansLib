@@ -8,8 +8,14 @@ TEST(MatrixNullTest, TestNull)
     MatrixNull mat;
     ASSERT_EQ(0, mat.GetRowDimension());
     ASSERT_EQ(0, mat.GetColDimension());
-    ASSERT_ANY_THROW(mat(0, 0) = 0.0;);
-    ASSERT_ANY_THROW(mat(0, 0););
+    ASSERT_ANY_THROW(mat.set(0, 0, 0.0););
+    ASSERT_ANY_THROW(mat.get(0, 0););
+    std::vector<double> vecin;
+    std::vector<double> vecout;
+    mat.timesVector(vecin, vecout);
+    ASSERT_TRUE(vecout.empty());
+    vecin.push_back(0.0);
+    ASSERT_ANY_THROW(mat.timesVector(vecin, vecout));
 }
 
 TEST(MatrixNullTest, TestInterface)

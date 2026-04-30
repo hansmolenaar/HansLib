@@ -11,9 +11,9 @@ class MatrixRotation3D : public IMatrixRotation
     static MatrixRotation3D Create(const UnitVector3 &, double);
     int GetDimension() const override;
 
-    double operator()(int, int) const override;
+    double get(int, int) const override;
 
-    void Transform(std::span<const double>, std::span<double>) const;
+    void timesVector(std::span<const double>, std::span<double>) const override;
 
   private:
     MatrixRotation3D(const UnitVector3 &, double);

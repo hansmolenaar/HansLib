@@ -86,7 +86,7 @@ template <typename T, size_t N> Point<T, N> TartanGrid<T, N>::getPoint(PointInde
     std::array<PointIndex, N> mp;
     m_multiIndexPoint.toMultiplet(pointIndex, mp);
     std::array<T, N> result;
-    for (int n = 0; n < N; ++n)
+    for (size_t n = 0; n < N; ++n)
     {
         result[n] = m_coordinates.at(n).at(mp.at(n));
     }
@@ -111,7 +111,7 @@ template <typename T, size_t N> const MultiIndex<CellIndex> &TartanGrid<T, N>::g
 template <typename T, size_t N> CellIndex TartanGrid<T, N>::locatePointInCell(const Point<T, N> &point) const
 {
     std::array<PointIndex, N> position;
-    for (int n = 0; n < N; ++n)
+    for (size_t n = 0; n < N; ++n)
     {
         if (point.data()[n] < m_coordinates.at(n).front())
             return PointIndexInvalid;

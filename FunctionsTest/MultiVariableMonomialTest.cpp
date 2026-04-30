@@ -16,7 +16,7 @@ TEST(MultiVariableMonomialTest, Test1)
     ASSERT_EQ(fie.Evaluate(x), 9.0);
 
     double y[] = {0};
-    fie.IMultiVariableRealValuedFunction::Evaluate(x, y);
+    fie.IMultiVariableRealValuedFunction::EvaluateFunction(x, y);
     ASSERT_EQ(y[0], 9.0);
 
     std::vector<double> deriv(2);

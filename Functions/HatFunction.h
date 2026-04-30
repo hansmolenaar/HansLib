@@ -6,13 +6,9 @@
 class HatFunction : public ISingleVariableRealValuedFunction
 {
   public:
-    double operator()(double x) const
-    {
-        return std::max(1.0 - std::abs(x), 0.0);
-    }
     double Evaluate(double x) const override
     {
-        return (*this)(x);
+        return std::max(1.0 - std::abs(x), 0.0);
     }
     double Derivative(double x) const override
     {

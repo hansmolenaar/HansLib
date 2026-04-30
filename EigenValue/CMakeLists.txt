@@ -8,4 +8,5 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 	${CMAKE_INCLUDE_DIR}/Utilities
 	${CMAKE_INCLUDE_DIR}/Functions
 	${CMAKE_INCLUDE_DIR}/MatrixVector
+        ${Eigen_INCLUDE_DIRS}
 )

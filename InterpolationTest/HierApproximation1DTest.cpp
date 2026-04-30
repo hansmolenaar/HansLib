@@ -106,7 +106,7 @@ TEST(HierApproximation1DTest, Square)
     const SingleVariableMonomial square(2);
     constexpr size_t maxLevel = 8;
     std::vector<double> maxSurplus;
-    for (int n = 1; n < maxLevel; ++n)
+    for (size_t n = 1; n < maxLevel; ++n)
     {
         HierBasisFunction1D_ExtendedLevelOneBC_Factory factory1D;
         HierBasisFunction_Factory factory(size_t{1}, &factory1D);
@@ -157,7 +157,7 @@ TEST(HierApproximation1DTest, Square_ExtrapolateSurplus)
     const SingleVariableMonomial square(2);
     constexpr size_t maxLevel = 8;
     std::vector<double> maxSurplus;
-    for (int n = 1; n < maxLevel; ++n)
+    for (size_t n = 1; n < maxLevel; ++n)
     {
         HierBasisFunction1D_ExtraplolateBC_Factory factory1D;
         HierBasisFunction_Factory factory(size_t{1}, &factory1D);

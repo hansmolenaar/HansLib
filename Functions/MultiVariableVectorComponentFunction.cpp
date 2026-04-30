@@ -43,7 +43,7 @@ bool MultiVariableVectorComponentFunction::HasDerivative() const
 
 double MultiVariableVectorComponentFunction::Evaluate(std::span<const double> x) const
 {
-    Utilities::MyAssert(x.size() == GetDomainDimension());
+    Utilities::MyAssert(static_cast<int>(x.size()) == GetDomainDimension());
     return x[m_index];
 }
 
@@ -51,8 +51,8 @@ void MultiVariableVectorComponentFunction::Derivative(std::span<const double> x,
 {
     const int dim = GetDomainDimension();
 
-    Utilities::MyAssert(x.size() == GetDomainDimension());
-    Utilities::MyAssert(dfdx.size() == dim);
+    Utilities::MyAssert(static_cast<int>(x.size()) == GetDomainDimension());
+    Utilities::MyAssert(static_cast<int>(dfdx.size()) == dim);
 
     std::fill(dfdx.begin(), dfdx.end(), 0.0);
     dfdx[m_index] = 1.0;

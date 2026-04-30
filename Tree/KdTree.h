@@ -188,7 +188,7 @@ template <typename T, size_t N> bool PreSorting<T, N>::less(KdTreePosition n0, K
         return true;
     if (m_points[n0].data()[m_currentDim] > m_points[n1].data()[m_currentDim])
         return false;
-    for (int n = 0; n < N; ++n)
+    for (size_t n = 0; n < N; ++n)
     {
         if (m_points[n0].data()[n] < m_points[n1].data()[n])
             return true;
@@ -216,7 +216,7 @@ template <typename T, size_t N> KdTree<T, N>::KdTree(std::span<const Point<T, N>
     {
         std::array<std::vector<KdTreePosition>, N> orders;
         std::array<T, N> lb, ub;
-        for (int d = 0; d < N; ++d)
+        for (size_t d = 0; d < N; ++d)
         {
             orders[d] = SortPerDimension(d, m_points);
             lb[d] = points[*orders[d].begin()].data()[d];
@@ -226,7 +226,7 @@ template <typename T, size_t N> KdTree<T, N>::KdTree(std::span<const Point<T, N>
             std::make_unique<BoundingBox<T, N>>(BoundingBox<T, N>::CreateFromList(std::array<Point<T, N>, 2>{lb, ub}));
         std::vector<bool> goRight(m_points.size(), false);
         std::array<std::span<KdTreePosition>, N> ordersSpan;
-        for (int n = 0; n < N; ++n)
+        for (size_t n = 0; n < N; ++n)
         {
             ordersSpan[n] = orders[n];
         }
@@ -272,9 +272,9 @@ KdTreeVertex<T, N> *KdTree<T, N>::BuildTree(std::array<std::span<KdTreePosition>
         }
 
         std::span<KdTreePosition> copyList(work.begin(), work.begin() + order.size());
-        for (int d = 0; d < N; ++d)
+        for (size_t d = 0; d < N; ++d)
         {
-            if (d == activeDim)
+            if (static_cast<int>(d) == activeDim)
                 continue;
 
             auto &currentOrder = orders[d];

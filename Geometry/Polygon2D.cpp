@@ -21,7 +21,7 @@ template <typename T> T Polygon2D::AreaSigned(std::span<const Point<T, 2>> polyg
         throw MyException("Polygon2D::AreaSigned not enough points: " + std::to_string(nPoints));
 
     // The shoelace formula
-    for (int n = 1; n < nPoints; ++n)
+    for (size_t n = 1; n < nPoints; ++n)
     {
         const auto &p1 = polygon[n - 1];
         const auto &p2 = polygon[n];

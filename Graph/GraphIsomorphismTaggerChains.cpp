@@ -1,0 +1,395 @@
+#include "GraphIsomorphismTaggerChains.h"
+#include "Defines.h"
+#include "GraphUsc.h"
+#include "MyAssert.h"
+
+using namespace Graph;
+using namespace GraphIsomorphism;
+using namespace Utilities;
+
+namespace
+{
+using Chain = std::vector<Vertex>;
+enum ChainId : TagEntry
+{
+    PureCycle,
+    PurePath,
+    AttachedCycle,
+    AttachedPathSingle,
+    AttachedPathDouble
+};
+
+struct ChainTag
+{
+    ChainId id;
+    TagEntry size;
+    Vertex attacheFirst = 0;
+    Vertex attacheLast = 0;
+    auto operator<=>(const ChainTag &) const = default;
+    bool operator==(const ChainTag &) const = default;
+};
+
+std::pair<ChainId, Chain> ConstrutcChain(const IGraphUs &graph, const Chain &part1, Chain part2)
+{
+    auto retval = part1;
+    str::reverse(retval);
+    retval.insert(retval.end(), part2.begin(), part2.end());
+    retval.erase(std::unique(retval.begin(), retval.end()), retval.end());
+
+    if (retval.front() == retval.back())
+    {
+        // This is a cycle
+        retval.pop_back();
+        ChainId id = ChainId::AttachedCycle;
+        if (graph.getDegree(retval.front()) == 2)
+        {
+            id = ChainId::PureCycle;
+            std::rotate(retval.begin(), str::min_element(retval), retval.end());
+        }
+        // Orient
+        if (retval.at(1) > retval.back())
+        {
+            std::reverse(retval.begin() + 1, retval.end());
+        }
+        return {id, retval};
+    }
+    else
+    {
+        // This is a path
+        const auto degreeF = graph.getDegree(retval.front());
+        const auto degreeB = graph.getDegree(retval.back());
+        if (degreeF == 1 && degreeB == 1)
+        {
+            if (retval.front() > retval.back())
+            {
+                str::reverse(retval);
+            }
+            return {ChainId::PurePath, retval};
+        }
+        else if (degreeF == 1)
+        {
+            str::reverse(retval);
+            return {ChainId::AttachedPathSingle, retval};
+        }
+        else if (degreeB == 1)
+        {
+            return {ChainId::AttachedPathSingle, retval};
+        }
+        else
+        {
+            if (retval.front() > retval.back())
+            {
+                str::reverse(retval);
+            }
+            return {ChainId::AttachedPathDouble, retval};
+        }
+    }
+    throw MyException("Should not come here");
+}
+
+Chain GetChainPart(const IGraphUs &graph, Vertex vertex, Vertex current, std::set<Vertex> &done)
+{
+    Chain result{vertex};
+    std::vector<Vertex> ngbs;
+    while (graph.getDegree(current) == 2)
+    {
+        graph.setAdjacentVertices(current, ngbs);
+        if (ngbs.front() != vertex && (graph.getDegree(ngbs.front()) > 2 || !done.contains(ngbs.front())))
+        {
+            result.push_back(current);
+            done.insert(current);
+            current = ngbs.front();
+            continue;
+        }
+        else if (ngbs.back() != vertex && (graph.getDegree(ngbs.back()) > 2 || !done.contains(ngbs.back())))
+        {
+            result.push_back(current);
+            done.insert(current);
+            current = ngbs.back();
+        }
+        else
+        {
+            break;
+        }
+    }
+    result.push_back(current);
+    done.insert(current);
+    return result;
+}
+
+std::pair<ChainId, Chain> GetChain(const IGraphUs &graph, Vertex vertex, std::set<Vertex> &done)
+{
+    std::vector<Vertex> ngbs;
+    graph.setAdjacentVertices(vertex, ngbs);
+    const Chain part1 = GetChainPart(graph, vertex, ngbs.front(), done);
+
+    Chain part2{vertex};
+    if (ngbs.size() == 2)
+    {
+        part2 = GetChainPart(graph, vertex, ngbs.back(), done);
+    }
+
+    return ConstrutcChain(graph, part1, part2);
+}
+
+std::vector<std::pair<ChainTag, Chain>> GetChains(const IGraphUs &graph)
+{
+    std::vector<std::pair<ChainTag, Chain>> retval;
+    std::vector<Vertex> ngbs;
+    std::set<Vertex> done;
+    for (Vertex v : graph.getVertexRange())
+    {
+        const auto degree = graph.getDegree(v);
+        if (degree == 0)
+        {
+            // Do nothing
+        }
+        else if (!done.contains(v) && degree <= 2)
+        {
+            const auto idAndChain = GetChain(graph, v, done);
+            const auto &chain = idAndChain.second;
+            retval.emplace_back(std::make_pair(
+                ChainTag{idAndChain.first, static_cast<TagEntry>(chain.size()), chain.front(), chain.back()}, chain));
+        }
+        done.insert(v);
+    }
+    str::sort(retval);
+    return retval;
+}
+
+std::pair<Tag, std::vector<Tag>> GenerateTags(const IGraphUs &graph)
+{
+    const auto nVertices = graph.getNumVertices();
+    std::vector<Tag> retval(nVertices);
+
+    const auto chains = GetChains(graph);
+    auto currentItr = chains.begin();
+    std::map<std::pair<ChainId, size_t>, Vertex> chainCounts;
+
+    const auto itrPureCycles = std::find_if_not(
+        currentItr, chains.end(), [](const auto &tagChain) { return tagChain.first.id == ChainId::PureCycle; });
+    while (currentItr != itrPureCycles)
+    {
+        const TagEntry currentSize = currentItr->first.size;
+        const auto itrSameSize = std::find_if_not(currentItr, itrPureCycles, [currentSize](const auto &tagChain) {
+            return tagChain.first.size == currentSize;
+        });
+        TagEntry count = 1;
+        for (; currentItr != itrSameSize; ++currentItr, ++count)
+        {
+            chainCounts[std::make_pair<ChainId, size_t>(ChainId::PureCycle, currentSize)] += 1;
+            for (TagEntry n : Iota::GetRange(currentSize))
+            {
+                // ( ChainId, cycle size, number of cycle with this size, position in cycle )
+                retval[currentItr->second.at(n)] = std::vector<TagEntry>{ChainId::PureCycle, currentSize, count, n};
+            }
+        }
+    }
+
+    const auto itrPurePath = std::find_if_not(
+        currentItr, chains.end(), [](const auto &tagChain) { return tagChain.first.id == ChainId::PurePath; });
+    while (currentItr != itrPurePath)
+    {
+        const TagEntry currentSize = currentItr->first.size;
+        const auto itrSameSize = std::find_if_not(currentItr, itrPurePath, [currentSize](const auto &tagChain) {
+            return tagChain.first.size == currentSize;
+        });
+        TagEntry count = 1;
+        for (; currentItr != itrSameSize; ++currentItr, ++count)
+        {
+            chainCounts[std::make_pair<ChainId, size_t>(ChainId::PurePath, currentSize)] += 1;
+            for (TagEntry n : Iota::GetRange(currentSize))
+            {
+                // ( ChainId, path size, number of path with this size, position in path )
+                retval[currentItr->second.at(n)] = std::vector<TagEntry>{ChainId::PurePath, currentSize, count, n};
+            }
+        }
+    }
+
+    const auto itrAttachedCycle = std::find_if_not(
+        currentItr, chains.end(), [](const auto &tagChain) { return tagChain.first.id == ChainId::AttachedCycle; });
+    while (currentItr != itrAttachedCycle)
+    {
+        const Vertex attachedTo = currentItr->first.attacheFirst;
+        const auto itrSameAttachedTo =
+            std::find_if_not(currentItr, itrAttachedCycle,
+                             [attachedTo](const auto &tagChain) { return tagChain.first.attacheFirst == attachedTo; });
+        while (currentItr != itrSameAttachedTo)
+        {
+            const TagEntry currentSize = currentItr->first.size;
+            const auto itrSameSize =
+                std::find_if_not(currentItr, itrSameAttachedTo,
+                                 [currentSize](const auto &tagChain) { return tagChain.first.size == currentSize; });
+
+            TagEntry count = 1;
+            for (; currentItr != itrSameSize; ++currentItr, ++count)
+            {
+                chainCounts[std::make_pair<ChainId, size_t>(ChainId::AttachedCycle, currentSize)] += 1;
+                for (TagEntry n = 1; n < currentSize; ++n)
+                {
+                    // ( ChainId, cycle size, number of cycle with this size, position in cycle )
+                    retval[currentItr->second.at(n)] =
+                        std::vector<TagEntry>{ChainId::AttachedCycle, currentSize, count, n};
+                }
+                const Vertex root = currentItr->first.attacheFirst;
+                retval[root].push_back(ChainId::AttachedCycle);
+                retval[root].push_back(currentSize);
+            }
+        }
+    }
+
+    const auto itrAttachedPathSingle = std::find_if_not(currentItr, chains.end(), [](const auto &tagChain) {
+        return tagChain.first.id == ChainId::AttachedPathSingle;
+    });
+    while (currentItr != itrAttachedPathSingle)
+    {
+        const Vertex attachedTo = currentItr->first.attacheFirst;
+        const auto itrSameAttachedTo =
+            std::find_if_not(currentItr, itrAttachedPathSingle,
+                             [attachedTo](const auto &tagChain) { return tagChain.first.attacheFirst == attachedTo; });
+        while (currentItr != itrSameAttachedTo)
+        {
+            const TagEntry currentSize = currentItr->first.size;
+            const auto itrSameSize =
+                std::find_if_not(currentItr, itrSameAttachedTo,
+                                 [currentSize](const auto &tagChain) { return tagChain.first.size == currentSize; });
+
+            TagEntry count = 1;
+            for (; currentItr != itrSameSize; ++currentItr, ++count)
+            {
+                chainCounts[std::make_pair<ChainId, size_t>(ChainId::AttachedPathSingle, currentSize)] += 1;
+                for (TagEntry n = 1; n < currentSize; ++n)
+                {
+                    // ( ChainId, path size, number of paths with this size, position in path )
+                    retval[currentItr->second.at(n)] =
+                        std::vector<TagEntry>{ChainId::AttachedPathSingle, currentSize, count, n};
+                }
+                const Vertex root = currentItr->first.attacheFirst;
+                retval[root].push_back(ChainId::AttachedPathSingle);
+                retval[root].push_back(currentSize);
+            }
+        }
+    }
+
+    std::map<VertexPair, std::vector<TagEntry>> pairTags;
+    const auto itrAttachedPathDouble = std::find_if_not(currentItr, chains.end(), [](const auto &tagChain) {
+        return tagChain.first.id == ChainId::AttachedPathDouble;
+    });
+    while (currentItr != itrAttachedPathDouble)
+    {
+        const Vertex attachedTo = currentItr->first.attacheFirst;
+        const auto itrSameAttachedTo =
+            std::find_if_not(currentItr, itrAttachedPathDouble,
+                             [attachedTo](const auto &tagChain) { return tagChain.first.attacheFirst == attachedTo; });
+        while (currentItr != itrSameAttachedTo)
+        {
+            const TagEntry currentSize = currentItr->first.size;
+            const auto itrSameSize =
+                std::find_if_not(currentItr, itrSameAttachedTo,
+                                 [currentSize](const auto &tagChain) { return tagChain.first.size == currentSize; });
+            while (currentItr != itrSameSize)
+            {
+                const Vertex attachedOther = currentItr->first.attacheLast;
+                const auto itrSameAttachedOther =
+                    std::find_if_not(currentItr, itrSameSize, [attachedOther](const auto &tagChain) {
+                        return tagChain.first.attacheLast == attachedOther;
+                    });
+                TagEntry count = 1;
+                for (; currentItr != itrSameAttachedOther; ++currentItr, ++count)
+                {
+                    chainCounts[std::make_pair<ChainId, size_t>(ChainId::AttachedPathDouble, currentSize)] += 1;
+                    for (TagEntry n = 1; n < currentSize - 1; ++n)
+                    {
+                        const auto possym = std::min(n, currentSize - n - 1);
+                        retval[currentItr->second.at(n)] =
+                            std::vector<TagEntry>{ChainId::AttachedPathDouble, currentSize, count, possym};
+                    }
+                    pairTags[VertexPair{currentItr->first.attacheFirst, currentItr->first.attacheLast}].push_back(
+                        currentSize);
+                }
+            }
+        }
+    }
+
+    std::map<Vertex, std::multiset<Tag>> perVertex;
+    for (const auto &itrPair : pairTags)
+    {
+        Tag tag;
+        for (const auto siz : itrPair.second)
+        {
+            tag.push_back(siz);
+        }
+        str::sort(tag);
+        tag.insert(tag.begin(), ChainId::AttachedPathDouble);
+
+        perVertex[itrPair.first[0]].insert(tag);
+        perVertex[itrPair.first[1]].insert(tag);
+    }
+
+    for (const auto &itr : perVertex)
+    {
+        const Vertex v = itr.first;
+        for (const auto &itrTag : itr.second)
+        {
+            retval[v].insert(retval[v].end(), itrTag.begin(), itrTag.end());
+        }
+    }
+
+    Tag graphTag;
+    for (const auto &itr : chainCounts)
+    {
+        graphTag.push_back(itr.first.first);
+        graphTag.push_back(itr.first.second);
+        graphTag.push_back(itr.second);
+    }
+    return {graphTag, retval};
+}
+
+} // namespace
+
+TaggerChains::TaggerChains(const IGraphUs &graph) : m_graph(graph)
+{
+    const auto allTags = GenerateTags(graph);
+    m_graphTag = allTags.first;
+    m_vertexTags = allTags.second;
+    m_vertexGrouping = VertexGrouping(graph.getVertexRange(), VertexLess{*this});
+}
+
+const Tag &TaggerChains::getVertexTag(Vertex v) const
+{
+    return m_vertexTags.at(v);
+}
+
+const Tag &TaggerChains::getGraphTag() const
+{
+    return m_graphTag;
+}
+
+const IGraphUs &TaggerChains::getGraph() const
+{
+    return m_graph;
+}
+
+std::weak_ordering TaggerChains::compareVertexOtherGraph(Vertex vertex0, const IVertexCompare &other,
+                                                         Vertex vertex1) const
+{
+    return getVertexTag(vertex0) <=> dynamic_cast<const TaggerChains &>(other).getVertexTag(vertex1);
+}
+
+std::weak_ordering TaggerChains::compareGraph(const IGraphCompare &otherComparer) const
+{
+    const auto &other = dynamic_cast<const TaggerChains &>(otherComparer);
+    return getGraphTag() <=> other.getGraphTag();
+}
+
+const VertexGrouping &TaggerChains::getVertexGrouping() const
+{
+    return m_vertexGrouping;
+}
+
+// !!!!!!!!!!!!! FACTORY
+
+std::unique_ptr<ICompare> CompareChainsFactory::createCompare(const Graph::IGraphUs &graph) const
+{
+    return std::make_unique<TaggerChains>(graph);
+}

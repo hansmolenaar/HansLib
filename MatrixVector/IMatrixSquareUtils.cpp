@@ -30,7 +30,7 @@ double GetSubDeterminant3x3(const IMatrixSquare &m, int row, int col)
     const int r1 = GetSubMatrixIndexHi3x3(row);
     const int c0 = GetSubMatrixIndexLo3x3(col);
     const int c1 = GetSubMatrixIndexHi3x3(col);
-    return GetDeterminant2x2(m(r0, c0), m(r0, c1), m(r1, c0), m(r1, c1));
+    return GetDeterminant2x2(m.get(r0, c0), m.get(r0, c1), m.get(r1, c0), m.get(r1, c1));
 }
 
 } // namespace
@@ -40,12 +40,12 @@ double GetDeterminant(const IMatrixSquare &m)
     switch (m.GetDimension())
     {
     case 1:
-        return m(0, 0);
+        return m.get(0, 0);
     case 2:
-        return m(0, 0) * m(1, 1) - m(0, 1) * m(1, 0);
+        return m.get(0, 0) * m.get(1, 1) - m.get(0, 1) * m.get(1, 0);
     case 3:
-        return m(0, 0) * GetSubDeterminant3x3(m, 0, 0) - m(1, 0) * GetSubDeterminant3x3(m, 1, 0) +
-               m(2, 0) * GetSubDeterminant3x3(m, 2, 0);
+        return m.get(0, 0) * GetSubDeterminant3x3(m, 0, 0) - m.get(1, 0) * GetSubDeterminant3x3(m, 1, 0) +
+               m.get(2, 0) * GetSubDeterminant3x3(m, 2, 0);
     default:
         throw std::runtime_error("Not implemented");
     }
@@ -63,7 +63,7 @@ double GetDeterminantDerivative(const IMatrixSquare &m, int row, int col)
         const int r = (row + 1) % 2;
         const int c = (col + 1) % 2;
         const double factor = (row + col) % 2 == 0 ? 1.0 : -1.0;
-        return factor * m(r, c);
+        return factor * m.get(r, c);
     }
     case 3: {
         const double factor = (row + col) % 2 == 0 ? 1.0 : -1.0;
@@ -79,7 +79,7 @@ double GetTrace(const IMatrixSquare &matrix)
     double result = 0;
     for (int n = 0; n < matrix.GetDimension(); ++n)
     {
-        result += matrix(n, n);
+        result += matrix.get(n, n);
     }
     return result;
 }
@@ -95,7 +95,7 @@ bool IsOrthogonal(const IMatrixSquare &matrix, double tol)
             double val = 0;
             for (int k = 0; k < dim; ++k)
             {
-                val += matrix(row, k) * matrix(col, k);
+                val += matrix.get(row, k) * matrix.get(col, k);
             }
             const double expect = row == col ? 1 : 0;
             if (std::abs(val - expect) > tol)

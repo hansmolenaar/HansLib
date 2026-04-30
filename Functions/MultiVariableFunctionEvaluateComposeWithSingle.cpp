@@ -15,5 +15,5 @@ int MultiVariableFunctionEvaluateComposeWithSingle::getDimension() const
 double MultiVariableFunctionEvaluateComposeWithSingle::operator()(std::span<const double> x) const
 {
     const double val = (*m_function)(x);
-    return (*m_transform)(val);
+    return m_transform->Evaluate(val);
 }

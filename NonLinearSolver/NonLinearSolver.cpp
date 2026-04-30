@@ -18,14 +18,14 @@ NonLinearSolverStatus NonLinearSolver::Solve(std::span<const double> fx, std::sp
 {
     const auto dim = fx.size();
     Utilities::MyAssert(x.size() == dim);
-    Utilities::MyAssert(GetDimension(m_problem) == dim);
+    Utilities::MyAssert(GetDimension(m_problem) == static_cast<int>(dim));
 
     std::vector<double> rsd(dim);
     std::vector<double> cor(dim);
     MatrixSquare jacobian(static_cast<int>(dim));
 
     // Calculate initial residual
-    m_problem.Evaluate(x, rsd);
+    m_problem.EvaluateFunction(x, rsd);
     std::transform(fx.begin(), fx.end(), rsd.begin(), rsd.begin(), std::minus<double>());
 
     int iter = 0;
@@ -46,7 +46,7 @@ NonLinearSolverStatus NonLinearSolver::Solve(std::span<const double> fx, std::sp
         std::transform(x.begin(), x.end(), cor.begin(), x.begin(), std::plus<double>());
 
         // Calculate residual
-        m_problem.Evaluate(x, rsd);
+        m_problem.EvaluateFunction(x, rsd);
         std::transform(fx.begin(), fx.end(), rsd.begin(), rsd.begin(), std::minus<double>());
 
         // Check convergence

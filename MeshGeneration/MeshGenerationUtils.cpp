@@ -69,7 +69,6 @@ void MeshGeneration::LogBb2(Logger &logger, const BoundingBox<GeomType, GeomDim2
 {
     std::vector<std::string> lines;
     lines.emplace_back(header);
-    bool first = true;
     for (const auto &i : bb.getIntervals())
     {
         std::ostringstream buffer;

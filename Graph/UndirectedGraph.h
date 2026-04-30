@@ -1,28 +1,60 @@
 #pragma once
 
-#include "GraphDefines.h"
+#include "IGraphUs.h"
+#include "Permutation.h"
 
-class UndirectedGraph
+#include <string>
+
+namespace Graph
+{
+
+class UndirectedGraph : public Graph::IGraphUs
 {
   public:
-    explicit UndirectedGraph(GraphVertex numVertices);
-    void addEdge(GraphVertex vertex1, GraphVertex vertex2);
-    GraphVertex getNumVertices() const;
-    GraphEdge getNumEdges() const;
-    std::vector<GraphVertex> getConnectedComponents() const;
-    void setAdjacentVertices(GraphVertex vertex, std::vector<GraphVertex> &result) const;
-    bool areAdjacent(GraphVertex v1, GraphVertex v2) const;
-    GraphVertex getDegree(GraphVertex vertex) const;
-    std::vector<GraphVertex> getDegreeSequence() const;
-    std::vector<GraphVertex> getIsolatedVertices() const;
+    explicit UndirectedGraph(const Graph::IGraphUs &);
+    explicit UndirectedGraph(Vertex, std::string = "");
+    void addEdge(Vertex, Vertex);
+    void addEdge(VertexPair);
+    void addWalk(std::initializer_list<Vertex> walk);
+
+    Vertex getNumVertices() const override;
+    Edge getNumEdges() const override;
+    void setAdjacentVertices(Vertex vertex, std::vector<Vertex> &) const override;
+    bool areAdjacent(Vertex, Vertex) const override;
+    Vertex getDegree(Vertex) const override;
+    std::vector<Vertex> getConnectedComponents() const override;
+
+    std::string getName() const override;
+
+    std::vector<Vertex> getDegreeSequence() const;
+    std::vector<Vertex> getSortedDegreeSequence() const;
+    std::vector<Vertex> getIsolatedVertices() const;
+    std::string toString() const;
+
+    static UndirectedGraph CreatePermuted(const IGraphUs &, const Permutation &permut);
+    static UndirectedGraph CreatePermuted(const IGraphUs &, std::initializer_list<Permutation::Entry>);
+    static UndirectedGraph CreateComplement(const IGraphUs &);
+    static UndirectedGraph CreateLineGraph(const IGraphUs &);
+    static UndirectedGraph CreateDisjointedUnion(const IGraphUs &, const IGraphUs &);
+
+    // Remove all edges between vertices in the same group
+    static UndirectedGraph CreateEdgesOmitted(const IGraphUs &, const std::vector<std::vector<Vertex>> &);
+
+    // Only keep edges between vertices in the same group
+    static UndirectedGraph CreateEdgesKeep(const IGraphUs &, const std::vector<std::vector<Vertex>> &);
+
+    static UndirectedGraph CreateRandomShuffled(const IGraphUs &, Permutation::Entry);
 
     struct CyclesAndPaths
     {
-        std::vector<std::vector<GraphVertex>> Cycles;
-        std::vector<std::vector<GraphVertex>> Paths;
+        std::vector<std::vector<Vertex>> Cycles;
+        std::vector<std::vector<Vertex>> Paths;
     };
     CyclesAndPaths SplitInCyclesAndPaths() const;
 
   private:
-    boost::adjacency_list<boost::listS, boost::vecS, boost::undirectedS, GraphVertex, GraphEdge> m_graph;
+    boost::adjacency_list<boost::listS, boost::vecS, boost::undirectedS, Vertex, Edge> m_graph;
+    std::string m_name;
 };
+
+} // namespace Graph

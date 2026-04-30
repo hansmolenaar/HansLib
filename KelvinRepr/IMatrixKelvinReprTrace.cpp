@@ -26,14 +26,14 @@ std::vector<bool> GenerateActive(int geomdim)
 
 double Eval(int geomdim, std::span<const double> x)
 {
-    Utilities::MyAssert(TriangleNumber(geomdim) == x.size());
+    Utilities::MyAssert(TriangleNumber(geomdim) == static_cast<int>(x.size()));
     return std::accumulate(x.begin(), x.begin() + geomdim, 0.0);
 }
 
 void Deriv(int geomdim, std::span<const double> x, std::span<double> df)
 {
-    const int siz = TriangleNumber(geomdim);
-    Utilities::MyAssert(siz == x.size() && siz == df.size());
+    const auto siz = TriangleNumber(geomdim);
+    Utilities::MyAssert(siz == static_cast<int>(x.size()) && siz == static_cast<int>(df.size()));
     std::fill(df.begin() + geomdim, df.end(), 0.0);
     std::fill_n(df.begin(), geomdim, 1.0);
 }

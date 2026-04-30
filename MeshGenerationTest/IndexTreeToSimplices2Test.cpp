@@ -29,7 +29,6 @@ void testOrientation(const Triangles triangles)
 TEST(IndexTreeToSimplices2Test, RootToVtk)
 {
     IndexTree<2> tree;
-    const auto &root = tree.getRoot();
 
     const auto triangles = IndexTreeToSimplices2::Create(tree);
     ASSERT_EQ(2, triangles.size());
@@ -46,7 +45,6 @@ TEST(IndexTreeToSimplices2Test, RootToVtk)
 TEST(IndexTreeToSimplices2Test, Level1ToVtk)
 {
     IndexTree<2> tree;
-    const auto &root = tree.getRoot();
     RefineToMaxLevel<IndexTreeToSimplices2::GeometryDimension> doRefine1{1};
     tree.refineLeaves(doRefine1);
 

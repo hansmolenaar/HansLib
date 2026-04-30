@@ -46,15 +46,15 @@ bool MultiVariableRealValuedFunction::HasDerivative() const
 
 double MultiVariableRealValuedFunction::Evaluate(std::span<const double> x) const
 {
-    Utilities::MyAssert(x.size() == GetDomainDimension());
+    Utilities::MyAssert(static_cast<int>(x.size()) == GetDomainDimension());
     return m_function(x);
 }
 
 void MultiVariableRealValuedFunction::Derivative(std::span<const double> x, std::span<double> dfdx) const
 {
     const int dim = GetDomainDimension();
-    Utilities::MyAssert(x.size() == dim);
-    Utilities::MyAssert(dfdx.size() == dim);
+    Utilities::MyAssert(static_cast<int>(x.size()) == dim);
+    Utilities::MyAssert(static_cast<int>(dfdx.size()) == dim);
     std::vector<double> deriv(dim);
     m_derivative(x, deriv);
     for (int n = 0; n < dim; ++n)

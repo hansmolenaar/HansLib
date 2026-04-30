@@ -36,7 +36,6 @@ TEST(UniquePointCollectionBinningTest, Delete)
     UniquePointCollectionBinning<1> collection(predicate, std::vector<Point1>{Point1{1.0}, Point1{2.0}});
     ASSERT_EQ(collection.getNumPoints(), 2);
 
-    const auto point0 = collection.getPoint(0);
     const auto point1 = collection.getPoint(1);
 
     collection.deletePoint(0);

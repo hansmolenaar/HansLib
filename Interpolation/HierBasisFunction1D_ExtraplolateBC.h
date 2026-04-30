@@ -9,7 +9,7 @@ class HierBasisFunction1D_ExtraplolateBC : public IHierBasisFunction1D
 {
   public:
     explicit HierBasisFunction1D_ExtraplolateBC(HierLevelIndex);
-    double operator()(double x) const override;
+    double Evaluate(double x) const override;
     HierLevelIndex getLevelIndex() const override;
     Interval<double> getSupport() const override;
 

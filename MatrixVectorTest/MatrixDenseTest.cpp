@@ -13,7 +13,7 @@ TEST(MatrixDenseTest, TestConstructor)
 TEST(MatrixDenseTest, TestInterface)
 {
     MatrixDense mat(2, 3);
-    IMatrixTest::TestConstInterface(mat);
+    IMatrixTest::TestInterface(mat, true);
 }
 
 TEST(MatrixDenseTest, TestGetSet)
@@ -40,4 +40,26 @@ TEST(MatrixDenseTest, TestGetSet)
             ASSERT_EQ(val, mat(row, col));
         }
     }
+}
+
+TEST(MatrixDenseTest, TimesVector)
+{
+    const int nRow = 2;
+    const int nCol = 3;
+    MatrixDense mat(nRow, nCol);
+    double val = 0.0;
+    for (int row = 0; row < nRow; ++row)
+    {
+        for (int col = 0; col < nCol; ++col)
+        {
+            val += 1.0;
+            mat(row, col) = val;
+        }
+    }
+
+    const std::vector<double> vecin{1, 2, 3};
+    std::vector<double> vecout(2);
+    mat.timesVector(vecin, vecout);
+    ASSERT_NEAR(vecout.at(0), 14.0, 1.0e-10);
+    ASSERT_NEAR(vecout.at(1), 32.0, 1.0e-10);
 }

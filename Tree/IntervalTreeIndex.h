@@ -54,7 +54,7 @@ template <size_t N> class Index
     friend std::ostream &operator<<(std::ostream &os, const Index &ind)
     {
         os << "(" << *(ind.m_factory1(ind.m_keys[0]));
-        for (int n = 1; n < N; ++n)
+        for (size_t n = 1; n < N; ++n)
         {
             os << ", " << *(ind.m_factory1(ind.m_keys[n]));
         }
@@ -136,10 +136,9 @@ template <size_t N> std::array<typename Index<N>::Key, NumKids<N>> Index<N>::ref
     Index1::Key ref[N][2];
 
     // Refine each of the indices
-    for (int d = 0; d < N; ++d)
+    for (size_t d = 0; d < N; ++d)
     {
         const Index1::Key key1 = m_keys[d];
-        const Index1 *indx1 = m_factory1(key1);
         const auto kids = Index1::refine(key1);
         for (size_t n = 0; n < kids.size(); ++n)
         {

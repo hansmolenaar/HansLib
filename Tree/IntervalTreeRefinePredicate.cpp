@@ -4,6 +4,13 @@
 
 #include <cmath>
 
+namespace IntervalTree
+{
+template class RefineIfOverlaps<1>;
+template class RefineIfOverlaps<2>;
+template class RefineIfOverlaps<3>;
+} // namespace IntervalTree
+
 using namespace IntervalTree;
 
 template <size_t N> bool RefineIfOverlaps<N>::operator()(const Index<N> &indx) const
@@ -13,7 +20,3 @@ template <size_t N> bool RefineIfOverlaps<N>::operator()(const Index<N> &indx) c
     const auto overlap = BoundingBox<double, N>::TryGetOverlap(cellBb, BbGiven);
     return overlap.has_value();
 }
-
-template class RefineIfOverlaps<1>;
-template class RefineIfOverlaps<2>;
-template class RefineIfOverlaps<3>;

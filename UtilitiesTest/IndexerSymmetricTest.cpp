@@ -4,12 +4,12 @@
 
 namespace
 {
-void Check1(const IndexerSymmetric &indexer)
+void Check1(const IndexerSymmetric<unsigned int> &indexer)
 {
     ASSERT_EQ(0, indexer.ToFlat(0, 0));
 }
 
-void Check2(const IndexerSymmetric &indexer)
+void Check2(const IndexerSymmetric<unsigned int> &indexer)
 {
     Check1(indexer);
     ASSERT_EQ(1, indexer.ToFlat(0, 1));
@@ -17,7 +17,7 @@ void Check2(const IndexerSymmetric &indexer)
     ASSERT_EQ(2, indexer.ToFlat(1, 1));
 }
 
-void Check3(const IndexerSymmetric &indexer)
+void Check3(const IndexerSymmetric<unsigned int> &indexer)
 {
     Check2(indexer);
     ASSERT_EQ(3, indexer.ToFlat(0, 2));
@@ -28,7 +28,7 @@ void Check3(const IndexerSymmetric &indexer)
     ASSERT_EQ(4, indexer.ToFlat(2, 1));
 }
 
-void Check4(const IndexerSymmetric &indexer)
+void Check4(const IndexerSymmetric<unsigned int> &indexer)
 {
     Check3(indexer);
     ASSERT_EQ(6, indexer.ToFlat(0, 3));
@@ -51,10 +51,10 @@ TEST(IndexerSymmetricTest, Test1)
 {
     const IndexerSymmetric indexer(1);
     ASSERT_EQ(0, indexer.ToFlat(0, 0));
-    ASSERT_EQ(0, indexer.ToFlat({0, 0}));
+    ASSERT_EQ(0, indexer.toFlat({0, 0}));
 
-    ASSERT_ANY_THROW(indexer.ToFlat({0}););
-    ASSERT_ANY_THROW(indexer.ToFlat({0, 0, 0}););
+    ASSERT_ANY_THROW(indexer.toFlat({0}););
+    ASSERT_ANY_THROW(indexer.toFlat({0, 0, 0}););
     ASSERT_ANY_THROW(indexer.ToFlat(-1, 0););
     ASSERT_ANY_THROW(indexer.ToFlat(0, -1););
     ASSERT_ANY_THROW(indexer.ToFlat(1, 0););
@@ -63,20 +63,23 @@ TEST(IndexerSymmetricTest, Test1)
 
 TEST(IndexerSymmetricTest, Test2)
 {
-    const IndexerSymmetric indexer(2);
+    const IndexerSymmetric<unsigned int> indexer(2);
 
-    ASSERT_EQ(2, indexer.ToFlat({1, 1}));
+    ASSERT_EQ(2, indexer.toFlat({1, 1}));
     Check2(indexer);
+    ASSERT_EQ(indexer.getFlatSize(), 3);
 }
 
 TEST(IndexerSymmetricTest, Test3)
 {
-    const IndexerSymmetric indexer(3);
+    const IndexerSymmetric<unsigned int> indexer(3);
     Check3(indexer);
+    ASSERT_EQ(indexer.getFlatSize(), 6);
 }
 
 TEST(IndexerSymmetricTest, Test4)
 {
-    const IndexerSymmetric indexer(4);
+    const IndexerSymmetric<unsigned int> indexer(4);
     Check4(indexer);
+    ASSERT_EQ(indexer.getFlatSize(), 10);
 }

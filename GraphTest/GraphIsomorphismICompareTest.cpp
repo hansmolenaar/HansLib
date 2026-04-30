@@ -1,0 +1,179 @@
+#include <gtest/gtest.h>
+
+#include "GraphIsomorphismICompareTest.h"
+
+#include "GraphIsomorphismGrouping.h"
+#include "GraphIsomorphismUtils.h"
+#include "UndirectedGraphFromG6.h"
+#include "UndirectedGraphLibrary.h"
+#include "UniquePointer.h"
+
+using namespace Graph;
+using namespace GraphTest;
+using namespace GraphIsomorphism;
+using namespace Utilities;
+
+namespace
+{
+
+void CheckGraphCompareSymmetry(const IGraphCompare &compare0, const IGraphCompare &compare1)
+{
+    const auto cmp0 = compare0.compareGraph(compare1);
+    const auto cmp1 = compare1.compareGraph(compare0);
+    if (cmp0 == std::weak_ordering::equivalent)
+    {
+        ASSERT_EQ(cmp1, std::weak_ordering::equivalent);
+    }
+    else if (cmp0 == std::weak_ordering::less)
+    {
+        ASSERT_EQ(cmp1, std::weak_ordering::greater);
+    }
+    else if (cmp0 == std::weak_ordering::greater)
+    {
+        ASSERT_EQ(cmp1, std::weak_ordering::less);
+    }
+    else
+    {
+        ASSERT_TRUE(false);
+    }
+}
+
+void CheckSymmetryAgainstList(ICompareFactory &factory, const IGraphUs &graph,
+                              const std::vector<const IGraphCompare *> &list)
+{
+    const auto compare = factory.createCompare(graph);
+    const auto &graphCompare = *compare->getGraphCompare();
+    ASSERT_EQ(graphCompare.compareGraph(graphCompare), std::weak_ordering::equivalent);
+    for (const auto *p : list)
+    {
+        CheckGraphCompareSymmetry(*p, *compare->getGraphCompare());
+    }
+}
+
+void CheckListGraphCompareSymmetry(ICompareFactory &factory, const std::vector<const IGraphCompare *> &list)
+{
+    // Test symmetry
+    CheckSymmetryAgainstList(factory, *UndirectedGraphLibrary::Get_Null(), list);
+    CheckSymmetryAgainstList(factory, *UndirectedGraphLibrary::Get_Singleton(), list);
+    CheckSymmetryAgainstList(factory, *UndirectedGraphLibrary::Get_Path(2), list);
+    CheckSymmetryAgainstList(factory, *UndirectedGraphLibrary::Get_Cycle(3), list);
+}
+
+void CheckListGraphCompare(ICompareFactory &factory, const std::vector<const IGraphCompare *> &gcomparers,
+                           Tag expectGraphTagMultiplicities, bool printMultiples)
+{
+    CheckListGraphCompareSymmetry(factory, gcomparers);
+
+    auto cmp = [](const IGraphCompare *p1, const IGraphCompare *p2) {
+        return p1->compareGraph(*p2) == std::weak_ordering::less;
+    };
+    const Grouping<const IGraphCompare *> grouping(gcomparers, cmp);
+    const auto tag = CondenseSizeSequence(grouping.getGroupSizes());
+    ASSERT_EQ(tag, expectGraphTagMultiplicities);
+    if (printMultiples)
+    {
+        for (const auto &group : grouping())
+        {
+            if (group.size() > 1)
+            {
+                std::cout << "Group of size " << group.size() << "\n";
+                for (const auto &g : group)
+                {
+                    std::cout << g->getGraph().getName() << "\n";
+                    // std::cout << g->getVertexGrouping() << "\n";
+                }
+                std::cout << "\n\n";
+            }
+        }
+    }
+}
+
+void CheckListVertexCompare(ICompareFactory &factory, const std::vector<std::unique_ptr<IGraphUs>> &graphs)
+{
+    for (const auto &graph : graphs)
+    {
+        CheckVertexCompareConsistency(*graph, factory);
+    }
+}
+
+} // namespace
+
+void GraphTest::CheckList(ICompareFactory &factory, const std::vector<std::unique_ptr<Graph::IGraphUs>> &graphs,
+                          Tag expectGraphTagMultiplicities, bool printMultiples)
+{
+    const auto graph0 = UndirectedGraphLibrary::Get_Null();
+    const auto compare0 = factory.createCompare(*graph0);
+    ASSERT_EQ(compare0->getGraph().getNumVertices(), 0);
+
+    std::vector<std::unique_ptr<ICompare>> comparers;
+    str::transform(graphs, std::back_inserter(comparers),
+                   [&factory](const auto &upg) { return factory.createCompare(*upg); });
+
+    if (compare0->getGraphCompare() != nullptr)
+    {
+        const std::vector<const IGraphCompare *> graphComparers = getCastPointers<const IGraphCompare>(comparers);
+        CheckListGraphCompare(factory, graphComparers, expectGraphTagMultiplicities, printMultiples);
+    }
+    else
+    {
+        ASSERT_TRUE(expectGraphTagMultiplicities.empty());
+    }
+
+    if (compare0->getVertexCompare() != nullptr)
+    {
+        CheckListVertexCompare(factory, graphs);
+    }
+}
+
+void GraphTest::CheckList(ICompareFactory &factory, const std::vector<std::string> &g6list,
+                          Tag expectGraphTagMultiplicities, bool printMultiples)
+{
+    const auto graphs = UndirectedGraphFromG6::getGraphs(g6list);
+    CheckList(factory, graphs, expectGraphTagMultiplicities, printMultiples);
+}
+
+void GraphTest::CheckVertexCompareConsistency(const IGraphUs &graph, GraphIsomorphism::ICompareFactory &factory,
+                                              int expectNumUniqueVertices)
+{
+    const Permutation::Entry numPermutations = 10;
+    const auto comparer = factory.createCompare(graph);
+    const auto *vertexCompare = comparer->getVertexCompare();
+    if (vertexCompare == nullptr)
+    {
+        return;
+    }
+    const VertexGrouping &grouping = vertexCompare->getVertexGrouping();
+    ASSERT_EQ(graph.getNumVertices(), grouping.size());
+
+    if (expectNumUniqueVertices >= 0)
+    {
+        ASSERT_EQ(grouping.countUnique(), expectNumUniqueVertices);
+    }
+
+    auto groupSizes = vertexCompare->getVertexGrouping().getGroupSizes();
+    str::sort(groupSizes);
+    for (auto n : Iota::GetRange(numPermutations))
+    {
+        const UndirectedGraph graphPermuted = UndirectedGraph::CreateRandomShuffled(graph, n);
+        const auto gcomparerPermuted = factory.createCompare(graphPermuted);
+        const auto *vertexComparePermuted = gcomparerPermuted->getVertexCompare();
+        const VertexGrouping groupingPermuted(graph.getVertexRange(), VertexLess{*vertexComparePermuted});
+        auto groupSizesPermuted = groupingPermuted.getGroupSizes();
+        str::sort(groupSizesPermuted);
+        ASSERT_EQ(groupSizes, groupSizesPermuted);
+        ASSERT_EQ(grouping.countUnique(), groupingPermuted.countUnique());
+    }
+}
+
+void GraphTest::CheckComparerBasics(GraphIsomorphism::ICompareFactory &factory, Tag expectGraphTagMultiplicities)
+{
+    // Test some tiny graphs
+    auto graphs = UndirectedGraphFromG6::getGraphs(UndirectedGraphFromG6::getListNumVertices_3());
+    graphs.emplace_back(UndirectedGraphLibrary::Get_Null());
+    graphs.emplace_back(UndirectedGraphLibrary::Get_Singleton());
+    graphs.emplace_back(UndirectedGraphLibrary::Get_Path(2));
+    graphs.emplace_back(UndirectedGraphLibrary::Get_DisconnectedGraph(2));
+    graphs.emplace_back(UndirectedGraphLibrary::Get_Cycle(3));
+
+    CheckList(factory, graphs, expectGraphTagMultiplicities);
+}

@@ -25,7 +25,7 @@ ActivePotentials getActiveFields(int clusterSize, SubSetPotentials &potentials)
         if (count > 1 && count <= clusterSize)
             active.push_back(ptr);
     }
-    if (active.size() < clusterSize)
+    if (static_cast<int>(active.size()) < clusterSize)
         active.clear();
     return active;
 }
@@ -67,12 +67,12 @@ bool FindCluster(int clusterSize, SubSetPotentials &potentials)
             std::set_union(allValues.begin(), allValues.end(), potValues.begin(), potValues.end(),
                            std::back_inserter(unionValues));
             allValues = unionValues;
-            if (allValues.size() > clusterSize)
+            if (static_cast<int>(allValues.size()) > clusterSize)
                 break;
         }
-        if (allValues.size() < clusterSize)
+        if (static_cast<int>(allValues.size()) < clusterSize)
             throw MyException("FindCluster should not happen");
-        if (allValues.size() == clusterSize)
+        if (static_cast<int>(allValues.size()) == clusterSize)
         {
             for (auto *p : potentials)
             {
@@ -127,9 +127,6 @@ bool SubSetPotentialsSweepSingles::operator()(SubSetPotentials &potentials)
             active.push_back(pot);
         }
     }
-
-    if (unsetMe.empty())
-        anyChange;
 
     for (auto pot : active)
     {

@@ -28,7 +28,7 @@ template <typename T> MultiIndex<T> MultiIndex<T>::Create(std::span<const T> dim
     return MultiIndex<T>(std::move(myDimensions));
 }
 
-template <typename T> size_t MultiIndex<T>::getNumDimensions() const
+template <typename T> T MultiIndex<T>::getNumberOfIndices() const
 {
     return m_dimensions.size();
 }
@@ -46,18 +46,18 @@ template <typename T> T MultiIndex<T>::at(size_t n) const
 template <typename T> void MultiIndex<T>::toMultiplet(size_t flat, std::span<T> multiplet) const
 {
     m_checkFlat.check(static_cast<T>(flat));
-    if (multiplet.size() != getNumDimensions())
+    if (static_cast<T>(multiplet.size()) != getNumberOfIndices())
     {
         std::string msg = "MultiIndex<T>::toMultiplet incorrect input dimension ";
         msg += std::to_string(multiplet.size());
-        msg += " expeced " + std::to_string(getNumDimensions());
+        msg += " expeced " + std::to_string(getNumberOfIndices());
         throw MyException(msg);
     }
 
     auto *data = multiplet.data();
 
     // Loop backwards!
-    for (int d = static_cast<int>(getNumDimensions() - 1); d >= 0; --d)
+    for (int d = static_cast<int>(getNumberOfIndices() - 1); d >= 0; --d)
     {
         T index = static_cast<T>(flat) / m_factors[d];
         *data = index;
@@ -67,9 +67,14 @@ template <typename T> void MultiIndex<T>::toMultiplet(size_t flat, std::span<T> 
     std::reverse(multiplet.begin(), multiplet.end());
 }
 
+template <typename T> size_t MultiIndex<T>::toFlat(std::initializer_list<T> multiplet) const
+{
+    return toFlat(std::span<const T>(multiplet));
+}
+
 template <typename T> size_t MultiIndex<T>::toFlat(std::span<const T> multiplet) const
 {
-    Utilities::MyAssert(multiplet.size() == getNumDimensions());
+    Utilities::MyAssert(static_cast<T>(multiplet.size()) == getNumberOfIndices());
     size_t result = 0;
     size_t count = 0;
     for (auto indx : multiplet)

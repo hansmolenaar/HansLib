@@ -169,7 +169,6 @@ const ConnectedFields &FieldInfoStatic::GetSortedConnectedFields(FieldIndex fiel
         for (FieldIndex f : getAllFields())
         {
             sameRowColBox.clear();
-            const auto &info = Instance().at(f);
             for (auto type : RowColBoxTypeAll)
             {
                 const auto index = FieldToRowColBox(type, f);

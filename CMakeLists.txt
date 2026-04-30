@@ -1,9 +1,14 @@
 cmake_minimum_required(VERSION 3.10)
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -Wno-long-long -pedantic")
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -Wall -Wno-long-long -pedantic")
+
 set(CMAKE_COMPILE_WARNING_AS_ERROR ON)
 set(BUILD_SHARED_LIBS OFF)
 set (CMAKE_CXX_STANDARD 23)
+set(CMAKE_EXPORT_COMPILE_COMMANDS "ON")
 
+#Boost
 set(BOOST_ROOT "/home/hans/src/boost_1_91_0")
 #find_package( Boost REQUIRED COMPONENTS program_options regex )
 set(Boost_USE_STATIC_LIBS OFF) 
@@ -14,11 +19,15 @@ message("BOOST_ROOT " ${BOOST_ROOT})
 find_package(Boost REQUIRED)
 message("Boost_INCLUDE_DIRS " ${Boost_INCLUDE_DIRS})
 
+# Eigen
+set(Eigen_INCLUDE_DIRS "/home/hans/src/eigen-5.0.0")
+message("Eigen_INCLUDE_DIRS" ${Eigen_INCLUDE_DIRS})
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
 set(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR}/bin)
 set(CMAKE_INCLUDE_DIR ${CMAKE_SOURCE_DIR})
 
+message("CMAKE_CXX_FLAGS " ${CMAKE_CXX_FLAGS})
 message("CMAKE_BINARY_DIR " ${CMAKE_BINARY_DIR})
 message("CMAKE_SOURCE_DIR " ${CMAKE_SOURCE_DIR})
 message("CMAKE_INCLUDE_DIR " ${CMAKE_INCLUDE_DIR})

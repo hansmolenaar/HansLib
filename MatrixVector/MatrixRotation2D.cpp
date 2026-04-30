@@ -24,7 +24,7 @@ int MatrixRotation2D::GetDimension() const
     return 2;
 }
 
-double MatrixRotation2D::operator()(int row, int col) const
+double MatrixRotation2D::get(int row, int col) const
 {
     return m_matrix(row, col);
 }
@@ -39,7 +39,7 @@ MatrixRotation2D::MatrixRotation2D(double angle) : m_matrix(2, 2)
     m_matrix(1, 0) = sinx;
 }
 
-void MatrixRotation2D::Transform(std::span<const double> vin, std::span<double> vout) const
+void MatrixRotation2D::timesVector(std::span<const double> vin, std::span<double> vout) const
 {
     MatrixTimesVector(m_matrix, vin, vout);
 }

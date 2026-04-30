@@ -52,10 +52,33 @@ TEST(FunctorTest, AreClose)
 
 TEST(FunctorTest, AreCloseVectors)
 {
+    const std::vector<double> x{1.0, 2.0};
+    const std::vector<double> y{1.0, 3.0};
+    constexpr Functors::AreClose areClose;
+    ASSERT_TRUE(areClose(x, x));
+    ASSERT_TRUE(areClose(y, y));
+    ASSERT_FALSE(areClose(x, y));
+    ASSERT_FALSE(areClose(y, x));
+}
+
+TEST(FunctorTest, VectorDoubleLess)
+{
     constexpr Functors::VectorDoubleLess less;
     const std::vector<double> x{1.0, 2.0};
     const std::vector<double> y{1.0, 3.0};
     ASSERT_TRUE(less(x, y));
     ASSERT_FALSE(less(y, x));
     ASSERT_FALSE(less(x, x));
+}
+
+TEST(FunctorTest, SumOfSquares1)
+{
+    const std::vector<double> x{3.0, 4.0};
+    ASSERT_NEAR(Functors::SumOfSquares()(x), 25, 1.0e-10);
+}
+
+TEST(FunctorTest, SumOfSquares2)
+{
+    const std::vector<int> x{3, 4};
+    ASSERT_EQ(Functors::SumOfSquares()(x), 25);
 }

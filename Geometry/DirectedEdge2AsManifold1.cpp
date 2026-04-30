@@ -1,9 +1,12 @@
 #include "DirectedEdge2AsManifold1.h"
 #include "DirectedEdgeUtils.h"
 
-using namespace Geometry;
-
+namespace Geometry
+{
 template class DirectedEdge2AsManifold1<double>;
+}
+
+using namespace Geometry;
 
 template <typename T>
 DirectedEdge2AsManifold1<T>::DirectedEdge2AsManifold1(DirectedEdge<T, GeomDim2> edge, std::string name)

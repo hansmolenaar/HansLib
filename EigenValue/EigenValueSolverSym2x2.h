@@ -1,5 +1,6 @@
 #pragma once
 
+#include "EigenSolution.h"
 #include "MultiVariableRealValuedFunction.h"
 #include <array>
 #include <span>
@@ -13,11 +14,11 @@ class EigenValueSolverSym2x2 : public IRealFunction
     int GetRangeDimension() const override;
     int GetDomainDimension() const override;
     bool DerivativeAlwaysZero(int eqn, int var) const override;
-    void Evaluate(std::span<const double> x, std::span<double> y) const override;
+    void EvaluateFunction(std::span<const double> x, std::span<double> y) const override;
     void Derivative(std::span<const double> x, IMatrix &dfdx) const override;
     bool HasDerivative() const override;
 
-    static void CalculateEigenvalues2x2(const MatrixKelvinRepr2 &, std::span<double>);
+    static EigenSolution CalculateEigenvalues2x2(const MatrixKelvinRepr2 &);
 };
 
 namespace EigenValueSolverSym2x2Utils

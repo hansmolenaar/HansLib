@@ -6,8 +6,12 @@
 CMakeCache.txt
 CTestTestfile.cmake
 
+compile_commands.json 
+
 Makefile
 */Makefile
 
 bin/
 CMakeFiles/
+
+*/.gdbinit

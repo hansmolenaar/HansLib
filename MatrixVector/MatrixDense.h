@@ -5,6 +5,7 @@
 
 #include "IMatrixSquare.h"
 #include "IndexerRowMajor.h"
+#include <Eigen/Dense>
 
 class MatrixDense : public IMatrix
 {
@@ -14,10 +15,13 @@ class MatrixDense : public IMatrix
     int GetRowDimension() const override;
     int GetColDimension() const override;
 
-    double operator()(int, int) const override;
-    double &operator()(int, int) override;
+    double operator()(int, int) const;
+    double &operator()(int, int);
+    void set(int, int, double) override;
+    double get(int, int) const override;
+
+    void timesVector(std::span<const double>, std::span<double>) const override;
 
   private:
-    IndexerRowMajor<int> m_indexer;
-    std::vector<double> m_entries;
+    Eigen::MatrixXd m_matrix;
 };

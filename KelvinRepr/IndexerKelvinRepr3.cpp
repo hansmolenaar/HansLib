@@ -13,7 +13,7 @@ IndexerKelvinRepr3::IndexerKelvinRepr3()
     // Empty
 }
 
-size_t IndexerKelvinRepr3::ToFlat(std::initializer_list<int> ijk) const
+size_t IndexerKelvinRepr3::toFlat(std::initializer_list<int> ijk) const
 {
     Utilities::MyAssert(2 == ijk.size());
     const int row = *ijk.begin();

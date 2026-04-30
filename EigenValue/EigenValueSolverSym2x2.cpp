@@ -63,7 +63,7 @@ bool EigenValueSolverSym2x2::HasDerivative() const
 
 // ( a c )
 // ( c b )
-void EigenValueSolverSym2x2::Evaluate(std::span<const double> x, std::span<double> eigenValues) const
+void EigenValueSolverSym2x2::EvaluateFunction(std::span<const double> x, std::span<double> eigenValues) const
 {
     Utilities::MyAssert(x.size() == 3);
     Utilities::MyAssert(eigenValues.size() == 2);
@@ -94,20 +94,22 @@ void EigenValueSolverSym2x2::Derivative(std::span<const double> x, IMatrix &dfdx
 
     for (int c = 0; c < 3; ++c)
     {
-        dfdx(0, c) = -sqrtDetDeriv * detDeriv[c];
-        dfdx(1, c) = sqrtDetDeriv * detDeriv[c];
+        dfdx.set(0, c, -sqrtDetDeriv * detDeriv[c]);
+        dfdx.set(1, c, sqrtDetDeriv * detDeriv[c]);
     }
 
     for (int n = 0; n < 2; ++n)
     {
-        dfdx(n, 0) += 1;
-        dfdx(n, 1) += 1;
+        dfdx.add(n, 0, 1.0);
+        dfdx.add(n, 1, 1.0);
     }
 
     dfdx *= 0.5;
 }
 
-void EigenValueSolverSym2x2::CalculateEigenvalues2x2(const MatrixKelvinRepr2 &matrix, std::span<double> eigenValues)
+EigenSolution EigenValueSolverSym2x2::CalculateEigenvalues2x2(const MatrixKelvinRepr2 &matrix)
 {
-    EigenValueSolverSym2x2().Evaluate(matrix.Vector(), eigenValues);
+    std::array<double, 2> eigenValues;
+    EigenValueSolverSym2x2().EvaluateFunction(matrix.Vector(), eigenValues);
+    return EigenSolution{eigenValues};
 }

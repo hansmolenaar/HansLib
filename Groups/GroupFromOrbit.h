@@ -46,7 +46,7 @@ std::unique_ptr<IFiniteGroup> GroupFromOrbit::Create(
             if (found == orbit.end())
                 return {};
             const GroupElement g = SafeCastToGroupElement(std::distance(orbit.begin(), found));
-            const auto pos = indexer->ToFlat({g0, g1});
+            const auto pos = indexer->toFlat({g0, g1});
             elements.at(pos) = g;
         }
     }

@@ -19,7 +19,8 @@ TEST(SolverSweepBiValueLinksTest, MyFirstBoostGraph)
     struct Edge
     {
     };
-    using SudokuGraph = Graph<Vertex, Edge>;
+
+    using SudokuGraph = boost::adjacency_list<boost::listS, boost::vecS, boost::undirectedS, Vertex, Edge>;
 
     constexpr int numVertices = 4;
     SudokuGraph g;
@@ -35,7 +36,6 @@ TEST(SolverSweepBiValueLinksTest, MyFirstBoostGraph)
     std::vector<int> actual;
     for (const auto v : boost::make_iterator_range(vertices(g)))
     {
-        const auto &data = g[v];
         actual.push_back(g[v].vertexId);
     }
 
@@ -77,7 +77,7 @@ TEST(SolverSweepBiValueLinksTest, ColoringAndMultipleComponents)
     struct Edge
     {
     };
-    using SudokuGraph = Graph<Vertex, Edge>;
+    using SudokuGraph = boost::adjacency_list<boost::listS, boost::vecS, boost::undirectedS, Vertex, Edge>;
 
     constexpr int numVertices = 5;
     SudokuGraph g;
@@ -123,7 +123,7 @@ TEST(SolverSweepBiValueLinksTest, GetBiValueFields)
     const Diagram diagram = TestModels::getBiValue1();
     auto potentials = diagram.getPotentials();
     SolverSweepTrivial sweep;
-    const auto status = sweep(potentials);
+    sweep(potentials);
     const auto start = potentials.toString();
     ASSERT_EQ(potentials.getNumSingles(), 53);
 

@@ -9,7 +9,7 @@ IterativeMinimizationConvergenceStatus IterativeMinimizationConvergenceCritMaxSt
     const std::vector<IterativeMinimizationStep> &steps) const
 {
     // Note, this is tested after refinement.
-    if (steps.size() + 1 > m_maxStep)
+    if (static_cast<int>(steps.size()) + 1 > m_maxStep)
     {
         return MaxIterExceeded;
     }

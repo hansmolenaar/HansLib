@@ -22,18 +22,15 @@ double RandomNumber()
     return 2 * (randomNormalized - 0.5);
 }
 
-void CheckCalculationSingleMatrix(const MatrixKelvinRepr3 &matrix,
-                                  const std::span<const double> &expectedSortedEigenValues, const bool checkDerivatives,
-                                  const double del)
+void CheckCalculationSingleMatrix(const MatrixKelvinRepr3 &matrix, std::span<const double> expectedSortedEigenValues,
+                                  const bool checkDerivatives, const double del)
 {
     const double tol = 1.0e-6;
-    std::vector<double> eigenvalues(3);
-    EigenValueSolverSym3x3::CalculateEigenvalues3x3(matrix, eigenvalues);
-    std::sort(eigenvalues.begin(), eigenvalues.end());
+    const auto solution = EigenValueSolverSym3x3::CalculateEigenvalues3x3(matrix);
+    const auto eigenvalues = solution.getAvailableEigenValues();
     for (int n = 0; n < 3; ++n)
     {
-        const double dif = std::abs(eigenvalues[n] - expectedSortedEigenValues[n]);
-        Utilities::MyAssert(std::abs(eigenvalues[n] - expectedSortedEigenValues[n]) < tol);
+        ASSERT_LE(std::abs(eigenvalues[n] - expectedSortedEigenValues[n]), tol);
     }
 
     ASSERT_NEAR(eigenvalues[0], expectedSortedEigenValues[0], tol);
@@ -61,8 +58,9 @@ TEST(EigenValueSolverSym3x3Test, Identity)
 {
     auto mat = MatrixKelvinRepr3::CreateIdentity();
 
-    std::vector<double> eigenvalues(GeomDim3);
-    EigenValueSolverSym3x3::CalculateEigenvalues3x3(mat, eigenvalues);
+    const auto solution = EigenValueSolverSym3x3::CalculateEigenvalues3x3(mat);
+    const auto ev = solution.getAvailableEigenValues();
+    std::vector<double> eigenvalues(ev.begin(), ev.end());
 
     ASSERT_NEAR(eigenvalues[0], 1, eps);
     ASSERT_NEAR(eigenvalues[1], 1, eps);
@@ -70,7 +68,7 @@ TEST(EigenValueSolverSym3x3Test, Identity)
 
     str::fill(eigenvalues, 0.0);
     EigenValueSolverSym3x3 solver;
-    solver.Evaluate(mat.Vector(), eigenvalues);
+    solver.EvaluateFunction(mat.Vector(), eigenvalues);
     ASSERT_NEAR(eigenvalues[0], 1, eps);
     ASSERT_NEAR(eigenvalues[1], 1, eps);
 
@@ -85,8 +83,8 @@ TEST(EigenValueSolverSym3x3Test, TestEigenvaluesDiagnal)
     {
         tensor.Set(n, n, n + 1);
     }
-    const std::array<double, 3> eigenValues = {1, 2, 3};
 
+    const std::array<double, 3> eigenValues = {1, 2, 3};
     CheckCalculationSingleMatrix(tensor, eigenValues, false, 1.0e-3);
 }
 
@@ -453,7 +451,6 @@ TEST(EigenValueSolverSym3x3Test, TestDetAMinQI_2)
     matrix.Set(0, 1, 4.53436);
     matrix.Set(0, 2, 5.7);
     matrix.Set(1, 2, 6.0);
-    const double eval = fie.Evaluate(matrix.Vector());
 
     std::vector<double> delx(6, 0.1);
     RealFunctionCheckDerivative::Check(fie, matrix.Vector(), delx);

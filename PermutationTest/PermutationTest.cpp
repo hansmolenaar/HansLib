@@ -29,6 +29,30 @@ TEST(PermutaionTest, Basic)
     ASSERT_EQ(permut(1), 0);
 }
 
+TEST(PermutaionTest, FromInitializerList)
+{
+    const Permutation permut = Permutation::Create({1, 0});
+    ASSERT_EQ(permut.getCardinality(), 2);
+    ASSERT_EQ(permut(0), 1);
+    ASSERT_EQ(permut(1), 0);
+}
+
+TEST(PermutaionTest, NotAPermutation)
+{
+    ASSERT_ANY_THROW(Permutation::Create({2, 0, 3}));
+}
+
+TEST(PermutaionTest, Random)
+{
+    const Permutation permut = Permutation::CreateTrivial(5);
+    const auto shuffled0 = Permutation::CreateRandomShuffle(permut, 0);
+    const auto shuffled1 = Permutation::CreateRandomShuffle(permut, 1);
+
+    ASSERT_FALSE(permut == shuffled0);
+    ASSERT_FALSE(permut == shuffled1);
+    ASSERT_FALSE(shuffled0 == shuffled1);
+}
+
 TEST(PermutaionTest, FromCycle)
 {
     const Permutation permut = Permutation::CreateFromCycle(3, std::vector<Permutation::Entry>{0, 2});

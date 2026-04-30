@@ -6,17 +6,17 @@
 TEST(IdentityMatrixTest, Test1)
 {
     const IdentityMatrix mat(1);
-    ASSERT_EQ(mat(0, 0), 1.0);
+    ASSERT_EQ(mat.get(0, 0), 1.0);
     IMatrixTest::TestConstInterface(mat);
 }
 
 TEST(IdentityMatrixTest, Test2)
 {
     const IdentityMatrix mat(2);
-    ASSERT_EQ(mat(0, 0), 1.0);
-    ASSERT_EQ(mat(1, 1), 1.0);
-    ASSERT_EQ(mat(1, 0), 0.0);
-    ASSERT_EQ(mat(0, 1), 0.0);
+    ASSERT_EQ(mat.get(0, 0), 1.0);
+    ASSERT_EQ(mat.get(1, 1), 1.0);
+    ASSERT_EQ(mat.get(1, 0), 0.0);
+    ASSERT_EQ(mat.get(0, 1), 0.0);
     IMatrixTest::TestConstInterface(mat);
 }
 
@@ -25,7 +25,7 @@ TEST(IdentityMatrixTest, TestError)
     ASSERT_ANY_THROW(IdentityMatrix(0););
     ASSERT_ANY_THROW(IdentityMatrix(-1););
     IdentityMatrix mat(1);
-    ASSERT_ANY_THROW(mat(0, 0) = 2;);
+    ASSERT_ANY_THROW(mat.set(0, 0, 2););
 
     const IdentityMatrix cmat(2);
     IMatrixTest::TestConstInterface(mat);
@@ -39,4 +39,10 @@ TEST(IdentityMatrixTest, TestInstance)
 
     const IdentityMatrix &anotherMat2 = IdentityMatrix::GetInstance(2);
     ASSERT_EQ(&mat2, &anotherMat2);
+
+    const std::vector<double> vecin{1, 2};
+    std::array<double, 2> vecout;
+    mat2.timesVector(vecin, vecout);
+    ASSERT_EQ(vecin[0], vecout[0]);
+    ASSERT_EQ(vecin[1], vecout[1]);
 }

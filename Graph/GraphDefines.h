@@ -4,11 +4,13 @@
 #include <boost/graph/connected_components.hpp>
 #include <boost/graph/sequential_vertex_coloring.hpp>
 
-using GraphVertex = size_t;
-using GraphEdge = size_t;
-
-template <typename Vertex, typename Edge>
-using Graph = boost::adjacency_list<boost::listS, boost::vecS, boost::undirectedS, Vertex, Edge>;
+namespace Graph
+{
+using Vertex = size_t;
+using Edge = size_t;
+using VertexPair = std::array<Vertex, 2>;
+using OrderedNonLoopEdge = VertexPair; // Not checked, responsibility of creator
+} // namespace Graph
 
 // Undirected graph, no data
 using UGraph = boost::adjacency_list<boost::listS, boost::vecS, boost::undirectedS>;

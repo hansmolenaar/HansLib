@@ -84,21 +84,11 @@ void ActionSplit::operator()(const IntervalTree::Index<GeomDim3> &index)
     }
     else
     {
-        auto rp = [](const RatPoint3 &p0, const RatPoint3 &p1) { return p0 + p1; };
-        const RatPoint3 cellCenterPoint =
-            std::accumulate(bbNodes.begin(), bbNodes.end(), RatPoint3{0, 0, 0}, rp) / NumCornersOnCube;
         const auto *adjacencyE2F =
             *ReferenceShapeCube::getInstance().getAdjacencies().getAdjacency(Topology::Edge, Topology::Face);
-        const auto *adjacencyC2F =
-            *ReferenceShapeCube::getInstance().getAdjacencies().getAdjacency(Topology::Corner, Topology::Face);
-        for (auto face = 0; face < NumFacesOnCube; ++face)
+        for (size_t face = 0; face < NumFacesOnCube; ++face)
         {
             const auto &edgesOnFace = adjacencyE2F->getConnectedLowers(face);
-            const auto &cornersOnFace = adjacencyC2F->getConnectedLowers(face);
-            auto addFacePoints = [&bbNodes](const RatPoint3 &rp, int crnr) { return rp + bbNodes[crnr]; };
-            const RatPoint3 faceCenterPoint =
-                std::accumulate(cornersOnFace.begin(), cornersOnFace.end(), RatPoint3{0, 0, 0}, addFacePoints) /
-                NumCornersOnSquare;
             const bool noEdgeSplit =
                 str::none_of(edgesOnFace, [&edgeIsRefined](int edge) { return edgeIsRefined[edge]; });
             if (noEdgeSplit)
@@ -292,7 +282,7 @@ std::array<IndexTreeToSimplices3::TreeEdge, Topology::NumEdgesOnCube> IndexTreeT
     const auto cube = IndexTreeToSimplices3::getCubeFromIndex(index);
     const auto *adjacencyC2E =
         *ReferenceShapeCube::getInstance().getAdjacencies().getAdjacency(Topology::Corner, Topology::Edge);
-    for (int edge = 0; edge < Topology::NumEdgesOnCube; ++edge)
+    for (size_t edge = 0; edge < Topology::NumEdgesOnCube; ++edge)
     {
         const auto &edgePoints = adjacencyC2E->getConnectedLowers(edge);
         // Edge is sorted

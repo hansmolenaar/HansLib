@@ -33,8 +33,8 @@ void RealFunctionCheckDerivative::Check(const IRealFunction &system, std::span<c
 {
     const int numEqn = system.GetRangeDimension();
     const int numVar = system.GetDomainDimension();
-    Utilities::MyAssert(x.size() == numVar);
-    Utilities::MyAssert(delx.size() == numVar);
+    Utilities::MyAssert(static_cast<int>(x.size()) == numVar);
+    Utilities::MyAssert(static_cast<int>(delx.size()) == numVar);
     std::vector<double> y(numEqn);
     MatrixDense jacobian(numEqn, numVar);
     for (int eqn = 0; eqn < numEqn; ++eqn)
@@ -52,7 +52,7 @@ void RealFunctionCheckDerivative::Check(const IRealFunction &system, std::span<c
             {
                 std::function<double(double)> evaluate = [&](double xx) {
                     vals[var] = xx;
-                    system.Evaluate(vals, y);
+                    system.EvaluateFunction(vals, y);
                     return y[eqn];
                 };
                 std::function<double(double)> derivative = [&](double xx) {
@@ -72,11 +72,11 @@ void RealFunctionCheckDerivative::CheckExtrapolation(ISingleVariableRealValuedFu
 {
     const auto siz = residuals.size();
     Utilities::MyAssert(siz > 1);
-    const double val0 = fie(x);
+    const double val0 = fie.Evaluate(x);
     const double deriv = fie.Derivative(x);
     for (size_t n = 0; n < siz; ++n)
     {
-        const double val = fie(x + delx);
+        const double val = fie.Evaluate(x + delx);
         residuals[n] = std::abs(val0 + deriv * delx - val);
         delx /= 2.0;
     }
@@ -98,7 +98,7 @@ void RealFunctionCheckDerivative::CheckExtrapolation(const IRealFunction &system
 
     const int numEqn = system.GetRangeDimension();
     const int numVar = system.GetDomainDimension();
-    Utilities::MyAssert(x.size() == numVar);
+    Utilities::MyAssert(static_cast<int>(x.size()) == numVar);
     std::vector<double> residuals(nSteps);
     std::vector<double> y(numEqn);
     MatrixDense jacobian(numEqn, numVar);
@@ -110,7 +110,7 @@ void RealFunctionCheckDerivative::CheckExtrapolation(const IRealFunction &system
             std::vector<double> vals(x.begin(), x.end());
             std::function<double(double)> evaluate = [&](double xx) {
                 vals[var] = xx;
-                system.Evaluate(vals, y);
+                system.EvaluateFunction(vals, y);
                 return y[eqn];
             };
             std::function<double(double)> derivative = [&](double xx) {

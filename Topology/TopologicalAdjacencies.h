@@ -29,8 +29,8 @@ class TopologicalAdjacencies : public ITopologicalAdjacencies
     TopologicalAdjacencies(const std::array<int, 2> &, std::unique_ptr<ITopologicalAdjacency> &&);
     TopologicalAdjacencies(std::map<TopologyDimension, int> &&count, AdjacencyMap &&adjacencies);
 
-    AdjacencyMap m_adjecencies;
     std::map<TopologyDimension, int> m_count;
+    AdjacencyMap m_adjecencies;
     BoundsCheck<TopologyDimension> m_checkDimension;
 };
 } // namespace Topology

@@ -1,5 +1,7 @@
 #include "NonLinearSolverStrategyResidualReduction.h"
 
+#include "Functors.h"
+
 #include <algorithm>
 #include <cassert>
 #include <cmath>
@@ -15,13 +17,13 @@ NonLinearSolverStrategyResidualReduction::NonLinearSolverStrategyResidualReducti
 
 NonLinearSolverStatus NonLinearSolverStrategyResidualReduction::GetStatus(int iter, std::span<const double> rsd)
 {
-    if (iter != m_residuals.size())
+    if (iter != static_cast<int>(m_residuals.size()))
     {
         const std::string msg = "NonLinearSolverStrategyResidualReduction::GetStatus rsd should have size " +
                                 std::to_string(iter) + ", but is " + std::to_string(m_residuals.size());
         throw std::runtime_error(msg.c_str());
     }
-    const double normResidual = std::sqrt(std::inner_product(rsd.begin(), rsd.end(), rsd.begin(), 0.0));
+    const double normResidual = std::sqrt(Functors::SumOfSquares{}(rsd));
     m_residuals.push_back(normResidual);
     if (iter == 0)
     {

@@ -20,31 +20,31 @@ TEST(MatrixRotation2DTest, TestNull)
 
     ASSERT_TRUE(IMatrixRotation::IsRotation(mat));
 
-    ASSERT_NEAR(mat(0, 0), MathConstants::SQRT1_2, eps);
-    ASSERT_NEAR(mat(1, 1), MathConstants::SQRT1_2, eps);
-    ASSERT_NEAR(mat(0, 1), -MathConstants::SQRT1_2, eps);
-    ASSERT_NEAR(mat(1, 0), MathConstants::SQRT1_2, eps);
+    ASSERT_NEAR(mat.get(0, 0), MathConstants::SQRT1_2, eps);
+    ASSERT_NEAR(mat.get(1, 1), MathConstants::SQRT1_2, eps);
+    ASSERT_NEAR(mat.get(0, 1), -MathConstants::SQRT1_2, eps);
+    ASSERT_NEAR(mat.get(1, 0), MathConstants::SQRT1_2, eps);
 }
 
 TEST(MatrixRotation2DTest, TestTransform)
 {
     const MatrixRotation2D mat(MathConstants::PI_2);
-    std::array<double, 2> vec0 = {1, 0};
-    std::array<double, 2> vec1;
+    std::array<double, 2> vec0{1, 0};
+    std::vector<double> vec1(2);
 
-    mat.Transform(vec0, vec1);
+    mat.timesVector(vec0, vec1);
     ASSERT_NEAR(vec1[0], 0.0, eps);
     ASSERT_NEAR(vec1[1], 1.0, eps);
 
-    mat.Transform(vec1, vec0);
+    mat.timesVector(vec1, vec0);
     ASSERT_NEAR(vec0[0], -1.0, eps);
     ASSERT_NEAR(vec0[1], 0.0, eps);
 
-    mat.Transform(vec0, vec1);
+    mat.timesVector(vec0, vec1);
     ASSERT_NEAR(vec1[0], 0.0, eps);
     ASSERT_NEAR(vec1[1], -1.0, eps);
 
-    mat.Transform(vec1, vec0);
+    mat.timesVector(vec1, vec0);
     ASSERT_NEAR(vec0[0], 1.0, eps);
     ASSERT_NEAR(vec0[1], 0.0, eps);
 }

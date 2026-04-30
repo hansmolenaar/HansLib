@@ -1,6 +1,7 @@
 #include "MatrixKelvinRepr3.h"
 
 #include "IMatrixKelvinReprUtils.h"
+#include "IMatrixSymmetric.h"
 #include "IndexerKelvinRepr3.h"
 #include "MathConstants.h"
 #include "MyAssert.h"
@@ -37,7 +38,7 @@ MatrixKelvinRepr3 MatrixKelvinRepr3::Create(const IMatrixSymmetric &matrix)
     {
         for (int col = row; col < 3; ++col)
         {
-            result.Set(row, col, matrix(row, col));
+            result.Set(row, col, matrix.get(row, col));
         }
     }
     return result;

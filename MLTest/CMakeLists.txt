@@ -8,6 +8,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 	${CMAKE_INCLUDE_DIR}/Functions
 	${CMAKE_INCLUDE_DIR}/NonLinearSolver
 	${CMAKE_INCLUDE_DIR}/MatrixVector
+        ${Eigen_INCLUDE_DIRS}
 )
 
 target_link_libraries(${PROJECT_NAME} ML Utilities NonLinearSolver Functions MatrixVector  ${GTestLibs})

@@ -17,7 +17,7 @@ TEST(HatFunctionTest, Test0)
     ASSERT_NEAR(fie.Evaluate(0.5), 0.5, Epsilon);
     ASSERT_NEAR(fie.Evaluate(1.0), 0.0, Epsilon);
     ASSERT_NEAR(fie.Evaluate(2.0), 0.0, Epsilon);
-    ASSERT_EQ(fie.Evaluate(0.1), fie(0.1));
+    ASSERT_EQ(fie.Evaluate(0.1), fie.Evaluate(0.1));
 
     // ISingleVariableRealValuedFunctionUtils::ToFile(fie, -2.0, 2.0, 1000, "HatFunction");
 }

@@ -5,7 +5,6 @@ using namespace IntervalTree;
 
 Index1Factory::Index1Factory()
 {
-    const auto root = Index1::CreateRoot();
     addIfNew(Index1::CreateRoot().getKey());
 }
 

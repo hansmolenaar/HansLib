@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Defines.h"
+#include "Functors.h"
 #include "Point.h"
 
 #include <cmath>
@@ -71,19 +72,16 @@ template <typename T, size_t N> UnitVector<T, N> UnitVector<T, N>::Create(std::s
     norm2 = std::accumulate(cors.begin(), cors.end(), norm2, [](T v0, T v1) { return v0 + v1 * v1; });
     if (norm2 < std::numeric_limits<T>::min())
         return {};
-    const T norm = std::sqrt(norm2);
+    const T normInv = 1 / std::sqrt(norm2);
     std::array<T, N> values;
-    for (int n = 0; n < N; ++n)
-    {
-        values[n] = cors[n] / norm;
-    }
+    str::transform(cors, values.begin(), Functors::TimesScalar{normInv});
     return UnitVector<T, N>(std::move(values));
 }
 
 template <typename T, size_t N> Point<T, N> operator*(const UnitVector<T, N> &uv, T factor)
 {
     std::array<T, N> result;
-    str::transform(uv.data(), result.begin(), [factor](auto value) { return factor * value; });
+    str::transform(uv.data(), result.begin(), Functors::TimesScalar{factor});
     return Point<T, N>{result};
 }
 

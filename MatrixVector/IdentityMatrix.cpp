@@ -1,5 +1,6 @@
 #include "IdentityMatrix.h"
 
+#include "Defines.h"
 #include "IMatrixUtils.h"
 #include "MyAssert.h"
 
@@ -21,28 +22,25 @@ const IdentityMatrix &IdentityMatrix::GetInstance(int dim)
     return *(matrices.find(dim)->second);
 }
 
-int IdentityMatrix::GetRowDimension() const
-{
-    return m_dimension;
-}
-
-int IdentityMatrix::GetColDimension() const
-{
-    return m_dimension;
-}
-
 int IdentityMatrix::GetDimension() const
 {
     return m_dimension;
 }
 
-double IdentityMatrix::operator()(int row, int col) const
+double IdentityMatrix::get(int row, int col) const
 {
     CheckRowCol(*this, row, col);
     return (row == col ? 1 : 0);
 }
 
-double &IdentityMatrix::operator()(int row, int col)
+void IdentityMatrix::set(int, int, double)
 {
     throw std::runtime_error("Don't call me");
+}
+
+void IdentityMatrix::timesVector(std::span<const double> vecin, std::span<double> vecout) const
+{
+    Utilities::MyAssert(static_cast<int>(vecin.size()) == GetRowDimension());
+    Utilities::MyAssert(static_cast<int>(vecout.size()) == GetRowDimension());
+    str::copy(vecin, vecout.begin());
 }

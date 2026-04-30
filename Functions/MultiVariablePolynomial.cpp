@@ -16,13 +16,13 @@ MultiVariablePolynomial::MultiVariablePolynomial(int dim) : m_dim(dim)
 
 void MultiVariablePolynomial::Add(double coef, std::span<const int> monomial)
 {
-    Utilities::MyAssert(monomial.size() == m_dim);
+    Utilities::MyAssert(static_cast<int>(monomial.size()) == m_dim);
     m_terms.push_back(std::make_pair(coef, MultiVariableMonomial(monomial)));
 }
 
 void MultiVariablePolynomial::Add(double coef, std::initializer_list<int> monomial)
 {
-    Utilities::MyAssert(monomial.size() == m_dim);
+    Utilities::MyAssert(static_cast<int>(monomial.size()) == m_dim);
     m_terms.push_back(std::make_pair(coef, MultiVariableMonomial(monomial)));
 }
 
@@ -44,7 +44,7 @@ bool MultiVariablePolynomial::DerivativeAlwaysZero(int var) const
 
 double MultiVariablePolynomial::Evaluate(std::span<const double> x) const
 {
-    Utilities::MyAssert(x.size() == GetDomainDimension());
+    Utilities::MyAssert(static_cast<int>(x.size()) == GetDomainDimension());
     double result = 0;
     for (const auto &term : m_terms)
     {
@@ -60,8 +60,8 @@ void MultiVariablePolynomial::Derivative(std::span<const double> x, std::span<do
 {
     const int dim = GetDomainDimension();
 
-    Utilities::MyAssert(x.size() == GetDomainDimension());
-    Utilities::MyAssert(dfdx.size() == dim);
+    Utilities::MyAssert(static_cast<int>(x.size()) == GetDomainDimension());
+    Utilities::MyAssert(static_cast<int>(dfdx.size()) == dim);
 
     std::fill(dfdx.begin(), dfdx.end(), 0.0);
 

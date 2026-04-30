@@ -35,10 +35,10 @@ void RealFunctionNull::Derivative(std::span<const double> x, IMatrix &dfdx) cons
     Clear(dfdx);
 }
 
-void RealFunctionNull::Evaluate(std::span<const double> x, std::span<double> y) const
+void RealFunctionNull::EvaluateFunction(std::span<const double> x, std::span<double> y) const
 {
-    Utilities::MyAssert(x.size() == GetDomainDimension());
-    Utilities::MyAssert(y.size() == GetRangeDimension());
+    Utilities::MyAssert(static_cast<int>(x.size()) == GetDomainDimension());
+    Utilities::MyAssert(static_cast<int>(y.size()) == GetRangeDimension());
     std::fill_n(y.begin(), GetRangeDimension(), 0.0);
 }
 

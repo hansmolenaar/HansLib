@@ -1,4 +1,6 @@
 #include "SubMatrix.h"
+#include "Defines.h"
+#include "Iota.h"
 #include "MyAssert.h"
 
 #include "IMatrixUtils.h"
@@ -23,14 +25,19 @@ int SubMatrix::GetColDimension() const
     return m_dimension[1];
 }
 
-double SubMatrix::operator()(int row, int col) const
+double SubMatrix::get(int row, int col) const
 {
     CheckRowCol(*this, row, col);
-    return m_matrix(row + m_ofset[0], col + m_ofset[1]);
+    return m_matrix.get(row + m_ofset[0], col + m_ofset[1]);
 }
 
-double &SubMatrix::operator()(int row, int col)
+void SubMatrix::set(int row, int col, double value)
 {
     CheckRowCol(*this, row, col);
-    return m_matrix(row + m_ofset[0], col + m_ofset[1]);
+    m_matrix.set(row + m_ofset[0], col + m_ofset[1], value);
+}
+
+void SubMatrix::timesVector(std::span<const double> vecin, std::span<double> result) const
+{
+    MatrixTimesVector(*this, vecin, result);
 }

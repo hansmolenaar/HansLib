@@ -56,7 +56,7 @@ template <typename T, size_t N> T DirectedEdge<T, N>::project(const Point<T, N> 
 {
     T inprod = 0;
     T norm2 = 0;
-    for (int d = 0; d < N; ++d)
+    for (size_t d = 0; d < N; ++d)
     {
         const T dif = (point1().at(d) - point0().at(d));
         inprod += dif * (point.at(d) - point0().at(d));

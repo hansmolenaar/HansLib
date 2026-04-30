@@ -57,7 +57,7 @@ std::unique_ptr<IFiniteGroup> GroupTable::CreateUsingBinaryOperator(const std::v
             {
                 throw MyException("CreateUsingBinaryOperator missing permutation!!");
             }
-            const auto pos = indexer->ToFlat({n0, n1});
+            const auto pos = indexer->toFlat({n0, n1});
             const auto groupElement = SafeCastToGroupElement(std::distance(elements.begin(), found));
             table.at(pos) = groupElement;
         }

@@ -20,15 +20,6 @@ IterativeMinimizationStep GetMinimumOfNewNodes(const HierApproximation &approxim
     return result;
 }
 
-bool Compare(const HierTreeNode *a, const HierTreeNode *b)
-{
-    return a->RefinementLevel < b->RefinementLevel;
-}
-
-int GetMaxLevel(std::vector<const HierTreeNode *> hierNodes)
-{
-    return (*str::max_element(hierNodes, Compare))->RefinementLevel;
-}
 } // namespace
 
 SparseGridOptimizer::SparseGridOptimizer(std::shared_ptr<IMultiVariableFunctionEvaluate> function,

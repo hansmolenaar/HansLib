@@ -1,133 +1,194 @@
 #include "UndirectedGraphLibrary.h"
+#include "Defines.h"
 #include "MyAssert.h"
 #include "UndirectedGraphFromG6.h"
 
+#include <numeric>
+
 using namespace Utilities;
+using namespace Graph;
 
 namespace
 {
-static void SetEdgesOfPath(UndirectedGraph &graph, GraphEdge numEdges)
+std::string CreateName(std::string name, std::initializer_list<Vertex> sizes)
 {
-    for (GraphEdge edge = 0; edge < numEdges; ++edge)
+    std::string result;
+    result += "Homegrown version of " + name;
+    for (auto siz : sizes)
+    {
+        name += " " + std::to_string(siz);
+    }
+    return name;
+}
+
+void SetEdgesOfPath(UndirectedGraph &graph, Edge numEdges)
+{
+    for (Edge edge : Iota::GetRange(numEdges))
     {
         graph.addEdge(edge, edge + 1);
     }
 }
 
-static std::unique_ptr<UndirectedGraph> Create(std::initializer_list<std::pair<GraphVertex, GraphVertex>> edges)
-{
-    std::set<GraphVertex> vertices;
-    for (auto edge : edges)
-    {
-        vertices.insert(edge.first);
-        vertices.insert(edge.second);
-    }
-
-    if (vertices.empty())
-        return std::make_unique<UndirectedGraph>(0);
-
-    const auto numVertices = *vertices.rbegin() + 1;
-    auto result = std::make_unique<UndirectedGraph>(numVertices);
-
-    for (auto edge : edges)
-    {
-        result->addEdge(edge.first, edge.second);
-    }
-    return result;
-}
-
 } // namespace
 
-std::unique_ptr<UndirectedGraph> UndirectedGraphLibrary::Get_Path(GraphVertex numVertices)
+std::unique_ptr<GraphUsc> UndirectedGraphLibrary::Get_Path(Vertex numVertices)
 {
     MyAssert(numVertices > 1);
-    auto result = std::make_unique<UndirectedGraph>(numVertices);
-    SetEdgesOfPath(*result, numVertices - 1);
-    return result;
+    auto ug = std::make_unique<UndirectedGraph>(numVertices, CreateName("Path", {numVertices}));
+    SetEdgesOfPath(*ug, numVertices - 1);
+    return std::make_unique<GraphUsc>(*ug);
 }
 
-std::unique_ptr<UndirectedGraph> UndirectedGraphLibrary::Get_Cycle(GraphVertex numVertices)
+std::unique_ptr<GraphUsc> UndirectedGraphLibrary::Get_Cycle(Vertex numVertices)
 {
     MyAssert(numVertices > 2);
-    auto result = std::make_unique<UndirectedGraph>(numVertices);
+    auto ug = std::make_unique<UndirectedGraph>(numVertices, CreateName("Cycle", {numVertices}));
     // add edge connecting first and last
-    result->addEdge(0, numVertices - 1);
-    SetEdgesOfPath(*result, numVertices - 1);
-    return result;
+    ug->addEdge(0, numVertices - 1);
+    SetEdgesOfPath(*ug, numVertices - 1);
+    return std::make_unique<GraphUsc>(*ug);
 }
 
-std::unique_ptr<UndirectedGraph> UndirectedGraphLibrary::Get_CompleteGraph(GraphVertex numVertices)
+std::unique_ptr<GraphUsc> UndirectedGraphLibrary::Get_CompleteGraph(Vertex numVertices)
 {
-    MyAssert(numVertices > 0);
-    auto result = std::make_unique<UndirectedGraph>(numVertices);
+    MyAssert(numVertices >= 0); // Used to generate empty graph
+    auto ug = std::make_unique<UndirectedGraph>(numVertices, CreateName("Complete", {numVertices}));
 
-    for (GraphVertex n0 = 0; n0 < numVertices; ++n0)
+    for (Vertex n0 : Iota::GetRange(numVertices))
     {
-        for (GraphVertex n1 = n0 + 1; n1 < numVertices; ++n1)
+        for (Vertex n1 = n0 + 1; n1 < numVertices; ++n1)
         {
-            result->addEdge(n0, n1);
+            ug->addEdge(n0, n1);
         }
     }
 
-    return result;
+    return std::make_unique<GraphUsc>(*ug);
 }
 
-//      2
-//    /    \
-//   0 ----  3
-//     \    /
-//       1
-std::unique_ptr<UndirectedGraph> UndirectedGraphLibrary::Get_Diamond()
+std::unique_ptr<GraphUsc> UndirectedGraphLibrary::Get_Star(std::initializer_list<Vertex> sizes)
 {
-    return UndirectedGraphFromG6::Create("Cz");
+    MyAssert(sizes.size() > 2);
+    MyAssert(str::all_of(sizes, [](auto v) { return v > 0; }));
+    const auto numVertices = str::fold_left(sizes, static_cast<Vertex>(1), std::plus<Vertex>());
+    auto ug = std::make_unique<UndirectedGraph>(numVertices, CreateName("Cycle", sizes));
+    Vertex cur = 1;
+    for (auto s : sizes)
+    {
+        ug->addEdge(0, cur);
+        for (Vertex v : Iota::GetRange(s - 1))
+        {
+            ug->addEdge(cur + v, cur + v + 1);
+        }
+        cur += s;
+    }
+    MyAssert(cur == numVertices);
+    return std::make_unique<GraphUsc>(*ug);
 }
 
-//    0 -- 2 -- 1
-//         |
-//         3
-std::unique_ptr<UndirectedGraph> UndirectedGraphLibrary::Get_Claw()
+/*
+        2
+      /    \
+     0 ----  3
+       \    /
+         1
+*/
+std::unique_ptr<GraphUsc> UndirectedGraphLibrary::Get_Diamond()
 {
-    return UndirectedGraphFromG6::Create("Cs");
+    return UndirectedGraphFromG6::CreateConnected(UndirectedGraphFromG6::diamond);
 }
 
-//     1  -- 3
-//   / |
-//  0  |
-//   \ |
-//      2 -- 4
-std::unique_ptr<UndirectedGraph> UndirectedGraphLibrary::Get_Bull()
+/*
+      0 -- 2 -- 1
+           |
+           3
+*/
+std::unique_ptr<GraphUsc> UndirectedGraphLibrary::Get_Claw()
 {
-    return UndirectedGraphFromG6::Create("D{O");
+    return UndirectedGraphFromG6::CreateConnected("Cs");
 }
 
-std::unique_ptr<UndirectedGraph> UndirectedGraphLibrary::Get_Butterfly()
+/*
+       1  -- 3
+     / |
+    0  |
+     \ |
+        2 -- 4
+*/
+std::unique_ptr<GraphUsc> UndirectedGraphLibrary::Get_Bull()
 {
-    return UndirectedGraphFromG6::Create("D{c");
+    return UndirectedGraphFromG6::CreateConnected("D{O");
 }
 
-std::unique_ptr<UndirectedGraph> UndirectedGraphLibrary::Get_Paw()
+std::unique_ptr<GraphUsc> UndirectedGraphLibrary::Get_Butterfly()
 {
-    return UndirectedGraphFromG6::Create("Cx");
+    return UndirectedGraphFromG6::CreateConnected(UndirectedGraphFromG6::butterfly);
 }
 
-std::unique_ptr<UndirectedGraph> UndirectedGraphLibrary::Get_DisconnectedGraph(GraphVertex numVertices)
+std::unique_ptr<GraphUsc> UndirectedGraphLibrary::Get_Paw()
 {
-    return std::make_unique<UndirectedGraph>(numVertices);
+    return UndirectedGraphFromG6::CreateConnected("Cx");
 }
 
-std::unique_ptr<UndirectedGraph> UndirectedGraphLibrary::Get_CompleteBipartite(GraphVertex size0, GraphVertex size1)
+std::unique_ptr<UndirectedGraph> UndirectedGraphLibrary::Get_DisconnectedGraph(Vertex numVertices)
+{
+    return std::make_unique<UndirectedGraph>(numVertices, CreateName("Disconnected", {numVertices}));
+}
+
+std::unique_ptr<GraphUsc> UndirectedGraphLibrary::Get_CompleteBipartite(Vertex size0, Vertex size1)
 {
     if (std::min(size0, size1) < 1)
     {
         throw MyException("CompleteBipartiteGraph: both sets muust have positive size");
     }
-    auto graph = std::make_unique<UndirectedGraph>(size0 + size1);
-    for (int n0 = 0; n0 < size0; ++n0)
+    UndirectedGraph ug(size0 + size1, CreateName("Complete Bipartite", {size0, size1}));
+    for (Vertex n0 : Iota::GetRange(size0))
     {
-        for (int n1 = 0; n1 < size1; ++n1)
+        for (Vertex n1 : Iota::GetRange(size1))
         {
-            graph->addEdge(n0, n1 + size0);
+            ug.addEdge(n0, n1 + size0);
         }
     }
-    return graph;
+    return std::make_unique<GraphUsc>(ug);
+}
+
+std::unique_ptr<Graph::IGraphUsc> UndirectedGraphLibrary::Get_Null()
+{
+    return Get_CompleteGraph(0);
+}
+
+std::unique_ptr<Graph::IGraphUsc> UndirectedGraphLibrary::Get_Singleton()
+{
+    return Get_CompleteGraph(1);
+}
+
+std::vector<std::unique_ptr<Graph::IGraphUs>> UndirectedGraphLibrary::Get_GraphsOrderLE5()
+{
+    auto list = UndirectedGraphFromG6::getListNumVertices_3();
+    const auto list4 = UndirectedGraphFromG6::getListNumVertices_4();
+    const auto list5 = UndirectedGraphFromG6::getListNumVertices_5();
+    list.insert(list.end(), list4.begin(), list4.end());
+    list.insert(list.end(), list5.begin(), list5.end());
+
+    auto graphs = UndirectedGraphFromG6::getGraphs(list);
+    graphs.emplace_back(UndirectedGraphLibrary::Get_Null());
+    graphs.emplace_back(UndirectedGraphLibrary::Get_Singleton());
+    graphs.emplace_back(UndirectedGraphLibrary::Get_Path(2));
+    graphs.emplace_back(UndirectedGraphLibrary::Get_DisconnectedGraph(2));
+    return graphs;
+}
+
+UndirectedGraph UndirectedGraphLibrary::Get_DistortedPrism(Vertex numVerticesCycle, Vertex (*connectTo)(Vertex))
+{
+    const auto cycle = Get_Cycle(numVerticesCycle);
+    auto result = UndirectedGraph::CreateDisjointedUnion(*cycle, *cycle);
+    for (Vertex v : Iota::GetRange(numVerticesCycle))
+    {
+        result.addEdge(v, connectTo(v) + numVerticesCycle);
+    }
+    return result;
+}
+
+UndirectedGraph UndirectedGraphLibrary::Get_Prism(Graph::Vertex numVerticesCycle)
+{
+    return Get_DistortedPrism(numVerticesCycle, [](Vertex v) { return v; });
 }

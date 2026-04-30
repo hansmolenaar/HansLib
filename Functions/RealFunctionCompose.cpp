@@ -39,7 +39,7 @@ void RealFunctionCompose::Derivative(std::span<const double> x, IMatrix &dfdx) c
     Utilities::MyAssert(dfdx.GetColDimension() == M);
 
     std::vector<double> z(K);
-    m_g.Evaluate(x, z);
+    m_g.EvaluateFunction(x, z);
 
     MatrixDense df(N, K);
     m_f.Derivative(z, df);
@@ -59,17 +59,17 @@ void RealFunctionCompose::Derivative(std::span<const double> x, IMatrix &dfdx) c
                 {
                     val += df(n, k) * dg(k, m);
                 }
-                dfdx(n, m) = val;
+                dfdx.set(n, m, val);
             }
         }
     }
 }
 
-void RealFunctionCompose::Evaluate(std::span<const double> x, std::span<double> y) const
+void RealFunctionCompose::EvaluateFunction(std::span<const double> x, std::span<double> y) const
 {
     std::vector<double> z(m_g.GetRangeDimension());
-    m_g.Evaluate(x, z);
-    m_f.Evaluate(z, y);
+    m_g.EvaluateFunction(x, z);
+    m_f.EvaluateFunction(z, y);
 }
 
 bool RealFunctionCompose::DerivativeAlwaysZero(int eqn, int var) const

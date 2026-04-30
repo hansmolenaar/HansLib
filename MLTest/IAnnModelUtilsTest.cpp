@@ -30,8 +30,8 @@ class NumericalCheck : public ISingleVariableRealValuedFunction
   public:
     NumericalCheck(const ML::IAnnModel &model, const ML::IAnnDataSet &dataSet, size_t layer, size_t param,
                    const ML::IParameterSet &parameterSet);
-    double operator()(double parameterValue) const;
-    double operator()() const;
+    // double Evaluate((double parameterValue) const;
+    double EvaluateDefault() const;
 
     double Evaluate(double x) const override;
     double Derivative(double x) const override;
@@ -58,7 +58,7 @@ NumericalCheck::NumericalCheck(const ML::IAnnModel &model, const ML::IAnnDataSet
 {
 }
 
-double NumericalCheck::operator()(double parameterValue) const
+double NumericalCheck::Evaluate(double parameterValue) const
 {
     ML::ParameterSet parameterSet = ML::ParameterSet::CopyFrom(m_parameterSet);
     auto params = parameterSet.getModifiable(m_layer);
@@ -67,15 +67,10 @@ double NumericalCheck::operator()(double parameterValue) const
     return m_model.getCostFunction().calculateSingleSample(m_dataSet.getNthOutput(0), forwardResult->getOutput());
 }
 
-double NumericalCheck::operator()() const
+double NumericalCheck::EvaluateDefault() const
 {
     auto forwardResult = ML::IAnnModelUtils::feedForward(m_model, m_dataSet.getNthInput(0), m_parameterSet);
     return m_model.getCostFunction().calculateSingleSample(m_dataSet.getNthOutput(0), forwardResult->getOutput());
-}
-
-double NumericalCheck::Evaluate(double x) const
-{
-    return (*this)(x);
 }
 
 double NumericalCheck::Derivative(double x) const
@@ -434,9 +429,9 @@ TEST(IAnnModelUtilsTest, NumericalCheckSingleParameter)
     constexpr size_t c_param = 0;
     const NumericalCheck nc(model, dataSet, c_layer, c_param, parameterSet);
     constexpr double expectedCost = 0;
-    ASSERT_TRUE(areClose(nc(), expectedCost));
-    ASSERT_FALSE(areClose(nc(singleParameter + 1), expectedCost));
-    ASSERT_TRUE(areClose(nc(singleParameter), expectedCost));
+    ASSERT_TRUE(areClose(nc.EvaluateDefault(), expectedCost));
+    ASSERT_FALSE(areClose(nc.Evaluate(singleParameter + 1), expectedCost));
+    ASSERT_TRUE(areClose(nc.Evaluate(singleParameter), expectedCost));
     ASSERT_TRUE(areClose(nc.Evaluate(parameterSet.at(c_layer)[c_param]), expectedCost));
 
     const ML::AnnDataSet anotherDataSet(std::vector<double>{2.0}, std::vector<double>{3.0});

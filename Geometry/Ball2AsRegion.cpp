@@ -1,9 +1,12 @@
 #include "Ball2AsRegion.h"
 #include "MyException.h"
 
-using namespace Geometry;
-
+namespace Geometry
+{
 template class Ball2AsRegion<double>;
+}
+
+using namespace Geometry;
 
 namespace
 {

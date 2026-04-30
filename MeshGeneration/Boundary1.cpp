@@ -5,11 +5,12 @@
 using namespace MeshGeneration;
 using namespace Topology;
 using namespace Utilities;
+using namespace Graph;
 
 namespace
 {
 UndirectedGraph CreateGraph(std::span<const Topology::EdgeNodesSorted> edges,
-                            const RenumberContiguous<NodeIndex, GraphVertex> &toVertex)
+                            const RenumberContiguous<NodeIndex, Vertex> &toVertex)
 {
     UndirectedGraph result(toVertex.size());
     for (const auto &edge : edges)
@@ -19,12 +20,10 @@ UndirectedGraph CreateGraph(std::span<const Topology::EdgeNodesSorted> edges,
     return result;
 }
 
-std::vector<NodeIndex> ToNodesIndices(const std::vector<GraphVertex> &grapVertices,
-                                      std::span<const NodeIndex> manifoldNodes)
+std::vector<NodeIndex> ToNodesIndices(const std::vector<Vertex> &grapVertices, std::span<const NodeIndex> manifoldNodes)
 {
     std::vector<NodeIndex> result(manifoldNodes.size());
-    str::transform(grapVertices, result.begin(),
-                   [&manifoldNodes](GraphVertex vertex) { return manifoldNodes[vertex]; });
+    str::transform(grapVertices, result.begin(), [&manifoldNodes](Vertex vertex) { return manifoldNodes[vertex]; });
     return result;
 }
 } // namespace
@@ -40,7 +39,7 @@ MeshGeneration::Boundary1::Boundary1(const std::vector<Topology::EdgeNodesSorted
     str::sort(activeNodes);
     activeNodes.erase(std::unique(activeNodes.begin(), activeNodes.end()), activeNodes.end());
 
-    const RenumberContiguous<NodeIndex, GraphVertex> toVertex(activeNodes.begin(), activeNodes.end());
+    const RenumberContiguous<NodeIndex, Vertex> toVertex(activeNodes.begin(), activeNodes.end());
     const UndirectedGraph graph = CreateGraph(edgeSet, toVertex);
 
     const auto cyclesAndPaths = graph.SplitInCyclesAndPaths();

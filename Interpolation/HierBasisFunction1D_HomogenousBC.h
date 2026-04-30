@@ -9,10 +9,10 @@ class HierBasisFunction1D_HomogenousBC : public IHierBasisFunction1D
 {
   public:
     explicit HierBasisFunction1D_HomogenousBC(HierLevelIndex);
-    double operator()(double x) const override;
+    double Evaluate(double x) const override;
     HierLevelIndex getLevelIndex() const override;
     Interval<double> getSupport() const override;
-    static double Evaluate(const HierLevelIndex &, double);
+    static double EvaluateAt(const HierLevelIndex &, double);
     static Interval<double> GetSupport(const HierLevelIndex &);
 
   private:
@@ -27,7 +27,7 @@ class HierBasisFunction1D_HomogenousBC_Factory : public IHierBasisFunction1D_Fac
     {
         return std::vector<HierLevelIndex>{HierLevelIndex(1, 1)};
     }
-    inline bool canBeRefined(const HierLevelIndex &) const
+    inline bool canBeRefined(const HierLevelIndex &) const override
     {
         return true;
     }

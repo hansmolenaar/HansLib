@@ -2,6 +2,7 @@
 
 #include "IMatrixSquare.h"
 #include "IndexerRowMajor.h"
+#include <Eigen/Dense>
 #include <memory>
 #include <span>
 #include <vector>
@@ -11,21 +12,16 @@ class MatrixSquare : public IMatrixSquare
   public:
     explicit MatrixSquare(int dim);
 
-    // void Clear();
     bool Solve(std::span<const double> rhs, std::span<double> sol); // Returns succes
 
-    const IIndexer<int> &GetIndexer();
-
     int GetDimension() const override;
+    void timesVector(std::span<const double>, std::span<double>) const override;
 
-    double operator()(int, int) const override;
-    double &operator()(int, int) override;
+    double operator()(int, int) const;
+    double get(int, int) const override;
+    void set(int, int, double) override;
+    double &operator()(int, int);
 
   private:
-    std::vector<double> m_matrix;
-    std::vector<double> m_inverse;
-    std::vector<int> m_pivot;
-    IndexerRowMajor<int> m_indexer;
-    int m_dim;
-    bool m_dirty;
+    Eigen::MatrixXd m_matrix;
 };

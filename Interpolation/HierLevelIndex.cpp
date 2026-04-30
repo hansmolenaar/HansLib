@@ -38,16 +38,6 @@ void CheckLevelIndex(const HierLevelIndex &li)
     }
 }
 
-HierLevelIndex Reduce(size_t level, size_t index)
-{
-    while (level > 0 && index % 2 == 0)
-    {
-        level -= 1;
-        index /= 2;
-    }
-    return HierLevelIndex(level, index);
-}
-
 } // namespace
 
 HierLevelIndex::HierLevelIndex(size_t level, size_t index) : m_level(level), m_index(index)

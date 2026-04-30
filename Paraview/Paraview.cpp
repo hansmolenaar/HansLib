@@ -46,7 +46,7 @@ void Paraview::WritePoints(std::ostream &stream, const Vtk::VtkData &data)
 
 void Paraview::WritePoint(std::ostream &stream, std::span<const Vtk::CoordinateType> point)
 {
-    for (int d = 0; d < point.size(); ++d)
+    for (size_t d = 0; d < point.size(); ++d)
     {
         stream << point[d] << " ";
     }

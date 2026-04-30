@@ -1,13 +1,16 @@
 #include "Ball.h"
 
-using namespace Geometry;
-
+namespace Geometry
+{
 template class Ball<int, 1>;
 template class Ball<int, 2>;
 template class Ball<int, 3>;
 template class Ball<double, 1>;
 template class Ball<double, 2>;
 template class Ball<double, 3>;
+} // namespace Geometry
+
+using namespace Geometry;
 
 template <typename T, size_t N>
 Ball<T, N>::Ball(Point<T, N> center, T radius)
@@ -76,12 +79,10 @@ std::optional<Point<T, N>> Ball<T, N>::TryGetFirstIntersectionWithDirectedEdge(
     }
     const auto &point0 = edge.point0();
     const auto &point1 = edge.point1();
-    const auto position0 = getPosition(point0, predicate);
-    const auto position1 = getPosition(point1, predicate);
 
     const T a = edge.lengthSquared();
     T b = 0;
-    for (int n = 0; n < N; ++n)
+    for (size_t n = 0; n < N; ++n)
     {
         b += 2 * (edge.point1().at(n) - edge.point0().at(n)) * (edge.point0().at(n) - m_center.at(n));
     }

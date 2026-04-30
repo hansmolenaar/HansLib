@@ -21,13 +21,13 @@ TEST(HierBasisFunction1D_ExtraplolateBCTest, Basis_1_1)
 
     IHierBasisFunction1DTest_Interface(fie);
 
-    ASSERT_NEAR(fie(-1.0), 0.0, Epsilon);
-    ASSERT_NEAR(fie(0.0), 1.0, Epsilon);
-    ASSERT_NEAR(fie(0.25), 1.0, Epsilon);
-    ASSERT_NEAR(fie(0.5), 1.0, Epsilon);
-    ASSERT_NEAR(fie(0.75), 1.0, Epsilon);
-    ASSERT_NEAR(fie(1.0), 1.0, Epsilon);
-    ASSERT_NEAR(fie(2.0), 0.0, Epsilon);
+    ASSERT_NEAR(fie.Evaluate(-1.0), 0.0, Epsilon);
+    ASSERT_NEAR(fie.Evaluate(0.0), 1.0, Epsilon);
+    ASSERT_NEAR(fie.Evaluate(0.25), 1.0, Epsilon);
+    ASSERT_NEAR(fie.Evaluate(0.5), 1.0, Epsilon);
+    ASSERT_NEAR(fie.Evaluate(0.75), 1.0, Epsilon);
+    ASSERT_NEAR(fie.Evaluate(1.0), 1.0, Epsilon);
+    ASSERT_NEAR(fie.Evaluate(2.0), 0.0, Epsilon);
 
     ASSERT_TRUE(fie.getSupport().contains(0.0));
     ASSERT_TRUE(fie.getSupport().contains(1.0));
@@ -41,13 +41,13 @@ TEST(HierBasisFunction1D_ExtraplolateBCTest, Basis_2_1)
 
     IHierBasisFunction1DTest_Interface(fie);
 
-    ASSERT_NEAR(fie(-1.0), 0.0, Epsilon);
-    ASSERT_NEAR(fie(0.0), 2.0, Epsilon);
-    ASSERT_NEAR(fie(0.25), 1.0, Epsilon);
-    ASSERT_NEAR(fie(0.5), 0.0, Epsilon);
-    ASSERT_NEAR(fie(0.75), .0, Epsilon);
-    ASSERT_NEAR(fie(1.0), 0.0, Epsilon);
-    ASSERT_NEAR(fie(2.0), 0.0, Epsilon);
+    ASSERT_NEAR(fie.Evaluate(-1.0), 0.0, Epsilon);
+    ASSERT_NEAR(fie.Evaluate(0.0), 2.0, Epsilon);
+    ASSERT_NEAR(fie.Evaluate(0.25), 1.0, Epsilon);
+    ASSERT_NEAR(fie.Evaluate(0.5), 0.0, Epsilon);
+    ASSERT_NEAR(fie.Evaluate(0.75), .0, Epsilon);
+    ASSERT_NEAR(fie.Evaluate(1.0), 0.0, Epsilon);
+    ASSERT_NEAR(fie.Evaluate(2.0), 0.0, Epsilon);
 
     ASSERT_TRUE(fie.getSupport().contains(0.0));
     ASSERT_TRUE(fie.getSupport().contains(0.5));
@@ -62,13 +62,13 @@ TEST(HierBasisFunction1D_ExtraplolateBCTest, Basis_2_3)
 
     IHierBasisFunction1DTest_Interface(fie);
 
-    ASSERT_NEAR(fie(-1.0), 0.0, Epsilon);
-    ASSERT_NEAR(fie(0.0), 0.0, Epsilon);
-    ASSERT_NEAR(fie(0.25), 0.0, Epsilon);
-    ASSERT_NEAR(fie(0.5), 0.0, Epsilon);
-    ASSERT_NEAR(fie(0.75), 1.0, Epsilon);
-    ASSERT_NEAR(fie(1.0), 2.0, Epsilon);
-    ASSERT_NEAR(fie(2.0), 0.0, Epsilon);
+    ASSERT_NEAR(fie.Evaluate(-1.0), 0.0, Epsilon);
+    ASSERT_NEAR(fie.Evaluate(0.0), 0.0, Epsilon);
+    ASSERT_NEAR(fie.Evaluate(0.25), 0.0, Epsilon);
+    ASSERT_NEAR(fie.Evaluate(0.5), 0.0, Epsilon);
+    ASSERT_NEAR(fie.Evaluate(0.75), 1.0, Epsilon);
+    ASSERT_NEAR(fie.Evaluate(1.0), 2.0, Epsilon);
+    ASSERT_NEAR(fie.Evaluate(2.0), 0.0, Epsilon);
 
     ASSERT_FALSE(fie.getSupport().contains(0.0));
     ASSERT_TRUE(fie.getSupport().contains(0.5));
@@ -83,13 +83,13 @@ TEST(HierBasisFunction1D_ExtraplolateBCTest, Basis_3_1)
 
     IHierBasisFunction1DTest_Interface(fie);
 
-    ASSERT_NEAR(fie(-1.0), 0.0, Epsilon);
-    ASSERT_NEAR(fie(0.0), 2.0, Epsilon);
-    ASSERT_NEAR(fie(0.125), 1.0, Epsilon);
-    ASSERT_NEAR(fie(0.25), 0.0, Epsilon);
-    ASSERT_NEAR(fie(0.75), 0.0, Epsilon);
-    ASSERT_NEAR(fie(1.0), 0.0, Epsilon);
-    ASSERT_NEAR(fie(2.0), 0.0, Epsilon);
+    ASSERT_NEAR(fie.Evaluate(-1.0), 0.0, Epsilon);
+    ASSERT_NEAR(fie.Evaluate(0.0), 2.0, Epsilon);
+    ASSERT_NEAR(fie.Evaluate(0.125), 1.0, Epsilon);
+    ASSERT_NEAR(fie.Evaluate(0.25), 0.0, Epsilon);
+    ASSERT_NEAR(fie.Evaluate(0.75), 0.0, Epsilon);
+    ASSERT_NEAR(fie.Evaluate(1.0), 0.0, Epsilon);
+    ASSERT_NEAR(fie.Evaluate(2.0), 0.0, Epsilon);
 
     ASSERT_TRUE(fie.getSupport().contains(0.0));
     ASSERT_TRUE(fie.getSupport().contains(0.25));
@@ -104,13 +104,13 @@ TEST(HierBasisFunction1D_ExtraplolateBCTest, Basis_3_3)
 
     IHierBasisFunction1DTest_Interface(fie);
 
-    ASSERT_NEAR(fie(-1.0), 0.0, Epsilon);
-    ASSERT_NEAR(fie(0.0), 0.0, Epsilon);
-    ASSERT_NEAR(fie(0.25), 0.0, Epsilon);
-    ASSERT_NEAR(fie(0.375), 1.0, Epsilon);
-    ASSERT_NEAR(fie(0.5), 0.0, Epsilon);
-    ASSERT_NEAR(fie(1.0), 0.0, Epsilon);
-    ASSERT_NEAR(fie(2.0), 0.0, Epsilon);
+    ASSERT_NEAR(fie.Evaluate(-1.0), 0.0, Epsilon);
+    ASSERT_NEAR(fie.Evaluate(0.0), 0.0, Epsilon);
+    ASSERT_NEAR(fie.Evaluate(0.25), 0.0, Epsilon);
+    ASSERT_NEAR(fie.Evaluate(0.375), 1.0, Epsilon);
+    ASSERT_NEAR(fie.Evaluate(0.5), 0.0, Epsilon);
+    ASSERT_NEAR(fie.Evaluate(1.0), 0.0, Epsilon);
+    ASSERT_NEAR(fie.Evaluate(2.0), 0.0, Epsilon);
 
     ASSERT_FALSE(fie.getSupport().contains(0.0));
     ASSERT_TRUE(fie.getSupport().contains(0.25));
@@ -126,13 +126,13 @@ TEST(HierBasisFunction1D_ExtraplolateBCTest, Basis_3_7)
 
     IHierBasisFunction1DTest_Interface(fie);
 
-    ASSERT_NEAR(fie(-1.0), 0.0, Epsilon);
-    ASSERT_NEAR(fie(0.0), 0.0, Epsilon);
-    ASSERT_NEAR(fie(0.25), 0.0, Epsilon);
-    ASSERT_NEAR(fie(0.75), 0.0, Epsilon);
-    ASSERT_NEAR(fie(0.875), 1.0, Epsilon);
-    ASSERT_NEAR(fie(1.0), 2.0, Epsilon);
-    ASSERT_NEAR(fie(2.0), 0.0, Epsilon);
+    ASSERT_NEAR(fie.Evaluate(-1.0), 0.0, Epsilon);
+    ASSERT_NEAR(fie.Evaluate(0.0), 0.0, Epsilon);
+    ASSERT_NEAR(fie.Evaluate(0.25), 0.0, Epsilon);
+    ASSERT_NEAR(fie.Evaluate(0.75), 0.0, Epsilon);
+    ASSERT_NEAR(fie.Evaluate(0.875), 1.0, Epsilon);
+    ASSERT_NEAR(fie.Evaluate(1.0), 2.0, Epsilon);
+    ASSERT_NEAR(fie.Evaluate(2.0), 0.0, Epsilon);
 
     ASSERT_FALSE(fie.getSupport().contains(0.0));
     ASSERT_FALSE(fie.getSupport().contains(0.25));
