@@ -8,6 +8,8 @@ class Permutation
 {
   public:
     using Entry = unsigned int;
+    using Cycle = std::vector<Entry>;
+    using Cycles = std::vector<Cycle>;
     static constexpr Entry InvalidEntry = std::numeric_limits<Entry>::max();
 
     enum class Parity
@@ -43,7 +45,7 @@ class Permutation
   private:
     explicit Permutation(std::vector<Entry> &&);
     std::vector<Entry> m_permut;
-    std::vector<std::vector<Entry>> m_cycles;
+    Cycles m_cycles;
 };
 
 template <typename InputIt, typename OutputIt> void Permutation::apply(InputIt first, OutputIt d_first) const

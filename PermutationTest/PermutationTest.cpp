@@ -6,6 +6,7 @@
 #include "Single.h"
 
 #include <array>
+
 TEST(PermutaionTest, Trivial)
 {
     const Permutation permut = Permutation::CreateTrivial(2);
@@ -296,4 +297,23 @@ TEST(PermutaionTest, getParity_3)
 {
     const auto perm = Permutation::CreateFromDisjunctCycles(11, {{2, 5}, {7, 3}});
     ASSERT_EQ(Permutation::Parity::EVEN, perm.getParity());
+}
+
+
+TEST(PermutaionTest, getProduct0)
+{
+    const auto p1 = Permutation::CreateFromCycle(4, std::vector<Permutation::Entry>{0, 1});
+    const auto p2 = Permutation::CreateFromCycle(4, std::vector<Permutation::Entry>{3, 2, 1});
+    const std::vector<Permutation::Entry> vecIn{0,1,2,3};
+    std::vector<Permutation::Entry> vecOut(4);
+
+    const auto p12 = p1 * p2;
+    p12.apply(vecIn.begin(), vecOut.begin());
+    const std::vector<Permutation::Entry> expect12{2,0,3,1};
+    ASSERT_TRUE(std::equal(vecOut.begin(), vecOut.end(), expect12.begin(), expect12.end()));
+
+    const auto p21 = p2 * p1;
+    p21.apply(vecIn.begin(), vecOut.begin());
+    const std::vector<Permutation::Entry> expect21{1,2,3,0};
+    ASSERT_TRUE(std::equal(vecOut.begin(), vecOut.end(), expect21.begin(), expect21.end()));
 }
