@@ -9,7 +9,7 @@ set (CMAKE_CXX_STANDARD 23)
 set(CMAKE_EXPORT_COMPILE_COMMANDS "ON")
 
 #Boost
-set(BOOST_ROOT "/home/hans/repos/boost/boost_1_82_0")
+set(BOOST_ROOT "/home/hans/src/boost_1_91_0")
 #find_package( Boost REQUIRED COMPONENTS program_options regex )
 set(Boost_USE_STATIC_LIBS OFF) 
 #set(Boost_USE_MULTITHREADED ON)  
@@ -20,7 +20,7 @@ find_package(Boost REQUIRED)
 message("Boost_INCLUDE_DIRS " ${Boost_INCLUDE_DIRS})
 
 # Eigen
-set(Eigen_INCLUDE_DIRS "/home/hans/repos/Eigen")
+set(Eigen_INCLUDE_DIRS "/home/hans/src/eigen-5.0.0")
 message("Eigen_INCLUDE_DIRS" ${Eigen_INCLUDE_DIRS})
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
