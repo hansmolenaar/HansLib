@@ -92,7 +92,7 @@ TEST(PermutaionTest, TetSymmetry)
     const Permutation permut0 = Permutation::CreateFromCycle(4, std::vector<Permutation::Entry>{2, 3});
     const Permutation permut1 = Permutation::CreateFromCycle(4, std::vector<Permutation::Entry>{0, 1, 2});
     const auto permut = permut1 * permut0;
-    const Permutation permut_cycle = Permutation::CreateFromCycle(4, std::vector<Permutation::Entry>{0, 1, 2, 3});
+    const Permutation permut_cycle = Permutation::CreateFromCycle(4, std::vector<Permutation::Entry>{0, 1, 3, 2});
     ASSERT_TRUE(permut == permut_cycle);
 }
 
@@ -275,6 +275,22 @@ TEST(PermutaionTest, getCycles_5)
     ASSERT_EQ(Permutation::Parity::EVEN, perm.getParity());
 }
 
+TEST(PermutaionTest, getCycles_6)
+{
+    const auto perm = Permutation::Create(std::vector<Permutation::Entry>{1, 5, 4, 3, 2, 0});
+    const std::vector<std::vector<Permutation::Entry>> expect{{0, 1, 5}, {2, 4}};
+    const auto cycles = perm.getCycles();
+    ASSERT_EQ(2, cycles.size());
+    ASSERT_TRUE(str::equal(cycles.at(0), expect.at(0)));
+    ASSERT_TRUE(str::equal(cycles.at(1), expect.at(1)));
+
+    std::vector<Permutation::Entry> vecin{1, 2, 3, 4, 5, 6};
+    std::vector<Permutation::Entry> vecout(6);
+    perm.apply(vecin.begin(), vecout.begin());
+    const std::vector<Permutation::Entry> expectPerm{2, 6, 5, 4, 3, 1};
+    ASSERT_TRUE(std::equal(vecout.begin(), vecout.end(), expectPerm.begin(), expectPerm.end()));
+}
+
 TEST(PermutaionTest, getParity_0)
 {
     const auto perm = Permutation::Create(std::vector<Permutation::Entry>{1, 2, 0});
@@ -308,11 +324,25 @@ TEST(PermutaionTest, getProduct0)
 
     const auto p12 = p1 * p2;
     p12.apply(vecIn.begin(), vecOut.begin());
-    const std::vector<Permutation::Entry> expect12{2, 0, 3, 1};
+    const std::vector<Permutation::Entry> expect12{3, 0, 1, 2};
     ASSERT_TRUE(std::equal(vecOut.begin(), vecOut.end(), expect12.begin(), expect12.end()));
 
     const auto p21 = p2 * p1;
     p21.apply(vecIn.begin(), vecOut.begin());
-    const std::vector<Permutation::Entry> expect21{1, 2, 3, 0};
+    const std::vector<Permutation::Entry> expect21{1, 3, 0, 2};
     ASSERT_TRUE(std::equal(vecOut.begin(), vecOut.end(), expect21.begin(), expect21.end()));
+}
+
+TEST(PermutaionTest, example0)
+{
+    const auto perm = Permutation::CreateFromCycle(4, {{3, 2, 0}});
+    const std::vector<Permutation::Entry> id{1, 2, 3, 4};
+    std::vector<Permutation::Entry> rv(4);
+    perm.apply(id.begin(), rv.begin());
+    const std::vector<Permutation::Entry> expect{4, 2, 1, 3};
+    ASSERT_TRUE(std::equal(rv.begin(), rv.end(), expect.begin(), expect.end()));
+
+    const auto perm2 = Permutation::Create({3, 1, 0, 2});
+    perm2.apply(id.begin(), rv.begin());
+    ASSERT_TRUE(std::equal(rv.begin(), rv.end(), expect.begin(), expect.end()));
 }

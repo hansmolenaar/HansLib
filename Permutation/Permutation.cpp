@@ -154,11 +154,8 @@ Permutation operator*(const Permutation &perm1, const Permutation &perm0)
 {
     Utilities::MyAssert(perm1.getCardinality() == perm0.getCardinality());
     const auto siz = perm0.getCardinality();
-    std::vector<Permutation::Entry> permut(siz, Permutation::InvalidEntry);
-    for (Permutation::Entry n = 0; n < siz; ++n)
-    {
-        permut.at(n) = perm1(perm0(n));
-    }
+    std::vector<Permutation::Entry> permut(siz);
+    perm1.apply(perm0.m_permut.begin(), permut.begin());
     return Permutation::Create(permut);
 }
 

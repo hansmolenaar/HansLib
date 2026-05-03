@@ -50,9 +50,8 @@ class Permutation
 
 template <typename InputIt, typename OutputIt> void Permutation::apply(InputIt first, OutputIt d_first) const
 {
-    for (auto n : m_permut)
+    for (size_t n = 0; n < m_permut.size(); ++n)
     {
-        d_first[n] = *first;
-        ++first;
+        d_first[n] = first[m_permut.at(n)];
     }
 }
