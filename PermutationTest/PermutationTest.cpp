@@ -92,7 +92,7 @@ TEST(PermutaionTest, TetSymmetry)
     const Permutation permut0 = Permutation::CreateFromCycle(4, std::vector<Permutation::Entry>{2, 3});
     const Permutation permut1 = Permutation::CreateFromCycle(4, std::vector<Permutation::Entry>{0, 1, 2});
     const auto permut = permut1 * permut0;
-    const Permutation permut_cycle = Permutation::CreateFromCycle(4, std::vector<Permutation::Entry>{0, 1, 3, 2});
+    const Permutation permut_cycle = Permutation::CreateFromCycle(4, std::vector<Permutation::Entry>{0, 1, 2, 3});
     ASSERT_TRUE(permut == permut_cycle);
 }
 
@@ -324,12 +324,12 @@ TEST(PermutaionTest, getProduct0)
 
     const auto p12 = p1 * p2;
     p12.apply(vecIn.begin(), vecOut.begin());
-    const std::vector<Permutation::Entry> expect12{3, 0, 1, 2};
+    const std::vector<Permutation::Entry> expect12{1, 3, 0, 2};
     ASSERT_TRUE(std::equal(vecOut.begin(), vecOut.end(), expect12.begin(), expect12.end()));
 
     const auto p21 = p2 * p1;
     p21.apply(vecIn.begin(), vecOut.begin());
-    const std::vector<Permutation::Entry> expect21{1, 3, 0, 2};
+    const std::vector<Permutation::Entry> expect21{3, 0, 1, 2};
     ASSERT_TRUE(std::equal(vecOut.begin(), vecOut.end(), expect21.begin(), expect21.end()));
 }
 
@@ -337,12 +337,55 @@ TEST(PermutaionTest, getProduct1)
 {
     const auto p1 = Permutation::CreateFromCycle(7, std::vector<Permutation::Entry>{1, 3, 5, 2});
     const auto p2 = Permutation::CreateFromCycle(7, std::vector<Permutation::Entry>{1, 6, 3, 4});
-    const auto p21 = p2 * p1;
+    const auto p12 = p1 * p2;
 
-    const auto cycles = p21.getCycles();
+    const auto cycles = p12.getCycles();
     ASSERT_EQ(2, cycles.size());
     ASSERT_TRUE(str::equal(cycles.at(0), Permutation::Cycle{1, 6, 5, 2}));
     ASSERT_TRUE(str::equal(cycles.at(1), Permutation::Cycle{3, 4}));
+}
+
+TEST(PermutaionTest, getProduct2)
+{
+    const auto p1 = Permutation::CreateFromCycle(7, std::vector<Permutation::Entry>{1, 3, 2});
+    const auto p2 = Permutation::CreateFromCycle(7, std::vector<Permutation::Entry>{4, 5});
+    const auto p3 = Permutation::CreateFromCycle(7, std::vector<Permutation::Entry>{2, 4, 6, 5, 3});
+    const auto p4 = Permutation::CreateFromCycle(7, std::vector<Permutation::Entry>{1, 4, 3});
+    const auto p5 = Permutation::CreateFromCycle(7, std::vector<Permutation::Entry>{5, 6});
+    const auto p21 = p2 * p1;
+
+    auto cycles = p21.getCycles();
+    ASSERT_EQ(2, cycles.size());
+    ASSERT_TRUE(str::equal(cycles.at(0), Permutation::Cycle{1, 3, 2}));
+    ASSERT_TRUE(str::equal(cycles.at(1), Permutation::Cycle{4, 5}));
+
+    const auto p321 = p3 * (p2 * p1);
+    cycles = p321.getCycles();
+    ASSERT_EQ(3, cycles.size());
+    ASSERT_TRUE(str::equal(cycles.at(0), Permutation::Cycle{1, 2}));
+    ASSERT_TRUE(str::equal(cycles.at(1), Permutation::Cycle{3, 4}));
+    ASSERT_TRUE(str::equal(cycles.at(2), Permutation::Cycle{5, 6}));
+
+    const auto p4321 = p4 * p3 * p2 * p1;
+    cycles = p4321.getCycles();
+    ASSERT_EQ(2, cycles.size());
+    ASSERT_TRUE(str::equal(cycles.at(0), Permutation::Cycle{1, 2, 4}));
+    ASSERT_TRUE(str::equal(cycles.at(1), Permutation::Cycle{5, 6}));
+
+    const auto p54321 = p5 * p4 * p3 * p2 * p1;
+    cycles = p54321.getCycles();
+    ASSERT_EQ(1, cycles.size());
+    ASSERT_TRUE(str::equal(cycles.at(0), Permutation::Cycle{1, 2, 4}));
+}
+
+TEST(PermutaionTest, getProduct3)
+{
+    const auto p1 = Permutation::Create(std::vector<Permutation::Entry>{0, 3, 4, 2, 5, 1});
+    const auto p2 = Permutation::Create(std::vector<Permutation::Entry>{0, 5, 4, 3, 2, 1});
+    const auto p21 = p2 * p1;
+    const auto cycles = p21.getCycles();
+    ASSERT_EQ(1, cycles.size());
+    ASSERT_TRUE(str::equal(cycles.at(0), Permutation::Cycle{1, 3, 4}));
 }
 
 TEST(PermutaionTest, example0)
