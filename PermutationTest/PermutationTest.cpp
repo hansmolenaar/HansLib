@@ -333,6 +333,18 @@ TEST(PermutaionTest, getProduct0)
     ASSERT_TRUE(std::equal(vecOut.begin(), vecOut.end(), expect21.begin(), expect21.end()));
 }
 
+TEST(PermutaionTest, getProduct1)
+{
+    const auto p1 = Permutation::CreateFromCycle(7, std::vector<Permutation::Entry>{1, 3, 5, 2});
+    const auto p2 = Permutation::CreateFromCycle(7, std::vector<Permutation::Entry>{1, 6, 3, 4});
+    const auto p21 = p2 * p1;
+
+    const auto cycles = p21.getCycles();
+    ASSERT_EQ(2, cycles.size());
+    ASSERT_TRUE(str::equal(cycles.at(0), Permutation::Cycle{1, 6, 5, 2}));
+    ASSERT_TRUE(str::equal(cycles.at(1), Permutation::Cycle{3, 4}));
+}
+
 TEST(PermutaionTest, example0)
 {
     const auto perm = Permutation::CreateFromCycle(4, {{3, 2, 0}});
