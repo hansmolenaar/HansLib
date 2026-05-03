@@ -388,6 +388,22 @@ TEST(PermutaionTest, getProduct3)
     ASSERT_TRUE(str::equal(cycles.at(0), Permutation::Cycle{1, 3, 4}));
 }
 
+TEST(PermutaionTest, getProduct4)
+{
+    const auto p1 = Permutation::Create(std::vector<Permutation::Entry>{0, 3, 1, 4, 5, 2});
+    const auto p2 = Permutation::Create(std::vector<Permutation::Entry>{0, 5, 3, 2, 1, 4});
+
+    const auto p21 = p2 * p1;
+    auto cycles = p21.getCycles();
+    ASSERT_EQ(1, cycles.size());
+    ASSERT_TRUE(str::equal(cycles.at(0), Permutation::Cycle{1, 2, 5, 3}));
+
+    const auto p12 = p1 * p2;
+    cycles = p12.getCycles();
+    ASSERT_EQ(1, cycles.size());
+    ASSERT_TRUE(str::equal(cycles.at(0), Permutation::Cycle{1, 2, 4, 3}));
+}
+
 TEST(PermutaionTest, example0)
 {
     const auto perm = Permutation::CreateFromCycle(4, {{3, 2, 0}});
