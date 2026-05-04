@@ -185,14 +185,12 @@ Permutation Permutation::getInverse() const
 
 Permutation::Entry Permutation::getOrder() const
 {
-    Permutation perm = *this;
-    for (Entry result = 1; result < std::numeric_limits<Entry>::max(); ++result)
+    Permutation::Entry retval = 1;
+    for (const auto &cycle : m_cycles)
     {
-        if (PermutationUtils::isIdentity(perm))
-            return result;
-        perm = perm * (*this);
+        retval = std::lcm(retval, cycle.size());
     }
-    throw MyException("Permutation::getOrder error");
+    return retval;
 }
 
 Permutation Permutation::getPower(int pow) const

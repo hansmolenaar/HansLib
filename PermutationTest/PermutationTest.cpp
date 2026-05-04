@@ -106,6 +106,16 @@ TEST(PermutaionTest, Apply_1)
     ASSERT_FALSE(out.at(1));
 }
 
+TEST(PermutaionTest, Apply_2)
+{
+    const Permutation permut = Permutation::CreateFromDisjunctCycles(4, {{3, 0}, {1, 2}});
+    const std::array<char, 4> in = {'a', 'b', 'c', 'd'};
+    std::vector<char> out(4);
+    permut.apply(in.begin(), out.begin());
+    ASSERT_TRUE(str::equal(out, std::vector<char>{'d', 'c', 'b', 'a'}));
+    ASSERT_EQ(permut.getOrder(), 2);
+}
+
 TEST(PermutaionTest, CreateFromDisjunctCycles_0)
 {
     const auto perm = Permutation::CreateFromDisjunctCycles(0, {});
