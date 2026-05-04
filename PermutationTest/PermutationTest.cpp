@@ -120,12 +120,14 @@ TEST(PermutaionTest, CreateFromDisjunctCycles_0)
 {
     const auto perm = Permutation::CreateFromDisjunctCycles(0, {});
     ASSERT_EQ(perm.getCardinality(), 0);
+    ASSERT_EQ(perm.getOrder(), 1);
 }
 
 TEST(PermutaionTest, CreateFromDisjunctCycles_1)
 {
     const auto perm = Permutation::CreateFromDisjunctCycles(3, {{1, 2}});
     ASSERT_EQ(perm.getCardinality(), 3);
+    ASSERT_EQ(perm.getOrder(), 2);
     const auto expect = Permutation::Create(std::vector<Permutation::Entry>{0, 2, 1});
     ASSERT_TRUE(expect == perm);
 }
@@ -134,6 +136,7 @@ TEST(PermutaionTest, CreateFromDisjunctCycles_2)
 {
     const auto perm = Permutation::CreateFromDisjunctCycles(4, {{0, 1, 3}});
     ASSERT_EQ(perm.getCardinality(), 4);
+    ASSERT_EQ(perm.getOrder(), 3);
     const auto expect = Permutation::Create(std::vector<Permutation::Entry>{1, 3, 2, 0});
     ASSERT_TRUE(expect == perm);
 }
@@ -142,6 +145,7 @@ TEST(PermutaionTest, CreateFromDisjunctCycles_3)
 {
     const auto perm = Permutation::CreateFromDisjunctCycles(4, {{0, 2}, {1, 3}});
     ASSERT_EQ(perm.getCardinality(), 4);
+    ASSERT_EQ(perm.getOrder(), 2);
     const auto expect = Permutation::Create(std::vector<Permutation::Entry>{2, 3, 0, 1});
     ASSERT_TRUE(expect == perm);
 }
@@ -151,6 +155,7 @@ TEST(PermutaionTest, CreateFromDisjunctCycles_4)
     const auto perm = Permutation::CreateFromDisjunctCycles(7, {{1, 2, 6}, {3, 5}});
     const auto expect = Permutation::Create(std::vector<Permutation::Entry>{0, 2, 6, 5, 4, 3, 1});
     ASSERT_TRUE(expect == perm);
+    ASSERT_EQ(perm.getOrder(), 6);
 }
 
 TEST(PermutaionTest, spaceShip)
