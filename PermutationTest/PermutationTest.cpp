@@ -1,11 +1,11 @@
 #include <gtest/gtest.h>
 
-#include "Defines.h"
 #include "Permutation.h"
 #include "PermutationUtils.h"
-#include "Single.h"
 
 #include <array>
+
+namespace str = std::ranges;
 
 TEST(PermutaionTest, Trivial)
 {
