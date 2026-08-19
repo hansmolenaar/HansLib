@@ -1,10 +1,12 @@
 #include "Permutation.h"
 #include "BoundsCheck.h"
-#include "Defines.h"
 #include "MyAssert.h"
 #include "PermutationUtils.h"
 
+#include <algorithm>
 #include <random>
+
+namespace str = std::ranges;
 
 namespace
 {

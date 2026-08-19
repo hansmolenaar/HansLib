@@ -1,7 +1,8 @@
 #include "PermutationUtils.h"
-#include "Defines.h"
-#include "MyAssert.h"
+#include <algorithm>
 #include <set>
+
+namespace str = std::ranges;
 
 namespace
 {

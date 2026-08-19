@@ -1,9 +1,5 @@
 #include "GroupTable.h"
 #include "IFiniteGroupUtils.h"
-#include "PermutationUtils.h"
-
-#include <cmath>
-#include <set>
 
 namespace
 {

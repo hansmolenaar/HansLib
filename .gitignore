@@ -2,6 +2,7 @@
 *.swp
 *.cmake
 *.a
+*.idx
 
 CMakeCache.txt
 CTestTestfile.cmake
