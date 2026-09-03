@@ -36,10 +36,10 @@ TEST(GraphIsomorphismTaggerSpectrumTest, CheckList4)
    list.emplace_back(UndirectedGraphLibrary::Get_Cycle(4));
    std::vector<std::unique_ptr<TaggerSpectrum>> taggers(list.size());
    str::transform(list, taggers.begin(), [](const auto &gp) { return std::make_unique<TaggerSpectrum>(*gp); });
-   for (const auto &spectrum : taggers)
-   {
-      std::cout << *spectrum->getEigenSolution() << "\n";
-   }
+   // for (const auto &spectrum : taggers)
+   //{
+   // std::cout << *spectrum->getEigenSolution() << "\n";
+   //}
    GraphTest::CheckList(factory, list, Tag{5, 1});
 }
 
