@@ -4,12 +4,12 @@ namespace
 {
 double function(double x)
 {
-    return x;
+   return x;
 }
 
 double derivative(double)
 {
-    return 1;
+   return 1;
 }
 } // namespace
 

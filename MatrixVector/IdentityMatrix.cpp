@@ -9,38 +9,38 @@
 
 IdentityMatrix::IdentityMatrix(int dim) : m_dimension(dim)
 {
-    Utilities::MyAssert(m_dimension > 0);
+   Utilities::MyAssert(m_dimension > 0);
 }
 
 const IdentityMatrix &IdentityMatrix::GetInstance(int dim)
 {
-    static std::map<int, std::unique_ptr<IdentityMatrix>> matrices;
-    if (matrices.find(dim) == matrices.end())
-    {
-        matrices[dim] = std::make_unique<IdentityMatrix>(dim);
-    }
-    return *(matrices.find(dim)->second);
+   static std::map<int, std::unique_ptr<IdentityMatrix>> matrices;
+   if (matrices.find(dim) == matrices.end())
+   {
+      matrices[dim] = std::make_unique<IdentityMatrix>(dim);
+   }
+   return *(matrices.find(dim)->second);
 }
 
 int IdentityMatrix::GetDimension() const
 {
-    return m_dimension;
+   return m_dimension;
 }
 
 double IdentityMatrix::get(int row, int col) const
 {
-    CheckRowCol(*this, row, col);
-    return (row == col ? 1 : 0);
+   CheckRowCol(*this, row, col);
+   return (row == col ? 1 : 0);
 }
 
 void IdentityMatrix::set(int, int, double)
 {
-    throw std::runtime_error("Don't call me");
+   throw std::runtime_error("Don't call me");
 }
 
 void IdentityMatrix::timesVector(std::span<const double> vecin, std::span<double> vecout) const
 {
-    Utilities::MyAssert(static_cast<int>(vecin.size()) == GetRowDimension());
-    Utilities::MyAssert(static_cast<int>(vecout.size()) == GetRowDimension());
-    str::copy(vecin, vecout.begin());
+   Utilities::MyAssert(static_cast<int>(vecin.size()) == GetRowDimension());
+   Utilities::MyAssert(static_cast<int>(vecout.size()) == GetRowDimension());
+   str::copy(vecin, vecout.begin());
 }

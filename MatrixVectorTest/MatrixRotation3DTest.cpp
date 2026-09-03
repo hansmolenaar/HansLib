@@ -14,49 +14,49 @@ const double eps = 1.0e-12;
 
 TEST(MatrixRotation3DTest, TestBase)
 {
-    const auto axisz = UnitVector<double, 3>::Create(std::array<double, 3>({0, 0, 1}));
+   const auto axisz = UnitVector<double, 3>::Create(std::array<double, 3>({0, 0, 1}));
 
-    const auto &mat = MatrixRotation3D::Create(axisz, MathConstants::PI_4);
-    ASSERT_EQ(3, mat.GetRowDimension());
-    ASSERT_EQ(3, mat.GetColDimension());
+   const auto &mat = MatrixRotation3D::Create(axisz, MathConstants::PI_4);
+   ASSERT_EQ(3, mat.GetRowDimension());
+   ASSERT_EQ(3, mat.GetColDimension());
 
-    ASSERT_TRUE(IMatrixRotation::IsRotation(mat));
+   ASSERT_TRUE(IMatrixRotation::IsRotation(mat));
 
-    ASSERT_NEAR(mat.get(0, 0), MathConstants::SQRT1_2, eps);
-    ASSERT_NEAR(mat.get(1, 1), MathConstants::SQRT1_2, eps);
-    ASSERT_NEAR(mat.get(0, 1), -MathConstants::SQRT1_2, eps);
-    ASSERT_NEAR(mat.get(1, 0), MathConstants::SQRT1_2, eps);
+   ASSERT_NEAR(mat.get(0, 0), MathConstants::SQRT1_2, eps);
+   ASSERT_NEAR(mat.get(1, 1), MathConstants::SQRT1_2, eps);
+   ASSERT_NEAR(mat.get(0, 1), -MathConstants::SQRT1_2, eps);
+   ASSERT_NEAR(mat.get(1, 0), MathConstants::SQRT1_2, eps);
 }
 
 TEST(MatrixRotation3DTest, TestUnit)
 {
-    const auto axisz = UnitVector<double, 3>::Create(std::array<double, 3>({1, 1, 1}));
-    const auto &mat = MatrixRotation3D::Create(axisz, 0.0);
+   const auto axisz = UnitVector<double, 3>::Create(std::array<double, 3>({1, 1, 1}));
+   const auto &mat = MatrixRotation3D::Create(axisz, 0.0);
 
-    ASSERT_TRUE(IMatrixRotation::IsRotation(mat));
+   ASSERT_TRUE(IMatrixRotation::IsRotation(mat));
 
-    ASSERT_NEAR(mat.get(0, 0), 1.0, eps);
-    ASSERT_NEAR(mat.get(1, 1), 1.0, eps);
-    ASSERT_NEAR(mat.get(2, 2), 1.0, eps);
-    ASSERT_NEAR(mat.get(0, 1), 0.0, eps);
-    ASSERT_NEAR(mat.get(1, 0), 0.0, eps);
-    ASSERT_NEAR(mat.get(0, 2), 0.0, eps);
-    ASSERT_NEAR(mat.get(2, 0), 0.0, eps);
-    ASSERT_NEAR(mat.get(1, 2), 0.0, eps);
-    ASSERT_NEAR(mat.get(2, 1), 0.0, eps);
+   ASSERT_NEAR(mat.get(0, 0), 1.0, eps);
+   ASSERT_NEAR(mat.get(1, 1), 1.0, eps);
+   ASSERT_NEAR(mat.get(2, 2), 1.0, eps);
+   ASSERT_NEAR(mat.get(0, 1), 0.0, eps);
+   ASSERT_NEAR(mat.get(1, 0), 0.0, eps);
+   ASSERT_NEAR(mat.get(0, 2), 0.0, eps);
+   ASSERT_NEAR(mat.get(2, 0), 0.0, eps);
+   ASSERT_NEAR(mat.get(1, 2), 0.0, eps);
+   ASSERT_NEAR(mat.get(2, 1), 0.0, eps);
 }
 
 TEST(MatrixRotation3DTest, TestPermute)
 {
-    const auto axisz = UnitVector<double, 3>::Create(std::array<double, 3>({1, 1, 1}));
-    const auto &mat = MatrixRotation3D::Create(axisz, 2 * MathConstants::PI / 3);
+   const auto axisz = UnitVector<double, 3>::Create(std::array<double, 3>({1, 1, 1}));
+   const auto &mat = MatrixRotation3D::Create(axisz, 2 * MathConstants::PI / 3);
 
-    const std::vector<double> vecin{1, 2, 3};
-    std::array<double, 3> vecout;
+   const std::vector<double> vecin{1, 2, 3};
+   std::array<double, 3> vecout;
 
-    MatrixTimesVector(mat, vecin, vecout);
+   MatrixTimesVector(mat, vecin, vecout);
 
-    ASSERT_NEAR(vecout[0], 3.0, eps);
-    ASSERT_NEAR(vecout[1], 1.0, eps);
-    ASSERT_NEAR(vecout[2], 2.0, eps);
+   ASSERT_NEAR(vecout[0], 3.0, eps);
+   ASSERT_NEAR(vecout[1], 1.0, eps);
+   ASSERT_NEAR(vecout[2], 2.0, eps);
 }

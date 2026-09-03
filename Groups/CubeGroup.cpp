@@ -81,99 +81,99 @@ std::vector<Permutation> Symmetries = {
 
 std::pair<std::unique_ptr<IFiniteGroup>, std::vector<Permutation>> CubeGroup::Create()
 {
-    auto subset = getRotations();
-    subset.emplace_back(getReflectionsIjk().front());
-    return GroupTable::GeneratedBy(subset);
+   auto subset = getRotations();
+   subset.emplace_back(getReflectionsIjk().front());
+   return GroupTable::GeneratedBy(subset);
 }
 
 GroupElement CubeGroup::getOrder() const
 {
-    return 48;
+   return 48;
 }
 
 GroupElement CubeGroup::getIdentity() const
 {
-    return 0;
+   return 0;
 }
 
 GroupElement CubeGroup::getInverse(GroupElement) const
 {
-    throw MyException("CubeGroup::getInverse not yet implemented");
+   throw MyException("CubeGroup::getInverse not yet implemented");
 }
 
 GroupElement CubeGroup::operator()(GroupElement, GroupElement) const
 {
-    throw MyException("CubeGroup::operator not yet implemented");
+   throw MyException("CubeGroup::operator not yet implemented");
 }
 
 std::vector<Permutation> CubeGroup::getRotations()
 {
-    std::vector<Permutation> result;
-    result.reserve(23);
-    for (size_t n = 1; n < 24; ++n)
-    {
-        result.emplace_back(Symmetries[n]);
-    }
-    return result;
+   std::vector<Permutation> result;
+   result.reserve(23);
+   for (size_t n = 1; n < 24; ++n)
+   {
+      result.emplace_back(Symmetries[n]);
+   }
+   return result;
 }
 
 std::vector<Permutation> CubeGroup::getReflections()
 {
-    std::vector<Permutation> result;
-    result.reserve(9);
-    for (size_t n = 24; n < 33; ++n)
-    {
-        result.emplace_back(Symmetries[n]);
-    }
-    return result;
+   std::vector<Permutation> result;
+   result.reserve(9);
+   for (size_t n = 24; n < 33; ++n)
+   {
+      result.emplace_back(Symmetries[n]);
+   }
+   return result;
 }
 
 int CubeGroup::getDistance(Vertex v1, Vertex v2)
 {
-    int result = 0;
-    const auto &v1c = Coordinates[v1];
-    const auto &v2c = Coordinates[v2];
-    for (nrDims_t n = 0; n < nrDims; ++n)
-    {
-        if (v1c[n] != v2c[n])
-            result += 1;
-    }
-    return result;
+   int result = 0;
+   const auto &v1c = Coordinates[v1];
+   const auto &v2c = Coordinates[v2];
+   for (nrDims_t n = 0; n < nrDims; ++n)
+   {
+      if (v1c[n] != v2c[n])
+         result += 1;
+   }
+   return result;
 }
 
 bool CubeGroup::isIsometry(const Permutation &permutation)
 {
-    return PermutationUtils::isIsometry(permutation, CubeGroup::getDistance);
+   return PermutationUtils::isIsometry(permutation, CubeGroup::getDistance);
 }
 
 std::vector<Permutation> CubeGroup::getGroupSymmetries()
 {
-    static std::vector<Permutation> s_permutations;
-    if (s_permutations.empty())
-    {
-        const auto &reflection = Symmetries.at(numRotations + 1);
-        s_permutations.reserve(48);
-        std::copy_n(Symmetries.begin(), numRotations + 1, std::back_inserter(s_permutations));
-        for (size_t n = 0; n < numRotations + 1; ++n)
-        {
-            s_permutations.emplace_back(Symmetries.at(n) * reflection);
-        }
-    }
-    return s_permutations;
+   static std::vector<Permutation> s_permutations;
+   if (s_permutations.empty())
+   {
+      const auto &reflection = Symmetries.at(numRotations + 1);
+      s_permutations.reserve(48);
+      std::copy_n(Symmetries.begin(), numRotations + 1, std::back_inserter(s_permutations));
+      for (size_t n = 0; n < numRotations + 1; ++n)
+      {
+         s_permutations.emplace_back(Symmetries.at(n) * reflection);
+      }
+   }
+   return s_permutations;
 }
 
 std::vector<Permutation> CubeGroup::getReflectionsIjk()
 {
-    static std::vector<Permutation> s_permutations;
-    if (s_permutations.empty())
-    {
-        s_permutations.reserve(3);
-        std::copy_n(Symmetries.begin() + numRotations + 1, 3, std::back_inserter(s_permutations));
-    }
-    return s_permutations;
+   static std::vector<Permutation> s_permutations;
+   if (s_permutations.empty())
+   {
+      s_permutations.reserve(3);
+      std::copy_n(Symmetries.begin() + numRotations + 1, 3, std::back_inserter(s_permutations));
+   }
+   return s_permutations;
 }
 
 std::vector<Permutation> CubeGroup::getSymmetries()
 {
-    return Symmetries;
+   return Symmetries;
 }

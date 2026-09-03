@@ -21,25 +21,25 @@ public:
 
 int MatrixRotation2D::GetDimension() const
 {
-    return 2;
+   return 2;
 }
 
 double MatrixRotation2D::get(int row, int col) const
 {
-    return m_matrix(row, col);
+   return m_matrix(row, col);
 }
 
 MatrixRotation2D::MatrixRotation2D(double angle) : m_matrix(2, 2)
 {
-    const double cosx = std::cos(angle);
-    const double sinx = std::sin(angle);
-    m_matrix(0, 0) = cosx;
-    m_matrix(1, 1) = cosx;
-    m_matrix(0, 1) = -sinx;
-    m_matrix(1, 0) = sinx;
+   const double cosx = std::cos(angle);
+   const double sinx = std::sin(angle);
+   m_matrix(0, 0) = cosx;
+   m_matrix(1, 1) = cosx;
+   m_matrix(0, 1) = -sinx;
+   m_matrix(1, 0) = sinx;
 }
 
 void MatrixRotation2D::timesVector(std::span<const double> vin, std::span<double> vout) const
 {
-    MatrixTimesVector(m_matrix, vin, vout);
+   MatrixTimesVector(m_matrix, vin, vout);
 }

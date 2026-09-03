@@ -8,81 +8,81 @@ MultiIndex<T>::MultiIndex(boost::container::small_vector<T, MULTI_INDEX_MAX_SMAL
     : m_dimensions(std::move(dimensions))
 
 {
-    Utilities::MyAssert(!m_dimensions.empty());
+   Utilities::MyAssert(!m_dimensions.empty());
 
-    m_flatLength = 1;
-    m_factors.reserve(m_dimensions.size());
-    for (auto d : m_dimensions)
-    {
-        m_checkIndex.push_back(BoundsCheck<T>::Create(0, d - 1));
-        m_factors.push_back(static_cast<T>(m_flatLength));
-        m_flatLength *= d;
-    }
-    m_checkFlat = BoundsCheck<T>::Create(0, static_cast<T>(m_flatLength) - 1);
+   m_flatLength = 1;
+   m_factors.reserve(m_dimensions.size());
+   for (auto d : m_dimensions)
+   {
+      m_checkIndex.push_back(BoundsCheck<T>::Create(0, d - 1));
+      m_factors.push_back(static_cast<T>(m_flatLength));
+      m_flatLength *= d;
+   }
+   m_checkFlat = BoundsCheck<T>::Create(0, static_cast<T>(m_flatLength) - 1);
 }
 
 template <typename T> MultiIndex<T> MultiIndex<T>::Create(std::span<const T> dimensions)
 {
-    boost::container::small_vector<T, MULTI_INDEX_MAX_SMALL_VECTOR> myDimensions(dimensions.size());
-    str::copy(dimensions, myDimensions.begin());
-    return MultiIndex<T>(std::move(myDimensions));
+   boost::container::small_vector<T, MULTI_INDEX_MAX_SMALL_VECTOR> myDimensions(dimensions.size());
+   str::copy(dimensions, myDimensions.begin());
+   return MultiIndex<T>(std::move(myDimensions));
 }
 
 template <typename T> T MultiIndex<T>::getNumberOfIndices() const
 {
-    return m_dimensions.size();
+   return m_dimensions.size();
 }
 
 template <typename T> size_t MultiIndex<T>::getFlatSize() const
 {
-    return m_flatLength;
+   return m_flatLength;
 }
 
 template <typename T> T MultiIndex<T>::at(size_t n) const
 {
-    return m_dimensions.at(n);
+   return m_dimensions.at(n);
 }
 
 template <typename T> void MultiIndex<T>::toMultiplet(size_t flat, std::span<T> multiplet) const
 {
-    m_checkFlat.check(static_cast<T>(flat));
-    if (static_cast<T>(multiplet.size()) != getNumberOfIndices())
-    {
-        std::string msg = "MultiIndex<T>::toMultiplet incorrect input dimension ";
-        msg += std::to_string(multiplet.size());
-        msg += " expeced " + std::to_string(getNumberOfIndices());
-        throw MyException(msg);
-    }
+   m_checkFlat.check(static_cast<T>(flat));
+   if (static_cast<T>(multiplet.size()) != getNumberOfIndices())
+   {
+      std::string msg = "MultiIndex<T>::toMultiplet incorrect input dimension ";
+      msg += std::to_string(multiplet.size());
+      msg += " expeced " + std::to_string(getNumberOfIndices());
+      throw MyException(msg);
+   }
 
-    auto *data = multiplet.data();
+   auto *data = multiplet.data();
 
-    // Loop backwards!
-    for (int d = static_cast<int>(getNumberOfIndices() - 1); d >= 0; --d)
-    {
-        T index = static_cast<T>(flat) / m_factors[d];
-        *data = index;
-        ++data;
-        flat -= index * m_factors[d];
-    }
-    std::reverse(multiplet.begin(), multiplet.end());
+   // Loop backwards!
+   for (int d = static_cast<int>(getNumberOfIndices() - 1); d >= 0; --d)
+   {
+      T index = static_cast<T>(flat) / m_factors[d];
+      *data = index;
+      ++data;
+      flat -= index * m_factors[d];
+   }
+   std::reverse(multiplet.begin(), multiplet.end());
 }
 
 template <typename T> size_t MultiIndex<T>::toFlat(std::initializer_list<T> multiplet) const
 {
-    return toFlat(std::span<const T>(multiplet));
+   return toFlat(std::span<const T>(multiplet));
 }
 
 template <typename T> size_t MultiIndex<T>::toFlat(std::span<const T> multiplet) const
 {
-    Utilities::MyAssert(static_cast<T>(multiplet.size()) == getNumberOfIndices());
-    size_t result = 0;
-    size_t count = 0;
-    for (auto indx : multiplet)
-    {
-        m_checkIndex.at(count).check(indx);
-        result += indx * m_factors[count];
-        ++count;
-    }
+   Utilities::MyAssert(static_cast<T>(multiplet.size()) == getNumberOfIndices());
+   size_t result = 0;
+   size_t count = 0;
+   for (auto indx : multiplet)
+   {
+      m_checkIndex.at(count).check(indx);
+      result += indx * m_factors[count];
+      ++count;
+   }
 
-    return result;
+   return result;
 }

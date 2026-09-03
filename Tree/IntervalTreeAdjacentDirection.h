@@ -6,9 +6,9 @@ namespace IntervalTree
 {
 struct AdjacentDirection
 {
-    int Direction;
-    bool UsePositiveDirection;
-    auto operator<=>(const AdjacentDirection &) const = default;
+   int Direction;
+   bool UsePositiveDirection;
+   auto operator<=>(const AdjacentDirection &) const = default;
 };
 
 template <size_t N> const std::array<AdjacentDirection, 2 * N> &GetAdjacentNeighbors();

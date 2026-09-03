@@ -9,13 +9,13 @@ namespace Graph
 
 class UndirectedGraphSpectrum
 {
-  public:
-    explicit UndirectedGraphSpectrum(const Graph::IGraphUs &);
-    const Graph::IGraphUs &getGraph() const;
-    EigenSolution getEigenSolution() const;
+ public:
+   explicit UndirectedGraphSpectrum(const Graph::IGraphUs &);
+   const Graph::IGraphUs &getGraph() const;
+   EigenSolution getEigenSolution() const;
 
-  private:
-    const Graph::IGraphUs &m_graph;
+ private:
+   const Graph::IGraphUs &m_graph;
 };
 
 } // namespace Graph

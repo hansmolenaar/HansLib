@@ -6,7 +6,7 @@ namespace Topology
 {
 class ReferenceShapeNode : public IReferenceShape
 {
-  public:
-    const ITopologicalAdjacencies &getAdjacencies() const override;
+ public:
+   const ITopologicalAdjacencies &getAdjacencies() const override;
 };
 } // namespace Topology

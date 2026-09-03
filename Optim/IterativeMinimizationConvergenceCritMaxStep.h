@@ -4,11 +4,11 @@
 
 class IterativeMinimizationConvergenceCritMaxStep : public IIterativeMinimizationConvergenceCrit
 {
-  public:
-    explicit IterativeMinimizationConvergenceCritMaxStep(int maxStep);
-    IterativeMinimizationConvergenceStatus getConvergenceStatus(
-        const std::vector<IterativeMinimizationStep> &) const override;
+ public:
+   explicit IterativeMinimizationConvergenceCritMaxStep(int maxStep);
+   IterativeMinimizationConvergenceStatus getConvergenceStatus(
+       const std::vector<IterativeMinimizationStep> &) const override;
 
-  private:
-    int m_maxStep;
+ private:
+   int m_maxStep;
 };

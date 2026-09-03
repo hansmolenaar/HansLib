@@ -3,13 +3,13 @@
 
 class NodeRefinePredicateByLevelOrSurplus : public INodeRefinePredicate
 {
-  public:
-    NodeRefinePredicateByLevelOrSurplus(int maxlevel, double minSurplus);
-    bool operator()(const HierTreeNode *htn, int dir) const override;
+ public:
+   NodeRefinePredicateByLevelOrSurplus(int maxlevel, double minSurplus);
+   bool operator()(const HierTreeNode *htn, int dir) const override;
 
-  private:
-    int m_maxLevel;
-    double m_minSurplus;
+ private:
+   int m_maxLevel;
+   double m_minSurplus;
 };
 
 NodeRefinePredicateByLevelOrSurplus::NodeRefinePredicateByLevelOrSurplus(int maxlevel, double minSurplus)
@@ -19,11 +19,11 @@ NodeRefinePredicateByLevelOrSurplus::NodeRefinePredicateByLevelOrSurplus(int max
 
 bool NodeRefinePredicateByLevelOrSurplus::operator()(const HierTreeNode *htn, int dir) const
 {
-    if (htn->RefinementLevel < m_maxLevel)
-        return true;
-    if (std::abs(htn->Surplus) > m_minSurplus)
-        return true;
-    return false;
+   if (htn->RefinementLevel < m_maxLevel)
+      return true;
+   if (std::abs(htn->Surplus) > m_minSurplus)
+      return true;
+   return false;
 }
 
 NodeRefinePredicateFactoryByLevelOrSurplus::NodeRefinePredicateFactoryByLevelOrSurplus(int maxlevel, double minSurplus)
@@ -34,5 +34,5 @@ NodeRefinePredicateFactoryByLevelOrSurplus::NodeRefinePredicateFactoryByLevelOrS
 std::unique_ptr<INodeRefinePredicate> NodeRefinePredicateFactoryByLevelOrSurplus::create(
     const HierApproximation &approximation)
 {
-    return std::make_unique<NodeRefinePredicateByLevelOrSurplus>(m_maxLevel, m_minSurplus);
+   return std::make_unique<NodeRefinePredicateByLevelOrSurplus>(m_maxLevel, m_minSurplus);
 }

@@ -7,29 +7,29 @@
 
 TEST(MatrixKelvinRepr3Test, Test1)
 {
-    auto matrix = MatrixKelvinRepr3::CreateEmpty();
-    ASSERT_EQ(3, matrix.GetDimension());
-    for (int n = 0; n < 6; ++n)
-    {
-        ASSERT_EQ(0.0, matrix.Vector()[n]);
-    }
+   auto matrix = MatrixKelvinRepr3::CreateEmpty();
+   ASSERT_EQ(3, matrix.GetDimension());
+   for (int n = 0; n < 6; ++n)
+   {
+      ASSERT_EQ(0.0, matrix.Vector()[n]);
+   }
 }
 
 TEST(MatrixKelvinRepr3Test, TestInterface)
 {
-    auto matrix = MatrixKelvinRepr3::CreateEmpty();
-    IMatrixKelvinReprTest::TestInterface(matrix);
+   auto matrix = MatrixKelvinRepr3::CreateEmpty();
+   IMatrixKelvinReprTest::TestInterface(matrix);
 }
 
 TEST(MatrixKelvinRepr3Test, Test2)
 {
-    auto matrix = MatrixKelvinRepr3::CreateEmpty();
-    IndexerSymmetric<int> indexer(3);
-    for (int row = 0; row < 3; ++row)
-    {
-        for (int col = 0; col < 3; ++col)
-        {
-            matrix.Set(row, col, indexer.ToFlat(row, col) * 1.0);
-        }
-    }
+   auto matrix = MatrixKelvinRepr3::CreateEmpty();
+   IndexerSymmetric<int> indexer(3);
+   for (int row = 0; row < 3; ++row)
+   {
+      for (int col = 0; col < 3; ++col)
+      {
+         matrix.Set(row, col, indexer.ToFlat(row, col) * 1.0);
+      }
+   }
 }

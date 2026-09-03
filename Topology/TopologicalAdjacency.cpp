@@ -11,16 +11,16 @@ namespace
 {
 void Cleanup(std::map<int, std::vector<int>> &from_to, int sizeFrom)
 {
-    for (auto &itr : from_to)
-    {
-        Utilities::throwOnDuplicate(itr.second);
-    }
-    const int lwrBound = from_to.begin()->first;
-    if (lwrBound < 0)
-        throw MyException("TopologicalAdjacency::Cleanup lower bound " + std::to_string(lwrBound));
-    const int uprBound = from_to.rbegin()->first;
-    if (uprBound >= sizeFrom)
-        throw MyException("TopologicalAdjacency::Cleanup upper bound " + std::to_string(uprBound));
+   for (auto &itr : from_to)
+   {
+      Utilities::throwOnDuplicate(itr.second);
+   }
+   const int lwrBound = from_to.begin()->first;
+   if (lwrBound < 0)
+      throw MyException("TopologicalAdjacency::Cleanup lower bound " + std::to_string(lwrBound));
+   const int uprBound = from_to.rbegin()->first;
+   if (uprBound >= sizeFrom)
+      throw MyException("TopologicalAdjacency::Cleanup upper bound " + std::to_string(uprBound));
 }
 
 } // namespace
@@ -33,64 +33,64 @@ TopologicalAdjacency::TopologicalAdjacency(TopologyDimension dimLow, std::map<in
 
 TopologyDimension TopologicalAdjacency::getDimensionLow() const
 {
-    return m_dimLow;
+   return m_dimLow;
 }
 
 TopologyDimension TopologicalAdjacency::getDimensionHigh() const
 {
-    return m_dimHigh;
+   return m_dimHigh;
 }
 
 const std::vector<int> &TopologicalAdjacency::getConnectedLowers(int posHi) const
 {
-    Utilities::MyAssert(m_high_2_low.contains(posHi));
-    return m_high_2_low.at(posHi);
+   Utilities::MyAssert(m_high_2_low.contains(posHi));
+   return m_high_2_low.at(posHi);
 }
 
 const std::vector<int> &TopologicalAdjacency::getConnectedHighers(int posLo) const
 {
-    Utilities::MyAssert(m_low_2_high.contains(posLo));
-    return m_low_2_high.at(posLo);
+   Utilities::MyAssert(m_low_2_high.contains(posLo));
+   return m_low_2_high.at(posLo);
 }
 
 std::unique_ptr<TopologicalAdjacency> TopologicalAdjacency::Create(TopologyDimension dimHi, int countHigh,
                                                                    TopologyDimension dimLo, int countLow,
                                                                    const std::map<int, std::vector<int>> &hi2lo)
 {
-    if (dimLo >= dimHi)
-        throw MyException("TopologicalAdjacency::Create dimLower should be less than dimHigher");
+   if (dimLo >= dimHi)
+      throw MyException("TopologicalAdjacency::Create dimLower should be less than dimHigher");
 
-    std::map<int, std::vector<int>> low_2_high;
-    std::map<int, std::vector<int>> high_2_low;
+   std::map<int, std::vector<int>> low_2_high;
+   std::map<int, std::vector<int>> high_2_low;
 
-    for (int n = 0; n < countLow; ++n)
-    {
-        low_2_high.emplace(n, std::vector<int>{});
-    }
-    for (int n = 0; n < countHigh; ++n)
-    {
-        high_2_low.emplace(n, std::vector<int>{});
-    }
-    for (const auto &itr : hi2lo)
-    {
-        const int high = itr.first;
-        for (auto low : itr.second)
-        {
-            low_2_high.at(low).push_back(high);
-            high_2_low.at(high).push_back(low);
-        }
-    }
+   for (int n = 0; n < countLow; ++n)
+   {
+      low_2_high.emplace(n, std::vector<int>{});
+   }
+   for (int n = 0; n < countHigh; ++n)
+   {
+      high_2_low.emplace(n, std::vector<int>{});
+   }
+   for (const auto &itr : hi2lo)
+   {
+      const int high = itr.first;
+      for (auto low : itr.second)
+      {
+         low_2_high.at(low).push_back(high);
+         high_2_low.at(high).push_back(low);
+      }
+   }
 
-    Cleanup(low_2_high, countLow);
-    Cleanup(high_2_low, countHigh);
+   Cleanup(low_2_high, countLow);
+   Cleanup(high_2_low, countHigh);
 
-    return std::unique_ptr<TopologicalAdjacency>(
-        new TopologicalAdjacency(dimLo, std::move(low_2_high), dimHi, std::move(high_2_low)));
+   return std::unique_ptr<TopologicalAdjacency>(
+       new TopologicalAdjacency(dimLo, std::move(low_2_high), dimHi, std::move(high_2_low)));
 }
 
 std::unique_ptr<TopologicalAdjacency> TopologicalAdjacency::CreateTrivial(TopologyDimension dimHi,
                                                                           TopologyDimension dimLo, int countLow)
 {
-    std::map<int, std::vector<int>> hi2lo{{0, Iota::GenerateIntVector(countLow)}};
-    return Create(dimHi, 1, dimLo, countLow, hi2lo);
+   std::map<int, std::vector<int>> hi2lo{{0, Iota::GenerateIntVector(countLow)}};
+   return Create(dimHi, 1, dimLo, countLow, hi2lo);
 }

@@ -11,10 +11,10 @@ ManifoldId::ManifoldId(Topology::TopologyDimension dimension, const std::string 
 
 Topology::TopologyDimension ManifoldId::getTopologyDimension() const
 {
-    return m_dimension;
+   return m_dimension;
 }
 
 const std::string &ManifoldId::getName() const
 {
-    return m_name;
+   return m_name;
 }

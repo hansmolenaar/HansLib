@@ -6,10 +6,10 @@ NonLinearSolverConvergenceCriteria::NonLinearSolverConvergenceCriteria(double re
 }
 double NonLinearSolverConvergenceCriteria::GetResidualReduction() const
 {
-    return m_rsdReduction;
+   return m_rsdReduction;
 }
 
 int NonLinearSolverConvergenceCriteria::GetMaxIter() const
 {
-    return m_maxIter;
+   return m_maxIter;
 }

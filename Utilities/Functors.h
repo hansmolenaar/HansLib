@@ -12,115 +12,115 @@ namespace Functors
 {
 template <typename T> struct IsEqualTo
 {
-    T Expect;
-    bool operator()(const T &actual) const
-    {
-        return actual == Expect;
-    }
+   T Expect;
+   bool operator()(const T &actual) const
+   {
+      return actual == Expect;
+   }
 };
 
 template <typename T> struct IsInIncludeBounds
 {
-    T LowerBound;
-    T UpperBound;
-    bool operator()(const T &val) const
-    {
-        return (val >= LowerBound) && (val <= UpperBound);
-    }
+   T LowerBound;
+   T UpperBound;
+   bool operator()(const T &val) const
+   {
+      return (val >= LowerBound) && (val <= UpperBound);
+   }
 };
 
 template <typename TDerived> struct IsOfDerivedType
 {
-    template <typename TBase> bool operator()(const TBase *base) const
-    {
-        return dynamic_cast<const TDerived *>(base) != nullptr;
-    }
+   template <typename TBase> bool operator()(const TBase *base) const
+   {
+      return dynamic_cast<const TDerived *>(base) != nullptr;
+   }
 
-  private:
+ private:
 };
 
 struct AreClose
 {
-    double RelTolerance = 1.0e-12;
-    double AbsTolerance = 1.0e-100;
+   double RelTolerance = 1.0e-12;
+   double AbsTolerance = 1.0e-100;
 
-    bool operator()(double x, double y) const
-    {
-        const double maxabs = std::max(std::abs(x), std::abs(y));
-        if (maxabs < AbsTolerance)
-            return true;
-        return std::abs(x - y) <= maxabs * RelTolerance;
-    }
+   bool operator()(double x, double y) const
+   {
+      const double maxabs = std::max(std::abs(x), std::abs(y));
+      if (maxabs < AbsTolerance)
+         return true;
+      return std::abs(x - y) <= maxabs * RelTolerance;
+   }
 
-    bool operator()(std::span<const double> a, std::span<const double> b) const
-    {
-        if (a.size() != b.size())
-            throw MyException("VectorDoubleLess dimension mismatch");
-        for (size_t n = 0; n < a.size(); ++n)
-        {
-            if (!(*this)(a[n], b[n]))
-            {
-                return false;
-            }
-        }
+   bool operator()(std::span<const double> a, std::span<const double> b) const
+   {
+      if (a.size() != b.size())
+         throw MyException("VectorDoubleLess dimension mismatch");
+      for (size_t n = 0; n < a.size(); ++n)
+      {
+         if (!(*this)(a[n], b[n]))
+         {
+            return false;
+         }
+      }
 
-        // Are close
-        return true;
-    }
+      // Are close
+      return true;
+   }
 };
 
 struct VectorDoubleLess
 {
-    AreClose AreCloseValue;
+   AreClose AreCloseValue;
 
-    bool operator()(const std::vector<double> &a, const std::vector<double> &b) const
-    {
-        if (a.size() != b.size())
-            throw MyException("VectorDoubleLess dimension mismatch");
-        for (size_t n = 0; n < a.size(); ++n)
-        {
-            if (AreCloseValue(a[n], b[n]))
-                continue;
-            return a[n] < b[n];
-        }
+   bool operator()(const std::vector<double> &a, const std::vector<double> &b) const
+   {
+      if (a.size() != b.size())
+         throw MyException("VectorDoubleLess dimension mismatch");
+      for (size_t n = 0; n < a.size(); ++n)
+      {
+         if (AreCloseValue(a[n], b[n]))
+            continue;
+         return a[n] < b[n];
+      }
 
-        // Are equal
-        return false;
-    }
+      // Are equal
+      return false;
+   }
 };
 
 struct PointerIsNull
 {
-    bool operator()(const void *ptr) const
-    {
-        return ptr == nullptr;
-    }
+   bool operator()(const void *ptr) const
+   {
+      return ptr == nullptr;
+   }
 };
 
 struct PointerIsNotNull
 {
-    bool operator()(const void *ptr) const
-    {
-        return ptr != nullptr;
-    }
+   bool operator()(const void *ptr) const
+   {
+      return ptr != nullptr;
+   }
 };
 
 struct SumOfSquares
 {
-    template <typename C> auto operator()(const C &container) const
-    {
-        typename C::value_type init = 0;
-        return std::inner_product(container.begin(), container.end(), container.begin(), init);
-    }
+   template <typename C> auto operator()(const C &container) const
+   {
+      typename C::value_type init = 0;
+      return std::inner_product(container.begin(), container.end(), container.begin(), init);
+   }
 };
 
 template <typename T> struct TimesScalar
 {
-    T Scalar;
-    auto operator()(T value) const
-    {
-        return Scalar * value;
-    }
+   T Scalar;
+   auto operator()(T value) const
+   {
+      return Scalar * value;
+   }
 };
 
 } // namespace Functors

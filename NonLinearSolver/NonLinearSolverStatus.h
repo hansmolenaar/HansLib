@@ -2,8 +2,8 @@
 
 enum class NonLinearSolverStatus
 {
-    Converged,
-    NotConverged,
-    MaxIterExceeded,
-    Diverged
+   Converged,
+   NotConverged,
+   MaxIterExceeded,
+   Diverged
 };

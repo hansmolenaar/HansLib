@@ -14,28 +14,28 @@ namespace
 {
 constexpr int TriangleNumber(int dim)
 {
-    return dim * (dim + 1) / 2;
+   return dim * (dim + 1) / 2;
 }
 
 std::vector<bool> GenerateActive(int geomdim)
 {
-    std::vector<bool> result(TriangleNumber(geomdim), false);
-    std::fill_n(result.begin(), geomdim, true);
-    return result;
+   std::vector<bool> result(TriangleNumber(geomdim), false);
+   std::fill_n(result.begin(), geomdim, true);
+   return result;
 }
 
 double Eval(int geomdim, std::span<const double> x)
 {
-    Utilities::MyAssert(TriangleNumber(geomdim) == static_cast<int>(x.size()));
-    return std::accumulate(x.begin(), x.begin() + geomdim, 0.0);
+   Utilities::MyAssert(TriangleNumber(geomdim) == static_cast<int>(x.size()));
+   return std::accumulate(x.begin(), x.begin() + geomdim, 0.0);
 }
 
 void Deriv(int geomdim, std::span<const double> x, std::span<double> df)
 {
-    const auto siz = TriangleNumber(geomdim);
-    Utilities::MyAssert(siz == static_cast<int>(x.size()) && siz == static_cast<int>(df.size()));
-    std::fill(df.begin() + geomdim, df.end(), 0.0);
-    std::fill_n(df.begin(), geomdim, 1.0);
+   const auto siz = TriangleNumber(geomdim);
+   Utilities::MyAssert(siz == static_cast<int>(x.size()) && siz == static_cast<int>(df.size()));
+   std::fill(df.begin() + geomdim, df.end(), 0.0);
+   std::fill_n(df.begin(), geomdim, 1.0);
 }
 } // namespace
 

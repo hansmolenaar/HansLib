@@ -13,20 +13,20 @@ SingleVariableRealValuedFunction::SingleVariableRealValuedFunction(std::function
 
 double SingleVariableRealValuedFunction::Evaluate(double x) const
 {
-    return m_function(x);
+   return m_function(x);
 }
 
 double SingleVariableRealValuedFunction::Derivative(double x) const
 {
-    return m_derivative(x);
+   return m_derivative(x);
 }
 
 bool SingleVariableRealValuedFunction::IsNonConstant() const
 {
-    return true;
+   return true;
 }
 
 bool SingleVariableRealValuedFunction::HasDerivative() const
 {
-    return m_derivative != nullptr;
+   return m_derivative != nullptr;
 }

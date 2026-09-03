@@ -2,8 +2,8 @@
 
 #include <Eigen/Dense>
 
-#include <vector>
 #include <span>
+#include <vector>
 
 namespace EigenTools
 {

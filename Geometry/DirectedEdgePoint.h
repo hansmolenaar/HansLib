@@ -9,70 +9,70 @@ template <typename T, size_t N> class DirectedEdge;
 
 enum class DirectedEdgePointType
 {
-    Point0,
-    Inside,
-    Point1
+   Point0,
+   Inside,
+   Point1
 };
 
 template <typename T, size_t N> class DirectedEdgePoint
 {
-  public:
-    DirectedEdgePoint();
+ public:
+   DirectedEdgePoint();
 
-    DirectedEdgePoint(const Point<T, N> &point, const DirectedEdge<T, N> &edge,
-                      const IGeometryPredicate<T, N> &predicate);
-    DirectedEdgePointType getPointType() const;
-    const Point<T, N> &getPoint() const;
-    T getScalar() const;
+   DirectedEdgePoint(const Point<T, N> &point, const DirectedEdge<T, N> &edge,
+                     const IGeometryPredicate<T, N> &predicate);
+   DirectedEdgePointType getPointType() const;
+   const Point<T, N> &getPoint() const;
+   T getScalar() const;
 
-  private:
-    T m_scalar = std::numeric_limits<T>::max();
-    Point<T, N> m_edgePoint;
-    DirectedEdgePointType m_pointType = DirectedEdgePointType::Inside;
+ private:
+   T m_scalar = std::numeric_limits<T>::max();
+   Point<T, N> m_edgePoint;
+   DirectedEdgePointType m_pointType = DirectedEdgePointType::Inside;
 };
 
 using DirectedEdgePoint2 = DirectedEdgePoint<double, 2>;
 
 template <typename T, size_t N> struct DirectedEdgePointEquals
 {
-    const IGeometryPredicate<T, N> &predicate;
+   const IGeometryPredicate<T, N> &predicate;
 
-    bool operator()(DirectedEdgePoint<T, N> const &lhs, DirectedEdgePoint<T, N> const &rhs) const
-    {
-        if (lhs.getPointType() != rhs.getPointType())
-        {
-            return false;
-        }
-        if (lhs.getPointType() != DirectedEdgePointType::Inside)
-        {
-            return true;
-        }
-        // both are inside
-        return predicate.samePoints(lhs.getPoint(), rhs.getPoint());
-    }
+   bool operator()(DirectedEdgePoint<T, N> const &lhs, DirectedEdgePoint<T, N> const &rhs) const
+   {
+      if (lhs.getPointType() != rhs.getPointType())
+      {
+         return false;
+      }
+      if (lhs.getPointType() != DirectedEdgePointType::Inside)
+      {
+         return true;
+      }
+      // both are inside
+      return predicate.samePoints(lhs.getPoint(), rhs.getPoint());
+   }
 };
 
 template <typename T, size_t N> struct DirectedEdgePointLess
 {
-    const IGeometryPredicate<T, N> &predicate;
+   const IGeometryPredicate<T, N> &predicate;
 
-    bool operator()(DirectedEdgePoint<T, N> const &lhs, DirectedEdgePoint<T, N> const &rhs) const
-    {
-        if (lhs.getPointType() != rhs.getPointType())
-        {
-            return lhs.getPointType() < rhs.getPointType();
-        }
-        if (lhs.getPointType() != DirectedEdgePointType::Inside)
-        {
-            return false;
-        }
-        // both are inside
-        if (predicate.samePoints(lhs.getPoint(), rhs.getPoint()))
-        {
-            return false;
-        }
+   bool operator()(DirectedEdgePoint<T, N> const &lhs, DirectedEdgePoint<T, N> const &rhs) const
+   {
+      if (lhs.getPointType() != rhs.getPointType())
+      {
+         return lhs.getPointType() < rhs.getPointType();
+      }
+      if (lhs.getPointType() != DirectedEdgePointType::Inside)
+      {
+         return false;
+      }
+      // both are inside
+      if (predicate.samePoints(lhs.getPoint(), rhs.getPoint()))
+      {
+         return false;
+      }
 
-        return lhs.getScalar() < rhs.getScalar();
-    }
+      return lhs.getScalar() < rhs.getScalar();
+   }
 };
 } // namespace Geometry

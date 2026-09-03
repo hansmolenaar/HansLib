@@ -8,10 +8,10 @@ class INonLinearSolverStrategy;
 
 class NonLinearSolver
 {
-  public:
-    NonLinearSolver(IRealFunction &problem);
-    NonLinearSolverStatus Solve(std::span<const double> fx, std::span<double> x, INonLinearSolverStrategy &strategy);
+ public:
+   NonLinearSolver(IRealFunction &problem);
+   NonLinearSolverStatus Solve(std::span<const double> fx, std::span<double> x, INonLinearSolverStrategy &strategy);
 
-  private:
-    IRealFunction &m_problem;
+ private:
+   IRealFunction &m_problem;
 };

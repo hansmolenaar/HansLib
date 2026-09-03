@@ -7,73 +7,73 @@ MultiVariableProductFunction::MultiVariableProductFunction(
     std::initializer_list<const IMultiVariableRealValuedFunction *> functions)
     : m_functions(functions.begin(), functions.end())
 {
-    m_dim = (*m_functions.begin())->GetDomainDimension();
-    for (auto f : m_functions)
-    {
-        Utilities::MyAssert(f->GetDomainDimension() == m_dim);
-    }
+   m_dim = (*m_functions.begin())->GetDomainDimension();
+   for (auto f : m_functions)
+   {
+      Utilities::MyAssert(f->GetDomainDimension() == m_dim);
+   }
 }
 
 int MultiVariableProductFunction::GetDomainDimension() const
 {
-    return m_dim;
+   return m_dim;
 }
 
 bool MultiVariableProductFunction::HasDerivative() const
 {
-    return std::all_of(m_functions.begin(), m_functions.end(),
-                       [=](const IMultiVariableRealValuedFunction *fie) { return fie->HasDerivative(); });
+   return std::all_of(m_functions.begin(), m_functions.end(),
+                      [=](const IMultiVariableRealValuedFunction *fie) { return fie->HasDerivative(); });
 }
 
 bool MultiVariableProductFunction::DerivativeAlwaysZero(int var) const
 {
-    return std::all_of(m_functions.begin(), m_functions.end(),
-                       [=](const IMultiVariableRealValuedFunction *fie) { return fie->DerivativeAlwaysZero(var); });
+   return std::all_of(m_functions.begin(), m_functions.end(),
+                      [=](const IMultiVariableRealValuedFunction *fie) { return fie->DerivativeAlwaysZero(var); });
 }
 
 double MultiVariableProductFunction::Evaluate(std::span<const double> x) const
 {
-    Utilities::MyAssert(static_cast<int>(x.size()) == m_dim);
-    double result = 1.0;
-    for (const auto fie : m_functions)
-    {
-        result *= fie->Evaluate(x);
-    }
+   Utilities::MyAssert(static_cast<int>(x.size()) == m_dim);
+   double result = 1.0;
+   for (const auto fie : m_functions)
+   {
+      result *= fie->Evaluate(x);
+   }
 
-    return result;
+   return result;
 }
 
 void MultiVariableProductFunction::Derivative(std::span<const double> x, std::span<double> dfdx) const
 {
-    Utilities::MyAssert(static_cast<int>(x.size()) == m_dim);
-    Utilities::MyAssert(static_cast<int>(dfdx.size()) == m_dim);
+   Utilities::MyAssert(static_cast<int>(x.size()) == m_dim);
+   Utilities::MyAssert(static_cast<int>(dfdx.size()) == m_dim);
 
-    std::vector<double> evals(m_functions.size());
-    for (size_t n = 0; n < m_functions.size(); ++n)
-    {
-        evals[n] = m_functions[n]->Evaluate(x);
-    }
+   std::vector<double> evals(m_functions.size());
+   for (size_t n = 0; n < m_functions.size(); ++n)
+   {
+      evals[n] = m_functions[n]->Evaluate(x);
+   }
 
-    std::vector<double> deriv(m_dim);
+   std::vector<double> deriv(m_dim);
 
-    std::fill_n(dfdx.data(), m_dim, 0.0);
-    for (size_t f = 0; f < m_functions.size(); ++f)
-    {
-        m_functions[f]->Derivative(x, deriv);
-        double term = 1.0;
-        for (size_t n = 0; n < m_functions.size(); ++n)
-        {
-            if (n != f)
-            {
-                term *= evals[n];
-            }
-        }
-        for (int var = 0; var < m_dim; ++var)
-        {
-            if (!DerivativeAlwaysZero(var))
-            {
-                dfdx[var] += term * deriv[var];
-            }
-        }
-    }
+   std::fill_n(dfdx.data(), m_dim, 0.0);
+   for (size_t f = 0; f < m_functions.size(); ++f)
+   {
+      m_functions[f]->Derivative(x, deriv);
+      double term = 1.0;
+      for (size_t n = 0; n < m_functions.size(); ++n)
+      {
+         if (n != f)
+         {
+            term *= evals[n];
+         }
+      }
+      for (int var = 0; var < m_dim; ++var)
+      {
+         if (!DerivativeAlwaysZero(var))
+         {
+            dfdx[var] += term * deriv[var];
+         }
+      }
+   }
 }

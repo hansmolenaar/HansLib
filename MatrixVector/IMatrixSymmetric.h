@@ -4,6 +4,6 @@
 
 class IMatrixSymmetric : public IMatrixSquare
 {
-  public:
-    virtual ~IMatrixSymmetric() = default;
+ public:
+   virtual ~IMatrixSymmetric() = default;
 };

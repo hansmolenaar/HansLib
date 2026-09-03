@@ -7,16 +7,16 @@
 
 class MatrixRotation3D : public IMatrixRotation
 {
-  public:
-    static MatrixRotation3D Create(const UnitVector3 &, double);
-    int GetDimension() const override;
+ public:
+   static MatrixRotation3D Create(const UnitVector3 &, double);
+   int GetDimension() const override;
 
-    double get(int, int) const override;
+   double get(int, int) const override;
 
-    void timesVector(std::span<const double>, std::span<double>) const override;
+   void timesVector(std::span<const double>, std::span<double>) const override;
 
-  private:
-    MatrixRotation3D(const UnitVector3 &, double);
+ private:
+   MatrixRotation3D(const UnitVector3 &, double);
 
-    MatrixDense m_matrix;
+   MatrixDense m_matrix;
 };

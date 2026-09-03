@@ -10,79 +10,79 @@ namespace IMatrixTest
 
 TEST(IMatrixTest, TestCopyFrom)
 {
-    const int dim = 3;
-    MatrixSquare source(dim);
-    MatrixDense target(dim, dim);
-    for (int i = 0; i < dim; ++i)
-    {
-        for (int j = 0; j < dim; ++j)
-        {
-            source(i, j) = i * dim + j;
-        }
-    }
-    target.CopyFrom(source);
-    for (int i = 0; i < dim; ++i)
-    {
-        for (int j = 0; j < dim; ++j)
-        {
-            ASSERT_EQ(target(i, j), i * dim + j);
-        }
-    }
+   const int dim = 3;
+   MatrixSquare source(dim);
+   MatrixDense target(dim, dim);
+   for (int i = 0; i < dim; ++i)
+   {
+      for (int j = 0; j < dim; ++j)
+      {
+         source(i, j) = i * dim + j;
+      }
+   }
+   target.CopyFrom(source);
+   for (int i = 0; i < dim; ++i)
+   {
+      for (int j = 0; j < dim; ++j)
+      {
+         ASSERT_EQ(target(i, j), i * dim + j);
+      }
+   }
 }
 
 TEST(IMatrixTest, TestAssignmentError)
 {
-    const int dim = 3;
-    MatrixSquare source(dim);
-    MatrixDense target(dim, dim + 1);
-    ASSERT_ANY_THROW(target.CopyFrom(source););
-    target = MatrixDense(dim + 1, dim);
-    ASSERT_ANY_THROW(target.CopyFrom(source););
+   const int dim = 3;
+   MatrixSquare source(dim);
+   MatrixDense target(dim, dim + 1);
+   ASSERT_ANY_THROW(target.CopyFrom(source););
+   target = MatrixDense(dim + 1, dim);
+   ASSERT_ANY_THROW(target.CopyFrom(source););
 }
 
 void TestConstInterface(const IMatrix &matrix, bool usesAsserts)
 {
-    const int rowDim = matrix.GetRowDimension();
-    const int colDim = matrix.GetColDimension();
+   const int rowDim = matrix.GetRowDimension();
+   const int colDim = matrix.GetColDimension();
 
-    ASSERT_GE(rowDim, 0);
-    ASSERT_GE(colDim, 0);
+   ASSERT_GE(rowDim, 0);
+   ASSERT_GE(colDim, 0);
 
-    if (!usesAsserts)
-    {
-        ASSERT_ANY_THROW(matrix.get(-1, 0););
-        ASSERT_ANY_THROW(matrix.get(0, -1););
-        ASSERT_ANY_THROW(matrix.get(rowDim, 0););
-        ASSERT_ANY_THROW(matrix.get(0, colDim););
-    }
+   if (!usesAsserts)
+   {
+      ASSERT_ANY_THROW(matrix.get(-1, 0););
+      ASSERT_ANY_THROW(matrix.get(0, -1););
+      ASSERT_ANY_THROW(matrix.get(rowDim, 0););
+      ASSERT_ANY_THROW(matrix.get(0, colDim););
+   }
 }
 
 void TestInterface(IMatrix &matrix, bool usesAsserts)
 {
-    TestConstInterface(matrix, usesAsserts);
+   TestConstInterface(matrix, usesAsserts);
 
-    const int rowDim = matrix.GetRowDimension();
-    const int colDim = matrix.GetColDimension();
+   const int rowDim = matrix.GetRowDimension();
+   const int colDim = matrix.GetColDimension();
 
-    ASSERT_GT(rowDim, 0);
-    ASSERT_GT(colDim, 0);
+   ASSERT_GT(rowDim, 0);
+   ASSERT_GT(colDim, 0);
 
-    if (!usesAsserts)
-    {
-        ASSERT_ANY_THROW(matrix.set(-1, 0, 0););
-        ASSERT_ANY_THROW(matrix.set(0, -1, 0););
-        ASSERT_ANY_THROW(matrix.set(rowDim, 0, 0););
-        ASSERT_ANY_THROW(matrix.set(0, colDim, 0););
-    }
+   if (!usesAsserts)
+   {
+      ASSERT_ANY_THROW(matrix.set(-1, 0, 0););
+      ASSERT_ANY_THROW(matrix.set(0, -1, 0););
+      ASSERT_ANY_THROW(matrix.set(rowDim, 0, 0););
+      ASSERT_ANY_THROW(matrix.set(0, colDim, 0););
+   }
 
-    for (int row = 0; row < rowDim; ++row)
-    {
-        for (int col = 0; col < colDim; ++col)
-        {
-            Clear(matrix);
-            matrix.set(row, col, 1.0);
-            ASSERT_EQ(matrix.get(row, col), 1.0);
-        }
-    }
+   for (int row = 0; row < rowDim; ++row)
+   {
+      for (int col = 0; col < colDim; ++col)
+      {
+         Clear(matrix);
+         matrix.set(row, col, 1.0);
+         ASSERT_EQ(matrix.get(row, col), 1.0);
+      }
+   }
 }
 }; // namespace IMatrixTest

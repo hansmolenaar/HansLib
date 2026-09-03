@@ -8,27 +8,27 @@ namespace GraphIsomorphism
 
 class TaggerTwins : public IGraphCompare, public IVertexCompare
 {
-  public:
-    explicit TaggerTwins(const Graph::IGraphUs &);
+ public:
+   explicit TaggerTwins(const Graph::IGraphUs &);
 
-    const Tag &getGraphTag() const;
-    const Tag &getVertexTag(Graph::Vertex) const;
-    const Graph::IGraphUs &getGraph() const override;
-    std::weak_ordering compareGraph(const IGraphCompare &) const override;
-    std::weak_ordering compareVertexOtherGraph(Graph::Vertex, const IVertexCompare &, Graph::Vertex) const override;
-    const VertexGrouping &getVertexGrouping() const override;
+   const Tag &getGraphTag() const;
+   const Tag &getVertexTag(Graph::Vertex) const;
+   const Graph::IGraphUs &getGraph() const override;
+   std::weak_ordering compareGraph(const IGraphCompare &) const override;
+   std::weak_ordering compareVertexOtherGraph(Graph::Vertex, const IVertexCompare &, Graph::Vertex) const override;
+   const VertexGrouping &getVertexGrouping() const override;
 
-  private:
-    const Graph::IGraphUs &m_graph;
-    std::map<Graph::Vertex, Tag> m_vertexTwinsTag;
-    Tag m_graphTag;
-    VertexGrouping m_vertexGrouping;
+ private:
+   const Graph::IGraphUs &m_graph;
+   std::map<Graph::Vertex, Tag> m_vertexTwinsTag;
+   Tag m_graphTag;
+   VertexGrouping m_vertexGrouping;
 };
 
 class CompareTwinsFactory : public ICompareFactory
 {
-  public:
-    std::unique_ptr<ICompare> createCompare(const Graph::IGraphUs &) const override;
+ public:
+   std::unique_ptr<ICompare> createCompare(const Graph::IGraphUs &) const override;
 };
 
 } // namespace GraphIsomorphism

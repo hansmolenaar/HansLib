@@ -16,19 +16,19 @@ using namespace boost;
 
 TEST(SolverSweepTest, SolverSweepAll)
 {
-    SolverSweep sweep;
-    Diagram diagramEmpty = TestModels::getEmpty();
-    auto potentials = diagramEmpty.getPotentials();
-    auto result = sweep(potentials);
-    ASSERT_EQ(result, SolverSweepResult::NoChange);
+   SolverSweep sweep;
+   Diagram diagramEmpty = TestModels::getEmpty();
+   auto potentials = diagramEmpty.getPotentials();
+   auto result = sweep(potentials);
+   ASSERT_EQ(result, SolverSweepResult::NoChange);
 }
 
 TEST(SolverSweepTest, SolverSweepSolved)
 {
-    SolverSweep sweep;
-    Diagram diagramSolved = TestModels::getSolved();
-    ASSERT_TRUE(diagramSolved.isSolved());
-    auto potentials = diagramSolved.getPotentials();
-    auto result = sweep(potentials);
-    ASSERT_EQ(result, SolverSweepResult::Solved);
+   SolverSweep sweep;
+   Diagram diagramSolved = TestModels::getSolved();
+   ASSERT_TRUE(diagramSolved.isSolved());
+   auto potentials = diagramSolved.getPotentials();
+   auto result = sweep(potentials);
+   ASSERT_EQ(result, SolverSweepResult::Solved);
 }

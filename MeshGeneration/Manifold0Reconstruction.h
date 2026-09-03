@@ -8,21 +8,21 @@ namespace MeshGeneration
 {
 struct Reconstruction0
 {
-    Topology::NodeIndex node = Topology::NodeIndexInvalid;
+   Topology::NodeIndex node = Topology::NodeIndexInvalid;
 
-    void Check(Topology::NodeIndex manifoldPoint, const MeshGeneration::TrianglesNodes &trianglesNodes);
+   void Check(Topology::NodeIndex manifoldPoint, const MeshGeneration::TrianglesNodes &trianglesNodes);
 };
 
 class Manifold0Reconstruction : public IManifoldReconstruction
 {
-  public:
-    Manifold0Reconstruction(const Geometry::IManifoldId &manifoldId, const Reconstruction0 &reconstruction);
-    const Geometry::IManifoldId &getManifoldId() const override;
-    const Reconstruction0 &getReconstruction() const;
+ public:
+   Manifold0Reconstruction(const Geometry::IManifoldId &manifoldId, const Reconstruction0 &reconstruction);
+   const Geometry::IManifoldId &getManifoldId() const override;
+   const Reconstruction0 &getReconstruction() const;
 
-  private:
-    const Geometry::IManifoldId &m_manifold;
-    const Reconstruction0 &m_reconstruction;
+ private:
+   const Geometry::IManifoldId &m_manifold;
+   const Reconstruction0 &m_reconstruction;
 };
 
 } // namespace MeshGeneration

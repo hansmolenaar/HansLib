@@ -19,36 +19,36 @@ template <typename T>
 bool DirectedEdge2AsManifold1<T>::contains(const Point<T, GeomDim2> &point,
                                            const IGeometryPredicate<T, GeomDim2> &predicate) const
 {
-    return m_edge.contains(point, predicate);
+   return m_edge.contains(point, predicate);
 }
 
 template <typename T>
 Line<T, GeomDim2> DirectedEdge2AsManifold1<T>::getEuclideanSubspaceAt(
     const Point<T, GeomDim2> &point, const IGeometryPredicate<T, GeomDim2> &predicate) const
 {
-    if (!contains(point, predicate))
-    {
-        throw MyException("DirectedEdge2AsManifold1<T>::GetEuclideanSubspaceAt, point not on manifold");
-    }
-    return m_line;
+   if (!contains(point, predicate))
+   {
+      throw MyException("DirectedEdge2AsManifold1<T>::GetEuclideanSubspaceAt, point not on manifold");
+   }
+   return m_line;
 }
 
 template <typename T> BoundingBox<T, GeomDim2> DirectedEdge2AsManifold1<T>::getBoundingBox() const
 {
-    return m_bb;
+   return m_bb;
 }
 
 template <typename T>
 DirectedEdgeIntersections<T, GeomDim2> DirectedEdge2AsManifold1<T>::getIntersections(
     const DirectedEdge<T, GeomDim2> &edge, const IGeometryPredicate<T, GeomDim2> &predicate) const
 {
-    auto intersection = DirectedEdgeUtils::intersectWith2(edge, m_edge, predicate);
-    if (!intersection)
-        return {};
-    return {*intersection};
+   auto intersection = DirectedEdgeUtils::intersectWith2(edge, m_edge, predicate);
+   if (!intersection)
+      return {};
+   return {*intersection};
 }
 
 template <typename T> const std::string &DirectedEdge2AsManifold1<T>::getName() const
 {
-    return m_name;
+   return m_name;
 }

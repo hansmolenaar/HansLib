@@ -8,7 +8,7 @@
 
 class IIterativeMinimization
 {
-  public:
-    virtual IterativeMinimizationStep iterate() = 0;
-    virtual const IMultiVariableFunctionEvaluate &getObjectiveFunction() const = 0;
+ public:
+   virtual IterativeMinimizationStep iterate() = 0;
+   virtual const IMultiVariableFunctionEvaluate &getObjectiveFunction() const = 0;
 };

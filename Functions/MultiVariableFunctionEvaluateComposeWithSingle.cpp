@@ -9,11 +9,11 @@ MultiVariableFunctionEvaluateComposeWithSingle::MultiVariableFunctionEvaluateCom
 
 int MultiVariableFunctionEvaluateComposeWithSingle::getDimension() const
 {
-    return m_function->getDimension();
+   return m_function->getDimension();
 }
 
 double MultiVariableFunctionEvaluateComposeWithSingle::operator()(std::span<const double> x) const
 {
-    const double val = (*m_function)(x);
-    return m_transform->Evaluate(val);
+   const double val = (*m_function)(x);
+   return m_transform->Evaluate(val);
 }

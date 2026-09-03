@@ -10,22 +10,22 @@ class IRealFunction;
 
 class EigenSolution
 {
-  public:
-    explicit EigenSolution(std::span<const double>);
-    EigenSolution(std::span<const double>, const std::vector<std::vector<double>> &);
+ public:
+   explicit EigenSolution(std::span<const double>);
+   EigenSolution(std::span<const double>, const std::vector<std::vector<double>> &);
 
-    // Eigenvalues are sorted increasingly; need not contains all possible eigenvalues
-    std::span<const double> getAvailableEigenValues() const;
+   // Eigenvalues are sorted increasingly; need not contains all possible eigenvalues
+   std::span<const double> getAvailableEigenValues() const;
 
-    bool hasEigenVectors() const;
+   bool hasEigenVectors() const;
 
-    // Eigenvector corresponding to n-th eigenvalue
-    std::span<const double> getNthEigenVector(size_t) const;
+   // Eigenvector corresponding to n-th eigenvalue
+   std::span<const double> getNthEigenVector(size_t) const;
 
-  private:
-    size_t m_matrixDimension = 0;
-    std::vector<double> m_eigenValues;
-    std::vector<double> m_eigenVectors;
+ private:
+   size_t m_matrixDimension = 0;
+   std::vector<double> m_eigenValues;
+   std::vector<double> m_eigenVectors;
 };
 
 std::ostream &operator<<(std::ostream &, const EigenSolution &);

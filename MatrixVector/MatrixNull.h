@@ -4,12 +4,12 @@
 
 class MatrixNull : public IMatrix
 {
-  public:
-    int GetRowDimension() const override;
-    int GetColDimension() const override;
+ public:
+   int GetRowDimension() const override;
+   int GetColDimension() const override;
 
-    double get(int, int) const override;
-    void set(int, int, double) override;
+   double get(int, int) const override;
+   void set(int, int, double) override;
 
-    void timesVector(std::span<const double>, std::span<double>) const override;
+   void timesVector(std::span<const double>, std::span<double>) const override;
 };

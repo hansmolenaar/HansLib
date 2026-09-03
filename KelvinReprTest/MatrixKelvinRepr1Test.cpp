@@ -6,7 +6,7 @@
 
 TEST(MatrixKelvinRepr1Test, TestInterface)
 {
-    MatrixKelvinRepr1 matrix;
-    ASSERT_EQ(1, matrix.GetDimension());
-    IMatrixKelvinReprTest::TestInterface(matrix);
+   MatrixKelvinRepr1 matrix;
+   ASSERT_EQ(1, matrix.GetDimension());
+   IMatrixKelvinReprTest::TestInterface(matrix);
 }

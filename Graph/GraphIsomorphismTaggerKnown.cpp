@@ -8,74 +8,74 @@ using namespace Utilities;
 GraphIsomorphism::TaggerKnown::TaggerKnown(const Graph::IGraphUs &graph)
     : m_graph(graph), m_tag{KnownType::Unknown}, m_description{"Unknown"}
 {
-    const auto nVertices = graph.getNumVertices();
+   const auto nVertices = graph.getNumVertices();
 
-    if (nVertices == 0)
-    {
-        return;
-    }
+   if (nVertices == 0)
+   {
+      return;
+   }
 
-    const auto nComponents = graph.getNumberOfComponents();
-    if (nComponents > 1 && nVertices > 1)
-    {
-        if (graph.getNumberOfComponents() == nVertices)
-        {
-            m_tag = {KnownType::Singletons, static_cast<TagEntry>(nVertices)};
-            m_description = "completely disconnected graph of order " + std::to_string(nVertices);
-        }
-        return;
-    }
+   const auto nComponents = graph.getNumberOfComponents();
+   if (nComponents > 1 && nVertices > 1)
+   {
+      if (graph.getNumberOfComponents() == nVertices)
+      {
+         m_tag = {KnownType::Singletons, static_cast<TagEntry>(nVertices)};
+         m_description = "completely disconnected graph of order " + std::to_string(nVertices);
+      }
+      return;
+   }
 
-    if (graph.isComplete())
-    {
-        m_tag = {KnownType::Complete, static_cast<TagEntry>(nVertices)};
-        m_description = "complete graph of order " + std::to_string(nVertices);
-        return;
-    }
+   if (graph.isComplete())
+   {
+      m_tag = {KnownType::Complete, static_cast<TagEntry>(nVertices)};
+      m_description = "complete graph of order " + std::to_string(nVertices);
+      return;
+   }
 
-    const std::vector<Vertex> degreeSequence = graph.getSortedDegreeSequence();
-    if (degreeSequence.back() > 2)
-    {
-        return;
-    }
+   const std::vector<Vertex> degreeSequence = graph.getSortedDegreeSequence();
+   if (degreeSequence.back() > 2)
+   {
+      return;
+   }
 
-    if (degreeSequence.front() == 2)
-    {
-        m_tag = {KnownType::Cycle, static_cast<TagEntry>(nVertices)};
-        m_description = "cycle of order " + std::to_string(nVertices);
-        return;
-    }
+   if (degreeSequence.front() == 2)
+   {
+      m_tag = {KnownType::Cycle, static_cast<TagEntry>(nVertices)};
+      m_description = "cycle of order " + std::to_string(nVertices);
+      return;
+   }
 
-    MyAssert(degreeSequence.at(0) == 1);
-    MyAssert(degreeSequence.at(1) == 1);
-    MyAssert(degreeSequence.at(2) == 2);
-    m_tag = {KnownType::Path, static_cast<TagEntry>(nVertices)};
-    m_description = "path of order " + std::to_string(nVertices);
+   MyAssert(degreeSequence.at(0) == 1);
+   MyAssert(degreeSequence.at(1) == 1);
+   MyAssert(degreeSequence.at(2) == 2);
+   m_tag = {KnownType::Path, static_cast<TagEntry>(nVertices)};
+   m_description = "path of order " + std::to_string(nVertices);
 }
 
 const Graph::IGraphUs &TaggerKnown::getGraph() const
 {
-    return m_graph;
+   return m_graph;
 }
 
 const Tag &TaggerKnown::getGraphTag() const
 {
-    return m_tag;
+   return m_tag;
 }
 
 std::weak_ordering TaggerKnown::compareGraph(const IGraphCompare &otherComparer) const
 {
-    const auto &other = dynamic_cast<const TaggerKnown &>(otherComparer);
-    return getGraphTag() <=> other.getGraphTag();
+   const auto &other = dynamic_cast<const TaggerKnown &>(otherComparer);
+   return getGraphTag() <=> other.getGraphTag();
 }
 
 std::string TaggerKnown::getDescription() const
 {
-    return m_description;
+   return m_description;
 }
 // !!!!!!!!!!!!! FACTORY
 
 std::unique_ptr<ICompare> CompareKnownFactory::createCompare(const Graph::IGraphUs &graph) const
 {
-    return std::make_unique<TaggerKnown>(graph);
+   return std::make_unique<TaggerKnown>(graph);
 }

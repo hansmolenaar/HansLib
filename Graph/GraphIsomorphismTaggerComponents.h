@@ -9,24 +9,24 @@ namespace GraphIsomorphism
 
 class TaggerComponents : public IGraphCompare
 {
-  public:
-    explicit TaggerComponents(const Graph::IGraphUs &);
+ public:
+   explicit TaggerComponents(const Graph::IGraphUs &);
 
-    const Graph::IGraphUs &getGraph() const override;
-    std::weak_ordering compareGraph(const IGraphCompare &) const override;
-    const Tag &getGraphTag() const;
-    bool isConnected() const;
+   const Graph::IGraphUs &getGraph() const override;
+   std::weak_ordering compareGraph(const IGraphCompare &) const override;
+   const Tag &getGraphTag() const;
+   bool isConnected() const;
 
-  private:
-    const Graph::IGraphUs &m_graph;
-    bool m_isConnected;
-    Tag m_graphTag;
+ private:
+   const Graph::IGraphUs &m_graph;
+   bool m_isConnected;
+   Tag m_graphTag;
 };
 
 class CompareComponentsFactory : public ICompareFactory
 {
-  public:
-    std::unique_ptr<ICompare> createCompare(const Graph::IGraphUs &) const override;
+ public:
+   std::unique_ptr<ICompare> createCompare(const Graph::IGraphUs &) const override;
 };
 
 } // namespace GraphIsomorphism

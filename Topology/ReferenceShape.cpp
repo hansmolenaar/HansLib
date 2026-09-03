@@ -9,5 +9,5 @@ ReferenceShape::ReferenceShape(std::unique_ptr<ITopologicalAdjacencies> &&adjace
 
 const ITopologicalAdjacencies &ReferenceShape::getAdjacencies() const
 {
-    return *m_adjacencies;
+   return *m_adjacencies;
 }

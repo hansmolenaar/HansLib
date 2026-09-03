@@ -7,7 +7,7 @@ namespace FieldInfoStatic
 {
 constexpr FieldIndex RowColToField(RowColBoxIndex row, RowColBoxIndex col)
 {
-    return row * NumRowColBox + col;
+   return row * NumRowColBox + col;
 }
 void CheckRowColIndex(RowColBoxIndex index);
 void CheckValue(Value value);

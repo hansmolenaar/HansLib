@@ -13,9 +13,9 @@ constexpr Value ValueMax = ValueAll.back();
 
 enum class RowColBoxType
 {
-    Row,
-    Col,
-    Box
+   Row,
+   Col,
+   Box
 };
 constexpr std::array<RowColBoxType, 3> RowColBoxTypeAll = {RowColBoxType::Row, RowColBoxType::Col, RowColBoxType::Box};
 
@@ -39,7 +39,7 @@ using ActiveFields = boost::container::static_vector<FieldIndex, NumFields>;
 
 struct FieldValue
 {
-    FieldIndex Field;
-    Value CurrentValue;
+   FieldIndex Field;
+   Value CurrentValue;
 };
 } // namespace Sudoku

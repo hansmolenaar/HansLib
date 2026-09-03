@@ -14,16 +14,16 @@ namespace MultiVariableFunctionExamples
 {
 struct ExampleExtremumInfo
 {
-    double Extremum = std::numeric_limits<double>::quiet_NaN();
-    std::vector<std::vector<double>> Positions;
+   double Extremum = std::numeric_limits<double>::quiet_NaN();
+   std::vector<std::vector<double>> Positions;
 };
 
 struct Examplefunction
 {
-    std::shared_ptr<MultiVariableRealValuedFunctionEvaluateCached> Function;
-    std::vector<Interval<double>> Domain;
-    std::unique_ptr<ExampleExtremumInfo> Minimum;
-    std::unique_ptr<ExampleExtremumInfo> Maximum;
+   std::shared_ptr<MultiVariableRealValuedFunctionEvaluateCached> Function;
+   std::vector<Interval<double>> Domain;
+   std::unique_ptr<ExampleExtremumInfo> Minimum;
+   std::unique_ptr<ExampleExtremumInfo> Maximum;
 };
 
 std::shared_ptr<IMultiVariableRealValuedFunction> GetPolynomial(

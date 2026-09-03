@@ -18,5 +18,5 @@ MatrixKelvinRepr2::MatrixKelvinRepr2() : MatrixKelvinReprBase(indexer)
 
 MatrixKelvinRepr2 MatrixKelvinRepr2::Create()
 {
-    return MatrixKelvinRepr2();
+   return MatrixKelvinRepr2();
 }

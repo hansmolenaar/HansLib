@@ -17,9 +17,9 @@ using Tag = std::vector<TagEntry>;
 
 enum Flag
 {
-    Undecided,
-    Isomorphic,
-    NotIsomorphic
+   Undecided,
+   Isomorphic,
+   NotIsomorphic
 };
 
 } // namespace GraphIsomorphism

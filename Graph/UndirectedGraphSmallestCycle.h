@@ -8,18 +8,18 @@ class IGraphUs;
 
 class UndirectedGraphSmallestCycle
 {
-  public:
-    static constexpr Graph::Vertex noCycleLength = 0;
+ public:
+   static constexpr Graph::Vertex noCycleLength = 0;
 
-    explicit UndirectedGraphSmallestCycle(const Graph::IGraphUs &);
-    const Graph::IGraphUs &getGraph() const;
-    const std::vector<Graph::Vertex> &getSmallestCycleLengths() const;
+   explicit UndirectedGraphSmallestCycle(const Graph::IGraphUs &);
+   const Graph::IGraphUs &getGraph() const;
+   const std::vector<Graph::Vertex> &getSmallestCycleLengths() const;
 
-  private:
-    static std::optional<Vertex> getSmallestCycleLength(const Graph::IGraphUs &, Graph::Vertex);
+ private:
+   static std::optional<Vertex> getSmallestCycleLength(const Graph::IGraphUs &, Graph::Vertex);
 
-    const Graph::IGraphUs &m_graph;
-    std::vector<Graph::Vertex> m_lengths;
+   const Graph::IGraphUs &m_graph;
+   std::vector<Graph::Vertex> m_lengths;
 };
 
 } // namespace Graph

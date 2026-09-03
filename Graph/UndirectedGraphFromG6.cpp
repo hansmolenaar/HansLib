@@ -601,20 +601,20 @@ int errno = 0;
 /* extern long ftell(FILE*);   Should be in stdio.h  */
 
 #define SWBOOLEAN(c, boool)                                                                                            \
-    if (sw == c)                                                                                                       \
-        boool = TRUE;
+   if (sw == c)                                                                                                        \
+      boool = TRUE;
 #define SWINT(c, boool, val, id)                                                                                       \
-    if (sw == c)                                                                                                       \
-    {                                                                                                                  \
-        boool = TRUE;                                                                                                  \
-        arg_int(&arg, &val, id);                                                                                       \
-    }
+   if (sw == c)                                                                                                        \
+   {                                                                                                                   \
+      boool = TRUE;                                                                                                    \
+      arg_int(&arg, &val, id);                                                                                         \
+   }
 #define SWRANGE(c, boool, val1, val2, id)                                                                              \
-    if (sw == c)                                                                                                       \
-    {                                                                                                                  \
-        boool = TRUE;                                                                                                  \
-        arg_range(&arg, &val1, &val2, id);                                                                             \
-    }
+   if (sw == c)                                                                                                        \
+   {                                                                                                                   \
+      boool = TRUE;                                                                                                    \
+      arg_range(&arg, &val1, &val2, id);                                                                               \
+   }
 
 typedef unsigned long setword;
 
@@ -639,10 +639,10 @@ static int labelorg = 0;
 
 #define WORDSIZE 32
 #define FIRSTBIT(x)                                                                                                    \
-    ((x) & 037777600000 ? ((x) & 037700000000 ? leftbit[((x) >> 24) & 0377] : 8 + leftbit[(x) >> 16])                  \
-                        : ((x) & 0177400 ? 16 + leftbit[(x) >> 8] : 24 + leftbit[x]))
+   ((x) & 037777600000 ? ((x) & 037700000000 ? leftbit[((x) >> 24) & 0377] : 8 + leftbit[(x) >> 16])                   \
+                       : ((x) & 0177400 ? 16 + leftbit[(x) >> 8] : 24 + leftbit[x]))
 #define BITMASK(x)                                                                                                     \
-    (017777777777 >> (x)) /* setword whose rightmost                                                                   \
+   (017777777777 >> (x)) /* setword whose rightmost                                                                    \
 WORDSIZE-x-1 (numbered) bits are 1 and the rest 0 (0 <= x < WORDSIZE) */
 #define TIMESWORDSIZE(w) ((w) << 5)
 #define SETWD(pos) ((pos) >> 5)
@@ -670,7 +670,7 @@ WORDSIZE-x-1 (numbered) bits are 1 and the rest 0 (0 <= x < WORDSIZE) */
 
 static void gt_abort(const char *msg) /* Write message and halt. */
 {
-    throw MyException(msg);
+   throw MyException(msg);
 }
 
 /*****************************************************************************
@@ -685,41 +685,41 @@ static void gt_abort(const char *msg) /* Write message and halt. */
 
 static int itos(int i, char *s)
 {
-    int digit, j, k;
-    char c;
-    int ans;
+   int digit, j, k;
+   char c;
+   int ans;
 
-    if (i < 0)
-    {
-        k = 0;
-        i = -i;
-        j = 1;
-        s[0] = '-';
-    }
-    else
-    {
-        k = -1;
-        j = 0;
-    }
+   if (i < 0)
+   {
+      k = 0;
+      i = -i;
+      j = 1;
+      s[0] = '-';
+   }
+   else
+   {
+      k = -1;
+      j = 0;
+   }
 
-    do
-    {
-        digit = i % 10;
-        i = i / 10;
-        s[++k] = digit + '0';
-    } while (i);
+   do
+   {
+      digit = i % 10;
+      i = i / 10;
+      s[++k] = digit + '0';
+   } while (i);
 
-    s[k + 1] = '\0';
-    ans = k + 1;
+   s[k + 1] = '\0';
+   ans = k + 1;
 
-    for (; j < k; ++j, --k)
-    {
-        c = s[j];
-        s[j] = s[k];
-        s[k] = c;
-    }
+   for (; j < k; ++j, --k)
+   {
+      c = s[j];
+      s[j] = s[k];
+      s[k] = c;
+   }
 
-    return (ans);
+   return (ans);
 }
 
 /*****************************************************************************
@@ -735,28 +735,28 @@ static int itos(int i, char *s)
 
 static int nextelement(set *set1, int m, int pos)
 {
-    setword setwd;
-    int w;
+   setword setwd;
+   int w;
 
-    if (pos < 0)
-    {
-        w = 0;
-        setwd = set1[0];
-    }
-    else
-    {
-        w = SETWD(pos);
-        setwd = set1[w] & BITMASK(SETBT(pos));
-    }
+   if (pos < 0)
+   {
+      w = 0;
+      setwd = set1[0];
+   }
+   else
+   {
+      w = SETWD(pos);
+      setwd = set1[w] & BITMASK(SETBT(pos));
+   }
 
-    for (;;)
-    {
-        if (setwd != 0)
-            return (TIMESWORDSIZE(w) + FIRSTBIT(setwd));
-        if (++w == m)
-            return -1;
-        setwd = set1[w];
-    }
+   for (;;)
+   {
+      if (setwd != 0)
+         return (TIMESWORDSIZE(w) + FIRSTBIT(setwd));
+      if (++w == m)
+         return -1;
+      setwd = set1[w];
+   }
 }
 
 /*********************************************************************/
@@ -791,34 +791,34 @@ static int nextelement(set *set1, int m, int pos)
 int graphsize(const char *s)
 /* Get size of graph out of graph6, digraph6 or sparse6 string. */
 {
-    const char *p;
-    int n;
+   const char *p;
+   int n;
 
-    if (s[0] == ':' || s[0] == '&')
-        p = s + 1;
-    else
-        p = s;
-    n = *p++ - BIAS6;
+   if (s[0] == ':' || s[0] == '&')
+      p = s + 1;
+   else
+      p = s;
+   n = *p++ - BIAS6;
 
-    if (n > SMALLN)
-    {
-        n = *p++ - BIAS6;
-        if (n > SMALLN)
-        {
-            n = *p++ - BIAS6;
-            n = (n << 6) | (*p++ - BIAS6);
-            n = (n << 6) | (*p++ - BIAS6);
-            n = (n << 6) | (*p++ - BIAS6);
-            n = (n << 6) | (*p++ - BIAS6);
-            n = (n << 6) | (*p++ - BIAS6);
-        }
-        else
-        {
-            n = (n << 6) | (*p++ - BIAS6);
-            n = (n << 6) | (*p++ - BIAS6);
-        }
-    }
-    return n;
+   if (n > SMALLN)
+   {
+      n = *p++ - BIAS6;
+      if (n > SMALLN)
+      {
+         n = *p++ - BIAS6;
+         n = (n << 6) | (*p++ - BIAS6);
+         n = (n << 6) | (*p++ - BIAS6);
+         n = (n << 6) | (*p++ - BIAS6);
+         n = (n << 6) | (*p++ - BIAS6);
+         n = (n << 6) | (*p++ - BIAS6);
+      }
+      else
+      {
+         n = (n << 6) | (*p++ - BIAS6);
+         n = (n << 6) | (*p++ - BIAS6);
+      }
+   }
+   return n;
 }
 
 /****************************************************************************/
@@ -827,145 +827,145 @@ static void stringtograph(const char *s, graph *g, int m)
 /* Convert string (graph6, digraph6 or sparse6 format) to graph. */
 /* Assumes g is big enough to hold it.   */
 {
-    const char *p;
-    int n, i, j, k, v, x = -1, nb, need;
-    size_t ii;
-    set *gi, *gj;
-    boolean done;
+   const char *p;
+   int n, i, j, k, v, x = -1, nb, need;
+   size_t ii;
+   set *gi, *gj;
+   boolean done;
 
-    n = graphsize(s);
-    if (n == 0)
-        return;
+   n = graphsize(s);
+   if (n == 0)
+      return;
 
-    p = s + (s[0] == ':' || s[0] == '&') + SIZELEN(n);
+   p = s + (s[0] == ':' || s[0] == '&') + SIZELEN(n);
 
-    if (TIMESWORDSIZE(m) < n)
-        gt_abort(">E stringtograph: impossible m value\n");
+   if (TIMESWORDSIZE(m) < n)
+      gt_abort(">E stringtograph: impossible m value\n");
 
-    for (ii = m * (size_t)n; --ii > 0;)
-        g[ii] = 0;
-    g[0] = 0;
+   for (ii = m * (size_t)n; --ii > 0;)
+      g[ii] = 0;
+   g[0] = 0;
 
-    if (s[0] != ':' && s[0] != '&') /* graph6 format */
-    {
-        k = 1;
-        for (j = 1; j < n; ++j)
-        {
-            gj = GRAPHROW(g, j, m);
+   if (s[0] != ':' && s[0] != '&') /* graph6 format */
+   {
+      k = 1;
+      for (j = 1; j < n; ++j)
+      {
+         gj = GRAPHROW(g, j, m);
 
-            for (i = 0; i < j; ++i)
+         for (i = 0; i < j; ++i)
+         {
+            if (--k == 0)
             {
-                if (--k == 0)
-                {
-                    k = 6;
-                    x = *(p++) - BIAS6;
-                }
-
-                if ((x & TOPBIT6))
-                {
-                    gi = GRAPHROW(g, i, m);
-                    ADDELEMENT(gi, j);
-                    ADDELEMENT(gj, i);
-                }
-                x <<= 1;
+               k = 6;
+               x = *(p++) - BIAS6;
             }
-        }
-    }
-    else if (s[0] == '&')
-    {
-        k = 1;
-        for (i = 0; i < n; ++i)
-        {
-            gi = GRAPHROW(g, i, m);
 
-            for (j = 0; j < n; ++j)
+            if ((x & TOPBIT6))
             {
-                if (--k == 0)
-                {
-                    k = 6;
-                    x = *(p++) - BIAS6;
-                }
-
-                if ((x & TOPBIT6))
-                {
-                    ADDELEMENT(gi, j);
-                }
-                x <<= 1;
+               gi = GRAPHROW(g, i, m);
+               ADDELEMENT(gi, j);
+               ADDELEMENT(gj, i);
             }
-        }
-    }
-    else /* sparse6 format */
-    {
-        for (i = n - 1, nb = 0; i != 0; i >>= 1, ++nb)
-        {
-        }
+            x <<= 1;
+         }
+      }
+   }
+   else if (s[0] == '&')
+   {
+      k = 1;
+      for (i = 0; i < n; ++i)
+      {
+         gi = GRAPHROW(g, i, m);
 
-        k = 0;
-        v = 0;
-        done = FALSE;
-        while (!done)
-        {
+         for (j = 0; j < n; ++j)
+         {
+            if (--k == 0)
+            {
+               k = 6;
+               x = *(p++) - BIAS6;
+            }
+
+            if ((x & TOPBIT6))
+            {
+               ADDELEMENT(gi, j);
+            }
+            x <<= 1;
+         }
+      }
+   }
+   else /* sparse6 format */
+   {
+      for (i = n - 1, nb = 0; i != 0; i >>= 1, ++nb)
+      {
+      }
+
+      k = 0;
+      v = 0;
+      done = FALSE;
+      while (!done)
+      {
+         if (k == 0)
+         {
+            x = *(p++);
+            if (x == '\n' || x == '\0')
+            {
+               done = TRUE;
+               continue;
+            }
+            else
+            {
+               x -= BIAS6;
+               k = 6;
+            }
+         }
+         if ((x & B(k)))
+            ++v;
+         --k;
+
+         need = nb;
+         j = 0;
+         while (need > 0 && !done)
+         {
             if (k == 0)
             {
-                x = *(p++);
-                if (x == '\n' || x == '\0')
-                {
-                    done = TRUE;
-                    continue;
-                }
-                else
-                {
-                    x -= BIAS6;
-                    k = 6;
-                }
+               x = *(p++);
+               if (x == '\n' || x == '\0')
+               {
+                  done = TRUE;
+                  continue;
+               }
+               else
+               {
+                  x -= BIAS6;
+                  k = 6;
+               }
             }
-            if ((x & B(k)))
-                ++v;
-            --k;
-
-            need = nb;
-            j = 0;
-            while (need > 0 && !done)
+            if (need >= k)
             {
-                if (k == 0)
-                {
-                    x = *(p++);
-                    if (x == '\n' || x == '\0')
-                    {
-                        done = TRUE;
-                        continue;
-                    }
-                    else
-                    {
-                        x -= BIAS6;
-                        k = 6;
-                    }
-                }
-                if (need >= k)
-                {
-                    j = (j << k) | (x & M(k));
-                    need -= k;
-                    k = 0;
-                }
-                else
-                {
-                    k -= need;
-                    j = (j << need) | ((x >> k) & M(need));
-                    need = 0;
-                }
+               j = (j << k) | (x & M(k));
+               need -= k;
+               k = 0;
             }
-            if (done)
-                continue;
-
-            if (j > v)
-                v = j;
-            else if (v < n)
+            else
             {
-                ADDELEMENT(GRAPHROW(g, v, m), j);
-                ADDELEMENT(GRAPHROW(g, j, m), v);
+               k -= need;
+               j = (j << need) | ((x >> k) & M(need));
+               need = 0;
             }
-        }
-    }
+         }
+         if (done)
+            continue;
+
+         if (j > v)
+            v = j;
+         else if (v < n)
+         {
+            ADDELEMENT(GRAPHROW(g, v, m), j);
+            ADDELEMENT(GRAPHROW(g, j, m), v);
+         }
+      }
+   }
 }
 
 /************************************************************************/
@@ -990,51 +990,51 @@ static void stringtograph(const char *s, graph *g, int m)
 void myputsetx(Vertex source, std::set<SortedEdge> &edges, set *set1, int *curlenp, int linelength, int m,
                boolean compress, int start)
 {
-    int slen, j1, j2;
-    char s[40];
-    boolean first;
+   int slen, j1, j2;
+   char s[40];
+   boolean first;
 
-    first = TRUE;
-    j1 = start;
-    while ((j1 = nextelement(set1, m, j1)) >= 0)
-    {
-        j2 = j1;
-        if (compress)
-        {
-            while (nextelement(set1, m, j2) == j2 + 1)
-                ++j2;
-            if (j2 == j1 + 1)
-                j2 = j1;
-        }
-        slen = itos(j1 + labelorg, s);
-        if (j2 >= j1 + 2)
-        {
-            s[slen] = ':';
-            slen += 1 + itos(j2 + labelorg, &s[slen + 1]);
-        }
+   first = TRUE;
+   j1 = start;
+   while ((j1 = nextelement(set1, m, j1)) >= 0)
+   {
+      j2 = j1;
+      if (compress)
+      {
+         while (nextelement(set1, m, j2) == j2 + 1)
+            ++j2;
+         if (j2 == j1 + 1)
+            j2 = j1;
+      }
+      slen = itos(j1 + labelorg, s);
+      if (j2 >= j1 + 2)
+      {
+         s[slen] = ':';
+         slen += 1 + itos(j2 + labelorg, &s[slen + 1]);
+      }
 
-        if (*curlenp + slen + 1 >= linelength && linelength > 0)
-        {
-            // fprintf(f, "\n ");
-            *curlenp = 1;
-        }
-        if (first)
-        {
-            // fprintf(f, "%s", s);
-            const Vertex target = std::stoi(s);
-            edges.insert(SortedEdge{std::min(source, target), std::max(source, target)});
-            *curlenp += slen;
-            first = FALSE;
-        }
-        else
-        {
-            // fprintf(f, " %s", s);
-            const Vertex target = std::stoi(s);
-            edges.insert(SortedEdge{std::min(source, target), std::max(source, target)});
-            *curlenp += slen + 1;
-        }
-        j1 = j2;
-    }
+      if (*curlenp + slen + 1 >= linelength && linelength > 0)
+      {
+         // fprintf(f, "\n ");
+         *curlenp = 1;
+      }
+      if (first)
+      {
+         // fprintf(f, "%s", s);
+         const Vertex target = std::stoi(s);
+         edges.insert(SortedEdge{std::min(source, target), std::max(source, target)});
+         *curlenp += slen;
+         first = FALSE;
+      }
+      else
+      {
+         // fprintf(f, " %s", s);
+         const Vertex target = std::stoi(s);
+         edges.insert(SortedEdge{std::min(source, target), std::max(source, target)});
+         *curlenp += slen + 1;
+      }
+      j1 = j2;
+   }
 }
 
 /*****************************************************************************
@@ -1049,136 +1049,136 @@ void myputsetx(Vertex source, std::set<SortedEdge> &edges, set *set1, int *curle
 
 void myputgraphx(graph *g, int m, int n, std::set<SortedEdge> &edges)
 {
-    constexpr int linelength = 1000;
-    int i, curlen;
-    set *pg;
+   constexpr int linelength = 1000;
+   int i, curlen;
+   set *pg;
 
-    for (i = 0, pg = g; i < n; ++i, pg += m)
-    {
-        Vertex source = i + labelorg;
-        // fprintf(f, "%3d : ", i + labelorg);
-        curlen = 7;
-        const bool triang = false;
-        myputsetx(source, edges, pg, &curlen, linelength, m, FALSE, triang ? i - 1 : -1);
-        // fprintf(f, ";\n");
-    }
+   for (i = 0, pg = g; i < n; ++i, pg += m)
+   {
+      Vertex source = i + labelorg;
+      // fprintf(f, "%3d : ", i + labelorg);
+      curlen = 7;
+      const bool triang = false;
+      myputsetx(source, edges, pg, &curlen, linelength, m, FALSE, triang ? i - 1 : -1);
+      // fprintf(f, ";\n");
+   }
 }
 
 } // namespace
 
 std::unique_ptr<UndirectedGraph> UndirectedGraphFromG6::Create(std::string line)
 {
-    std::set<SortedEdge> edges;
-    const int n = graphsize(line.c_str());
-    const int m = (n + WORDSIZE - 1) / WORDSIZE;
-    std::vector<setword> buffer(m * n);
-    graph *g = buffer.data();
+   std::set<SortedEdge> edges;
+   const int n = graphsize(line.c_str());
+   const int m = (n + WORDSIZE - 1) / WORDSIZE;
+   std::vector<setword> buffer(m * n);
+   graph *g = buffer.data();
 
-    stringtograph(line.c_str(), g, m);
-    myputgraphx(g, m, n, edges);
+   stringtograph(line.c_str(), g, m);
+   myputgraphx(g, m, n, edges);
 
-    auto result = std::make_unique<UndirectedGraph>(n, line);
-    for (auto e : edges)
-    {
-        result->addEdge(e.first, e.second);
-    }
-    return result;
+   auto result = std::make_unique<UndirectedGraph>(n, line);
+   for (auto e : edges)
+   {
+      result->addEdge(e.first, e.second);
+   }
+   return result;
 }
 
 const std::vector<std::string> &UndirectedGraphFromG6::getListNumVertices_3()
 {
-    return ListNumVertices_3;
+   return ListNumVertices_3;
 }
 
 const std::vector<std::string> &UndirectedGraphFromG6::getListNumVertices_4()
 {
-    return ListNumVertices_4;
+   return ListNumVertices_4;
 }
 
 std::unique_ptr<Graph::GraphUsc> UndirectedGraphFromG6::CreateConnected(std::string g6)
 {
-    const auto undirected = Create(g6);
-    return std::make_unique<Graph::GraphUsc>(*undirected);
+   const auto undirected = Create(g6);
+   return std::make_unique<Graph::GraphUsc>(*undirected);
 }
 
 const std::vector<std::string> &UndirectedGraphFromG6::getListNumVertices_5_connected()
 {
-    return ListNumVertices_5_connected;
+   return ListNumVertices_5_connected;
 }
 
 const std::vector<std::string> &UndirectedGraphFromG6::getListNumVertices_5()
 {
-    return ListNumVertices_5;
+   return ListNumVertices_5;
 }
 
 const std::vector<std::string> &UndirectedGraphFromG6::getListNumVertices_6_connected()
 {
-    return ListNumVertices_6_connected;
+   return ListNumVertices_6_connected;
 }
 
 const std::vector<std::string> &UndirectedGraphFromG6::getListNumVertices_6()
 {
-    return ListNumVertices_6;
+   return ListNumVertices_6;
 }
 
 const std::vector<std::string> &UndirectedGraphFromG6::getListNumVertices_7_connected()
 {
-    return ListNumVertices_7_connected;
+   return ListNumVertices_7_connected;
 }
 
 const std::vector<std::string> &UndirectedGraphFromG6::getListNumVertices_7()
 {
-    return ListNumVertices_7;
+   return ListNumVertices_7;
 }
 
 const std::vector<std::string> &UndirectedGraphFromG6::getListNumVertices_8_connected()
 {
-    return ListNumVertices_8_connected;
+   return ListNumVertices_8_connected;
 }
 
 const std::vector<std::string> &UndirectedGraphFromG6::getListNumVertices_11_connected()
 {
-    return ListNumVertices_11_connected;
+   return ListNumVertices_11_connected;
 }
 
 const std::vector<std::string> &UndirectedGraphFromG6::getListNumVertices_12_connected()
 {
-    return ListNumVertices_12_connected;
+   return ListNumVertices_12_connected;
 }
 
 const std::vector<std::string> &UndirectedGraphFromG6::getListNumVertices_8()
 {
-    return ListNumVertices_8;
+   return ListNumVertices_8;
 }
 
 const std::vector<std::string> &UndirectedGraphFromG6::getListNumVertices_9()
 {
-    return ListNumVertices_9;
+   return ListNumVertices_9;
 }
 
 const std::vector<std::string> &UndirectedGraphFromG6::getListNumVertices_10()
 {
-    return ListNumVertices_10;
+   return ListNumVertices_10;
 }
 
 std::vector<std::unique_ptr<Graph::IGraphUs>> UndirectedGraphFromG6::getDisconnectedGraphs(
     const std::vector<std::string> &list)
 {
-    std::vector<std::unique_ptr<Graph::IGraphUs>> result;
-    for (const auto &g6 : list)
-    {
-        auto ugraph = UndirectedGraphFromG6::Create(g6);
-        if (!ugraph->isConnected())
-        {
-            result.emplace_back(std::move(ugraph));
-        }
-    }
-    return result;
+   std::vector<std::unique_ptr<Graph::IGraphUs>> result;
+   for (const auto &g6 : list)
+   {
+      auto ugraph = UndirectedGraphFromG6::Create(g6);
+      if (!ugraph->isConnected())
+      {
+         result.emplace_back(std::move(ugraph));
+      }
+   }
+   return result;
 }
 
 std::vector<std::unique_ptr<Graph::IGraphUs>> UndirectedGraphFromG6::getGraphs(const std::vector<std::string> &list)
 {
-    std::vector<std::unique_ptr<Graph::IGraphUs>> result(list.size());
-    str::transform(list, result.begin(), [](const std::string str) { return UndirectedGraphFromG6::Create(str); });
-    return result;
+   std::vector<std::unique_ptr<Graph::IGraphUs>> result(list.size());
+   str::transform(list, result.begin(), [](const std::string str) { return UndirectedGraphFromG6::Create(str); });
+   return result;
 }

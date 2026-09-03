@@ -12,5 +12,5 @@ EdgeNodesSorted::EdgeNodesSorted(const EdgeNodesDirected &edge) : EdgeNodesSorte
 
 bool EdgeNodesSorted::contains(NodeIndex node) const
 {
-    return m_edge.contains(node);
+   return m_edge.contains(node);
 }

@@ -16,21 +16,21 @@ SolverSweepSubSet::SolverSweepSubSet(RowColBoxType type, ISubSetPotentialsSweep 
 
 SolverSweepResult SolverSweepSubSet::operator()(Potentials &potentials)
 {
-    bool anyChange = false;
-    for (auto index : RowColBoxAll)
-    {
-        auto subSetPotentials = potentials.getSubSetPotentials(m_type, index);
-        if (m_subSetSweep(subSetPotentials))
-        {
-            anyChange = true;
-        }
-    }
+   bool anyChange = false;
+   for (auto index : RowColBoxAll)
+   {
+      auto subSetPotentials = potentials.getSubSetPotentials(m_type, index);
+      if (m_subSetSweep(subSetPotentials))
+      {
+         anyChange = true;
+      }
+   }
 
-    if (potentials.isSolved())
-        return SolverSweepResult::Solved;
-    if (!anyChange)
-        return SolverSweepResult::NoChange;
-    return SolverSweepResult::Change;
+   if (potentials.isSolved())
+      return SolverSweepResult::Solved;
+   if (!anyChange)
+      return SolverSweepResult::NoChange;
+   return SolverSweepResult::Change;
 }
 
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -41,7 +41,7 @@ SolverSweepClusters::SolverSweepClusters() : m_sweepCluster(), m_allTypes(m_swee
 
 SolverSweepResult SolverSweepClusters::operator()(Potentials &potentials)
 {
-    return m_allTypes(potentials);
+   return m_allTypes(potentials);
 }
 
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -52,14 +52,14 @@ SolverSweepIterate::SolverSweepIterate(ISolverSweep &sweep) : m_sweep(sweep)
 
 SolverSweepResult SolverSweepIterate::operator()(Potentials &potentials)
 {
-    SolverSweepResult result = SolverSweepResult::NoChange;
-    SolverSweepResult resultSweep = SolverSweepResult::NoChange;
-    do
-    {
-        resultSweep = m_sweep(potentials);
-        result = std::max(result, resultSweep);
-    } while (resultSweep == SolverSweepResult::Change);
-    return result;
+   SolverSweepResult result = SolverSweepResult::NoChange;
+   SolverSweepResult resultSweep = SolverSweepResult::NoChange;
+   do
+   {
+      resultSweep = m_sweep(potentials);
+      result = std::max(result, resultSweep);
+   } while (resultSweep == SolverSweepResult::Change);
+   return result;
 };
 
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -70,14 +70,14 @@ SolverSweepComposite::SolverSweepComposite(std::initializer_list<ISolverSweep *>
 
 SolverSweepResult SolverSweepComposite::operator()(Potentials &potentials)
 {
-    SolverSweepResult result = SolverSweepResult::NoChange;
-    for (auto *sweep : m_sweeps)
-    {
-        result = std::max(result, (*sweep)(potentials));
-        if (result == SolverSweepResult::Solved)
-            break;
-    }
-    return result;
+   SolverSweepResult result = SolverSweepResult::NoChange;
+   for (auto *sweep : m_sweeps)
+   {
+      result = std::max(result, (*sweep)(potentials));
+      if (result == SolverSweepResult::Solved)
+         break;
+   }
+   return result;
 }
 
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -90,7 +90,7 @@ SolverSweepSubSetTypeAll::SolverSweepSubSetTypeAll(ISubSetPotentialsSweep &sweep
 
 SolverSweepResult SolverSweepSubSetTypeAll::operator()(Potentials &potentials)
 {
-    return m_composite(potentials);
+   return m_composite(potentials);
 }
 
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -101,7 +101,7 @@ SolverSweepTrivial::SolverSweepTrivial() : m_sweepSingles(), m_allTypes(m_sweepS
 
 SolverSweepResult SolverSweepTrivial::operator()(Potentials &potentials)
 {
-    return m_iterate(potentials);
+   return m_iterate(potentials);
 }
 
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -113,5 +113,5 @@ SolverSweep::SolverSweep()
 
 SolverSweepResult SolverSweep::operator()(Potentials &potentials)
 {
-    return m_iterate(potentials);
+   return m_iterate(potentials);
 }

@@ -7,24 +7,24 @@
 
 class HierBasisFunction1D_ExtendedLevelOneBC : public IHierBasisFunction1D
 {
-  public:
-    explicit HierBasisFunction1D_ExtendedLevelOneBC(HierLevelIndex);
-    double Evaluate(double x) const override;
-    HierLevelIndex getLevelIndex() const override;
-    Interval<double> getSupport() const override;
+ public:
+   explicit HierBasisFunction1D_ExtendedLevelOneBC(HierLevelIndex);
+   double Evaluate(double x) const override;
+   HierLevelIndex getLevelIndex() const override;
+   Interval<double> getSupport() const override;
 
-  private:
-    HierLevelIndex m_levelIndex;
+ private:
+   HierLevelIndex m_levelIndex;
 };
 
 class HierBasisFunction1D_ExtendedLevelOneBC_Factory : public IHierBasisFunction1D_Factory
 {
-  public:
-    const IHierBasisFunction1D *get(const HierLevelIndex &li) override;
-    std::vector<HierLevelIndex> getLowestLevel() const override;
-    bool canBeRefined(const HierLevelIndex &) const override;
+ public:
+   const IHierBasisFunction1D *get(const HierLevelIndex &li) override;
+   std::vector<HierLevelIndex> getLowestLevel() const override;
+   bool canBeRefined(const HierLevelIndex &) const override;
 
-  private:
-    std::unique_ptr<HierBasisFunction1D_ExtendedLevelOneBC> create(const HierLevelIndex &li) const;
-    std::map<HierLevelIndex, std::unique_ptr<HierBasisFunction1D_ExtendedLevelOneBC>> m_basisFunctions;
+ private:
+   std::unique_ptr<HierBasisFunction1D_ExtendedLevelOneBC> create(const HierLevelIndex &li) const;
+   std::map<HierLevelIndex, std::unique_ptr<HierBasisFunction1D_ExtendedLevelOneBC>> m_basisFunctions;
 };

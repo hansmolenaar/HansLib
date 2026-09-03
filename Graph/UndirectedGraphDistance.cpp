@@ -10,61 +10,61 @@ namespace
 {
 UndirectedGraphDistance::AtDistance Generate(const IGraphUs &graph, const Vertex vertex)
 {
-    const auto nVertices = graph.getNumVertices();
-    std::vector<bool> done(nVertices, false);
+   const auto nVertices = graph.getNumVertices();
+   std::vector<bool> done(nVertices, false);
 
-    UndirectedGraphDistance::AtDistance result;
+   UndirectedGraphDistance::AtDistance result;
 
-    std::vector<Vertex> ngbs;
-    std::vector<Vertex> current(1, vertex);
+   std::vector<Vertex> ngbs;
+   std::vector<Vertex> current(1, vertex);
 
-    while (!current.empty())
-    {
-        result.push_back(current);
-        for (auto c : current)
-        {
-            done[c] = true;
-        }
-        std::set<Vertex> todo;
-        for (auto c : current)
-        {
-            graph.setAdjacentVertices(c, ngbs);
-            for (auto n : ngbs)
+   while (!current.empty())
+   {
+      result.push_back(current);
+      for (auto c : current)
+      {
+         done[c] = true;
+      }
+      std::set<Vertex> todo;
+      for (auto c : current)
+      {
+         graph.setAdjacentVertices(c, ngbs);
+         for (auto n : ngbs)
+         {
+            if (!done.at(n))
             {
-                if (!done.at(n))
-                {
-                    todo.insert(n);
-                }
+               todo.insert(n);
             }
-        }
-        current = std::vector<Vertex>(todo.begin(), todo.end());
-        // TODO use c++23
-        // current = std::vector<Vertex>(todo);
-    }
+         }
+      }
+      current = std::vector<Vertex>(todo.begin(), todo.end());
+      // TODO use c++23
+      // current = std::vector<Vertex>(todo);
+   }
 
-    return result;
+   return result;
 }
 } // namespace
 
 UndirectedGraphDistance::UndirectedGraphDistance(const IGraphUs &graph) : m_graph(graph)
 {
-    const auto nVertices = graph.getNumVertices();
-    m_distances.reserve(nVertices);
-    str::transform(Iota::GetRange(nVertices), std::back_inserter(m_distances),
-                   [&graph](Vertex v) { return Generate(graph, v); });
+   const auto nVertices = graph.getNumVertices();
+   m_distances.reserve(nVertices);
+   str::transform(Iota::GetRange(nVertices), std::back_inserter(m_distances),
+                  [&graph](Vertex v) { return Generate(graph, v); });
 }
 
 const Graph::IGraphUs &UndirectedGraphDistance::getGraph() const
 {
-    return m_graph;
+   return m_graph;
 }
 
 const UndirectedGraphDistance::AtDistance &UndirectedGraphDistance::operator()(Vertex vertex) const
 {
-    return m_distances.at(vertex);
+   return m_distances.at(vertex);
 }
 
 Vertex UndirectedGraphDistance::getNumVertices() const
 {
-    return m_distances.size();
+   return m_distances.size();
 }

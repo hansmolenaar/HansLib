@@ -7,10 +7,10 @@ namespace MeshGeneration
 {
 class IManifoldReconstruction
 {
-  public:
-    virtual ~IManifoldReconstruction() = default;
+ public:
+   virtual ~IManifoldReconstruction() = default;
 
-    virtual const Geometry::IManifoldId &getManifoldId() const = 0;
+   virtual const Geometry::IManifoldId &getManifoldId() const = 0;
 };
 
 } // namespace MeshGeneration

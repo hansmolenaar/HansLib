@@ -10,15 +10,15 @@ class IRealFunction;
 
 class EigenValueSolverSym2x2 : public IRealFunction
 {
-  public:
-    int GetRangeDimension() const override;
-    int GetDomainDimension() const override;
-    bool DerivativeAlwaysZero(int eqn, int var) const override;
-    void EvaluateFunction(std::span<const double> x, std::span<double> y) const override;
-    void Derivative(std::span<const double> x, IMatrix &dfdx) const override;
-    bool HasDerivative() const override;
+ public:
+   int GetRangeDimension() const override;
+   int GetDomainDimension() const override;
+   bool DerivativeAlwaysZero(int eqn, int var) const override;
+   void EvaluateFunction(std::span<const double> x, std::span<double> y) const override;
+   void Derivative(std::span<const double> x, IMatrix &dfdx) const override;
+   bool HasDerivative() const override;
 
-    static EigenSolution CalculateEigenvalues2x2(const MatrixKelvinRepr2 &);
+   static EigenSolution CalculateEigenvalues2x2(const MatrixKelvinRepr2 &);
 };
 
 namespace EigenValueSolverSym2x2Utils
@@ -26,15 +26,15 @@ namespace EigenValueSolverSym2x2Utils
 
 class Det : public IMultiVariableRealValuedFunction
 {
-  public:
-    int GetDomainDimension() const override;
-    double Evaluate(std::span<const double> x) const override;
-    void Derivative(std::span<const double> x, std::span<double> dfdx) const override;
-    bool DerivativeAlwaysZero(int var) const override;
-    bool HasDerivative() const override;
+ public:
+   int GetDomainDimension() const override;
+   double Evaluate(std::span<const double> x) const override;
+   void Derivative(std::span<const double> x, std::span<double> dfdx) const override;
+   bool DerivativeAlwaysZero(int var) const override;
+   bool HasDerivative() const override;
 
-    using IMultiVariableRealValuedFunction::Derivative;
-    using IMultiVariableRealValuedFunction::DerivativeAlwaysZero;
+   using IMultiVariableRealValuedFunction::Derivative;
+   using IMultiVariableRealValuedFunction::DerivativeAlwaysZero;
 };
 
 }; // namespace EigenValueSolverSym2x2Utils

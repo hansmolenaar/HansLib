@@ -43,7 +43,7 @@ std::vector<const ICompareFactory *> allFactories{
 
 ComparersFactory::ComparersFactory(std::vector<const ICompareFactory *> factories) : m_factories(std::move(factories))
 {
-    MyAssert(!m_factories.empty());
+   MyAssert(!m_factories.empty());
 }
 
 ComparersFactory::ComparersFactory() : ComparersFactory(getAllSimpleFactories())
@@ -52,26 +52,26 @@ ComparersFactory::ComparersFactory() : ComparersFactory(getAllSimpleFactories())
 
 std::vector<std::unique_ptr<ICompare>> ComparersFactory::getAllComparers(const Graph::IGraphUs &graph) const
 {
-    std::vector<std::unique_ptr<ICompare>> comparers;
-    for (auto *factory : m_factories)
-    {
-        comparers.emplace_back(factory->createCompare(graph));
-    }
-    return comparers;
+   std::vector<std::unique_ptr<ICompare>> comparers;
+   for (auto *factory : m_factories)
+   {
+      comparers.emplace_back(factory->createCompare(graph));
+   }
+   return comparers;
 }
 
 std::unique_ptr<ICompare> ComparersFactory::createCompare(const Graph::IGraphUs &graph) const
 {
-    return create(graph);
+   return create(graph);
 }
 
 std::unique_ptr<Comparers> ComparersFactory::create(const Graph::IGraphUs &graph) const
 
 {
-    return std::make_unique<Comparers>(getAllComparers(graph));
+   return std::make_unique<Comparers>(getAllComparers(graph));
 }
 
 std::vector<const ICompareFactory *> ComparersFactory::getAllSimpleFactories()
 {
-    return allFactories;
+   return allFactories;
 }

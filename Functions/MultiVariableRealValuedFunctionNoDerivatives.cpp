@@ -2,9 +2,9 @@
 
 double MultiVariableRealValuedFunctionNoDerivatives::Evaluate(std::span<const double> x) const
 {
-    if (static_cast<int>(x.size()) != m_dim)
-        throw MyException("FunctionNoDerivativesGiven::Evaluate: input dimension incorrect");
-    return (*m_function)(x);
+   if (static_cast<int>(x.size()) != m_dim)
+      throw MyException("FunctionNoDerivativesGiven::Evaluate: input dimension incorrect");
+   return (*m_function)(x);
 }
 
 MultiVariableRealValuedFunctionNoDerivatives::MultiVariableRealValuedFunctionNoDerivatives(

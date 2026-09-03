@@ -9,19 +9,19 @@
 
 class MatrixDenseSymmetric : public IMatrixSymmetric
 {
-  public:
-    explicit MatrixDenseSymmetric(int dim);
+ public:
+   explicit MatrixDenseSymmetric(int dim);
 
-    int GetDimension() const override;
-    void timesVector(std::span<const double>, std::span<double>) const override;
+   int GetDimension() const override;
+   void timesVector(std::span<const double>, std::span<double>) const override;
 
-    bool Solve(std::span<const double> rhs, std::span<double> sol); // Returns succes
-    EigenSolution getEigenSolution();
+   bool Solve(std::span<const double> rhs, std::span<double> sol); // Returns succes
+   EigenSolution getEigenSolution();
 
-    double operator()(int, int) const;
-    double get(int, int) const override;
-    void set(int, int, double) override;
+   double operator()(int, int) const;
+   double get(int, int) const override;
+   void set(int, int, double) override;
 
-  private:
-    Eigen::MatrixXd m_matrix;
+ private:
+   Eigen::MatrixXd m_matrix;
 };

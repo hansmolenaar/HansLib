@@ -22,29 +22,29 @@ Comparers::Comparers(const Graph::IGraphUs &graph) : Comparers(ComparersFactory(
 
 const VertexGrouping &Comparers::getVertexGrouping() const
 {
-    return m_vertexComparers.getVertexGrouping();
+   return m_vertexComparers.getVertexGrouping();
 }
 
 const Graph::IGraphUs &Comparers::getGraph() const
 {
-    return m_comparers.front()->getGraph();
+   return m_comparers.front()->getGraph();
 }
 
 std::weak_ordering Comparers::compareGraph(const IGraphCompare &other) const
 {
-    const auto &lhs = *this;
-    const auto &rhs = dynamic_cast<const Comparers &>(other);
+   const auto &lhs = *this;
+   const auto &rhs = dynamic_cast<const Comparers &>(other);
 
-    const size_t nGraphComparers = m_graphComparers.size();
-    MyAssert(rhs.m_graphComparers.size() == nGraphComparers);
-    for (size_t n : Iota::GetRange(nGraphComparers))
-    {
-        const auto result = lhs.m_graphComparers.at(n)->compareGraph(*rhs.m_graphComparers.at(n));
-        if (result != std::weak_ordering::equivalent)
-        {
-            return result;
-        }
-    }
+   const size_t nGraphComparers = m_graphComparers.size();
+   MyAssert(rhs.m_graphComparers.size() == nGraphComparers);
+   for (size_t n : Iota::GetRange(nGraphComparers))
+   {
+      const auto result = lhs.m_graphComparers.at(n)->compareGraph(*rhs.m_graphComparers.at(n));
+      if (result != std::weak_ordering::equivalent)
+      {
+         return result;
+      }
+   }
 
-    return lhs.m_vertexComparers.compareGraph(rhs.m_vertexComparers);
+   return lhs.m_vertexComparers.compareGraph(rhs.m_vertexComparers);
 }

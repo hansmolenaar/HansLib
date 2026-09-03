@@ -15,36 +15,36 @@ TaggerShortestCycle::TaggerShortestCycle(const IGraphUs &graph)
 
 const IGraphUs &TaggerShortestCycle::getGraph() const
 {
-    return m_graph;
+   return m_graph;
 }
 
 std::weak_ordering TaggerShortestCycle::compareVertexOtherGraph(Vertex lhsVertex, const IVertexCompare &other,
                                                                 Vertex rhsVertex) const
 {
-    const TaggerShortestCycle &lhs = *this;
-    const TaggerShortestCycle &rhs = dynamic_cast<const TaggerShortestCycle &>(other);
-    return lhs.m_shortestCycle.at(lhsVertex) <=> rhs.m_shortestCycle.at(rhsVertex);
+   const TaggerShortestCycle &lhs = *this;
+   const TaggerShortestCycle &rhs = dynamic_cast<const TaggerShortestCycle &>(other);
+   return lhs.m_shortestCycle.at(lhsVertex) <=> rhs.m_shortestCycle.at(rhsVertex);
 }
 
 const Tag &TaggerShortestCycle::getGraphTag() const
 {
-    return m_graphTag;
+   return m_graphTag;
 }
 
 std::weak_ordering TaggerShortestCycle::compareGraph(const IGraphCompare &otherComparer) const
 {
-    const auto &other = dynamic_cast<const TaggerShortestCycle &>(otherComparer);
-    return getGraphTag() <=> other.getGraphTag();
+   const auto &other = dynamic_cast<const TaggerShortestCycle &>(otherComparer);
+   return getGraphTag() <=> other.getGraphTag();
 }
 
 const VertexGrouping &TaggerShortestCycle::getVertexGrouping() const
 {
-    return m_vertexGrouping;
+   return m_vertexGrouping;
 }
 
 // !!!!!!!!!!!!! FACTORY
 
 std::unique_ptr<ICompare> CompareShortestCycleFactory::createCompare(const Graph::IGraphUs &graph) const
 {
-    return std::make_unique<TaggerShortestCycle>(graph);
+   return std::make_unique<TaggerShortestCycle>(graph);
 }
