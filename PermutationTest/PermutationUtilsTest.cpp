@@ -1,7 +1,10 @@
 #include <gtest/gtest.h>
 
-#include "Defines.h"
 #include "PermutationUtils.h"
+
+#include <algorithm>
+
+namespace str = std::ranges;
 
 namespace
 {
@@ -107,6 +110,42 @@ TEST(PermutationUtilsTest, generateAllPowerCombinations_1)
     const std::vector<Permutation> generators{Permutation::CreateFromCycle(2, std::vector<Permutation::Entry>{0, 1})};
     const std::set<Permutation> permutations = PermutationUtils::generateAllPowerCombinations(generators);
     ASSERT_EQ(2, permutations.size());
+    ASSERT_EQ(1, str::count_if(permutations, PermutationUtils::isIdentity));
+}
+
+TEST(PermutationUtilsTest, generateAllPowerCombinations_2)
+{
+    const Permutation tau = Permutation::CreateFromCycle(5, std::vector<Permutation::Entry>{0, 1, 2, 3, 4});
+    const Permutation sigma = Permutation::CreateFromDisjunctCycles(5, {{1, 3}, {0, 4}});
+    const auto sigma_tau_sigma = sigma * tau * sigma;
+    ASSERT_TRUE(sigma_tau_sigma == tau.getInverse());
+    const auto sigma_tau2_sigma = sigma * tau * tau * sigma;
+    const auto tau2 = tau.getPower(2);
+    ASSERT_TRUE(tau2 == Permutation::CreateFromDisjunctCycles(5, {{0, 2, 4, 1, 3}}));
+    const auto tau3 = tau.getPower(3);
+    ASSERT_TRUE(tau3 == Permutation::CreateFromDisjunctCycles(5, {{0, 3, 1, 4, 2}}));
+    ASSERT_TRUE(sigma_tau2_sigma == tau3);
+    ASSERT_TRUE(sigma * tau3 * sigma == tau2);
+
+    const auto sigma_tau2 = sigma * tau * tau;
+    const auto sigma_tau3 = sigma * tau.getPower(3);
+    ASSERT_TRUE(sigma_tau3 == sigma_tau2 * tau);
+    ASSERT_TRUE(tau * tau * sigma == sigma_tau3);
+    ASSERT_TRUE(tau * tau * tau * sigma == sigma_tau2);
+
+    const std::vector<Permutation> generators{sigma, tau};
+    const std::set<Permutation> permutations = PermutationUtils::generateAllPowerCombinations(generators);
+    ASSERT_EQ(10, permutations.size());
+    ASSERT_EQ(1, str::count_if(permutations, PermutationUtils::isIdentity));
+}
+
+TEST(PermutationUtilsTest, generateAllPowerCombinations_3)
+{
+    const std::vector<Permutation> generators{
+        Permutation::CreateFromCycle(5, std::vector<Permutation::Entry>{0, 1, 2, 3, 4}),
+        Permutation::CreateFromCycle(5, std::vector<Permutation::Entry>{0, 4})};
+    const std::set<Permutation> permutations = PermutationUtils::generateAllPowerCombinations(generators);
+    ASSERT_EQ(120, permutations.size());
     ASSERT_EQ(1, str::count_if(permutations, PermutationUtils::isIdentity));
 }
 

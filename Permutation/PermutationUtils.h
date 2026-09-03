@@ -3,8 +3,6 @@
 #include "MyException.h"
 #include "Permutation.h"
 
-#include <functional>
-#include <numeric>
 #include <optional>
 #include <set>
 #include <span>
