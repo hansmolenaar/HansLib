@@ -2,6 +2,7 @@
 
 #include <vector>
 
+#include "GraphDefines.h"
 #include "GraphIsomorphismDefines.h"
 
 namespace GraphIsomorphism

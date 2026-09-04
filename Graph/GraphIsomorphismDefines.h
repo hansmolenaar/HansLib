@@ -2,8 +2,6 @@
 
 #include <vector>
 
-#include "GraphDefines.h"
-
 namespace Graph
 {
 class UndirectedGraph;

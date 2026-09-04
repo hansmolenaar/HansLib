@@ -1,7 +1,8 @@
 #pragma once
 
+#include "GraphIsomorphismDefines.h"
 #include "IGraphIsomorphismTagger.h"
-#include "IGraphUsc.h"
+
 #include <string>
 #include <vector>
 

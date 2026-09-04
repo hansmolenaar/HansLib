@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GraphIsomorphismDefines.h"
+#include "GraphDefines.h"
 #include "GraphIsomorphismGrouping.h"
 
 namespace Graph

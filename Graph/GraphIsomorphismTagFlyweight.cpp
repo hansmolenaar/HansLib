@@ -1,4 +1,8 @@
 #include "GraphIsomorphismTagFlyweight.h"
+#include "GraphIsomorphismDefines.h"
+
+#include <map>
+#include <memory>
 
 using namespace GraphIsomorphism;
 
