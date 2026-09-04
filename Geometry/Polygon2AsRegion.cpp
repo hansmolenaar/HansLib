@@ -4,6 +4,8 @@
 #include "Polygon2D.h"
 #include "UnitVector.h"
 
+namespace str = std::ranges;
+
 namespace Geometry
 {
 template class Polygon2AsRegion<double>;

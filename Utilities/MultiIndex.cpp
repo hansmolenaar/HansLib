@@ -1,5 +1,7 @@
 #include "MultiIndex.h"
 
+namespace str = std::ranges;
+
 template class MultiIndex<int>;
 template class MultiIndex<size_t>;
 

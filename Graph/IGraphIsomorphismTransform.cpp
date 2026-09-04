@@ -5,6 +5,8 @@
 #include "MyAssert.h"
 #include "UndirectedGraph.h"
 
+namespace str = std::ranges;
+
 using namespace GraphIsomorphism;
 using namespace Graph;
 using namespace Utilities;

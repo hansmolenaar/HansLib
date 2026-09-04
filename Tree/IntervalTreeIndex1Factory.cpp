@@ -1,6 +1,8 @@
 #include "IntervalTreeIndex1Factory.h"
 #include "StdHash.h"
 
+namespace str = std::ranges;
+
 using namespace IntervalTree;
 
 Index1Factory::Index1Factory()

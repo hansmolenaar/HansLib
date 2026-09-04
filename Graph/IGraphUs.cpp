@@ -3,6 +3,8 @@
 
 #include <functional>
 
+namespace str = std::ranges;
+
 using namespace Graph;
 
 std::vector<Vertex> IGraphUs::getDegreeSequence() const

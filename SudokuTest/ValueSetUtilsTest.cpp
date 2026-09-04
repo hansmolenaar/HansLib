@@ -3,6 +3,8 @@
 #include "Defines.h"
 #include "ValueSetUtils.h"
 
+namespace str = std::ranges;
+
 using namespace Sudoku;
 
 TEST(ValueSetUtils, IsSolvedSucces)

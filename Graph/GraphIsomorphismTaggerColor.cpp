@@ -2,6 +2,8 @@
 #include "MyAssert.h"
 #include "UndirectedGraphColor.h"
 
+namespace str = std::ranges;
+
 using namespace Graph;
 using namespace GraphIsomorphism;
 using namespace Utilities;

@@ -8,6 +8,8 @@
 #include "UndirectedGraphLibrary.h"
 #include "UniquePointer.h"
 
+namespace str = std::ranges;
+
 using namespace Graph;
 using namespace GraphIsomorphism;
 using namespace Utilities;

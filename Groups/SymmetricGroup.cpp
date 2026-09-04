@@ -2,6 +2,8 @@
 #include "Defines.h"
 #include "GroupTable.h"
 
+namespace str = std::ranges;
+
 std::unique_ptr<IFiniteGroup> SymmetricGroup::Create(GroupElement size)
 {
    std::vector<Permutation> permutations;

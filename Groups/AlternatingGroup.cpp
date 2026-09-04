@@ -2,6 +2,8 @@
 #include "AlternatingGroup.h"
 #include "GroupTable.h"
 
+namespace str = std::ranges;
+
 std::unique_ptr<IFiniteGroup> AlternatingGroup::Create(GroupElement size)
 {
    std::vector<Permutation> permutations;

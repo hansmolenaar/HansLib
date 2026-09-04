@@ -2,6 +2,8 @@
 #include "Defines.h"
 #include "GraphIsomorphismUtils.h"
 
+namespace str = std::ranges;
+
 using namespace Graph;
 using namespace GraphIsomorphism;
 

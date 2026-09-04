@@ -14,6 +14,8 @@
 #include "TopologyDefines.h"
 #include "UniqueHashedPointCollection.h"
 
+namespace str = std::ranges;
+
 using namespace IntervalTree;
 using namespace IndexTreeToSimplices3;
 using namespace Topology;

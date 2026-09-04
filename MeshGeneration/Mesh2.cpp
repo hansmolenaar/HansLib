@@ -1,5 +1,7 @@
 #include "Mesh2.h"
 
+namespace str = std::ranges;
+
 using namespace MeshGeneration;
 using namespace MeshGeneration2;
 using namespace Topology;

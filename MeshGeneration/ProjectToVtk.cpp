@@ -8,6 +8,7 @@
 #include "TetrahedronsNodes.h"
 #include "TrianglesNodes.h"
 
+namespace str = std::ranges;
 namespace stv = std::views;
 
 using namespace MeshGeneration;

@@ -10,6 +10,8 @@
 #include <utility>
 #include <vector>
 
+namespace str = std::ranges;
+
 using namespace Sudoku;
 
 namespace

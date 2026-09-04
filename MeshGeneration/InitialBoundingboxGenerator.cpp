@@ -2,6 +2,8 @@
 #include "Defines.h"
 #include "MyException.h"
 
+namespace str = std::ranges;
+
 template class InitialBoundingboxGenerator<1>;
 template class InitialBoundingboxGenerator<2>;
 template class InitialBoundingboxGenerator<3>;

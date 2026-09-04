@@ -6,6 +6,8 @@
 #include "MyException.h"
 #include "TetrahedronsNodes.h"
 
+namespace str = std::ranges;
+
 using namespace MeshGeneration;
 using namespace Topology;
 

@@ -7,6 +7,8 @@
 #include <iterator>
 #include <unordered_set>
 
+namespace str = std::ranges;
+
 using namespace Sudoku;
 
 SolverSweepBiValueLinksSingleValue::SolverSweepBiValueLinksSingleValue(Value value) : m_value(value)

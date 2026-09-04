@@ -10,6 +10,8 @@
 #include "UndirectedGraphLibrary.h"
 #include "UndirectedGraphTriangles.h"
 
+namespace str = std::ranges;
+
 using namespace GraphIsomorphism;
 using namespace Graph;
 

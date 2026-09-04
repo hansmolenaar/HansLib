@@ -2,11 +2,9 @@
 #include "Defines.h"
 #include "FirstDuplicate.h"
 #include "ITopologicalAdjacency.h"
-#include "MyException.h"
 #include "ReferenceShapeTetrahedron.h"
-#include "StreamUtils.h"
 
-#include <sstream>
+namespace str = std::ranges;
 
 using namespace Topology;
 using namespace Utilities;

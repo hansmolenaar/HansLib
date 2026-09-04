@@ -3,6 +3,8 @@
 
 #include <cmath>
 
+namespace str = std::ranges;
+
 NodalBasis1D::NodalBasis1D(std::unique_ptr<TartanGrid<double, 1>> &&grid, std::vector<double> &&coefficients)
     : m_grid(std::move(grid)), m_coefficients(std::move(coefficients))
 {

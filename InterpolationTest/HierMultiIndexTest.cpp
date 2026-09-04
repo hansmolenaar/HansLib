@@ -5,6 +5,8 @@
 #include "HierMultiIndex.h"
 #include "MyException.h"
 
+namespace str = std::ranges;
+
 TEST(HierMultiIndex, Basics)
 {
    const HierMultiIndex mi(std::vector<HierLevelIndex>{HierLevelIndex{2, 1}, HierLevelIndex{3, 7}});

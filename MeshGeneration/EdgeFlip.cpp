@@ -6,6 +6,7 @@
 
 #include <queue>
 
+namespace str = std::ranges;
 namespace stv = std::views;
 
 using namespace Geometry;

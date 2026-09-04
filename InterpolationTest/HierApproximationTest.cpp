@@ -21,6 +21,8 @@
 #include <filesystem>
 #include <fstream>
 
+namespace str = std::ranges;
+
 inline constexpr double Epsilon = 1.0e-10;
 
 namespace

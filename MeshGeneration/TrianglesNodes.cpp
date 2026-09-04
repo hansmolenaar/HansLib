@@ -5,6 +5,8 @@
 
 #include <sstream>
 
+namespace str = std::ranges;
+
 using namespace MeshGeneration;
 using namespace Topology;
 using namespace Utilities;

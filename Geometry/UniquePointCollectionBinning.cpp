@@ -2,7 +2,8 @@
 #include "MultiIndex.h"
 
 #include <boost/container/static_vector.hpp>
-#include <sstream>
+
+namespace str = std::ranges;
 
 template class UniquePointCollectionBinning<GeomDim1>;
 template class UniquePointCollectionBinning<GeomDim2>;

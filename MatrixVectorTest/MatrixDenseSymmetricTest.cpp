@@ -12,6 +12,8 @@
 #include <numbers>
 #include <span>
 
+namespace str = std::ranges;
+
 void CheckEigenSolver(MatrixDenseSymmetric &matrix, std::initializer_list<double> expectedEigenvalues = {})
 {
    const auto solution = matrix.getEigenSolution();

@@ -8,6 +8,8 @@
 #include "Plotting.h"
 #include "Single.h"
 
+namespace str = std::ranges;
+
 inline constexpr double Epsilon = 1.0e-10;
 
 TEST(HierBasisFunctionTest, BasisFie2D)

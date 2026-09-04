@@ -6,6 +6,8 @@
 #include "UndirectedGraphDistance.h"
 #include "UndirectedGraphTriangles.h"
 
+namespace str = std::ranges;
+
 using namespace Graph;
 using namespace GraphIsomorphism;
 

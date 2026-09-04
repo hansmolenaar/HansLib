@@ -28,6 +28,8 @@
 #include <numbers>
 #include <set>
 
+namespace str = std::ranges;
+
 using namespace MeshGeneration;
 using namespace MeshGeneration2;
 using namespace IntervalTree;

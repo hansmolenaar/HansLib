@@ -5,6 +5,8 @@
 #include "Iota.h"
 #include "MyAssert.h"
 
+namespace str = std::ranges;
+
 using namespace Utilities;
 
 namespace

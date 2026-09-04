@@ -6,6 +6,9 @@
 #include "SubMatrix.h"
 
 #include <numeric>
+
+namespace str = std::ranges;
+
 TEST(SubMatrixTest, Test1)
 {
    const double eps = 1.0e-10;

@@ -8,6 +8,8 @@
 #include <set>
 #include <vector>
 
+namespace str = std::ranges;
+
 using namespace Sudoku;
 using namespace FieldInfoStatic;
 

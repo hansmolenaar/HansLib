@@ -10,6 +10,8 @@
 
 #include <iostream>
 
+namespace str = std::ranges;
+
 using namespace GraphIsomorphism;
 using namespace Graph;
 

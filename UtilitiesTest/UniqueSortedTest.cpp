@@ -3,6 +3,8 @@
 #include "UniqueSorted.h"
 #include <vector>
 
+namespace str = std::ranges;
+
 using namespace Utilities;
 
 TEST(UniqueSortedTest, Test)

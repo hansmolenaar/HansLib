@@ -4,6 +4,8 @@
 #include "TestIReferenceShape.h"
 #include <gtest/gtest.h>
 
+namespace str = std::ranges;
+
 TEST(ReferenceShapePolygon, Triangle)
 {
    const IReferenceShape &triangle = ReferenceShapePolygon::GetTriangle();

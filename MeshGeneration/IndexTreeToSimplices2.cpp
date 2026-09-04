@@ -10,6 +10,8 @@
 using namespace Topology;
 using namespace MeshGeneration;
 
+namespace str = std::ranges;
+
 namespace
 {
 

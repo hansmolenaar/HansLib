@@ -4,6 +4,7 @@
 
 #include <numeric>
 
+namespace str = std::ranges;
 namespace stv = std::views;
 
 HierMultiIndex::HierMultiIndex(std::vector<HierLevelIndex> &&levelsIndices) : m_levelsIndices(std::move(levelsIndices))

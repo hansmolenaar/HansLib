@@ -5,6 +5,8 @@
 #include "PointClose.h"
 #include "Polygon2AsRegion.h"
 
+namespace str = std::ranges;
+
 using namespace Geometry;
 using namespace Topology;
 

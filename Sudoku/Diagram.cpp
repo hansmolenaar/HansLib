@@ -9,6 +9,8 @@
 #include <sstream>
 #include <unordered_set>
 
+namespace str = std::ranges;
+
 using namespace Sudoku;
 
 Diagram::Diagram(std::array<Value, NumFields> values) : m_state(std::move(values))

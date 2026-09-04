@@ -1,5 +1,7 @@
 #include "DirectedEdgeIntersections.h"
 
+namespace str = std::ranges;
+
 namespace Geometry
 {
 template class DirectedEdgeIntersections<double, 1>;

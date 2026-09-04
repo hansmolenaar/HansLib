@@ -1,5 +1,7 @@
 #include "UndirectedGraphTriangles.h"
 
+namespace str = std::ranges;
+
 using namespace Graph;
 
 namespace

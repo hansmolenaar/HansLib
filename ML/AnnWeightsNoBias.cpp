@@ -4,6 +4,8 @@
 
 #include <numeric>
 
+namespace str = std::ranges;
+
 ML::AnnWeightsNoBias::AnnWeightsNoBias(size_t dimPrv, size_t dimCur) : m_layerSizePrv(dimPrv), m_layerSizeCur(dimCur)
 {
 }

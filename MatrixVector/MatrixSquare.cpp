@@ -9,6 +9,8 @@
 #include <iostream>
 #include <limits>
 
+namespace str = std::ranges;
+
 namespace
 {
 using EigenColumnVector = Eigen::Matrix<double, Eigen::Dynamic, 1>;

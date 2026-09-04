@@ -7,6 +7,8 @@
 #include "Point.h"
 #include <random>
 
+namespace str = std::ranges;
+
 template <size_t N> static void TestIntKdTree(std::span<const Point<int, N>> points)
 {
    if (points.empty())

@@ -7,6 +7,8 @@
 #include "MyAssert.h"
 #include "ParameterSet.h"
 
+namespace str = std::ranges;
+
 void ML::IAnnModelUtils::checkDimensions(const ML::IAnnModel &model)
 {
    const auto layers = model.getLayers();

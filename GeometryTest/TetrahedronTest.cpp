@@ -12,6 +12,8 @@
 #include <array>
 #include <numbers>
 
+namespace str = std::ranges;
+
 using namespace Topology;
 
 namespace

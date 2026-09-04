@@ -5,6 +5,8 @@
 #include "SubGraphConnected.h"
 #include "UndirectedGraphLibrary.h"
 
+namespace str = std::ranges;
+
 using namespace Graph;
 using namespace Utilities;
 

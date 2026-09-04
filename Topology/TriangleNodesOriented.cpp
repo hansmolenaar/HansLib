@@ -1,6 +1,8 @@
 
 #include "TriangleNodesOriented.h"
 
+namespace str = std::ranges;
+
 using namespace Topology;
 
 namespace

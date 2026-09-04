@@ -3,6 +3,8 @@
 #include "Iota.h"
 #include "MyAssert.h"
 
+namespace str = std::ranges;
+
 using namespace Utilities;
 
 EigenSolution::EigenSolution(std::span<const double> eigenValues)

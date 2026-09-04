@@ -3,6 +3,8 @@
 #include "GraphUsc.h"
 #include "MyAssert.h"
 
+namespace str = std::ranges;
+
 using namespace Graph;
 using namespace GraphIsomorphism;
 using namespace Utilities;

@@ -3,6 +3,8 @@
 #include "Triangle.h"
 #include "UnitVector.h"
 
+namespace str = std::ranges;
+
 using namespace Topology;
 
 double Tetrahedron::getSignedVolume(const Point3 &p0, const Point3 &p1, const Point3 &p2, const Point3 &p3)

@@ -3,6 +3,8 @@
 #include "Functors.h"
 #include "Logger.h"
 
+namespace str = std::ranges;
+
 namespace stv = std::views;
 
 namespace

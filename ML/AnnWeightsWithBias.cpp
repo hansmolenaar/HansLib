@@ -2,6 +2,8 @@
 #include "Defines.h"
 #include "MyAssert.h"
 
+namespace str = std::ranges;
+
 ML::AnnWeightsWithBias::AnnWeightsWithBias(size_t dimPrv, size_t dimCur) : m_matrixOnly(dimPrv, dimCur)
 {
 }

@@ -2,6 +2,8 @@
 #include "RenumberContiguous.h"
 #include "UndirectedGraph.h"
 
+namespace str = std::ranges;
+
 using namespace MeshGeneration;
 using namespace Topology;
 using namespace Utilities;

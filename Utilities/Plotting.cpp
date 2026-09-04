@@ -8,6 +8,8 @@
 #include <sstream>
 #include <vector>
 
+namespace str = std::ranges;
+
 namespace
 {
 std::filesystem::path getOutputDir()

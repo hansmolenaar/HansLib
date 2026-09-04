@@ -1,6 +1,8 @@
 #include "TriangleNodesOriented.h"
 #include <gtest/gtest.h>
 
+namespace str = std::ranges;
+
 using namespace Topology;
 
 TEST(TriangleNodesOrientedTest, ContainsNode)

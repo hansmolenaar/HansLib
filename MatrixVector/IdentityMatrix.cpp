@@ -7,6 +7,8 @@
 #include <map>
 #include <memory>
 
+namespace str = std::ranges;
+
 IdentityMatrix::IdentityMatrix(int dim) : m_dimension(dim)
 {
    Utilities::MyAssert(m_dimension > 0);

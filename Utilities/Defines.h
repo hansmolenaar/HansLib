@@ -13,8 +13,6 @@
 
 #include "MyException.h"
 
-namespace str = std::ranges;
-
 using PointIndex = size_t;
 inline constexpr PointIndex PointIndexInvalid = std::numeric_limits<size_t>::max();
 using CellIndex = size_t;

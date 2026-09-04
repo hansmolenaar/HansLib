@@ -3,6 +3,8 @@
 #include "MyAssert.h"
 #include "UndirectedGraph.h"
 
+namespace str = std::ranges;
+
 using namespace Graph;
 using namespace Utilities;
 

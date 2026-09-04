@@ -9,6 +9,8 @@
 #include "TopologyDefines.h"
 #include "UniquePointCollectionBinning.h"
 
+namespace str = std::ranges;
+
 using namespace Topology;
 using namespace Vtk;
 using namespace MeshGeneration;

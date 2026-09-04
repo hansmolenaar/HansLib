@@ -5,6 +5,8 @@
 
 #include <numeric>
 
+namespace str = std::ranges;
+
 using namespace Utilities;
 using namespace Graph;
 

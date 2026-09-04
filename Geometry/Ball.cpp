@@ -1,5 +1,7 @@
 #include "Ball.h"
 
+namespace str = std::ranges;
+
 namespace Geometry
 {
 template class Ball<int, 1>;

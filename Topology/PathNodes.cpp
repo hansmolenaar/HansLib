@@ -2,7 +2,7 @@
 #include "FirstDuplicate.h"
 #include "MyException.h"
 
-#include <sstream>
+namespace str = std::ranges;
 
 using namespace Topology;
 using namespace Utilities;

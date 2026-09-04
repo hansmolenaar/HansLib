@@ -5,6 +5,8 @@
 #include "UndirectedGraphFromG6.h"
 #include "UndirectedGraphLibrary.h"
 
+namespace str = std::ranges;
+
 using namespace Graph;
 using namespace GraphIsomorphism;
 

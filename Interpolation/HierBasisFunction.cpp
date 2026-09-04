@@ -5,6 +5,8 @@
 #include "MultiIndex.h"
 #include "MyAssert.h"
 
+namespace str = std::ranges;
+
 namespace
 {
 HierMultiIndex CreateMultiIndex(const std::vector<const IHierBasisFunction1D *> &fies)

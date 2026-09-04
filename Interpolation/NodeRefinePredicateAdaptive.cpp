@@ -4,6 +4,8 @@
 #include <iterator>
 #include <queue>
 
+namespace str = std::ranges;
+
 namespace
 {
 using HTreeNodeValue = std::pair<const HierTreeNode *, double>;

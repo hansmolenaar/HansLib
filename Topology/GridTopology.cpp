@@ -6,6 +6,8 @@
 #include "TopologicalAdjacencies.h"
 #include "TopologicalAdjacency.h"
 
+namespace str = std::ranges;
+
 using namespace Topology;
 
 GridTopology::GridTopology(const std::vector<int> &cellDimensions)

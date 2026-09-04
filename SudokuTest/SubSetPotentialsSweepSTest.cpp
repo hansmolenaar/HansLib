@@ -7,6 +7,8 @@
 
 #include <unordered_map>
 
+namespace str = std::ranges;
+
 using namespace Sudoku;
 
 TEST(SubSetPotentialsSweepTest, SweepSingle)

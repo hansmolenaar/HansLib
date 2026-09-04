@@ -4,6 +4,8 @@
 #include "Single.h"
 #include "TrianglesNodes.h"
 
+namespace str = std::ranges;
+
 using namespace MeshGeneration;
 using namespace Topology;
 using namespace Utilities;

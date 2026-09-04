@@ -6,6 +6,8 @@
 #include "SolverSweepBiValueLinks.h"
 #include "TestModels.h"
 
+namespace str = std::ranges;
+
 using namespace Sudoku;
 using namespace boost;
 

@@ -10,6 +10,8 @@
 #include "TrianglesNodes.h"
 #include "UniquePointCollectionBinning.h"
 
+namespace str = std::ranges;
+
 using namespace MeshGeneration;
 using namespace Geometry;
 using namespace Topology;

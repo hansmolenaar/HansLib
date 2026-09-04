@@ -2,6 +2,8 @@
 #include "Defines.h"
 #include "FieldInfoStatic.h"
 
+namespace str = std::ranges;
+
 using namespace Sudoku;
 
 namespace

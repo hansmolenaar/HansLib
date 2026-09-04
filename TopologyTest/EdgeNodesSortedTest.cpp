@@ -3,6 +3,8 @@
 #include <algorithm>
 #include <gtest/gtest.h>
 
+namespace str = std::ranges;
+
 using namespace Topology;
 
 TEST(EdgeNodesSortedTest, Constructor)

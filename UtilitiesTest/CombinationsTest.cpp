@@ -5,6 +5,8 @@
 
 #include <set>
 
+namespace str = std::ranges;
+
 TEST(CombinationsTest, Test53)
 {
    const auto allCombinations = Combinations::Get(5, 3);

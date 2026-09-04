@@ -3,6 +3,8 @@
 #include <iostream>
 #include <set>
 
+namespace str = std::ranges;
+
 using namespace Graph;
 
 using SortedEdge = std::pair<Vertex, Vertex>;
