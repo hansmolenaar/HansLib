@@ -20,7 +20,7 @@ template <typename T, size_t N> class PointClose : public IGeometryPredicate<T, 
 template <typename T, size_t N> bool PointClose<T, N>::operator()(const Point<T, N> &p0, const Point<T, N> &p1) const
 {
    const auto dif = p0 - p1;
-   return str::all_of(dif, [this](auto d) { return std::abs(d) < eps; });
+   return std::ranges::all_of(dif, [this](auto d) { return std::abs(d) < eps; });
 }
 
 template <typename T, size_t N> bool PointClose<T, N>::samePoints(Point<T, N> p0, Point<T, N> p1) const

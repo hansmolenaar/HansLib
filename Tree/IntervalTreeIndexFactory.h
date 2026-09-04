@@ -34,14 +34,14 @@ template <size_t N> const Index<N> *IndexFactory<N>::operator()(const Index<N>::
 template <size_t N> IndexFactory<N>::IndexFactory()
 {
    typename Index<N>::Key key;
-   str::fill(key, 0);
+   std::ranges::fill(key, 0);
    addIfNew(key);
 }
 
 template <size_t N> const Index<N> *IndexFactory<N>::getRoot() const
 {
    typename Index<N>::Key key;
-   str::fill(key, 0);
+   std::ranges::fill(key, 0);
    return (*this)(key);
 }
 
@@ -62,7 +62,7 @@ template <size_t N> std::array<const Index<N> *, NumKids<N>> IndexFactory<N>::re
    }
    const auto kids = toRefine.refine();
    std::array<const Index<N> *, NumKids<N>> result;
-   str::fill(result, nullptr);
+   std::ranges::fill(result, nullptr);
    size_t n = 0;
    for (const auto &k : kids)
    {

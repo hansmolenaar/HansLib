@@ -38,7 +38,7 @@ template <typename C> std::optional<typename C::value_type> firstDuplicate(const
 
    std::vector<typename C::value_type> sorted(values.begin(), values.end());
    std::sort(sorted.begin(), sorted.end());
-   const auto found = str::adjacent_find(sorted);
+   const auto found = std::ranges::adjacent_find(sorted);
    if (found != sorted.end())
    {
       return *found;

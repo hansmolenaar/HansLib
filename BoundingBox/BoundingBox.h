@@ -6,6 +6,7 @@
 #include "Point.h"
 #include "StreamUtils.h"
 
+#include <algorithm>
 #include <optional>
 #include <span>
 
@@ -163,14 +164,14 @@ Point<T, N> BoundingBox<T, N>::scaleFromPoint01(const Point<TScale, N> &scale) c
 template <typename T, size_t N> Point<T, N> BoundingBox<T, N>::getLower() const
 {
    std::array<T, N> values;
-   str::transform(m_intervals, values.data(), [](const Interval<T> &intv) { return intv.getLower(); });
+   std::ranges::transform(m_intervals, values.data(), [](const Interval<T> &intv) { return intv.getLower(); });
    return Point<T, N>(values);
 }
 
 template <typename T, size_t N> Point<T, N> BoundingBox<T, N>::getUpper() const
 {
    std::array<T, N> values;
-   str::transform(m_intervals, values.data(), [](const Interval<T> &intv) { return intv.getUpper(); });
+   std::ranges::transform(m_intervals, values.data(), [](const Interval<T> &intv) { return intv.getUpper(); });
    return Point<T, N>(values);
 }
 
@@ -213,8 +214,8 @@ std::optional<BoundingBox<T, N>> BoundingBox<T, N>::TryGetOverlap(const Bounding
 template <typename T, size_t N> Point<T, N> BoundingBox<T, N>::getCenter() const
 {
    Point<T, N> result;
-   str::transform(getIntervals(), result.begin(),
-                  [](const Interval<T> &intv) { return (intv.getLower() + intv.getUpper()) / 2; });
+   std::ranges::transform(getIntervals(), result.begin(),
+                          [](const Interval<T> &intv) { return (intv.getLower() + intv.getUpper()) / 2; });
    return result;
 }
 

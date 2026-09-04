@@ -74,14 +74,14 @@ template <typename T, size_t N> UnitVector<T, N> UnitVector<T, N>::Create(std::s
       return {};
    const T normInv = 1 / std::sqrt(norm2);
    std::array<T, N> values;
-   str::transform(cors, values.begin(), Functors::TimesScalar{normInv});
+   std::ranges::transform(cors, values.begin(), Functors::TimesScalar{normInv});
    return UnitVector<T, N>(std::move(values));
 }
 
 template <typename T, size_t N> Point<T, N> operator*(const UnitVector<T, N> &uv, T factor)
 {
    std::array<T, N> result;
-   str::transform(uv.data(), result.begin(), Functors::TimesScalar{factor});
+   std::ranges::transform(uv.data(), result.begin(), Functors::TimesScalar{factor});
    return Point<T, N>{result};
 }
 

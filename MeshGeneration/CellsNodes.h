@@ -118,7 +118,7 @@ std::optional<CellIndex> CellsNodes<TCell>::tryGetCellFromOrderedNodes(std::span
    {
       const CellIndex candidate = itr->second;
       const auto &candidateNodes = m_cellIdToNodes.at(candidate);
-      if (str::equal(nodes, candidateNodes))
+      if (std::ranges::equal(nodes, candidateNodes))
       {
          // Duplicates are not possible, already checked in addCell
          return candidate;
@@ -132,7 +132,7 @@ template <typename TCell> bool CellsNodes<TCell>::cellContainsNode(CellIndex cel
    checkCellId(cellId); // only for error message
    checkNodeId(nodeId);
    const auto &nodes = m_cellIdToNodes.at(cellId);
-   return str::find(nodes, nodeId) != nodes.end();
+   return std::ranges::find(nodes, nodeId) != nodes.end();
 }
 
 template <typename TCell> TCell CellsNodes<TCell>::getCellNodes(CellIndex cellId) const
@@ -177,7 +177,7 @@ template <typename TCell> std::vector<CellIndex> CellsNodes<TCell>::getAllCellId
    {
       result.push_back(itr.first);
    }
-   str::sort(result);
+   std::ranges::sort(result);
    return result;
 }
 template <typename TCell> std::vector<Topology::NodeIndex> CellsNodes<TCell>::getAllNodes() const
@@ -188,7 +188,7 @@ template <typename TCell> std::vector<Topology::NodeIndex> CellsNodes<TCell>::ge
    {
       result.push_back(iter->first);
    }
-   str::sort(result);
+   std::ranges::sort(result);
    return result;
 }
 
@@ -228,7 +228,7 @@ C &CellsNodes<TCell>::getCellsContainingNodes(C &result, std::span<const Topolog
          result.push_back(cellId);
       }
    }
-   str::sort(result);
+   std::ranges::sort(result);
    return result;
 }
 
@@ -246,13 +246,13 @@ C &CellsNodes<TCell>::getEdgeConnectedNodes(C &result, Topology::NodeIndex node)
       const auto &cellNodes = getCellNodes(cellId);
       for (auto ngb : cellNodes)
       {
-         if ((ngb != node) && (str::find(result, ngb) == result.end()))
+         if ((ngb != node) && (std::ranges::find(result, ngb) == result.end()))
          {
             result.push_back(ngb);
          }
       }
    }
-   str::sort(result);
+   std::ranges::sort(result);
    return result;
 }
 
@@ -268,8 +268,8 @@ template <typename TCell> template <typename C> C &CellsNodes<TCell>::getAlEdges
          result.emplace_back(edge);
       }
    }
-   str::sort(result);
-   const auto [first, last] = str::unique(result);
+   std::ranges::sort(result);
+   const auto [first, last] = std::ranges::unique(result);
    result.erase(first, last);
    return result;
 }

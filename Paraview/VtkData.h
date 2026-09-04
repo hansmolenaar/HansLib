@@ -106,8 +106,8 @@ void VtkData::addCell(CellType typ, std::span<const PointIndex> points, const IP
          const auto &pointInCollection = pointCollection.getPoint(p);
          std::array<CoordinateType, N> coordinates;
          // Handle rational
-         str::transform(pointInCollection, coordinates.begin(),
-                        [](T c) { return static_cast<CoordinateType>(1.0 * c); });
+         std::ranges::transform(pointInCollection, coordinates.begin(),
+                                [](T c) { return static_cast<CoordinateType>(1.0 * c); });
          addNode(coordinates);
 
          m_pointToNodeIndex[p] = static_cast<NodeIndex>(m_pointToNodeIndex.size());

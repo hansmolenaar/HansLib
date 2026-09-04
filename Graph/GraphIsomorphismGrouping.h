@@ -19,7 +19,7 @@ template <typename T> class Grouping
       }
 
       m_groups.resize(grouped.size());
-      str::transform(grouped, m_groups.begin(), [](const auto &itr) { return itr.second; });
+      std::ranges::transform(grouped, m_groups.begin(), [](const auto &itr) { return itr.second; });
    }
 
    template <typename C> Grouping(const auto &values, C compare)
@@ -31,7 +31,7 @@ template <typename T> class Grouping
       }
 
       m_groups.resize(grouped.size());
-      str::transform(grouped, m_groups.begin(), [](const auto &itr) { return itr.second; });
+      std::ranges::transform(grouped, m_groups.begin(), [](const auto &itr) { return itr.second; });
    }
 
    const std::vector<std::vector<T>> &operator()() const
@@ -42,8 +42,8 @@ template <typename T> class Grouping
    std::vector<size_t> getGroupSizes() const
    {
       std::vector<size_t> result(m_groups.size());
-      str::transform(m_groups, result.begin(), [](const auto &g) { return g.size(); });
-      str::sort(result);
+      std::ranges::transform(m_groups, result.begin(), [](const auto &g) { return g.size(); });
+      std::ranges::sort(result);
       return result;
    }
 
@@ -62,7 +62,7 @@ template <typename T> class Grouping
 
    size_t countUnique() const
    {
-      return str::count_if(m_groups, [](const auto &itr) { return itr.size() == 1; });
+      return std::ranges::count_if(m_groups, [](const auto &itr) { return itr.size() == 1; });
    }
 
    size_t size() const

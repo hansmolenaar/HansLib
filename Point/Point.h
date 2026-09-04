@@ -33,7 +33,7 @@ template <typename T, size_t N> std::array<T, N> operator-(std::array<T, N> lhs,
 
 template <typename T, size_t N> std::array<T, N> operator*(std::array<T, N> result, T factor)
 {
-   str::transform(result, result.begin(), Functors::TimesScalar{factor});
+   std::ranges::transform(result, result.begin(), Functors::TimesScalar{factor});
    return result;
 }
 
@@ -44,7 +44,7 @@ template <typename T> std::array<T, 3> operator*(const std::array<T, 3> &a, cons
 
 template <typename T, size_t N> std::array<T, N> operator/(std::array<T, N> result, int divisor)
 {
-   str::transform(result, result.begin(), [divisor](T value) { return value / divisor; });
+   std::ranges::transform(result, result.begin(), [divisor](T value) { return value / divisor; });
    return result;
 }
 
@@ -55,7 +55,7 @@ template <typename T, size_t N> std::array<T, N> operator*(T factor, std::array<
 
 template <typename T, size_t N> std::array<T, N> operator-(std::array<T, N> result)
 {
-   str::transform(result, result.begin(), [](T value) { return -value; });
+   std::ranges::transform(result, result.begin(), [](T value) { return -value; });
    return result;
 }
 
@@ -121,7 +121,7 @@ template <typename T, size_t N> T innerProduct(const Point<T, N> &p0, const Poin
 template <size_t N> Point<double, N> toPoint(const Point<Rational, N> &p)
 {
    Point<double, N> result;
-   str::transform(p, result.begin(), [](const Rational &r) { return 1.0 * r; });
+   std::ranges::transform(p, result.begin(), [](const Rational &r) { return 1.0 * r; });
    return result;
 }
 } // namespace PointUtils

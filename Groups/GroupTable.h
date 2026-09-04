@@ -8,8 +8,6 @@
 #include <cmath>
 #include <memory>
 
-namespace str = std::ranges;
-
 class GroupTable : public IFiniteGroup
 {
  public:
@@ -56,7 +54,7 @@ std::unique_ptr<IFiniteGroup> GroupTable::CreateUsingBinaryOperator(const std::v
       for (GroupElement n1 = 0; n1 < order; ++n1)
       {
          const auto composition = binop(elements.at(n0), elements.at(n1));
-         const auto found = str::find(elements, composition);
+         const auto found = std::ranges::find(elements, composition);
          if (found == elements.end())
          {
             throw MyException("CreateUsingBinaryOperator missing permutation!!");
@@ -67,7 +65,7 @@ std::unique_ptr<IFiniteGroup> GroupTable::CreateUsingBinaryOperator(const std::v
       }
    }
 
-   if (str::any_of(table, [](GroupElement g) { return g == GroupElementInvalid; }))
+   if (std::ranges::any_of(table, [](GroupElement g) { return g == GroupElementInvalid; }))
    {
       throw MyException("CreateUsingBinaryOperator incomplete");
    }

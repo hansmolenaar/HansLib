@@ -42,7 +42,7 @@ MultiIndex<PointIndex> TartanGrid<T, N>::CreateMultiIndex(const std::vector<std:
    if (coordinates.size() != N)
       throw MyException("TartanGrid<T, N>::CreateMultiIndex inconsistent dimensions");
    std::vector<PointIndex> dimensions(coordinates.size());
-   str::transform(coordinates, dimensions.begin(), [](const auto &d) { return d.size(); });
+   std::ranges::transform(coordinates, dimensions.begin(), [](const auto &d) { return d.size(); });
    return MultiIndex<PointIndex>::Create(std::move(dimensions));
 }
 
@@ -50,8 +50,8 @@ template <typename T, size_t N>
 MultiIndex<CellIndex> TartanGrid<T, N>::CreateCellIndexer(const MultiIndex<PointIndex> &pointIndexer)
 {
    std::vector<size_t> cellDimensions;
-   str::transform(std::views::iota(0UZ, N), std::back_inserter(cellDimensions),
-                  [&pointIndexer](auto n) { return pointIndexer.at(n) - 1; });
+   std::ranges::transform(std::views::iota(0UZ, N), std::back_inserter(cellDimensions),
+                          [&pointIndexer](auto n) { return pointIndexer.at(n) - 1; });
    return MultiIndex<CellIndex>::Create(std::move(cellDimensions));
 }
 
@@ -59,7 +59,8 @@ template <typename T, size_t N>
 std::unique_ptr<Topology::GridTopology> TartanGrid<T, N>::CreateTopology(const std::vector<std::vector<T>> &coordinates)
 {
    std::vector<int> dimensions(coordinates.size());
-   str::transform(coordinates, dimensions.begin(), [](const auto &d) { return static_cast<int>(d.size() - 1); });
+   std::ranges::transform(coordinates, dimensions.begin(),
+                          [](const auto &d) { return static_cast<int>(d.size() - 1); });
    return std::make_unique<Topology::GridTopology>(dimensions);
 }
 

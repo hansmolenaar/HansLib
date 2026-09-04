@@ -65,7 +65,7 @@ template <size_t N> IndexTree<N>::IndexTree() : m_root(m_factory.getRoot())
 template <size_t N> std::vector<const Index<N> *> IndexTree<N>::getNodesInFixedOrder() const
 {
    std::vector<const Index<N> *> result(m_leaves.begin(), m_leaves.end());
-   str::transform(m_tree, std::back_inserter(result), [](const auto &itr) { return itr.first; });
+   std::ranges::transform(m_tree, std::back_inserter(result), [](const auto &itr) { return itr.first; });
    std::sort(result.begin(), result.end(), IntervalTree::ComparePointer<N>());
    return result;
 }

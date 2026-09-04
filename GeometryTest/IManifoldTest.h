@@ -22,7 +22,7 @@ void IManifoldTestInterface(const IManifold<T, N> &manifold, const IGeometryPred
       auto del = p - pCenter;
       if (predicate.samePoints(p, pCenter))
       {
-         str::generate(del, []() { return T(1); });
+         std::ranges::generate(del, []() { return T(1); });
       }
       const auto point = pCenter + T(2) * del;
       ASSERT_FALSE(manifold.contains(point, predicate));

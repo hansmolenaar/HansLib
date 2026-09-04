@@ -96,7 +96,7 @@ template <size_t N> Index<N>::Index(Key keys, Index1Factory &factory) : m_factor
 
    // Check if all of same level
    const Level level = getLevel();
-   if (!str::all_of(keys, [level, &factory](Index1::Key key) { return factory(key)->getLevel() == level; }))
+   if (!std::ranges::all_of(keys, [level, &factory](Index1::Key key) { return factory(key)->getLevel() == level; }))
    {
       throw MyException("Non-uniform refinement not yet implemented");
    }
@@ -149,7 +149,7 @@ template <size_t N> std::array<typename Index<N>::Key, NumKids<N>> Index<N>::ref
    for (int kid = 0; kid < NumKids<N>; ++kid)
    {
       auto bools = BoolContainerUtils::FromNumber(kid);
-      str::reverse(bools);
+      std::ranges::reverse(bools);
       while (bools.size() < N)
       {
          bools.push_back(false);
@@ -167,7 +167,7 @@ template <size_t N> std::array<typename Index<N>::Key, NumKids<N>> Index<N>::ref
 
 template <size_t N> bool Index<N>::IsRoot(const Index<N>::Key &key)
 {
-   return str::all_of(key, Index1::IsRoot);
+   return std::ranges::all_of(key, Index1::IsRoot);
 }
 
 template <size_t N> bool Index<N>::isRoot() const
@@ -179,14 +179,15 @@ template <size_t N> Index<N>::Key Index<N>::GetParent(const Index<N>::Key &key)
 {
    Utilities::MyAssert(!Index<N>::IsRoot(key));
    Index<N>::Key result;
-   str::transform(key, result.begin(), Index1::GetParentKey);
+   std::ranges::transform(key, result.begin(), Index1::GetParentKey);
    return result;
 }
 
 template <size_t N> Index<N> Index<N>::getParent() const
 {
    std::array<Index1::Key, N> parent;
-   str::transform(m_keys, parent.begin(), [this](Index1::Key key) { return m_factory1.getParent(key)->getKey(); });
+   std::ranges::transform(m_keys, parent.begin(),
+                          [this](Index1::Key key) { return m_factory1.getParent(key)->getKey(); });
    return Index<N>(parent, m_factory1);
 }
 
@@ -204,7 +205,8 @@ template <size_t N> std::optional<typename Index<N>::Key> Index<N>::getAdjacentI
 template <size_t N> std::array<Rational, N> Index<N>::getCenter() const
 {
    std::array<Rational, N> result;
-   str::transform(this->getKey(), result.begin(), [this](Index1::Key key) { return m_factory1(key)->getCenter(); });
+   std::ranges::transform(this->getKey(), result.begin(),
+                          [this](Index1::Key key) { return m_factory1(key)->getCenter(); });
    return result;
 }
 

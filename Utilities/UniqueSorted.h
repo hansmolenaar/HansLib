@@ -13,7 +13,7 @@ template <typename C> void UniqueSorted(std::vector<C> &vec)
    {
       return;
    }
-   str::sort(vec);
+   std::ranges::sort(vec);
    vec.erase(std::unique(vec.begin(), vec.end()), vec.end());
 }
 
