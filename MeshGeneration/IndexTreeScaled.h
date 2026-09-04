@@ -1,7 +1,6 @@
 #pragma once
 
 #include "BoundingBox.h"
-#include "Defines.h"
 #include "Interval.h"
 #include "IntervalTree.h"
 #include "IntervalTreeIndex.h"

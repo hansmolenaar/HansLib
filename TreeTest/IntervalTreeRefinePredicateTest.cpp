@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 
+#include "IntervalTree.h"
 #include "IntervalTreeRefinePredicate.h"
 
 using namespace IntervalTree;

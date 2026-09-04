@@ -1,9 +1,11 @@
 #pragma once
 
-#include "Defines.h"
 #include "MyException.h"
+
+#include <algorithm>
 #include <optional>
 #include <sstream>
+#include <vector>
 
 namespace Utilities
 {

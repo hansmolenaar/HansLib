@@ -1,7 +1,6 @@
 #pragma once
 
 #include "BoundsCheck.h"
-#include "Defines.h"
 #include "IIndexer.h"
 
 #include <boost/container/small_vector.hpp>

@@ -1,12 +1,9 @@
 #pragma once
 
 #include "Defines.h"
-#include "IDynamicUniquePointCollection.h"
 #include "Simplex.h"
-#include "TopologyDefines.h"
 
 #include <boost/container/static_vector.hpp>
-#include <functional>
 
 namespace MeshGeneration
 {

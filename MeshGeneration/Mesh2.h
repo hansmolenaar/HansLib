@@ -1,9 +1,9 @@
 #pragma once
 
+#include "IDynamicUniquePointCollection.h"
 #include "IManifoldReconstruction.h"
 #include "IndexTreeToSimplices2.h"
 #include "ManifoldsAndNodes.h"
-#include "MeshGenerationDefines.h"
 #include "TrianglesNodes.h"
 
 namespace MeshGeneration2

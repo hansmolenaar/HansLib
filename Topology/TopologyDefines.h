@@ -1,8 +1,6 @@
 #pragma once
 #include "Defines.h"
 
-#include <limits>
-
 namespace Topology
 {
 using TopologyDimension = unsigned int;

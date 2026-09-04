@@ -1,6 +1,5 @@
 #pragma once
 #include "Potentials.h"
-#include "SudokuDefines.h"
 
 namespace Sudoku
 {

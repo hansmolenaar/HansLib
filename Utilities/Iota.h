@@ -1,6 +1,8 @@
 #pragma once
 
-#include "Defines.h"
+#include <numeric>
+#include <ranges>
+#include <vector>
 
 namespace Iota
 {

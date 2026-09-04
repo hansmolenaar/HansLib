@@ -1,5 +1,6 @@
 #include "MultiIndex.h"
 
+#include <algorithm>
 namespace str = std::ranges;
 
 template class MultiIndex<int>;

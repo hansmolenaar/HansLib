@@ -2,7 +2,6 @@
 
 #include "CellsNodes.h"
 #include "EdgeNodesSorted.h"
-#include "MeshGenerationDefines.h"
 #include "TetrahedronNodesOriented.h"
 #include "TopologyDefines.h"
 #include "TrianglesNodes.h"
@@ -11,7 +10,6 @@
 #include <boost/container/static_vector.hpp>
 #include <optional>
 #include <string>
-#include <unordered_map>
 #include <vector>
 
 namespace MeshGeneration

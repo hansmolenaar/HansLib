@@ -1,11 +1,11 @@
 #pragma once
 
-#include "Defines.h"
 #include "MyException.h"
-#include <algorithm>
+
 #include <optional>
 #include <sstream>
 #include <unordered_map>
+#include <vector>
 
 namespace Utilities
 {

@@ -2,7 +2,6 @@
 
 #include "Defines.h"
 #include "Functors.h"
-#include "MyAssert.h"
 #include "Rational.h"
 
 #include <ostream>

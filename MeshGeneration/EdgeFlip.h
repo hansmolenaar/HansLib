@@ -2,9 +2,8 @@
 
 #include "EdgeNodesSorted.h"
 #include "IManifoldReconstruction.h"
+#include "IPointCollection.h"
 #include "MeshGenerationDefines.h"
-
-#include <memory>
 
 namespace MeshGeneration
 {

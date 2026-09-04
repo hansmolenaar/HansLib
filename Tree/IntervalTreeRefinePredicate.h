@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Defines.h"
-#include "IntervalTree.h"
 #include "IntervalTreeIndex.h"
 #include "Rational.h"
 

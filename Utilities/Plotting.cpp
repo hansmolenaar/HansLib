@@ -4,6 +4,7 @@
 #include "MultiIndex.h"
 #include "Plotting.h"
 
+#include <algorithm>
 #include <fstream>
 #include <sstream>
 #include <vector>

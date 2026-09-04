@@ -1,13 +1,11 @@
 #pragma once
 
 #include "BoundingBox.h"
-#include "Defines.h"
 #include "IKdTreeTraversor.h"
 #include "KdTreeTraversorPointsInRange.h"
 #include "Point.h"
 
 #include <deque>
-#include <limits>
 #include <memory>
 #include <numeric>
 #include <span>

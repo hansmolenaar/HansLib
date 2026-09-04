@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Defines.h"
 #include "IGeometryPredicate.h"
 #include "UnitVector.h"
 

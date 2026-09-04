@@ -1,6 +1,5 @@
 #pragma once
 
-#include "GraphIsomorphismDefines.h"
 #include "IGraphUs.h"
 
 namespace GraphIsomorphism

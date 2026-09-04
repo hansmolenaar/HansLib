@@ -1,8 +1,6 @@
 #pragma once
 #include "SudokuDefines.h"
 
-#include <bitset>
-
 namespace Sudoku
 {
 class ValueSetUtils

@@ -1,6 +1,5 @@
 #pragma once
 
-#include "IPointCollection.h"
 #include "Point.h"
 #include "TopologyDefines.h"
 

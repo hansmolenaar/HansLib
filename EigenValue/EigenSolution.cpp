@@ -3,6 +3,8 @@
 #include "Iota.h"
 #include "MyAssert.h"
 
+#include <algorithm>
+
 namespace str = std::ranges;
 
 using namespace Utilities;

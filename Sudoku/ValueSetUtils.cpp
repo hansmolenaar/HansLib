@@ -1,8 +1,9 @@
 
 #include "ValueSetUtils.h"
-#include "Defines.h"
 #include "Functors.h"
 #include "MyException.h"
+
+#include <bitset>
 
 using namespace Sudoku;
 

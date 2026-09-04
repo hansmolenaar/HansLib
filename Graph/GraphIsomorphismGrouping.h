@@ -1,6 +1,9 @@
 #pragma once
 
-#include "Defines.h"
+#include <algorithm>
+#include <map>
+#include <numeric>
+#include <vector>
 
 namespace GraphIsomorphism
 {

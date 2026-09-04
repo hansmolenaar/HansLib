@@ -1,10 +1,6 @@
 #pragma once
 #include "Diagram.h"
 #include "Potentials.h"
-#include "SudokuDefines.h"
-
-#include <array>
-#include <span>
 
 namespace Sudoku
 {

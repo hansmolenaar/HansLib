@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Defines.h"
 #include "IManifold0Test.h"
 #include "IManifold1Test.h"
 #include "IRegionManifolds.h"

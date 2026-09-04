@@ -1,8 +1,7 @@
 #pragma once
 
-#include "Defines.h"
-
 #include <algorithm>
+#include <memory>
 #include <vector>
 
 namespace Utilities

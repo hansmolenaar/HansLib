@@ -2,6 +2,7 @@
 
 #include "Defines.h"
 #include "Functors.h"
+#include "MyAssert.h"
 #include "Point.h"
 
 #include <cmath>
