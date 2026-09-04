@@ -1,4 +1,5 @@
 #include "TriangleNodes.h"
+#include "MyException.h"
 #include <gtest/gtest.h>
 
 using namespace Topology;

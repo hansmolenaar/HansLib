@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "MathConstants.h"
+#include "MyException.h"
 #include "PointClose.h"
 #include "UnitVector.h"
 

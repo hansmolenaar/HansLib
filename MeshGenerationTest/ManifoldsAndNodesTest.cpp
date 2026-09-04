@@ -3,6 +3,7 @@
 #include "Manifold0.h"
 #include "ManifoldsAndNodes.h"
 #include "MeshGenerationDefines.h"
+#include "MyException.h"
 #include "Single.h"
 #include "Sphere2AsManifold1.h"
 

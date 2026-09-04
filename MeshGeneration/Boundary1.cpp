@@ -1,4 +1,5 @@
 #include "Boundary1.h"
+#include "MyException.h"
 #include "RenumberContiguous.h"
 #include "UndirectedGraph.h"
 

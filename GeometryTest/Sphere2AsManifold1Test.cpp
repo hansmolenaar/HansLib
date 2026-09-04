@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "IManifold1D2Test.h"
+#include "MyException.h"
 #include "PointClose.h"
 #include "Sphere2AsManifold1.h"
 

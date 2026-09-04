@@ -2,16 +2,12 @@
 
 #include "DirectedEdge2AsManifold1.h"
 #include "IManifold1D2Test.h"
+#include "MyException.h"
 #include "PointClose.h"
 #include "Single.h"
 
 using namespace Geometry;
 using namespace Topology;
-
-namespace
-{
-constexpr double crit = 1.0e-10;
-}
 
 TEST(DirectedEdge2AsManifold1, Constructor)
 {

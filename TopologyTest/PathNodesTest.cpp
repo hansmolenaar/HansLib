@@ -1,4 +1,5 @@
 #include "PathNodes.h"
+#include "MyException.h"
 #include <gtest/gtest.h>
 
 namespace str = std::ranges;

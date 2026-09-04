@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 
+#include "MyException.h"
 #include "PermutationUtils.h"
 
 #include <algorithm>

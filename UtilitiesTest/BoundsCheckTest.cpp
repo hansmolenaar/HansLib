@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "BoundsCheck.h"
+#include "MyException.h"
 
 using namespace Utilities;
 

@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "LocalizationBins.h"
+#include "MyException.h"
 #include <sstream>
 
 TEST(LocalizationBinsTest, SingleBin)

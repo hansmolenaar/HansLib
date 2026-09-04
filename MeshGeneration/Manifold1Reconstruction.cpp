@@ -1,4 +1,5 @@
 #include "Manifold1Reconstruction.h"
+#include "MyException.h"
 
 using namespace MeshGeneration;
 using namespace Topology;

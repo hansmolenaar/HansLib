@@ -1,6 +1,7 @@
 #include "Potential.h"
 #include "Defines.h"
 #include "FieldInfoStatic.h"
+#include "MyException.h"
 using namespace Sudoku;
 
 Potential::Potential()

@@ -2,6 +2,7 @@
 
 #include "Functors.h"
 #include "Interval.h"
+#include "MyException.h"
 #include <sstream>
 
 TEST(IntervalTest, Basic1)

@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 
+#include "MyException.h"
 #include "RenumberContiguous.h"
 
 using namespace Utilities;

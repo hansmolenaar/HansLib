@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "DirectedEdge.h"
+#include "MyException.h"
 #include "PointClose.h"
 
 using namespace Geometry;

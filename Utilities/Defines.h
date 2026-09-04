@@ -11,8 +11,6 @@
 #include <span>
 #include <vector>
 
-#include "MyException.h"
-
 using PointIndex = size_t;
 inline constexpr PointIndex PointIndexInvalid = std::numeric_limits<size_t>::max();
 using CellIndex = size_t;

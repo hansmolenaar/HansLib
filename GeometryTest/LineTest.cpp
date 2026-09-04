@@ -1,9 +1,8 @@
 #include <gtest/gtest.h>
 
 #include "Line.h"
+#include "MyException.h"
 #include "PointClose.h"
-
-#include <optional>
 
 using namespace Geometry;
 

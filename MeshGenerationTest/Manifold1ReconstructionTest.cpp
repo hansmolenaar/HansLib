@@ -3,11 +3,9 @@
 #include "Boundary1.h"
 #include "Manifold1Reconstruction.h"
 #include "ManifoldId.h"
-#include "PointClose.h"
 #include "Single.h"
 #include "TopologyDefines.h"
 #include "TrianglesNodes.h"
-#include "UniquePointCollectionBinning.h"
 
 namespace str = std::ranges;
 
