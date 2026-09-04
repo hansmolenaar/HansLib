@@ -1,6 +1,5 @@
 #include <gtest/gtest.h>
 
-#include "Defines.h"
 #include "GraphDefines.h"
 #include "GraphIsomorphismDefines.h"
 #include "GraphIsomorphismGrouping.h"

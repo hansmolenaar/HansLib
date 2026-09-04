@@ -1,13 +1,7 @@
 #include "MatrixSquare.h"
-#include "Defines.h"
 #include "EigenTools.h"
-#include "Functors.h"
 #include "IMatrixUtils.h"
-#include "Iota.h"
 #include "MyAssert.h"
-
-#include <iostream>
-#include <limits>
 
 namespace str = std::ranges;
 

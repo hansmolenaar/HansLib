@@ -1,7 +1,6 @@
 #include <gtest/gtest.h>
 
 #include "BoundingBox.h"
-#include "Defines.h"
 #include "KdTree.h"
 #include "KdTreeTraversorPointsInRange.h"
 #include "Point.h"

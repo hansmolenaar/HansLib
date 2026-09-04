@@ -1,7 +1,5 @@
 #include "SubGraphConnected.h"
-#include "Defines.h"
 #include "MyAssert.h"
-#include "UndirectedGraph.h"
 
 using namespace Graph;
 using namespace Utilities;

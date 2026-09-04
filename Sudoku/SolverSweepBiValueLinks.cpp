@@ -1,9 +1,12 @@
 #include "SolverSweepBiValueLinks.h"
-#include "Defines.h"
 #include "FieldInfoStatic.h"
 #include "MyAssert.h"
 
-#include "GraphDefines.h"
+#include "boost/graph/adjacency_list.hpp"
+#include <boost/graph/connected_components.hpp>
+#include <boost/graph/sequential_vertex_coloring.hpp>
+
+#include <algorithm>
 #include <iterator>
 #include <unordered_set>
 

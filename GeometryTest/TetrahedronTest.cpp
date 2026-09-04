@@ -10,7 +10,6 @@
 
 #include <algorithm>
 #include <array>
-#include <numbers>
 
 namespace str = std::ranges;
 

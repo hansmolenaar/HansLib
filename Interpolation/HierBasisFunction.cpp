@@ -1,7 +1,6 @@
 #include "HierBasisFunction.h"
 #include "IHierBasisFunction1D.h"
 
-#include "Defines.h"
 #include "MultiIndex.h"
 #include "MyAssert.h"
 

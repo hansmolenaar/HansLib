@@ -1,13 +1,10 @@
 #include "GraphIsomorphismTaggerChains.h"
-#include "Defines.h"
-#include "GraphUsc.h"
-#include "MyAssert.h"
+#include "MyException.h"
 
 namespace str = std::ranges;
 
 using namespace Graph;
 using namespace GraphIsomorphism;
-using namespace Utilities;
 
 namespace
 {

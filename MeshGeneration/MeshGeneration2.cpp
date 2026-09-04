@@ -1,9 +1,7 @@
 #include "MeshGeneration2.h"
 #include "BoundingBox.h"
 #include "Defines.h"
-#include "Functors.h"
 #include "IDynamicUniquePointCollection.h"
-#include "IRefinementPredicate.h"
 #include "IntervalTreeBalance.h"
 #include "Manifold0Reconstruction.h"
 #include "Manifold1Reconstruction.h"
@@ -11,7 +9,6 @@
 #include "MyAssert.h"
 #include "Polygon2D.h"
 #include "StdHash.h"
-#include "Triangle.h"
 #include "UniquePointCollectionBinning.h"
 
 #include <ranges>

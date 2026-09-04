@@ -1,6 +1,5 @@
 #include <gtest/gtest.h>
 
-#include "Defines.h"
 #include "GraphIsomorphismXGraph.h"
 #include "IGraphIsomorphismTransform.h"
 #include "Single.h"

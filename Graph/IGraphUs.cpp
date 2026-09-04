@@ -1,7 +1,4 @@
 #include "IGraphUs.h"
-#include "Defines.h"
-
-#include <functional>
 
 namespace str = std::ranges;
 

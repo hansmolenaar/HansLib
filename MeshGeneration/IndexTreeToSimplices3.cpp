@@ -4,7 +4,6 @@
 #include "IntervalTreeIndex.h"
 #include "PointClose.h"
 #include "ReferenceShapeCube.h"
-#include "ReferenceShapeTetrahedron.h"
 #include "TetrahedronsNodes.h"
 #include "TopologyDefines.h"
 #include "UniquePointCollectionBinning.h"

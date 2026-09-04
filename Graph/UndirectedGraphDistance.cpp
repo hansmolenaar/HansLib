@@ -1,11 +1,7 @@
 #include "UndirectedGraphDistance.h"
-#include "Defines.h"
-#include "MyAssert.h"
-#include "UndirectedGraph.h"
 
 namespace str = std::ranges;
 
-using namespace Utilities;
 using namespace Graph;
 
 namespace

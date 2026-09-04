@@ -1,21 +1,16 @@
 #include <gtest/gtest.h>
 
-#include "Defines.h"
 #include "GraphIsomorphismComparers.h"
 #include "GraphIsomorphismComparersFactory.h"
 #include "GraphIsomorphismGrouping.h"
 #include "GraphIsomorphismICompareTest.h"
 #include "GraphIsomorphismTaggerChains.h"
 #include "GraphIsomorphismTaggerTriangles.h"
-#include "GraphIsomorphismUtils.h"
-#include "Single.h"
 #include "UndirectedGraphFromG6.h"
 #include "UndirectedGraphLibrary.h"
-#include "UniquePointer.h"
 
 using namespace GraphIsomorphism;
 using namespace Graph;
-using namespace Utilities;
 
 TEST(GraphIsomorphismComparersTest, CheckBasics)
 {

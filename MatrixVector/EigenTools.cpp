@@ -1,6 +1,5 @@
 #include "EigenTools.h"
 
-#include "Defines.h"
 #include "Functors.h"
 
 namespace

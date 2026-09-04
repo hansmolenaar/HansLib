@@ -1,5 +1,4 @@
 #include "SparseGridOptimizer.h"
-#include "Defines.h"
 #include "NodeRefinePredicateNever.h"
 
 namespace

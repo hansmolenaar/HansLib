@@ -1,10 +1,8 @@
 #include <gtest/gtest.h>
 
-#include "Defines.h"
 #include "HierBasisFunction.h"
 #include "HierBasisFunction1D_ExtendedLevelOneBC.h"
 #include "HierBasisFunction1D_HomogenousBC.h"
-#include "MyException.h"
 #include "Plotting.h"
 #include "Single.h"
 

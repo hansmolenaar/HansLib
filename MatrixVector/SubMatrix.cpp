@@ -1,6 +1,4 @@
 #include "SubMatrix.h"
-#include "Defines.h"
-#include "Iota.h"
 #include "MyAssert.h"
 
 #include "IMatrixUtils.h"

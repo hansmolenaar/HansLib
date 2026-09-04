@@ -1,5 +1,4 @@
 #include "NodeRefinePredicateFactoryByLevel.h"
-#include "Defines.h"
 #include "HierApproximation.h"
 #include "NodeRefinePredicateAlways.h"
 #include "NodeRefinePredicateNever.h"

@@ -1,9 +1,7 @@
 #include <gtest/gtest.h>
 
-#include "Defines.h"
 #include "Functors.h"
 #include "HierMultiIndex.h"
-#include "MyException.h"
 
 namespace str = std::ranges;
 

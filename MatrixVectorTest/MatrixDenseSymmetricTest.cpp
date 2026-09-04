@@ -1,6 +1,5 @@
 #include <gtest/gtest.h>
 
-#include "Defines.h"
 #include "Functors.h"
 #include "IMatrixTest.h"
 #include "IMatrixUtils.h"
@@ -8,7 +7,6 @@
 #include "MatrixDenseSymmetric.h"
 
 #include <array>
-#include <iostream>
 #include <numbers>
 #include <span>
 

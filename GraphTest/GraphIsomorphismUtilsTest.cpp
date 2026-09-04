@@ -1,9 +1,7 @@
 #include <gtest/gtest.h>
 
-#include "Defines.h"
 #include "GraphIsomorphismTaggerDegree.h"
 #include "GraphIsomorphismUtils.h"
-#include "UndirectedGraphFromG6.h"
 #include "UndirectedGraphLibrary.h"
 
 #include <sstream>

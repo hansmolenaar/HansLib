@@ -1,10 +1,12 @@
 #include <gtest/gtest.h>
 
-#include "Defines.h"
 #include "FieldInfoStatic.h"
-#include "GraphDefines.h"
 #include "SolverSweepBiValueLinks.h"
 #include "TestModels.h"
+
+#include "boost/graph/adjacency_list.hpp"
+#include <boost/graph/connected_components.hpp>
+#include <boost/graph/sequential_vertex_coloring.hpp>
 
 namespace str = std::ranges;
 

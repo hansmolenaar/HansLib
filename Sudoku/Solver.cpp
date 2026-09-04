@@ -1,7 +1,4 @@
 #include "Solver.h"
-#include "Defines.h"
-#include "FieldInfoStatic.h"
-#include "Potential.h"
 #include "SolverSweep.h"
 
 using namespace Sudoku;

@@ -1,5 +1,4 @@
 #include "InitialBoundingboxGenerator.h"
-#include "Defines.h"
 #include "MyException.h"
 
 namespace str = std::ranges;

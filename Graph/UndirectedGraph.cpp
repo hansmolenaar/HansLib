@@ -1,5 +1,4 @@
 #include "UndirectedGraph.h"
-#include "Defines.h"
 #include "MyAssert.h"
 
 #include <sstream>

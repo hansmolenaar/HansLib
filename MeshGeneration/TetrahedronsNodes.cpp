@@ -1,7 +1,6 @@
 #include "TetrahedronsNodes.h"
 #include "Defines.h"
 #include "MyException.h"
-#include <limits>
 #include <set>
 
 using namespace MeshGeneration;

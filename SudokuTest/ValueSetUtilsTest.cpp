@@ -1,6 +1,5 @@
 #include <gtest/gtest.h>
 
-#include "Defines.h"
 #include "MyException.h"
 #include "ValueSetUtils.h"
 

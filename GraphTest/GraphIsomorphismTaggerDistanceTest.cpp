@@ -1,6 +1,5 @@
 #include <gtest/gtest.h>
 
-#include "Defines.h"
 #include "GraphIsomorphismICompareTest.h"
 #include "GraphIsomorphismTaggerDistance.h"
 #include "GraphIsomorphismVertexComparers.h"

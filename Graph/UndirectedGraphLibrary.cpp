@@ -1,9 +1,6 @@
 #include "UndirectedGraphLibrary.h"
-#include "Defines.h"
 #include "MyAssert.h"
 #include "UndirectedGraphFromG6.h"
-
-#include <numeric>
 
 namespace str = std::ranges;
 

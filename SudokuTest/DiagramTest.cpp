@@ -1,11 +1,8 @@
 #include <gtest/gtest.h>
 
-#include "Defines.h"
 #include "Diagram.h"
 #include "FieldInfoStatic.h"
 #include "MyException.h"
-#include "Potential.h"
-#include "Solver.h"
 #include "SolverSweep.h"
 #include "TestModels.h"
 

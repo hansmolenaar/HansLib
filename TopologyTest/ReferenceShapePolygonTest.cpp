@@ -1,6 +1,4 @@
 #include "ReferenceShapePolygon.h"
-#include "Defines.h"
-#include "MyException.h"
 #include "TestIReferenceShape.h"
 #include <gtest/gtest.h>
 

@@ -1,6 +1,5 @@
 #include <gtest/gtest.h>
 
-#include "Defines.h"
 #include "GraphIsomorphismTaggerKnown.h"
 #include "IGraphUs.h"
 #include "Single.h"

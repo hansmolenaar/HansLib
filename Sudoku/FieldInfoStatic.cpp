@@ -1,5 +1,4 @@
 #include "FieldInfoStatic.h"
-#include "Defines.h"
 #include "MyException.h"
 #include "SudokuDefines.h"
 #include <algorithm>

@@ -1,6 +1,5 @@
 #include <gtest/gtest.h>
 
-#include "Defines.h"
 #include "GraphIsomorphismICompareTest.h"
 #include "GraphIsomorphismTaggerShortestCycle.h"
 #include "UndirectedGraphFromG6.h"

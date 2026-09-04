@@ -1,5 +1,4 @@
 #include "EdgeNodesSorted.h"
-#include "Defines.h"
 #include <algorithm>
 #include <gtest/gtest.h>
 

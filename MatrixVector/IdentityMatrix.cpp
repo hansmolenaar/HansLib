@@ -1,6 +1,5 @@
 #include "IdentityMatrix.h"
 
-#include "Defines.h"
 #include "IMatrixUtils.h"
 #include "MyAssert.h"
 

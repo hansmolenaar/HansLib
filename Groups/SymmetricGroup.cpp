@@ -1,5 +1,4 @@
 #include "SymmetricGroup.h"
-#include "Defines.h"
 #include "GroupTable.h"
 
 namespace str = std::ranges;

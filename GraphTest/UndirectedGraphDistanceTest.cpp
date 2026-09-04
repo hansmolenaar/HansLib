@@ -1,6 +1,5 @@
 #include <gtest/gtest.h>
 
-#include "Defines.h"
 #include "Single.h"
 #include "UndirectedGraphDistance.h"
 #include "UndirectedGraphLibrary.h"

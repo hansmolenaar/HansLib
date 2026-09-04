@@ -1,5 +1,4 @@
 #include "IHierBasisFunction.h"
-#include "Defines.h"
 #include "IHierBasisFunction1D.h"
 #include "MyAssert.h"
 

@@ -1,8 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "Defines.h"
 #include "GraphIsomorphismICompareTest.h"
-#include "GraphIsomorphismStatus.h"
 #include "GraphIsomorphismTaggerKnown.h"
 #include "UndirectedGraphFromG6.h"
 #include "UndirectedGraphLibrary.h"

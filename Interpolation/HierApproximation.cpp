@@ -1,6 +1,4 @@
 #include "HierApproximation.h"
-#include "Defines.h"
-#include "Functors.h"
 #include "Logger.h"
 
 namespace str = std::ranges;

@@ -1,13 +1,8 @@
 #include "Diagram.h"
-#include "Defines.h"
 #include "FieldInfoStatic.h"
-#include "Functors.h"
-#include "MyException.h"
-#include "Potential.h"
 #include "ValueSetUtils.h"
 #include <algorithm>
 #include <sstream>
-#include <unordered_set>
 
 namespace str = std::ranges;
 

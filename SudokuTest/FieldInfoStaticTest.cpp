@@ -1,6 +1,5 @@
 #include <gtest/gtest.h>
 
-#include "Defines.h"
 #include "FieldInfoStatic.h"
 #include "MyException.h"
 #include <unordered_set>

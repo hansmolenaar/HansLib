@@ -1,5 +1,4 @@
 #include "TetrahedronNodesOriented.h"
-#include "Defines.h"
 #include "FirstDuplicate.h"
 #include "ITopologicalAdjacency.h"
 #include "ReferenceShapeTetrahedron.h"

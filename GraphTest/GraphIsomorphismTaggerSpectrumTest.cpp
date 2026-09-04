@@ -1,14 +1,10 @@
 #include <gtest/gtest.h>
 
-#include "Defines.h"
 #include "Functors.h"
 #include "GraphIsomorphismICompareTest.h"
 #include "GraphIsomorphismTaggerSpectrum.h"
 #include "UndirectedGraphFromG6.h"
 #include "UndirectedGraphLibrary.h"
-#include "UndirectedGraphSpectrum.h"
-
-#include <iostream>
 
 namespace str = std::ranges;
 

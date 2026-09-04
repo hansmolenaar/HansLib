@@ -1,5 +1,4 @@
 #include "ReferenceShapeCube.h"
-#include "MyException.h"
 #include "TopologicalAdjacencies.h"
 #include "TopologicalAdjacency.h"
 #include "TopologyDefines.h"

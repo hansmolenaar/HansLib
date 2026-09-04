@@ -1,5 +1,4 @@
 #include "SolverSweep.h"
-#include "FieldInfoStatic.h"
 #include "SubSetPotentialsSweep.h"
 #include "SudokuDefines.h"
 
