@@ -1,7 +1,7 @@
 #include "AnnWeightsNoBias.h"
-#include "Defines.h"
 #include "MyAssert.h"
 
+#include <algorithm>
 #include <numeric>
 
 namespace str = std::ranges;

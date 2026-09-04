@@ -1,10 +1,11 @@
 #include "EdgeFlip.h"
-#include "Functors.h"
 #include "Manifold1Reconstruction.h"
 #include "Triangle.h"
 #include "TrianglesNodes.h"
 
+#include <algorithm>
 #include <queue>
+#include <ranges>
 
 namespace str = std::ranges;
 namespace stv = std::views;

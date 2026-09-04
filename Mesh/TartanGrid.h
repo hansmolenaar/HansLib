@@ -5,6 +5,7 @@
 #include "MultiIndex.h"
 #include "MyException.h"
 
+#include <ranges>
 #include <span>
 
 template <typename T, size_t N> class TartanGrid : public IMesh<T, N>, IPointCollection<T, N>

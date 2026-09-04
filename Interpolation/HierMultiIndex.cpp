@@ -1,8 +1,9 @@
 #include "HierMultiIndex.h"
-#include "Defines.h"
 #include "MyAssert.h"
 
+#include <algorithm>
 #include <numeric>
+#include <ranges>
 
 namespace str = std::ranges;
 namespace stv = std::views;

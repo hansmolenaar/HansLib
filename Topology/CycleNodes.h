@@ -1,6 +1,10 @@
 #pragma once
 #include "EdgeNodesDirected.h"
 #include "StreamUtils.h"
+#include "TopologyDefines.h"
+
+#include <span>
+#include <vector>
 
 namespace Topology
 {

@@ -1,11 +1,8 @@
 #include <gtest/gtest.h>
 
-#include "Defines.h"
-#include "FieldInfoStatic.h"
-#include "SolverSweep.h"
 #include "SubSetPotentialsSweep.h"
 
-#include <unordered_map>
+#include <algorithm>
 
 namespace str = std::ranges;
 

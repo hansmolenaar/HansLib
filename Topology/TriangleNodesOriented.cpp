@@ -2,6 +2,8 @@
 
 #include "MyException.h"
 
+#include <algorithm>
+
 namespace str = std::ranges;
 
 using namespace Topology;

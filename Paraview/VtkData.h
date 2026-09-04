@@ -3,10 +3,6 @@
 #include "IPointCollection.h"
 
 #include <array>
-#include <filesystem>
-#include <fstream>
-#include <map>
-#include <ostream>
 #include <span>
 #include <string>
 #include <unordered_map>

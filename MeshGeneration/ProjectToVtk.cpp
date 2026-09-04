@@ -8,6 +8,9 @@
 #include "TetrahedronsNodes.h"
 #include "TrianglesNodes.h"
 
+#include <algorithm>
+#include <ranges>
+
 namespace str = std::ranges;
 namespace stv = std::views;
 

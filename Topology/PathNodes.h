@@ -2,6 +2,9 @@
 #include "EdgeNodesDirected.h"
 #include "StreamUtils.h"
 
+#include <span>
+#include <vector>
+
 namespace Topology
 {
 class PathNodes

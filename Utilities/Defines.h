@@ -1,14 +1,7 @@
 #pragma once
 
-#include <algorithm>
 #include <cmath>
 #include <limits>
-#include <map>
-#include <memory>
-#include <numeric>
-#include <ranges>
-#include <span>
-#include <vector>
 
 using PointIndex = size_t;
 inline constexpr PointIndex PointIndexInvalid = std::numeric_limits<size_t>::max();

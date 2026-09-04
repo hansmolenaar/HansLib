@@ -1,11 +1,10 @@
 #include <gtest/gtest.h>
 
-#include "Defines.h"
 #include "MatrixDense.h"
 #include "MatrixSquare.h"
 #include "SubMatrix.h"
 
-#include <numeric>
+#include <ranges>
 
 namespace str = std::ranges;
 

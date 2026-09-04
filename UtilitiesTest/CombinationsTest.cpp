@@ -1,8 +1,8 @@
 #include <gtest/gtest.h>
 
 #include "Combinations.h"
-#include "Defines.h"
 
+#include <algorithm>
 #include <set>
 
 namespace str = std::ranges;

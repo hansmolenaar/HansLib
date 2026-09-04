@@ -3,9 +3,11 @@
 #include "MyException.h"
 #include "TopologyDefines.h"
 
+#include <algorithm>
 #include <optional>
 #include <span>
 #include <unordered_map>
+#include <vector>
 
 namespace MeshGeneration
 {

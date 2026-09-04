@@ -3,6 +3,8 @@
 #include "IntervalTreeIndex.h"
 #include "Rational.h"
 
+#include <ranges>
+
 namespace IntervalTree
 {
 

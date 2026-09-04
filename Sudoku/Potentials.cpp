@@ -1,6 +1,8 @@
 #include "Potentials.h"
-#include "Defines.h"
 #include "FieldInfoStatic.h"
+
+#include <algorithm>
+#include <numeric>
 
 namespace str = std::ranges;
 

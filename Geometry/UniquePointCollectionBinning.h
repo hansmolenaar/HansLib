@@ -5,6 +5,7 @@
 #include "IGeometryPredicate.h"
 #include "LocalizationBins.h"
 
+#include <map>
 #include <unordered_map>
 
 template <size_t N> class UniquePointCollectionBinning : public IDynamicUniquePointCollection<double, N>

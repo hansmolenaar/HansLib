@@ -1,11 +1,12 @@
 #include "IAnnModelUtils.h"
 
 #include "AnnArray.h"
-#include "Defines.h"
 #include "FeedForwardResult.h"
 #include "IAnnDataSet.h"
 #include "MyAssert.h"
 #include "ParameterSet.h"
+
+#include <algorithm>
 
 namespace str = std::ranges;
 
@@ -121,7 +122,6 @@ void ML::IAnnModelUtils::setParameterDerivatives(const ML::IAnnModel &model,
    Utilities::MyAssert(parameters.getNumLayers() == dimensions.size());
    Utilities::MyAssert(parameterDerivs.getNumLayers() == dimensions.size());
 
-   const auto layers = model.getLayers();
    ML::AnnArray neuronError(dimensions);
    std::vector<double> activationDerivWork(maxDim);
 

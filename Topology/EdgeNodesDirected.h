@@ -1,6 +1,8 @@
 #pragma once
 #include "StreamUtils.h"
 #include "TopologyDefines.h"
+
+#include <array>
 #include <ostream>
 
 namespace Topology

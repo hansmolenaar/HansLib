@@ -6,6 +6,8 @@
 #include "TopologicalAdjacencies.h"
 #include "TopologicalAdjacency.h"
 
+#include <algorithm>
+
 namespace str = std::ranges;
 
 using namespace Topology;
@@ -19,7 +21,7 @@ GridTopology::GridTopology(const std::vector<int> &cellDimensions)
    const auto cellIndexer = MultiIndex<int>::Create(std::vector<int>(cellDimensions));
    const auto numCells = cellIndexer.getFlatSize();
    std::vector<int> crnrDimension(cellDimensions);
-   std::ranges::transform(crnrDimension, crnrDimension.begin(), [](const auto &d) { return d + 1; });
+   str::transform(crnrDimension, crnrDimension.begin(), [](const auto &d) { return d + 1; });
    const auto cornerIndexer = MultiIndex<int>::Create(std::vector<int>(crnrDimension));
    const auto numCorners = cornerIndexer.getFlatSize();
    std::map<int, std::vector<int>> cellToCorner;
