@@ -1,10 +1,14 @@
 #pragma once
 
-#include "Defines.h"
 #include "IFiniteGroup.h"
 #include "IIndexer.h"
 #include "IndexerRowMajor.h"
-#include "Permutation.h"
+
+#include <algorithm>
+#include <cmath>
+#include <memory>
+
+namespace str = std::ranges;
 
 class GroupTable : public IFiniteGroup
 {

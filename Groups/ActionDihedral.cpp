@@ -1,4 +1,5 @@
 #include "ActionDihedral.h"
+#include "DihedralGroup.h"
 #include "Hyperplane.h"
 #include "Rotate2D.h"
 #include "UnitVector.h"

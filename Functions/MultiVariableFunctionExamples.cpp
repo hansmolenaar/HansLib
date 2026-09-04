@@ -1,10 +1,10 @@
 #include "MultiVariableFunctionExamples.h"
 #include "BoundsCheck.h"
-#include "Defines.h"
 #include "MultiVariablePolynomial.h"
 #include "MultiVariableRealValuedFunctionNoDerivatives.h"
 #include "SingleVariableFunctionExamples.h"
-#include <numeric>
+
+namespace str = std::ranges;
 
 namespace
 {
@@ -14,7 +14,7 @@ class SkewedHatSquaredEval : public IMultiVariableFunctionEvaluate
    SkewedHatSquaredEval(const std::vector<double> &pos);
 
    int getDimension() const override;
-   double operator()(std::span<const double> x) const;
+   double operator()(std::span<const double> x) const override;
 
  private:
    std::vector<std::shared_ptr<ISingleVariableRealValuedFunction>> m_hats;
@@ -52,7 +52,7 @@ class ProductEval : public IMultiVariableFunctionEvaluate
    ProductEval(std::vector<std::shared_ptr<ISingleVariableRealValuedFunction>> &functions1D);
 
    int getDimension() const override;
-   double operator()(std::span<const double> x) const;
+   double operator()(std::span<const double> x) const override;
 
  private:
    std::vector<std::shared_ptr<ISingleVariableRealValuedFunction>> m_functions;
@@ -92,7 +92,7 @@ class SumOfSqauresEval : public IMultiVariableFunctionEvaluate
    SumOfSqauresEval(std::vector<std::shared_ptr<ISingleVariableRealValuedFunction>> &functions1D);
 
    int getDimension() const override;
-   double operator()(std::span<const double> x) const;
+   double operator()(std::span<const double> x) const override;
 
  private:
    std::vector<std::shared_ptr<ISingleVariableRealValuedFunction>> m_functions;

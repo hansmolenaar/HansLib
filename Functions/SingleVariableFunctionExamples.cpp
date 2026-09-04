@@ -2,7 +2,6 @@
 #include "BoundsCheck.h"
 #include "Interval.h"
 #include "SingleVariableFunctionOnIntervals.h"
-#include "SingleVariablePolynomial.h"
 #include "SingleVariableRealValuedFunction.h"
 
 std::shared_ptr<ISingleVariableRealValuedFunction> SingleVariableFunctionExamples::GetRungeFunction()

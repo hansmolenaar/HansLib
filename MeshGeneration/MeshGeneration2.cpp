@@ -14,6 +14,8 @@
 
 #include <set>
 
+namespace stv = std::views;
+
 using namespace Geometry;
 using namespace IntervalTree;
 using namespace MeshGeneration;

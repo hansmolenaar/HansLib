@@ -5,8 +5,6 @@
 #include "IndexerRowMajor.h"
 #include "PermutationUtils.h"
 
-#include <typeinfo>
-
 TEST(GroupTableTest, Trivial)
 {
    std::unique_ptr<IIndexer<GroupElement>> indexer = std::make_unique<IndexerRowMajor<GroupElement>>(1, 1);

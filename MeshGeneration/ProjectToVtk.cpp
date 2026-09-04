@@ -8,6 +8,8 @@
 #include "TetrahedronsNodes.h"
 #include "TrianglesNodes.h"
 
+namespace stv = std::views;
+
 using namespace MeshGeneration;
 using namespace Topology;
 

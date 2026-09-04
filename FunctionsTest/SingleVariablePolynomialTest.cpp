@@ -1,7 +1,5 @@
 #include <gtest/gtest.h>
 
-#include "ISingleVariableRealValuedFunction.h"
-#include "ISingleVariableRealValuedFunctionUtils.h"
 #include "RealFunctionCheckDerivative.h"
 #include "SingleVariablePolynomial.h"
 

@@ -1,24 +1,18 @@
 #include "EigenValueSolverSym3x3.h"
 
-#include "Defines.h"
-#include "IMatrixKelvinReprUtils.h"
-#include "IMatrixSquareUtils.h"
-#include "IMatrixSymmetric.h"
 #include "IMatrixUtils.h"
 #include "IRealFunctionUtils.h"
 #include "MathConstants.h"
 #include "MatrixDense.h"
 #include "MatrixKelvinRepr3.h"
-#include "MultiVariableMultiplicativeInverseFunction.h"
 #include "MultiVariableProductFunction.h"
-#include "MultiVariableRealValuedFunction.h"
-#include "MultiVariableVectorComponentFunction.h"
 #include "MultiVariableVectorValuedFunction.h"
 #include "MyAssert.h"
 
 #include <algorithm>
 #include <cmath>
-#include <numeric>
+
+namespace str = std::ranges;
 
 namespace
 {

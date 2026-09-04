@@ -1,14 +1,8 @@
 #include "IRealFunctionUtils.h"
-#include "IMatrixUtils.h"
 #include "IRealFunction.h"
-#include "ISingleVariableRealValuedFunctionUtils.h"
 #include "MatrixDense.h"
-#include "MultiVariableRealValuedFunction.h"
 #include "MyAssert.h"
 #include "RealFunctionAdd.h"
-#include "SingleVariableRealValuedFunction.h"
-
-#include <vector>
 
 int GetDimension(const IRealFunction &fie)
 {

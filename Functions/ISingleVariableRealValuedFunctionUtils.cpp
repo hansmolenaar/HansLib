@@ -1,15 +1,9 @@
 #include "ISingleVariableRealValuedFunctionUtils.h"
 #include "ISingleVariableRealValuedFunction.h"
-// #include "NonLinearSolverStrategyResidualReduction.h"
-// #include "NonLinearSolver.h"
 #include "MyAssert.h"
-#include "MyException.h"
 #include "Plotting.h"
 
-#include <array>
-#include <filesystem>
 #include <fstream>
-#include <sstream>
 #include <string>
 
 double ISingleVariableRealValuedFunctionUtils::Evaluate(ISingleVariableRealValuedFunction &fie, double x)

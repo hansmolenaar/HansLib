@@ -18,12 +18,12 @@ inline std::vector<int> GenerateIntVector(size_t siz, int from = 0)
 
 template <typename T> inline auto GetRange(T siz)
 {
-   return stv::iota(T{0}, siz);
+   return std::views::iota(T{0}, siz);
 }
 
 template <typename T> inline auto GetRangeFromTo(T lbInclusive, T ubExclusive)
 {
-   return stv::iota(lbInclusive, std::max(lbInclusive, ubExclusive));
+   return std::views::iota(lbInclusive, std::max(lbInclusive, ubExclusive));
 }
 
 } // namespace Iota

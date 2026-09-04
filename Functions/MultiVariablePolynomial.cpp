@@ -1,13 +1,9 @@
 #include "MultiVariablePolynomial.h"
 
-#include "IMatrix.h"
-#include "IMatrixUtils.h"
 #include "IRealFunctionUtils.h"
 #include "MyAssert.h"
 
 #include <algorithm>
-#include <numeric>
-#include <ranges>
 
 MultiVariablePolynomial::MultiVariablePolynomial(int dim) : m_dim(dim)
 {

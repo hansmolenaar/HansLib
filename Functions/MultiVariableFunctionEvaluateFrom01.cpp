@@ -1,6 +1,9 @@
 #include "MultiVariableFunctionEvaluateFrom01.h"
-#include "Defines.h"
 #include "MyException.h"
+
+#include <algorithm>
+
+namespace str = std::ranges;
 
 namespace
 {

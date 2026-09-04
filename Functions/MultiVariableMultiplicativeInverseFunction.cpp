@@ -1,8 +1,6 @@
 #include "MultiVariableMultiplicativeInverseFunction.h"
 #include "MyAssert.h"
 
-#include <algorithm>
-
 MultiVariableMultiplicativeInverseFunction::MultiVariableMultiplicativeInverseFunction(
     const IMultiVariableRealValuedFunction &fie)
     : m_function(fie)

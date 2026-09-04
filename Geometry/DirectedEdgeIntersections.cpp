@@ -1,5 +1,4 @@
 #include "DirectedEdgeIntersections.h"
-#include "DirectedEdge.h"
 
 namespace Geometry
 {

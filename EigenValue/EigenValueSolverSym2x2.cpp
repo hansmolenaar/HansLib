@@ -3,9 +3,7 @@
 #include "MatrixKelvinRepr2.h"
 #include "MyAssert.h"
 
-#include <algorithm>
 #include <cmath>
-#include <numeric>
 
 int EigenValueSolverSym2x2Utils::Det::GetDomainDimension() const
 {

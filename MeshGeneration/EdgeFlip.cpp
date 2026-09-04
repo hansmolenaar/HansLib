@@ -6,6 +6,8 @@
 
 #include <queue>
 
+namespace stv = std::views;
+
 using namespace Geometry;
 using namespace MeshGeneration;
 using namespace Topology;

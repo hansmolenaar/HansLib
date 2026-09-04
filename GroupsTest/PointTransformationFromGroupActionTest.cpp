@@ -1,7 +1,6 @@
 #include <gtest/gtest.h>
 
 #include "ActionRotate2D.h"
-#include "CyclicGroup.h"
 #include "PointClose.h"
 #include "PointTransformationFromGroupAction.h"
 

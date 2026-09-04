@@ -1,6 +1,5 @@
 #include <gtest/gtest.h>
 
-// #include "GroupFromOrbit.h"
 #include "ActionDihedral.h"
 #include "CyclicGroup.h"
 #include "DihedralGroup.h"

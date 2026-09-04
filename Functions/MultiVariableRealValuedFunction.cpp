@@ -1,8 +1,5 @@
 #include "MultiVariableRealValuedFunction.h"
-#include "IMatrix.h"
-#include "IMatrixUtils.h"
 #include "IRealFunctionUtils.h"
-#include "MatrixDense.h"
 #include "MyAssert.h"
 
 MultiVariableRealValuedFunction::MultiVariableRealValuedFunction(

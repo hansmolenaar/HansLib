@@ -1,5 +1,4 @@
 #include "Ball2AsRegion.h"
-#include "MyException.h"
 
 namespace Geometry
 {

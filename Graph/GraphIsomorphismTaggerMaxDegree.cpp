@@ -1,6 +1,8 @@
 #include "GraphIsomorphismTaggerMaxDegree.h"
 #include "GraphIsomorphismTagFlyweight.h"
 
+namespace stv = std::views;
+
 using namespace Graph;
 using namespace GraphIsomorphism;
 

@@ -1,7 +1,6 @@
 #include "MultiVariableVectorValuedFunction.h"
 
 #include "IRealFunctionUtils.h"
-#include "MatrixSquare.h"
 #include "MyAssert.h"
 
 MultiVariableVectorValuedFunction::MultiVariableVectorValuedFunction(

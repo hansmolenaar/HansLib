@@ -1,8 +1,9 @@
 #include "LocalizationBins.h"
 #include "ArrayStatistics.h"
-#include "Defines.h"
 #include "MyException.h"
 #include <iostream>
+
+namespace str = std::ranges;
 
 namespace
 {

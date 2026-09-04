@@ -1,8 +1,9 @@
 #pragma once
 
-#include "Defines.h"
 #include "IFiniteGroup.h"
 #include "Permutation.h"
+
+#include <memory>
 
 //                   6 ------ 7
 //                  /        /

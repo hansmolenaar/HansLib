@@ -21,7 +21,8 @@ template <size_t N> struct RefineIfContainsPoint
 {
    bool operator()(const Index<N> &indx) const
    {
-      return str::all_of(stv::iota(0UZ, N), [this, &indx](int n) { return indx.getInterval(n).contains(Point[n]); });
+      return str::all_of(std::views::iota(0UZ, N),
+                         [this, &indx](int n) { return indx.getInterval(n).contains(Point[n]); });
    };
    std::array<Rational, N> Point;
 };

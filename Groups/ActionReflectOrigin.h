@@ -1,7 +1,6 @@
 #pragma once
 
 #include "DihedralGroup.h"
-#include "Hyperplane.h"
 #include "IFinitePointGroupAction.h"
 #include "PointReflection.h"
 

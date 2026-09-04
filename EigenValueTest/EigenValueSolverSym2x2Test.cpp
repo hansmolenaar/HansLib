@@ -1,11 +1,11 @@
 #include <gtest/gtest.h>
 
-#include "Defines.h"
 #include "EigenValueSolverSym2x2.h"
-#include "IRealFunctionUtils.h"
 #include "MatrixKelvinRepr2.h"
 #include "MyAssert.h"
 #include "RealFunctionCheckDerivative.h"
+
+namespace str = std::ranges;
 
 namespace
 {

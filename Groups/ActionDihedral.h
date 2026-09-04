@@ -1,6 +1,5 @@
 #pragma once
 
-#include "DihedralGroup.h"
 #include "IFinitePointGroupAction.h"
 #include "IPointTransformation.h"
 

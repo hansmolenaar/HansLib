@@ -4,6 +4,8 @@
 
 #include <numeric>
 
+namespace stv = std::views;
+
 HierMultiIndex::HierMultiIndex(std::vector<HierLevelIndex> &&levelsIndices) : m_levelsIndices(std::move(levelsIndices))
 {
    Utilities::MyAssert(!m_levelsIndices.empty());

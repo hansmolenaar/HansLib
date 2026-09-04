@@ -1,6 +1,5 @@
 #include "EigenSolution.h"
 
-#include "Defines.h"
 #include "Iota.h"
 #include "MyAssert.h"
 
