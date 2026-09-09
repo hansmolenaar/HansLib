@@ -2,7 +2,6 @@
 
 #include "IntervalTree.h"
 #include "ReferenceShapePolygon.h"
-#include "VtkData.h"
 
 #include <array>
 #include <vector>

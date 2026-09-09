@@ -5,8 +5,6 @@
 #include "IUniquePointCollection.h"
 #include "MeshGenerationDefines.h"
 
-#include <memory>
-
 class Logger;
 
 namespace MeshGeneration

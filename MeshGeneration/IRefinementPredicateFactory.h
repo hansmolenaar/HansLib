@@ -2,6 +2,7 @@
 
 #include "IGeometryRegion.h"
 #include "IInitialBoundingboxGenerator.h"
+#include "IRefinementPredicate.h"
 
 template <size_t N> class IRefinementPredicateFactory
 {

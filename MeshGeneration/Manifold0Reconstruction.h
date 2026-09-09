@@ -1,7 +1,6 @@
 #pragma once
 
 #include "IManifoldReconstruction.h"
-#include "MeshGenerationDefines.h"
 #include "TrianglesNodes.h"
 
 namespace MeshGeneration
