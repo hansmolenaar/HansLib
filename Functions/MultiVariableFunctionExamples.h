@@ -5,7 +5,7 @@
 #include "ISingleVariableRealValuedFunction.h"
 #include "Interval.h"
 #include "MultiVariableRealValuedFunctionEvaluateCached.h"
-#include <functional>
+
 #include <limits>
 #include <memory>
 #include <vector>

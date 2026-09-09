@@ -1,9 +1,7 @@
 #pragma once
 
 #include <array>
-#include <compare>
 #include <ostream>
-#include <string>
 
 class HierLevelIndex
 {

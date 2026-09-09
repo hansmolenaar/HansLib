@@ -4,7 +4,6 @@
 #include "StreamUtils.h"
 
 #include <array>
-#include <functional>
 #include <vector>
 
 class HierMultiIndex

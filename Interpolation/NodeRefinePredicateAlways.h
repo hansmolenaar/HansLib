@@ -1,6 +1,7 @@
 #pragma once
 
 #include "INodeRefinePredicate.h"
+#include "INodeRefinePredicateFactory.h"
 
 class NodeRefinePredicateAlways : public INodeRefinePredicate
 {

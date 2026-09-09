@@ -2,6 +2,7 @@
 
 #include "IMultiVariableRealValuedFunction.h"
 #include "SingleVariableMonomial.h"
+
 #include <initializer_list>
 #include <vector>
 

@@ -1,8 +1,6 @@
 #pragma once
 
-#include "IFinitePointGroupAction.h"
 #include "IMatrixSquare.h"
-#include "MatrixDense.h"
 
 class IMatrixKelvinRepr;
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "IManifold0.h"
+#include "IManifold.h"
 
 namespace Geometry
 {

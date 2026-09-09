@@ -1,6 +1,7 @@
 #pragma once
 
 #include "IMatrix.h"
+
 #include <array>
 
 class SubMatrix : public IMatrix

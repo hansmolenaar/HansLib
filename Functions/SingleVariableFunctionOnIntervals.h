@@ -1,6 +1,9 @@
 #pragma once
+
 #include "SingleVariableFunctionOnInterval.h"
+
 #include <memory>
+#include <vector>
 
 class SingleVariableFunctionOnIntervals : public ISingleVariableRealValuedFunction
 {

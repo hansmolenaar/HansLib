@@ -1,9 +1,11 @@
 #pragma once
+
 #include "HierLevelIndex.h"
 #include "ISingleVariableRealValuedFunction.h"
 #include "Interval.h"
 #include "MyException.h"
-#include <cstddef>
+
+#include <vector>
 
 class IHierBasisFunction1D : public ISingleVariableRealValuedFunction
 {

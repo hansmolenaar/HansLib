@@ -1,7 +1,6 @@
 #pragma once
 
 #include "BoundingBox.h"
-#include "IGeometryPredicate.h"
 
 namespace Geometry
 {

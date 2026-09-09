@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "Paraview.h"
+#include "MeshGenerationDefines.h"
 #include "PointClose.h"
 #include "ProjectToVtk.h"
 #include "Tetrahedron.h"

@@ -1,6 +1,7 @@
 #include "SingleVariableFunctionExamples.h"
 #include "BoundsCheck.h"
 #include "Interval.h"
+#include "SingleVariableFunctionOnInterval.h"
 #include "SingleVariableFunctionOnIntervals.h"
 #include "SingleVariableRealValuedFunction.h"
 

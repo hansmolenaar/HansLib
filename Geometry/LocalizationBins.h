@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Interval.h"
+
 #include <ostream>
-#include <span>
 #include <vector>
 
 class LocalizationBins

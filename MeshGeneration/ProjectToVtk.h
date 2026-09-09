@@ -1,6 +1,5 @@
 #pragma once
 
-#include "EdgeNodesSorted.h"
 #include "IManifoldReconstruction.h"
 #include "VtkData.h"
 

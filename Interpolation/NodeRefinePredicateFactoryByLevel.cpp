@@ -3,6 +3,8 @@
 #include "NodeRefinePredicateAlways.h"
 #include "NodeRefinePredicateNever.h"
 
+#include <algorithm>
+
 NodeRefinePredicateFactoryByLevel::NodeRefinePredicateFactoryByLevel(int maxlevel) : m_maxLevel(maxlevel)
 {
 }

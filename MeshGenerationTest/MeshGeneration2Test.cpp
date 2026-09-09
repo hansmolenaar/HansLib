@@ -17,6 +17,7 @@
 #include "Polygon2AsRegion.h"
 #include "ProjectToVtk.h"
 #include "Single.h"
+#include "Sphere2AsManifold1.h"
 #include "Triangle.h"
 #include "UniquePointCollectionBinning.h"
 

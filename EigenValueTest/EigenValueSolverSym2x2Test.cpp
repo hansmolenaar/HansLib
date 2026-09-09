@@ -5,6 +5,8 @@
 #include "MyAssert.h"
 #include "RealFunctionCheckDerivative.h"
 
+#include <cmath>
+
 namespace str = std::ranges;
 
 namespace

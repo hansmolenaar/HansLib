@@ -1,7 +1,6 @@
 #pragma once
 
 #include "BoundingBox.h"
-#include "DirectedEdge.h"
 #include "IGeometryObject.h"
 #include "IGeometryPredicate.h"
 #include "IRegionManifolds.h"

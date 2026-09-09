@@ -1,4 +1,5 @@
 #include "Ball2AsRegion.h"
+#include "Sphere2AsManifold1.h"
 
 namespace Geometry
 {

@@ -1,9 +1,12 @@
 #include "HierApproximation.h"
 #include "Logger.h"
 
-namespace str = std::ranges;
+#include <algorithm>
+#include <cmath>
+#include <ranges>
 
-namespace stv = std::views;
+namespace str = std::ranges;
+namespace stv = std::ranges::views;
 
 namespace
 {

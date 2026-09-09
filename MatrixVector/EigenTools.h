@@ -3,7 +3,6 @@
 #include <Eigen/Dense>
 
 #include <span>
-#include <vector>
 
 namespace EigenTools
 {

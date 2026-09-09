@@ -1,10 +1,7 @@
 #pragma once
 
-#include "IFinitePointGroupAction.h"
 #include "IMatrixRotation.h"
 #include "MatrixDense.h"
-
-#include <map>
 
 class MatrixRotation2D : public IMatrixRotation
 {

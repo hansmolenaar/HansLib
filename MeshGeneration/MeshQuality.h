@@ -1,4 +1,5 @@
 #pragma once
+
 #include "IPointCollection.h"
 #include "MeshGenerationDefines.h"
 

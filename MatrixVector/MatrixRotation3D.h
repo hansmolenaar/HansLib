@@ -1,6 +1,5 @@
 #pragma once
 
-#include "IFinitePointGroupAction.h"
 #include "IMatrixRotation.h"
 #include "MatrixDense.h"
 #include "UnitVector.h"

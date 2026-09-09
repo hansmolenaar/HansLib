@@ -2,6 +2,8 @@
 
 #include "ISingleVariableRealValuedFunction.h"
 
+#include <vector>
+
 class LagrangeInterpolation : public ISingleVariableRealValuedFunction
 {
  public:

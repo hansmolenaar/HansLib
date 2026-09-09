@@ -1,8 +1,8 @@
 #include "NodeRefinePredicateAdaptive.h"
 #include "HierApproximation.h"
 
-#include <iterator>
-#include <queue>
+#include <algorithm>
+#include <cmath>
 
 namespace str = std::ranges;
 

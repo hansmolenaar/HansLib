@@ -14,12 +14,8 @@
 #include "MultiVariableRealValuedFunctionNoDerivatives.h"
 #include "MyException.h"
 #include "NodeRefinePredicateFactoryByLevel.h"
-#include "Single.h"
 
-#include "Plotting.h"
-
-#include <filesystem>
-#include <fstream>
+#include <ranges>
 
 namespace str = std::ranges;
 

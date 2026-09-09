@@ -1,6 +1,5 @@
 #pragma once
 
-#include "IRealFunction.h"
 #include <span>
 
 class IMultiVariableFunctionEvaluate

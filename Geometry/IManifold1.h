@@ -3,7 +3,6 @@
 #include "IManifold.h"
 #include "Line.h"
 #include "Point.h"
-#include "Simplex.h"
 
 namespace Geometry
 {

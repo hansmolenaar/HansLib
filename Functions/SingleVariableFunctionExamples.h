@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ISingleVariableRealValuedFunction.h"
+
 #include <memory>
 
 namespace SingleVariableFunctionExamples

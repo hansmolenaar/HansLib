@@ -1,8 +1,8 @@
 #pragma once
 
 #include "EigenSolution.h"
-#include "MultiVariableRealValuedFunction.h"
-#include <array>
+#include "IMultiVariableRealValuedFunction.h"
+
 #include <span>
 
 class MatrixKelvinRepr3;

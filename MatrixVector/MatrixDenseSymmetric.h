@@ -2,10 +2,10 @@
 
 #include "EigenSolution.h"
 #include "IMatrixSymmetric.h"
-#include "IndexerSymmetric.h"
+
 #include <Eigen/Dense>
+
 #include <span>
-#include <vector>
 
 class MatrixDenseSymmetric : public IMatrixSymmetric
 {

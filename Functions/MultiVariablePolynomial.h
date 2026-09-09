@@ -2,6 +2,7 @@
 
 #include "IMultiVariableRealValuedFunction.h"
 #include "MultiVariableMonomial.h"
+
 #include <vector>
 
 class MultiVariablePolynomial : public IMultiVariableRealValuedFunction

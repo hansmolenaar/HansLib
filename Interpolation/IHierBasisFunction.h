@@ -2,16 +2,13 @@
 
 #include "HierMultiIndex.h"
 #include "IMultiVariableRealValuedFunction.h"
-#include "Interval.h"
-
-#include <memory>
 
 class IHierBasisFunction1D;
 
 class IHierBasisFunction : public IMultiVariableRealValuedFunction
 {
  public:
-   virtual double operator()(std::span<const double> x) const = 0;
+   virtual double operator()(std::span<const double> x) const override = 0;
    virtual const HierMultiIndex &getMultiIndex() const = 0;
    virtual const std::vector<const IHierBasisFunction1D *> &getBasisFunctions1D() const = 0;
 

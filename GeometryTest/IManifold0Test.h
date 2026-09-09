@@ -4,9 +4,7 @@
 #include "IManifoldTest.h"
 #include <gtest/gtest.h>
 
-#include <algorithm>
 #include <cstdlib>
-#include <random>
 
 using namespace Geometry;
 

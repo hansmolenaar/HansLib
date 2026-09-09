@@ -2,6 +2,7 @@
 
 #include "IManifold1.h"
 #include "IManifoldTest.h"
+
 #include <gtest/gtest.h>
 
 #include <algorithm>

@@ -1,10 +1,7 @@
 #pragma once
 
-#include <memory>
-#include <vector>
+#include "IMatrix.h"
 
-#include "IMatrixSquare.h"
-#include "IndexerRowMajor.h"
 #include <Eigen/Dense>
 
 class MatrixDense : public IMatrix

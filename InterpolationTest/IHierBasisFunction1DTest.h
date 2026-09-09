@@ -1,8 +1,10 @@
 #pragma once
 
 #include "IHierBasisFunction1D.h"
-#include <gtest/gtest.h>
+
 #include <numeric>
+
+#include <gtest/gtest.h>
 
 inline void IHierBasisFunction1DTest_Interface(const IHierBasisFunction1D &fie)
 {

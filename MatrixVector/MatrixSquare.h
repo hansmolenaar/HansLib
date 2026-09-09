@@ -1,11 +1,10 @@
 #pragma once
 
 #include "IMatrixSquare.h"
-#include "IndexerRowMajor.h"
+
 #include <Eigen/Dense>
-#include <memory>
+
 #include <span>
-#include <vector>
 
 class MatrixSquare : public IMatrixSquare
 {

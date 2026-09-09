@@ -1,10 +1,9 @@
 #pragma once
 
-#include <vector>
-
 #include "GraphIsomorphismDefines.h"
-#include "GraphIsomorphismGrouping.h"
 #include "IGraphIsomorphismTagger.h"
+
+#include <vector>
 
 namespace GraphIsomorphism
 {

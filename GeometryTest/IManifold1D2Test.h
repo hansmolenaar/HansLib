@@ -2,6 +2,7 @@
 
 #include "IManifold1D2.h"
 #include "IManifold1Test.h"
+
 #include <gtest/gtest.h>
 
 using namespace Geometry;

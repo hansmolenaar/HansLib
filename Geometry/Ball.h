@@ -4,8 +4,6 @@
 #include "DirectedEdge.h"
 #include "IGeometryObject.h"
 #include "IGeometryPredicate.h"
-#include "MyAssert.h"
-#include "MyException.h"
 
 namespace Geometry
 {

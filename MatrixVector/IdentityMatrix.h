@@ -1,6 +1,7 @@
 #pragma once
 
 #include "IMatrixSymmetric.h"
+
 #include <span>
 
 class IdentityMatrix : public IMatrixSymmetric

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "MatrixKelvinReprBase.h"
-#include <array>
+
 #include <span>
 
 class IMatrixSymmetric;

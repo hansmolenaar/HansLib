@@ -6,6 +6,7 @@
 #include "RealFunctionCheckDerivative.h"
 
 #include <algorithm>
+#include <cmath>
 #include <numbers>
 
 namespace str = std::ranges;

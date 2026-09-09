@@ -1,10 +1,10 @@
 #include "IMatrixRotation.h"
 #include "IMatrixSquareUtils.h"
-#include "MyAssert.h"
+#include "MyException.h"
 
 void IMatrixRotation::set(int, int, double)
 {
-   throw std::runtime_error("Don't call me, use const version instead");
+   throw MyException("Don't call me, use const version instead");
 }
 
 bool IMatrixRotation::IsRotation(const IMatrixSquare &matrix, double tol)

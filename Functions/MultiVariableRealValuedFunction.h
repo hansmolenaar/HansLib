@@ -1,9 +1,9 @@
 #pragma once
 
 #include "IMultiVariableRealValuedFunction.h"
-#include "SingleVariableMonomial.h"
 
 #include <functional>
+#include <memory>
 #include <vector>
 
 class MultiVariableRealValuedFunction : public IMultiVariableRealValuedFunction

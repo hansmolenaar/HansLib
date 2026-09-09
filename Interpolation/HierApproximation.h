@@ -2,12 +2,9 @@
 
 #include "HierMultiIndex.h"
 #include "IHierBasisFunction.h"
-#include "IMultiVariableRealValuedFunction.h"
 #include "INodeRefinePredicateFactory.h"
-#include "Iota.h"
 #include "MultiIndex.h"
 
-#include <functional>
 #include <limits>
 #include <map>
 #include <memory>

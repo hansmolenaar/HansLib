@@ -3,6 +3,8 @@
 #include "IMultiVariableFunctionEvaluate.h"
 #include "ISingleVariableRealValuedFunction.h"
 
+#include <memory>
+
 class MultiVariableFunctionEvaluateComposeWithSingle : public IMultiVariableFunctionEvaluate
 {
  public:

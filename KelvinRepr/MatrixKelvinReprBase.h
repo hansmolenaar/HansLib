@@ -1,12 +1,10 @@
 #pragma once
 
+#include "IIndexer.h"
 #include "IMatrixKelvinRepr.h"
-#include "IndexerSymmetric.h"
 #include "MathConstants.h"
-#include "MyAssert.h"
 
 #include <array>
-#include <stdexcept>
 
 template <int Dimension> class MatrixKelvinReprBase : public IMatrixKelvinRepr
 {

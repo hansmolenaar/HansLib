@@ -1,6 +1,7 @@
 #pragma once
 
 #include "TopologyDefines.h"
+
 #include <string>
 
 namespace Geometry

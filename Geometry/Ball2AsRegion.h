@@ -2,7 +2,6 @@
 
 #include "Ball.h"
 #include "IGeometryRegion.h"
-#include "Sphere2AsManifold1.h"
 
 namespace Geometry
 {

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "IMultiVariableRealValuedFunction.h"
+
 #include <vector>
 
 class MultiVariableProductFunction : public IMultiVariableRealValuedFunction

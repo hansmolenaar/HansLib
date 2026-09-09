@@ -1,6 +1,7 @@
 #pragma once
 
 #include "BoundingBox.h"
+#include "IPointCollection.h"
 #include "IndexTreeToSimplices2.h"
 #include "IntervalTree.h"
 #include "Logger.h"

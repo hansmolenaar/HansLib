@@ -2,6 +2,7 @@
 
 #include "IGeometryRegion.h"
 #include "IRegionManifoldsTest.h"
+
 #include <gtest/gtest.h>
 
 using namespace Geometry;
