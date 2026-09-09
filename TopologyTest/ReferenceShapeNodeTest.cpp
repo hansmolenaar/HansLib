@@ -1,5 +1,4 @@
 #include "ReferenceShapeNode.h"
-#include "MyException.h"
 #include "TestIReferenceShape.h"
 #include <gtest/gtest.h>
 

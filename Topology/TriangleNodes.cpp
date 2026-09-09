@@ -4,8 +4,6 @@
 #include "MyException.h"
 #include "ReferenceShapePolygon.h"
 
-#include <sstream>
-
 using namespace Topology;
 using namespace Utilities;
 

@@ -1,8 +1,6 @@
 #include "AnnModel.h"
 #include "IAnnModelUtils.h"
 
-#include "MyAssert.h"
-
 ML::AnnModel::AnnModel(std::span<const ML::IAnnLayer *> layers, std::span<const ML::IAnnWeights *> weights,
                        const ML::IAnnCostFunction &costFunction)
     : m_layers(layers), m_weights(weights), m_costFunction(costFunction)

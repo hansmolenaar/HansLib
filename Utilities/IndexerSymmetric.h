@@ -3,8 +3,6 @@
 #include "IIndexer.h"
 #include "MyAssert.h"
 
-#include <vector>
-
 template <typename I> class IndexerSymmetric : public IIndexer<I>
 {
  public:

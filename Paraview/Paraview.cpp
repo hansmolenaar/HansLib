@@ -2,6 +2,8 @@
 #include "MyAssert.h"
 #include "Plotting.h"
 
+#include <fstream>
+
 std::filesystem::path Paraview::GetFileName(const std::string &baseName)
 {
    return Plotting::GenerateFullFilePath(baseName + ".vtk");

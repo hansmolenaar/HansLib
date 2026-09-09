@@ -2,9 +2,6 @@
 
 #include "IMultiVariableFunctionEvaluate.h"
 #include "IterativeMinimizationStep.h"
-#include <limits>
-#include <memory>
-#include <vector>
 
 class IIterativeMinimization
 {

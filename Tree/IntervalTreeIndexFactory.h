@@ -1,7 +1,6 @@
 #pragma once
 
 #include "IntervalTreeIndex.h"
-#include "StdHash.h"
 
 namespace IntervalTree
 {

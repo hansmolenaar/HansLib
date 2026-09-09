@@ -1,6 +1,8 @@
 #include "MultiIndex.h"
+#include "MyException.h"
 
 #include <algorithm>
+
 namespace str = std::ranges;
 
 template class MultiIndex<int>;

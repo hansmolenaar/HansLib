@@ -2,7 +2,7 @@
 
 #include "IntervalTreeIndex.h"
 #include "Logger.h"
-#include "Rational.h"
+
 #include <map>
 
 namespace IntervalTree

@@ -5,8 +5,6 @@
 #include "NonLinearSolverStrategyResidualReduction.h"
 #include "SingleVariableMonomial.h"
 
-const double c_eps = 1.0e-10;
-
 TEST(FindRootBisectionTest, Normal)
 {
    SingleVariableMonomial fie(3);

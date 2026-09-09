@@ -1,7 +1,6 @@
 #include "CompassSearch.h"
 #include "BoundsCheck.h"
 #include "IterativeMinimizationStep.h"
-#include "MyException.h"
 
 CompassSearch::CompassSearch(std::shared_ptr<IMultiVariableFunctionEvaluate> fie, std::vector<double> init, double del)
     : m_objectiveFunction(std::move(fie)), m_currentArg(std::move(init)), m_delta(del)

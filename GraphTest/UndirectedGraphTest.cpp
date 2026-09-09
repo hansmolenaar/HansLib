@@ -2,6 +2,7 @@
 
 #include "GraphIsomorphismTaggerKnown.h"
 #include "IGraphUs.h"
+#include "MyException.h"
 #include "Single.h"
 #include "UndirectedGraphFromG6.h"
 #include "UndirectedGraphLibrary.h"

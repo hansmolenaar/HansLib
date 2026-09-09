@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Rational.h"
 #include <array>
 #include <boost/functional/hash.hpp>
 

@@ -5,7 +5,6 @@
 #include <algorithm>
 #include <numeric>
 #include <span>
-#include <type_traits>
 #include <vector>
 
 namespace Functors

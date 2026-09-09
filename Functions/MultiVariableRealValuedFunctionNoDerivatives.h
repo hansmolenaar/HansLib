@@ -2,6 +2,7 @@
 
 #include "IMultiVariableFunctionEvaluate.h"
 #include "IMultiVariableRealValuedFunction.h"
+#include "MyException.h"
 #include <memory>
 
 class MultiVariableRealValuedFunctionNoDerivatives : public IMultiVariableRealValuedFunction

@@ -1,9 +1,10 @@
 #include "TopologicalAdjacencies.h"
 #include "BoundsCheck.h"
-#include "TopologicalAdjacency.h"
+#include "ITopologicalAdjacencies.h"
+#include "ITopologicalAdjacency.h"
+#include "TopologyDefines.h"
 
 #include <algorithm>
-#include <set>
 
 using namespace Topology;
 

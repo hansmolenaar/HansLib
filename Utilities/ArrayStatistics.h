@@ -2,8 +2,9 @@
 
 #include <limits>
 #include <span>
-#include <sstream>
 #include <string>
+
+#include <ostream>
 
 template <typename T> class ArrayStatistics
 {

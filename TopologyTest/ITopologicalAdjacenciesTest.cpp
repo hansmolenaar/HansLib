@@ -1,5 +1,3 @@
-#include "IReferenceShape.h"
-#include "MyException.h"
 #include "ReferenceShapeHyperCube.h"
 #include "ReferenceShapeNode.h"
 #include "TopologicalAdjacencies.h"

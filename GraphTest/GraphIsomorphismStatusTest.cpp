@@ -1,11 +1,10 @@
 #include <gtest/gtest.h>
 
 #include "GraphIsomorphismStatus.h"
-#include "MyAssert.h"
+#include "MyException.h"
 
 using namespace GraphIsomorphism;
 using namespace Graph;
-using namespace Utilities;
 
 namespace
 {

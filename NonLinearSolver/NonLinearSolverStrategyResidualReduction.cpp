@@ -2,10 +2,8 @@
 
 #include "Functors.h"
 
-#include <algorithm>
 #include <cassert>
 #include <cmath>
-#include <numeric>
 #include <stdexcept>
 #include <string>
 

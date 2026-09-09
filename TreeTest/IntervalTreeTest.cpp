@@ -2,12 +2,9 @@
 
 #include "IntervalTree.h"
 #include "IntervalTreeAction.h"
-#include "IntervalTreeBalance.h"
 #include "IntervalTreeRefinePredicate.h"
 #include "IntervalTreeStatistics.h"
 #include "IntervalTreeVtk.h"
-#include "Paraview.h"
-#include "Point.h"
 
 using namespace IntervalTree;
 

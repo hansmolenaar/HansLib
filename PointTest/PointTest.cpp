@@ -5,6 +5,7 @@
 
 #include <numbers>
 #include <numeric>
+
 TEST(PointTest, PointArray)
 {
    const auto p = Point<int, 1>({42});

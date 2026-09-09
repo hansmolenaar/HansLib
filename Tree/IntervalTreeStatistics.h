@@ -3,9 +3,8 @@
 #include "IntervalTree.h"
 #include "IntervalTreeAction.h"
 #include "StreamUtils.h"
-#include <map>
+
 #include <ostream>
-#include <unordered_set>
 
 namespace IntervalTree
 {

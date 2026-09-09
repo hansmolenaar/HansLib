@@ -1,7 +1,5 @@
 #include "IntervalTreeRefinePredicate.h"
 
-#include "MyException.h"
-
 #include <cmath>
 
 namespace IntervalTree

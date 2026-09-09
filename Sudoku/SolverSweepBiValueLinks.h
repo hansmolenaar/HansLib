@@ -2,8 +2,6 @@
 
 #include "SolverSweep.h"
 
-#include <unordered_map>
-
 namespace Sudoku
 {
 

@@ -2,6 +2,10 @@
 
 #include "AnnArray.h"
 #include "IAnnModel.h"
+#include "IFeedForwardResult.h"
+#include "IParameterSet.h"
+
+#include <memory>
 
 namespace ML
 {

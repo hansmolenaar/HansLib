@@ -1,6 +1,5 @@
 #include "ReferenceShapeNode.h"
 #include "BoundsCheck.h"
-#include "MyException.h"
 
 using namespace Topology;
 

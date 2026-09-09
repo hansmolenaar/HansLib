@@ -1,7 +1,5 @@
 #include "FeedForwardResult.h"
 
-#include "MyAssert.h"
-
 ML::FeedForwardResult::FeedForwardResult(std::span<const double> input, std::span<const size_t> dimensions)
     : m_outputs(dimensions), m_activations(dimensions), m_input(input.begin(), input.end())
 {

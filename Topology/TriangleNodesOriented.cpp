@@ -1,5 +1,4 @@
 #include "TriangleNodesOriented.h"
-
 #include "MyException.h"
 
 #include <algorithm>

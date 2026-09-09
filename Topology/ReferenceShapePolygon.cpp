@@ -1,6 +1,5 @@
 #include "ReferenceShapePolygon.h"
 #include "BoundsCheck.h"
-#include "MyException.h"
 #include "ReferenceShape.h"
 #include "TopologicalAdjacencies.h"
 #include "TopologicalAdjacency.h"

@@ -1,6 +1,5 @@
 #include "VtkData.h"
 #include "MyAssert.h"
-#include "MyException.h"
 #include "VtkData.h"
 
 using namespace Vtk;

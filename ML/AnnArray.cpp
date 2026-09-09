@@ -1,7 +1,5 @@
 #include "AnnArray.h"
 
-#include "MyAssert.h"
-
 ML::AnnArray::AnnArray(std::span<const size_t> dimensions) : m_offset(dimensions.size() + 1)
 {
    size_t totalSize = 0;

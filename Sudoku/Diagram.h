@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Potential.h"
 #include "Potentials.h"
 #include <ostream>
 #include <unordered_map>

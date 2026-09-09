@@ -1,11 +1,7 @@
 #pragma once
 
 #include "VtkData.h"
-#include <array>
 #include <filesystem>
-#include <fstream>
-#include <map>
-#include <memory>
 #include <ostream>
 #include <string>
 #include <vector>

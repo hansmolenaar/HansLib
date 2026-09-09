@@ -2,7 +2,6 @@
 
 #include "IIndexer.h"
 #include "MyAssert.h"
-#include <vector>
 
 template <typename I> class IndexerRowMajor : public IIndexer<I>
 {

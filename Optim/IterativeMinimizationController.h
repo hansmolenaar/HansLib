@@ -1,5 +1,6 @@
 #pragma once
 #include "IIterativeMinimizationConvergenceCrit.h"
+
 #include <limits>
 #include <vector>
 

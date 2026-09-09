@@ -8,8 +8,6 @@
 
 #include <cmath>
 
-const double c_eps = 1.0e-10;
-
 TEST(FindRootIllinoisTest, Normal)
 {
    SingleVariableMonomial fie(3);

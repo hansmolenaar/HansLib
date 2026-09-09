@@ -1,7 +1,6 @@
 #pragma once
 
-#include "MyException.h"
-#include <cassert>
+#include <string>
 
 namespace Utilities
 {

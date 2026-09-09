@@ -3,7 +3,6 @@
 #include "IReferenceShape.h"
 #include "TestITopologicalAdjacencies.h"
 #include <gtest/gtest.h>
-#include <set>
 
 using namespace Topology;
 

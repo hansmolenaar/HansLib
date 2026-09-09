@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstddef>
+
 class Pow2
 {
  public:

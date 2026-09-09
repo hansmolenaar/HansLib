@@ -3,13 +3,12 @@
 #include "RealFunctionCheckDerivative.h"
 
 #include "MultiVariableMonomial.h"
+#include "MyException.h"
 #include "SingleVariableMonomial.h"
 
 #include <gmock/gmock.h>
 
 using ::testing::HasSubstr;
-
-const double c_eps = 1.0e-10;
 
 TEST(RealFunctionCheckDerivativeTest, CheckSingleSucces)
 {

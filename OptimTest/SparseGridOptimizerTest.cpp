@@ -6,7 +6,6 @@
 #include "MinimizationProblem.h"
 #include "NodeRefinePredicateAdaptive.h"
 #include "NodeRefinePredicateAlways.h"
-#include "NodeRefinePredicateFactoryByLevel.h"
 #include "NodeRefinePredicateNever.h"
 #include "Plotting.h"
 #include "Single.h"

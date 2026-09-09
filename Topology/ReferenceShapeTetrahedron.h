@@ -1,7 +1,6 @@
 #pragma once
 
 #include "IReferenceShape.h"
-#include "TetrahedronNodesOriented.h"
 #include "TopologicalAdjacencies.h"
 
 namespace Topology

@@ -1,5 +1,4 @@
 #pragma once
-#include "EdgeNodesDirected.h"
 #include "EdgeNodesSorted.h"
 #include "TriangleNodesOriented.h"
 

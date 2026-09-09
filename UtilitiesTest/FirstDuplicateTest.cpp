@@ -2,6 +2,7 @@
 
 #include "FirstDuplicate.h"
 #include "MyException.h"
+
 #include <vector>
 
 using namespace Utilities;

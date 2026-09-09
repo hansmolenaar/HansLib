@@ -1,14 +1,11 @@
 #include <gtest/gtest.h>
 
 #include "CompassSearch.h"
-#include "Functors.h"
 #include "IIterativeMinimizationConvergenceCrit.h"
+#include "IMultiVariableFunctionEvaluate.h"
 #include "IterativeMinimizationController.h"
 #include "IterativeMinimizationConvergenceCrit.h"
 #include "MultiVariableFunctionExamples.h"
-#include "MultiVariableRealValuedFunctionEvaluateCached.h"
-#include "Single.h"
-#include "SingleVariablePolynomial.h"
 
 class FakeConvergenceCrit : public IIterativeMinimizationConvergenceCrit
 {

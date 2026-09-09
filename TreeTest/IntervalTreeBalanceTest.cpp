@@ -3,8 +3,6 @@
 #include "IntervalTreeBalance.h"
 #include "IntervalTreeRefinePredicate.h"
 #include "IntervalTreeStatistics.h"
-#include "IntervalTreeVtk.h"
-#include "Paraview.h"
 
 using namespace IntervalTree;
 

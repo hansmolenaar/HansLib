@@ -5,8 +5,6 @@
 #include "PointClose.h"
 #include "UnitVector.h"
 
-#include <numeric>
-
 namespace
 {
 constexpr double crit = 1.0e-10;

@@ -2,6 +2,7 @@
 #include "MultiIndex.h"
 
 #include "MultiIndex.h"
+#include "MyException.h"
 #include "Plotting.h"
 
 #include <algorithm>

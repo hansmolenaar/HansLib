@@ -1,6 +1,8 @@
 #pragma once
 
-#include "IntervalTree.h"
+#include "IntervalTreeIndex.h"
+
+#include <cstddef>
 
 template <size_t N> class IRefinementPredicate
 {

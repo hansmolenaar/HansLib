@@ -29,7 +29,10 @@ template <typename T> class Interval
 
    T interpolate(T factor) const;
    T inverseInterpolate(T arg) const;
+
    auto operator<=>(const Interval<T> &) const = default;
+   bool operator==(const Interval<T> &) const = default;
+
    friend std::ostream &operator<<(std::ostream &os, const Interval<T> &intv)
    {
       os << "(" << intv.m_lower << ", " << intv.m_upper << ")";
@@ -40,11 +43,6 @@ template <typename T> class Interval
    T m_lower;
    T m_upper;
 };
-
-template <typename T> bool operator==(const Interval<T> &lhs, const Interval<T> &rhs)
-{
-   return lhs.getLower() == rhs.getLower() && lhs.getUpper() == rhs.getUpper();
-}
 
 template <typename T> Interval<T>::Interval(const T &val)
 {

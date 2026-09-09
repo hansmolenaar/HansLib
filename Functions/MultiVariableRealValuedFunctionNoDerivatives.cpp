@@ -1,4 +1,5 @@
 #include "MultiVariableRealValuedFunctionNoDerivatives.h"
+#include "MyException.h"
 
 double MultiVariableRealValuedFunctionNoDerivatives::Evaluate(std::span<const double> x) const
 {

@@ -8,10 +8,7 @@
 #include "StdHash.h"
 
 #include <array>
-#include <functional>
 #include <string>
-#include <unordered_map>
-#include <vector>
 
 namespace IntervalTree
 {

@@ -1,5 +1,7 @@
 #pragma once
+
 #include "IterativeMinimizationStep.h"
+
 #include <array>
 #include <vector>
 

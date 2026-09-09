@@ -1,7 +1,6 @@
 #pragma once
 
 #include "IReferenceShape.h"
-#include <vector>
 
 namespace Topology
 {

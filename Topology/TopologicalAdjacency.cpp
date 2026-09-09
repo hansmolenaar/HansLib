@@ -3,8 +3,6 @@
 #include "Iota.h"
 #include "MyAssert.h"
 
-#include <algorithm>
-
 using namespace Topology;
 
 namespace

@@ -1,6 +1,7 @@
 #include "FieldInfoStatic.h"
 #include "MyException.h"
 #include "SudokuDefines.h"
+
 #include <algorithm>
 #include <map>
 #include <numeric>

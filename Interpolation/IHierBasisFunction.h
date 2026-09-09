@@ -2,6 +2,7 @@
 
 #include "HierMultiIndex.h"
 #include "IMultiVariableRealValuedFunction.h"
+#include "MyException.h"
 
 class IHierBasisFunction1D;
 

@@ -1,6 +1,5 @@
 #include "IntervalTreeIndex.h"
 
-#include "MyException.h"
 #include <cmath>
 
 using namespace IntervalTree;

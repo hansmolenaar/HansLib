@@ -1,7 +1,6 @@
 #include "ArrayStatistics.h"
 #include "Rational.h"
 
-#include <iostream>
 #include <numeric>
 
 template class ArrayStatistics<int>;

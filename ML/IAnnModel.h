@@ -3,11 +3,6 @@
 #include "IAnnCostFunction.h"
 #include "IAnnLayer.h"
 #include "IAnnWeights.h"
-#include "IFeedForwardResult.h"
-#include "IParameterSet.h"
-
-#include <memory>
-#include <vector>
 
 namespace ML
 {

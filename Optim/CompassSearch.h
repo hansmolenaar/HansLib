@@ -2,6 +2,7 @@
 
 #include "IIterativeMinimization.h"
 #include "IMultiVariableFunctionEvaluate.h"
+
 #include <memory>
 
 class IMultiVariableFunctionEvaluate;
