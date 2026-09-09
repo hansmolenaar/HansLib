@@ -16,6 +16,8 @@ class IMultiVariableRealValuedFunction : public IRealFunction, public IMultiVari
    virtual void Derivative(std::span<const double> x, std::span<double> dfdx) const = 0;
    virtual bool DerivativeAlwaysZero(int var) const = 0;
 
+   using IRealFunction::DerivativeAlwaysZero;
+
    int GetRangeDimension() const override;
    void EvaluateFunction(std::span<const double> x, std::span<double> y) const override;
    void Derivative(std::span<const double> x, IMatrix &dfdx) const override;
