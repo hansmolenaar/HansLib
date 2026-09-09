@@ -1,16 +1,21 @@
 #pragma once
 
 #include "EdgeNodesDirected.h"
+#include "IDynamicUniquePointCollection.h"
 #include "IGeometryRegion.h"
 #include "IManifold0.h"
 #include "IManifold1D2.h"
+#include "IManifoldReconstruction.h"
 #include "IMeshingSettings.h"
 #include "IRegionManifolds.h"
+#include "IndexTreeToSimplices2.h"
 #include "Logger.h"
-#include "Mesh2.h"
+#include "ManifoldsAndNodes.h"
+#include "TrianglesNodes.h"
 
 namespace MeshGeneration2
 {
+
 using IManifold0D2 = Geometry::IManifold0<MeshGeneration::GeomType, GeomDim2>;
 
 IndexTreeToSimplices2::Triangles GenerateBaseTriangulation(
