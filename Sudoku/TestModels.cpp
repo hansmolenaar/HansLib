@@ -17,7 +17,6 @@ const std::array<Value, NumFields> diagramValues =
    0, 0, 0,     0, 0, 0,    0, 0, 0,
    0, 0, 0,     0, 0, 0,    0, 0, 0,
 };
-#endif
 
 Diagram TestModels::getEmpty()
 {
@@ -146,3 +145,4 @@ Diagram TestModels::getBiValue1()
    };
    return Diagram::Create(diagramValues);
 }
+#endif

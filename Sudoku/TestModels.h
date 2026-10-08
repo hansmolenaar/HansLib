@@ -1,10 +1,8 @@
 #pragma once
 
-#include "Diagram.h"
-
 namespace Sudoku
 {
-
+#if false
 namespace TestModels
 {
 Diagram getEmpty();
@@ -23,4 +21,5 @@ Diagram getBiValue1();
 
 }; // namespace TestModels
 
+#endif
 } // namespace Sudoku
