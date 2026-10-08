@@ -4,7 +4,7 @@
 
 using namespace Sudoku;
 
-TEST(SolverTest, DefaultConstructor)
+TEST(CandidatesTest, DefaultConstructor)
 {
    const Candidates candidates;
    ASSERT_FALSE(candidates.isSolved());
@@ -13,7 +13,7 @@ TEST(SolverTest, DefaultConstructor)
    ASSERT_TRUE(candidates.contains(9));
 }
 
-TEST(SolverTest, SetGiven)
+TEST(CandidatesTest, SetGiven)
 {
    Candidates candidates;
    candidates.setGiven(4);
@@ -24,7 +24,7 @@ TEST(SolverTest, SetGiven)
    ASSERT_EQ(candidates.getSolvedValue(), 4);
 }
 
-TEST(SolverTest, Unset)
+TEST(CandidatesTest, Unset)
 {
    Candidates candidates;
    ASSERT_TRUE(candidates.contains(4));
@@ -36,7 +36,7 @@ TEST(SolverTest, Unset)
    ASSERT_EQ(candidates.size(), 8);
 }
 
-TEST(SolverTest, SetOnly)
+TEST(CandidatesTest, SetOnly)
 {
    Candidates candidates;
    candidates.setOnly({1, 9});

@@ -17,6 +17,7 @@ constexpr RowColBox NumRowColBox(9);
 constexpr RowColBox NumRow = NumRowColBox;
 constexpr RowColBox NumCol = NumRowColBox;
 constexpr RowColBox NumBox = NumRowColBox;
+constexpr RowColBox RowColBoxUndefined = NumRowColBox;
 
 constexpr std::array<RowColBox, NumRowColBox> RowColBoxAll = {RowColBox(0), RowColBox(1), RowColBox(2),
                                                               RowColBox(3), RowColBox(4), RowColBox(5),
