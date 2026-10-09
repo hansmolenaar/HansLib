@@ -52,6 +52,12 @@ const Cell &Cell::get(Field f)
    return s_allCells.at(f);
 }
 
+const Cell &Cell::getFromRowCol(Index row, Index col)
+{
+   const Field field = rowCol2Field(row, col);
+   return get(field);
+}
+
 Field Cell::rowCol2Field(Index row, Index col)
 {
    return row * NumIndex + col;

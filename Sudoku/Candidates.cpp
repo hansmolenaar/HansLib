@@ -18,7 +18,7 @@ void Candidates::setGiven(Value v)
    setOnly({v});
 }
 
-bool Candidates::unsetValue(Value v)
+void Candidates::unsetValue(Value v)
 {
    const auto found = str::find(m_candidates, v);
    const bool succes = found != m_candidates.end();
@@ -26,8 +26,6 @@ bool Candidates::unsetValue(Value v)
    {
       m_candidates.erase(found);
    }
-
-   return succes;
 }
 
 bool Candidates::isSolved() const

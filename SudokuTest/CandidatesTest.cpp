@@ -28,9 +28,8 @@ TEST(CandidatesTest, Unset)
 {
    Candidates candidates;
    ASSERT_TRUE(candidates.contains(4));
-   bool succes = candidates.unsetValue(4);
+   candidates.unsetValue(4);
    ASSERT_FALSE(candidates.contains(4));
-   ASSERT_TRUE(succes);
 
    ASSERT_FALSE(candidates.isSolved());
    ASSERT_EQ(candidates.size(), 8);

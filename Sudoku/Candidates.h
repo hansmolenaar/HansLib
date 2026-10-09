@@ -13,7 +13,7 @@ class Candidates
  public:
    void setGiven(Value);
    void setOnly(std::initializer_list<Value>);
-   bool unsetValue(Value);
+   void unsetValue(Value);
    bool isSolved() const;
    Index size() const;
    std::optional<Value> tryGetSolvedValue() const;

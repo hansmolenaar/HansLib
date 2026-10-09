@@ -60,3 +60,12 @@ TEST(CellTest, RowCol2Field)
    }
    ASSERT_EQ(field, NumField);
 }
+
+TEST(CellTest, GetFromRowCol)
+{
+   const Index row = 6;
+   const Index col = 3;
+   const Cell &cell = Cell::getFromRowCol(row, col);
+   ASSERT_EQ(cell.row, row);
+   ASSERT_EQ(cell.col, col);
+}

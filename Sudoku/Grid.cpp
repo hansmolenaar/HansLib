@@ -51,3 +51,8 @@ std::ostream &operator<<(std::ostream &os, const Sudoku::Grid &grid)
    }
    return os;
 }
+
+void Grid ::unset(Field field, Value value)
+{
+   m_candidates.at(field).unsetValue(value);
+}

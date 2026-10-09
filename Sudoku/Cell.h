@@ -15,6 +15,7 @@ struct Cell
    Index box = IndexUndefined;
 
    static const Cell &get(Field);
+   static const Cell &getFromRowCol(Index, Index);
    static Field rowCol2Field(Index, Index);
 };
 

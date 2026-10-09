@@ -11,6 +11,7 @@ class Grid
  public:
    void setGiven(Field, Value);
    void setGiven(Index, Index, Value);
+   void unset(Field, Value);
    Index getNumCandidates() const;
    std::optional<Value> tryGetSolvedValue(Field) const;
    bool isSolved() const;
