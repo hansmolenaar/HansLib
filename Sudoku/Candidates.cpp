@@ -14,7 +14,7 @@ bool Candidates::contains(Value v) const
 
 void Candidates::setGiven(Value v)
 {
-   Utilities::MyAssert(size() == NumRowColBox);
+   Utilities::MyAssert(size() == NumIndex);
    setOnly({v});
 }
 
@@ -35,7 +35,7 @@ bool Candidates::isSolved() const
    return size() == 1;
 }
 
-RowColBox Candidates::size() const
+Index Candidates::size() const
 {
    return m_candidates.size();
 }
@@ -48,6 +48,10 @@ Value Candidates::getSolvedValue() const
 
 void Candidates::setOnly(std::initializer_list<Value> values)
 {
+   for (auto v : values)
+   {
+      Utilities::MyAssert(contains(v));
+   }
    m_candidates = values;
    Utilities::MyAssert(!m_candidates.empty());
    str::sort(m_candidates);

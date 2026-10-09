@@ -26,7 +26,7 @@ TEST(CoordinatesTest, Max)
 
 TEST(CoordinatesTest, All)
 {
-   for (Field f = 0; f < NumFields; ++f)
+   for (Field f = 0; f < NumField; ++f)
    {
       const Coordinates c = Coordinates::fromField(f);
       const auto retval = c.toField();
@@ -36,9 +36,9 @@ TEST(CoordinatesTest, All)
 
 TEST(CoordinatesTest, AllReverse)
 {
-   for (auto row : RowColBoxAll)
+   for (auto row : IndexAll)
    {
-      for (auto col : RowColBoxAll)
+      for (auto col : IndexAll)
       {
          const Coordinates cor(row, col);
          const Field field = cor.toField();

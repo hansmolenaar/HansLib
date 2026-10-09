@@ -6,8 +6,8 @@ namespace Sudoku
 {
 struct Coordinates
 {
-   RowColBox Row = RowColBoxUndefined;
-   RowColBox Col = RowColBoxUndefined;
+   Index Row = IndexUndefined;
+   Index Col = IndexUndefined;
 
    Field toField() const;
    static Coordinates fromField(Field);

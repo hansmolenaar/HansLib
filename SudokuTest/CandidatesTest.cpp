@@ -39,15 +39,17 @@ TEST(CandidatesTest, Unset)
 TEST(CandidatesTest, SetOnly)
 {
    Candidates candidates;
-   candidates.setOnly({1, 9});
+   candidates.setOnly({1, 9, 1});
    ASSERT_TRUE(candidates.contains(1));
    ASSERT_TRUE(candidates.contains(9));
    ASSERT_FALSE(candidates.contains(8));
    ASSERT_EQ(candidates.size(), 2);
    ASSERT_FALSE(candidates.isSolved());
 
-   candidates.setOnly({8});
-   ASSERT_TRUE(candidates.contains(8));
-   ASSERT_FALSE(candidates.contains(9));
+   candidates.setOnly({9});
+   ASSERT_TRUE(candidates.contains(9));
+   ASSERT_FALSE(candidates.contains(1));
    ASSERT_TRUE(candidates.isSolved());
+
+   ASSERT_ANY_THROW(candidates.setOnly({1}));
 }

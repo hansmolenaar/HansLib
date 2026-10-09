@@ -8,21 +8,21 @@ namespace
 {
 void CheckValid(const Coordinates c)
 {
-   MyAssert(c.Row < NumRow && c.Col < NumCol);
+   MyAssert(c.Row < NumIndex && c.Col < NumIndex);
 }
 } // namespace
 
 Field Coordinates::toField() const
 {
    CheckValid(*this);
-   return Row * NumCol + Col;
+   return Row * NumIndex + Col;
 }
 
 Coordinates Coordinates::fromField(Field f)
 {
    Coordinates result;
-   result.Row = f / NumCol;
-   result.Col = f - result.Row * NumRowColBox;
+   result.Row = f / NumIndex;
+   result.Col = f - result.Row * NumIndex;
    CheckValid(result);
    return result;
 }

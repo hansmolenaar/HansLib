@@ -14,11 +14,11 @@ class Candidates
    void setOnly(std::initializer_list<Value>);
    bool unsetValue(Value);
    bool isSolved() const;
-   RowColBox size() const;
+   Index size() const;
    Value getSolvedValue() const;
    bool contains(Value) const;
 
  private:
-   boost::container::static_vector<Value, NumRowColBox> m_candidates = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+   boost::container::static_vector<Value, NumIndex> m_candidates = {1, 2, 3, 4, 5, 6, 7, 8, 9};
 };
 } // namespace Sudoku
