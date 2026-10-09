@@ -1,6 +1,8 @@
 #include "Cell.h"
 #include "MyAssert.h"
 
+#include <vector>
+
 using namespace Sudoku;
 using namespace Utilities;
 
@@ -35,4 +37,17 @@ Cell::Cell(Field f)
    MyAssert(row < NumIndex);
    MyAssert(col < NumIndex);
    MyAssert(box < NumIndex);
+}
+
+const Cell &Cell::get(Field f)
+{
+   static std::vector<Cell> s_allCells;
+   if (s_allCells.empty())
+   {
+      for (Field f = 0; f < NumField; ++f)
+      {
+         s_allCells.emplace_back(f);
+      }
+   }
+   return s_allCells.at(f);
 }
