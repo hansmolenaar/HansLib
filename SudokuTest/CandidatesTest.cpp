@@ -21,7 +21,7 @@ TEST(CandidatesTest, SetGiven)
    ASSERT_EQ(candidates.size(), 1);
    ASSERT_TRUE(candidates.contains(4));
    ASSERT_FALSE(candidates.contains(5));
-   ASSERT_EQ(candidates.getSolvedValue(), 4);
+   ASSERT_EQ(candidates.tryGetSolvedValue().value(), 4);
 }
 
 TEST(CandidatesTest, Unset)
@@ -43,6 +43,7 @@ TEST(CandidatesTest, SetOnly)
    ASSERT_TRUE(candidates.contains(1));
    ASSERT_TRUE(candidates.contains(9));
    ASSERT_FALSE(candidates.contains(8));
+   ASSERT_TRUE(!candidates.tryGetSolvedValue());
    ASSERT_EQ(candidates.size(), 2);
    ASSERT_FALSE(candidates.isSolved());
 

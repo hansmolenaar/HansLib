@@ -4,6 +4,7 @@
 #include <boost/container/static_vector.hpp>
 
 #include <initializer_list>
+#include <optional>
 
 namespace Sudoku
 {
@@ -15,7 +16,7 @@ class Candidates
    bool unsetValue(Value);
    bool isSolved() const;
    Index size() const;
-   Value getSolvedValue() const;
+   std::optional<Value> tryGetSolvedValue() const;
    bool contains(Value) const;
 
  private:

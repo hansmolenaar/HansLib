@@ -40,9 +40,12 @@ Index Candidates::size() const
    return m_candidates.size();
 }
 
-Value Candidates::getSolvedValue() const
+std::optional<Value> Candidates::tryGetSolvedValue() const
 {
-   Utilities::MyAssert(isSolved());
+   if (m_candidates.size() != 1)
+   {
+      return {};
+   }
    return m_candidates.front();
 }
 

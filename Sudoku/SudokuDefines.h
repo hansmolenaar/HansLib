@@ -18,6 +18,8 @@ using Field = unsigned short; // 0..80
 constexpr Field NumField = NumIndex * NumIndex;
 constexpr Field FieldUndefined = NumField;
 
+constexpr char ValueUndefinedChar = '.';
+
 #if false
 using RowColBoxPosition = unsigned short;                         // Position in row/col/box
 constexpr RowColBoxPosition NumRowColBoxPositions = 9; // Number of RowColBoxPosition in row/col/box
