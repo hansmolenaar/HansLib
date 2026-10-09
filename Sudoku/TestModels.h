@@ -1,12 +1,15 @@
 #pragma once
 
+#include "Grid.h"
+
 namespace Sudoku
 {
-#if false
 namespace TestModels
 {
-Diagram getEmpty();
-Diagram getSolved();
+Grid getSolved();
+}; // namespace TestModels
+
+#if false
 
 Diagram getOneStar1();
 Diagram getOneStar2();
@@ -18,8 +21,6 @@ Diagram getFourStar2();
 Diagram getFourStar3();
 
 Diagram getBiValue1();
-
-}; // namespace TestModels
 
 #endif
 } // namespace Sudoku

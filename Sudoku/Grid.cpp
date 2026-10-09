@@ -14,6 +14,11 @@ void Grid::setGiven(Field field, Value value)
    m_candidates.at(field).setGiven(value);
 }
 
+void Grid::setGiven(Index row, Index col, Value value)
+{
+   setGiven(Cell::rowCol2Field(row, col), value);
+}
+
 Index Grid::getNumCandidates() const
 {
    return std::accumulate(m_candidates.begin(), m_candidates.end(), static_cast<Index>(0),

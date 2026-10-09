@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "Grid.h"
+#include "TestModels.h"
 
 #include <algorithm>
 #include <sstream>
@@ -39,4 +40,19 @@ TEST(GridTest, ToOStream)
    retval = stream.str();
    ASSERT_EQ(str::count_if(retval, [](char c) { return c == ValueUndefinedChar; }), NumField - 1);
    ASSERT_EQ(str::count_if(retval, [](char c) { return c == '9'; }), 1);
+
+   grid.setGiven(10, 8);
+   grid.setGiven(20, 8);
+   stream.str("");
+   stream << grid;
+   retval = stream.str();
+   ASSERT_EQ(str::count_if(retval, [](char c) { return c == ValueUndefinedChar; }), NumField - 3);
+   ASSERT_EQ(str::count_if(retval, [](char c) { return c == '9'; }), 1);
+   ASSERT_EQ(str::count_if(retval, [](char c) { return c == '8'; }), 2);
+}
+
+TEST(GridTest, Solved)
+{
+   const Grid solved = TestModels::getSolved();
+   ASSERT_TRUE(solved.isSolved());
 }

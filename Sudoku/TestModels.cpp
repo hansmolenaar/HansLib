@@ -2,6 +2,24 @@
 
 using namespace Sudoku;
 
+Grid TestModels::getSolved()
+{
+   const std::array<Value, NumField> diagramValues = {
+       1, 2, 3, 4, 5, 6, 7, 8, 9, 4, 5, 6, 7, 8, 9, 1, 2, 3, 7, 8, 9, 1, 2, 3, 4, 5, 6,
+
+       2, 3, 4, 5, 6, 7, 8, 9, 1, 5, 6, 7, 8, 9, 1, 2, 3, 4, 8, 9, 1, 2, 3, 4, 5, 6, 7,
+
+       3, 4, 5, 6, 7, 8, 9, 1, 2, 6, 7, 8, 9, 1, 2, 3, 4, 5, 9, 1, 2, 3, 4, 5, 6, 7, 8,
+   };
+
+   Grid result;
+   for (Index f = 0; f < NumField; ++f)
+   {
+      result.setGiven(f, diagramValues.at(f));
+   }
+   return result;
+}
+
 #if false
 const std::array<Value, NumFields> diagramValues =
 {
@@ -18,22 +36,6 @@ const std::array<Value, NumFields> diagramValues =
    0, 0, 0,     0, 0, 0,    0, 0, 0,
 };
 
-Diagram TestModels::getEmpty()
-{
-   return Diagram::Create(std::unordered_map<FieldIndex, Value>{});
-}
-
-Diagram TestModels::getSolved()
-{
-   const std::array<Value, NumFields> diagramValues = {
-       1, 2, 3, 4, 5, 6, 7, 8, 9, 4, 5, 6, 7, 8, 9, 1, 2, 3, 7, 8, 9, 1, 2, 3, 4, 5, 6,
-
-       2, 3, 4, 5, 6, 7, 8, 9, 1, 5, 6, 7, 8, 9, 1, 2, 3, 4, 8, 9, 1, 2, 3, 4, 5, 6, 7,
-
-       3, 4, 5, 6, 7, 8, 9, 1, 2, 6, 7, 8, 9, 1, 2, 3, 4, 5, 9, 1, 2, 3, 4, 5, 6, 7, 8,
-   };
-   return Diagram::Create(diagramValues);
-}
 
 Diagram TestModels::getOneStar1()
 {
