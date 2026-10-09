@@ -9,8 +9,9 @@ class Grid
 {
  public:
    void setGiven(Field, Value);
+   Index getNumCandidates() const;
 
  private:
-   std::array<Candidates, NumFields> m_grid;
+   std::array<Candidates, NumField> m_grid;
 };
 } // namespace Sudoku
