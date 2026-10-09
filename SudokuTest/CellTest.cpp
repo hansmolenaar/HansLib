@@ -42,3 +42,21 @@ TEST(CellTest, All)
       ASSERT_EQ(box2field.at(idx).size(), NumIndex);
    }
 }
+
+TEST(CellTest, RowCol2Field)
+{
+   Field field = 0;
+   for (auto row : IndexAll)
+   {
+      for (auto col : IndexAll)
+      {
+         const auto f = Cell::rowCol2Field(row, col);
+         ASSERT_EQ(field, f);
+         const Cell &cell = Cell::get(f);
+         ASSERT_EQ(field, cell.field);
+
+         ++field;
+      }
+   }
+   ASSERT_EQ(field, NumField);
+}

@@ -51,3 +51,8 @@ const Cell &Cell::get(Field f)
    }
    return s_allCells.at(f);
 }
+
+Field Cell::rowCol2Field(Index row, Index col)
+{
+   return row * NumIndex + col;
+}
