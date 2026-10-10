@@ -79,3 +79,28 @@ TEST(GridTest, CheckValidDoubleValue)
    grid.setGiven(3, 1);
    ASSERT_ANY_THROW(grid.checkValidSudoku());
 }
+
+TEST(GridTest, update)
+{
+   Grid grid;
+
+   grid.setGiven(0, 0, 2);
+   grid.setGiven(0, 1, 5);
+   grid.setGiven(0, 2, 8);
+   grid.setGiven(1, 3, 5);
+   grid.setGiven(1, 4, 8);
+   grid.setGiven(1, 7, 7);
+   grid.setGiven(2, 0, 3);
+   grid.setGiven(2, 2, 9);
+   grid.setGiven(2, 4, 4);
+   grid.setGiven(4, 1, 6);
+   grid.setGiven(6, 1, 4);
+   grid.setGiven(6, 2, 6);
+
+   grid.update();
+   ASSERT_NO_THROW(grid.checkValidSudoku());
+   ASSERT_EQ(grid.getNumCandidates(), 433);
+   auto found = grid.tryGetSolvedValue(2, 1);
+   ASSERT_TRUE(found.has_value());
+   ASSERT_EQ(found.value(), 7);
+}

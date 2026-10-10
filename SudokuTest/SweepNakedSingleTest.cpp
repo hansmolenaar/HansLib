@@ -77,3 +77,26 @@ TEST(SweepNakedSingleTest, Diagonal)
    ASSERT_TRUE(grid.isSolved());
    ASSERT_NO_THROW(grid.checkValidSudoku());
 }
+
+TEST(SweepNakedSingleTest, SweepExample1)
+{
+   Grid grid;
+
+   grid.setGiven(0, 0, 2);
+   grid.setGiven(0, 1, 5);
+   grid.setGiven(0, 2, 8);
+   grid.setGiven(1, 7, 7);
+   grid.setGiven(2, 0, 3);
+   grid.setGiven(2, 2, 9);
+   grid.setGiven(2, 4, 4);
+   grid.setGiven(4, 1, 6);
+   grid.setGiven(6, 1, 4);
+   grid.setGiven(6, 2, 6);
+
+   for (int s = 0; s < 10; ++s)
+   {
+      SweepNakedSingle().sweep(grid);
+   }
+   ASSERT_NO_THROW(grid.checkValidSudoku());
+   ASSERT_EQ(grid.getNumCandidates(), 463);
+}

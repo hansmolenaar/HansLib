@@ -1,5 +1,4 @@
 #include "SweepNakedSingle.h"
-#include "Cell.h"
 #include "Grid.h"
 #include "House.h"
 

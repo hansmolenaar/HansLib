@@ -1,6 +1,7 @@
 #include "Grid.h"
 #include "House.h"
 #include "MyAssert.h"
+#include "SweepNakedSingle.h"
 
 #include <algorithm>
 #include <bitset>
@@ -23,6 +24,11 @@ void Grid::setGiven(Index row, Index col, Value value)
    setGiven(Cell::rowCol2Field(row, col), value);
 }
 
+void Grid::setValue(Field field, Value value)
+{
+   m_candidates.at(field).setOnly({value});
+}
+
 Index Grid::getNumCandidates() const
 {
    return std::accumulate(m_candidates.begin(), m_candidates.end(), static_cast<Index>(0),
@@ -32,6 +38,12 @@ Index Grid::getNumCandidates() const
 std::optional<Value> Grid::tryGetSolvedValue(Field field) const
 {
    return m_candidates.at(field).tryGetSolvedValue();
+}
+
+std::optional<Value> Grid::tryGetSolvedValue(Index row, Index col) const
+
+{
+   return tryGetSolvedValue(Cell::rowCol2Field(row, col));
 }
 
 bool Grid::isSolved() const
@@ -89,4 +101,21 @@ void Grid::checkValidSudoku() const
          }
       }
    }
+}
+
+bool Grid::isCandidateInCell(Field field, Value value) const
+{
+   return m_candidates.at(field).contains(value);
+}
+
+void Grid::update()
+{
+   auto nCandidatesPrv = getNumCandidates();
+   auto nCandidatesCur = nCandidatesPrv;
+   do
+   {
+      SweepNakedSingle().sweep(*this);
+      nCandidatesPrv = nCandidatesCur;
+      nCandidatesCur = getNumCandidates();
+   } while (nCandidatesCur < nCandidatesPrv);
 }
