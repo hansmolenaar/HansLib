@@ -6,8 +6,8 @@ namespace Sudoku
 {
 using Value = unsigned short; // 1..9
 constexpr Value NumValue{9};
-constexpr Value ValueUndefined{0};
-constexpr auto ValueAll = std::ranges::iota_view{static_cast<Value>(1), NumValue};
+constexpr Value ValueUndefined{10};
+constexpr auto ValueAll = std::ranges::iota_view{static_cast<Value>(1), ValueUndefined};
 
 using Index = unsigned short; // 0..8
 constexpr Index NumIndex(9);

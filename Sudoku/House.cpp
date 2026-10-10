@@ -62,3 +62,37 @@ const House &House::getBox(Index box)
    }
    return housesByBox.at(box);
 }
+
+const House &House::get(HouseType typ, Index idx)
+{
+   if (typ == HouseType::Row)
+   {
+      return getRow(idx);
+   }
+   else if (typ == HouseType::Col)
+   {
+      return getCol(idx);
+   }
+   else
+   {
+      MyAssert(typ == HouseType::Box);
+      return getBox(idx);
+   }
+}
+
+const std::vector<House> &House::getAllHouses()
+{
+   static std::vector<House> housesAll;
+   if (housesAll.empty())
+   {
+      for (auto type : HouseTypeAll)
+      {
+         for (Index row : IndexAll)
+         {
+            housesAll.push_back(get(type, row));
+         }
+      }
+      MyAssert(housesAll.size() == HouseNum);
+   }
+   return housesAll;
+}

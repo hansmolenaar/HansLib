@@ -3,6 +3,7 @@
 #include "MyAssert.h"
 
 #include <algorithm>
+#include <bitset>
 #include <numeric>
 #include <ostream>
 #include <string>
@@ -64,12 +65,28 @@ void Grid::checkValidSudoku() const
 {
 
    // Check if value within bounds
+   constexpr Value lwr = ValueAll.front();
+   constexpr Value upr = ValueAll.back();
    for (const auto f : FieldAll)
    {
       const auto value = tryGetSolvedValue(f);
       if (value.has_value())
       {
-         MyAssert(value >= ValueAll.front() && value <= ValueAll.back());
+         MyAssert(value >= lwr && value <= upr);
+      }
+   }
+
+   for (const auto &house : House::getAllHouses())
+   {
+      std::bitset<NumCellsInHouse + 1> isUsed; // all 0, 1 extra because value is 1-based
+      for (const auto &cell : house.cells)
+      {
+         const auto value = tryGetSolvedValue(cell.field);
+         if (value.has_value())
+         {
+            MyAssert(!isUsed.test(value.value()));
+            isUsed.set(value.value());
+         }
       }
    }
 }

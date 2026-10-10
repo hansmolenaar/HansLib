@@ -56,3 +56,9 @@ TEST(GridTest, Solved)
    const Grid solved = TestModels::getSolved();
    ASSERT_TRUE(solved.isSolved());
 }
+
+TEST(GridTest, CheckValidOK)
+{
+   const Grid solved = TestModels::getSolved();
+   ASSERT_NO_THROW(solved.checkValidSudoku());
+}
