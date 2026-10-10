@@ -44,7 +44,7 @@ const Cell &Cell::get(Field f)
    static std::vector<Cell> s_allCells;
    if (s_allCells.empty())
    {
-      for (Field f = 0; f < NumField; ++f)
+      for (Field f : FieldAll)
       {
          s_allCells.emplace_back(f);
       }

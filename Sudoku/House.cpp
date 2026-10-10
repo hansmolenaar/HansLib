@@ -14,7 +14,7 @@ template <typename F> std::vector<House> getHousesBy(F &&selector)
 {
    std::vector<House> housesByIdx(NumIndex);
    std::array<std::vector<Cell>, NumIndex> idx2cell;
-   for (Field f = 0; f < NumField; ++f)
+   for (Field f : FieldAll)
    {
       const auto &cell = Cell::get(f);
       idx2cell.at(selector(cell)).push_back(cell);

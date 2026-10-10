@@ -14,7 +14,7 @@ template <typename F> void UnsetConnectedCells(Grid &grid, Field fieldSkip, Valu
    {
       if (cell.field != fieldSkip)
       {
-         grid.unset(cell.field, value);
+         grid.unsetCandidate(cell.field, value);
       }
    }
 }
@@ -23,7 +23,7 @@ template <typename F> void UnsetConnectedCells(Grid &grid, Field fieldSkip, Valu
 
 void SweepNakedSingle::sweep(Grid &grid)
 {
-   for (Field field = 0; field < NumField; ++field)
+   for (Field field : FieldAll)
    {
       const auto value = grid.tryGetSolvedValue(field);
       if (value)

@@ -1,5 +1,6 @@
 #include "Grid.h"
 #include "House.h"
+#include "MyAssert.h"
 
 #include <algorithm>
 #include <numeric>
@@ -7,6 +8,8 @@
 #include <string>
 
 using namespace Sudoku;
+using namespace Utilities;
+
 namespace str = std::ranges;
 
 void Grid::setGiven(Field field, Value value)
@@ -37,7 +40,7 @@ bool Grid::isSolved() const
 
 std::ostream &operator<<(std::ostream &os, const Sudoku::Grid &grid)
 {
-   for (Index row = 0; row < NumIndex; ++row)
+   for (const auto row : IndexAll)
    {
       const House &house = House::getRow(row);
       os << "|";
@@ -52,7 +55,21 @@ std::ostream &operator<<(std::ostream &os, const Sudoku::Grid &grid)
    return os;
 }
 
-void Grid ::unset(Field field, Value value)
+void Grid ::unsetCandidate(Field field, Value value)
 {
    m_candidates.at(field).unsetValue(value);
+}
+
+void Grid::checkValidSudoku() const
+{
+
+   // Check if value within bounds
+   for (const auto f : FieldAll)
+   {
+      const auto value = tryGetSolvedValue(f);
+      if (value.has_value())
+      {
+         MyAssert(value >= ValueAll.front() && value <= ValueAll.back());
+      }
+   }
 }

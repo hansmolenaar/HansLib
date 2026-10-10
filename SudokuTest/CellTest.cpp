@@ -26,7 +26,7 @@ TEST(CellTest, All)
    std::array<std::vector<Field>, NumIndex> col2field;
    std::array<std::vector<Field>, NumIndex> box2field;
 
-   for (Field f = 0; f < NumField; ++f)
+   for (Field f : FieldAll)
    {
       const Cell cell(f);
       ASSERT_EQ(cell.field, f);

@@ -13,7 +13,7 @@ Grid TestModels::getSolved()
    };
 
    Grid result;
-   for (Index f = 0; f < NumField; ++f)
+   for (const Field f : FieldAll)
    {
       result.setGiven(f, diagramValues.at(f));
    }
