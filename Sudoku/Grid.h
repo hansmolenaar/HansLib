@@ -10,8 +10,7 @@ class Grid
 {
  public:
    void update(); // set candidates from givens
-   void setGiven(Field, Value);
-   void setGiven(Index, Index, Value);
+   void setValue(Index, Index, Value);
    void setValue(Field, Value); // TODO remove setGiven
    void unsetCandidate(Field, Value);
    Index getNumCandidates() const;

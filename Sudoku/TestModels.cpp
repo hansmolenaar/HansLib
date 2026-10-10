@@ -15,7 +15,7 @@ Grid TestModels::getSolved()
    Grid result;
    for (const Field f : FieldAll)
    {
-      result.setGiven(f, diagramValues.at(f));
+      result.setValue(f, diagramValues.at(f));
    }
    return result;
 }

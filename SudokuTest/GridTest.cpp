@@ -19,7 +19,7 @@ TEST(GridTest, DefaultConstructor)
 TEST(GridTest, SetGiven)
 {
    Grid grid;
-   grid.setGiven(5, 7);
+   grid.setValue(5, 7);
    ASSERT_EQ(grid.getNumCandidates(), (NumField - 1) * NumIndex + 1);
    ASSERT_EQ(grid.tryGetSolvedValue(5).value(), 7);
    ASSERT_FALSE(grid.tryGetSolvedValue(7).has_value());
@@ -34,15 +34,15 @@ TEST(GridTest, ToOStream)
    std::string retval = stream.str();
    ASSERT_EQ(str::count_if(retval, [](char c) { return c == ValueUndefinedChar; }), NumField);
 
-   grid.setGiven(1, 9);
+   grid.setValue(1, 9);
    stream.str("");
    stream << grid;
    retval = stream.str();
    ASSERT_EQ(str::count_if(retval, [](char c) { return c == ValueUndefinedChar; }), NumField - 1);
    ASSERT_EQ(str::count_if(retval, [](char c) { return c == '9'; }), 1);
 
-   grid.setGiven(10, 8);
-   grid.setGiven(20, 8);
+   grid.setValue(10, 8);
+   grid.setValue(20, 8);
    stream.str("");
    stream << grid;
    retval = stream.str();
@@ -70,13 +70,13 @@ TEST(GridTest, CheckValidDoubleValue)
 {
    Grid grid;
 
-   grid.setGiven(1, 1);
+   grid.setValue(1, 1);
    ASSERT_NO_THROW(grid.checkValidSudoku());
 
-   grid.setGiven(2, 2);
+   grid.setValue(2, 2);
    ASSERT_NO_THROW(grid.checkValidSudoku());
 
-   grid.setGiven(3, 1);
+   grid.setValue(3, 1);
    ASSERT_ANY_THROW(grid.checkValidSudoku());
 }
 
@@ -84,18 +84,18 @@ TEST(GridTest, update)
 {
    Grid grid;
 
-   grid.setGiven(0, 0, 2);
-   grid.setGiven(0, 1, 5);
-   grid.setGiven(0, 2, 8);
-   grid.setGiven(1, 3, 5);
-   grid.setGiven(1, 4, 8);
-   grid.setGiven(1, 7, 7);
-   grid.setGiven(2, 0, 3);
-   grid.setGiven(2, 2, 9);
-   grid.setGiven(2, 4, 4);
-   grid.setGiven(4, 1, 6);
-   grid.setGiven(6, 1, 4);
-   grid.setGiven(6, 2, 6);
+   grid.setValue(0, 0, 2);
+   grid.setValue(0, 1, 5);
+   grid.setValue(0, 2, 8);
+   grid.setValue(1, 3, 5);
+   grid.setValue(1, 4, 8);
+   grid.setValue(1, 7, 7);
+   grid.setValue(2, 0, 3);
+   grid.setValue(2, 2, 9);
+   grid.setValue(2, 4, 4);
+   grid.setValue(4, 1, 6);
+   grid.setValue(6, 1, 4);
+   grid.setValue(6, 2, 6);
 
    grid.update();
    ASSERT_NO_THROW(grid.checkValidSudoku());

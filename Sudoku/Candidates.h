@@ -11,7 +11,6 @@ namespace Sudoku
 class Candidates
 {
  public:
-   void setGiven(Value);
    void setOnly(std::initializer_list<Value>);
    void unsetValue(Value);
    bool isSolved() const;

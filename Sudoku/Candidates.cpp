@@ -12,12 +12,6 @@ bool Candidates::contains(Value v) const
    return str::find(m_candidates, v) != m_candidates.end();
 }
 
-void Candidates::setGiven(Value v)
-{
-   Utilities::MyAssert(size() == NumIndex);
-   setOnly({v});
-}
-
 void Candidates::unsetValue(Value v)
 {
    const auto found = str::find(m_candidates, v);

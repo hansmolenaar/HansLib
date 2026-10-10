@@ -13,7 +13,7 @@ TEST(SweepNakedSingleTest, RowSimple)
    Grid grid;
    for (Field f = 1; f < NumIndex; ++f)
    {
-      grid.setGiven(f, f + 1);
+      grid.setValue(f, f + 1);
    }
 
    SweepNakedSingle().sweep(grid);
@@ -30,7 +30,7 @@ TEST(SweepNakedSingleTest, ColSimple)
    {
       if (row != 3)
       {
-         grid.setGiven(row, col, row + 1);
+         grid.setValue(row, col, row + 1);
       }
    }
 
@@ -52,7 +52,7 @@ TEST(SweepNakedSingleTest, BoxSimple)
       if (c.field != fieldToSkip)
       {
          ++val;
-         grid.setGiven(c.field, val);
+         grid.setValue(c.field, val);
       }
    }
 
@@ -68,7 +68,7 @@ TEST(SweepNakedSingleTest, Diagonal)
    {
       if (cell.row != cell.col)
       {
-         grid.setGiven(cell.field, solved.tryGetSolvedValue(cell.field).value());
+         grid.setValue(cell.field, solved.tryGetSolvedValue(cell.field).value());
       }
    }
 
@@ -82,16 +82,16 @@ TEST(SweepNakedSingleTest, SweepExample1)
 {
    Grid grid;
 
-   grid.setGiven(0, 0, 2);
-   grid.setGiven(0, 1, 5);
-   grid.setGiven(0, 2, 8);
-   grid.setGiven(1, 7, 7);
-   grid.setGiven(2, 0, 3);
-   grid.setGiven(2, 2, 9);
-   grid.setGiven(2, 4, 4);
-   grid.setGiven(4, 1, 6);
-   grid.setGiven(6, 1, 4);
-   grid.setGiven(6, 2, 6);
+   grid.setValue(0, 0, 2);
+   grid.setValue(0, 1, 5);
+   grid.setValue(0, 2, 8);
+   grid.setValue(1, 7, 7);
+   grid.setValue(2, 0, 3);
+   grid.setValue(2, 2, 9);
+   grid.setValue(2, 4, 4);
+   grid.setValue(4, 1, 6);
+   grid.setValue(6, 1, 4);
+   grid.setValue(6, 2, 6);
 
    for (int s = 0; s < 10; ++s)
    {

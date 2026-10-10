@@ -14,14 +14,9 @@ using namespace Utilities;
 
 namespace str = std::ranges;
 
-void Grid::setGiven(Field field, Value value)
+void Grid::setValue(Index row, Index col, Value value)
 {
-   m_candidates.at(field).setGiven(value);
-}
-
-void Grid::setGiven(Index row, Index col, Value value)
-{
-   setGiven(Cell::rowCol2Field(row, col), value);
+   setValue(Cell::rowCol2Field(row, col), value);
 }
 
 void Grid::setValue(Field field, Value value)

@@ -16,7 +16,7 @@ TEST(CandidatesTest, DefaultConstructor)
 TEST(CandidatesTest, SetGiven)
 {
    Candidates candidates;
-   candidates.setGiven(4);
+   candidates.setOnly({4});
    ASSERT_TRUE(candidates.isSolved());
    ASSERT_EQ(candidates.size(), 1);
    ASSERT_TRUE(candidates.contains(4));
