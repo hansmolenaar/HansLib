@@ -1,6 +1,8 @@
 #include "TestModels.h"
+#include "MyAssert.h"
 
 using namespace Sudoku;
+using namespace Utilities;
 
 Grid TestModels::getSolved()
 {
@@ -16,6 +18,22 @@ Grid TestModels::getSolved()
    for (const Field f : FieldAll)
    {
       result.setValue(f, diagramValues.at(f));
+   }
+   return result;
+}
+
+Grid TestModels::fromString(const std::string &str)
+{
+   MyAssert(str.length() == NumField);
+   Grid result;
+   for (Field f : FieldAll)
+   {
+      const char c = str[f];
+      if (c != ValueUndefinedChar)
+      {
+         const Value value = c - '0';
+         result.setValue(f, value);
+      }
    }
    return result;
 }

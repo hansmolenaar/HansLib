@@ -105,12 +105,6 @@ bool Grid::isCandidateInCell(Field field, Value value) const
 
 void Grid::update()
 {
-   auto nCandidatesPrv = getNumCandidates();
-   auto nCandidatesCur = nCandidatesPrv;
-   do
-   {
-      SweepNakedSingle().sweep(*this);
-      nCandidatesPrv = nCandidatesCur;
-      nCandidatesCur = getNumCandidates();
-   } while (nCandidatesCur < nCandidatesPrv);
+   SweepNakedSingle sweeper;
+   ISweep::iterate(sweeper, *this);
 }
