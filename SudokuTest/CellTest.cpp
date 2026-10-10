@@ -69,3 +69,13 @@ TEST(CellTest, GetFromRowCol)
    ASSERT_EQ(cell.row, row);
    ASSERT_EQ(cell.col, col);
 }
+
+TEST(CellTest, GetAll)
+{
+   std::set<Field> fields;
+   for (const Cell &cell : Cell::getAll())
+   {
+      fields.insert(cell.field);
+   }
+   ASSERT_EQ(fields.size(), NumField);
+}

@@ -39,7 +39,7 @@ Cell::Cell(Field f)
    MyAssert(box < NumIndex);
 }
 
-const Cell &Cell::get(Field f)
+const std::vector<Cell> &Cell::getAll()
 {
    static std::vector<Cell> s_allCells;
    if (s_allCells.empty())
@@ -49,7 +49,12 @@ const Cell &Cell::get(Field f)
          s_allCells.emplace_back(f);
       }
    }
-   return s_allCells.at(f);
+   return s_allCells;
+}
+
+const Cell &Cell::get(Field f)
+{
+   return getAll().at(f);
 }
 
 const Cell &Cell::getFromRowCol(Index row, Index col)

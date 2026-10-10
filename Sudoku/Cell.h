@@ -2,6 +2,8 @@
 
 #include "SudokuDefines.h"
 
+#include <vector>
+
 namespace Sudoku
 {
 struct Cell
@@ -14,6 +16,7 @@ struct Cell
    Index col = IndexUndefined;
    Index box = IndexUndefined;
 
+   static const std::vector<Cell> &getAll();
    static const Cell &get(Field);
    static const Cell &getFromRowCol(Index, Index);
    static Field rowCol2Field(Index, Index);
