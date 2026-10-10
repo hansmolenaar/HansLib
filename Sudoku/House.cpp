@@ -92,7 +92,7 @@ const std::vector<House> &House::getAllHouses()
             housesAll.push_back(get(type, row));
          }
       }
-      MyAssert(housesAll.size() == HouseNum);
+      MyAssert(housesAll.size() == NumHouse);
    }
    return housesAll;
 }

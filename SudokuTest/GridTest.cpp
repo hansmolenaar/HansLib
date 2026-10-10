@@ -59,6 +59,23 @@ TEST(GridTest, Solved)
 
 TEST(GridTest, CheckValidOK)
 {
-   const Grid solved = TestModels::getSolved();
-   ASSERT_NO_THROW(solved.checkValidSudoku());
+   Grid grid;
+   ASSERT_NO_THROW(grid.checkValidSudoku());
+
+   grid = TestModels::getSolved();
+   ASSERT_NO_THROW(grid.checkValidSudoku());
+}
+
+TEST(GridTest, CheckValidDoubleValue)
+{
+   Grid grid;
+
+   grid.setGiven(1, 1);
+   ASSERT_NO_THROW(grid.checkValidSudoku());
+
+   grid.setGiven(2, 2);
+   ASSERT_NO_THROW(grid.checkValidSudoku());
+
+   grid.setGiven(3, 1);
+   ASSERT_ANY_THROW(grid.checkValidSudoku());
 }

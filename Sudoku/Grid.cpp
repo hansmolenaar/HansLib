@@ -78,7 +78,7 @@ void Grid::checkValidSudoku() const
 
    for (const auto &house : House::getAllHouses())
    {
-      std::bitset<NumCellsInHouse + 1> isUsed; // all 0, 1 extra because value is 1-based
+      std::bitset<NumValue + 1> isUsed; // all 0; 1 extra because Value is 1-based
       for (const auto &cell : house.cells)
       {
          const auto value = tryGetSolvedValue(cell.field);
