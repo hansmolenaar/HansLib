@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Candidates.h"
+#include "CandidatesGrid.h"
 #include <array>
 #include <optional>
 
@@ -21,7 +21,7 @@ class Grid
    bool isCandidateInCell(Field, Value) const;
 
  private:
-   std::array<Candidates, NumField> m_candidates;
+   CandidatesGrid m_candidates;
 };
 } // namespace Sudoku
 

@@ -5,7 +5,6 @@
 
 #include <algorithm>
 #include <bitset>
-#include <numeric>
 #include <ostream>
 #include <string>
 
@@ -21,18 +20,17 @@ void Grid::setValue(Index row, Index col, Value value)
 
 void Grid::setValue(Field field, Value value)
 {
-   m_candidates.at(field).setOnly({value});
+   m_candidates.setCandidates(field, {value});
 }
 
 Index Grid::getNumCandidates() const
 {
-   return std::accumulate(m_candidates.begin(), m_candidates.end(), static_cast<Index>(0),
-                          [](Index acc, const Candidates &c) { return acc + c.size(); });
+   return m_candidates.getNumCandidates();
 }
 
 std::optional<Value> Grid::tryGetSolvedValue(Field field) const
 {
-   return m_candidates.at(field).tryGetSolvedValue();
+   return m_candidates[field].tryGetSolvedValue();
 }
 
 std::optional<Value> Grid::tryGetSolvedValue(Index row, Index col) const
@@ -43,7 +41,7 @@ std::optional<Value> Grid::tryGetSolvedValue(Index row, Index col) const
 
 bool Grid::isSolved() const
 {
-   return str::all_of(m_candidates, [](const auto &c) { return c.isSolved(); });
+   return str::all_of(FieldAll, [this](Field f) { return m_candidates[f].isSolved(); });
 }
 
 std::ostream &operator<<(std::ostream &os, const Sudoku::Grid &grid)
@@ -65,7 +63,7 @@ std::ostream &operator<<(std::ostream &os, const Sudoku::Grid &grid)
 
 void Grid ::unsetCandidate(Field field, Value value)
 {
-   m_candidates.at(field).unsetValue(value);
+   m_candidates.removeCandidate(field, value);
 }
 
 void Grid::checkValidSudoku() const
@@ -100,7 +98,7 @@ void Grid::checkValidSudoku() const
 
 bool Grid::isCandidateInCell(Field field, Value value) const
 {
-   return m_candidates.at(field).contains(value);
+   return m_candidates[field].contains(value);
 }
 
 void Grid::update()
