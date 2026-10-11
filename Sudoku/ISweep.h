@@ -2,14 +2,14 @@
 
 namespace Sudoku
 {
-class Grid;
+class CandidatesGrid;
 
 class ISweep
 {
  public:
    virtual ~ISweep() = default;
-   virtual void sweep(Grid &) = 0;
-   static void iterate(ISweep &, Grid &);
+   virtual void sweep(CandidatesGrid &) = 0;
+   static void iterate(ISweep &, CandidatesGrid &);
 };
 
 } // namespace Sudoku

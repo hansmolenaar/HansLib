@@ -11,7 +11,7 @@ class SweepCombined : public ISweep
 {
  public:
    SweepCombined(std::initializer_list<ISweep *>);
-   void sweep(Grid &) override;
+   void sweep(CandidatesGrid &) override;
 
  private:
    std::vector<ISweep *> m_sweepers;

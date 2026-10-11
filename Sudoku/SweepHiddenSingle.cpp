@@ -1,5 +1,5 @@
 #include "SweepHiddenSingle.h"
-#include "Grid.h"
+#include "CandidatesGrid.h"
 #include "House.h"
 
 using namespace Sudoku;
@@ -7,19 +7,19 @@ using namespace Sudoku;
 namespace
 {
 
-std::optional<Field> tryFindUniqueCellForValue(const Grid &grid, const House &house, Value value)
+std::optional<Field> tryFindUniqueCellForValue(const CandidatesGrid &grid, const House &house, Value value)
 {
    std::optional<Field> result;
    for (const auto &cell : house.cells)
    {
-      if (grid.isCandidateInCell(cell.field, value))
+      if (grid[cell.field].contains(value))
       {
          if (result.has_value())
          {
             // More then one...
             return {};
          }
-         const auto solved = grid.tryGetSolvedValue(cell.field);
+         const auto solved = grid[cell.field].tryGetSolvedValue();
          if (solved.has_value())
          {
             // Already treated, ready
@@ -34,7 +34,7 @@ std::optional<Field> tryFindUniqueCellForValue(const Grid &grid, const House &ho
 
 } // namespace
 
-void SweepHiddenSingle::sweep(Grid &grid)
+void SweepHiddenSingle::sweep(CandidatesGrid &grid)
 {
    for (const House &house : House::getAllHouses())
    {
@@ -44,7 +44,7 @@ void SweepHiddenSingle::sweep(Grid &grid)
          if (candidateInField.has_value())
          {
             // only cell with this value as candidate
-            grid.setValue(candidateInField.value(), value);
+            grid.setCandidates(candidateInField.value(), {value});
          }
       }
    }

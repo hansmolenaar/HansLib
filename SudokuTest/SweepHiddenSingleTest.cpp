@@ -37,7 +37,7 @@ TEST(SweepHidddenSingleTest, SweepExample1)
    ASSERT_NO_THROW(grid.checkValidSudoku());
    ASSERT_EQ(grid.getNumCandidates(), 260);
 
-   SweepHiddenSingle().sweep(grid);
+   SweepHiddenSingle().sweep(grid.get());
    ASSERT_EQ(grid.getNumCandidates(), 233);
 
    grid.update();

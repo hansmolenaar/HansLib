@@ -16,7 +16,7 @@ TEST(SweepNakedSingleTest, RowSimple)
       grid.setValue(f, f + 1);
    }
 
-   SweepNakedSingle().sweep(grid);
+   SweepNakedSingle().sweep(grid.get());
    ASSERT_EQ(grid.tryGetSolvedValue(0).value(), 1);
 }
 
@@ -34,7 +34,7 @@ TEST(SweepNakedSingleTest, ColSimple)
       }
    }
 
-   SweepNakedSingle().sweep(grid);
+   SweepNakedSingle().sweep(grid.get());
    ASSERT_EQ(grid.tryGetSolvedValue(cell.field).value(), row + 1);
 }
 
@@ -56,7 +56,7 @@ TEST(SweepNakedSingleTest, BoxSimple)
       }
    }
 
-   SweepNakedSingle().sweep(grid);
+   SweepNakedSingle().sweep(grid.get());
    ASSERT_EQ(grid.tryGetSolvedValue(fieldToSkip).value(), 9);
 }
 
@@ -72,7 +72,7 @@ TEST(SweepNakedSingleTest, Diagonal)
       }
    }
 
-   SweepNakedSingle().sweep(grid);
+   SweepNakedSingle().sweep(grid.get());
 
    ASSERT_TRUE(grid.isSolved());
    ASSERT_NO_THROW(grid.checkValidSudoku());
@@ -95,7 +95,7 @@ TEST(SweepNakedSingleTest, SweepExample1)
 
    for (int s = 0; s < 10; ++s)
    {
-      SweepNakedSingle().sweep(grid);
+      SweepNakedSingle().sweep(grid.get());
    }
    ASSERT_NO_THROW(grid.checkValidSudoku());
    ASSERT_EQ(grid.getNumCandidates(), 463);

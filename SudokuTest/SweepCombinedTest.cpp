@@ -29,7 +29,7 @@ TEST(SweepCombinedTest, SweepExample1)
    Grid grid = TestModels::fromString(model_1);
    grid.update();
    ASSERT_EQ(grid.getNumCandidates(), 213);
-   ISweep::iterate(sweepCombined, grid);
+   ISweep::iterate(sweepCombined, grid.get());
    ASSERT_NO_THROW(grid.checkValidSudoku());
    ASSERT_TRUE(grid.isSolved());
 }
@@ -39,7 +39,7 @@ TEST(SweepCombinedTest, SweepExample2)
    Grid grid = TestModels::fromString(model_2);
    grid.update();
    ASSERT_EQ(grid.getNumCandidates(), 170);
-   ISweep::iterate(sweepCombined, grid);
+   ISweep::iterate(sweepCombined, grid.get());
    ASSERT_NO_THROW(grid.checkValidSudoku());
    ASSERT_TRUE(grid.isSolved());
 }
@@ -49,7 +49,7 @@ TEST(SweepCombinedTest, SweepExample3)
    Grid grid = TestModels::fromString(model_3);
    grid.update();
    ASSERT_EQ(grid.getNumCandidates(), 238);
-   ISweep::iterate(sweepCombined, grid);
+   ISweep::iterate(sweepCombined, grid.get());
    ASSERT_NO_THROW(grid.checkValidSudoku());
    ASSERT_TRUE(grid.isSolved());
 }
@@ -59,7 +59,7 @@ TEST(SweepCombinedTest, SweepExample4)
    Grid grid = TestModels::fromString(model_4);
    grid.update();
    ASSERT_EQ(grid.getNumCandidates(), 269);
-   ISweep::iterate(sweepCombined, grid);
+   ISweep::iterate(sweepCombined, grid.get());
    ASSERT_NO_THROW(grid.checkValidSudoku());
    ASSERT_TRUE(grid.isSolved());
 }
@@ -69,7 +69,7 @@ TEST(SweepCombinedTest, SweepExample5)
    Grid grid = TestModels::fromString(model_5);
    grid.update();
    ASSERT_EQ(grid.getNumCandidates(), 247);
-   ISweep::iterate(sweepCombined, grid);
+   ISweep::iterate(sweepCombined, grid.get());
    ASSERT_NO_THROW(grid.checkValidSudoku());
    ASSERT_TRUE(grid.isSolved());
 }
@@ -79,7 +79,7 @@ TEST(SweepCombinedTest, SweepExample6)
    Grid grid = TestModels::fromString(model_6);
    grid.update();
    ASSERT_EQ(grid.getNumCandidates(), 224);
-   ISweep::iterate(sweepCombined, grid);
+   ISweep::iterate(sweepCombined, grid.get());
    ASSERT_NO_THROW(grid.checkValidSudoku());
    ASSERT_TRUE(grid.isSolved());
 }

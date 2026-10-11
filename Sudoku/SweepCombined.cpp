@@ -6,7 +6,7 @@ SweepCombined::SweepCombined(std::initializer_list<ISweep *> sweepers) : m_sweep
 {
 }
 
-void SweepCombined::sweep(Grid &grid)
+void SweepCombined::sweep(CandidatesGrid &grid)
 {
    for (auto *s : m_sweepers)
    {

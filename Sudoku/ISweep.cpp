@@ -1,9 +1,9 @@
 #include "ISweep.h"
-#include "Grid.h"
+#include "CandidatesGrid.h"
 
 using namespace Sudoku;
 
-void ISweep::iterate(ISweep &sweeper, Grid &grid)
+void ISweep::iterate(ISweep &sweeper, CandidatesGrid &grid)
 {
    auto nCandidatesPrv = grid.getNumCandidates();
    auto nCandidatesCur = nCandidatesPrv;

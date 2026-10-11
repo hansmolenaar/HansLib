@@ -104,5 +104,5 @@ bool Grid::isCandidateInCell(Field field, Value value) const
 void Grid::update()
 {
    SweepNakedSingle sweeper;
-   ISweep::iterate(sweeper, *this);
+   ISweep::iterate(sweeper, m_candidates);
 }

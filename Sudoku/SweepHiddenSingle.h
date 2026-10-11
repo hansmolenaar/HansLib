@@ -4,12 +4,11 @@
 
 namespace Sudoku
 {
-class Grid;
 
 class SweepHiddenSingle : public ISweep
 {
  public:
-   void sweep(Grid &) override;
+   void sweep(CandidatesGrid &) override;
 };
 
 } // namespace Sudoku
