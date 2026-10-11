@@ -4,6 +4,7 @@
 #include <algorithm>
 
 using namespace Sudoku;
+using namespace Utilities;
 
 namespace str = std::ranges;
 
@@ -18,6 +19,7 @@ void Candidates::unsetValue(Value v)
    const bool succes = found != m_candidates.end();
    if (succes)
    {
+      MyAssert(size() > 1);
       m_candidates.erase(found);
    }
 }
