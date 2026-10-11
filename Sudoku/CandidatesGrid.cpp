@@ -1,8 +1,11 @@
 #include "CandidatesGrid.h"
+#include "Cell.h"
+#include "MyAssert.h"
 
 #include <numeric>
 
 using namespace Sudoku;
+using namespace Utilities;
 
 Index CandidatesGrid::getNumCandidates() const
 {
@@ -18,4 +21,16 @@ void CandidatesGrid::setCandidates(Field field, std::initializer_list<Value> val
 void CandidatesGrid::removeCandidate(Field field, Value value)
 {
    m_candidates.at(field).unsetValue(value);
+}
+
+void CandidatesGrid::setGiven(Field field, Value value)
+{
+   MyAssert((*this)[field].size() == NumValue);
+   setCandidates(field, {value});
+}
+
+void CandidatesGrid::setGiven(Index row, Index col, Value value)
+{
+   const Field field = Cell::getFromRowCol(row, col).field;
+   setGiven(field, value);
 }

@@ -9,8 +9,8 @@ class Grid
 {
  public:
    void update(); // set candidates from givens
-   void setValue(Index, Index, Value);
-   void setValue(Field, Value); // TODO rename setGiven
+   void setGiven(Index, Index, Value);
+   void setGiven(Field, Value);
    void unsetCandidate(Field, Value);
    Index getNumCandidates() const;
    std::optional<Value> tryGetSolvedValue(Field) const;
@@ -18,6 +18,10 @@ class Grid
    bool isSolved() const;
    void checkValidSudoku() const; // throws if not valid
    bool isCandidateInCell(Field, Value) const;
+
+   // TESTING
+   // TODO can be reomved?
+   static Grid FromSolvedValues(const CandidatesGrid &);
 
    // TODO Remove me
    CandidatesGrid &get()

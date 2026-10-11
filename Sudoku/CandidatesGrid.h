@@ -9,6 +9,8 @@ class CandidatesGrid
  public:
    Index getNumCandidates() const;
 
+   void setGiven(Field, Value);
+   void setGiven(Index, Index, Value);
    void setCandidates(Field, std::initializer_list<Value>);
    void removeCandidate(Field, Value);
 

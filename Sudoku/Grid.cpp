@@ -13,12 +13,12 @@ using namespace Utilities;
 
 namespace str = std::ranges;
 
-void Grid::setValue(Index row, Index col, Value value)
+void Grid::setGiven(Index row, Index col, Value value)
 {
-   setValue(Cell::rowCol2Field(row, col), value);
+   setGiven(Cell::rowCol2Field(row, col), value);
 }
 
-void Grid::setValue(Field field, Value value)
+void Grid::setGiven(Field field, Value value)
 {
    m_candidates.setCandidates(field, {value});
 }
@@ -105,4 +105,18 @@ void Grid::update()
 {
    SweepNakedSingle sweeper;
    ISweep::iterate(sweeper, m_candidates);
+}
+
+Grid Grid::FromSolvedValues(const CandidatesGrid &cg)
+{
+   Grid result;
+   for (auto field : FieldAll)
+   {
+      const auto found = cg[field].tryGetSolvedValue();
+      if (found.has_value())
+      {
+         result.m_candidates.setGiven(field, found.value());
+      }
+   }
+   return result;
 }

@@ -4,7 +4,7 @@
 using namespace Sudoku;
 using namespace Utilities;
 
-Grid TestModels::getSolved()
+CandidatesGrid TestModels::getSolved()
 {
    const std::array<Value, NumField> diagramValues = {
        1, 2, 3, 4, 5, 6, 7, 8, 9, 4, 5, 6, 7, 8, 9, 1, 2, 3, 7, 8, 9, 1, 2, 3, 4, 5, 6,
@@ -14,10 +14,10 @@ Grid TestModels::getSolved()
        3, 4, 5, 6, 7, 8, 9, 1, 2, 6, 7, 8, 9, 1, 2, 3, 4, 5, 9, 1, 2, 3, 4, 5, 6, 7, 8,
    };
 
-   Grid result;
+   CandidatesGrid result;
    for (const Field f : FieldAll)
    {
-      result.setValue(f, diagramValues.at(f));
+      result.setGiven(f, diagramValues.at(f));
    }
    return result;
 }
@@ -32,7 +32,7 @@ Grid TestModels::fromString(const std::string &str)
       if (c != ValueUndefinedChar)
       {
          const Value value = c - '0';
-         result.setValue(f, value);
+         result.setGiven(f, value);
       }
    }
    return result;

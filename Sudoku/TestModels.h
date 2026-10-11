@@ -6,7 +6,7 @@ namespace Sudoku
 {
 namespace TestModels
 {
-Grid getSolved();
+CandidatesGrid getSolved();
 Grid fromString(const std::string &);
 }; // namespace TestModels
 
