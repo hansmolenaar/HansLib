@@ -1,13 +1,13 @@
 #include <gtest/gtest.h>
 
-#include "Grid.h"
+#include "CandidatesGrid.h"
 #include "SweepHiddenSingle.h"
 
 using namespace Sudoku;
 
 TEST(SweepHidddenSingleTest, SweepExample1)
 {
-   Grid grid;
+   CandidatesGrid grid;
 
    grid.setGiven(0, 6, 5);
    grid.setGiven(1, 0, 1);
@@ -34,10 +34,9 @@ TEST(SweepHidddenSingleTest, SweepExample1)
    grid.setGiven(8, 8, 9);
 
    grid.update();
-   ASSERT_NO_THROW(grid.checkValidSudoku());
    ASSERT_EQ(grid.getNumCandidates(), 260);
 
-   SweepHiddenSingle().sweep(grid.get());
+   SweepHiddenSingle().sweep(grid);
    ASSERT_EQ(grid.getNumCandidates(), 233);
 
    grid.update();

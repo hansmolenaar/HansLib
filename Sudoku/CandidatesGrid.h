@@ -13,6 +13,7 @@ class CandidatesGrid
    void setGiven(Index, Index, Value);
    void setCandidates(Field, std::initializer_list<Value>);
    void removeCandidate(Field, Value);
+   void update(); // set candidates from givens
 
    const Candidates &operator[](Field f) const
    {

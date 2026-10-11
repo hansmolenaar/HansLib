@@ -61,11 +61,6 @@ std::ostream &operator<<(std::ostream &os, const Sudoku::Grid &grid)
    return os;
 }
 
-void Grid ::unsetCandidate(Field field, Value value)
-{
-   m_candidates.removeCandidate(field, value);
-}
-
 void Grid::checkValidSudoku() const
 {
 
@@ -94,11 +89,6 @@ void Grid::checkValidSudoku() const
          }
       }
    }
-}
-
-bool Grid::isCandidateInCell(Field field, Value value) const
-{
-   return m_candidates[field].contains(value);
 }
 
 void Grid::update()

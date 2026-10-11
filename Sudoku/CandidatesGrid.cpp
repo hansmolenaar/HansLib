@@ -1,6 +1,7 @@
 #include "CandidatesGrid.h"
 #include "Cell.h"
 #include "MyAssert.h"
+#include "SweepNakedSingle.h"
 
 #include <numeric>
 
@@ -33,4 +34,10 @@ void CandidatesGrid::setGiven(Index row, Index col, Value value)
 {
    const Field field = Cell::getFromRowCol(row, col).field;
    setGiven(field, value);
+}
+
+void CandidatesGrid::update()
+{
+   SweepNakedSingle sweeper;
+   ISweep::iterate(sweeper, *this);
 }

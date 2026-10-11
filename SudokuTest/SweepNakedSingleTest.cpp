@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
+#include "CandidatesGrid.h"
 #include "Cell.h"
-#include "Grid.h"
 #include "House.h"
 #include "SweepNakedSingle.h"
 #include "TestModels.h"
@@ -81,7 +81,7 @@ TEST(SweepNakedSingleTest, Diagonal)
 
 TEST(SweepNakedSingleTest, SweepExample1)
 {
-   Grid grid;
+   CandidatesGrid grid;
 
    grid.setGiven(0, 0, 2);
    grid.setGiven(0, 1, 5);
@@ -96,8 +96,7 @@ TEST(SweepNakedSingleTest, SweepExample1)
 
    for (int s = 0; s < 10; ++s)
    {
-      SweepNakedSingle().sweep(grid.get());
+      SweepNakedSingle().sweep(grid);
    }
-   ASSERT_NO_THROW(grid.checkValidSudoku());
    ASSERT_EQ(grid.getNumCandidates(), 463);
 }

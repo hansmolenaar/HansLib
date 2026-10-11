@@ -11,13 +11,14 @@ class Grid
    void update(); // set candidates from givens
    void setGiven(Index, Index, Value);
    void setGiven(Field, Value);
-   void unsetCandidate(Field, Value);
+
    Index getNumCandidates() const;
    std::optional<Value> tryGetSolvedValue(Field) const;
+
    std::optional<Value> tryGetSolvedValue(Index, Index) const;
+
    bool isSolved() const;
    void checkValidSudoku() const; // throws if not valid
-   bool isCandidateInCell(Field, Value) const;
 
    // TESTING
    // TODO can be reomved?
