@@ -23,8 +23,6 @@ class CandidatesGrid
    {
       return m_candidates[f];
    }
-   // std::optional<Value> tryGetSolvedValue(Field) const;
-   // std::optional<Value> tryGetSolvedValue(Index, Index) const;
 
  private:
    std::array<Candidates, NumField> m_candidates;

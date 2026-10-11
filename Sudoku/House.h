@@ -15,8 +15,6 @@ enum class HouseType
 
 constexpr std::array<HouseType, 3> HouseTypeAll = {HouseType::Row, HouseType::Col, HouseType::Box};
 
-// TODO
-// constexpr Index NumCellsInHouse = NumIndex;
 constexpr Index NumHouse = 3 * NumIndex;
 
 struct House

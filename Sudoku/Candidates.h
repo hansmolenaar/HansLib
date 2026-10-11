@@ -12,7 +12,7 @@ class Candidates
 {
  public:
    void setOnly(std::initializer_list<Value>);
-   void unsetValue(Value);
+   void removeCandidate(Value);
    bool isSolved() const;
    Index size() const;
    std::optional<Value> tryGetSolvedValue() const;

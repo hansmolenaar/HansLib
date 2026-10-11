@@ -28,7 +28,7 @@ TEST(CandidatesTest, Unset)
 {
    Candidates candidates;
    ASSERT_TRUE(candidates.contains(4));
-   candidates.unsetValue(4);
+   candidates.removeCandidate(4);
    ASSERT_FALSE(candidates.contains(4));
 
    ASSERT_FALSE(candidates.isSolved());

@@ -15,7 +15,7 @@ class Grid
    Index getNumCandidates() const;
    std::optional<Value> tryGetSolvedValue(Field) const;
 
-   std::optional<Value> tryGetSolvedValue(Index, Index) const;
+   std::optional<Value> tryGetSolvedValue(Index, Index) const; // TODO do we need this one?
 
    bool isSolved() const;
    void checkValidSudoku() const; // throws if not valid

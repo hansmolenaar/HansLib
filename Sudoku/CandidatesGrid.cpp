@@ -26,7 +26,7 @@ void CandidatesGrid::setCandidates(Field field, std::initializer_list<Value> val
 
 void CandidatesGrid::removeCandidate(Field field, Value value)
 {
-   m_candidates.at(field).unsetValue(value);
+   m_candidates.at(field).removeCandidate(value);
 }
 
 void CandidatesGrid::setGiven(Field field, Value value)
@@ -49,7 +49,6 @@ void CandidatesGrid::update()
 
 void CandidatesGrid::checkValidSudoku() const
 {
-
    // Check if value within bounds
    constexpr Value lwr = ValueAll.front();
    constexpr Value upr = ValueAll.back();
@@ -62,6 +61,7 @@ void CandidatesGrid::checkValidSudoku() const
       }
    }
 
+   // Check rule of 1
    for (const auto &house : House::getAllHouses())
    {
       std::bitset<NumValue + 1> isUsed; // all 0; 1 extra because Value is 1-based

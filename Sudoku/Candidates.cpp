@@ -13,7 +13,7 @@ bool Candidates::contains(Value v) const
    return str::find(m_candidates, v) != m_candidates.end();
 }
 
-void Candidates::unsetValue(Value v)
+void Candidates::removeCandidate(Value v)
 {
    const auto found = str::find(m_candidates, v);
    const bool succes = found != m_candidates.end();
