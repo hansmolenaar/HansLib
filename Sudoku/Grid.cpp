@@ -1,17 +1,11 @@
 #include "Grid.h"
 #include "House.h"
-#include "MyAssert.h"
 #include "SweepNakedSingle.h"
 
-#include <algorithm>
-#include <bitset>
 #include <ostream>
 #include <string>
 
 using namespace Sudoku;
-using namespace Utilities;
-
-namespace str = std::ranges;
 
 void Grid::setGiven(Index row, Index col, Value value)
 {
@@ -70,18 +64,4 @@ void Grid::update()
 {
    SweepNakedSingle sweeper;
    ISweep::iterate(sweeper, m_candidates);
-}
-
-Grid Grid::FromSolvedValues(const CandidatesGrid &cg)
-{
-   Grid result;
-   for (auto field : FieldAll)
-   {
-      const auto found = cg[field].tryGetSolvedValue();
-      if (found.has_value())
-      {
-         result.m_candidates.setGiven(field, found.value());
-      }
-   }
-   return result;
 }

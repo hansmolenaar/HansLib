@@ -20,20 +20,6 @@ class Grid
    bool isSolved() const;
    void checkValidSudoku() const; // throws if not valid
 
-   // TESTING
-   // TODO can be reomved?
-   static Grid FromSolvedValues(const CandidatesGrid &);
-
-   // TODO Remove me
-   CandidatesGrid &get()
-   {
-      return m_candidates;
-   }
-   const CandidatesGrid &get() const
-   {
-      return m_candidates;
-   }
-
  private:
    CandidatesGrid m_candidates;
 };

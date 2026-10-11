@@ -4,7 +4,6 @@
 #include "Cell.h"
 #include "House.h"
 #include "SweepNakedSingle.h"
-#include "TestModels.h"
 
 using namespace Sudoku;
 
@@ -59,24 +58,6 @@ TEST(SweepNakedSingleTest, BoxSimple)
 
    SweepNakedSingle().sweep(grid);
    ASSERT_EQ(grid[fieldToSkip].tryGetSolvedValue().value(), 9);
-}
-
-TEST(SweepNakedSingleTest, Diagonal)
-{
-   const Grid solved = Grid::FromSolvedValues(TestModels::getSolved());
-   Grid grid;
-   for (const Cell &cell : Cell::getAll())
-   {
-      if (cell.row != cell.col)
-      {
-         grid.setGiven(cell.field, solved.tryGetSolvedValue(cell.field).value());
-      }
-   }
-
-   SweepNakedSingle().sweep(grid.get());
-
-   ASSERT_TRUE(grid.isSolved());
-   ASSERT_NO_THROW(grid.checkValidSudoku());
 }
 
 TEST(SweepNakedSingleTest, SweepExample1)

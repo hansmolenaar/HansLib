@@ -1,13 +1,9 @@
 #pragma once
 
-#include "Grid.h"
-
 namespace Sudoku
 {
 namespace TestModels
 {
-CandidatesGrid getSolved();
-// TODO  Grid fromString(const std::string &);
 }; // namespace TestModels
 
 #if false

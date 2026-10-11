@@ -1,26 +1,6 @@
 #include "TestModels.h"
-#include "MyAssert.h"
 
 using namespace Sudoku;
-using namespace Utilities;
-
-CandidatesGrid TestModels::getSolved()
-{
-   const std::array<Value, NumField> diagramValues = {
-       1, 2, 3, 4, 5, 6, 7, 8, 9, 4, 5, 6, 7, 8, 9, 1, 2, 3, 7, 8, 9, 1, 2, 3, 4, 5, 6,
-
-       2, 3, 4, 5, 6, 7, 8, 9, 1, 5, 6, 7, 8, 9, 1, 2, 3, 4, 8, 9, 1, 2, 3, 4, 5, 6, 7,
-
-       3, 4, 5, 6, 7, 8, 9, 1, 2, 6, 7, 8, 9, 1, 2, 3, 4, 5, 9, 1, 2, 3, 4, 5, 6, 7, 8,
-   };
-
-   CandidatesGrid result;
-   for (const Field f : FieldAll)
-   {
-      result.setGiven(f, diagramValues.at(f));
-   }
-   return result;
-}
 
 #if false
 Grid TestModels::fromString(const std::string &str)

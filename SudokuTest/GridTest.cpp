@@ -9,6 +9,29 @@
 using namespace Sudoku;
 namespace str = std::ranges;
 
+namespace
+{
+
+Grid GenerateSolvedGrid()
+{
+   const std::array<Value, NumField> diagramValues = {
+       1, 2, 3, 4, 5, 6, 7, 8, 9, 4, 5, 6, 7, 8, 9, 1, 2, 3, 7, 8, 9, 1, 2, 3, 4, 5, 6,
+
+       2, 3, 4, 5, 6, 7, 8, 9, 1, 5, 6, 7, 8, 9, 1, 2, 3, 4, 8, 9, 1, 2, 3, 4, 5, 6, 7,
+
+       3, 4, 5, 6, 7, 8, 9, 1, 2, 6, 7, 8, 9, 1, 2, 3, 4, 5, 9, 1, 2, 3, 4, 5, 6, 7, 8,
+   };
+
+   Grid result;
+
+   for (auto field : FieldAll)
+   {
+      result.setGiven(field, diagramValues[field]);
+   }
+   return result;
+}
+} // namespace
+
 TEST(GridTest, DefaultConstructor)
 {
    const Grid grid;
@@ -53,7 +76,7 @@ TEST(GridTest, ToOStream)
 
 TEST(GridTest, Solved)
 {
-   const Grid solved = Grid::FromSolvedValues(TestModels::getSolved());
+   const Grid solved = GenerateSolvedGrid();
    ASSERT_TRUE(solved.isSolved());
 }
 
@@ -62,7 +85,7 @@ TEST(GridTest, CheckValidOK)
    Grid grid;
    ASSERT_NO_THROW(grid.checkValidSudoku());
 
-   grid = Grid::FromSolvedValues(TestModels::getSolved());
+   grid = GenerateSolvedGrid();
    ASSERT_NO_THROW(grid.checkValidSudoku());
 }
 
