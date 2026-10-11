@@ -1,9 +1,9 @@
 #include <gtest/gtest.h>
 
+#include "CandidatesGrid.h"
 #include "SweepCombined.h"
 #include "SweepHiddenSingle.h"
 #include "SweepNakedSingle.h"
-#include "TestModels.h"
 
 using namespace Sudoku;
 
@@ -26,60 +26,60 @@ SweepCombined sweepCombined({&nakedSingle, &hiddenSingle});
 
 TEST(SweepCombinedTest, SweepExample1)
 {
-   Grid grid = TestModels::fromString(model_1);
+   CandidatesGrid grid = CandidatesGrid::FromString(model_1);
    grid.update();
    ASSERT_EQ(grid.getNumCandidates(), 213);
-   ISweep::iterate(sweepCombined, grid.get());
+   ISweep::iterate(sweepCombined, grid);
    ASSERT_NO_THROW(grid.checkValidSudoku());
    ASSERT_TRUE(grid.isSolved());
 }
 
 TEST(SweepCombinedTest, SweepExample2)
 {
-   Grid grid = TestModels::fromString(model_2);
+   CandidatesGrid grid = CandidatesGrid ::FromString(model_2);
    grid.update();
    ASSERT_EQ(grid.getNumCandidates(), 170);
-   ISweep::iterate(sweepCombined, grid.get());
+   ISweep::iterate(sweepCombined, grid);
    ASSERT_NO_THROW(grid.checkValidSudoku());
    ASSERT_TRUE(grid.isSolved());
 }
 
 TEST(SweepCombinedTest, SweepExample3)
 {
-   Grid grid = TestModels::fromString(model_3);
+   CandidatesGrid grid = CandidatesGrid ::FromString(model_3);
    grid.update();
    ASSERT_EQ(grid.getNumCandidates(), 238);
-   ISweep::iterate(sweepCombined, grid.get());
+   ISweep::iterate(sweepCombined, grid);
    ASSERT_NO_THROW(grid.checkValidSudoku());
    ASSERT_TRUE(grid.isSolved());
 }
 
 TEST(SweepCombinedTest, SweepExample4)
 {
-   Grid grid = TestModels::fromString(model_4);
+   CandidatesGrid grid = CandidatesGrid ::FromString(model_4);
    grid.update();
    ASSERT_EQ(grid.getNumCandidates(), 269);
-   ISweep::iterate(sweepCombined, grid.get());
+   ISweep::iterate(sweepCombined, grid);
    ASSERT_NO_THROW(grid.checkValidSudoku());
    ASSERT_TRUE(grid.isSolved());
 }
 
 TEST(SweepCombinedTest, SweepExample5)
 {
-   Grid grid = TestModels::fromString(model_5);
+   CandidatesGrid grid = CandidatesGrid ::FromString(model_5);
    grid.update();
    ASSERT_EQ(grid.getNumCandidates(), 247);
-   ISweep::iterate(sweepCombined, grid.get());
+   ISweep::iterate(sweepCombined, grid);
    ASSERT_NO_THROW(grid.checkValidSudoku());
    ASSERT_TRUE(grid.isSolved());
 }
 
 TEST(SweepCombinedTest, SweepExample6)
 {
-   Grid grid = TestModels::fromString(model_6);
+   CandidatesGrid grid = CandidatesGrid ::FromString(model_6);
    grid.update();
    ASSERT_EQ(grid.getNumCandidates(), 224);
-   ISweep::iterate(sweepCombined, grid.get());
+   ISweep::iterate(sweepCombined, grid);
    ASSERT_NO_THROW(grid.checkValidSudoku());
    ASSERT_TRUE(grid.isSolved());
 }

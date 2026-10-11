@@ -8,7 +8,7 @@ namespace Sudoku
 class Grid
 {
  public:
-   void update(); // set candidates from givens
+   void update(); // set candidates from solved values
    void setGiven(Index, Index, Value);
    void setGiven(Field, Value);
 

@@ -41,7 +41,7 @@ std::optional<Value> Grid::tryGetSolvedValue(Index row, Index col) const
 
 bool Grid::isSolved() const
 {
-   return str::all_of(FieldAll, [this](Field f) { return m_candidates[f].isSolved(); });
+   return m_candidates.isSolved();
 }
 
 std::ostream &operator<<(std::ostream &os, const Sudoku::Grid &grid)
@@ -63,32 +63,7 @@ std::ostream &operator<<(std::ostream &os, const Sudoku::Grid &grid)
 
 void Grid::checkValidSudoku() const
 {
-
-   // Check if value within bounds
-   constexpr Value lwr = ValueAll.front();
-   constexpr Value upr = ValueAll.back();
-   for (const auto f : FieldAll)
-   {
-      const auto value = tryGetSolvedValue(f);
-      if (value.has_value())
-      {
-         MyAssert(value >= lwr && value <= upr);
-      }
-   }
-
-   for (const auto &house : House::getAllHouses())
-   {
-      std::bitset<NumValue + 1> isUsed; // all 0; 1 extra because Value is 1-based
-      for (const auto &cell : house.cells)
-      {
-         const auto value = tryGetSolvedValue(cell.field);
-         if (value.has_value())
-         {
-            MyAssert(!isUsed.test(value.value()));
-            isUsed.set(value.value());
-         }
-      }
-   }
+   m_candidates.checkValidSudoku();
 }
 
 void Grid::update()

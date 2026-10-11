@@ -22,6 +22,7 @@ CandidatesGrid TestModels::getSolved()
    return result;
 }
 
+#if false
 Grid TestModels::fromString(const std::string &str)
 {
    MyAssert(str.length() == NumField);
@@ -38,7 +39,6 @@ Grid TestModels::fromString(const std::string &str)
    return result;
 }
 
-#if false
 const std::array<Value, NumFields> diagramValues =
 {
    0, 0, 0,     0, 0, 0,    0, 0, 0,
