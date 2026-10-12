@@ -1,43 +1,45 @@
 #include <gtest/gtest.h>
 
 #include "Combinations.h"
+#include "UniqueSorted.h"
 
-#include <algorithm>
 #include <set>
 
-namespace str = std::ranges;
+using namespace Utilities;
 
 TEST(CombinationsTest, Test53)
 {
-   const auto allCombinations = Combinations::Get(5, 3);
-   ASSERT_EQ(allCombinations.size(), 10);
-
-   ASSERT_TRUE(str::all_of(allCombinations, [](const auto &cmb) { return cmb.size() == 5; }));
-
-   std::set<std::vector<bool>> unique;
-   for (const auto &bv : allCombinations)
+   std::set<std::vector<int>> all;
+   const std::array<int, 5> data{1, 2, 3, 4, 5};
+   std::vector<int> combi(3);
+   auto generator = make_combination_generator(data.begin(), data.end(), combi.begin(), combi.end());
+   int count = 0;
+   do
    {
-      unique.insert(bv);
-   }
-   ASSERT_EQ(unique.size(), 10);
+      UniqueSorted(combi);
+      ASSERT_EQ(combi.size(), 3);
+      std::cout << combi[0] << " " << combi[1] << " " << combi[2] << "\n";
+      all.insert(combi);
+      ++count;
+   } while (generator());
+
+   ASSERT_EQ(count, 10);
+   ASSERT_EQ(all.size(), 10);
 }
 
 TEST(CombinationsTest, Test24)
 {
-   const std::string data[] = {"HELLO", "WORLD", "ALPHA", "BET"};
-   const int N = sizeof(data) / sizeof(*data);
-   const auto allCombinations = Combinations::Get(N, 2);
-   for (const auto &bv : allCombinations)
-   {
-      for (int n = 0; n < N; ++n)
-      {
-         if (bv.at(n))
-         {
-            std::cout << data[n] << " ";
-         }
-      }
-      std::cout << "\n";
-   }
+   const std::vector<std::string> data{"HELLO", "WORLD", "ALPHA", "BET"};
+   std::vector<std::string> result(2);
 
-   ASSERT_EQ(allCombinations.size(), 6);
+   auto generator = make_combination_generator(data.begin(), data.end(), result.begin(), result.end());
+   ASSERT_EQ(result[0], data[2]);
+   ASSERT_EQ(result[1], data[3]);
+   int count = 0;
+   do
+   {
+      ++count;
+   } while (generator());
+
+   ASSERT_EQ(count, 6);
 }
