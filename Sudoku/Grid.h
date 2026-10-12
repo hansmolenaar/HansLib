@@ -25,4 +25,4 @@ class Grid
 };
 } // namespace Sudoku
 
-std::ostream &operator<<(std::ostream &os, const Sudoku::Grid &);
+std::ostream &operator<<(std::ostream &, const Sudoku::Grid &);

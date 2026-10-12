@@ -27,4 +27,7 @@ class CandidatesGrid
  private:
    std::array<Candidates, NumField> m_candidates;
 };
+
 } // namespace Sudoku
+
+std::ostream &operator<<(std::ostream &, const Sudoku::CandidatesGrid &);

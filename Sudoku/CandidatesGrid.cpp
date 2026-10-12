@@ -7,11 +7,112 @@
 #include <algorithm>
 #include <bitset>
 #include <numeric>
+#include <string>
 
 using namespace Sudoku;
 using namespace Utilities;
 
 namespace str = std::ranges;
+
+namespace
+{
+
+std::array<std::string, NumBoxIndex> SolvedCellToString(Value value)
+{
+   std::array<std::string, NumBoxIndex> result;
+   result[0] = "...";
+   result[1] = "." + std::to_string(value) + ".";
+   result[2] = "...";
+   return result;
+}
+
+std::array<std::string, NumBoxIndex> UnSolvedCellToString(const Candidates &candidates)
+{
+   std::array<std::string, NumBoxIndex> result;
+   for (auto row : BoxIndexAll)
+   {
+      for (auto col : BoxIndexAll)
+      {
+         const Value val = col + row * NumBoxIndex + 1;
+         if (candidates.contains(val))
+         {
+            result.at(row).append(std::to_string(val));
+         }
+         else
+         {
+            result.at(row).append(" ");
+         }
+      }
+   }
+   return result;
+}
+
+std::array<std::string, NumBoxIndex> CandidatesToStrings(const Candidates &candidates)
+{
+   const auto solvedValue = candidates.tryGetSolvedValue();
+   if (solvedValue.has_value())
+   {
+      return SolvedCellToString(solvedValue.value());
+   }
+   else
+   {
+      return UnSolvedCellToString(candidates);
+   }
+}
+
+std::vector<std::string> ToStrings(const CandidatesGrid &grid)
+{
+   std::vector<std::string> result;
+   const std::string hsep = "*-----------------------------------*";
+   const std::string box_hsep = "*************************************";
+   const std::string vsep = "|";
+   const std::string box_vsep = "*";
+
+   for (const auto row : IndexAll)
+   {
+      if (row % 3 == 0)
+      {
+         result.push_back(box_hsep);
+      }
+      else
+      {
+         result.push_back(hsep);
+      }
+      const size_t pos = result.size();
+      result.push_back({}); // Open 3 new lines
+      result.push_back({});
+      result.push_back({});
+
+      const House &house = House::getRow(row);
+      for (const auto &cell : house.cells)
+      {
+         const Field field = cell.field;
+         const auto cstrings = CandidatesToStrings(grid[field]);
+
+         for (auto p : BoxIndexAll)
+         {
+            if ((cell.col) % 3 == 0)
+            {
+               result.at(pos + p).append(box_vsep);
+            }
+            else
+            {
+               result.at(pos + p).append(vsep);
+            }
+            result.at(pos + p).append(cstrings.at(p));
+         }
+      }
+      for (size_t p = pos; p < pos + NumBoxIndex; ++p)
+      {
+         result.at(p).append(box_vsep);
+      }
+   }
+
+   result.push_back(box_hsep);
+   return result;
+}
+
+} // namespace
 
 Index CandidatesGrid::getNumCandidates() const
 {
@@ -96,4 +197,14 @@ CandidatesGrid CandidatesGrid::FromString(const std::string &str)
 bool CandidatesGrid::isSolved() const
 {
    return str::all_of(FieldAll, [this](Field f) { return m_candidates[f].isSolved(); });
+}
+
+std::ostream &operator<<(std::ostream &os, const Sudoku::CandidatesGrid &cg)
+{
+   const auto strings = ToStrings(cg);
+   for (const auto &s : strings)
+   {
+      os << s + "\n";
+   }
+   return os;
 }

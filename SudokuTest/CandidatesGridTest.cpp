@@ -43,3 +43,18 @@ TEST(CandidatesGridTest, RemoveCandidate)
    ASSERT_NO_THROW(cg.removeCandidate(field, 3));  // OK, not a candidate anymore
    ASSERT_ANY_THROW(cg.removeCandidate(field, 4)); // only candidate
 }
+
+TEST(CandidatesGridTest, ToOStream)
+{
+   CandidatesGrid cg;
+   std::ostringstream stream;
+
+   cg.setCandidates(9, {3, 4});
+   cg.setCandidates(8, {8});
+   cg.setCandidates(NumField - 1, {9});
+
+   stream << cg;
+   const auto retval = stream.str();
+   // std::cout << retval;
+   ASSERT_FALSE(retval.empty());
+}
