@@ -21,3 +21,23 @@ TEST(CombinationsTest, Test53)
    }
    ASSERT_EQ(unique.size(), 10);
 }
+
+TEST(CombinationsTest, Test24)
+{
+   const std::string data[] = {"HELLO", "WORLD", "ALPHA", "BET"};
+   const int N = sizeof(data) / sizeof(*data);
+   const auto allCombinations = Combinations::Get(N, 2);
+   for (const auto &bv : allCombinations)
+   {
+      for (int n = 0; n < N; ++n)
+      {
+         if (bv.at(n))
+         {
+            std::cout << data[n] << " ";
+         }
+      }
+      std::cout << "\n";
+   }
+
+   ASSERT_EQ(allCombinations.size(), 6);
+}
