@@ -18,7 +18,7 @@ TEST(CombinationsTest, Test53)
    {
       UniqueSorted(combi);
       ASSERT_EQ(combi.size(), 3);
-      std::cout << combi[0] << " " << combi[1] << " " << combi[2] << "\n";
+      // std::cout << combi[0] << " " << combi[1] << " " << combi[2] << "\n";
       all.insert(combi);
       ++count;
    } while (generator());
