@@ -7,6 +7,47 @@
 
 using namespace Sudoku;
 
+namespace
+{
+std::string CellValueToString(const std::optional<Value> &value)
+{
+   return !value.has_value() ? std::string{ValueUndefinedChar} : std::to_string(*value);
+}
+
+std::vector<std::string> ToStrings(const Grid &grid)
+{
+   std::vector<std::string> result;
+   const std::string hline = "-------------------------------";
+   const std::string vsep = "|";
+   for (const auto row : IndexAll)
+   {
+      result.push_back({}); // Open new line
+      if (row % 3 == 0)
+      {
+         result.back().append(hline);
+         result.push_back({}); // Open new line
+      }
+
+      const House &house = House::getRow(row);
+      result.back().append(vsep);
+      for (const auto &cell : house.cells)
+      {
+         const Field field = cell.field;
+         const auto value = grid.tryGetSolvedValue(field);
+         result.back().append(" " + CellValueToString(value) + " ");
+         if (cell.col % 3 == 2)
+         {
+            result.back().append(vsep);
+         }
+      }
+   }
+   result.push_back(hline);
+
+   return result;
+}
+
+} // namespace
+
 void Grid::setGiven(Index row, Index col, Value value)
 {
    setGiven(Cell::rowCol2Field(row, col), value);
@@ -40,17 +81,10 @@ bool Grid::isSolved() const
 
 std::ostream &operator<<(std::ostream &os, const Sudoku::Grid &grid)
 {
-   for (const auto row : IndexAll)
+   const auto strings = ToStrings(grid);
+   for (const auto &s : strings)
    {
-      const House &house = House::getRow(row);
-      os << "|";
-      for (const auto &cell : house.cells)
-      {
-         const Field field = cell.field;
-         const auto value = grid.tryGetSolvedValue(field);
-         os << " " << (!value.has_value() ? std::string{ValueUndefinedChar} : std::to_string(*value)) + " ";
-      }
-      os << "|\n";
+      os << s << "\n";
    }
    return os;
 }
