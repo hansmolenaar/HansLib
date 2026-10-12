@@ -20,9 +20,9 @@ namespace
 std::array<std::string, NumBoxIndex> SolvedCellToString(Value value)
 {
    std::array<std::string, NumBoxIndex> result;
-   result[0] = "...";
-   result[1] = "." + std::to_string(value) + ".";
-   result[2] = "...";
+   result[0] = "   ";
+   result[1] = " " + std::to_string(value) + " ";
+   result[2] = "   ";
    return result;
 }
 
@@ -40,7 +40,7 @@ std::array<std::string, NumBoxIndex> UnSolvedCellToString(const Candidates &cand
          }
          else
          {
-            result.at(row).append(" ");
+            result.at(row).append(std::string{ValueUndefinedChar});
          }
       }
    }

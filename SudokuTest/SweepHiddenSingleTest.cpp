@@ -24,7 +24,6 @@ TEST(SweepHidddenSingleTest, BasicExample)
 
    auto value0 = grid[Cell::rowCol2Field(row, 0)].tryGetSolvedValue();
    ASSERT_FALSE(value0.has_value());
-
    SweepHiddenSingle().sweep(grid);
 
    value0 = grid[Cell::rowCol2Field(row, 0)].tryGetSolvedValue();
