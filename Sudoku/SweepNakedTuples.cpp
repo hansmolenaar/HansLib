@@ -9,7 +9,6 @@
 #include <initializer_list>
 
 #include <map>
-#include <numeric>
 #include <set>
 
 using namespace Sudoku;
@@ -36,8 +35,10 @@ bool RemoveCandidates(CandidatesGrid &cg, const House &house, const std::set<Val
    }
    return cg.getNumCandidates() != numCandidates;
 }
+} // namespace
 
-void Sweep(CandidatesGrid &cg, std::initializer_list<Index> useCandidatesOfSize)
+void SweepNakedTuples::sweepHouseOfType(CandidatesGrid &cg, HouseType houseType,
+                                        std::initializer_list<Index> useCandidatesOfSize)
 {
    const auto numUniqueValues = useCandidatesOfSize.size();
    std::map<Index, Index> multiplicityCount;
@@ -50,11 +51,12 @@ void Sweep(CandidatesGrid &cg, std::initializer_list<Index> useCandidatesOfSize)
 
    std::vector<Field> fieldCombination(onlyUseMultiplicity);
    std::set<Value> values;
-   for (const House &house : House::getAllHouses())
+   for (const Index &houseIndex : IndexAll)
    {
+      const auto &house = House::get(houseType, houseIndex);
       const HouseByMultiplicities multiplicitiesInHouse(cg, house);
       if (str::all_of(multiplicityCount, [&multiplicitiesInHouse](auto itr) {
-             return itr.second > multiplicitiesInHouse.get(itr.first).size();
+             return itr.second <= multiplicitiesInHouse.get(itr.first).size();
           }))
       {
          const auto &fieldsToTest = multiplicitiesInHouse.get(onlyUseMultiplicity);
@@ -72,25 +74,26 @@ void Sweep(CandidatesGrid &cg, std::initializer_list<Index> useCandidatesOfSize)
                      values.insert(v);
                   }
                }
-               if (values.size() == numUniqueValues)
+            }
+            if (values.size() == numUniqueValues)
+            {
+               // Naked tuple found
+               const bool anyChange = RemoveCandidates(cg, house, values, fieldCombination);
+               if (anyChange)
                {
-                  // Naked tuple found
-                  const bool anyChange = RemoveCandidates(cg, house, values, fieldCombination);
-                  if (anyChange)
-                  {
-                     return; // multiplicitiesInHouse could be stale now
-                  }
+                  return; // multiplicitiesInHouse could be stale now
                }
             }
+
          } while (generator());
       }
    }
 }
-} // namespace
 
 void SweepNakedTuples::sweep(CandidatesGrid &cg)
 {
-   const std::map<Index, Index> fromMultiplicities = {{2, 2}};
-
-   Sweep(cg, {2, 2});
+   for (HouseType houseType : HouseTypeAll)
+   {
+      sweepHouseOfType(cg, houseType, {2, 2});
+   }
 }

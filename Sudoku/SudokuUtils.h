@@ -16,6 +16,6 @@ class HouseByMultiplicities
    std::span<const Field> get(Index) const;
 
  private:
-   std::array<std::vector<Field>, NumIndex> m_multiplicities;
+   std::array<std::vector<Field>, NumIndex + 1> m_multiplicities;
 };
 } // namespace Sudoku
