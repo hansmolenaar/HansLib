@@ -9,6 +9,8 @@
 namespace Utilities
 {
 
+size_t countCombinations(size_t, size_t);
+
 template <class iterator_type, class output_iterator> class combination_generator
 {
    iterator_type first, last;
