@@ -21,16 +21,19 @@ TEST(SweepNakedTuplesTest, SweepNakedPair)
    grid.setCandidates(Cell::rowCol2Field(1, 2), {2, 3});
    grid.setCandidates(Cell::rowCol2Field(2, 2), {2, 3, 5});
 
+   std::cout << grid << "\n";
    size_t expectNumCandidates = 671;
    ASSERT_EQ(grid.getNumCandidates(), expectNumCandidates);
    auto value0 = grid[Field22].tryGetSolvedValue();
    ASSERT_FALSE(value0.has_value());
-
    SweepNakedTuples().sweepHouseOfType(grid, HouseType::Row, {2, 2});
+   std::cout << grid << "\n";
    expectNumCandidates -= 2 * 6;
    ASSERT_EQ(grid.getNumCandidates(), expectNumCandidates); // Remainer of row removed
 
+   std::cout << grid << "\n";
    SweepNakedTuples().sweepHouseOfType(grid, HouseType::Box, {2, 2});
+   std::cout << grid << "\n";
    value0 = grid[Field22].tryGetSolvedValue();
    ASSERT_TRUE(value0.has_value());
    ASSERT_EQ(value0.value(), 5);

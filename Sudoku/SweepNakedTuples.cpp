@@ -61,13 +61,13 @@ bool IsNakedTuple(const CandidatesInHouse &candidatesInHouse, std::array<Field, 
                   const NakedTuplesInput &input)
 {
    const auto values = candidatesInHouse.getUniqueValuesInCells(candidateTuple);
-   return (values.size() != input.getNumUniqueValues());
+   return (values.size() == input.getNumUniqueValues());
 }
 
 } // namespace
 
-void SweepNakedTuples::sweepHouseOfType2(CandidatesGrid &cg, HouseType houseType,
-                                         std::initializer_list<Index> useCandidatesOfSize)
+void SweepNakedTuples::sweepHouseOfType(CandidatesGrid &cg, HouseType houseType,
+                                        std::initializer_list<Index> useCandidatesOfSize)
 {
    const NakedTuplesInput nakedTupleInput(useCandidatesOfSize);
 
@@ -105,8 +105,8 @@ void SweepNakedTuples::sweepHouseOfType2(CandidatesGrid &cg, HouseType houseType
    }
 }
 
-void SweepNakedTuples::sweepHouseOfType(CandidatesGrid &cg, HouseType houseType,
-                                        std::initializer_list<Index> useCandidatesOfSize)
+void SweepNakedTuples::sweepHouseOfType2(CandidatesGrid &cg, HouseType houseType,
+                                         std::initializer_list<Index> useCandidatesOfSize)
 {
    const NakedTuplesInput nakedTupleInput(useCandidatesOfSize);
    const auto numUniqueValues = nakedTupleInput.getNumUniqueValues();
