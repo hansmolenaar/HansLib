@@ -1,21 +1,43 @@
 #pragma once
 
+#include "House.h"
 #include "SudokuDefines.h"
 
+#include <map>
+#include <unordered_set>
 #include <vector>
 
 namespace Sudoku
 {
-class CandidatesGrid;
-struct House;
 
-class HouseByMultiplicities
+class CandidatesGrid;
+
+class NakedTuplesInput
 {
  public:
-   HouseByMultiplicities(const CandidatesGrid &, const House &);
-   std::span<const Field> get(Index) const;
+   NakedTuplesInput(std::initializer_list<Index>);
+   Index getNumUniqueValues() const;
+   std::span<const Index> getMultiplicitiesToTry() const;
+   Index getMultiplicitySize(Index) const;
 
  private:
-   std::array<std::vector<Field>, NumIndex + 1> m_multiplicities;
+   Index m_numUniqueValues;
+   std::vector<Index> m_multiplicites;
+   std::map<Index, Index> m_multiplicitesCounted;
+};
+
+class CandidatesInHouse
+{
+ public:
+   CandidatesInHouse(const CandidatesGrid &cg, House house);
+   bool isConsistentWith(const NakedTuplesInput &input) const;
+   std::unordered_set<Value> getUniqueValuesInCells(std::span<const Field> fields) const;
+   std::span<const Field> getFieldsWithMultiplicity(Index multiplicity) const;
+   const House &getHouse() const;
+
+ private:
+   const CandidatesGrid &m_grid;
+   House m_house;
+   std::array<std::vector<Field>, NumValue + 1> m_multiplicities;
 };
 } // namespace Sudoku
