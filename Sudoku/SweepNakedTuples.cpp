@@ -2,9 +2,10 @@
 #include "CandidatesGrid.h"
 #include "Combinations.h"
 #include "House.h"
-#include "MyAssert.h"
+#include "Single.h"
 #include "SudokuDefines.h"
 #include "SudokuUtils.h"
+#include "UniqueSorted.h"
 #include <algorithm>
 #include <initializer_list>
 
@@ -35,19 +36,56 @@ bool RemoveCandidates(CandidatesGrid &cg, const House &house, const std::set<Val
    }
    return cg.getNumCandidates() != numCandidates;
 }
+
+class NakedTuplesInput
+{
+ public:
+   NakedTuplesInput(std::initializer_list<Index>);
+   Index getNumUniqueValues() const;
+   std::span<const Index> getMultiplicitiesToTry() const;
+   Index getMultiplicitySize(Index) const;
+
+ private:
+   Index m_numUniqueValues;
+   std::vector<Index> m_multiplicites;
+   std::map<Index, Index> m_multiplicitesCounted;
+};
+
+NakedTuplesInput::NakedTuplesInput(std::initializer_list<Index> useCandidatesOfSize)
+    : m_numUniqueValues(useCandidatesOfSize.size()), m_multiplicites(useCandidatesOfSize)
+{
+   for (auto m : m_multiplicites)
+   {
+      m_multiplicitesCounted[m] += 1;
+   }
+   UniqueSorted(m_multiplicites);
+}
+
+Index NakedTuplesInput::getNumUniqueValues() const
+{
+   return m_numUniqueValues;
+}
+
+std::span<const Index> NakedTuplesInput::getMultiplicitiesToTry() const
+{
+   return m_multiplicites;
+}
+
+Index NakedTuplesInput::getMultiplicitySize(Index multiplicity) const
+
+{
+   return m_multiplicitesCounted.at(multiplicity);
+}
+
 } // namespace
 
 void SweepNakedTuples::sweepHouseOfType(CandidatesGrid &cg, HouseType houseType,
                                         std::initializer_list<Index> useCandidatesOfSize)
 {
-   const auto numUniqueValues = useCandidatesOfSize.size();
-   std::map<Index, Index> multiplicityCount;
-   for (Index m : useCandidatesOfSize)
-   {
-      multiplicityCount[m] += 1;
-   }
-   MyAssert(multiplicityCount.size() == 1); // TODO
-   const Index onlyUseMultiplicity = multiplicityCount.begin()->first;
+   const NakedTuplesInput nakedTupleInput(useCandidatesOfSize);
+   const auto numUniqueValues = nakedTupleInput.getNumUniqueValues();
+
+   const Index onlyUseMultiplicity = Single(nakedTupleInput.getMultiplicitiesToTry());
 
    std::vector<Field> fieldCombination(onlyUseMultiplicity);
    std::set<Value> values;
@@ -55,8 +93,8 @@ void SweepNakedTuples::sweepHouseOfType(CandidatesGrid &cg, HouseType houseType,
    {
       const auto &house = House::get(houseType, houseIndex);
       const HouseByMultiplicities multiplicitiesInHouse(cg, house);
-      if (str::all_of(multiplicityCount, [&multiplicitiesInHouse](auto itr) {
-             return itr.second <= multiplicitiesInHouse.get(itr.first).size();
+      if (str::all_of(nakedTupleInput.getMultiplicitiesToTry(), [&multiplicitiesInHouse, &nakedTupleInput](auto m) {
+             return nakedTupleInput.getMultiplicitySize(m) <= multiplicitiesInHouse.get(m).size();
           }))
       {
          const auto &fieldsToTest = multiplicitiesInHouse.get(onlyUseMultiplicity);
