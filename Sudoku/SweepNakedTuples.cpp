@@ -11,6 +11,7 @@
 
 #include <map>
 #include <set>
+#include <unordered_set>
 
 using namespace Sudoku;
 using namespace Utilities;
@@ -19,7 +20,7 @@ namespace str = std::ranges;
 
 namespace
 {
-bool RemoveCandidates(CandidatesGrid &cg, const House &house, const std::set<Value> &candidatesToRemove,
+bool RemoveCandidates(CandidatesGrid &cg, const House &house, const std::unordered_set<Value> &candidatesToRemove,
                       const std::vector<Field> &fieldToSkip)
 {
    const auto numCandidates = cg.getNumCandidates();
@@ -82,7 +83,7 @@ class CandidatesInHouse
  public:
    CandidatesInHouse(const CandidatesGrid &cg, House house);
    bool isConsistentWith(const NakedTuplesInput &input) const;
-   std::vector<Value> getUniqueValuesInCells(std::span<const Cell> cells) const;
+   std::unordered_set<Value> getUniqueValuesInCells(std::span<const Field> fields) const;
    std::span<const Field> getFieldsWithMultiplicity(Index multiplicity) const;
    const House &getHouse() const;
 
@@ -108,25 +109,22 @@ const House &CandidatesInHouse::getHouse() const
    return m_house;
 }
 
-#if false
-std::vector<Value> CandidatesInHouse::getUniqueValuesInCells(std::span<const Cell> cells) const
+std::unordered_set<Value> CandidatesInHouse::getUniqueValuesInCells(std::span<const Field> fields) const
 {
-   std::vector<Value> result;
-   for (const auto &cell : cells)
+   std::unordered_set<Value> result;
+   for (Field f : fields)
    {
-      const auto &candidates = m_grid[cell.field];
+      const auto &candidates = m_grid[f];
       for (Value value : ValueAll)
       {
          if (candidates.contains(value))
          {
-            result.push_back(value);
+            result.insert(value);
          }
       }
    }
-   UniqueSorted(result);
    return result;
 }
-#endif
 
 std::span<const Field> CandidatesInHouse::getFieldsWithMultiplicity(Index multiplicity) const
 {
@@ -151,7 +149,6 @@ void SweepNakedTuples::sweepHouseOfType(CandidatesGrid &cg, HouseType houseType,
    const Index onlyUseMultiplicity = Single(nakedTupleInput.getMultiplicitiesToTry());
 
    std::vector<Field> fieldCombination(onlyUseMultiplicity);
-   std::set<Value> values;
    for (const Index &houseIndex : IndexAll)
    {
       const CandidatesInHouse candidatesInHouse(cg, House::get(houseType, houseIndex));
@@ -162,24 +159,14 @@ void SweepNakedTuples::sweepHouseOfType(CandidatesGrid &cg, HouseType houseType,
                                                      fieldCombination.end());
          do
          {
-            values.clear();
-            for (auto field : fieldCombination)
-            {
-               for (Value v : ValueAll)
-               {
-                  if (cg[field].contains(v))
-                  {
-                     values.insert(v);
-                  }
-               }
-            }
+            const std::unordered_set<Value> values = candidatesInHouse.getUniqueValuesInCells(fieldCombination);
             if (values.size() == numUniqueValues)
             {
                // Naked tuple found
                const bool anyChange = RemoveCandidates(cg, candidatesInHouse.getHouse(), values, fieldCombination);
                if (anyChange)
                {
-                  return; // candidatesInHouse multiplicities is be stale now
+                  return; // candidatesInHouse is be stale now
                }
             }
 
