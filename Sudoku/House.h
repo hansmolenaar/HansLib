@@ -6,6 +6,9 @@
 
 namespace Sudoku
 {
+
+constexpr auto NumCellsInHouse = NumIndex;
+
 enum class HouseType
 {
    Row,

@@ -77,6 +77,69 @@ Index NakedTuplesInput::getMultiplicitySize(Index multiplicity) const
    return m_multiplicitesCounted.at(multiplicity);
 }
 
+class CandidatesInHouse
+{
+ public:
+   CandidatesInHouse(const CandidatesGrid &cg, House house);
+   bool isConsistentWith(const NakedTuplesInput &input) const;
+   std::vector<Value> getUniqueValuesInCells(std::span<const Cell> cells) const;
+   std::span<const Field> getFieldsWithMultiplicity(Index multiplicity) const;
+   const House &getHouse() const;
+
+ private:
+   const CandidatesGrid &m_grid;
+   House m_house;
+   // std::array<Index, NumCellsInHouse> m_candidateMultiplicity;
+   std::array<std::vector<Field>, NumValue + 1> m_multiplicities;
+};
+
+CandidatesInHouse::CandidatesInHouse(const CandidatesGrid &cg, House house) : m_grid(cg), m_house(std::move(house))
+{
+   for (auto cell : m_house.cells)
+   {
+      const Field field = cell.field;
+      const auto numCandidates = cg[field].size();
+      m_multiplicities.at(numCandidates).push_back(field);
+   }
+}
+
+const House &CandidatesInHouse::getHouse() const
+{
+   return m_house;
+}
+
+#if false
+std::vector<Value> CandidatesInHouse::getUniqueValuesInCells(std::span<const Cell> cells) const
+{
+   std::vector<Value> result;
+   for (const auto &cell : cells)
+   {
+      const auto &candidates = m_grid[cell.field];
+      for (Value value : ValueAll)
+      {
+         if (candidates.contains(value))
+         {
+            result.push_back(value);
+         }
+      }
+   }
+   UniqueSorted(result);
+   return result;
+}
+#endif
+
+std::span<const Field> CandidatesInHouse::getFieldsWithMultiplicity(Index multiplicity) const
+{
+   return m_multiplicities.at(multiplicity);
+}
+
+bool CandidatesInHouse::isConsistentWith(const NakedTuplesInput &input) const
+{
+   return str::all_of(input.getMultiplicitiesToTry(), [this, &input](auto m) {
+      return input.getMultiplicitySize(m) <= getFieldsWithMultiplicity(m).size();
+   });
+}
+
 } // namespace
 
 void SweepNakedTuples::sweepHouseOfType(CandidatesGrid &cg, HouseType houseType,
@@ -91,13 +154,10 @@ void SweepNakedTuples::sweepHouseOfType(CandidatesGrid &cg, HouseType houseType,
    std::set<Value> values;
    for (const Index &houseIndex : IndexAll)
    {
-      const auto &house = House::get(houseType, houseIndex);
-      const HouseByMultiplicities multiplicitiesInHouse(cg, house);
-      if (str::all_of(nakedTupleInput.getMultiplicitiesToTry(), [&multiplicitiesInHouse, &nakedTupleInput](auto m) {
-             return nakedTupleInput.getMultiplicitySize(m) <= multiplicitiesInHouse.get(m).size();
-          }))
+      const CandidatesInHouse candidatesInHouse(cg, House::get(houseType, houseIndex));
+      if (candidatesInHouse.isConsistentWith(nakedTupleInput))
       {
-         const auto &fieldsToTest = multiplicitiesInHouse.get(onlyUseMultiplicity);
+         const auto &fieldsToTest = candidatesInHouse.getFieldsWithMultiplicity(onlyUseMultiplicity);
          auto generator = make_combination_generator(fieldsToTest.begin(), fieldsToTest.end(), fieldCombination.begin(),
                                                      fieldCombination.end());
          do
@@ -116,10 +176,10 @@ void SweepNakedTuples::sweepHouseOfType(CandidatesGrid &cg, HouseType houseType,
             if (values.size() == numUniqueValues)
             {
                // Naked tuple found
-               const bool anyChange = RemoveCandidates(cg, house, values, fieldCombination);
+               const bool anyChange = RemoveCandidates(cg, candidatesInHouse.getHouse(), values, fieldCombination);
                if (anyChange)
                {
-                  return; // multiplicitiesInHouse could be stale now
+                  return; // candidatesInHouse multiplicities is be stale now
                }
             }
 
