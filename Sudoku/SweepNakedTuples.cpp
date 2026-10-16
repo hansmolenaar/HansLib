@@ -51,14 +51,9 @@ bool IsNakedTuple(const CandidatesInHouse &candidatesInHouse, std::span<const Fi
    {
       multiplitcityCount[candidatesInHouse.getNumCandidatesInCell(c)] += 1;
    }
-   for (auto m : input.getMultiplicitiesToTry())
-   {
-      if (input.getMultiplicitySize(m) != multiplitcityCount[m])
-      {
-         return false;
-      }
-   }
-   return true;
+   return str::all_of(input.getMultiplicitiesToTry(), [&input, &multiplitcityCount](auto m) {
+      return input.getMultiplicitySize(m) == multiplitcityCount[m];
+   });
 }
 
 } // namespace
