@@ -37,10 +37,28 @@ bool RemoveCandidates(CandidatesGrid &cg, const CandidatesInHouse &candidatesInH
    return cg.getNumCandidates() != numCandidates;
 }
 
-bool IsNakedTuple(const CandidatesInHouse &candidatesInHouse, std::span<const Field> candidateTuple)
+bool IsNakedTuple(const CandidatesInHouse &candidatesInHouse, std::span<const Field> candidateTuple,
+                  NakedTuplesInput input)
 {
    const auto values = candidatesInHouse.getUniqueValuesInCells(candidateTuple);
-   return values.size() == candidateTuple.size();
+   if (values.size() != candidateTuple.size())
+   {
+      return false;
+   }
+   std::array<Index, NumCellsInHouse> multiplitcityCount;
+   std::fill_n(multiplitcityCount.begin(), NumCellsInHouse, 0); // TODO is this necessary?
+   for (auto c : candidateTuple)
+   {
+      multiplitcityCount[candidatesInHouse.getNumCandidatesInCell(c)] += 1;
+   }
+   for (auto m : input.getMultiplicitiesToTry())
+   {
+      if (input.getMultiplicitySize(m) != multiplitcityCount[m])
+      {
+         return false;
+      }
+   }
+   return true;
 }
 
 } // namespace
@@ -67,7 +85,7 @@ void SweepNakedTuples::sweepHouseOfType(CandidatesGrid &cg, HouseType houseType,
                                                      candidateTuple.end());
          do
          {
-            if (IsNakedTuple(candidatesInHouse, candidateTuple))
+            if (IsNakedTuple(candidatesInHouse, candidateTuple, nakedTupleInput))
             {
                const bool anyChange = RemoveCandidates(cg, candidatesInHouse, candidateTuple);
                if (anyChange)

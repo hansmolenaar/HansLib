@@ -70,6 +70,11 @@ std::span<const Field> CandidatesInHouse::getFieldsWithMultiplicity(Index multip
    return m_multiplicities.at(multiplicity);
 }
 
+Index CandidatesInHouse::getNumCandidatesInCell(Field field) const
+{
+   return m_grid[field].size();
+}
+
 bool CandidatesInHouse::isConsistentWith(const NakedTuplesInput &input) const
 {
    return str::all_of(input.getMultiplicitiesToTry(), [this, &input](auto m) {

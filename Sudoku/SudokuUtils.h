@@ -33,6 +33,7 @@ class CandidatesInHouse
    bool isConsistentWith(const NakedTuplesInput &input) const;
    std::unordered_set<Value> getUniqueValuesInCells(std::span<const Field> fields) const;
    std::span<const Field> getFieldsWithMultiplicity(Index multiplicity) const;
+   Index getNumCandidatesInCell(Field) const;
    const House &getHouse() const;
 
  private:
