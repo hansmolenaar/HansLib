@@ -2,6 +2,8 @@
 #include "CandidatesGrid.h"
 #include "House.h"
 
+#include <iostream>
+
 using namespace Sudoku;
 
 namespace
@@ -13,6 +15,10 @@ template <typename F> void UnsetConnectedCells(CandidatesGrid &grid, Field field
    {
       if (cell.field != fieldSkip)
       {
+         // TODO remove me
+         // std::cout << "value to remove " << value << " fieldSkip = " << fieldSkip
+         //          << "       cell.field = " << cell.field << " row = " << cell.row << " col = " << cell.col << "\n";
+         // std::cout << grid << "\n";
          grid.removeCandidate(cell.field, value);
       }
    }

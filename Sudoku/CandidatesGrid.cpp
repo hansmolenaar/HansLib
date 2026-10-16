@@ -194,6 +194,20 @@ CandidatesGrid CandidatesGrid::FromString(const std::string &str)
    return result;
 }
 
+CandidatesGrid CandidatesGrid::FromValues(const std::array<Value, NumField> &values)
+
+{
+   CandidatesGrid result;
+   for (Field f : FieldAll)
+   {
+      if (values[f] != 0)
+      {
+         result.setGiven(f, values[f]);
+      }
+   }
+   return result;
+}
+
 bool CandidatesGrid::isSolved() const
 {
    return str::all_of(FieldAll, [this](Field f) { return m_candidates[f].isSolved(); });

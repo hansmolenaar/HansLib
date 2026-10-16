@@ -3,11 +3,12 @@
 #include "CandidatesGrid.h"
 #include "Cell.h"
 #include "SudokuDefines.h"
+#include "SweepNakedSingle.h"
 #include "SweepNakedTuples.h"
 
 using namespace Sudoku;
 
-TEST(SweepNakedTuplesTest, SweepNakedPair)
+TEST(SweepNakedTuplesTest, SweepNakedPair_1)
 {
    CandidatesGrid grid;
    const Field Field22 = Cell::rowCol2Field(2, 2);
@@ -42,7 +43,7 @@ TEST(SweepNakedTuplesTest, SweepNakedPair)
    ASSERT_EQ(grid.getNumCandidates(), expectNumCandidates);
 }
 
-TEST(SweepNakedTuplesTest, SweepNakedPairAnotherExample)
+TEST(SweepNakedTuplesTest, SweepNakedPair_2)
 {
    CandidatesGrid grid;
    const Index row = 8;
@@ -75,6 +76,19 @@ TEST(SweepNakedTuplesTest, SweepNakedPairAnotherExample)
    ASSERT_EQ(grid.getNumCandidates(), expectNumCandidates);
    ASSERT_EQ(grid[field7].tryGetSolvedValue().value(), 6);
    ASSERT_EQ(grid[field0].size(), 3);
+}
+
+TEST(SweepNakedTuplesTest, SweepNakedTuples_3)
+{
+   const std::array<Value, NumField> diagramValues = {
+       4, 0, 0, 0, 0, 0, 9, 3, 8, 0, 3, 2, 0, 9, 4, 1, 0, 0, 0, 9, 5, 3, 0, 0, 2, 4, 0,
+       3, 7, 0, 6, 0, 9, 0, 0, 4, 5, 2, 9, 0, 0, 1, 6, 7, 3, 6, 0, 4, 7, 0, 3, 0, 9, 0,
+       9, 5, 7, 0, 0, 8, 3, 0, 0, 0, 0, 3, 9, 0, 0, 4, 0, 0, 2, 4, 0, 0, 3, 0, 7, 0, 9,
+   };
+
+   auto grid = CandidatesGrid::FromValues(diagramValues);
+   SweepNakedSingle().sweep(grid);
+   ASSERT_EQ(grid.getNumCandidates(), 0);
 }
 
 TEST(SweepNakedTuplesTest, SweepNakedTuples_222_box)
@@ -141,7 +155,6 @@ TEST(SweepNakedTuplesTest, SweepNakedTuples_223_a)
    ASSERT_EQ(grid.getNumCandidates(), expectNumCandidates);
 
    SweepNakedTuples().sweepHouseOfType(grid, HouseType::Box, {2, 3, 2});
-   std::cout << grid << "\n";
    expectNumCandidates -= 6 * 3;
    ASSERT_EQ(grid.getNumCandidates(), expectNumCandidates);
 }

@@ -18,6 +18,7 @@ class CandidatesGrid
    bool isSolved() const;
 
    static CandidatesGrid FromString(const std::string &);
+   static CandidatesGrid FromValues(const std::array<Value, NumField> &);
 
    const Candidates &operator[](Field f) const
    {
