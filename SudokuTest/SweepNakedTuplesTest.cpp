@@ -2,6 +2,7 @@
 
 #include "CandidatesGrid.h"
 #include "Cell.h"
+#include "SudokuDefines.h"
 #include "SweepNakedTuples.h"
 
 using namespace Sudoku;
@@ -74,4 +75,50 @@ TEST(SweepNakedTuplesTest, SweepNakedPairAnotherExample)
    ASSERT_EQ(grid.getNumCandidates(), expectNumCandidates);
    ASSERT_EQ(grid[field7].tryGetSolvedValue().value(), 6);
    ASSERT_EQ(grid[field0].size(), 3);
+}
+
+TEST(SweepNakedTuplesTest, SweepNakedTuples_222_a)
+{
+   CandidatesGrid grid;
+
+   grid.setCandidates(Cell::rowCol2Field(6, 6), {1, 2});
+   grid.setCandidates(Cell::rowCol2Field(7, 7), {2, 3});
+   grid.setCandidates(Cell::rowCol2Field(8, 8), {3, 1});
+
+   size_t expectNumCandidates = NumField * NumValue - 3 * 7;
+   ASSERT_EQ(grid.getNumCandidates(), expectNumCandidates);
+
+   SweepNakedTuples().sweepHouseOfType(grid, HouseType::Col, {2, 2, 2});
+   ASSERT_EQ(grid.getNumCandidates(), expectNumCandidates);
+
+   SweepNakedTuples().sweepHouseOfType(grid, HouseType::Row, {2, 2, 2});
+   ASSERT_EQ(grid.getNumCandidates(), expectNumCandidates);
+
+   SweepNakedTuples().sweepHouseOfType(grid, HouseType::Box, {2, 2, 2});
+   expectNumCandidates -= 6 * 3;
+   ASSERT_EQ(grid.getNumCandidates(), expectNumCandidates);
+}
+
+TEST(SweepNakedTuplesTest, SweepNakedTuples_223_a)
+{
+   CandidatesGrid grid;
+
+   grid.setCandidates(Cell::rowCol2Field(6, 6), {4, 5});
+   grid.setCandidates(Cell::rowCol2Field(7, 7), {5, 6});
+   grid.setCandidates(Cell::rowCol2Field(8, 8), {6, 4, 5});
+
+   size_t expectNumCandidates = NumField * NumValue - 2 * 7 - 6;
+
+   ASSERT_EQ(grid.getNumCandidates(), expectNumCandidates);
+
+   SweepNakedTuples().sweepHouseOfType(grid, HouseType::Col, {2, 2, 3});
+   ASSERT_EQ(grid.getNumCandidates(), expectNumCandidates);
+
+   SweepNakedTuples().sweepHouseOfType(grid, HouseType::Row, {2, 2, 3});
+   ASSERT_EQ(grid.getNumCandidates(), expectNumCandidates);
+
+   SweepNakedTuples().sweepHouseOfType(grid, HouseType::Box, {2, 3, 2});
+   std::cout << grid << "\n";
+   expectNumCandidates -= 6 * 3;
+   ASSERT_EQ(grid.getNumCandidates(), expectNumCandidates);
 }
