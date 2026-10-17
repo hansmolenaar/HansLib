@@ -88,7 +88,37 @@ TEST(SweepNakedTuplesTest, SweepNakedTuples_3)
 
    auto grid = CandidatesGrid::FromValues(diagramValues);
    SweepNakedSingle().sweep(grid);
-   ASSERT_EQ(grid.getNumCandidates(), 0);
+   Field expect = 152;
+   ASSERT_EQ(grid.getNumCandidates(), expect);
+
+   SweepNakedTuples().sweepHouseOfType(grid, HouseType::Col, {2, 2, 2});
+   ASSERT_EQ(grid.getNumCandidates(), expect);
+
+   SweepNakedTuples().sweepHouseOfType(grid, HouseType::Row, {2, 2, 2});
+   ASSERT_EQ(grid.getNumCandidates(), expect);
+
+   SweepNakedTuples().sweepHouseOfType(grid, HouseType::Box, {2, 2, 2});
+   ASSERT_EQ(grid.getNumCandidates(), expect);
+
+   SweepNakedTuples().sweepHouseOfType(grid, HouseType::Col, {2, 2, 3});
+   ASSERT_EQ(grid.getNumCandidates(), expect);
+
+   SweepNakedTuples().sweepHouseOfType(grid, HouseType::Row, {2, 2, 3});
+   ASSERT_EQ(grid.getNumCandidates(), expect);
+
+   SweepNakedTuples().sweepHouseOfType(grid, HouseType::Box, {2, 2, 3});
+   ASSERT_EQ(grid.getNumCandidates(), expect);
+
+   SweepNakedTuples().sweepHouseOfType(grid, HouseType::Col, {2, 2});
+   ASSERT_EQ(grid.getNumCandidates(), expect);
+
+   SweepNakedTuples().sweepHouseOfType(grid, HouseType::Box, {2, 2});
+   expect -= 6;
+   ASSERT_EQ(grid.getNumCandidates(), expect);
+
+   SweepNakedTuples().sweepHouseOfType(grid, HouseType::Row, {2, 2});
+   expect -= 7;
+   ASSERT_EQ(grid.getNumCandidates(), expect);
 }
 
 TEST(SweepNakedTuplesTest, SweepNakedTuples_222_box)

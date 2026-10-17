@@ -37,7 +37,7 @@ class CandidatesInHouse
    const House &getHouse() const;
 
  private:
-   const CandidatesGrid &m_grid;
+   const CandidatesGrid *m_grid;
    House m_house;
    std::array<std::vector<Field>, NumValue + 1> m_multiplicities;
 };

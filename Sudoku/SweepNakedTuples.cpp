@@ -66,7 +66,7 @@ void SweepNakedTuples::sweepHouseOfType(CandidatesGrid &cg, HouseType houseType,
 
    for (const Index &houseIndex : IndexAll)
    {
-      const CandidatesInHouse candidatesInHouse(cg, House::get(houseType, houseIndex));
+      CandidatesInHouse candidatesInHouse(cg, House::get(houseType, houseIndex));
       if (candidatesInHouse.isConsistentWith(nakedTupleInput))
       {
          std::vector<Field> fieldsToTest;
@@ -85,7 +85,8 @@ void SweepNakedTuples::sweepHouseOfType(CandidatesGrid &cg, HouseType houseType,
                const bool anyChange = RemoveCandidates(cg, candidatesInHouse, candidateTuple);
                if (anyChange)
                {
-                  return; // candidatesInHouse is stale now
+                  // candidatesInHouse is stale now, recalculate it
+                  candidatesInHouse = CandidatesInHouse(cg, House::get(houseType, houseIndex));
                }
             }
          } while (generator());

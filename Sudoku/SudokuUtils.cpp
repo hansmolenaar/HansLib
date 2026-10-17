@@ -33,7 +33,7 @@ Index NakedTuplesInput::getMultiplicitySize(Index multiplicity) const
    return m_multiplicitesCounted.at(multiplicity);
 }
 
-CandidatesInHouse::CandidatesInHouse(const CandidatesGrid &cg, House house) : m_grid(cg), m_house(std::move(house))
+CandidatesInHouse::CandidatesInHouse(const CandidatesGrid &cg, House house) : m_grid(&cg), m_house(std::move(house))
 {
    for (auto cell : m_house.cells)
    {
@@ -53,7 +53,7 @@ std::unordered_set<Value> CandidatesInHouse::getUniqueValuesInCells(std::span<co
    std::unordered_set<Value> result;
    for (Field f : fields)
    {
-      const auto &candidates = m_grid[f];
+      const auto &candidates = (*m_grid)[f];
       for (Value value : ValueAll)
       {
          if (candidates.contains(value))
@@ -72,7 +72,7 @@ std::span<const Field> CandidatesInHouse::getFieldsWithMultiplicity(Index multip
 
 Index CandidatesInHouse::getNumCandidatesInCell(Field field) const
 {
-   return m_grid[field].size();
+   return (*m_grid)[field].size();
 }
 
 bool CandidatesInHouse::isConsistentWith(const NakedTuplesInput &input) const

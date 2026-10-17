@@ -191,6 +191,7 @@ CandidatesGrid CandidatesGrid::FromString(const std::string &str)
          result.setGiven(f, value);
       }
    }
+   result.checkValidSudoku();
    return result;
 }
 
@@ -205,6 +206,7 @@ CandidatesGrid CandidatesGrid::FromValues(const std::array<Value, NumField> &val
          result.setGiven(f, values[f]);
       }
    }
+   result.checkValidSudoku();
    return result;
 }
 
