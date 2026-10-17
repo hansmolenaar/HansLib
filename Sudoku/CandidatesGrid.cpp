@@ -63,16 +63,21 @@ std::array<std::string, NumBoxIndex> CandidatesToStrings(const Candidates &candi
 std::vector<std::string> ToStrings(const CandidatesGrid &grid)
 {
    std::vector<std::string> result;
-   const std::string hsep = "*----------------------------------------*";
-   const std::string box_hsep = "******************************************";
+   const std::string hsep = "*-------------*-------------*-------------*";
+   const std::string box_hsep_top_bot = "*******************************************";
+   const std::string box_hsep_x = "*             *             *             *";
    const std::string vsep = "|";
    const std::string box_vsep = "*";
 
    for (const auto row : IndexAll)
    {
-      if (row % 3 == 0)
+      if (row == 0)
       {
-         result.push_back(box_hsep);
+         result.push_back(box_hsep_top_bot);
+      }
+      else if (row % 3 == 0)
+      {
+         result.push_back(box_hsep_x);
       }
       else
       {
@@ -108,11 +113,11 @@ std::vector<std::string> ToStrings(const CandidatesGrid &grid)
       }
       for (size_t p = pos; p < pos + NumBoxIndex; ++p)
       {
-         result.at(p).append(box_vsep);
+         result.at(p).append(" " + box_vsep);
       }
    }
 
-   result.push_back(box_hsep);
+   result.push_back(box_hsep_top_bot);
    return result;
 }
 
