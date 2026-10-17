@@ -35,7 +35,7 @@ TEST(SweepNakedTuplesTest, SweepNakedPair_1)
 
    // std::cout << grid << "\n";
    SweepNakedTuples().sweepHouseOfType(grid, HouseType::Box, {2, 2});
-   // std::cout << grid << "\n";
+   std::cout << grid << "\n";
    value0 = grid[Field22].tryGetSolvedValue();
    ASSERT_TRUE(value0.has_value());
    ASSERT_EQ(value0.value(), 5);
