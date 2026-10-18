@@ -63,10 +63,10 @@ std::array<std::string, NumBoxIndex> CandidatesToStrings(const Candidates &candi
 std::vector<std::string> ToStrings(const CandidatesGrid &grid)
 {
    std::vector<std::string> result;
-   const std::string hsep = "*-------------*-------------*-------------*";
-   const std::string box_hsep_top_bot = "*******************************************";
-   const std::string box_hsep_x = "*             *             *             *";
-   const std::string vsep = "|";
+   const std::string hsep = "*-----------------*-----------------*-----------------*";
+   const std::string box_hsep_top_bot = "*******************************************************";
+   const std::string box_hsep_x = box_hsep_top_bot; //"*             *             *             *";
+   const std::string vsep = " | ";
    const std::string box_vsep = "*";
 
    for (const auto row : IndexAll)
@@ -232,4 +232,25 @@ std::ostream &operator<<(std::ostream &os, const Sudoku::CandidatesGrid &cg)
       os << s + "\n";
    }
    return os;
+}
+CandidatesGrid CandidatesGrid::Difference(const CandidatesGrid &prvGrid, const CandidatesGrid &nxtGrid)
+{
+   CandidatesGrid result;
+   for (Field field : FieldAll)
+   {
+      const Candidates &prv = prvGrid[field];
+      const Candidates &nxt = nxtGrid[field];
+      for (Value value : ValueAll)
+      {
+         const bool prvContains = prv.contains(value);
+         const bool nxtContains = nxt.contains(value);
+         MyAssert(!(!prvContains && nxtContains));
+         if (prvContains && !nxtContains)
+         {
+            result.removeCandidate(field, value);
+         }
+      }
+   }
+
+   return result;
 }

@@ -19,6 +19,7 @@ class CandidatesGrid
 
    static CandidatesGrid FromString(const std::string &);
    static CandidatesGrid FromValues(const std::array<Value, NumField> &);
+   static CandidatesGrid Difference(const CandidatesGrid &, const CandidatesGrid &);
 
    const Candidates &operator[](Field f) const
    {
