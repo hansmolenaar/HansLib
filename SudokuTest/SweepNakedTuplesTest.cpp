@@ -34,11 +34,16 @@ TEST(SweepNakedTuplesTest, SweepNakedPair_1)
    expectNumCandidates -= 2 * 6;
    ASSERT_EQ(grid.getNumCandidates(), expectNumCandidates); // Remainer of row removed
 
-   SweepNakedTuples().sweepHouseOfType(grid, HouseType::Box, {2, 2});
+   bool anyChange = SweepNakedTuples().sweepHouseOfType(grid, HouseType::Box, {2, 2});
+   ASSERT_TRUE(anyChange);
    value0 = grid[Field22].tryGetSolvedValue();
    ASSERT_TRUE(value0.has_value());
    ASSERT_EQ(value0.value(), 5);
    expectNumCandidates -= 5;
+   ASSERT_EQ(grid.getNumCandidates(), expectNumCandidates);
+
+   anyChange = SweepNakedTuples().sweepHouseOfType(grid, HouseType::Box, {2, 2});
+   ASSERT_FALSE(anyChange);
    ASSERT_EQ(grid.getNumCandidates(), expectNumCandidates);
 }
 

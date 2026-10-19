@@ -58,9 +58,10 @@ bool IsNakedTuple(const CandidatesInHouse &candidatesInHouse, std::span<const Fi
 
 } // namespace
 
-void SweepNakedTuples::sweepHouseOfType(CandidatesGrid &cg, HouseType houseType,
+bool SweepNakedTuples::sweepHouseOfType(CandidatesGrid &cg, HouseType houseType,
                                         std::initializer_list<Index> useCandidatesOfSize)
 {
+   bool anyChange = false;
    const NakedTuplesInput nakedTupleInput(useCandidatesOfSize);
    std::vector<Field> candidateTuple(nakedTupleInput.getNumUniqueValues());
 
@@ -82,9 +83,10 @@ void SweepNakedTuples::sweepHouseOfType(CandidatesGrid &cg, HouseType houseType,
          {
             if (IsNakedTuple(candidatesInHouse, candidateTuple, nakedTupleInput))
             {
-               const bool anyChange = RemoveCandidates(cg, candidatesInHouse, candidateTuple);
-               if (anyChange)
+               const bool anyChangeInHouse = RemoveCandidates(cg, candidatesInHouse, candidateTuple);
+               if (anyChangeInHouse)
                {
+                  anyChange = true;
                   // candidatesInHouse is stale now, recalculate it
                   candidatesInHouse = CandidatesInHouse(cg, House::get(houseType, houseIndex));
                }
@@ -92,6 +94,7 @@ void SweepNakedTuples::sweepHouseOfType(CandidatesGrid &cg, HouseType houseType,
          } while (generator());
       }
    }
+   return anyChange;
 }
 
 void SweepNakedTuples::sweep(CandidatesGrid &cg)
