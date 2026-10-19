@@ -195,6 +195,7 @@ std::vector<std::string> CandidatesGrid::DifferenceToStrings(const CandidatesGri
                                                              const CandidatesGrid &nxtGrid)
 {
    CandidatesGrid result;
+   Field numChanges = 0;
    for (Field field : FieldAll)
    {
       const Candidates &prv = prvGrid[field];
@@ -211,8 +212,11 @@ std::vector<std::string> CandidatesGrid::DifferenceToStrings(const CandidatesGri
                result.removeCandidate(field, value);
             }
          }
+         numChanges += result[field].size();
       }
    }
 
-   return ToStrings(result, &Candidates::ToStringsDifferences);
+   auto retval = ToStrings(result, &Candidates::ToStringsDifferences);
+   retval.push_back("Number of changes = " + std::to_string(numChanges));
+   return retval;
 }

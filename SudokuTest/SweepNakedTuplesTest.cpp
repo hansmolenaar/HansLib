@@ -2,6 +2,7 @@
 
 #include "CandidatesGrid.h"
 #include "Cell.h"
+#include "ISweep.h"
 #include "StreamUtils.h"
 #include "SudokuDefines.h"
 #include "SweepHiddenSingle.h"
@@ -145,11 +146,7 @@ TEST(SweepNakedTuplesTest, SweepNakedTuples_2)
    expect -= 6;
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
-   CandidatesGrid prv = grid;
-   std::cout << prv << "\n";
    SweepNakedTuples().sweepHouseOfType(grid, HouseType::Box, {2, 2});
-   std::cout << grid << "\n\n\n";
-   std::cout << CandidatesGrid::DifferenceToStrings(prv, grid);
    expect -= 2;
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
@@ -179,6 +176,103 @@ TEST(SweepNakedTuplesTest, SweepNakedTuples_2)
 
    SweepNakedTuples().sweepHouseOfType(grid, HouseType::Row, {2, 2});
    ASSERT_EQ(grid.getNumCandidates(), expect);
+}
+
+TEST(SweepNakedTuplesTest, SweepNakedTuples_3)
+{
+
+   const std::array<Value, NumField> diagramValues = {
+       4, 0, 0, 0, 0, 0, 0, 3, 8, 0, 0, 2, 0, 0, 4, 1, 0, 0, 0, 0, 5, 3, 0, 0, 2, 4, 0,
+
+       0, 7, 0, 6, 0, 9, 0, 0, 4, 0, 2, 0, 0, 0, 0, 0, 7, 0, 6, 0, 0, 7, 0, 3, 0, 9, 0,
+
+       0, 5, 7, 0, 0, 8, 3, 0, 0, 0, 0, 3, 9, 0, 0, 4, 0, 0, 2, 4, 0, 0, 0, 0, 0, 0, 9,
+   };
+   auto grid = CandidatesGrid::FromValues(diagramValues);
+   SweepNakedSingle sweepNakedSingle;
+
+   SweepNakedSingle().sweep(grid);
+   Field expect = 211;
+   ASSERT_EQ(grid.getNumCandidates(), expect);
+
+   SweepNakedSingle().sweep(grid);
+   ASSERT_EQ(grid.getNumCandidates(), expect);
+
+   SweepHiddenSingle().sweep(grid);
+   expect -= 26;
+   ASSERT_EQ(grid.getNumCandidates(), expect);
+
+   SweepNakedTuples().sweepHouseOfType(grid, HouseType::Row, {2, 2});
+   ASSERT_EQ(grid.getNumCandidates(), expect);
+
+   SweepNakedTuples().sweepHouseOfType(grid, HouseType::Col, {2, 2});
+   expect -= 2;
+   ASSERT_EQ(grid.getNumCandidates(), expect);
+
+   SweepNakedTuples().sweepHouseOfType(grid, HouseType::Box, {2, 2});
+   expect -= 5;
+   ASSERT_EQ(grid.getNumCandidates(), expect);
+
+   SweepNakedSingle().sweep(grid);
+   expect -= 21;
+   ASSERT_EQ(grid.getNumCandidates(), expect);
+
+   SweepNakedTuples().sweepHouseOfType(grid, HouseType::Col, {2, 2, 2});
+   ASSERT_EQ(grid.getNumCandidates(), expect);
+
+   SweepNakedTuples().sweepHouseOfType(grid, HouseType::Row, {2, 2, 2});
+   ASSERT_EQ(grid.getNumCandidates(), expect);
+
+   SweepNakedTuples().sweepHouseOfType(grid, HouseType::Box, {2, 2, 2});
+   ASSERT_EQ(grid.getNumCandidates(), expect);
+
+   SweepNakedTuples().sweepHouseOfType(grid, HouseType::Col, {2, 2, 3});
+   expect -= 3;
+   ASSERT_EQ(grid.getNumCandidates(), expect);
+
+   SweepNakedSingle().sweep(grid);
+   expect -= 1;
+   ASSERT_EQ(grid.getNumCandidates(), expect);
+
+   SweepNakedTuples().sweepHouseOfType(grid, HouseType::Row, {2, 2, 3});
+   ASSERT_EQ(grid.getNumCandidates(), expect);
+
+   SweepNakedTuples().sweepHouseOfType(grid, HouseType::Box, {2, 2, 3});
+   ASSERT_EQ(grid.getNumCandidates(), expect);
+
+   SweepNakedTuples().sweepHouseOfType(grid, HouseType::Col, {2, 2});
+   ASSERT_EQ(grid.getNumCandidates(), expect);
+
+   SweepNakedTuples().sweepHouseOfType(grid, HouseType::Box, {2, 2});
+   expect -= 3;
+   ASSERT_EQ(grid.getNumCandidates(), expect);
+
+   SweepNakedTuples().sweepHouseOfType(grid, HouseType::Row, {2, 2});
+   expect -= 7;
+   ASSERT_EQ(grid.getNumCandidates(), expect);
+
+   SweepNakedSingle().sweep(grid);
+   expect -= 9;
+   ASSERT_EQ(grid.getNumCandidates(), expect);
+
+   SweepNakedSingle().sweep(grid);
+   expect -= 2;
+   ASSERT_EQ(grid.getNumCandidates(), expect);
+
+   SweepNakedSingle().sweep(grid);
+   ASSERT_EQ(grid.getNumCandidates(), expect);
+
+   SweepHiddenSingle().sweep(grid);
+   expect -= 8;
+   ASSERT_EQ(grid.getNumCandidates(), expect);
+
+   SweepHiddenSingle().sweep(grid);
+   expect -= 10;
+   ASSERT_EQ(grid.getNumCandidates(), expect);
+
+   ISweep::iterate(sweepNakedSingle, grid);
+   ASSERT_EQ(grid.getNumCandidates(), NumField);
+   ASSERT_TRUE(grid.isSolved());
 }
 
 TEST(SweepNakedTuplesTest, SweepNakedTuples_222_box)
