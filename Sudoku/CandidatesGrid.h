@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Candidates.h"
+#include <vector>
 
 namespace Sudoku
 {
@@ -19,7 +20,7 @@ class CandidatesGrid
 
    static CandidatesGrid FromString(const std::string &);
    static CandidatesGrid FromValues(const std::array<Value, NumField> &);
-   static CandidatesGrid Difference(const CandidatesGrid &, const CandidatesGrid &);
+   static std::vector<std::string> DifferenceToStrings(const CandidatesGrid &, const CandidatesGrid &);
 
    const Candidates &operator[](Field f) const
    {

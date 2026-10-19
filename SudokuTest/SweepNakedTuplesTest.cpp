@@ -2,6 +2,7 @@
 
 #include "CandidatesGrid.h"
 #include "Cell.h"
+#include "StreamUtils.h"
 #include "SudokuDefines.h"
 #include "SweepHiddenSingle.h"
 #include "SweepNakedSingle.h"
@@ -24,19 +25,15 @@ TEST(SweepNakedTuplesTest, SweepNakedPair_1)
    grid.setCandidates(Cell::rowCol2Field(1, 2), {2, 3});
    grid.setCandidates(Cell::rowCol2Field(2, 2), {2, 3, 5});
 
-   // std::cout << grid << "\n";
    size_t expectNumCandidates = 671;
    ASSERT_EQ(grid.getNumCandidates(), expectNumCandidates);
    auto value0 = grid[Field22].tryGetSolvedValue();
    ASSERT_FALSE(value0.has_value());
    SweepNakedTuples().sweepHouseOfType(grid, HouseType::Row, {2, 2});
-   // std::cout << grid << "\n";
    expectNumCandidates -= 2 * 6;
    ASSERT_EQ(grid.getNumCandidates(), expectNumCandidates); // Remainer of row removed
 
-   // std::cout << grid << "\n";
    SweepNakedTuples().sweepHouseOfType(grid, HouseType::Box, {2, 2});
-   // std::cout << grid << "\n";
    value0 = grid[Field22].tryGetSolvedValue();
    ASSERT_TRUE(value0.has_value());
    ASSERT_EQ(value0.value(), 5);
@@ -148,7 +145,11 @@ TEST(SweepNakedTuplesTest, SweepNakedTuples_2)
    expect -= 6;
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
+   CandidatesGrid prv = grid;
+   std::cout << prv << "\n";
    SweepNakedTuples().sweepHouseOfType(grid, HouseType::Box, {2, 2});
+   std::cout << grid << "\n\n\n";
+   std::cout << CandidatesGrid::DifferenceToStrings(prv, grid);
    expect -= 2;
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
@@ -173,11 +174,7 @@ TEST(SweepNakedTuplesTest, SweepNakedTuples_2)
    SweepNakedTuples().sweepHouseOfType(grid, HouseType::Col, {2, 2});
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
-   CandidatesGrid prv = grid;
-   std::cout << prv << "\n";
    SweepNakedTuples().sweepHouseOfType(grid, HouseType::Box, {2, 2});
-   std::cout << grid << "\n\n\n";
-   std::cout << CandidatesGrid::Difference(prv, grid);
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
    SweepNakedTuples().sweepHouseOfType(grid, HouseType::Row, {2, 2});

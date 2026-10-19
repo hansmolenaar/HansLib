@@ -18,6 +18,8 @@ class Candidates
    std::optional<Value> tryGetSolvedValue() const;
    bool contains(Value) const;
 
+   auto operator<=>(const Sudoku::Candidates &) const = default;
+
    static std::array<std::string, NumBoxIndex> ToStringsDifferences(const Candidates &);
    static std::array<std::string, NumBoxIndex> ToStrings(const Candidates &);
 

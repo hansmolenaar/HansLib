@@ -19,49 +19,9 @@ namespace str = std::ranges;
 namespace
 {
 
-std::array<std::string, NumBoxIndex> SolvedCellToString(Value value)
-{
-   std::array<std::string, NumBoxIndex> result;
-   result[0] = "   ";
-   result[1] = " " + std::to_string(value) + " ";
-   result[2] = "   ";
-   return result;
-}
+typedef std::array<std::string, NumBoxIndex> (*candidatesToStringsPtr)(const Candidates &);
 
-std::array<std::string, NumBoxIndex> UnSolvedCellToString(const Candidates &candidates)
-{
-   std::array<std::string, NumBoxIndex> result;
-   for (auto row : BoxIndexAll)
-   {
-      for (auto col : BoxIndexAll)
-      {
-         const Value val = col + row * NumBoxIndex + 1;
-         if (candidates.contains(val))
-         {
-            result.at(row).append(std::to_string(val));
-         }
-         else
-         {
-            result.at(row).append(std::string{ValueUndefinedChar});
-         }
-      }
-   }
-   return result;
-}
-
-std::array<std::string, NumBoxIndex> CandidatesToStrings(const Candidates &candidates)
-{
-   const auto solvedValue = candidates.tryGetSolvedValue();
-   if (solvedValue.has_value())
-   {
-      return SolvedCellToString(solvedValue.value());
-   }
-   else
-   {
-      return UnSolvedCellToString(candidates);
-   }
-}
-std::vector<std::string> ToStrings(const CandidatesGrid &grid)
+std::vector<std::string> ToStrings(const CandidatesGrid &grid, candidatesToStringsPtr fun)
 {
    std::vector<std::string> result;
    const std::string hsep = "*-----------------*-----------------*-----------------*";
@@ -93,7 +53,7 @@ std::vector<std::string> ToStrings(const CandidatesGrid &grid)
       for (const auto &cell : house.cells)
       {
          const Field field = cell.field;
-         const auto cstrings = CandidatesToStrings(grid[field]);
+         const auto cstrings = fun(grid[field]);
 
          for (auto p : BoxIndexAll)
          {
@@ -227,27 +187,32 @@ bool CandidatesGrid::isSolved() const
 
 std::ostream &operator<<(std::ostream &os, const Sudoku::CandidatesGrid &cg)
 {
-   os << ToStrings(cg);
+   os << ToStrings(cg, &Candidates::ToStrings);
    return os;
 }
-CandidatesGrid CandidatesGrid::Difference(const CandidatesGrid &prvGrid, const CandidatesGrid &nxtGrid)
+
+std::vector<std::string> CandidatesGrid::DifferenceToStrings(const CandidatesGrid &prvGrid,
+                                                             const CandidatesGrid &nxtGrid)
 {
    CandidatesGrid result;
    for (Field field : FieldAll)
    {
       const Candidates &prv = prvGrid[field];
       const Candidates &nxt = nxtGrid[field];
-      for (Value value : ValueAll)
+      if (prv != nxt)
       {
-         const bool prvContains = prv.contains(value);
-         const bool nxtContains = nxt.contains(value);
-         MyAssert(!(!prvContains && nxtContains));
-         if (prvContains && !nxtContains)
+         for (Value value : ValueAll)
          {
-            result.removeCandidate(field, value);
+            const bool prvContains = prv.contains(value);
+            const bool nxtContains = nxt.contains(value);
+            MyAssert(!(!prvContains && nxtContains));
+            if (prvContains == nxtContains)
+            {
+               result.removeCandidate(field, value);
+            }
          }
       }
    }
 
-   return result;
+   return ToStrings(result, &Candidates::ToStringsDifferences);
 }
