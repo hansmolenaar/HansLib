@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "Candidates.h"
+#include "StreamUtils.h"
 
 using namespace Sudoku;
 
@@ -52,4 +53,47 @@ TEST(CandidatesTest, SetOnly)
    ASSERT_TRUE(candidates.isSolved());
 
    ASSERT_ANY_THROW(candidates.setOnly({1}));
+}
+
+TEST(CandidatesTest, ToStringsDifferences)
+{
+   Candidates candidates;
+   auto retval = Candidates::ToStringsDifferences(candidates);
+   ASSERT_EQ(retval[0], "...");
+   ASSERT_EQ(retval[1], "...");
+   ASSERT_EQ(retval[2], "...");
+
+   candidates.setOnly({9, 1});
+   retval = Candidates::ToStringsDifferences(candidates);
+   ASSERT_EQ(retval[0], "1..");
+   ASSERT_EQ(retval[1], "...");
+   ASSERT_EQ(retval[2], "..9");
+
+   candidates.removeCandidate(1);
+   retval = Candidates::ToStringsDifferences(candidates);
+   ASSERT_EQ(retval[0], "...");
+   ASSERT_EQ(retval[1], "...");
+   ASSERT_EQ(retval[2], "..9");
+}
+
+TEST(CandidatesTest, ToStrings)
+{
+   Candidates candidates;
+
+   auto retval = Candidates::ToStrings(candidates);
+   ASSERT_EQ(retval[0], "123");
+   ASSERT_EQ(retval[1], "456");
+   ASSERT_EQ(retval[2], "789");
+
+   candidates.setOnly({9, 1});
+   retval = Candidates::ToStrings(candidates);
+   ASSERT_EQ(retval[0], "1..");
+   ASSERT_EQ(retval[1], "...");
+   ASSERT_EQ(retval[2], "..9");
+
+   candidates.removeCandidate(1);
+   retval = Candidates::ToStrings(candidates);
+   ASSERT_EQ(retval[0], "   ");
+   ASSERT_EQ(retval[1], " 9 ");
+   ASSERT_EQ(retval[2], "   ");
 }

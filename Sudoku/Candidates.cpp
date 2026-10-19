@@ -54,3 +54,56 @@ void Candidates::setOnly(std::initializer_list<Value> values)
    str::sort(m_candidates);
    m_candidates.erase(std::unique(m_candidates.begin(), m_candidates.end()), m_candidates.end());
 }
+
+std::array<std::string, NumBoxIndex> Candidates::ToStringsDifferences(const Candidates &candidates)
+{
+   std::array<std::string, NumBoxIndex> result;
+   result[0] = "...";
+   result[1] = "...";
+   result[2] = "...";
+   if (candidates.size() != NumValue)
+   {
+      for (Index idx : IndexAll)
+      {
+         const Value value = idx + 1;
+         if (candidates.contains(value))
+         {
+            auto row = idx / NumBoxIndex;
+            auto col = idx - row * NumBoxIndex;
+            result[row][col] = char('0' + value);
+         }
+      }
+   }
+   return result;
+}
+
+std::array<std::string, NumBoxIndex> Candidates::ToStrings(const Candidates &candidates)
+{
+   std::array<std::string, NumBoxIndex> result;
+
+   const auto solvedValue = candidates.tryGetSolvedValue();
+   if (solvedValue)
+   {
+      result[0] = "   ";
+      result[1] = "   ";
+      result[2] = "   ";
+      result[1][1] = char('0' + solvedValue.value());
+   }
+   else
+   {
+      result[0] = "...";
+      result[1] = "...";
+      result[2] = "...";
+      for (Index idx : IndexAll)
+      {
+         const Value value = idx + 1;
+         if (candidates.contains(value))
+         {
+            auto row = idx / NumBoxIndex;
+            auto col = idx - row * NumBoxIndex;
+            result[row][col] = char('0' + value);
+         }
+      }
+   }
+   return result;
+}

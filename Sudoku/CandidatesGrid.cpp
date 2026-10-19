@@ -2,6 +2,8 @@
 #include "Cell.h"
 #include "House.h"
 #include "MyAssert.h"
+#include "StreamUtils.h"
+#include "SudokuDefines.h"
 #include "SweepNakedSingle.h"
 
 #include <algorithm>
@@ -59,7 +61,6 @@ std::array<std::string, NumBoxIndex> CandidatesToStrings(const Candidates &candi
       return UnSolvedCellToString(candidates);
    }
 }
-
 std::vector<std::string> ToStrings(const CandidatesGrid &grid)
 {
    std::vector<std::string> result;
@@ -226,11 +227,7 @@ bool CandidatesGrid::isSolved() const
 
 std::ostream &operator<<(std::ostream &os, const Sudoku::CandidatesGrid &cg)
 {
-   const auto strings = ToStrings(cg);
-   for (const auto &s : strings)
-   {
-      os << s + "\n";
-   }
+   os << ToStrings(cg);
    return os;
 }
 CandidatesGrid CandidatesGrid::Difference(const CandidatesGrid &prvGrid, const CandidatesGrid &nxtGrid)

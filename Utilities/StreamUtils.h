@@ -1,6 +1,7 @@
 #pragma once
 
 #include <ostream>
+#include <span>
 
 namespace StreamUtils
 {
@@ -23,3 +24,5 @@ std::ostream &insertList(std::ostream &os, const C &container, std::string open 
    return os;
 }
 } // namespace StreamUtils
+
+std::ostream &operator<<(std::ostream &, std::span<const std::string>);
