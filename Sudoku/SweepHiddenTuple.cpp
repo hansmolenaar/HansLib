@@ -38,30 +38,6 @@ bool CellContainsHiddenTuple(const CandidatesGrid &grid, Field field, std::span<
 
 bool IsHiddenTuple(const CandidatesGrid &grid, const House &house, std::span<const Value> candidateValueTuple)
 {
-   if (candidateValueTuple.size() == 2)
-   {
-      // std::cout << candidateValueTuple[0] << " " << candidateValueTuple[1] << "\n";
-      if (candidateValueTuple[0] == 2 && candidateValueTuple[1] == 6 &&
-          str::all_of(house.cells, [](Cell cell) { return cell.box == 3; }))
-      {
-         // std::cout << candidateValueTuple[0] << " " << candidateValueTuple[1] << "\n";
-      }
-   }
-
-   for (Value value : candidateValueTuple)
-   {
-      auto tmp = grid.countOccurence(house.cells, value);
-      if (tmp > 100)
-         return false;
-      Index count = 0;
-      for (Cell cell : house.cells)
-      {
-         // std::cout << Candidates::ToStrings(grid[cell.field]);
-         if (grid[cell.field].contains(value))
-            count += 1;
-      }
-      MyAssert(count == tmp);
-   }
    const auto size = candidateValueTuple.size();
    for (Value value : candidateValueTuple)
    {

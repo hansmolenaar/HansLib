@@ -1,6 +1,7 @@
 #include "SweepHiddenSingle.h"
 #include "CandidatesGrid.h"
 #include "House.h"
+#include "SweepHiddenTuple.h"
 
 using namespace Sudoku;
 
@@ -36,6 +37,7 @@ std::optional<Field> tryFindUniqueCellForValue(const CandidatesGrid &grid, const
 
 bool SweepHiddenSingle::sweep(CandidatesGrid &grid)
 {
+   // return SweepHiddenTuple::sweep(grid, 1);
    bool anyChange = false;
    for (const House &house : House::getAllHouses())
    {

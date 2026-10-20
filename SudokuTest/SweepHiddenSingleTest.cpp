@@ -2,6 +2,7 @@
 
 #include "CandidatesGrid.h"
 #include "Cell.h"
+#include "StreamUtils.h"
 #include "SweepHiddenSingle.h"
 
 using namespace Sudoku;
@@ -62,7 +63,11 @@ TEST(SweepHidddenSingleTest, SweepExample1)
    grid.update();
    ASSERT_EQ(grid.getNumCandidates(), 260);
 
+   CandidatesGrid prv;
+   prv = grid;
+   std::cout << grid << "\n";
    SweepHiddenSingle().sweep(grid);
+   std::cout << CandidatesGrid::DifferenceToStrings(prv, grid) << "\n";
    ASSERT_EQ(grid.getNumCandidates(), 233);
 
    grid.update();
