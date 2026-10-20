@@ -112,3 +112,8 @@ std::array<std::string, NumBoxIndex> Candidates::ToStrings(const Candidates &can
    }
    return result;
 }
+
+bool Candidates::contains(std::span<const Value> values) const
+{
+   return str::all_of(values, [this](Value value) { return contains(value); });
+}

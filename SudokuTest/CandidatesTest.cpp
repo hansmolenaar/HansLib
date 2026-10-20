@@ -97,3 +97,16 @@ TEST(CandidatesTest, ToStrings)
    ASSERT_EQ(retval[1], " 9 ");
    ASSERT_EQ(retval[2], "   ");
 }
+
+TEST(CandidatesTest, ContainsValues)
+{
+   Candidates candidates;
+   const std::array<Value, 2> values{2, 8};
+   ASSERT_TRUE(candidates.contains(values));
+   candidates.removeCandidate(5);
+   ASSERT_TRUE(candidates.contains(values));
+   candidates.removeCandidate(2);
+   ASSERT_FALSE(candidates.contains(values));
+   candidates.removeCandidate(8);
+   ASSERT_FALSE(candidates.contains(values));
+}

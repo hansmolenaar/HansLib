@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Candidates.h"
+#include "Cell.h"
 #include <vector>
 
 namespace Sudoku
@@ -17,6 +18,7 @@ class CandidatesGrid
    void update();                 // set candidates from givens
    void checkValidSudoku() const; // throws if not valid
    bool isSolved() const;
+   Index countOccurence(std::span<const Cell>, Value) const;
 
    static CandidatesGrid FromString(const std::string &);
    static CandidatesGrid FromValues(const std::array<Value, NumField> &);

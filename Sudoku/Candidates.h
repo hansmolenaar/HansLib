@@ -17,6 +17,7 @@ class Candidates
    Index size() const;
    std::optional<Value> tryGetSolvedValue() const;
    bool contains(Value) const;
+   bool contains(std::span<const Value>) const;
 
    auto operator<=>(const Sudoku::Candidates &) const = default;
 
