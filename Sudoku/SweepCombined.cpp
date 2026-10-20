@@ -6,10 +6,17 @@ SweepCombined::SweepCombined(std::initializer_list<ISweep *> sweepers) : m_sweep
 {
 }
 
-void SweepCombined::sweep(CandidatesGrid &grid)
+bool SweepCombined::sweep(CandidatesGrid &grid)
 {
+   bool anyChange = false;
    for (auto *s : m_sweepers)
    {
-      s->sweep(grid);
+      anyChange = s->sweep(grid);
+      // Stop after first change, and iterate
+      if (anyChange)
+      {
+         break;
+      }
    }
+   return anyChange;
 }

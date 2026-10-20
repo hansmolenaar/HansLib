@@ -3,14 +3,14 @@
 
 using namespace Sudoku;
 
-void ISweep::iterate(ISweep &sweeper, CandidatesGrid &grid)
+bool ISweep::iterate(ISweep &sweeper, CandidatesGrid &grid)
 {
-   auto nCandidatesPrv = grid.getNumCandidates();
-   auto nCandidatesCur = nCandidatesPrv;
+   bool anyChange = false;
+   bool changeInSweep = false;
    do
    {
-      sweeper.sweep(grid);
-      nCandidatesPrv = nCandidatesCur;
-      nCandidatesCur = grid.getNumCandidates();
-   } while (nCandidatesCur < nCandidatesPrv);
+      changeInSweep = sweeper.sweep(grid);
+      anyChange |= changeInSweep;
+   } while (changeInSweep);
+   return anyChange;
 }

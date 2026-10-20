@@ -34,8 +34,9 @@ std::optional<Field> tryFindUniqueCellForValue(const CandidatesGrid &grid, const
 
 } // namespace
 
-void SweepHiddenSingle::sweep(CandidatesGrid &grid)
+bool SweepHiddenSingle::sweep(CandidatesGrid &grid)
 {
+   bool anyChange = false;
    for (const House &house : House::getAllHouses())
    {
       for (const Value value : ValueAll)
@@ -44,8 +45,9 @@ void SweepHiddenSingle::sweep(CandidatesGrid &grid)
          if (candidateInField.has_value())
          {
             // only cell with this value as candidate
-            grid.setCandidates(candidateInField.value(), {value});
+            anyChange |= grid.setCandidates(candidateInField.value(), {value});
          }
       }
    }
+   return anyChange;
 }

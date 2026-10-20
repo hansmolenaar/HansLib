@@ -13,15 +13,17 @@ bool Candidates::contains(Value v) const
    return str::find(m_candidates, v) != m_candidates.end();
 }
 
-void Candidates::removeCandidate(Value v)
+bool Candidates::removeCandidate(Value v)
 {
    const auto found = str::find(m_candidates, v);
-   const bool succes = found != m_candidates.end();
-   if (succes)
+   const bool anyChange = found != m_candidates.end();
+
+   if (anyChange)
    {
       MyAssert(size() > 1);
       m_candidates.erase(found);
    }
+   return anyChange;
 }
 
 bool Candidates::isSolved() const
@@ -43,8 +45,9 @@ std::optional<Value> Candidates::tryGetSolvedValue() const
    return m_candidates.front();
 }
 
-void Candidates::setOnly(std::initializer_list<Value> values)
+bool Candidates::setOnly(std::initializer_list<Value> values)
 {
+   const Field numCandidatesBefore = size();
    for (auto v : values)
    {
       Utilities::MyAssert(contains(v));
@@ -53,6 +56,8 @@ void Candidates::setOnly(std::initializer_list<Value> values)
    Utilities::MyAssert(!m_candidates.empty());
    str::sort(m_candidates);
    m_candidates.erase(std::unique(m_candidates.begin(), m_candidates.end()), m_candidates.end());
+   return numCandidatesBefore != size();
+   ;
 }
 
 std::array<std::string, NumBoxIndex> Candidates::ToStringsDifferences(const Candidates &candidates)

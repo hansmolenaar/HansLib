@@ -8,8 +8,8 @@ class ISweep
 {
  public:
    virtual ~ISweep() = default;
-   virtual void sweep(CandidatesGrid &) = 0;
-   static void iterate(ISweep &, CandidatesGrid &);
+   virtual bool sweep(CandidatesGrid &) = 0;
+   static bool iterate(ISweep &, CandidatesGrid &);
 };
 
 } // namespace Sudoku

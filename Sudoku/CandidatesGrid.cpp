@@ -90,14 +90,14 @@ Index CandidatesGrid::getNumCandidates() const
                           [](Index acc, const Candidates &c) { return acc + c.size(); });
 }
 
-void CandidatesGrid::setCandidates(Field field, std::initializer_list<Value> values)
+bool CandidatesGrid::setCandidates(Field field, std::initializer_list<Value> values)
 {
-   m_candidates.at(field).setOnly(values);
+   return m_candidates.at(field).setOnly(values);
 }
 
-void CandidatesGrid::removeCandidate(Field field, Value value)
+bool CandidatesGrid::removeCandidate(Field field, Value value)
 {
-   m_candidates.at(field).removeCandidate(value);
+   return m_candidates.at(field).removeCandidate(value);
 }
 
 void CandidatesGrid::setGiven(Field field, Value value)

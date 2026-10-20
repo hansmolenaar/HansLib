@@ -97,10 +97,12 @@ bool SweepNakedTuples::sweepHouseOfType(CandidatesGrid &cg, HouseType houseType,
    return anyChange;
 }
 
-void SweepNakedTuples::sweep(CandidatesGrid &cg)
+bool SweepNakedTuples::sweep(CandidatesGrid &cg)
 {
+   bool anyChange = false;
    for (HouseType houseType : HouseTypeAll)
    {
-      sweepHouseOfType(cg, houseType, {2, 2});
+      anyChange |= sweepHouseOfType(cg, houseType, {2, 2});
    }
+   return anyChange;
 }

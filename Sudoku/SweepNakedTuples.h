@@ -9,7 +9,7 @@ namespace Sudoku
 class SweepNakedTuples : public ISweep
 {
  public:
-   void sweep(CandidatesGrid &) override;
+   bool sweep(CandidatesGrid &) override;
    bool sweepHouseOfType(CandidatesGrid &, HouseType, std::initializer_list<Index>);
 
  private:
