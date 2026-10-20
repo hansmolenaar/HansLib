@@ -10,7 +10,7 @@ namespace str = std::ranges;
 
 namespace
 {
-template <typename F> std::vector<House> getHousesBy(F &&selector)
+template <typename F> std::vector<House> getHousesBy(HouseType houseType, F &&selector)
 {
    std::vector<House> housesByIdx(NumIndex);
    std::array<std::vector<Cell>, NumIndex> idx2cell;
@@ -24,6 +24,7 @@ template <typename F> std::vector<House> getHousesBy(F &&selector)
    {
       MyAssert(idx2cell.at(idx).size() == NumIndex);
       House house;
+      house.type = houseType;
       str::copy(idx2cell.at(idx), house.cells.begin());
       housesByIdx.at(idx) = house;
    }
@@ -38,7 +39,7 @@ const House &House::getRow(Index row)
    static std::vector<House> housesByRow;
    if (housesByRow.empty())
    {
-      housesByRow = getHousesBy([](const Cell &cell) { return cell.row; });
+      housesByRow = getHousesBy(HouseType::Row, [](const Cell &cell) { return cell.row; });
    }
    return housesByRow.at(row);
 }
@@ -48,7 +49,7 @@ const House &House::getCol(Index col)
    static std::vector<House> housesByCol;
    if (housesByCol.empty())
    {
-      housesByCol = getHousesBy([](const Cell &cell) { return cell.col; });
+      housesByCol = getHousesBy(HouseType::Col, [](const Cell &cell) { return cell.col; });
    }
    return housesByCol.at(col);
 }
@@ -58,7 +59,7 @@ const House &House::getBox(Index box)
    static std::vector<House> housesByBox;
    if (housesByBox.empty())
    {
-      housesByBox = getHousesBy([](const Cell &cell) { return cell.box; });
+      housesByBox = getHousesBy(HouseType::Box, [](const Cell &cell) { return cell.box; });
    }
    return housesByBox.at(box);
 }

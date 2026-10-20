@@ -30,14 +30,17 @@ template <typename F, typename G> void TestGetHouse(F &&getHouse, G &&getIndexFr
 TEST(HouseTest, ByRow)
 {
    TestGetHouse([](Index idx) { return House::getRow(idx); }, [](const Cell &cell) { return cell.row; });
+   ASSERT_EQ(House::getRow(8).type, HouseType::Row);
 }
 
 TEST(HouseTest, ByCol)
 {
    TestGetHouse([](Index idx) { return House::getCol(idx); }, [](const Cell &cell) { return cell.col; });
+   ASSERT_EQ(House::getCol(8).type, HouseType::Col);
 }
 
 TEST(HouseTest, ByBox)
 {
    TestGetHouse([](Index idx) { return House::getBox(idx); }, [](const Cell &cell) { return cell.box; });
+   ASSERT_EQ(House::getBox(8).type, HouseType::Box);
 }

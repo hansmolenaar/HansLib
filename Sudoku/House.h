@@ -28,6 +28,7 @@ struct House
    static const House &get(HouseType, Index);
    static const std::vector<House> &getAllHouses();
 
+   HouseType type;
    std::array<Cell, NumIndex> cells;
 };
 

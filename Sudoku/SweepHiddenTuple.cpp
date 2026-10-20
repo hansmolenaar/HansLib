@@ -63,6 +63,9 @@ bool RemoveCandidates(CandidatesGrid &grid, const House &house, std::span<Value>
          {
             if (grid[cell.field].contains(value) && str::find(candidateTuple, value) == candidateTuple.end())
             {
+               // std::cout << "Remove candidate " << value << " from cell " << cell.row << " " << cell.col
+               //         << " in house of type " << static_cast<int>(house.type) << " with hidden single "
+               //       << candidateTuple[0] << "\n";
                anyChange |= grid.removeCandidate(cell.field, value);
             }
          }
@@ -70,10 +73,12 @@ bool RemoveCandidates(CandidatesGrid &grid, const House &house, std::span<Value>
    }
    return anyChange;
 }
+} // namespace
 
-bool sweepHouse(CandidatesGrid &grid, const House &house, std::span<const Value> activeCandidates, Index size)
+bool SweepHiddenTuple::sweepHouse(CandidatesGrid &grid, const House &house, Index size)
 {
    bool anyChange = false;
+   const auto activeCandidates = GetActiveValuesInHouse(grid, house);
    if (activeCandidates.size() < size)
    {
       return anyChange;
@@ -94,15 +99,12 @@ bool sweepHouse(CandidatesGrid &grid, const House &house, std::span<const Value>
    return anyChange;
 }
 
-} // namespace
-
 bool SweepHiddenTuple::sweep(CandidatesGrid &grid, Index size)
 {
    bool anyChange = false;
    for (const House &house : House::getAllHouses())
    {
-      const auto activeValues = GetActiveValuesInHouse(grid, house);
-      anyChange |= sweepHouse(grid, house, activeValues, size);
+      anyChange |= sweepHouse(grid, house, size);
    }
    return anyChange;
 }
