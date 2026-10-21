@@ -31,8 +31,9 @@ class CandidatesInHouse
  public:
    CandidatesInHouse(const CandidatesGrid &cg, House house);
    bool isConsistentWith(const NakedTuplesInput &input) const;
-   std::unordered_set<Value> getUniqueValuesInCells(std::span<const Field> fields) const;
+   std::unordered_set<Value> getUniqueActiveValuesInCells(std::span<const Field> fields) const;
    std::span<const Field> getFieldsWithMultiplicity(Index multiplicity) const;
+   std::span<const Field> getFieldsContainingValue(Value) const;
    Index getNumCandidatesInCell(Field) const;
    const House &getHouse() const;
 
@@ -40,5 +41,6 @@ class CandidatesInHouse
    const CandidatesGrid *m_grid;
    House m_house;
    std::array<std::vector<Field>, NumValue + 1> m_multiplicities;
+   std::array<std::vector<Field>, NumValue + 1> m_fieldsContainingValue;
 };
 } // namespace Sudoku

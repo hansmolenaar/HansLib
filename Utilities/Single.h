@@ -2,7 +2,9 @@
 
 #include "MyAssert.h"
 #include <boost/container/static_vector.hpp>
+#include <iterator>
 #include <span>
+#include <string>
 #include <vector>
 
 namespace Utilities
@@ -14,6 +16,14 @@ template <typename T> T &Single(std::vector<T> &);
 template <typename T, size_t N> const T &Single(const boost::container::static_vector<T, N> &);
 
 template <typename T> const T &Single(const std::span<const T> &);
+
+template <typename InputItr> const std::iterator_traits<InputItr>::value_type &Single(InputItr b, InputItr e)
+{
+   const auto size = std::distance(b, e);
+   MyAssert(size == 1, "Expect single value, actual " + std::to_string(size));
+   return *b;
+}
+
 } // namespace Utilities
 
 template <typename T> const T &Utilities::Single(const std::vector<T> &container)

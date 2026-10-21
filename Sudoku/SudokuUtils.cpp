@@ -40,6 +40,14 @@ CandidatesInHouse::CandidatesInHouse(const CandidatesGrid &cg, House house) : m_
       const Field field = cell.field;
       const auto numCandidates = cg[field].size();
       m_multiplicities.at(numCandidates).push_back(field);
+      for (auto value : ValueAll)
+      {
+         if (cg[field].contains(value))
+         {
+            m_fieldsContainingValue[value].push_back(field);
+         }
+      }
+      std::array<std::vector<Field>, NumValue + 1> m_fieldsContainingValue;
    }
 }
 
@@ -48,7 +56,7 @@ const House &CandidatesInHouse::getHouse() const
    return m_house;
 }
 
-std::unordered_set<Value> CandidatesInHouse::getUniqueValuesInCells(std::span<const Field> fields) const
+std::unordered_set<Value> CandidatesInHouse::getUniqueActiveValuesInCells(std::span<const Field> fields) const
 {
    std::unordered_set<Value> result;
    for (Field f : fields)
