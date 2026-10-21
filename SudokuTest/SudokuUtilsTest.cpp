@@ -16,16 +16,13 @@ TEST(SudokuUtilsTest, Basic)
    grid.update();
    const House house = House::getRow(0);
    const CandidatesInHouse cih(grid, house);
+
    std::vector<Field> someFields = {0, 2};
    auto retval = cih.getUniqueActiveValuesInCells(someFields);
    ASSERT_EQ(retval.size(), 8);
-#if false
-   const auto m1 = hbm.get(1);
-   ASSERT_EQ(m1.size(), 1);
-   ASSERT_EQ(m1.front(), 1);
-   const auto m2 = hbm.get(2);
-   ASSERT_EQ(m2.size(), 0);
-   const auto m9 = hbm.get(9);
-   ASSERT_EQ(m9.size(), 8);
-#endif
+
+   auto fields = cih.getFieldsContainingValue(1);
+   ASSERT_EQ(Single(fields), 1);
+   fields = cih.getFieldsContainingValue(3);
+   ASSERT_EQ(fields.size(), 7);
 }

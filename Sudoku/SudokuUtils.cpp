@@ -47,13 +47,17 @@ CandidatesInHouse::CandidatesInHouse(const CandidatesGrid &cg, House house) : m_
             m_fieldsContainingValue[value].push_back(field);
          }
       }
-      std::array<std::vector<Field>, NumValue + 1> m_fieldsContainingValue;
    }
 }
 
 const House &CandidatesInHouse::getHouse() const
 {
    return m_house;
+}
+
+std::span<const Field> CandidatesInHouse::getFieldsContainingValue(Value value) const
+{
+   return m_fieldsContainingValue.at(value);
 }
 
 std::unordered_set<Value> CandidatesInHouse::getUniqueActiveValuesInCells(std::span<const Field> fields) const
