@@ -1,6 +1,7 @@
 #include "SudokuUtils.h"
 #include "CandidatesGrid.h"
 #include "UniqueSorted.h"
+#include <algorithm>
 
 using namespace Sudoku;
 using namespace Utilities;
@@ -65,27 +66,42 @@ const CandidatesGrid &CandidatesInHouse::getGrid() const
    return *m_grid;
 }
 
-std::unordered_set<Value> SudokuUtils::getUniqueActiveValuesInCells(const CandidatesGrid &grid,
-                                                                    std::span<const Field> fields)
+std::set<Value> SudokuUtils::getUniqueActiveValuesInCells(const CandidatesGrid &grid, std::span<const Field> fields)
 {
-   std::unordered_set<Value> result;
-   for (Field f : fields)
+   std::set<Value> result;
+   boost::container::static_vector<Value, NumIndex> solvedValues;
+   for (Field field : fields)
    {
-      const auto &candidates = grid[f];
-      // Skip the known values
+      const auto &candidates = grid[field];
+      // Store the known values
       if (candidates.isSolved())
       {
-         continue;
+         solvedValues.push_back(candidates.tryGetSolvedValue().value());
       }
-      for (Value value : ValueAll)
+      else
       {
-         if (candidates.contains(value))
+         for (Value value : ValueAll)
          {
-            result.insert(value);
+            if (candidates.contains(value))
+            {
+               result.insert(value);
+            }
          }
       }
    }
+   for (Value value : solvedValues)
+   {
+      result.erase(value);
+   }
+
    return result;
+}
+
+std::set<Value> SudokuUtils::getUniqueActiveValuesInCells(const CandidatesGrid &grid, std::span<const Cell> cells)
+{
+   std::vector<Field> fields(cells.size());
+   str::transform(cells, fields.begin(), [](Cell cell) { return cell.field; });
+   return getUniqueActiveValuesInCells(grid, fields);
 }
 
 std::span<const Field> CandidatesInHouse::getFieldsWithMultiplicity(Index multiplicity) const

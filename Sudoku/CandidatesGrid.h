@@ -19,7 +19,6 @@ class CandidatesGrid
    void checkValidSudoku() const; // throws if not valid
    bool isSolved() const;
    Index countOccurence(std::span<const Cell>, Value) const;
-   boost::container::static_vector<Value, NumIndex> getActiveCandidatesInCells(std::span<const Cell>) const;
 
    static CandidatesGrid FromString(const std::string &);
    static CandidatesGrid FromValues(const std::array<Value, NumField> &);

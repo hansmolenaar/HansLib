@@ -2,11 +2,9 @@
 
 #include "CandidatesGrid.h"
 #include "House.h"
-#include "Single.h"
 #include "SudokuUtils.h"
 
 using namespace Sudoku;
-using namespace Utilities;
 
 TEST(SudokuUtilsTest, Basic)
 {
@@ -18,10 +16,9 @@ TEST(SudokuUtilsTest, Basic)
    std::vector<Field> someFields = {0, 2};
 
    auto retval = SudokuUtils::getUniqueActiveValuesInCells(grid, someFields);
-   ASSERT_EQ(retval.size(), 9);
+   ASSERT_EQ(retval.size(), 8);
 
    grid.update();
-
    retval = SudokuUtils::getUniqueActiveValuesInCells(grid, someFields);
    ASSERT_EQ(retval.size(), 7);
 
@@ -32,4 +29,20 @@ TEST(SudokuUtilsTest, Basic)
    someFields = {0, 4};
    retval = SudokuUtils::getUniqueActiveValuesInCells(grid, someFields);
    ASSERT_EQ(retval.size(), 7);
+}
+
+TEST(SudokuUtilsTest, GetActiveCandidatesInCells)
+{
+   CandidatesGrid cg;
+   const auto house = House::getRow(0);
+   auto retval = SudokuUtils::getUniqueActiveValuesInCells(cg, house.cells);
+   ASSERT_EQ(retval.size(), NumCellsInHouse);
+
+   cg.removeCandidate(0, 9);
+   retval = SudokuUtils::getUniqueActiveValuesInCells(cg, house.cells);
+   ASSERT_EQ(retval.size(), NumCellsInHouse);
+
+   cg.setGiven(1, 5);
+   retval = SudokuUtils::getUniqueActiveValuesInCells(cg, house.cells);
+   ASSERT_EQ(retval.size(), NumCellsInHouse - 1);
 }

@@ -4,10 +4,12 @@
 #include "MyAssert.h"
 #include "StreamUtils.h"
 #include "SudokuDefines.h"
+#include "SudokuUtils.h"
 #include "SweepNakedSingle.h"
 
 #include <algorithm>
 #include <bitset>
+#include <iostream>
 #include <numeric>
 #include <string>
 
@@ -224,22 +226,4 @@ std::vector<std::string> CandidatesGrid::DifferenceToStrings(const CandidatesGri
 Index CandidatesGrid::countOccurence(std::span<const Cell> cells, Value value) const
 {
    return str::count_if(cells, [this, value](Cell cell) { return (*this)[cell.field].contains(value); });
-}
-
-// Forget solved values
-boost::container::static_vector<Value, NumIndex> CandidatesGrid::getActiveCandidatesInCells(
-    std::span<const Cell> cells) const
-{
-   boost::container::static_vector<Value, NumIndex> result(ValueAll.begin(), ValueAll.end());
-   for (const Cell &cell : cells)
-   {
-      const auto solvedValue = (*this)[cell.field].tryGetSolvedValue();
-      if (solvedValue)
-      {
-         result[solvedValue.value() - 1] = ValueUndefined;
-      }
-   }
-   result.erase(std::remove(result.begin(), result.end(), ValueUndefined), result.end());
-
-   return result;
 }

@@ -4,7 +4,7 @@
 #include "SudokuDefines.h"
 
 #include <map>
-#include <unordered_set>
+#include <set>
 #include <vector>
 
 namespace Sudoku
@@ -14,8 +14,9 @@ class CandidatesGrid;
 
 namespace SudokuUtils
 {
-std::unordered_set<Value> getUniqueActiveValuesInCells(const CandidatesGrid &, std::span<const Field>);
-}
+std::set<Value> getUniqueActiveValuesInCells(const CandidatesGrid &, std::span<const Cell>);
+std::set<Value> getUniqueActiveValuesInCells(const CandidatesGrid &, std::span<const Field>);
+} // namespace SudokuUtils
 
 class NakedTuplesInput
 {

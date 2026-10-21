@@ -4,6 +4,7 @@
 #include "House.h"
 #include "StreamUtils.h"
 #include "SudokuDefines.h"
+#include "SudokuUtils.h"
 #include <algorithm>
 #include <iostream>
 
@@ -61,7 +62,7 @@ bool RemoveCandidates(CandidatesGrid &grid, const House &house, std::span<Value>
 bool SweepHiddenTuple::sweepHouse(CandidatesGrid &grid, const House &house, Index size)
 {
    bool anyChange = false;
-   const auto activeCandidates = grid.getActiveCandidatesInCells(house.cells);
+   const auto activeCandidates = SudokuUtils::getUniqueActiveValuesInCells(grid, house.cells);
    if (activeCandidates.size() < size)
    {
       return anyChange;
