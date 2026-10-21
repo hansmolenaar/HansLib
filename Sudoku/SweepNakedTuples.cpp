@@ -97,6 +97,28 @@ bool SweepNakedTuples::sweepHouseOfType(CandidatesGrid &cg, HouseType houseType,
    return anyChange;
 }
 
+#if false
+bool SweepNakedTuples::sweepHouseOfType(CandidatesGrid &grid, HouseType houseType, Index houseIndex, Index tupleSize)
+
+{
+   bool anyChange = false;
+   const House &house = House::get(houseType, houseIndex);
+
+   std::vector<Value> tupleTry(tupleSize);
+   auto generator =
+       make_combination_generator(activeValues.begin(), activeValues.end(), tupleTry.begin(), tupleTry.end());
+   do
+   {
+      if (IsNakedTuplee(grid, house, tupleTry))
+      {
+         anyChange |= RemoveCandidates(grid, house, candidateTuple);
+      }
+   } while (generator());
+
+   return anyChange;
+}
+#endif
+
 bool SweepNakedTuples::sweep(CandidatesGrid &cg)
 {
    bool anyChange = false;

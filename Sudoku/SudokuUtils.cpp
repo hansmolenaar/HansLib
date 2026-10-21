@@ -125,3 +125,13 @@ bool CandidatesInHouse::isConsistentWith(const NakedTuplesInput &input) const
       return input.getMultiplicitySize(m) <= getFieldsWithMultiplicity(m).size();
    });
 }
+
+boost::container::static_vector<Cell, NumCellsInHouse> SudokuUtils::getNotSolvedCells(const CandidatesGrid &grid,
+                                                                                      const House &house)
+{
+   boost::container::static_vector<Cell, NumCellsInHouse> result(NumCellsInHouse);
+   const auto last = std::copy_if(house.cells.begin(), house.cells.end(), result.begin(),
+                                  [&grid](Cell cell) { return !grid[cell.field].isSolved(); });
+   result.erase(last, result.end());
+   return result;
+}

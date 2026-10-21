@@ -70,7 +70,6 @@ bool SweepHiddenTuple::sweepHouse(CandidatesGrid &grid, const House &house, Inde
 
    std::vector<Value> candidateTuple(size);
    auto generator = make_combination_generator(activeCandidates.begin(), activeCandidates.end(), candidateTuple.begin(),
-
                                                candidateTuple.end());
    do
    {

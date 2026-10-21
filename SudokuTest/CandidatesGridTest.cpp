@@ -1,7 +1,6 @@
 #include <gtest/gtest.h>
 
 #include "CandidatesGrid.h"
-#include "House.h"
 
 using namespace Sudoku;
 

@@ -11,6 +11,7 @@ class SweepNakedTuples : public ISweep
  public:
    bool sweep(CandidatesGrid &) override;
    bool sweepHouseOfType(CandidatesGrid &, HouseType, std::initializer_list<Index>);
+   bool sweepHouseOfType(CandidatesGrid &, HouseType, Index);
 
  private:
 };

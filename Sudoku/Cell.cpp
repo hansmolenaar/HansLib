@@ -67,3 +67,8 @@ Field Cell::rowCol2Field(Index row, Index col)
 {
    return row * NumIndex + col;
 }
+
+bool Cell::AreSame(const Cell &cell, Field field)
+{
+   return cell.field == field;
+}
