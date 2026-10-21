@@ -60,12 +60,23 @@ std::span<const Field> CandidatesInHouse::getFieldsContainingValue(Value value) 
    return m_fieldsContainingValue.at(value);
 }
 
-std::unordered_set<Value> CandidatesInHouse::getUniqueActiveValuesInCells(std::span<const Field> fields) const
+const CandidatesGrid &CandidatesInHouse::getGrid() const
+{
+   return *m_grid;
+}
+
+std::unordered_set<Value> SudokuUtils::getUniqueActiveValuesInCells(const CandidatesGrid &grid,
+                                                                    std::span<const Field> fields)
 {
    std::unordered_set<Value> result;
    for (Field f : fields)
    {
-      const auto &candidates = (*m_grid)[f];
+      const auto &candidates = grid[f];
+      // Skip the known values
+      if (candidates.isSolved())
+      {
+         continue;
+      }
       for (Value value : ValueAll)
       {
          if (candidates.contains(value))

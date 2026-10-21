@@ -22,7 +22,7 @@ bool RemoveCandidates(CandidatesGrid &cg, const CandidatesInHouse &candidatesInH
                       std::span<const Field> candidateTuple)
 {
    const auto numCandidates = cg.getNumCandidates();
-   const auto candidatesToRemove = candidatesInHouse.getUniqueActiveValuesInCells(candidateTuple);
+   const auto candidatesToRemove = SudokuUtils::getUniqueActiveValuesInCells(cg, candidateTuple);
    for (const Cell &cell : candidatesInHouse.getHouse().cells)
    {
       if (str::find(candidateTuple, cell.field) == candidateTuple.end())
@@ -40,7 +40,7 @@ bool RemoveCandidates(CandidatesGrid &cg, const CandidatesInHouse &candidatesInH
 bool IsNakedTuple(const CandidatesInHouse &candidatesInHouse, std::span<const Field> candidateTuple,
                   NakedTuplesInput input)
 {
-   const auto values = candidatesInHouse.getUniqueActiveValuesInCells(candidateTuple);
+   const auto values = SudokuUtils::getUniqueActiveValuesInCells(candidatesInHouse.getGrid(), candidateTuple);
    if (values.size() != candidateTuple.size())
    {
       return false;

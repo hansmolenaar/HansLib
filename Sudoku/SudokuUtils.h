@@ -12,6 +12,11 @@ namespace Sudoku
 
 class CandidatesGrid;
 
+namespace SudokuUtils
+{
+std::unordered_set<Value> getUniqueActiveValuesInCells(const CandidatesGrid &, std::span<const Field>);
+}
+
 class NakedTuplesInput
 {
  public:
@@ -31,11 +36,11 @@ class CandidatesInHouse
  public:
    CandidatesInHouse(const CandidatesGrid &cg, House house);
    bool isConsistentWith(const NakedTuplesInput &input) const;
-   std::unordered_set<Value> getUniqueActiveValuesInCells(std::span<const Field> fields) const;
    std::span<const Field> getFieldsWithMultiplicity(Index multiplicity) const;
    std::span<const Field> getFieldsContainingValue(Value) const;
    Index getNumCandidatesInCell(Field) const;
    const House &getHouse() const;
+   const CandidatesGrid &getGrid() const;
 
  private:
    const CandidatesGrid *m_grid;
