@@ -222,8 +222,3 @@ std::vector<std::string> CandidatesGrid::DifferenceToStrings(const CandidatesGri
    retval.push_back("Number of changes = " + std::to_string(numChanges));
    return retval;
 }
-
-Index CandidatesGrid::countOccurence(std::span<const Cell> cells, Value value) const
-{
-   return str::count_if(cells, [this, value](Cell cell) { return (*this)[cell.field].contains(value); });
-}

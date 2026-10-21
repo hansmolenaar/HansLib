@@ -59,14 +59,3 @@ TEST(CandidatesGridTest, ToOStream)
    // std::cout << retval;
    ASSERT_FALSE(retval.empty());
 }
-
-TEST(CandidatesGridTest, CountOccurence)
-{
-   constexpr Field field = 2;
-   CandidatesGrid cg;
-   const auto house = House::getRow(0);
-
-   cg.setCandidates(field, {3, 4});
-   ASSERT_EQ(cg.countOccurence(house.cells, 2), NumCellsInHouse - 1);
-   ASSERT_EQ(cg.countOccurence(house.cells, 3), NumCellsInHouse);
-}

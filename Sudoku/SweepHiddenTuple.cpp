@@ -25,7 +25,7 @@ bool IsHiddenTuple(const CandidatesGrid &grid, const House &house, std::span<con
    const auto size = candidateValueTuple.size();
    for (Value value : candidateValueTuple)
    {
-      if (grid.countOccurence(house.cells, value) != size)
+      if (SudokuUtils::countOccurence(grid, house.cells, value) != size)
       {
          return false;
       }

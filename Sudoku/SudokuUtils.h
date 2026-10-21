@@ -16,6 +16,7 @@ namespace SudokuUtils
 {
 std::set<Value> getUniqueActiveValuesInCells(const CandidatesGrid &, std::span<const Cell>);
 std::set<Value> getUniqueActiveValuesInCells(const CandidatesGrid &, std::span<const Field>);
+Index countOccurence(const CandidatesGrid &, std::span<const Cell> cells, Value value);
 } // namespace SudokuUtils
 
 class NakedTuplesInput
