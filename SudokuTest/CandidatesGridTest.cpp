@@ -2,8 +2,10 @@
 
 #include "CandidatesGrid.h"
 #include "House.h"
+#include "Single.h"
 
 using namespace Sudoku;
+using namespace Utilities;
 
 TEST(CandidatesGridTest, DefaultConstructor)
 {
@@ -69,4 +71,20 @@ TEST(CandidatesGridTest, CountOccurence)
    cg.setCandidates(field, {3, 4});
    ASSERT_EQ(cg.countOccurence(house.cells, 2), NumCellsInHouse - 1);
    ASSERT_EQ(cg.countOccurence(house.cells, 3), NumCellsInHouse);
+}
+
+TEST(CandidatesGridTest, GetActiveCandidatesInCells)
+{
+   CandidatesGrid cg;
+   const auto house = House::getRow(0);
+   auto retval = cg.getActiveCandidatesInCells(house.cells);
+   ASSERT_EQ(retval.size(), NumCellsInHouse);
+
+   cg.removeCandidate(0, 9);
+   retval = cg.getActiveCandidatesInCells(house.cells);
+   ASSERT_EQ(retval.size(), NumCellsInHouse);
+
+   cg.setGiven(1, 5);
+   retval = cg.getActiveCandidatesInCells(house.cells);
+   ASSERT_EQ(retval.size(), NumCellsInHouse - 1);
 }

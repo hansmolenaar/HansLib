@@ -4,7 +4,6 @@
 #include "House.h"
 #include "StreamUtils.h"
 #include "SudokuDefines.h"
-
 #include <algorithm>
 #include <iostream>
 
@@ -15,22 +14,6 @@ namespace str = std::ranges;
 
 namespace
 {
-// Forget solved values
-std::vector<Value> GetActiveValuesInHouse(const CandidatesGrid &grid, const House &house)
-{
-   std::vector<Value> result(ValueAll.begin(), ValueAll.end());
-   for (const Cell &cell : house.cells)
-   {
-      const auto solvedValue = grid[cell.field].tryGetSolvedValue();
-      if (solvedValue)
-      {
-         result[solvedValue.value() - 1] = ValueUndefined;
-      }
-   }
-   result.erase(std::remove(result.begin(), result.end(), ValueUndefined), result.end());
-   return result;
-}
-
 bool CellContainsHiddenTuple(const CandidatesGrid &grid, Field field, std::span<const Value> values)
 {
    return grid[field].contains(values);
@@ -78,7 +61,7 @@ bool RemoveCandidates(CandidatesGrid &grid, const House &house, std::span<Value>
 bool SweepHiddenTuple::sweepHouse(CandidatesGrid &grid, const House &house, Index size)
 {
    bool anyChange = false;
-   const auto activeCandidates = GetActiveValuesInHouse(grid, house);
+   const auto activeCandidates = grid.getActiveCandidatesInCells(house.cells);
    if (activeCandidates.size() < size)
    {
       return anyChange;
