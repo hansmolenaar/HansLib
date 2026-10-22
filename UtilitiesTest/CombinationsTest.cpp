@@ -109,9 +109,9 @@ class Combinations
  public:
    std::vector<char> values;
 
-   Combinations(const std::vector<char> &allValues, size_t r)
+   Combinations(std::span<const char> allValues, size_t r)
        : values(allValues.begin(), allValues.begin() + r), m_N(allValues.size()), m_r(r), m_positions(m_r),
-         m_original(allValues.begin(), allValues.end())
+         m_original(allValues)
    {
       std::iota(m_positions.begin(), m_positions.end(), 1);
    }
@@ -130,7 +130,7 @@ class Combinations
    size_t m_N;
    size_t m_r;
    std::vector<int> m_positions;
-   std::vector<char> m_original;
+   std::span<const char> m_original;
 };
 
 TEST(CombinationsTest, BetterMethod)
