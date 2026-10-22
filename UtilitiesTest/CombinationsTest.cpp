@@ -3,6 +3,7 @@
 #include "Combinations.h"
 #include "UniqueSorted.h"
 
+#include <numeric>
 #include <ranges>
 #include <set>
 #include <span>
@@ -84,4 +85,62 @@ TEST(CombinationsTest, Test24)
    } while (generator());
 
    ASSERT_EQ(count, 6);
+}
+
+// ***************************************************
+bool next_combination(std::vector<int> &a, int n)
+{
+   int k = (int)a.size();
+   for (int i = k - 1; i >= 0; i--)
+   {
+      if (a[i] < n - k + i + 1)
+      {
+         a[i]++;
+         for (int j = i + 1; j < k; j++)
+            a[j] = a[j - 1] + 1;
+         return true;
+      }
+   }
+   return false;
+}
+
+class Combinations
+{
+ public:
+   Combinations(std::span<const int> &values_, size_t N)
+       : values(values_.begin(), values_.end()), m_positions(values.size()), m_original(values), m_N(N)
+   {
+      std::iota(m_positions.begin(), m_positions.end(), 1);
+   }
+
+   bool nextCombination()
+   {
+      bool result = next_combination(m_positions, m_N);
+      for (size_t n = 0; n < m_N; ++n)
+      {
+         values[n] = m_original[m_positions[n] - 1];
+      }
+      return result;
+   }
+
+   std::vector<int> values;
+
+ private:
+   std::vector<int> m_positions;
+   std::vector<int> m_original;
+   size_t m_N;
+};
+
+TEST(CombinationsTest, BetterMethod)
+{
+   std::vector<int> values{1, 2, 3};
+   do
+   {
+      std::cout << " BetterMethod";
+      for (size_t n = 0; n < values.size(); ++n)
+      {
+         std::cout << " " << values[n];
+      }
+      std::cout << "\n";
+   } while (next_combination(values, 5));
 }
