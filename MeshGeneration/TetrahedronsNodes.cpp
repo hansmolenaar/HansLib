@@ -1,4 +1,5 @@
 #include "TetrahedronsNodes.h"
+#include "Contains.h"
 #include "Defines.h"
 #include "MyException.h"
 #include <set>
@@ -116,7 +117,7 @@ std::vector<NodeIndex> TetrahedronsNodes::getEdgeConnectedNodes(NodeIndex node) 
       const auto& tetrahedronNodes = m_toNodes.at(tetId);
       for (auto ngb : tetrahedronNodes)
       {
-         if ((ngb != node) && (str::find(result, ngb) == result.end()))
+         if ((ngb != node) && !Utilities::Contains(result, ngb) )
          {
             result.push_back(ngb);
          }

@@ -1,4 +1,5 @@
 #include "ManifoldsAndNodes.h"
+#include "Contains.h"
 #include "Defines.h"
 
 namespace MeshGeneration
@@ -66,8 +67,7 @@ template <size_t N> void ManifoldsAndNodes<N>::addNodeToManifold(NodeIndex node,
    {
       m_node2manifolds[node].push_back(manifoldPtr);
    }
-   else if (std::find(m_node2manifolds[node].begin(), m_node2manifolds[node].end(), manifoldPtr) !=
-            m_node2manifolds[node].end())
+   else if (Utilities::Contains(m_node2manifolds[node], manifoldPtr))
    {
       // Don't add twice
       return;

@@ -1,4 +1,5 @@
 #include "PathNodes.h"
+#include "Contains.h"
 #include "FirstDuplicate.h"
 #include "MyException.h"
 
@@ -21,7 +22,7 @@ Topology::PathNodes::PathNodes(std::span<const NodeIndex> nodes) : m_nodes(nodes
 
 bool PathNodes::contains(NodeIndex node) const
 {
-   return str::find(m_nodes, node) != m_nodes.end();
+   return Utilities::Contains(m_nodes, node);
 }
 
 std::vector<EdgeNodesDirected> PathNodes::getEdges() const

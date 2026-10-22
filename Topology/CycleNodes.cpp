@@ -1,8 +1,7 @@
 #include "CycleNodes.h"
+#include "Contains.h"
 #include "FirstDuplicate.h"
 #include "MyException.h"
-
-namespace str = std::ranges;
 
 using namespace Topology;
 using namespace Utilities;
@@ -18,7 +17,7 @@ Topology::CycleNodes::CycleNodes(std::span<const NodeIndex> nodes) : m_nodes(nod
 
 bool CycleNodes::contains(NodeIndex node) const
 {
-   return str::find(m_nodes, node) != m_nodes.end();
+   return Utilities::Contains(m_nodes, node);
 }
 
 std::vector<EdgeNodesDirected> CycleNodes::getEdges() const

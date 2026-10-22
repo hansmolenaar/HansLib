@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Contains.h"
 #include "IManifold0Test.h"
 #include "IManifold1Test.h"
 #include "IRegionManifolds.h"
@@ -8,6 +9,7 @@
 
 using namespace Geometry;
 using namespace Topology;
+using namespace Utilities;
 
 template <typename T, size_t N>
 void IRegionManifoldsTestInterface(const IRegionManifolds<T, N> &manifolds, const IGeometryPredicate<T, N> &predicate)
@@ -39,7 +41,7 @@ void IRegionManifoldsTestInterface(const IRegionManifolds<T, N> &manifolds, cons
 
    for (const auto *b : boundary)
    {
-      ASSERT_TRUE(std::find(allManifolds.begin(), allManifolds.end(), b) != allManifolds.end());
+      ASSERT_TRUE(Contains(allManifolds, b));
    }
 
    const auto manifolds0 = manifolds.template getManifoldsOfType<const IManifold0<T, N> *>();

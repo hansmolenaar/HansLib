@@ -1,5 +1,6 @@
 #include "MeshGeneration2.h"
 #include "BoundingBox.h"
+#include "Contains.h"
 #include "Defines.h"
 #include "IDynamicUniquePointCollection.h"
 #include "IntervalTreeBalance.h"
@@ -267,8 +268,7 @@ bool MeshGeneration2::AddEdgeManifold1Intersections(const Geometry::IManifold1D2
       const auto dist0 = PointUtils::GetDistanceSquared(ip.getPoint(), edge.point0());
       const auto dist1 = PointUtils::GetDistanceSquared(ip.getPoint(), edge.point1());
       auto nodeToMove = dist0 < dist1 ? edgeNodes[0] : edgeNodes[1];
-      if (str::find(nodeUsed, nodeToMove) != nodeUsed.end() ||
-          !manifoldsAndNodes.isMobileOnManifold(nodeToMove, &manifold))
+      if (Utilities::Contains(nodeUsed, nodeToMove) || !manifoldsAndNodes.isMobileOnManifold(nodeToMove, &manifold))
       {
          // Take the other one
          nodeToMove = (nodeToMove == edgeNodes[0]) ? edgeNodes[1] : edgeNodes[0];

@@ -1,9 +1,7 @@
 #include "GraphIsomorphismStatus.h"
-#include "Defines.h"
+#include "Contains.h"
 #include "Iota.h"
 #include "MyAssert.h"
-
-namespace str = std::ranges;
 
 using namespace Graph;
 using namespace GraphIsomorphism;
@@ -51,10 +49,10 @@ std::vector<Graph::VertexPair> Status::getVertexPairs() const
 
 bool Status::containsFirst(Vertex vertex) const
 {
-   return str::find(m_vertexFirst, vertex) != m_vertexFirst.end();
+   return Utilities::Contains(m_vertexFirst, vertex);
 }
 
 bool Status::containsSecond(Vertex vertex) const
 {
-   return str::find(m_vertexSecond, vertex) != m_vertexSecond.end();
+   return Utilities::Contains(m_vertexSecond, vertex);
 }
