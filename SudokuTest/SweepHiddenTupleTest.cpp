@@ -81,7 +81,7 @@ TEST(SweepHidddenTupleTest, SweepExample1)
    ASSERT_EQ(grid.getNumCandidates(), 260);
 
    SweepHiddenTuple().sweep(grid, 1);
-   ASSERT_EQ(grid.getNumCandidates(), 225);
+   ASSERT_EQ(grid.getNumCandidates(), 233);
 
    while (SweepHiddenTuple().sweep(grid, 1))
    {

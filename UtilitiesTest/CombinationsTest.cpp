@@ -1,14 +1,10 @@
 #include <gtest/gtest.h>
 
 #include "Combinations.h"
-#include "UniqueSorted.h"
 
 #include <numeric>
-#include <ranges>
 #include <set>
 #include <span>
-
-namespace str = std::ranges;
 
 using namespace Utilities;
 
@@ -26,9 +22,9 @@ void CheckCombinations(size_t N, size_t r, size_t expectedSize)
    do
    {
       // std::cout << combi[0] << " " << combi[1] << " " << combi[2] << "\n";
-      all.insert(combinations.values);
+      all.insert(combinations());
       ++count;
-   } while (combinations.nextCombination());
+   } while (combinations.next());
 
    ASSERT_EQ(count, expectedSize);
    ASSERT_EQ(all.size(), expectedSize);
@@ -72,29 +68,13 @@ TEST(CombinationsTest, Test24)
    const std::vector<std::string> data{"HELLO", "WORLD", "ALPHA", "BET"};
 
    CombinationS<std::string> combinations(data, 2);
-   ASSERT_EQ(combinations.values[0], data[0]);
-   ASSERT_EQ(combinations.values[1], data[1]);
+   ASSERT_EQ(combinations()[0], data[0]);
+   ASSERT_EQ(combinations()[1], data[1]);
    int count = 0;
    do
    {
       ++count;
-   } while (combinations.nextCombination());
+   } while (combinations.next());
 
    ASSERT_EQ(count, 6);
-}
-
-TEST(CombinationsTest, BetterMethod)
-{
-   const std::vector<char> values{'a', 'b', 'c', 'd'};
-   const int r = 2;
-   CombinationS<char> combinations(values, r);
-   do
-   {
-      std::cout << " BetterMethod";
-      for (size_t n = 0; n < r; ++n)
-      {
-         std::cout << " " << combinations.values[n];
-      }
-      std::cout << "\n";
-   } while (combinations.nextCombination());
 }

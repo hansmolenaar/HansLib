@@ -63,22 +63,25 @@ combination_generator<iterator_type, output_iterator> make_combination_generator
 template <typename T> class CombinationS
 {
  public:
-   std::vector<T> values;
-
    CombinationS(std::span<const T> allValues, size_t r)
-       : values(allValues.begin(), allValues.begin() + r), m_N(allValues.size()), m_r(r), m_positions(m_r),
-         m_original(allValues)
+       : m_N(allValues.size()), m_r(r), m_positions(m_r), m_original(allValues),
+         m_values(allValues.begin(), allValues.begin() + r)
    {
       MyAssert(m_r <= m_N);
       std::iota(m_positions.begin(), m_positions.end(), 1);
    }
 
-   bool nextCombination()
+   const std::vector<T> &operator()() const
+   {
+      return m_values;
+   }
+
+   bool next()
    {
       bool result = next_combination(m_positions, m_N);
       for (size_t n = 0; n < m_r; ++n)
       {
-         values[n] = m_original[m_positions[n] - 1];
+         m_values[n] = m_original[m_positions[n] - 1];
       }
       return result;
    }
@@ -88,5 +91,6 @@ template <typename T> class CombinationS
    size_t m_r;
    std::vector<int> m_positions;
    std::span<const T> m_original;
+   std::vector<T> m_values;
 };
 } // namespace Utilities

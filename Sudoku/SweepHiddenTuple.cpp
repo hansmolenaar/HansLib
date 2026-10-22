@@ -37,7 +37,7 @@ bool IsHiddenTuple(const CandidatesGrid &grid, const House &house, std::span<con
    return (count == size);
 }
 
-bool RemoveCandidates(CandidatesGrid &grid, const House &house, std::span<Value> candidateTuple)
+bool RemoveCandidates(CandidatesGrid &grid, const House &house, std::span<const Value> candidateTuple)
 {
    bool anyChange = false;
    for (const Cell &cell : house.cells)
@@ -63,22 +63,21 @@ bool RemoveCandidates(CandidatesGrid &grid, const House &house, std::span<Value>
 bool SweepHiddenTuple::sweepHouse(CandidatesGrid &grid, const House &house, Index size)
 {
    bool anyChange = false;
-   const auto activeCandidates = SudokuUtils::getUniqueActiveValuesInCells(grid, house.cells);
-   if (activeCandidates.size() < size)
+   const auto activeUniqueCandidates = SudokuUtils::getUniqueActiveValuesInCells(grid, house.cells);
+   if (activeUniqueCandidates.size() < size)
    {
       return anyChange;
    }
+   const std::vector<Value> activeCandidates(activeUniqueCandidates.begin(), activeUniqueCandidates.end());
 
-   std::vector<Value> candidateTuple(size);
-   auto generator = make_combination_generator(activeCandidates.begin(), activeCandidates.end(), candidateTuple.begin(),
-                                               candidateTuple.end());
+   CombinationS<Value> combinations(activeCandidates, size);
    do
    {
-      if (IsHiddenTuple(grid, house, candidateTuple))
+      if (IsHiddenTuple(grid, house, combinations()))
       {
-         anyChange |= RemoveCandidates(grid, house, candidateTuple);
+         anyChange |= RemoveCandidates(grid, house, combinations());
       }
-   } while (generator());
+   } while (combinations.next());
 
    return anyChange;
 }
