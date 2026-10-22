@@ -63,7 +63,6 @@ bool SweepNakedTuples::sweepHouseOfType(CandidatesGrid &cg, HouseType houseType,
 {
    bool anyChange = false;
    const NakedTuplesInput nakedTupleInput(useCandidatesOfSize);
-   std::vector<Field> candidateTuple(nakedTupleInput.getNumUniqueValues());
 
    for (const Index &houseIndex : IndexAll)
    {
@@ -77,13 +76,12 @@ bool SweepNakedTuples::sweepHouseOfType(CandidatesGrid &cg, HouseType houseType,
             fieldsToTest.insert(fieldsToTest.end(), fields.begin(), fields.end());
          }
          UniqueSorted(fieldsToTest);
-         auto generator = make_combination_generator(fieldsToTest.begin(), fieldsToTest.end(), candidateTuple.begin(),
-                                                     candidateTuple.end());
+         Combinations<Field> combinations(fieldsToTest, nakedTupleInput.getNumUniqueValues());
          do
          {
-            if (IsNakedTuple(candidatesInHouse, candidateTuple, nakedTupleInput))
+            if (IsNakedTuple(candidatesInHouse, combinations(), nakedTupleInput))
             {
-               const bool anyChangeInHouse = RemoveCandidates(cg, candidatesInHouse, candidateTuple);
+               const bool anyChangeInHouse = RemoveCandidates(cg, candidatesInHouse, combinations());
                if (anyChangeInHouse)
                {
                   anyChange = true;
@@ -91,7 +89,7 @@ bool SweepNakedTuples::sweepHouseOfType(CandidatesGrid &cg, HouseType houseType,
                   candidatesInHouse = CandidatesInHouse(cg, House::get(houseType, houseIndex));
                }
             }
-         } while (generator());
+         } while (combinations.next());
       }
    }
    return anyChange;

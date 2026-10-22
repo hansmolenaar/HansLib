@@ -16,7 +16,7 @@ void CheckCombinations(size_t N, size_t r, size_t expectedSize)
    std::vector<int> numbers(N);
    std::iota(numbers.begin(), numbers.end(), 0);
    std::set<std::vector<int>> all;
-   CombinationS<int> combinations(numbers, r);
+   Combinations<int> combinations(numbers, r);
 
    int count = 0;
    do
@@ -67,7 +67,7 @@ TEST(CombinationsTest, Test24)
 {
    const std::vector<std::string> data{"HELLO", "WORLD", "ALPHA", "BET"};
 
-   CombinationS<std::string> combinations(data, 2);
+   Combinations<std::string> combinations(data, 2);
    ASSERT_EQ(combinations()[0], data[0]);
    ASSERT_EQ(combinations()[1], data[1]);
    int count = 0;

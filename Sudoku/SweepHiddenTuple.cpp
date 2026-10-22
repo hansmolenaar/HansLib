@@ -70,7 +70,7 @@ bool SweepHiddenTuple::sweepHouse(CandidatesGrid &grid, const House &house, Inde
    }
    const std::vector<Value> activeCandidates(activeUniqueCandidates.begin(), activeUniqueCandidates.end());
 
-   CombinationS<Value> combinations(activeCandidates, size);
+   Combinations<Value> combinations(activeCandidates, size);
    do
    {
       if (IsHiddenTuple(grid, house, combinations()))
