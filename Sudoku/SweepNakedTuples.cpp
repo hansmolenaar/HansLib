@@ -1,6 +1,7 @@
 #include "SweepNakedTuples.h"
 #include "CandidatesGrid.h"
 #include "Combinations.h"
+#include "Contains.h"
 #include "House.h"
 #include "SudokuDefines.h"
 #include "SudokuUtils.h"
@@ -8,7 +9,6 @@
 
 #include <algorithm>
 #include <initializer_list>
-#include <unordered_set>
 
 using namespace Sudoku;
 using namespace Utilities;
@@ -25,7 +25,7 @@ bool RemoveCandidates(CandidatesGrid &cg, const CandidatesInHouse &candidatesInH
    const auto candidatesToRemove = SudokuUtils::getUniqueActiveValuesInCells(cg, candidateTuple);
    for (const Cell &cell : candidatesInHouse.getHouse().cells)
    {
-      if (str::find(candidateTuple, cell.field) == candidateTuple.end())
+      if (!Contains(candidateTuple, cell.field))
       {
          for (auto v : candidatesToRemove)
          {

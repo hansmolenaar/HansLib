@@ -1,4 +1,5 @@
 #include "Candidates.h"
+#include "Contains.h"
 #include "MyAssert.h"
 
 #include <algorithm>
@@ -10,7 +11,7 @@ namespace str = std::ranges;
 
 bool Candidates::contains(Value v) const
 {
-   return str::find(m_candidates, v) != m_candidates.end();
+   return Contains(m_candidates, v);
 }
 
 bool Candidates::removeCandidate(Value v)

@@ -1,6 +1,7 @@
 #include "SweepHiddenTuple.h"
 #include "CandidatesGrid.h"
 #include "Combinations.h"
+#include "Contains.h"
 #include "House.h"
 #include "StreamUtils.h"
 #include "SudokuDefines.h"
@@ -45,7 +46,7 @@ bool RemoveCandidates(CandidatesGrid &grid, const House &house, std::span<Value>
       {
          for (Value value : ValueAll)
          {
-            if (grid[cell.field].contains(value) && str::find(candidateTuple, value) == candidateTuple.end())
+            if (grid[cell.field].contains(value) && !Contains(candidateTuple, value))
             {
                // std::cout << "Remove candidate " << value << " from cell " << cell.row << " " << cell.col
                //         << " in house of type " << static_cast<int>(house.type) << " with hidden single "
