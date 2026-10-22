@@ -3,7 +3,7 @@
 #include "Combinations.h"
 #include "UniqueSorted.h"
 
-#include <numeric>
+#include <numbers>
 #include <ranges>
 #include <set>
 #include <span>
@@ -87,57 +87,11 @@ TEST(CombinationsTest, Test24)
    ASSERT_EQ(count, 6);
 }
 
-// ***************************************************
-bool next_combination(std::vector<int> &a, int n)
-{
-   int k = (int)a.size();
-   for (int i = k - 1; i >= 0; i--)
-   {
-      if (a[i] < n - k + i + 1)
-      {
-         a[i]++;
-         for (int j = i + 1; j < k; j++)
-            a[j] = a[j - 1] + 1;
-         return true;
-      }
-   }
-   return false;
-}
-
-template <typename T> class Combinations
-{
- public:
-   std::vector<T> values;
-
-   Combinations(std::span<const T> allValues, size_t r)
-       : values(allValues.begin(), allValues.begin() + r), m_N(allValues.size()), m_r(r), m_positions(m_r),
-         m_original(allValues)
-   {
-      std::iota(m_positions.begin(), m_positions.end(), 1);
-   }
-
-   bool nextCombination()
-   {
-      bool result = next_combination(m_positions, m_N);
-      for (size_t n = 0; n < m_N; ++n)
-      {
-         values[n] = m_original[m_positions[n] - 1];
-      }
-      return result;
-   }
-
- private:
-   size_t m_N;
-   size_t m_r;
-   std::vector<int> m_positions;
-   std::span<const T> m_original;
-};
-
 TEST(CombinationsTest, BetterMethod)
 {
    const std::vector<char> values{'a', 'b', 'c', 'd'};
    const int r = 2;
-   Combinations<char> combinations(values, r);
+   CombinationS<char> combinations(values, r);
    do
    {
       std::cout << " BetterMethod";

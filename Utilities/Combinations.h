@@ -2,6 +2,8 @@
 
 #include <algorithm>
 #include <iterator>
+#include <numeric>
+#include <span>
 #include <vector>
 
 #include "MyAssert.h"
@@ -10,6 +12,7 @@ namespace Utilities
 {
 
 size_t countCombinations(size_t, size_t);
+bool next_combination(std::vector<int> &a, int n);
 
 template <class iterator_type, class output_iterator> class combination_generator
 {
@@ -57,4 +60,32 @@ combination_generator<iterator_type, output_iterator> make_combination_generator
    return combination_generator(first, last, d_first, d_last);
 }
 
+template <typename T> class CombinationS
+{
+ public:
+   std::vector<T> values;
+
+   CombinationS(std::span<const T> allValues, size_t r)
+       : values(allValues.begin(), allValues.begin() + r), m_N(allValues.size()), m_r(r), m_positions(m_r),
+         m_original(allValues)
+   {
+      std::iota(m_positions.begin(), m_positions.end(), 1);
+   }
+
+   bool nextCombination()
+   {
+      bool result = next_combination(m_positions, m_N);
+      for (size_t n = 0; n < m_N; ++n)
+      {
+         values[n] = m_original[m_positions[n] - 1];
+      }
+      return result;
+   }
+
+ private:
+   size_t m_N;
+   size_t m_r;
+   std::vector<int> m_positions;
+   std::span<const T> m_original;
+};
 } // namespace Utilities
