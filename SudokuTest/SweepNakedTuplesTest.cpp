@@ -77,7 +77,6 @@ TEST(SweepNakedTuplesTest, SweepNakedPair_2)
    ASSERT_EQ(grid.getNumCandidates(), expectNumCandidates);
 
    SweepNakedTuples().sweepHousesOfType(grid, HouseType::Row, 2);
-   // SweepNakedTuples().sweepHouseOfType(grid, HouseType::Row, {2, 2});
    expectNumCandidates -= 2;
    ASSERT_EQ(grid.getNumCandidates(), expectNumCandidates);
    ASSERT_EQ(grid[field7].tryGetSolvedValue().value(), 6);
@@ -106,7 +105,7 @@ TEST(SweepNakedTuplesTest, SweepNakedTuples_1)
    SweepNakedTuples().sweepHousesOfType(grid, HouseType::Box, 3);
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
-   SweepNakedTuples().sweepHouseOfType(grid, HouseType::Col, {2, 2});
+   SweepNakedTuples().sweepHousesOfType(grid, HouseType::Col, 2);
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
    SweepNakedTuples().sweepHousesOfType(grid, HouseType::Box, 2);
@@ -230,7 +229,7 @@ TEST(SweepNakedTuplesTest, SweepNakedTuples_3)
    SweepNakedTuples().sweepHousesOfType(grid, HouseType::Box, 3);
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
-   SweepNakedTuples().sweepHouseOfType(grid, HouseType::Col, {2, 2});
+   SweepNakedTuples().sweepHousesOfType(grid, HouseType::Col, 2);
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
    SweepNakedTuples().sweepHousesOfType(grid, HouseType::Box, 2);
