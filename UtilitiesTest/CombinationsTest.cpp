@@ -3,7 +3,7 @@
 #include "Combinations.h"
 #include "UniqueSorted.h"
 
-#include <numbers>
+#include <numeric>
 #include <ranges>
 #include <set>
 #include <span>
@@ -18,20 +18,17 @@ void CheckCombinations(size_t N, size_t r, size_t expectedSize)
 {
    ASSERT_EQ(countCombinations(N, r), expectedSize);
    std::vector<int> numbers(N);
-   str::copy(str::iota_view(static_cast<int>(1), static_cast<int>(N)), numbers.begin());
-   std::vector<int> result(r);
+   std::iota(numbers.begin(), numbers.end(), 0);
    std::set<std::vector<int>> all;
-   auto generator = make_combination_generator(numbers.begin(), numbers.end(), result.begin(), result.end());
+   CombinationS<int> combinations(numbers, r);
 
    int count = 0;
    do
    {
-      UniqueSorted(result);
-      ASSERT_EQ(result.size(), r);
       // std::cout << combi[0] << " " << combi[1] << " " << combi[2] << "\n";
-      all.insert(result);
+      all.insert(combinations.values);
       ++count;
-   } while (generator());
+   } while (combinations.nextCombination());
 
    ASSERT_EQ(count, expectedSize);
    ASSERT_EQ(all.size(), expectedSize);
@@ -73,16 +70,15 @@ TEST(CombinationsTest, Test53)
 TEST(CombinationsTest, Test24)
 {
    const std::vector<std::string> data{"HELLO", "WORLD", "ALPHA", "BET"};
-   std::vector<std::string> result(2);
 
-   auto generator = make_combination_generator(data.begin(), data.end(), result.begin(), result.end());
-   ASSERT_EQ(result[0], data[2]);
-   ASSERT_EQ(result[1], data[3]);
+   CombinationS<std::string> combinations(data, 2);
+   ASSERT_EQ(combinations.values[0], data[0]);
+   ASSERT_EQ(combinations.values[1], data[1]);
    int count = 0;
    do
    {
       ++count;
-   } while (generator());
+   } while (combinations.nextCombination());
 
    ASSERT_EQ(count, 6);
 }

@@ -69,13 +69,14 @@ template <typename T> class CombinationS
        : values(allValues.begin(), allValues.begin() + r), m_N(allValues.size()), m_r(r), m_positions(m_r),
          m_original(allValues)
    {
+      MyAssert(m_r <= m_N);
       std::iota(m_positions.begin(), m_positions.end(), 1);
    }
 
    bool nextCombination()
    {
       bool result = next_combination(m_positions, m_N);
-      for (size_t n = 0; n < m_N; ++n)
+      for (size_t n = 0; n < m_r; ++n)
       {
          values[n] = m_original[m_positions[n] - 1];
       }
