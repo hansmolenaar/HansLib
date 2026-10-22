@@ -107,8 +107,9 @@ bool next_combination(std::vector<int> &a, int n)
 class Combinations
 {
  public:
-   Combinations(std::span<const int> &values_, size_t N)
-       : values(values_.begin(), values_.end()), m_positions(values.size()), m_original(values), m_N(N)
+   Combinations(const std::vector<char> &allValues, size_t r)
+       : m_N(allValues.size()), m_r(r), m_positions(m_r), m_original(allValues.begin(), allValues.end()),
+         values(allValues.begin(), allValues.begin() + m_r)
    {
       std::iota(m_positions.begin(), m_positions.end(), 1);
    }
@@ -123,24 +124,28 @@ class Combinations
       return result;
    }
 
-   std::vector<int> values;
-
  private:
-   std::vector<int> m_positions;
-   std::vector<int> m_original;
    size_t m_N;
+   size_t m_r;
+   std::vector<int> m_positions;
+   std::vector<char> m_original;
+
+ public:
+   std::vector<char> values;
 };
 
 TEST(CombinationsTest, BetterMethod)
 {
-   std::vector<int> values{1, 2, 3};
+   const std::vector<char> values{'a', 'b', 'c', 'd'};
+   const int r = 2;
+   Combinations combinations(values, r);
    do
    {
       std::cout << " BetterMethod";
-      for (size_t n = 0; n < values.size(); ++n)
+      for (size_t n = 0; n < r; ++n)
       {
-         std::cout << " " << values[n];
+         std::cout << " " << combinations.values[n];
       }
       std::cout << "\n";
-   } while (next_combination(values, 5));
+   } while (combinations.nextCombination());
 }
