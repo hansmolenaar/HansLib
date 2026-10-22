@@ -104,12 +104,12 @@ bool next_combination(std::vector<int> &a, int n)
    return false;
 }
 
-class Combinations
+template <typename T> class Combinations
 {
  public:
-   std::vector<char> values;
+   std::vector<T> values;
 
-   Combinations(std::span<const char> allValues, size_t r)
+   Combinations(std::span<const T> allValues, size_t r)
        : values(allValues.begin(), allValues.begin() + r), m_N(allValues.size()), m_r(r), m_positions(m_r),
          m_original(allValues)
    {
@@ -130,14 +130,14 @@ class Combinations
    size_t m_N;
    size_t m_r;
    std::vector<int> m_positions;
-   std::span<const char> m_original;
+   std::span<const T> m_original;
 };
 
 TEST(CombinationsTest, BetterMethod)
 {
    const std::vector<char> values{'a', 'b', 'c', 'd'};
    const int r = 2;
-   Combinations combinations(values, r);
+   Combinations<char> combinations(values, r);
    do
    {
       std::cout << " BetterMethod";
