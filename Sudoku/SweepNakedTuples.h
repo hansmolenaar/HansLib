@@ -12,8 +12,8 @@ class SweepNakedTuples : public ISweep
    bool sweep(CandidatesGrid &) override;
    bool sweepHouseOfType(CandidatesGrid &, HouseType, std::initializer_list<Index>);
    bool sweepHouseOfType(CandidatesGrid &, HouseType, Index);
-
- private:
+   bool sweepHouse(CandidatesGrid &grid, const House &, Index);
+   bool sweepHousesOfType(CandidatesGrid &grid, HouseType, Index);
 };
 
 } // namespace Sudoku

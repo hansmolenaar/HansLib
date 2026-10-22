@@ -9,6 +9,7 @@
 
 #include <algorithm>
 #include <initializer_list>
+#include <numeric>
 
 using namespace Sudoku;
 using namespace Utilities;
@@ -37,6 +38,41 @@ bool RemoveCandidates(CandidatesGrid &cg, const CandidatesInHouse &candidatesInH
    return cg.getNumCandidates() != numCandidates;
 }
 
+std::vector<Value> GetUniqueValuesFromFields(const CandidatesGrid &grid, std::span<const Field> fields)
+{
+   std::vector<Value> result;
+   for (Field field : fields)
+   {
+      for (Value value : ValueAll)
+      {
+         if (grid[field].contains(value))
+         {
+            result.push_back(value);
+         }
+      }
+   }
+   UniqueSorted(result);
+   return result;
+}
+
+bool RemoveCandidates(CandidatesGrid &grid, const House &house, std::span<const Field> candidateTuple)
+{
+   bool anyChange = false;
+   const auto candidatesToRemove = GetUniqueValuesFromFields(grid, candidateTuple);
+   for (const Cell &cell : house.cells)
+   {
+      if (!Contains(candidateTuple, cell.field))
+      {
+         for (auto v : candidatesToRemove)
+         {
+            anyChange |= grid.removeCandidate(cell.field, v);
+         }
+      }
+   }
+
+   return anyChange;
+}
+
 bool IsNakedTuple(const CandidatesInHouse &candidatesInHouse, std::span<const Field> candidateTuple,
                   NakedTuplesInput input)
 {
@@ -54,6 +90,11 @@ bool IsNakedTuple(const CandidatesInHouse &candidatesInHouse, std::span<const Fi
    return str::all_of(input.getMultiplicitiesToTry(), [&input, &multiplitcityCount](auto m) {
       return input.getMultiplicitySize(m) == multiplitcityCount[m];
    });
+}
+bool IsNakedTuplE(const CandidatesGrid &grid, const std::vector<Field> &candidateTuple) // TODO
+{
+   const auto values = GetUniqueValuesFromFields(grid, candidateTuple);
+   return values.size() == candidateTuple.size();
 }
 
 } // namespace
@@ -95,27 +136,46 @@ bool SweepNakedTuples::sweepHouseOfType(CandidatesGrid &cg, HouseType houseType,
    return anyChange;
 }
 
-#if false
-bool SweepNakedTuples::sweepHouseOfType(CandidatesGrid &grid, HouseType houseType, Index houseIndex, Index tupleSize)
+bool SweepNakedTuples::sweepHouse(CandidatesGrid &grid, const House &house, Index tupleSize)
 
 {
    bool anyChange = false;
-   const House &house = House::get(houseType, houseIndex);
 
-   std::vector<Value> tupleTry(tupleSize);
-   auto generator =
-       make_combination_generator(activeValues.begin(), activeValues.end(), tupleTry.begin(), tupleTry.end());
+   std::vector<Field> activeFields;
+   for (Cell cell : house.cells)
+   {
+      if (!grid[cell.field].isSolved() && grid[cell.field].size() <= tupleSize)
+      {
+         activeFields.push_back(cell.field);
+      }
+   }
+
+   if (activeFields.size() < tupleSize)
+   {
+      return anyChange;
+   }
+
+   Combinations<Field> combinations(activeFields, tupleSize);
    do
    {
-      if (IsNakedTuplee(grid, house, tupleTry))
+      if (IsNakedTuplE(grid, combinations()))
       {
-         anyChange |= RemoveCandidates(grid, house, candidateTuple);
+         anyChange |= RemoveCandidates(grid, house, combinations());
       }
-   } while (generator());
+   } while (combinations.next());
 
    return anyChange;
 }
-#endif
+
+bool SweepNakedTuples::sweepHousesOfType(CandidatesGrid &grid, HouseType type, Index tupleSize)
+{
+   bool anyChange = false;
+   for (Index idx : IndexAll)
+   {
+      anyChange |= sweepHouse(grid, House::get(type, idx), tupleSize);
+   }
+   return anyChange;
+}
 
 bool SweepNakedTuples::sweep(CandidatesGrid &cg)
 {
