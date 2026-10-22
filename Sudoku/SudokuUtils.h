@@ -22,25 +22,11 @@ boost::container::static_vector<Cell, NumCellsInHouse> getNotSolvedCells(const C
 
 } // namespace SudokuUtils
 
-class NakedTuplesInput
-{
- public:
-   NakedTuplesInput(std::initializer_list<Index>);
-   Index getNumUniqueValues() const;
-   std::span<const Index> getMultiplicitiesToTry() const;
-   Index getMultiplicitySize(Index) const;
-
- private:
-   Index m_numUniqueValues;
-   std::vector<Index> m_multiplicites;
-   std::map<Index, Index> m_multiplicitesCounted;
-};
-
 class CandidatesInHouse
 {
- public:
    CandidatesInHouse(const CandidatesGrid &cg, House house);
-   bool isConsistentWith(const NakedTuplesInput &input) const;
+
+ public:
    std::span<const Field> getFieldsWithMultiplicity(Index multiplicity) const;
    std::span<const Field> getFieldsContainingValue(Value) const;
    Index getNumCandidatesInCell(Field) const;

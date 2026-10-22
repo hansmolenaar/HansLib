@@ -8,32 +8,6 @@ using namespace Utilities;
 
 namespace str = std::ranges;
 
-NakedTuplesInput::NakedTuplesInput(std::initializer_list<Index> useCandidatesOfSize)
-    : m_numUniqueValues(useCandidatesOfSize.size()), m_multiplicites(useCandidatesOfSize)
-{
-   for (auto m : m_multiplicites)
-   {
-      m_multiplicitesCounted[m] += 1;
-   }
-   UniqueSorted(m_multiplicites);
-}
-
-Index NakedTuplesInput::getNumUniqueValues() const
-{
-   return m_numUniqueValues;
-}
-
-std::span<const Index> NakedTuplesInput::getMultiplicitiesToTry() const
-{
-   return m_multiplicites;
-}
-
-Index NakedTuplesInput::getMultiplicitySize(Index multiplicity) const
-
-{
-   return m_multiplicitesCounted.at(multiplicity);
-}
-
 CandidatesInHouse::CandidatesInHouse(const CandidatesGrid &cg, House house) : m_grid(&cg), m_house(std::move(house))
 {
    for (auto cell : m_house.cells)
@@ -117,13 +91,6 @@ std::span<const Field> CandidatesInHouse::getFieldsWithMultiplicity(Index multip
 Index CandidatesInHouse::getNumCandidatesInCell(Field field) const
 {
    return (*m_grid)[field].size();
-}
-
-bool CandidatesInHouse::isConsistentWith(const NakedTuplesInput &input) const
-{
-   return str::all_of(input.getMultiplicitiesToTry(), [this, &input](auto m) {
-      return input.getMultiplicitySize(m) <= getFieldsWithMultiplicity(m).size();
-   });
 }
 
 boost::container::static_vector<Cell, NumCellsInHouse> SudokuUtils::getNotSolvedCells(const CandidatesGrid &grid,
