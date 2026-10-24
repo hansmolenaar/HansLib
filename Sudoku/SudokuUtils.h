@@ -4,9 +4,7 @@
 #include "SudokuDefines.h"
 
 #include <boost/container/static_vector.hpp>
-#include <map>
 #include <set>
-#include <vector>
 
 namespace Sudoku
 {

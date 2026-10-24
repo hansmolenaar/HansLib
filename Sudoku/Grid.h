@@ -5,6 +5,8 @@
 
 namespace Sudoku
 {
+class ISweep;
+
 class Grid
 {
  public:
@@ -19,6 +21,7 @@ class Grid
 
    bool isSolved() const;
    void checkValidSudoku() const; // throws if not valid
+   bool solve(ISweep &);
 
  private:
    CandidatesGrid m_candidates;

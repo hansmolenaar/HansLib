@@ -1,10 +1,12 @@
 #include <gtest/gtest.h>
 
 #include "Grid.h"
+#include "SweepCombined.h"
 #include "TestModels.h"
 
 #include <algorithm>
 #include <sstream>
+#include <vector>
 
 using namespace Sudoku;
 namespace str = std::ranges;
@@ -126,4 +128,16 @@ TEST(GridTest, update)
    auto found = grid.tryGetSolvedValue(2, 1);
    ASSERT_TRUE(found.has_value());
    ASSERT_EQ(found.value(), 7);
+}
+
+TEST(GridTest, Simple)
+{
+   std::vector<Grid> grids = TestModels::getSimplePuzzles();
+
+   for (auto &grid : grids)
+   {
+      SweepCombined *simpleSweepers = SweepCombined::getSimpleSweepers();
+      ASSERT_TRUE(grid.solve(*simpleSweepers));
+      ASSERT_TRUE(grid.isSolved());
+   }
 }

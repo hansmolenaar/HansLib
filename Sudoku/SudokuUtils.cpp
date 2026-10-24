@@ -1,10 +1,8 @@
 #include "SudokuUtils.h"
 #include "CandidatesGrid.h"
-#include "UniqueSorted.h"
 #include <algorithm>
 
 using namespace Sudoku;
-using namespace Utilities;
 
 namespace str = std::ranges;
 

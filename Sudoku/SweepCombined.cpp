@@ -1,8 +1,22 @@
 #include "SweepCombined.h"
+#include "SweepHiddenSingle.h"
+#include "SweepNakedSingle.h"
 
 using namespace Sudoku;
 
+namespace
+{
+
+SweepNakedSingle sweepNakedSingle;
+SweepHiddenSingle sweepHiddenSingle;
+
+} // namespace
+
 SweepCombined::SweepCombined(std::initializer_list<ISweep *> sweepers) : m_sweepers(sweepers)
+{
+}
+
+SweepCombined::SweepCombined(std::span<ISweep *> sweepers) : m_sweepers(sweepers.begin(), sweepers.end())
 {
 }
 
@@ -19,4 +33,10 @@ bool SweepCombined::sweep(CandidatesGrid &grid)
       }
    }
    return anyChange;
+}
+
+SweepCombined *SweepCombined::getSimpleSweepers()
+{
+   static SweepCombined combined{&sweepNakedSingle, &sweepHiddenSingle};
+   return &combined;
 }

@@ -99,3 +99,9 @@ void Grid::update()
    SweepNakedSingle sweeper;
    ISweep::iterate(sweeper, m_candidates);
 }
+
+bool Grid::solve(ISweep &sweep)
+{
+   ISweep::iterate(sweep, m_candidates);
+   return isSolved();
+}
