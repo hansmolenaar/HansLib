@@ -2,7 +2,7 @@
 
 #include "CandidatesGrid.h"
 #include "SweepCombined.h"
-#include "SweepHiddenSingle.h"
+#include "SweepHiddenTuple.h"
 #include "SweepNakedSingle.h"
 
 using namespace Sudoku;

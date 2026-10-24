@@ -98,3 +98,10 @@ bool SweepHiddenTuple::sweep(CandidatesGrid &grid)
    anyChange |= sweep(grid, 2);
    return anyChange;
 }
+
+// *******************************************************************************************
+
+bool SweepHiddenSingle::sweep(CandidatesGrid &grid)
+{
+   return SweepHiddenTuple::sweep(grid, 1);
+};

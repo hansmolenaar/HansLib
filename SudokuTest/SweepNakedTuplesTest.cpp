@@ -5,7 +5,7 @@
 #include "ISweep.h"
 #include "StreamUtils.h"
 #include "SudokuDefines.h"
-#include "SweepHiddenSingle.h"
+#include "SweepHiddenTuple.h"
 #include "SweepNakedSingle.h"
 #include "SweepNakedTuples.h"
 
