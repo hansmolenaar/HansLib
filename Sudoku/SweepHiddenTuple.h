@@ -14,7 +14,26 @@ class SweepHiddenTuple : public ISweep
    static bool sweep(CandidatesGrid &, Index);
    bool sweep(CandidatesGrid &) override;
 };
+
 class SweepHiddenSingle : public ISweep
+{
+ public:
+   bool sweep(CandidatesGrid &) override;
+};
+
+class SweepHiddenPair : public ISweep
+{
+ public:
+   bool sweep(CandidatesGrid &) override;
+};
+
+class SweepHiddenTriplet : public ISweep
+{
+ public:
+   bool sweep(CandidatesGrid &) override;
+};
+
+class SweepHiddenQuartet : public ISweep
 {
  public:
    bool sweep(CandidatesGrid &) override;

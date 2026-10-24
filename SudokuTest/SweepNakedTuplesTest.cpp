@@ -158,13 +158,7 @@ TEST(SweepNakedTuplesTest, SweepNakedTuples_2)
    expect -= 1;
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
-   SweepNakedTuples().sweepHousesOfType(grid, HouseType::Col, 2);
-   ASSERT_EQ(grid.getNumCandidates(), expect);
-
-   SweepNakedTuples().sweepHousesOfType(grid, HouseType::Box, 2);
-   ASSERT_EQ(grid.getNumCandidates(), expect);
-
-   SweepNakedTuples().sweepHousesOfType(grid, HouseType::Row, 2);
+   SweepNakedPairs().sweep(grid);
    ASSERT_EQ(grid.getNumCandidates(), expect);
 }
 
@@ -350,14 +344,10 @@ TEST(SweepNakedTuplesTest, SweepNakedQuartet)
 
    ASSERT_EQ(grid.getNumCandidates(), expectNumCandidates);
 
-   SweepNakedTuples().sweepHousesOfType(grid, HouseType::Row, 2);
-   SweepNakedTuples().sweepHousesOfType(grid, HouseType::Col, 2);
-   SweepNakedTuples().sweepHousesOfType(grid, HouseType::Box, 2);
+   SweepNakedPairs().sweep(grid);
    ASSERT_EQ(grid.getNumCandidates(), expectNumCandidates);
 
-   SweepNakedTuples().sweepHousesOfType(grid, HouseType::Row, 3);
-   SweepNakedTuples().sweepHousesOfType(grid, HouseType::Col, 3);
-   SweepNakedTuples().sweepHousesOfType(grid, HouseType::Box, 3);
+   SweepNakedTriplet().sweep(grid);
    ASSERT_EQ(grid.getNumCandidates(), expectNumCandidates);
 
    SweepNakedTuples().sweepHousesOfType(grid, HouseType::Box, 4);

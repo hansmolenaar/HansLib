@@ -7,7 +7,6 @@
 #include "SudokuDefines.h"
 #include "SudokuUtils.h"
 #include <algorithm>
-#include <iostream>
 
 using namespace Sudoku;
 using namespace Utilities;
@@ -104,4 +103,25 @@ bool SweepHiddenTuple::sweep(CandidatesGrid &grid)
 bool SweepHiddenSingle::sweep(CandidatesGrid &grid)
 {
    return SweepHiddenTuple::sweep(grid, 1);
+};
+
+// *******************************************************************************************
+
+bool SweepHiddenPair::sweep(CandidatesGrid &grid)
+{
+   return SweepHiddenTuple::sweep(grid, 2);
+};
+
+// *******************************************************************************************
+
+bool SweepHiddenTriplet::sweep(CandidatesGrid &grid)
+{
+   return SweepHiddenTuple::sweep(grid, 3);
+};
+
+// *******************************************************************************************
+
+bool SweepHiddenQuartet::sweep(CandidatesGrid &grid)
+{
+   return SweepHiddenTuple::sweep(grid, 4);
 };

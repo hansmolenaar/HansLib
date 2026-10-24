@@ -132,44 +132,45 @@ TEST(GridTest, update)
 
 TEST(GridTest, Simple)
 {
+   SweepCombined *sweepers = SweepCombined::getSimpleSweepers();
    std::vector<Grid> grids = TestModels::getSimplePuzzles();
+   ASSERT_EQ(grids.size(), 133);
 
    for (auto &grid : grids)
    {
-      SweepCombined *simpleSweepers = SweepCombined::getSimpleSweepers();
-      ASSERT_TRUE(grid.solve(*simpleSweepers));
+      ASSERT_TRUE(grid.solve(*sweepers));
       ASSERT_TRUE(grid.isSolved());
    }
 }
 
 TEST(GridTest, Medium)
 {
+   SweepCombined *sweepers = SweepCombined::getMediumSweepers();
    std::vector<Grid> grids = TestModels::getMediumPuzzles();
    ASSERT_EQ(grids.size(), 863);
    int numSolved = 0;
    for (auto &grid : grids)
    {
-      SweepCombined *simpleSweepers = SweepCombined::getSimpleSweepers();
-      if (grid.solve(*simpleSweepers))
+      if (grid.solve(*sweepers))
       {
          numSolved += 1;
       }
    }
-   ASSERT_EQ(numSolved, 625);
+   ASSERT_EQ(numSolved, 821);
 }
 
 TEST(GridTest, Hard)
 {
+   SweepCombined *simpleSweepers = SweepCombined::getMediumSweepers();
    std::vector<Grid> grids = TestModels::getHardPuzzles();
    ASSERT_EQ(grids.size(), 1278);
    int numSolved = 0;
    for (auto &grid : grids)
    {
-      SweepCombined *simpleSweepers = SweepCombined::getSimpleSweepers();
       if (grid.solve(*simpleSweepers))
       {
          numSolved += 1;
       }
    }
-   ASSERT_EQ(numSolved, 0);
+   ASSERT_EQ(numSolved, 384);
 }

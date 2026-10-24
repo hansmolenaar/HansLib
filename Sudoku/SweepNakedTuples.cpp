@@ -115,3 +115,41 @@ bool SweepNakedTuples::sweep(CandidatesGrid &cg)
    }
    return anyChange;
 }
+
+// ***************************************************************
+
+bool SweepNakedPairs::sweep(CandidatesGrid &cg)
+{
+   bool anyChange = false;
+   bool changeInSizeLoop = false;
+   for (HouseType type : HouseTypeAll)
+   {
+      changeInSizeLoop |= SweepNakedTuples::sweepHousesOfType(cg, type, 2);
+   };
+   anyChange |= changeInSizeLoop;
+   return anyChange;
+}
+
+bool SweepNakedTriplet::sweep(CandidatesGrid &cg)
+{
+   bool anyChange = false;
+   bool changeInSizeLoop = false;
+   for (HouseType type : HouseTypeAll)
+   {
+      changeInSizeLoop |= SweepNakedTuples::sweepHousesOfType(cg, type, 3);
+   };
+   anyChange |= changeInSizeLoop;
+   return anyChange;
+}
+
+bool SweepNakedQuartet::sweep(CandidatesGrid &cg)
+{
+   bool anyChange = false;
+   bool changeInSizeLoop = false;
+   for (HouseType type : HouseTypeAll)
+   {
+      changeInSizeLoop |= SweepNakedTuples::sweepHousesOfType(cg, type, 4);
+   };
+   anyChange |= changeInSizeLoop;
+   return anyChange;
+}

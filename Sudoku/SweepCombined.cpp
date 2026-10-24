@@ -1,6 +1,7 @@
 #include "SweepCombined.h"
 #include "SweepHiddenTuple.h"
 #include "SweepNakedSingle.h"
+#include "SweepNakedTuples.h"
 
 using namespace Sudoku;
 
@@ -9,6 +10,12 @@ namespace
 
 SweepNakedSingle sweepNakedSingle;
 SweepHiddenSingle sweepHiddenSingle;
+SweepNakedPairs sweepNakedPair;
+SweepHiddenPair sweepHiddenPair;
+SweepNakedTriplet sweepNakedTriplet;
+SweepHiddenTriplet sweepHiddenTriplet;
+SweepNakedQuartet sweepNakedQuartet;
+SweepHiddenQuartet sweepHiddenQuartet:
 
 } // namespace
 
@@ -38,5 +45,12 @@ bool SweepCombined::sweep(CandidatesGrid &grid)
 SweepCombined *SweepCombined::getSimpleSweepers()
 {
    static SweepCombined combined{&sweepNakedSingle, &sweepHiddenSingle};
+   return &combined;
+}
+
+SweepCombined *SweepCombined::getMediumSweepers()
+{
+   static SweepCombined combined{&sweepNakedSingle,  &sweepHiddenSingle,  &sweepNakedPair,    &sweepHiddenPair,
+                                 &sweepNakedTriplet, &sweepHiddenTriplet, &sweepNakedQuartet, &sweepHiddenQuartet};
    return &combined;
 }
