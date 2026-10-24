@@ -7,12 +7,11 @@
 namespace Sudoku
 {
 
-class SweepHiddenTuple
+namespace SweepHiddenTuple
 {
- public:
-   static bool sweepHouse(CandidatesGrid &, const House &, Index);
-   static bool sweep(CandidatesGrid &, Index);
-};
+bool sweepHouse(CandidatesGrid &, const House &, Index);
+bool sweep(CandidatesGrid &, Index);
+}; // namespace SweepHiddenTuple
 
 class SweepHiddenSingle : public ISweep
 {

@@ -6,13 +6,12 @@
 namespace Sudoku
 {
 
-class SweepNakedTuples
+namespace SweepNakedTuples
 {
- public:
-   static bool sweep(CandidatesGrid &, Index);
-   static bool sweepHouse(CandidatesGrid &grid, const House &, Index);
-   static bool sweepHousesOfType(CandidatesGrid &grid, HouseType, Index);
-};
+bool sweep(CandidatesGrid &, Index);
+bool sweepHouse(CandidatesGrid &grid, const House &, Index);
+bool sweepHousesOfType(CandidatesGrid &grid, HouseType, Index);
+}; // namespace SweepNakedTuples
 
 class SweepNakedPairs : public ISweep
 {

@@ -7,22 +7,11 @@
 namespace Sudoku
 {
 
-class SweepPointingTuple
+class SweepPointingTuple : public ISweep
 {
  public:
    static bool sweepBox(CandidatesGrid &, const House &, Index);
    static bool sweep(CandidatesGrid &, Index);
-};
-
-class SweepPointingPair : public ISweep
-{
- public:
-   bool sweep(CandidatesGrid &) override;
-};
-
-class SweepPointingTriplet : public ISweep
-{
- public:
    bool sweep(CandidatesGrid &) override;
 };
 
