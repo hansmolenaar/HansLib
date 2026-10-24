@@ -16,34 +16,24 @@ Index SudokuUtils::countOccurence(const CandidatesGrid &grid, std::span<const Ce
 std::set<Value> SudokuUtils::getUniqueActiveValuesInCells(const CandidatesGrid &grid, std::span<const Field> fields)
 {
    std::array<bool, NumValue + 1> activeValues = {false, false, false, false, false,
-                                                  false, false, false, false}; // TODO is this necessary?
-   std::array<bool, NumValue + 1> solvedValues = activeValues;
+                                                  false, false, false, false, false}; // TODO is this necessary?
 
    for (Field field : fields)
    {
-      const auto &candidates = grid[field];
-      const auto solved = candidates.tryGetSolvedValue();
-      // Store the known values
-      if (solved.has_value())
+      for (Value value : ValueAll)
       {
-         solvedValues[solved.value()] = true;
-      }
-      else
-      {
-         for (Value value : ValueAll)
+         if (grid[field].contains(value))
          {
-            if (candidates.contains(value))
-            {
-               activeValues[value] = true;
-            }
+            activeValues[value] = true;
          }
       }
    }
 
+   const auto valueIsSolved = SudokuUtils::getSolvedValues(grid, fields);
    std::set<Value> result;
    for (Value value : ValueAll)
    {
-      if (activeValues[value] && !solvedValues[value])
+      if (activeValues[value] && !valueIsSolved.test(value))
       {
          result.insert(value);
       }
@@ -65,5 +55,35 @@ boost::container::static_vector<Cell, NumCellsInHouse> SudokuUtils::getNotSolved
    const auto last = std::copy_if(house.cells.begin(), house.cells.end(), result.begin(),
                                   [&grid](Cell cell) { return !grid[cell.field].isSolved(); });
    result.erase(last, result.end());
+   return result;
+}
+
+std::bitset<NumValue + 1> SudokuUtils::getSolvedValues(const CandidatesGrid &grid, std::span<const Cell> cells)
+{
+   std::bitset<NumValue + 1> result;
+   for (auto cell : cells)
+   {
+      const auto &candidates = grid[cell.field];
+      const auto solved = candidates.tryGetSolvedValue();
+      if (solved.has_value())
+      {
+         result.set(solved.value());
+      }
+   }
+   return result;
+}
+
+std::bitset<NumValue + 1> SudokuUtils::getSolvedValues(const CandidatesGrid &grid, std::span<const Field> fields)
+{
+   std::bitset<NumValue + 1> result;
+   for (auto field : fields)
+   {
+      const auto &candidates = grid[field];
+      const auto solved = candidates.tryGetSolvedValue();
+      if (solved.has_value())
+      {
+         result.set(solved.value());
+      }
+   }
    return result;
 }
