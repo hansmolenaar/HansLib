@@ -12,6 +12,7 @@ namespace TestModels
 Grid fromString(const std::string &);
 
 std::vector<Grid> getSimplePuzzles();
+std::vector<Grid> getMediumPuzzles();
 }; // namespace TestModels
 
 } // namespace Sudoku
