@@ -97,22 +97,13 @@ bool SweepNakedTuples::sweepHousesOfType(CandidatesGrid &grid, HouseType type, I
    return anyChange;
 }
 
-bool SweepNakedTuples::sweep(CandidatesGrid &cg)
+bool SweepNakedTuples::sweep(CandidatesGrid &cg, Index tupleSize)
 {
    bool anyChange = false;
-   for (Index siz = 2; siz <= 4; ++siz)
+   for (HouseType type : HouseTypeAll)
    {
-      bool changeInSizeLoop = false;
-      for (HouseType type : HouseTypeAll)
-      {
-         changeInSizeLoop |= sweepHousesOfType(cg, type, siz);
-      };
-      anyChange |= changeInSizeLoop;
-      if (changeInSizeLoop)
-      {
-         break;
-      }
-   }
+      anyChange |= sweepHousesOfType(cg, type, tupleSize);
+   };
    return anyChange;
 }
 
@@ -121,35 +112,33 @@ bool SweepNakedTuples::sweep(CandidatesGrid &cg)
 bool SweepNakedPairs::sweep(CandidatesGrid &cg)
 {
    bool anyChange = false;
-   bool changeInSizeLoop = false;
    for (HouseType type : HouseTypeAll)
    {
-      changeInSizeLoop |= SweepNakedTuples::sweepHousesOfType(cg, type, 2);
+      anyChange |= SweepNakedTuples::sweepHousesOfType(cg, type, 2);
    };
-   anyChange |= changeInSizeLoop;
    return anyChange;
 }
+
+// ***************************************************************
 
 bool SweepNakedTriplet::sweep(CandidatesGrid &cg)
 {
    bool anyChange = false;
-   bool changeInSizeLoop = false;
    for (HouseType type : HouseTypeAll)
    {
-      changeInSizeLoop |= SweepNakedTuples::sweepHousesOfType(cg, type, 3);
+      anyChange |= SweepNakedTuples::sweepHousesOfType(cg, type, 3);
    };
-   anyChange |= changeInSizeLoop;
    return anyChange;
 }
+
+// ***************************************************************
 
 bool SweepNakedQuartet::sweep(CandidatesGrid &cg)
 {
    bool anyChange = false;
-   bool changeInSizeLoop = false;
    for (HouseType type : HouseTypeAll)
    {
-      changeInSizeLoop |= SweepNakedTuples::sweepHousesOfType(cg, type, 4);
+      anyChange |= SweepNakedTuples::sweepHousesOfType(cg, type, 4);
    };
-   anyChange |= changeInSizeLoop;
    return anyChange;
 }

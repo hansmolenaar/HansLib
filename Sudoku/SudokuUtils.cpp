@@ -1,6 +1,8 @@
 #include "SudokuUtils.h"
 #include "CandidatesGrid.h"
+#include "SudokuDefines.h"
 #include <algorithm>
+#include <boost/container/static_vector.hpp>
 
 using namespace Sudoku;
 
@@ -13,15 +15,18 @@ Index SudokuUtils::countOccurence(const CandidatesGrid &grid, std::span<const Ce
 
 std::set<Value> SudokuUtils::getUniqueActiveValuesInCells(const CandidatesGrid &grid, std::span<const Field> fields)
 {
-   std::set<Value> result;
-   boost::container::static_vector<Value, NumIndex> solvedValues;
+   std::array<bool, NumValue + 1> activeValues = {false, false, false, false, false,
+                                                  false, false, false, false}; // TODO is this necessary?
+   std::array<bool, NumValue + 1> solvedValues = activeValues;
+
    for (Field field : fields)
    {
       const auto &candidates = grid[field];
+      const auto solved = candidates.tryGetSolvedValue();
       // Store the known values
-      if (candidates.isSolved())
+      if (solved.has_value())
       {
-         solvedValues.push_back(candidates.tryGetSolvedValue().value());
+         solvedValues[solved.value()] = true;
       }
       else
       {
@@ -29,16 +34,20 @@ std::set<Value> SudokuUtils::getUniqueActiveValuesInCells(const CandidatesGrid &
          {
             if (candidates.contains(value))
             {
-               result.insert(value);
+               activeValues[value] = true;
             }
          }
       }
    }
-   for (Value value : solvedValues)
-   {
-      result.erase(value);
-   }
 
+   std::set<Value> result;
+   for (Value value : ValueAll)
+   {
+      if (activeValues[value] && !solvedValues[value])
+      {
+         result.insert(value);
+      }
+   }
    return result;
 }
 

@@ -15,7 +15,7 @@ SweepHiddenPair sweepHiddenPair;
 SweepNakedTriplet sweepNakedTriplet;
 SweepHiddenTriplet sweepHiddenTriplet;
 SweepNakedQuartet sweepNakedQuartet;
-SweepHiddenQuartet sweepHiddenQuartet:
+SweepHiddenQuartet sweepHiddenQuartet;
 
 } // namespace
 
