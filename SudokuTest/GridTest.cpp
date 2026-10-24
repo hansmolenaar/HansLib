@@ -157,3 +157,19 @@ TEST(GridTest, Medium)
    }
    ASSERT_EQ(numSolved, 625);
 }
+
+TEST(GridTest, Hard)
+{
+   std::vector<Grid> grids = TestModels::getHardPuzzles();
+   ASSERT_EQ(grids.size(), 1278);
+   int numSolved = 0;
+   for (auto &grid : grids)
+   {
+      SweepCombined *simpleSweepers = SweepCombined::getSimpleSweepers();
+      if (grid.solve(*simpleSweepers))
+      {
+         numSolved += 1;
+      }
+   }
+   ASSERT_EQ(numSolved, 0);
+}
