@@ -2,6 +2,9 @@
 
 #include "House.h"
 #include "SudokuDefines.h"
+#include "boost/container/container_fwd.hpp"
+#include "boost/container/options.hpp"
+#include "boost/container/static_vector.hpp"
 
 #include <bitset>
 #include <boost/container/static_vector.hpp>
@@ -21,5 +24,7 @@ boost::container::static_vector<Cell, NumCellsInHouse> getNotSolvedCells(const C
 std::bitset<NumValue + 1> getSolvedValues(const CandidatesGrid &, std::span<const Cell>);
 std::bitset<NumValue + 1> getSolvedValues(const CandidatesGrid &, std::span<const Field>);
 
+using Value2Fields = std::array<boost::container::static_vector<Field, NumField>, NumValue + 1>;
+Value2Fields getValue2Fields(const CandidatesGrid &, std::span<Field>);
 } // namespace SudokuUtils
 } // namespace Sudoku

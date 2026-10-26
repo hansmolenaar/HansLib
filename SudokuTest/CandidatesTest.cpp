@@ -2,6 +2,7 @@
 
 #include "Candidates.h"
 #include "StreamUtils.h"
+#include "SudokuDefines.h"
 
 using namespace Sudoku;
 
@@ -109,4 +110,44 @@ TEST(CandidatesTest, ContainsValues)
    ASSERT_FALSE(candidates.contains(values));
    candidates.removeCandidate(8);
    ASSERT_FALSE(candidates.contains(values));
+}
+
+TEST(CandidatesTest, Iterator)
+{
+   Candidates candidates;
+   auto itr = candidates.cbegin();
+   auto last = candidates.cend();
+   int count = 0;
+   while (itr != last)
+   {
+      ++itr;
+      ++count;
+   };
+   ASSERT_EQ(count, 9);
+
+   candidates.setOnly({1, 9});
+   ASSERT_EQ(candidates.size(), 2);
+
+   candidates.removeCandidate(1);
+   ASSERT_EQ(*candidates.cbegin(), 9);
+   ASSERT_EQ(candidates.size(), 1);
+
+   candidates = Candidates();
+   candidates.setOnly({5});
+   ASSERT_EQ(*candidates.cbegin(), 5);
+   ASSERT_EQ(candidates.size(), 1);
+}
+
+TEST(CandidatesTest, CIterator)
+{
+   const Candidates candidates;
+   auto itr = candidates.cbegin();
+   auto last = candidates.cend();
+   int count = 0;
+   while (itr != last)
+   {
+      ++itr;
+      ++count;
+   };
+   ASSERT_EQ(count, 9);
 }
