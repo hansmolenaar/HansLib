@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "Cell.h"
+#include "Single.h"
 
 using namespace Sudoku;
 
@@ -78,4 +79,14 @@ TEST(CellTest, GetAll)
       fields.insert(cell.field);
    }
    ASSERT_EQ(fields.size(), NumField);
+}
+
+TEST(CellTest, Cells2fields)
+{
+   const Index row = 6;
+   const Index col = 3;
+   const Cell cell = Cell::getFromRowCol(row, col);
+   const auto cells = {cell};
+   const auto fields = Cell::cells2fields(cells);
+   ASSERT_EQ(Utilities::Single(fields), cell.field);
 }

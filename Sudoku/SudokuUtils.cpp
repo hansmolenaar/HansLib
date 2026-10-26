@@ -84,3 +84,16 @@ std::bitset<NumValue + 1> SudokuUtils::getSolvedValues(const CandidatesGrid &gri
    }
    return result;
 }
+
+SudokuUtils::Value2Fields SudokuUtils::getValue2Fields(const CandidatesGrid &grid, std::span<Field> fields)
+{
+   Value2Fields result;
+   for (auto field : fields)
+   {
+      for (auto value : grid[field])
+      {
+         result[value].push_back(field);
+      }
+   }
+   return result;
+}

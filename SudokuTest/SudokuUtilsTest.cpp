@@ -76,3 +76,12 @@ TEST(SudokuUtilsTest, GetSolvedCells)
    const std::vector<Field> expect{61, 62, 69, 71, 78, 79, 80};
    ASSERT_TRUE(std::equal(retval.begin(), retval.end(), expect.begin(), expect.end(), Cell::AreSame));
 }
+
+TEST(SudokuUtilsTest, GetValue2Fields)
+{
+   CandidatesGrid grid;
+   grid.setGiven(0, 0, 1);
+   grid.setGiven(8, 8, 8);
+   grid.removeCandidate(Cell::rowCol2Field(0, 5), 5);
+   //  const auto v2f = SudokuUtils::getValue2Fields(grid, {0, 9, 18, 27});
+}

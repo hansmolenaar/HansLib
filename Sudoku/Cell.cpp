@@ -1,10 +1,12 @@
 #include "Cell.h"
 #include "MyAssert.h"
 
+#include <algorithm>
 #include <vector>
 
 using namespace Sudoku;
 using namespace Utilities;
+namespace str = std::ranges;
 
 namespace
 {
@@ -71,4 +73,16 @@ Field Cell::rowCol2Field(Index row, Index col)
 bool Cell::AreSame(const Cell &cell, Field field)
 {
    return cell.field == field;
+}
+
+Field Cell::getField(const Cell &cell)
+{
+   return cell.field;
+}
+
+boost::container::static_vector<Field, NumField> Cell::cells2fields(std::span<const Cell> cells)
+{
+   boost::container::static_vector<Field, NumField> result(cells.size());
+   str::transform(cells, result.begin(), Cell::getField);
+   return result;
 }

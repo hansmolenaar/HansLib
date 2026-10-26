@@ -2,9 +2,6 @@
 
 #include "House.h"
 #include "SudokuDefines.h"
-#include "boost/container/container_fwd.hpp"
-#include "boost/container/options.hpp"
-#include "boost/container/static_vector.hpp"
 
 #include <bitset>
 #include <boost/container/static_vector.hpp>
