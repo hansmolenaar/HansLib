@@ -1,7 +1,6 @@
 #include <gtest/gtest.h>
 
 #include "Candidates.h"
-#include "StreamUtils.h"
 #include "SudokuDefines.h"
 
 using namespace Sudoku;

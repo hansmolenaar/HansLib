@@ -6,6 +6,8 @@
 #include "SudokuDefines.h"
 #include "SudokuUtils.h"
 #include "UniqueSorted.h"
+#include <algorithm>
+#include <iterator>
 
 using namespace Sudoku;
 using namespace Utilities;
@@ -18,10 +20,8 @@ std::vector<Value> GetUniqueValuesFromFields(const CandidatesGrid &grid, std::sp
    std::vector<Value> result;
    for (Field field : fields)
    {
-      for (Value value : grid[field])
-      {
-         result.push_back(value);
-      }
+      const Candidates &candidates = grid[field];
+      std::copy(candidates.begin(), candidates.end(), std::back_inserter(result));
    }
    UniqueSorted(result);
    return result;

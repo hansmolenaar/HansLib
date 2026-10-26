@@ -41,7 +41,7 @@ std::set<Value> SudokuUtils::getUniqueActiveValuesInCells(const CandidatesGrid &
 std::set<Value> SudokuUtils::getUniqueActiveValuesInCells(const CandidatesGrid &grid, std::span<const Cell> cells)
 {
    std::vector<Field> fields(cells.size());
-   str::transform(cells, fields.begin(), [](Cell cell) { return cell.field; });
+   str::transform(cells, fields.begin(), Cell::getField);
    return getUniqueActiveValuesInCells(grid, fields);
 }
 
