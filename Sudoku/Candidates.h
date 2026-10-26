@@ -79,6 +79,16 @@ class Candidates
    static std::array<std::string, NumBoxIndex> ToStringsDifferences(const Candidates &);
    static std::array<std::string, NumBoxIndex> ToStrings(const Candidates &);
 
+   CandidatesIterator begin() const
+   {
+      return cbegin();
+   }
+
+   CandidatesIterator end() const
+   {
+      return cend();
+   }
+
    CandidatesIterator cbegin() const
    {
       return CandidatesIterator(m_candidates.begin(), m_candidates.end());

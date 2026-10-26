@@ -20,12 +20,9 @@ std::set<Value> SudokuUtils::getUniqueActiveValuesInCells(const CandidatesGrid &
 
    for (Field field : fields)
    {
-      for (Value value : ValueAll)
+      for (Value value : grid[field])
       {
-         if (grid[field].contains(value))
-         {
-            activeValues[value] = true;
-         }
+         activeValues[value] = true;
       }
    }
 

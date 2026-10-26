@@ -18,12 +18,9 @@ std::vector<Value> GetUniqueValuesFromFields(const CandidatesGrid &grid, std::sp
    std::vector<Value> result;
    for (Field field : fields)
    {
-      for (Value value : ValueAll)
+      for (Value value : grid[field])
       {
-         if (grid[field].contains(value))
-         {
-            result.push_back(value);
-         }
+         result.push_back(value);
       }
    }
    UniqueSorted(result);

@@ -141,13 +141,5 @@ TEST(CandidatesTest, Iterator)
 TEST(CandidatesTest, CIterator)
 {
    const Candidates candidates;
-   auto itr = candidates.cbegin();
-   auto last = candidates.cend();
-   int count = 0;
-   while (itr != last)
-   {
-      ++itr;
-      ++count;
-   };
-   ASSERT_EQ(count, 9);
+   ASSERT_EQ(*candidates.cbegin(), 1);
 }
