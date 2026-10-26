@@ -2,6 +2,7 @@
 
 #include "CandidatesGrid.h"
 #include "House.h"
+#include "Single.h"
 #include "SudokuUtils.h"
 
 #include <algorithm>
@@ -80,8 +81,26 @@ TEST(SudokuUtilsTest, GetSolvedCells)
 TEST(SudokuUtilsTest, GetValue2Fields)
 {
    CandidatesGrid grid;
-   grid.setGiven(0, 0, 1);
-   grid.setGiven(8, 8, 8);
+   grid.setGiven(0, 1);
+   grid.setGiven(8, 8);
    grid.removeCandidate(Cell::rowCol2Field(0, 5), 5);
-   //  const auto v2f = SudokuUtils::getValue2Fields(grid, {0, 9, 18, 27});
+
+   std::vector<Field> fields{2};
+
+   auto v2f = SudokuUtils::getValue2Fields(grid, std::span(fields));
+   ASSERT_EQ(Utilities::Single(v2f[1]), 2);
+   ASSERT_EQ(Utilities::Single(v2f[2]), 2);
+   ASSERT_EQ(Utilities::Single(v2f[8]), 2);
+
+   fields.push_back(0);
+   v2f = SudokuUtils::getValue2Fields(grid, std::span(fields));
+   ASSERT_EQ(v2f[1].size(), 2);
+   ASSERT_EQ(v2f[2].size(), 1);
+   ASSERT_EQ(v2f[8].size(), 1);
+
+   fields.push_back(8);
+   v2f = SudokuUtils::getValue2Fields(grid, std::span(fields));
+   ASSERT_EQ(v2f[1].size(), 2);
+   ASSERT_EQ(Utilities::Single(v2f[2]), 2);
+   ASSERT_EQ(v2f[8].size(), 2);
 }
