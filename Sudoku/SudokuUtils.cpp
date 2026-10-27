@@ -1,8 +1,6 @@
 #include "SudokuUtils.h"
 #include "CandidatesGrid.h"
-#include "SudokuDefines.h"
 #include <algorithm>
-#include <boost/container/static_vector.hpp>
 
 using namespace Sudoku;
 
@@ -13,7 +11,8 @@ Index SudokuUtils::countOccurence(const CandidatesGrid &grid, std::span<const Ce
    return str::count_if(cells, [&grid, value](Cell cell) { return grid[cell.field].contains(value); });
 }
 
-std::set<Value> SudokuUtils::getUniqueActiveValuesInCells(const CandidatesGrid &grid, std::span<const Cell> cells)
+boost::container::static_vector<Value, NumValue> SudokuUtils::getUniqueActiveValuesInCells(const CandidatesGrid &grid,
+                                                                                           std::span<const Cell> cells)
 {
    std::array<bool, NumValue + 1> activeValues = {false, false, false, false, false,
                                                   false, false, false, false, false}; // TODO is this necessary?
@@ -27,12 +26,12 @@ std::set<Value> SudokuUtils::getUniqueActiveValuesInCells(const CandidatesGrid &
    }
 
    const auto valueIsSolved = SudokuUtils::getSolvedValues(grid, cells);
-   std::set<Value> result;
+   boost::container::static_vector<Value, NumValue> result;
    for (Value value : ValueAll)
    {
       if (activeValues[value] && !valueIsSolved.test(value))
       {
-         result.insert(value);
+         result.push_back(value);
       }
    }
    return result;

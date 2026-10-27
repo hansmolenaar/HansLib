@@ -5,7 +5,6 @@
 
 #include <bitset>
 #include <boost/container/static_vector.hpp>
-#include <set>
 
 namespace Sudoku
 {
@@ -14,7 +13,8 @@ class CandidatesGrid;
 
 namespace SudokuUtils
 {
-std::set<Value> getUniqueActiveValuesInCells(const CandidatesGrid &, std::span<const Cell>);
+boost::container::static_vector<Value, NumValue> getUniqueActiveValuesInCells(const CandidatesGrid &,
+                                                                              std::span<const Cell>);
 Index countOccurence(const CandidatesGrid &, std::span<const Cell> cells, Value value);
 boost::container::static_vector<Cell, NumCellsInHouse> getNotSolvedCells(const CandidatesGrid &, const House &);
 std::bitset<NumValue + 1> getSolvedValues(const CandidatesGrid &, std::span<const Cell>);
