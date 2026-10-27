@@ -17,12 +17,8 @@ namespace str = std::ranges;
 
 namespace
 {
-struct CellContainsHiddenTuplE
+struct CellContainsAllValues
 {
-   CellContainsHiddenTuplE(const CandidatesGrid &grid_, std::span<const Value> values_) : grid(grid_), values(values_)
-   {
-   }
-
    bool operator()(const Cell &cell) const
    {
       return grid[cell.field].contains(values);
@@ -31,11 +27,6 @@ struct CellContainsHiddenTuplE
    const CandidatesGrid &grid;
    std::span<const Value> values;
 };
-
-bool CellContainsHiddenTuple(const CandidatesGrid &grid, Field field, std::span<const Value> values)
-{
-   return grid[field].contains(values);
-}
 
 bool IsHiddenTuple(const CandidatesGrid &grid, const House &house, std::span<const Value> candidateValueTuple)
 {
@@ -47,31 +38,19 @@ bool IsHiddenTuple(const CandidatesGrid &grid, const House &house, std::span<con
          return false;
       }
    }
-   const Index count = str::count_if(house.cells, [&grid, candidateValueTuple](Cell cell) {
-      return CellContainsHiddenTuple(grid, cell.field, candidateValueTuple);
-   });
+   const CellContainsAllValues containsHiddenTuple{grid, candidateValueTuple};
+   const Index count = str::count_if(house.cells, containsHiddenTuple);
    return (count == size);
 }
 
 bool RemoveCandidates(CandidatesGrid &grid, const House &house, std::span<const Value> candidateTuple)
 {
-   bool anyChange = false;
-
+   // Remove all values except the candidate tuple
    boost::container::static_vector<Value, NumValue> activeValues;
    str::copy_if(ValueAll, std::back_inserter(activeValues),
                 [&candidateTuple](Value value) { return !Contains(candidateTuple, value); });
 
-   boost::container::static_vector<Cell, NumCellsInHouse> activeCells;
-   str::copy_if(house.cells, std::back_inserter(activeCells), CellContainsHiddenTuplE{grid, candidateTuple});
-
-   for (const Cell &cell : activeCells)
-   {
-      for (Value value : activeValues)
-      {
-         anyChange |= grid.removeCandidate(cell.field, value);
-      }
-   }
-   return anyChange;
+   return grid.RemoveCandidates(activeValues, house.cells, CellContainsAllValues{grid, candidateTuple});
 }
 } // namespace
 
