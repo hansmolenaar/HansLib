@@ -6,6 +6,7 @@
 #include "StreamUtils.h"
 #include "SudokuDefines.h"
 #include "SudokuUtils.h"
+#include "boost/container/static_vector.hpp"
 #include <algorithm>
 
 using namespace Sudoku;
@@ -15,6 +16,21 @@ namespace str = std::ranges;
 
 namespace
 {
+struct CellContainsHiddenTuplE
+{
+   CellContainsHiddenTuplE(const CandidatesGrid &grid_, std::span<const Value> values_) : grid(grid_), values(values_)
+   {
+   }
+
+   bool operator()(Field field) const
+   {
+      return grid[field].contains(values);
+   }
+
+   const CandidatesGrid &grid;
+   std::span<const Value> values;
+};
+
 bool CellContainsHiddenTuple(const CandidatesGrid &grid, Field field, std::span<const Value> values)
 {
    return grid[field].contains(values);
@@ -39,13 +55,14 @@ bool IsHiddenTuple(const CandidatesGrid &grid, const House &house, std::span<con
 bool RemoveCandidates(CandidatesGrid &grid, const House &house, std::span<const Value> candidateTuple)
 {
    bool anyChange = false;
+   boost::container::static_vector<Value, NumValue> activeValues;
    for (const Cell &cell : house.cells)
    {
       if (CellContainsHiddenTuple(grid, cell.field, candidateTuple))
       {
          for (Value value : ValueAll)
          {
-            if (grid[cell.field].contains(value) && !Contains(candidateTuple, value))
+            if (!Contains(candidateTuple, value))
             {
                // std::cout << "Remove candidate " << value << " from cell " << cell.row << " " << cell.col
                //         << " in house of type " << static_cast<int>(house.type) << " with hidden single "

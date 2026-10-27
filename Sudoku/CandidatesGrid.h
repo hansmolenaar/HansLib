@@ -27,6 +27,23 @@ class CandidatesGrid
       return m_candidates[f];
    }
 
+   template <typename C, typename P>
+   bool RemoveCandidates(std::span<const Value> valuesToRemove, const C &allFields, P useFieldPredicate)
+   {
+      bool anyChange = false;
+      for (Field field : allFields)
+      {
+         if (useFieldPredicate(field))
+         {
+            for (Value value : valuesToRemove)
+            {
+               anyChange |= removeCandidate(field, value);
+            }
+         }
+      }
+      return anyChange;
+   }
+
  private:
    std::array<Candidates, NumField> m_candidates;
 };
