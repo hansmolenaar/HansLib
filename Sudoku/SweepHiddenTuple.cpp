@@ -8,6 +8,7 @@
 #include "SudokuUtils.h"
 #include "boost/container/static_vector.hpp"
 #include <algorithm>
+#include <iterator>
 
 using namespace Sudoku;
 using namespace Utilities;
@@ -22,9 +23,9 @@ struct CellContainsHiddenTuplE
    {
    }
 
-   bool operator()(Field field) const
+   bool operator()(const Cell &cell) const
    {
-      return grid[field].contains(values);
+      return grid[cell.field].contains(values);
    }
 
    const CandidatesGrid &grid;
@@ -55,21 +56,19 @@ bool IsHiddenTuple(const CandidatesGrid &grid, const House &house, std::span<con
 bool RemoveCandidates(CandidatesGrid &grid, const House &house, std::span<const Value> candidateTuple)
 {
    bool anyChange = false;
+
    boost::container::static_vector<Value, NumValue> activeValues;
-   for (const Cell &cell : house.cells)
+   str::copy_if(ValueAll, std::back_inserter(activeValues),
+                [&candidateTuple](Value value) { return !Contains(candidateTuple, value); });
+
+   boost::container::static_vector<Cell, NumCellsInHouse> activeCells;
+   str::copy_if(house.cells, std::back_inserter(activeCells), CellContainsHiddenTuplE{grid, candidateTuple});
+
+   for (const Cell &cell : activeCells)
    {
-      if (CellContainsHiddenTuple(grid, cell.field, candidateTuple))
+      for (Value value : activeValues)
       {
-         for (Value value : ValueAll)
-         {
-            if (!Contains(candidateTuple, value))
-            {
-               // std::cout << "Remove candidate " << value << " from cell " << cell.row << " " << cell.col
-               //         << " in house of type " << static_cast<int>(house.type) << " with hidden single "
-               //       << candidateTuple[0] << "\n";
-               anyChange |= grid.removeCandidate(cell.field, value);
-            }
-         }
+         anyChange |= grid.removeCandidate(cell.field, value);
       }
    }
    return anyChange;
