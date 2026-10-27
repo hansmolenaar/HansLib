@@ -15,11 +15,13 @@ class CandidatesIterator
  public:
    typedef boost::container::static_vector<Value, NumValue>::const_iterator CIter;
 
+   CandidatesIterator() = default;
    CandidatesIterator(CIter itr, CIter end) : m_ptr(itr), m_end(end)
    {
       skipInvalid();
    };
-
+   // CandidatesIterator &operator=(CandidatesIterator &other) = default;
+   //  CandidatesIterator &operator=(CandidatesIterator other) = default;
    const Value &operator*() const
    {
       return *m_ptr;
@@ -49,6 +51,8 @@ class CandidatesIterator
    {
       return (m_ptr != other.m_ptr);
    };
+
+   bool operator==(const CandidatesIterator &other) const = default;
 
  private:
    void skipInvalid()
@@ -97,6 +101,16 @@ class Candidates
    CandidatesIterator cend() const
    {
       return CandidatesIterator(m_candidates.end(), m_candidates.end());
+   }
+
+   static CandidatesIterator begin(Candidates candidates)
+   {
+      return candidates.begin();
+   }
+
+   static CandidatesIterator end(Candidates candidates)
+   {
+      return candidates.end();
    }
 
  private:

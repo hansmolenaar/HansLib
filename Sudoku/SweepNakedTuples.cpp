@@ -12,6 +12,8 @@
 using namespace Sudoku;
 using namespace Utilities;
 
+namespace str = std::ranges;
+
 namespace
 {
 
@@ -21,7 +23,8 @@ std::vector<Value> GetUniqueValuesFromFields(const CandidatesGrid &grid, std::sp
    for (Field field : fields)
    {
       const Candidates &candidates = grid[field];
-      std::copy(candidates.begin(), candidates.end(), std::back_inserter(result));
+      // std::copy(candidates.begin(), candidates.end(), std::back_inserter(result));
+      str::copy(candidates, std::back_inserter(result));
    }
    UniqueSorted(result);
    return result;

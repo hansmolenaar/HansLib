@@ -7,6 +7,10 @@ using namespace Sudoku;
 
 TEST(CandidatesTest, DefaultConstructor)
 {
+   static_assert(std::input_iterator<CandidatesIterator>);
+   static_assert(std::forward_iterator<CandidatesIterator>);
+   static_assert(std::ranges::forward_range<Candidates>);
+
    const Candidates candidates;
    ASSERT_FALSE(candidates.isSolved());
    ASSERT_EQ(candidates.size(), 9);
