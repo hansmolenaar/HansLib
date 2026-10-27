@@ -30,20 +30,9 @@ std::vector<Value> GetUniqueValuesFromFields(const CandidatesGrid &grid, std::sp
 
 bool RemoveCandidates(CandidatesGrid &grid, const House &house, std::span<const Field> candidateTuple)
 {
-   bool anyChange = false;
    const auto candidatesToRemove = GetUniqueValuesFromFields(grid, candidateTuple);
-   for (const Cell &cell : house.cells)
-   {
-      if (!Contains(candidateTuple, cell.field))
-      {
-         for (auto v : candidatesToRemove)
-         {
-            anyChange |= grid.removeCandidate(cell.field, v);
-         }
-      }
-   }
-
-   return anyChange;
+   return grid.RemoveCandidates(candidatesToRemove, house.cells,
+                                [&candidateTuple](const Cell &cell) { return !Contains(candidateTuple, cell.field); });
 }
 
 bool IsNakedTuple(const CandidatesGrid &grid, const std::vector<Field> &candidateTuple)
