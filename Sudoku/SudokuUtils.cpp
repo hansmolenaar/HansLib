@@ -13,20 +13,20 @@ Index SudokuUtils::countOccurence(const CandidatesGrid &grid, std::span<const Ce
    return str::count_if(cells, [&grid, value](Cell cell) { return grid[cell.field].contains(value); });
 }
 
-std::set<Value> SudokuUtils::getUniqueActiveValuesInCells(const CandidatesGrid &grid, std::span<const Field> fields)
+std::set<Value> SudokuUtils::getUniqueActiveValuesInCells(const CandidatesGrid &grid, std::span<const Cell> cells)
 {
    std::array<bool, NumValue + 1> activeValues = {false, false, false, false, false,
                                                   false, false, false, false, false}; // TODO is this necessary?
 
-   for (Field field : fields)
+   for (Cell cell : cells)
    {
-      for (Value value : grid[field])
+      for (Value value : grid[cell.field])
       {
          activeValues[value] = true;
       }
    }
 
-   const auto valueIsSolved = SudokuUtils::getSolvedValues(grid, fields);
+   const auto valueIsSolved = SudokuUtils::getSolvedValues(grid, cells);
    std::set<Value> result;
    for (Value value : ValueAll)
    {
@@ -36,13 +36,6 @@ std::set<Value> SudokuUtils::getUniqueActiveValuesInCells(const CandidatesGrid &
       }
    }
    return result;
-}
-
-std::set<Value> SudokuUtils::getUniqueActiveValuesInCells(const CandidatesGrid &grid, std::span<const Cell> cells)
-{
-   std::vector<Field> fields(cells.size());
-   str::transform(cells, fields.begin(), Cell::getField);
-   return getUniqueActiveValuesInCells(grid, fields);
 }
 
 boost::container::static_vector<Cell, NumCellsInHouse> SudokuUtils::getNotSolvedCells(const CandidatesGrid &grid,

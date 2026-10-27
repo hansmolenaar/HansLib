@@ -14,21 +14,21 @@ TEST(SudokuUtilsTest, Basic)
    CandidatesGrid grid;
    grid.setGiven(1, 1);
    grid.setGiven(2, 2);
-   std::vector<Field> someFields = {0, 2};
+   std::vector<Cell> someCells = {0, 2};
 
-   auto retval = SudokuUtils::getUniqueActiveValuesInCells(grid, someFields);
+   auto retval = SudokuUtils::getUniqueActiveValuesInCells(grid, someCells);
    ASSERT_EQ(retval.size(), 8);
 
    grid.update();
-   retval = SudokuUtils::getUniqueActiveValuesInCells(grid, someFields);
+   retval = SudokuUtils::getUniqueActiveValuesInCells(grid, someCells);
    ASSERT_EQ(retval.size(), 7);
 
-   someFields = {1, 2};
-   retval = SudokuUtils::getUniqueActiveValuesInCells(grid, someFields);
+   someCells = {1, 2};
+   retval = SudokuUtils::getUniqueActiveValuesInCells(grid, someCells);
    ASSERT_EQ(retval.size(), 0);
 
-   someFields = {0, 4};
-   retval = SudokuUtils::getUniqueActiveValuesInCells(grid, someFields);
+   someCells = {0, 4};
+   retval = SudokuUtils::getUniqueActiveValuesInCells(grid, someCells);
    ASSERT_EQ(retval.size(), 7);
 }
 
