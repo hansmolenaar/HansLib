@@ -20,8 +20,7 @@ class CandidatesIterator
    {
       skipInvalid();
    };
-   // CandidatesIterator &operator=(CandidatesIterator &other) = default;
-   //  CandidatesIterator &operator=(CandidatesIterator other) = default;
+
    const Value &operator*() const
    {
       return *m_ptr;
@@ -102,7 +101,7 @@ class Candidates
    {
       return CandidatesIterator(m_candidates.end(), m_candidates.end());
    }
-
+#if false
    static CandidatesIterator begin(Candidates candidates)
    {
       return candidates.begin();
@@ -112,6 +111,7 @@ class Candidates
    {
       return candidates.end();
    }
+#endif
 
  private:
    boost::container::static_vector<Value, NumIndex> m_candidates = {1, 2, 3, 4, 5, 6, 7, 8, 9};

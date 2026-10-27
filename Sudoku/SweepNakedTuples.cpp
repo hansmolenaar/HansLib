@@ -22,9 +22,7 @@ std::vector<Value> GetUniqueValuesFromFields(const CandidatesGrid &grid, std::sp
    std::vector<Value> result;
    for (Field field : fields)
    {
-      const Candidates &candidates = grid[field];
-      // std::copy(candidates.begin(), candidates.end(), std::back_inserter(result));
-      str::copy(candidates, std::back_inserter(result));
+      str::copy(grid[field], std::back_inserter(result));
    }
    UniqueSorted(result);
    return result;
