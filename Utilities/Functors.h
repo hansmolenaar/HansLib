@@ -17,6 +17,14 @@ template <typename T> struct IsEqualTo
       return actual == Expect;
    }
 };
+template <typename T> struct IsNotEqualTo
+{
+   T Expect;
+   bool operator()(const T &actual) const
+   {
+      return actual != Expect;
+   }
+};
 
 template <typename T> struct IsInIncludeBounds
 {

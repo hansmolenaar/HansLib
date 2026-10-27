@@ -10,6 +10,13 @@ TEST(FunctorTest, IsEqualTo)
    ASSERT_TRUE(isEqualTo42(42));
 }
 
+TEST(FunctorTest, IsNotEqualTo)
+{
+   const Functors::IsNotEqualTo isEqualTo42{42};
+   ASSERT_TRUE(isEqualTo42(1));
+   ASSERT_FALSE(isEqualTo42(42));
+}
+
 struct Base
 {
    virtual ~Base() = default;

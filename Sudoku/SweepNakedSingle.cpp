@@ -1,30 +1,15 @@
 #include "SweepNakedSingle.h"
 #include "CandidatesGrid.h"
+#include "Functors.h"
 #include "House.h"
-
-#include <iostream>
 
 using namespace Sudoku;
 
 namespace
 {
-template <typename F> bool UnsetConnectedCells(CandidatesGrid &grid, Field fieldSkip, Value value, F &&getHouse)
+bool UnsetConnectedCells(CandidatesGrid &grid, const Cell &cellSkip, Value value, const House &house)
 {
-
-   bool anyChange = false;
-   const House &house = getHouse(fieldSkip);
-   for (const auto &cell : house.cells)
-   {
-      if (cell.field != fieldSkip)
-      {
-         // TODO remove me
-         // std::cout << "value to remove " << value << " fieldSkip = " << fieldSkip
-         //          << "       cell.field = " << cell.field << " row = " << cell.row << " col = " << cell.col << "\n";
-         // std::cout << grid << "\n";
-         anyChange |= grid.removeCandidate(cell.field, value);
-      }
-   }
-   return anyChange;
+   return grid.RemoveCandidates(std::span<Value>(&value, &value + 1), house.cells, Functors::IsNotEqualTo{cellSkip});
 }
 
 } // namespace
@@ -37,12 +22,10 @@ bool SweepNakedSingle::sweep(CandidatesGrid &grid)
       const auto value = grid[field].tryGetSolvedValue();
       if (value)
       {
-         anyChange |= UnsetConnectedCells(grid, field, value.value(),
-                                          [](Field field) { return House::getRow(Cell::get(field).row); });
-         anyChange |= UnsetConnectedCells(grid, field, value.value(),
-                                          [](Field field) { return House::getCol(Cell::get(field).col); });
-         anyChange |= UnsetConnectedCells(grid, field, value.value(),
-                                          [](Field field) { return House::getBox(Cell::get(field).box); });
+         const Cell cell = Cell::get(field);
+         anyChange |= UnsetConnectedCells(grid, cell, value.value(), House::getRow(cell.row));
+         anyChange |= UnsetConnectedCells(grid, cell, value.value(), House::getCol(cell.col));
+         anyChange |= UnsetConnectedCells(grid, cell, value.value(), House::getBox(cell.box));
       }
    }
    return anyChange;

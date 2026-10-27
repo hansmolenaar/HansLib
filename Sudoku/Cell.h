@@ -17,6 +17,8 @@ struct Cell
    Index col = IndexUndefined;
    Index box = IndexUndefined;
 
+   auto operator<=>(const Cell &) const = default;
+
    static const std::vector<Cell> &getAll();
    static Field getField(const Cell &);
    static const Cell &get(Field);

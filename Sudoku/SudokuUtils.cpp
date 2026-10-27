@@ -1,6 +1,7 @@
 #include "SudokuUtils.h"
 #include "CandidatesGrid.h"
 #include <algorithm>
+#include <bitset>
 
 using namespace Sudoku;
 
@@ -14,9 +15,7 @@ Index SudokuUtils::countOccurence(const CandidatesGrid &grid, std::span<const Ce
 boost::container::static_vector<Value, NumValue> SudokuUtils::getUniqueActiveValuesInCells(const CandidatesGrid &grid,
                                                                                            std::span<const Cell> cells)
 {
-   std::array<bool, NumValue + 1> activeValues = {false, false, false, false, false,
-                                                  false, false, false, false, false}; // TODO is this necessary?
-
+   std::bitset<NumValue + 1> activeValues;
    for (Cell cell : cells)
    {
       for (Value value : grid[cell.field])
