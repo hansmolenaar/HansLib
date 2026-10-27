@@ -101,17 +101,6 @@ class Candidates
    {
       return CandidatesIterator(m_candidates.end(), m_candidates.end());
    }
-#if false
-   static CandidatesIterator begin(Candidates candidates)
-   {
-      return candidates.begin();
-   }
-
-   static CandidatesIterator end(Candidates candidates)
-   {
-      return candidates.end();
-   }
-#endif
 
  private:
    boost::container::static_vector<Value, NumIndex> m_candidates = {1, 2, 3, 4, 5, 6, 7, 8, 9};
