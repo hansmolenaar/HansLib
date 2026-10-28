@@ -15,6 +15,7 @@ template <typename F, typename G> void TestGetHouse(F &&getHouse, G &&getIndexFr
    for (auto idx : IndexAll)
    {
       const House &house = getHouse(idx);
+      MyAssert(house.houseId.houseIndex == idx);
       for (const Cell &cell : house.cells)
       {
          MyAssert(getIndexFromCell(cell) == idx);
@@ -30,17 +31,23 @@ template <typename F, typename G> void TestGetHouse(F &&getHouse, G &&getIndexFr
 TEST(HouseTest, ByRow)
 {
    TestGetHouse([](Index idx) { return House::getRow(idx); }, [](const Cell &cell) { return cell.row; });
-   ASSERT_EQ(House::getRow(8).type, HouseType::Row);
+   const HouseId &houseId = House::getRow(1).houseId;
+   ASSERT_EQ(houseId.houseType, HouseType::Row);
+   ASSERT_EQ(houseId.houseIndex, 1);
 }
 
 TEST(HouseTest, ByCol)
 {
    TestGetHouse([](Index idx) { return House::getCol(idx); }, [](const Cell &cell) { return cell.col; });
-   ASSERT_EQ(House::getCol(8).type, HouseType::Col);
+   const HouseId &houseId = House::getCol(8).houseId;
+   ASSERT_EQ(houseId.houseType, HouseType::Col);
+   ASSERT_EQ(houseId.houseIndex, 8);
 }
 
 TEST(HouseTest, ByBox)
 {
+   const HouseId &houseId = House::getBox(7).houseId;
    TestGetHouse([](Index idx) { return House::getBox(idx); }, [](const Cell &cell) { return cell.box; });
-   ASSERT_EQ(House::getBox(8).type, HouseType::Box);
+   ASSERT_EQ(houseId.houseType, HouseType::Box);
+   ASSERT_EQ(houseId.houseIndex, 7);
 }

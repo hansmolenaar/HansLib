@@ -20,15 +20,21 @@ constexpr std::array<HouseType, 3> HouseTypeAll = {HouseType::Row, HouseType::Co
 
 constexpr Index NumHouse = 3 * NumIndex;
 
+struct HouseId
+{
+   HouseType houseType;
+   Index houseIndex;
+};
+
 struct House
 {
    static const House &getRow(Index);
    static const House &getCol(Index);
    static const House &getBox(Index);
-   static const House &get(HouseType, Index);
+   static const House &getHouse(HouseId);
    static const std::vector<House> &getAllHouses();
 
-   HouseType type;
+   HouseId houseId;
    std::array<Cell, NumIndex> cells;
 };
 

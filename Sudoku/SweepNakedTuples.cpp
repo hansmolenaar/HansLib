@@ -77,9 +77,11 @@ bool SweepNakedTuples::sweepHouse(CandidatesGrid &grid, const House &house, Inde
 bool SweepNakedTuples::sweepHousesOfType(CandidatesGrid &grid, HouseType type, Index tupleSize)
 {
    bool anyChange = false;
+   HouseId houseId{type, IndexUndefined};
    for (Index idx : IndexAll)
    {
-      anyChange |= sweepHouse(grid, House::get(type, idx), tupleSize);
+      houseId.houseIndex = idx;
+      anyChange |= sweepHouse(grid, House::getHouse(houseId), tupleSize);
    }
    return anyChange;
 }

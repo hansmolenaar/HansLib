@@ -24,7 +24,7 @@ template <typename F> std::vector<House> getHousesBy(HouseType houseType, F &&se
    {
       MyAssert(idx2cell.at(idx).size() == NumIndex);
       House house;
-      house.type = houseType;
+      house.houseId = {houseType, idx};
       str::copy(idx2cell.at(idx), house.cells.begin());
       housesByIdx.at(idx) = house;
    }
@@ -64,20 +64,20 @@ const House &House::getBox(Index box)
    return housesByBox.at(box);
 }
 
-const House &House::get(HouseType typ, Index idx)
+const House &House::getHouse(HouseId houseId)
 {
-   if (typ == HouseType::Row)
+   if (houseId.houseType == HouseType::Row)
    {
-      return getRow(idx);
+      return getRow(houseId.houseIndex);
    }
-   else if (typ == HouseType::Col)
+   else if (houseId.houseType == HouseType::Col)
    {
-      return getCol(idx);
+      return getCol(houseId.houseIndex);
    }
    else
    {
-      MyAssert(typ == HouseType::Box);
-      return getBox(idx);
+      MyAssert(houseId.houseType == HouseType::Box);
+      return getBox(houseId.houseIndex);
    }
 }
 
@@ -88,9 +88,9 @@ const std::vector<House> &House::getAllHouses()
    {
       for (auto type : HouseTypeAll)
       {
-         for (Index row : IndexAll)
+         for (Index idx : IndexAll)
          {
-            housesAll.push_back(get(type, row));
+            housesAll.push_back(getHouse({type, idx}));
          }
       }
       MyAssert(housesAll.size() == NumHouse);
