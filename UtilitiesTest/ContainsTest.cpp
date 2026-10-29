@@ -18,6 +18,9 @@ TEST(ContainsTest, Function)
 {
    const std::vector<int> values{1, 3};
    const IsContained<int> functor{values};
+   const IsNotContained<int> functorInv{values};
    ASSERT_TRUE(functor(1));
+   ASSERT_FALSE(functorInv(1));
    ASSERT_FALSE(functor(2));
+   ASSERT_TRUE(functorInv(2));
 }

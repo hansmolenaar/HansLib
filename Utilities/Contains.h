@@ -27,4 +27,14 @@ template <typename T> struct IsContained
    std::span<const T> values;
 };
 
+template <typename T> struct IsNotContained
+{
+   bool operator()(const T &value) const
+   {
+      return !Contains(values, value);
+   }
+
+   std::span<const T> values;
+};
+
 } // namespace Utilities

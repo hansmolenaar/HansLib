@@ -27,8 +27,8 @@ bool SweepIntersectionElimination::SweepHouse(CandidatesGrid &grid, const House 
          if (intersectionHouseId.has_value())
          {
             const auto &intersectionHouse = House::getHouse(intersectionHouseId.value());
-            const IsContained<Cell> isContained{cells};
-            anyChange |= grid.RemoveCandidates({&value, &value + 1}, intersectionHouse.cells, isContained);
+            const IsNotContained<Cell> isNotContained{cells};
+            anyChange |= grid.RemoveCandidates({&value, &value + 1}, intersectionHouse.cells, isNotContained);
          }
       }
    }

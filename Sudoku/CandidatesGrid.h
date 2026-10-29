@@ -13,6 +13,7 @@ class CandidatesGrid
    void setGiven(Field, Value);
    void setGiven(Index, Index, Value);
    bool setCandidates(Field, std::initializer_list<Value>);
+   bool setCandidates(Index, Index, std::initializer_list<Value>);
    bool removeCandidate(Field, Value);
    void update();                 // set candidates from givens
    void checkValidSudoku() const; // throws if not valid

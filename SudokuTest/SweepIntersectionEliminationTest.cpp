@@ -1,5 +1,7 @@
 #include <gtest/gtest.h>
 
+#include "CandidatesGrid.h"
+#include "StreamUtils.h"
 #include "SweepIntersectionElimination.h"
 
 using namespace Sudoku;
@@ -50,4 +52,29 @@ TEST(SweepIntersectionElimination, BoxCol)
    cells = {Cell::getFromRowCol(0, 7), Cell::getFromRowCol(2, 6)};
    retval = SweepIntersectionElimination::TryGetIntersectionHouse(HouseType::Box, cells);
    ASSERT_FALSE(retval.has_value());
+}
+
+TEST(SweepIntersectionElimination, PointingPair)
+{
+   CandidatesGrid grid;
+   grid.setGiven(0, 2, 9);
+   grid.setGiven(1, 1, 8);
+   grid.setGiven(2, 2, 3);
+
+   grid.setCandidates(0, 0, {2, 4, 5});
+   grid.setCandidates(0, 1, {5, 6});
+   grid.setCandidates(1, 0, {2, 5, 7});
+   grid.setCandidates(1, 2, {1, 2, 5, 6, 7});
+   grid.setCandidates(2, 0, {4, 5, 7});
+   grid.setCandidates(2, 1, {5, 6, 7});
+
+   Field expect = 670;
+   ASSERT_EQ(grid.getNumCandidates(), expect);
+   auto prv = grid;
+   std::cout << grid << "\n";
+   auto retval = SweepIntersectionElimination().sweep(grid);
+   std::cout << CandidatesGrid::DifferenceToStrings(prv, grid) << "\n";
+   ASSERT_TRUE(retval);
+   expect -= 6;
+   ASSERT_EQ(grid.getNumCandidates(), expect);
 }

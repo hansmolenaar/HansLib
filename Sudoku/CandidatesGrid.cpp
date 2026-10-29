@@ -97,6 +97,11 @@ bool CandidatesGrid::setCandidates(Field field, std::initializer_list<Value> val
    return m_candidates.at(field).setOnly(values);
 }
 
+bool CandidatesGrid::setCandidates(Index row, Index col, std::initializer_list<Value> values)
+{
+   return setCandidates(Cell::rowCol2Field(row, col), values);
+}
+
 bool CandidatesGrid::removeCandidate(Field field, Value value)
 {
    return m_candidates.at(field).removeCandidate(value);
