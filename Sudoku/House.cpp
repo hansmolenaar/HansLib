@@ -2,6 +2,7 @@
 #include "MyAssert.h"
 
 #include <algorithm>
+#include <stdexcept>
 #include <vector>
 
 using namespace Sudoku;
@@ -96,4 +97,24 @@ const std::vector<House> &House::getAllHouses()
       MyAssert(housesAll.size() == NumHouse);
    }
    return housesAll;
+}
+
+bool CellInHouse::operator()(const Cell &cell) const
+{
+   return houseId == HouseId::getFromCellaAndType(cell, houseId.houseType);
+}
+
+HouseId HouseId::getFromCellaAndType(const Cell &cell, HouseType type)
+{
+   switch (type)
+   {
+   case HouseType::Row:
+      return {type, cell.row};
+   case HouseType::Col:
+      return {type, cell.col};
+   case HouseType::Box:
+      return {type, cell.box};
+   default:
+      throw std::runtime_error("Should not come here");
+   }
 }

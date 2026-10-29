@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Cell.h"
+#include "SudokuDefines.h"
 #include <array>
 #include <vector>
 
@@ -23,7 +24,16 @@ constexpr Index NumHouse = 3 * NumIndex;
 struct HouseId
 {
    HouseType houseType;
-   Index houseIndex;
+   Index houseIndex = IndexUndefined;
+   static HouseId getFromCellaAndType(const Cell &, HouseType);
+
+   auto operator<=>(const HouseId &) const = default;
+};
+
+struct CellInHouse
+{
+   bool operator()(const Cell &) const;
+   HouseId houseId;
 };
 
 struct House

@@ -22,5 +22,7 @@ std::bitset<NumValue + 1> getSolvedValues(const CandidatesGrid &, std::span<cons
 
 using Value2Fields = std::array<boost::container::static_vector<Field, NumField>, NumValue + 1>;
 Value2Fields getValue2Fields(const CandidatesGrid &, std::span<Field>);
+Value2Fields getValue2Fields(const CandidatesGrid &, std::span<const Cell>);
+
 } // namespace SudokuUtils
 } // namespace Sudoku

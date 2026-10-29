@@ -51,3 +51,23 @@ TEST(HouseTest, ByBox)
    ASSERT_EQ(houseId.houseType, HouseType::Box);
    ASSERT_EQ(houseId.houseIndex, 7);
 }
+
+TEST(HouseTest, GetFromCellAndType)
+{
+   const Cell cell = Cell::get(42);
+   ASSERT_EQ(HouseId::getFromCellaAndType(cell, HouseType::Row), (HouseId{HouseType::Row, 4}));
+   ASSERT_EQ(HouseId::getFromCellaAndType(cell, HouseType::Col), (HouseId{HouseType::Col, 6}));
+   ASSERT_EQ(HouseId::getFromCellaAndType(cell, HouseType::Box), (HouseId{HouseType::Box, 5}));
+}
+
+TEST(HouseTest, CellInHouse)
+{
+   const HouseId houseId = HouseId::getFromCellaAndType(Cell::get(42), HouseType::Row);
+   const CellInHouse cellInHouse{houseId};
+
+   ASSERT_TRUE(cellInHouse(Cell::get(41)));
+   ASSERT_TRUE(cellInHouse(Cell::get(42)));
+   ASSERT_TRUE(cellInHouse(Cell::get(43)));
+   ASSERT_FALSE(cellInHouse(Cell::getFromRowCol(5, 6)));
+   ASSERT_FALSE(cellInHouse(Cell::get(0)));
+}

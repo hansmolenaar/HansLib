@@ -1,5 +1,6 @@
 #include "SudokuUtils.h"
 #include "CandidatesGrid.h"
+#include "boost/container/static_vector.hpp"
 #include <algorithm>
 #include <bitset>
 
@@ -87,4 +88,11 @@ SudokuUtils::Value2Fields SudokuUtils::getValue2Fields(const CandidatesGrid &gri
       }
    }
    return result;
+}
+
+SudokuUtils::Value2Fields SudokuUtils::getValue2Fields(const CandidatesGrid &grid, std::span<const Cell> cells)
+{
+   boost::container::static_vector<Field, NumField> fields(cells.size());
+   str::transform(cells, fields.begin(), Cell::getField);
+   return getValue2Fields(grid, fields);
 }
