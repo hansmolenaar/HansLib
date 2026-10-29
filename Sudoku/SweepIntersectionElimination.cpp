@@ -3,9 +3,12 @@
 #include "MyAssert.h"
 #include "SudokuDefines.h"
 #include "SudokuUtils.h"
+#include "boost/container/static_vector.hpp"
 
+#include <algorithm>
 #include <optional>
 
+namespace str = std::ranges;
 using namespace Sudoku;
 using namespace Utilities;
 
@@ -28,54 +31,41 @@ bool SweepHouse(CandidatesGrid &grid, const House &house)
 
 } // namespace
 
-std::optional<HouseId> SweepIntersectionElimination::TryGetIntersectionHouse(HouseType houseTypeMaster,
+std::optional<HouseId> SweepIntersectionElimination::TryGetIntersectionHouse(HouseType houseTypeIn,
                                                                              std::span<const Field> fields)
 {
    const auto size = fields.size();
    MyAssert(size >= 2 && size <= 3);
+   boost::container::static_vector<Cell, 3> cells(size);
+   str::transform(fields, cells.begin(), Cell::get);
+   const HouseId houseIn = HouseId::getFromCellaAndType(cells.front(), houseTypeIn);
+   MyAssert(str::all_of(cells, CellInHouse{houseIn}));
 
-   const Cell &cell0 = Cell::get(fields[0]);
-   const Cell &cell1 = Cell::get(fields[1]);
-   if (houseTypeMaster == HouseType::Box)
+   HouseId houseOut;
+   if (houseTypeIn == HouseType::Box)
    {
       // Row or Col
-      if (cell0.row == cell1.row)
+      houseOut = HouseId::getFromCellaAndType(cells.front(), HouseType::Row);
+      if (str::all_of(cells, CellInHouse{houseOut}))
       {
-         for (auto f : fields)
-         {
-            if (Cell::get(f).row != cell0.row)
-            {
-               return {};
-            }
-         }
-
-         return HouseId{HouseType::Row, cell0.row};
+         return houseOut;
       }
-      else if (cell0.col == cell1.col)
+      houseOut = HouseId::getFromCellaAndType(cells.front(), HouseType::Col);
+      if (str::all_of(cells, CellInHouse{houseOut}))
       {
-         for (auto f : fields)
-         {
-            if (Cell::get(f).col != cell0.col)
-            {
-               return {};
-            }
-         }
-
-         return HouseId{HouseType::Col, cell0.col};
+         return houseOut;
       }
    }
    else
    {
-      for (auto f : fields)
+      // Only box possible
+      houseOut = HouseId::getFromCellaAndType(cells.front(), HouseType::Box);
+      if (str::all_of(cells, CellInHouse{houseOut}))
       {
-         if (Cell::get(f).box != cell0.box)
-         {
-            return {};
-         }
+         return houseOut;
       }
-
-      return HouseId{HouseType::Box, cell0.box};
    }
+
    return {};
 }
 
