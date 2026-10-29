@@ -13,3 +13,11 @@ TEST(ContainsTest, Basic)
    ASSERT_TRUE(Contains(values, 1));
    ASSERT_FALSE(Contains(values, 2));
 }
+
+TEST(ContainsTest, Function)
+{
+   const std::vector<int> values{1, 3};
+   const IsContained<int> functor{values};
+   ASSERT_TRUE(functor(1));
+   ASSERT_FALSE(functor(2));
+}
