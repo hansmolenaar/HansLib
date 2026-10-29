@@ -1,5 +1,6 @@
 #include "SweepCombined.h"
 #include "SweepHiddenTuple.h"
+#include "SweepIntersectionElimination.h"
 #include "SweepNakedSingle.h"
 #include "SweepNakedTuples.h"
 
@@ -16,6 +17,7 @@ SweepNakedTriplet sweepNakedTriplet;
 SweepHiddenTriplet sweepHiddenTriplet;
 SweepNakedQuartet sweepNakedQuartet;
 SweepHiddenQuartet sweepHiddenQuartet;
+SweepIntersectionElimination sweepIntersectionElimination;
 
 } // namespace
 
@@ -50,7 +52,8 @@ SweepCombined *SweepCombined::getSimpleSweepers()
 
 SweepCombined *SweepCombined::getMediumSweepers()
 {
-   static SweepCombined combined{&sweepNakedSingle,  &sweepHiddenSingle,  &sweepNakedPair,    &sweepHiddenPair,
-                                 &sweepNakedTriplet, &sweepHiddenTriplet, &sweepNakedQuartet, &sweepHiddenQuartet};
+   static SweepCombined combined{&sweepNakedSingle,  &sweepHiddenSingle,  &sweepNakedPair,
+                                 &sweepHiddenPair,   &sweepNakedTriplet,  &sweepHiddenTriplet,
+                                 &sweepNakedQuartet, &sweepHiddenQuartet, &sweepIntersectionElimination};
    return &combined;
 }

@@ -156,7 +156,7 @@ TEST(GridTest, Medium)
          numSolved += 1;
       }
    }
-   ASSERT_EQ(numSolved, 821);
+   ASSERT_EQ(numSolved, 863);
 }
 
 TEST(GridTest, Hard)
@@ -172,5 +172,5 @@ TEST(GridTest, Hard)
          numSolved += 1;
       }
    }
-   ASSERT_EQ(numSolved, 384);
+   ASSERT_EQ(numSolved, 567);
 }
