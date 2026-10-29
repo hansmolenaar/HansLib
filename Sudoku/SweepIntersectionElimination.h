@@ -11,7 +11,7 @@ class SweepIntersectionElimination : public ISweep
 {
  public:
    bool sweep(CandidatesGrid &) override;
-   static std::optional<HouseId> TryGetIntersectionHouse(HouseType, std::span<const Field>);
+   static std::optional<HouseId> TryGetIntersectionHouse(HouseType, std::span<const Cell>);
    static bool SweepHouse(CandidatesGrid &grid, const House &);
 };
 
