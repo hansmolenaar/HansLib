@@ -10,7 +10,7 @@ namespace Sudoku
 struct Cell
 {
    Cell() = default;
-   Cell(Field);
+   explicit Cell(Field);
 
    Field field = FieldUndefined;
    Index row = IndexUndefined;

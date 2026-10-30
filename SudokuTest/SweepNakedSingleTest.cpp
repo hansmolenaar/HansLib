@@ -24,7 +24,7 @@ TEST(SweepNakedSingleTest, ColSimple)
 {
    const Index row = 6;
    const Index col = 3;
-   const Cell &cell = Cell::rowCol2Field(row, col);
+   const Cell cell(Cell::rowCol2Field(row, col));
    CandidatesGrid grid;
    for (Index row = 0; row < NumIndex; ++row)
    {
@@ -42,7 +42,7 @@ TEST(SweepNakedSingleTest, BoxSimple)
 {
    const Index row = 6;
    const Index col = 3;
-   const Cell &cell = Cell::rowCol2Field(row, col);
+   const Cell cell(Cell::rowCol2Field(row, col));
    const House &house = House::getBox(cell.box);
    const Field fieldToSkip = house.cells[3].field;
    CandidatesGrid grid;

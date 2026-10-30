@@ -14,7 +14,7 @@ TEST(SudokuUtilsTest, Basic)
    CandidatesGrid grid;
    grid.setGiven(1, 1);
    grid.setGiven(2, 2);
-   std::vector<Cell> someCells = {0, 2};
+   std::vector<Cell> someCells = {Cell{0}, Cell{2}};
 
    auto retval = SudokuUtils::getUniqueActiveValuesInCells(grid, someCells);
    ASSERT_EQ(retval.size(), 8);
@@ -23,11 +23,11 @@ TEST(SudokuUtilsTest, Basic)
    retval = SudokuUtils::getUniqueActiveValuesInCells(grid, someCells);
    ASSERT_EQ(retval.size(), 7);
 
-   someCells = {1, 2};
+   someCells = {Cell{1}, Cell{2}};
    retval = SudokuUtils::getUniqueActiveValuesInCells(grid, someCells);
    ASSERT_EQ(retval.size(), 0);
 
-   someCells = {0, 4};
+   someCells = {Cell{0}, Cell{4}};
    retval = SudokuUtils::getUniqueActiveValuesInCells(grid, someCells);
    ASSERT_EQ(retval.size(), 7);
 }
