@@ -1,18 +1,8 @@
 #include "SweepNakedSingle.h"
 #include "CandidatesGrid.h"
-#include "Functors.h"
-#include "House.h"
+#include "Visibility.h"
 
 using namespace Sudoku;
-
-namespace
-{
-bool UnsetConnectedCells(CandidatesGrid &grid, const Cell &cellSkip, Value value, const House &house)
-{
-   return grid.RemoveCandidates(std::span<Value>(&value, &value + 1), house.cells, Functors::IsNotEqualTo{cellSkip});
-}
-
-} // namespace
 
 bool SweepNakedSingle::sweep(CandidatesGrid &grid)
 {
@@ -22,10 +12,9 @@ bool SweepNakedSingle::sweep(CandidatesGrid &grid)
       const auto value = grid[field].tryGetSolvedValue();
       if (value)
       {
-         const Cell cell = Cell::get(field);
-         anyChange |= UnsetConnectedCells(grid, cell, value.value(), House::getRow(cell.row));
-         anyChange |= UnsetConnectedCells(grid, cell, value.value(), House::getCol(cell.col));
-         anyChange |= UnsetConnectedCells(grid, cell, value.value(), House::getBox(cell.box));
+         const auto cells = Visiblity::getVisibleCells(field);
+         anyChange |= grid.RemoveCandidates(std::span<const Value>(&*value, &*value + 1), cells,
+                                            [](const Cell &) { return true; });
       }
    }
    return anyChange;
