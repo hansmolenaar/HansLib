@@ -6,7 +6,7 @@
 namespace Sudoku
 {
 
-constexpr Field NumVisibleCellls = 3 * (NumIndex - 1); // NOTE: a cell is NOT visible to itself
+constexpr Field NumVisibleCellls = 20; // NOTE: a cell is NOT visible to itself
 
 struct Visiblity
 {

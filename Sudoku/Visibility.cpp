@@ -1,9 +1,14 @@
 #include "Visibility.h"
 #include "Functors.h"
 #include "House.h"
+#include "MyAssert.h"
+#include "UniqueSorted.h"
+
 #include <algorithm>
+#include <vector>
 
 using namespace Sudoku;
+using namespace Utilities;
 
 namespace str = std::ranges;
 
@@ -29,20 +34,28 @@ std::span<const Cell> Visiblity::getVisibleCells(const Cell &cell)
    {
       for (auto field : FieldAll)
       {
+         std::vector<Cell> work(3 * (NumCellsInHouse - 1));
          const Cell &cell = Cell::get(field);
-         Functors::IsNotEqualTo<Cell> notEqualTo{cell};
+         const Functors::IsNotEqualTo<Cell> isNotEqualTo{cell};
          std::array<HouseId, 3> visibleHouses = {HouseId{HouseType::Row, cell.row}, HouseId{HouseType::Col, cell.col},
                                                  HouseId{HouseType::Box, cell.box}};
-         auto itr = visibleCells[field].begin();
+         auto itr = work.begin();
          for (auto houseId : visibleHouses)
          {
-            str::copy_if(House::getHouse(houseId).cells, itr, notEqualTo);
-            itr += 8;
+            str::copy_if(House::getHouse(houseId).cells, itr, isNotEqualTo);
+            itr += (NumCellsInHouse - 1);
          }
-         str::sort(visibleCells[field]);
+         UniqueSorted(work);
+         MyAssert(work.size() == NumVisibleCellls);
+         str::copy(work, visibleCells[field].begin());
       }
       isSet = true;
    }
 
    return visibleCells[cell.field];
+}
+
+std::span<const Cell> Visiblity::getVisibleCells(Field field)
+{
+   return getVisibleCells(Cell::get(field));
 }
