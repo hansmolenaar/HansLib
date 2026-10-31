@@ -8,17 +8,18 @@ using namespace Utilities;
 
 namespace
 {
-template <typename F, typename G> void TestGetHouse(F &&getHouse, G &&getIndexFromCell)
+template <typename F> void TestGetHouse(F &&getHouse)
 {
    std::set<Field> fieldsFound;
 
    for (auto idx : IndexAll)
    {
       const House &house = getHouse(idx);
+      const HouseType houseType = house.houseId.houseType;
       MyAssert(house.houseId.houseIndex == idx);
       for (const Cell &cell : house.cells)
       {
-         MyAssert(getIndexFromCell(cell) == idx);
+         MyAssert(cell[houseType] == idx);
          fieldsFound.insert(cell.field);
       }
    }
@@ -30,7 +31,7 @@ template <typename F, typename G> void TestGetHouse(F &&getHouse, G &&getIndexFr
 
 TEST(HouseTest, ByRow)
 {
-   TestGetHouse([](Index idx) { return House::getRow(idx); }, [](const Cell &cell) { return cell.row; });
+   TestGetHouse([](Index idx) { return House::getRow(idx); });
    const HouseId &houseId = House::getRow(1).houseId;
    ASSERT_EQ(houseId.houseType, HouseType::Row);
    ASSERT_EQ(houseId.houseIndex, 1);
@@ -38,7 +39,7 @@ TEST(HouseTest, ByRow)
 
 TEST(HouseTest, ByCol)
 {
-   TestGetHouse([](Index idx) { return House::getCol(idx); }, [](const Cell &cell) { return cell.col; });
+   TestGetHouse([](Index idx) { return House::getCol(idx); });
    const HouseId &houseId = House::getCol(8).houseId;
    ASSERT_EQ(houseId.houseType, HouseType::Col);
    ASSERT_EQ(houseId.houseIndex, 8);
@@ -47,7 +48,7 @@ TEST(HouseTest, ByCol)
 TEST(HouseTest, ByBox)
 {
    const HouseId &houseId = House::getBox(7).houseId;
-   TestGetHouse([](Index idx) { return House::getBox(idx); }, [](const Cell &cell) { return cell.box; });
+   TestGetHouse([](Index idx) { return House::getBox(idx); });
    ASSERT_EQ(houseId.houseType, HouseType::Box);
    ASSERT_EQ(houseId.houseIndex, 7);
 }

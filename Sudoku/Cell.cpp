@@ -2,6 +2,7 @@
 #include "MyAssert.h"
 
 #include <algorithm>
+#include <stdexcept>
 #include <vector>
 
 using namespace Sudoku;
@@ -39,6 +40,21 @@ Cell::Cell(Field f)
    MyAssert(row < NumIndex);
    MyAssert(col < NumIndex);
    MyAssert(box < NumIndex);
+}
+
+Index Cell::operator[](HouseType type) const
+{
+   switch (type)
+   {
+   case HouseType::Row:
+      return row;
+   case HouseType::Col:
+      return col;
+   case HouseType::Box:
+      return box;
+   default:
+      throw std::runtime_error("Cell::operator[] unknown HouseType");
+   }
 }
 
 const std::vector<Cell> &Cell::getAll()

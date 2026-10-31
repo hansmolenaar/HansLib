@@ -18,6 +18,7 @@ struct Cell
    Index box = IndexUndefined;
 
    auto operator<=>(const Cell &) const = default;
+   Index operator[](HouseType) const;
 
    static const std::vector<Cell> &getAll();
    static Field getField(const Cell &);

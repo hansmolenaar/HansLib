@@ -11,14 +11,14 @@ namespace str = std::ranges;
 
 namespace
 {
-template <typename F> std::vector<House> getHousesBy(HouseType houseType, F &&selector)
+std::vector<House> getHousesBy(HouseType houseType)
 {
    std::vector<House> housesByIdx(NumIndex);
    std::array<std::vector<Cell>, NumIndex> idx2cell;
    for (Field f : FieldAll)
    {
       const auto &cell = Cell::get(f);
-      idx2cell.at(selector(cell)).push_back(cell);
+      idx2cell.at(cell[houseType]).push_back(cell);
    }
 
    for (auto idx : IndexAll)
@@ -40,7 +40,7 @@ const House &House::getRow(Index row)
    static std::vector<House> housesByRow;
    if (housesByRow.empty())
    {
-      housesByRow = getHousesBy(HouseType::Row, [](const Cell &cell) { return cell.row; });
+      housesByRow = getHousesBy(HouseType::Row);
    }
    return housesByRow.at(row);
 }
@@ -50,7 +50,7 @@ const House &House::getCol(Index col)
    static std::vector<House> housesByCol;
    if (housesByCol.empty())
    {
-      housesByCol = getHousesBy(HouseType::Col, [](const Cell &cell) { return cell.col; });
+      housesByCol = getHousesBy(HouseType::Col);
    }
    return housesByCol.at(col);
 }
@@ -60,7 +60,7 @@ const House &House::getBox(Index box)
    static std::vector<House> housesByBox;
    if (housesByBox.empty())
    {
-      housesByBox = getHousesBy(HouseType::Box, [](const Cell &cell) { return cell.box; });
+      housesByBox = getHousesBy(HouseType::Box);
    }
    return housesByBox.at(box);
 }

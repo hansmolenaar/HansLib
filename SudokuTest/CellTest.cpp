@@ -5,6 +5,14 @@
 
 using namespace Sudoku;
 
+TEST(CellTest, At)
+{
+   const Cell cell{42};
+   ASSERT_EQ(cell[HouseType::Row], 4);
+   ASSERT_EQ(cell[HouseType::Col], 6);
+   ASSERT_EQ(cell[HouseType::Box], 5);
+}
+
 TEST(CellTest, Min)
 {
    const Cell cell{0};

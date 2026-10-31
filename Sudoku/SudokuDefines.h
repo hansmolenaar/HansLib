@@ -23,6 +23,16 @@ using BoxIndex = unsigned short; // 0..2
 constexpr BoxIndex NumBoxIndex(3);
 constexpr auto BoxIndexAll = std::ranges::iota_view{static_cast<BoxIndex>(0), NumBoxIndex};
 
+constexpr auto NumCellsInHouse = NumIndex;
+enum class HouseType
+{
+   Row,
+   Col,
+   Box
+};
+constexpr std::array<HouseType, 3> HouseTypeAll = {HouseType::Row, HouseType::Col, HouseType::Box};
+constexpr Index NumHouse = 3 * NumIndex;
+
 constexpr char ValueUndefinedChar = '.';
 
 } // namespace Sudoku
