@@ -31,7 +31,7 @@ class LockedPairs
    std::span<const LockedPair> getPairs(Value) const;
 
  private:
-   std::vector<LockedPair> m_lockedPairs;
+   std::array<std::vector<LockedPair>, NumValue + 1> m_lockedPairs;
 };
 
 } // namespace Sudoku

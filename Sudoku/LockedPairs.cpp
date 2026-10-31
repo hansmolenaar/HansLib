@@ -40,10 +40,18 @@ LockedPairs::LockedPairs(const CandidatesGrid &grid)
          const auto &fieldsWithValue = v2f.at(value);
          if (fieldsWithValue.size() == 2)
          {
-            m_lockedPairs.emplace_back(value, Cell::get(fieldsWithValue[0]), Cell::get(fieldsWithValue[1]));
+            m_lockedPairs[value].emplace_back(value, Cell::get(fieldsWithValue[0]), Cell::get(fieldsWithValue[1]));
          }
       }
    }
+
    // Remove duplicates
-   UniqueSorted(m_lockedPairs);
+   for (Value value : ValueAll)
+   {
+      UniqueSorted(m_lockedPairs.at(value));
+   }
+}
+std::span<const LockedPair> LockedPairs::getPairs(Value value) const
+{
+   return m_lockedPairs.at(value);
 }
