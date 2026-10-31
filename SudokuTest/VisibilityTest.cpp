@@ -1,9 +1,11 @@
 #include <gtest/gtest.h>
 
+#include "Single.h"
 #include "SudokuDefines.h"
 #include "Visibility.h"
 
 using namespace Sudoku;
+using namespace Utilities;
 
 TEST(VisibilityTest, AreVisible)
 {
@@ -45,4 +47,33 @@ TEST(VisibilityTest, VisibleFields)
          }
       }
    }
+}
+
+TEST(VisibilityTest, AreVisibleVia)
+{
+   const Cell cell{0};
+   auto retval = Visiblity::areVisibleVia(cell, cell);
+   ASSERT_TRUE(retval.empty());
+
+   retval = Visiblity::areVisibleVia(cell, Cell::getFromRowCol(3, 3));
+   ASSERT_TRUE(retval.empty());
+
+   retval = Visiblity::areVisibleVia(cell, Cell::getFromRowCol(0, 8));
+   ASSERT_EQ(Single(retval), HouseType::Row);
+
+   retval = Visiblity::areVisibleVia(cell, Cell::getFromRowCol(8, 0));
+   ASSERT_EQ(Single(retval), HouseType::Col);
+
+   retval = Visiblity::areVisibleVia(cell, Cell::getFromRowCol(2, 2));
+   ASSERT_EQ(Single(retval), HouseType::Box);
+
+   retval = Visiblity::areVisibleVia(cell, Cell::getFromRowCol(0, 2));
+   ASSERT_EQ(retval.size(), 2);
+   ASSERT_EQ(retval[0], HouseType::Row);
+   ASSERT_EQ(retval[1], HouseType::Box);
+
+   retval = Visiblity::areVisibleVia(cell, Cell::getFromRowCol(2, 0));
+   ASSERT_EQ(retval.size(), 2);
+   ASSERT_EQ(retval[0], HouseType::Col);
+   ASSERT_EQ(retval[1], HouseType::Box);
 }

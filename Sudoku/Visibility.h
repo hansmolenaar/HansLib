@@ -2,6 +2,7 @@
 
 #include "Cell.h"
 #include "SudokuDefines.h"
+#include "boost/container/static_vector.hpp"
 
 namespace Sudoku
 {
@@ -14,6 +15,7 @@ struct Visiblity
    static std::span<const Cell> getVisibleCells(Field);
    static bool areVisible(const Cell &, const Cell &);
    static bool areVisible(Field, Field);
+   static boost::container::static_vector<HouseType, 2> areVisibleVia(const Cell &, const Cell &);
 };
 
 } // namespace Sudoku

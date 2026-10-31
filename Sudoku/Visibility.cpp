@@ -2,6 +2,7 @@
 #include "Functors.h"
 #include "House.h"
 #include "MyAssert.h"
+#include "SudokuDefines.h"
 #include "UniqueSorted.h"
 
 #include <algorithm>
@@ -58,4 +59,19 @@ std::span<const Cell> Visiblity::getVisibleCells(const Cell &cell)
 std::span<const Cell> Visiblity::getVisibleCells(Field field)
 {
    return getVisibleCells(Cell::get(field));
+}
+
+boost::container::static_vector<HouseType, 2> Visiblity::areVisibleVia(const Cell &cell0, const Cell &cell1)
+{
+   if (cell0.field == cell1.field)
+      return {};
+   boost::container::static_vector<HouseType, 2> result;
+   for (HouseType type : HouseTypeAll)
+   {
+      if (cell0[type] == cell1[type])
+      {
+         result.push_back(type);
+      }
+   }
+   return result;
 }
