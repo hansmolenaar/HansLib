@@ -10,11 +10,18 @@ namespace Sudoku
 
 class CandidatesGrid;
 
-struct LockedPair
+class LockedPair
 {
-   Value value;
-   Cell cell0;
-   Cell cell1;
+ public:
+   LockedPair(Value, const Cell &, const Cell &);
+   Value getValue() const;
+   std::span<const Cell> getCells() const;
+
+   auto operator<=>(const LockedPair &) const = default;
+
+ private:
+   Value m_value = ValueUndefined;
+   std::array<Cell, 2> m_cells;
 };
 
 class LockedPairs
@@ -22,6 +29,9 @@ class LockedPairs
  public:
    explicit LockedPairs(const CandidatesGrid &);
    std::span<const LockedPair> getPairs(Value) const;
+
+ private:
+   std::vector<LockedPair> m_lockedPairs;
 };
 
 } // namespace Sudoku
