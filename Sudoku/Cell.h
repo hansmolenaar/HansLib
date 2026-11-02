@@ -30,3 +30,5 @@ struct Cell
 };
 
 } // namespace Sudoku
+
+std::ostream &operator<<(std::ostream &, const Sudoku::Cell &);

@@ -130,4 +130,9 @@ template <typename T> struct TimesScalar
    }
 };
 
+template <auto x> auto always()
+{
+   return [](auto &&) -> std::integral_constant<decltype(x), x> { return {}; };
+}
+
 } // namespace Functors

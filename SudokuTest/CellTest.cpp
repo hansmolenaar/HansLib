@@ -1,4 +1,5 @@
 #include <gtest/gtest.h>
+#include <sstream>
 
 #include "Cell.h"
 #include "Single.h"
@@ -97,4 +98,12 @@ TEST(CellTest, Cells2fields)
    const auto cells = {cell};
    const auto fields = Cell::cells2fields(cells);
    ASSERT_EQ(Utilities::Single(fields), cell.field);
+}
+
+TEST(CellTest, OStream)
+{
+   const Cell cell = Cell::get(42);
+   std::stringstream stream;
+   stream << cell;
+   ASSERT_EQ(stream.str(), "(r4, c6, b5 f42)");
 }

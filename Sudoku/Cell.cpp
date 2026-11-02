@@ -2,6 +2,7 @@
 #include "MyAssert.h"
 
 #include <algorithm>
+#include <ostream>
 #include <stdexcept>
 #include <vector>
 
@@ -101,4 +102,11 @@ boost::container::static_vector<Field, NumField> Cell::cells2fields(std::span<co
    boost::container::static_vector<Field, NumField> result(cells.size());
    str::transform(cells, result.begin(), Cell::getField);
    return result;
+}
+
+std::ostream &operator<<(std::ostream &os, const Sudoku::Cell &cell)
+{
+   // os << "(" << cell.row << ", " << cell.col << ", {" << cell.box << "})";
+   os << "(r" << cell.row << ", c" << cell.col << ", b" << cell.box << " f" << cell.field << ")";
+   return os;
 }

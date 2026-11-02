@@ -47,8 +47,7 @@ bool RemoveCandidates(CandidatesGrid &grid, const House &house, std::span<const 
 {
    // Remove all values except the candidate tuple
    boost::container::static_vector<Value, NumValue> activeValues;
-   str::copy_if(ValueAll, std::back_inserter(activeValues),
-                [&candidateTuple](Value value) { return !Contains(candidateTuple, value); });
+   str::copy_if(ValueAll, std::back_inserter(activeValues), IsNotContained(candidateTuple));
 
    return grid.RemoveCandidates(activeValues, house.cells, CellContainsAllValues{grid, candidateTuple});
 }

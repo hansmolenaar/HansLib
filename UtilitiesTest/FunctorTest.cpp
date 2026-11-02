@@ -89,3 +89,11 @@ TEST(FunctorTest, SumOfSquares2)
    const std::vector<int> x{3, 4};
    ASSERT_EQ(Functors::SumOfSquares()(x), 25);
 }
+
+TEST(FunctorTest, Always)
+{
+   const bool isTrue = Functors::always<true>()(42);
+   ASSERT_EQ(isTrue, true);
+   const int is42 = Functors::always<42>()(true);
+   ASSERT_EQ(is42, 42);
+}

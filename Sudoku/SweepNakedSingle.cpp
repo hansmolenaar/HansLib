@@ -1,5 +1,6 @@
 #include "SweepNakedSingle.h"
 #include "CandidatesGrid.h"
+#include "Functors.h"
 #include "Visibility.h"
 
 using namespace Sudoku;
@@ -13,8 +14,8 @@ bool SweepNakedSingle::sweep(CandidatesGrid &grid)
       if (value)
       {
          const auto cells = Visiblity::getVisibleCells(field);
-         anyChange |= grid.RemoveCandidates(std::span<const Value>(&*value, &*value + 1), cells,
-                                            [](const Cell &) { return true; });
+         anyChange |=
+             grid.RemoveCandidates(std::span<const Value>(&*value, &*value + 1), cells, Functors::always<true>());
       }
    }
    return anyChange;
