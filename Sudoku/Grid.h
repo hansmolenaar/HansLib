@@ -10,6 +10,8 @@ class ISweep;
 class Grid
 {
  public:
+   Grid() = default;
+   Grid(CandidatesGrid &&);
    void update(); // set candidates from solved values
    void setGiven(Index, Index, Value);
    void setGiven(Field, Value);

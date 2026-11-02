@@ -1,4 +1,5 @@
 #include "TestModels.h"
+#include "CandidatesGrid.h"
 #include "MyAssert.h"
 
 #include <string>
@@ -2305,7 +2306,7 @@ const std::vector<std::string> grahamHardPuzzles = {
 Grid GrahamStringToGrid(const std::string &str)
 {
    const auto stripped = str.substr(13, 81);
-   return TestModels::fromString(stripped);
+   return Grid(CandidatesGrid::FromString(stripped, UndefinedValueCharOnInput));
 }
 
 } // namespace GrahamPuzzles
@@ -2336,22 +2337,6 @@ std::vector<Grid> TestModels::getHardPuzzles()
    for (const auto &str : GrahamPuzzles::grahamHardPuzzles)
    {
       result.emplace_back(GrahamPuzzles::GrahamStringToGrid(str));
-   }
-   return result;
-}
-
-Grid TestModels::fromString(const std::string &str)
-{
-   MyAssert(str.length() == NumField);
-   Grid result;
-   for (Field f : FieldAll)
-   {
-      const char c = str[f];
-      if (c != UndefinedValueCharOnInput)
-      {
-         const Value value = c - '0';
-         result.setGiven(f, value);
-      }
    }
    return result;
 }

@@ -1,5 +1,6 @@
 #include "CandidatesGrid.h"
 #include "Cell.h"
+#include "Contains.h"
 #include "House.h"
 #include "MyAssert.h"
 #include "StreamUtils.h"
@@ -155,16 +156,17 @@ void CandidatesGrid::checkValidSudoku() const
    }
 }
 
-CandidatesGrid CandidatesGrid::FromString(const std::string &str)
+CandidatesGrid CandidatesGrid::FromString(const std::string &str, char valueUndef)
 {
    MyAssert(str.length() == NumField);
    CandidatesGrid result;
    for (Field f : FieldAll)
    {
       const char c = str[f];
-      if (c != ValueUndefinedChar)
+      if (c != valueUndef)
       {
          const Value value = c - '0';
+         MyAssert(Utilities::Contains(ValueAll, value));
          result.setGiven(f, value);
       }
    }

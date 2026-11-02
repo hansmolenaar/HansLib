@@ -19,7 +19,7 @@ class CandidatesGrid
    void checkValidSudoku() const; // throws if not valid
    bool isSolved() const;
 
-   static CandidatesGrid FromString(const std::string &);
+   static CandidatesGrid FromString(const std::string &, char = ValueUndefinedChar);
    static CandidatesGrid FromValues(const std::array<Value, NumField> &);
    static std::vector<std::string> DifferenceToStrings(const CandidatesGrid &, const CandidatesGrid &);
 

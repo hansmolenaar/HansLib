@@ -48,6 +48,10 @@ std::vector<std::string> ToStrings(const Grid &grid)
 
 } // namespace
 
+Grid::Grid(CandidatesGrid &&cg) : m_candidates(std::move(cg))
+{
+}
+
 void Grid::setGiven(Index row, Index col, Value value)
 {
    setGiven(Cell::rowCol2Field(row, col), value);
