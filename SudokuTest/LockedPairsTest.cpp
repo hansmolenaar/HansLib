@@ -3,6 +3,8 @@
 #include "CandidatesGrid.h"
 #include "LockedPairs.h"
 
+#include <iostream>
+
 using namespace Sudoku;
 
 TEST(LockedPairTest, Basics)
@@ -34,4 +36,7 @@ TEST(LockedPairsTest, Basics)
    ASSERT_EQ(lps.getPairs(7).size(), 1);
    ASSERT_EQ(lps.getPairs(8).size(), 7);
    ASSERT_EQ(lps.getPairs(9).size(), 4);
+
+   std::cout << grid;
+   std::cout << lps;
 }

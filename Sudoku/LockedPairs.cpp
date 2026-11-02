@@ -3,6 +3,7 @@
 #include "SudokuUtils.h"
 #include "UniqueSorted.h"
 #include <algorithm>
+#include <ostream>
 
 using namespace Sudoku;
 using namespace Utilities;
@@ -23,9 +24,20 @@ Value LockedPair::getValue() const
    return m_value;
 }
 
+const Cell &LockedPair::operator[](int pos) const
+{
+   return m_cells.at(pos);
+}
+
 std::span<const Cell> LockedPair::getCells() const
 {
    return m_cells;
+}
+
+std::ostream &operator<<(std::ostream &os, const Sudoku::LockedPair &lp)
+{
+   os << lp[0] << " <=> " << lp[1];
+   return os;
 }
 
 // Locked Pairs
@@ -54,4 +66,18 @@ LockedPairs::LockedPairs(const CandidatesGrid &grid)
 std::span<const LockedPair> LockedPairs::getPairs(Value value) const
 {
    return m_lockedPairs.at(value);
+}
+
+std::ostream &operator<<(std::ostream &os, const Sudoku::LockedPairs &lps)
+{
+   os << "Locked Pairs\n\n";
+   for (Value value : ValueAll)
+   {
+      const auto &pairs = lps.getPairs(value);
+      for (const auto &lp : pairs)
+      {
+         os << value << " :  " << lp << "\n";
+      }
+   }
+   return os;
 }
