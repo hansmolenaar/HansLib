@@ -44,6 +44,17 @@ TEST(CandidatesGridTest, RemoveCandidate)
    ASSERT_ANY_THROW(cg.removeCandidate(field, 4)); // only candidate
 }
 
+TEST(CandidatesGridTest, MesaageText)
+{
+   constexpr Field field = 2;
+   constexpr Value value = 3;
+   CandidatesGrid cg;
+   cg.setGiven(field, value);
+   const bool anyChange = cg.removeCandidate(field, value + 1);
+   ASSERT_FALSE(anyChange);
+   ASSERT_ANY_THROW(cg.removeCandidate(field, value));
+}
+
 TEST(CandidatesGridTest, ToOStream)
 {
    CandidatesGrid cg;

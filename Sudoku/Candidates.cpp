@@ -3,6 +3,7 @@
 #include "MyAssert.h"
 
 #include <algorithm>
+#include <string>
 
 using namespace Sudoku;
 using namespace Utilities;
@@ -21,7 +22,7 @@ bool Candidates::removeCandidate(Value v)
 
    if (anyChange)
    {
-      MyAssert(size() > 1);
+      MyAssert(size() > 1, "Trying to remove solved value " + std::to_string(v));
       m_candidates.erase(found);
    }
    return anyChange;
