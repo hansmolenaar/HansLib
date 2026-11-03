@@ -16,6 +16,7 @@ class SweepCombined : public ISweep
    bool sweep(CandidatesGrid &) override;
    static SweepCombined *getSimpleSweepers();
    static SweepCombined *getMediumSweepers();
+   static SweepCombined *getHardSweepers();
 
  private:
    std::vector<ISweep *> m_sweepers;

@@ -3,6 +3,7 @@
 #include "SweepIntersectionElimination.h"
 #include "SweepNakedSingle.h"
 #include "SweepNakedTuples.h"
+#include "SweepXWing.h"
 
 using namespace Sudoku;
 
@@ -18,6 +19,7 @@ SweepHiddenTriplet sweepHiddenTriplet;
 SweepNakedQuartet sweepNakedQuartet;
 SweepHiddenQuartet sweepHiddenQuartet;
 SweepIntersectionElimination sweepIntersectionElimination;
+SweepXWing sweepXWing;
 
 } // namespace
 
@@ -55,5 +57,17 @@ SweepCombined *SweepCombined::getMediumSweepers()
    static SweepCombined combined{&sweepNakedSingle,  &sweepHiddenSingle,  &sweepNakedPair,
                                  &sweepHiddenPair,   &sweepNakedTriplet,  &sweepHiddenTriplet,
                                  &sweepNakedQuartet, &sweepHiddenQuartet, &sweepIntersectionElimination};
+   return &combined;
+}
+
+SweepCombined *SweepCombined::getHardSweepers()
+{
+   static SweepCombined combined{// Simple
+                                 &sweepNakedSingle, &sweepHiddenSingle,
+                                 // Medium
+                                 &sweepNakedPair, &sweepHiddenPair, &sweepNakedTriplet, &sweepHiddenTriplet,
+                                 &sweepNakedQuartet, &sweepHiddenQuartet, &sweepIntersectionElimination,
+                                 // Hard
+                                 &sweepXWing};
    return &combined;
 }
