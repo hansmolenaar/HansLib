@@ -10,16 +10,59 @@ using namespace Sudoku;
 namespace
 {
 
-SweepNakedSingle sweepNakedSingle;
-SweepHiddenSingle sweepHiddenSingle;
-SweepNakedPairs sweepNakedPair;
-SweepHiddenPair sweepHiddenPair;
-SweepNakedTriplet sweepNakedTriplet;
-SweepHiddenTriplet sweepHiddenTriplet;
-SweepNakedQuartet sweepNakedQuartet;
-SweepHiddenQuartet sweepHiddenQuartet;
-SweepIntersectionElimination sweepIntersectionElimination;
-SweepXWing sweepXWing;
+template <typename T, std::size_t N, std::size_t M>
+auto concat_arrays(const std::array<T, N> &a, const std::array<T, M> &b)
+{
+   // assumes `T` is default-constructible
+   std::array<T, N + M> r;
+   std::copy(std::begin(a), std::end(a), std::begin(r));
+   std::copy(std::begin(b), std::end(b), std::begin(r) + N);
+   return r;
+}
+
+constexpr size_t numSimpleSweepers = 2;
+constexpr size_t numMediumSweepers = 7;
+constexpr size_t numHardSweepers = 1;
+
+std::array<ISweep *, numSimpleSweepers> getSimple()
+{
+   static SweepNakedSingle sweepNakedSingle;
+   static SweepHiddenSingle sweepHiddenSingle;
+   static std::array<ISweep *, numSimpleSweepers> simple{&sweepNakedSingle, &sweepHiddenSingle};
+   return simple;
+}
+
+std::array<ISweep *, numSimpleSweepers + numMediumSweepers> getMedium()
+{
+   static SweepNakedPairs sweepNakedPair;
+   static SweepHiddenPair sweepHiddenPair;
+   static SweepNakedTriplet sweepNakedTriplet;
+   static SweepHiddenTriplet sweepHiddenTriplet;
+   static SweepNakedQuartet sweepNakedQuartet;
+   static SweepHiddenQuartet sweepHiddenQuartet;
+   static SweepIntersectionElimination sweepIntersectionElimination;
+   static std::array<ISweep *, 7> mediumOnly{
+       &sweepNakedPair,
+       &sweepHiddenPair,
+       &sweepNakedTriplet,
+       &sweepHiddenTriplet,
+       &sweepNakedQuartet,
+       &sweepHiddenQuartet,
+       &sweepIntersectionElimination,
+   };
+   static std::array<ISweep *, numSimpleSweepers + numMediumSweepers> medium =
+       concat_arrays<ISweep *, numSimpleSweepers, numMediumSweepers>(getSimple(), mediumOnly);
+   return medium;
+}
+
+std::array<ISweep *, numSimpleSweepers + numMediumSweepers + numHardSweepers> getHard()
+{
+   static SweepXWing sweepXWing;
+   static std::array<ISweep *, numHardSweepers> hardOnly{&sweepXWing};
+   static std::array<ISweep *, numSimpleSweepers + numMediumSweepers + numHardSweepers> hard =
+       concat_arrays<ISweep *, numSimpleSweepers + numMediumSweepers, numHardSweepers>(getMedium(), hardOnly);
+   return hard;
+}
 
 } // namespace
 
@@ -48,26 +91,21 @@ bool SweepCombined::sweep(CandidatesGrid &grid)
 
 SweepCombined *SweepCombined::getSimpleSweepers()
 {
-   static SweepCombined combined{&sweepNakedSingle, &sweepHiddenSingle};
+   static auto s_sweepers = getSimple();
+   static SweepCombined combined(s_sweepers);
    return &combined;
 }
 
 SweepCombined *SweepCombined::getMediumSweepers()
 {
-   static SweepCombined combined{&sweepNakedSingle,  &sweepHiddenSingle,  &sweepNakedPair,
-                                 &sweepHiddenPair,   &sweepNakedTriplet,  &sweepHiddenTriplet,
-                                 &sweepNakedQuartet, &sweepHiddenQuartet, &sweepIntersectionElimination};
+   static auto s_sweepers = getMedium();
+   static SweepCombined combined(s_sweepers);
    return &combined;
 }
 
 SweepCombined *SweepCombined::getHardSweepers()
 {
-   static SweepCombined combined{// Simple
-                                 &sweepNakedSingle, &sweepHiddenSingle,
-                                 // Medium
-                                 &sweepNakedPair, &sweepHiddenPair, &sweepNakedTriplet, &sweepHiddenTriplet,
-                                 &sweepNakedQuartet, &sweepHiddenQuartet, &sweepIntersectionElimination,
-                                 // Hard
-                                 &sweepXWing};
+   static auto s_sweepers = getHard();
+   static SweepCombined combined(s_sweepers);
    return &combined;
 }

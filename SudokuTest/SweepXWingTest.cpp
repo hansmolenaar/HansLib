@@ -33,6 +33,13 @@ TEST(SweepXWingTest, Basics)
    ASSERT_EQ(expect, grid.getNumCandidates());
 
    SweepXWing().sweep(grid);
-   expect -= 14;
-   // ASSERT_EQ(expect, grid.getNumCandidates());
+   expect -= 7;
+   ASSERT_EQ(expect, grid.getNumCandidates());
+
+   SweepXWing().sweep(grid);
+   expect -= 7;
+   ASSERT_EQ(expect, grid.getNumCandidates());
+
+   SweepXWing().sweep(grid);
+   ASSERT_EQ(expect, grid.getNumCandidates());
 }
