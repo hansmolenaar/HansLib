@@ -110,3 +110,41 @@ std::ostream &operator<<(std::ostream &os, const Sudoku::Cell &cell)
    os << "(r" << cell.row << ", c" << cell.col << ", b" << cell.box << " f" << cell.field << ")";
    return os;
 }
+
+// Rotate over 90 deg
+const Cell &Cell::Rotate(const Cell &cell)
+{
+   const int rowIn = cell.row - 4;
+   const int colIn = cell.col - 4;
+   const int rowOut = colIn;
+   const int colOut = -rowIn;
+   return getFromRowCol(rowOut + 4, colOut + 4);
+}
+
+const Cell &Cell::ReflectX(const Cell &cell)
+{
+   const int rowIn = cell.row - 4;
+   const int rowOut = -rowIn;
+   return getFromRowCol(rowOut + 4, cell.col);
+}
+
+const Cell &Cell::ReflectY(const Cell &cell)
+{
+   const int colIn = cell.col - 4;
+   const int colOut = -colIn;
+   return getFromRowCol(cell.row, colOut + 4);
+}
+
+const Cell &Cell::ReflectYX(const Cell &cell)
+{
+   const int rowIn = cell.row - 4;
+   const int colIn = cell.col - 4;
+   return getFromRowCol(colIn + 4, rowIn + 4);
+}
+
+const Cell &Cell::ReflectXY(const Cell &cell)
+{
+   const int rowIn = cell.row - 4;
+   const int colIn = cell.col - 4;
+   return getFromRowCol(-colIn + 4, -rowIn + 4);
+}

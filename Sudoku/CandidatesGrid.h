@@ -22,6 +22,7 @@ class CandidatesGrid
    static CandidatesGrid FromString(const std::string &, char = ValueUndefinedChar);
    static CandidatesGrid FromValues(const std::array<Value, NumField> &);
    static std::vector<std::string> DifferenceToStrings(const CandidatesGrid &, const CandidatesGrid &);
+   static std::vector<CandidatesGrid> getSymmetricEquivalents(const CandidatesGrid &);
 
    const Candidates &operator[](Field f) const
    {

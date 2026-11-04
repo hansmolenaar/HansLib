@@ -13,6 +13,7 @@
 #include <iostream>
 #include <numeric>
 #include <string>
+#include <vector>
 
 using namespace Sudoku;
 using namespace Utilities;
@@ -82,6 +83,24 @@ std::vector<std::string> ToStrings(const CandidatesGrid &grid, candidatesToStrin
    }
 
    result.push_back(box_hsep_top_bot);
+   return result;
+}
+
+typedef const Cell &(*TransformCell)(const Cell &);
+CandidatesGrid Transform(const CandidatesGrid &grid, TransformCell transformCell)
+{
+   CandidatesGrid result;
+   for (const auto &cell : Cell::getAll())
+   {
+      const auto &tcell = transformCell(cell);
+      for (Value value : ValueAll)
+      {
+         if (!grid[cell.field].contains(value))
+         {
+            result.removeCandidate(tcell.field, value);
+         }
+      }
+   }
    return result;
 }
 
@@ -234,4 +253,21 @@ std::vector<std::string> CandidatesGrid::DifferenceToStrings(const CandidatesGri
    auto retval = ToStrings(result, &Candidates::ToStringsDifferences);
    retval.push_back("Number of changes = " + std::to_string(numChanges));
    return retval;
+}
+
+std::vector<CandidatesGrid> CandidatesGrid::getSymmetricEquivalents(const CandidatesGrid &grid)
+{
+   // 4 rotations
+   std::vector<CandidatesGrid> result{grid};
+   result.push_back(Transform(result.back(), &Cell::Rotate));
+   result.push_back(Transform(result.back(), &Cell::Rotate));
+   result.push_back(Transform(result.back(), &Cell::Rotate));
+
+   // 4 reflections
+   result.push_back(Transform(grid, &Cell::ReflectX));
+   result.push_back(Transform(grid, &Cell::ReflectY));
+   result.push_back(Transform(grid, &Cell::ReflectXY));
+   result.push_back(Transform(grid, &Cell::ReflectYX));
+
+   return result;
 }

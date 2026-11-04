@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "CandidatesGrid.h"
+#include <iostream>
 
 using namespace Sudoku;
 
@@ -68,4 +69,22 @@ TEST(CandidatesGridTest, ToOStream)
    const auto retval = stream.str();
    // std::cout << retval;
    ASSERT_FALSE(retval.empty());
+}
+
+TEST(CandidatesGridTest, Symmetries)
+{
+   const std::string str = "020010840709200001604000290000030020800102004090040000037000602100005903062070050";
+   CandidatesGrid grid = CandidatesGrid::FromString(str, '0');
+   grid.update();
+
+   const std::vector<CandidatesGrid> grids = CandidatesGrid::getSymmetricEquivalents(grid);
+   // std::cout << grids[0] << "\n";
+   // std::cout << grids[7] << "\n";
+
+   const auto expect = grid.getNumCandidates();
+   for (const auto &tg : grids)
+   {
+      ASSERT_EQ(tg.getNumCandidates(), expect);
+      tg.checkValidSudoku();
+   }
 }

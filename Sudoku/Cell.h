@@ -27,6 +27,12 @@ struct Cell
    static Field rowCol2Field(Index, Index);
    static bool AreSame(const Cell &cell, Field field);
    static boost::container::static_vector<Field, NumField> cells2fields(std::span<const Cell>);
+
+   static const Cell &Rotate(const Cell &);
+   static const Cell &ReflectX(const Cell &);
+   static const Cell &ReflectY(const Cell &);
+   static const Cell &ReflectXY(const Cell &);
+   static const Cell &ReflectYX(const Cell &);
 };
 
 } // namespace Sudoku

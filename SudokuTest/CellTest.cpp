@@ -107,3 +107,113 @@ TEST(CellTest, OStream)
    stream << cell;
    ASSERT_EQ(stream.str(), "(r4, c6, b5 f42)");
 }
+
+TEST(CellTest, Rotate00)
+{
+   Cell cell{0};
+
+   cell = Cell::Rotate(cell);
+   ASSERT_EQ(cell, Cell::getFromRowCol(0, 8));
+
+   cell = Cell::Rotate(cell);
+   ASSERT_EQ(cell, Cell::getFromRowCol(8, 8));
+
+   cell = Cell::Rotate(cell);
+   ASSERT_EQ(cell, Cell::getFromRowCol(8, 0));
+
+   cell = Cell::Rotate(cell);
+   ASSERT_EQ(cell, Cell::getFromRowCol(0, 0));
+}
+
+TEST(CellTest, Rotate55)
+{
+   Cell cell{Cell::getFromRowCol(3, 3)};
+
+   cell = Cell::Rotate(cell);
+   ASSERT_EQ(cell, Cell::getFromRowCol(3, 5));
+
+   cell = Cell::Rotate(cell);
+   ASSERT_EQ(cell, Cell::getFromRowCol(5, 5));
+
+   cell = Cell::Rotate(cell);
+   ASSERT_EQ(cell, Cell::getFromRowCol(5, 3));
+
+   cell = Cell::Rotate(cell);
+   ASSERT_EQ(cell, Cell::getFromRowCol(3, 3));
+}
+
+TEST(CellTest, ReflectX)
+{
+   Cell cell{Cell::getFromRowCol(0, 0)};
+   cell = Cell::ReflectX(cell);
+   ASSERT_EQ(cell, Cell::getFromRowCol(8, 0));
+
+   cell = Cell::ReflectX(cell);
+   ASSERT_EQ(cell, Cell::getFromRowCol(0, 0));
+
+   cell = Cell::getFromRowCol(3, 3);
+   cell = Cell::ReflectX(cell);
+   ASSERT_EQ(cell, Cell::getFromRowCol(5, 3));
+
+   cell = Cell::getFromRowCol(4, 4);
+   cell = Cell::ReflectX(cell);
+   ASSERT_EQ(cell, Cell::getFromRowCol(4, 4));
+}
+
+TEST(CellTest, ReflectY)
+{
+   Cell cell{Cell::getFromRowCol(0, 0)};
+   cell = Cell::ReflectY(cell);
+   ASSERT_EQ(cell, Cell::getFromRowCol(0, 8));
+
+   cell = Cell::ReflectY(cell);
+   ASSERT_EQ(cell, Cell::getFromRowCol(0, 0));
+
+   cell = Cell::getFromRowCol(3, 3);
+   cell = Cell::ReflectY(cell);
+   ASSERT_EQ(cell, Cell::getFromRowCol(3, 5));
+
+   cell = Cell::getFromRowCol(4, 4);
+   cell = Cell::ReflectY(cell);
+   ASSERT_EQ(cell, Cell::getFromRowCol(4, 4));
+}
+
+TEST(CellTest, ReflectXY)
+{
+   Cell cell{Cell::getFromRowCol(0, 0)};
+   cell = Cell::ReflectXY(cell);
+   ASSERT_EQ(cell, Cell::getFromRowCol(8, 8));
+
+   cell = Cell::ReflectXY(cell);
+   ASSERT_EQ(cell, Cell::getFromRowCol(0, 0));
+
+   cell = Cell::getFromRowCol(3, 3);
+   cell = Cell::ReflectXY(cell);
+   ASSERT_EQ(cell, Cell::getFromRowCol(5, 5));
+
+   cell = Cell::getFromRowCol(4, 4);
+   cell = Cell::ReflectXY(cell);
+   ASSERT_EQ(cell, Cell::getFromRowCol(4, 4));
+}
+
+TEST(CellTest, ReflectYX)
+{
+   Cell cell{Cell::getFromRowCol(0, 8)};
+   cell = Cell::ReflectYX(cell);
+   ASSERT_EQ(cell, Cell::getFromRowCol(8, 0));
+
+   cell = Cell::ReflectYX(cell);
+   ASSERT_EQ(cell, Cell::getFromRowCol(0, 8));
+
+   cell = Cell::getFromRowCol(3, 5);
+   cell = Cell::ReflectYX(cell);
+   ASSERT_EQ(cell, Cell::getFromRowCol(5, 3));
+
+   cell = Cell::getFromRowCol(3, 3);
+   cell = Cell::ReflectYX(cell);
+   ASSERT_EQ(cell, Cell::getFromRowCol(3, 3));
+
+   cell = Cell::getFromRowCol(4, 4);
+   cell = Cell::ReflectYX(cell);
+   ASSERT_EQ(cell, Cell::getFromRowCol(4, 4));
+}
