@@ -9,9 +9,9 @@ namespace Sudoku
 
 namespace TestModels
 {
-std::vector<Grid> getSimplePuzzles();
-std::vector<Grid> getMediumPuzzles();
-std::vector<Grid> getHardPuzzles();
+std::vector<CandidatesGrid> getSimplePuzzles();
+std::vector<CandidatesGrid> getMediumPuzzles();
+std::vector<CandidatesGrid> getHardPuzzles();
 }; // namespace TestModels
 
 } // namespace Sudoku

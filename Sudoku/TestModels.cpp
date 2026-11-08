@@ -2303,17 +2303,17 @@ const std::vector<std::string> grahamHardPuzzles = {
     "0105e4b77efb 001209700000000000005000400150804036800605007600090005300050004080000060500702008  4.6",
 };
 
-Grid GrahamStringToGrid(const std::string &str)
+CandidatesGrid GrahamStringToGrid(const std::string &str)
 {
    const auto stripped = str.substr(13, 81);
-   return Grid(CandidatesGrid::FromString(stripped, UndefinedValueCharOnInput));
+   return CandidatesGrid::FromString(stripped, UndefinedValueCharOnInput);
 }
 
 } // namespace GrahamPuzzles
 
-std::vector<Grid> TestModels::getSimplePuzzles()
+std::vector<CandidatesGrid> TestModels::getSimplePuzzles()
 {
-   std::vector<Grid> result;
+   std::vector<CandidatesGrid> result;
    for (const auto &str : GrahamPuzzles::grahamSimplePuzzles)
    {
       result.emplace_back(GrahamPuzzles::GrahamStringToGrid(str));
@@ -2321,9 +2321,9 @@ std::vector<Grid> TestModels::getSimplePuzzles()
    return result;
 }
 
-std::vector<Grid> TestModels::getMediumPuzzles()
+std::vector<CandidatesGrid> TestModels::getMediumPuzzles()
 {
-   std::vector<Grid> result;
+   std::vector<CandidatesGrid> result;
    for (const auto &str : GrahamPuzzles::grahamMediumPuzzles)
    {
       result.emplace_back(GrahamPuzzles::GrahamStringToGrid(str));
@@ -2331,9 +2331,9 @@ std::vector<Grid> TestModels::getMediumPuzzles()
    return result;
 }
 
-std::vector<Grid> TestModels::getHardPuzzles()
+std::vector<CandidatesGrid> TestModels::getHardPuzzles()
 {
-   std::vector<Grid> result;
+   std::vector<CandidatesGrid> result;
    for (const auto &str : GrahamPuzzles::grahamHardPuzzles)
    {
       result.emplace_back(GrahamPuzzles::GrahamStringToGrid(str));

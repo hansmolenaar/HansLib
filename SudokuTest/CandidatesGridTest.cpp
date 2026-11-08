@@ -1,14 +1,94 @@
 #include <gtest/gtest.h>
 
 #include "CandidatesGrid.h"
+#include "Cell.h"
+#include "SweepCombined.h"
+#include "TestModels.h"
 #include <iostream>
 
 using namespace Sudoku;
+
+namespace
+{
+
+CandidatesGrid GenerateSolvedGrid()
+{
+   const std::array<Value, NumField> diagramValues = {
+       1, 2, 3, 4, 5, 6, 7, 8, 9, 4, 5, 6, 7, 8, 9, 1, 2, 3, 7, 8, 9, 1, 2, 3, 4, 5, 6,
+
+       2, 3, 4, 5, 6, 7, 8, 9, 1, 5, 6, 7, 8, 9, 1, 2, 3, 4, 8, 9, 1, 2, 3, 4, 5, 6, 7,
+
+       3, 4, 5, 6, 7, 8, 9, 1, 2, 6, 7, 8, 9, 1, 2, 3, 4, 5, 9, 1, 2, 3, 4, 5, 6, 7, 8,
+   };
+
+   CandidatesGrid result;
+
+   for (auto field : FieldAll)
+   {
+      result.setGiven(field, diagramValues[field]);
+   }
+   return result;
+}
+} // namespace
 
 TEST(CandidatesGridTest, DefaultConstructor)
 {
    const CandidatesGrid cg;
    ASSERT_EQ(cg.getNumCandidates(), NumField * NumValue);
+}
+
+TEST(CandidatesGridTest, Solved)
+{
+   const auto solved = GenerateSolvedGrid();
+   ASSERT_TRUE(solved.isSolved());
+}
+
+TEST(GridTest, CheckValidOK)
+{
+   Grid grid;
+   ASSERT_NO_THROW(grid.checkValidSudoku());
+
+   grid = GenerateSolvedGrid();
+   ASSERT_NO_THROW(grid.checkValidSudoku());
+}
+
+TEST(CandidatesGridTest, CheckValidDoubleValue)
+{
+   Grid grid;
+
+   grid.setGiven(1, 1);
+   ASSERT_NO_THROW(grid.checkValidSudoku());
+
+   grid.setGiven(2, 2);
+   ASSERT_NO_THROW(grid.checkValidSudoku());
+
+   grid.setGiven(3, 1);
+   ASSERT_ANY_THROW(grid.checkValidSudoku());
+}
+
+TEST(CandidatesGridTest, update)
+{
+   CandidatesGrid grid;
+
+   grid.setGiven(0, 0, 2);
+   grid.setGiven(0, 1, 5);
+   grid.setGiven(0, 2, 8);
+   grid.setGiven(1, 3, 5);
+   grid.setGiven(1, 4, 8);
+   grid.setGiven(1, 7, 7);
+   grid.setGiven(2, 0, 3);
+   grid.setGiven(2, 2, 9);
+   grid.setGiven(2, 4, 4);
+   grid.setGiven(4, 1, 6);
+   grid.setGiven(6, 1, 4);
+   grid.setGiven(6, 2, 6);
+
+   grid.update();
+   ASSERT_NO_THROW(grid.checkValidSudoku());
+   ASSERT_EQ(grid.getNumCandidates(), 433);
+   auto found = grid[Cell::rowCol2Field(2, 1)].tryGetSolvedValue();
+   ASSERT_TRUE(found.has_value());
+   ASSERT_EQ(found.value(), 7);
 }
 
 TEST(CandidatesGridTest, SetCandidates)
@@ -87,4 +167,53 @@ TEST(CandidatesGridTest, Symmetries)
       ASSERT_EQ(tg.getNumCandidates(), expect);
       tg.checkValidSudoku();
    }
+}
+
+TEST(CandidatesGridTest, Simple)
+{
+   SweepCombined *sweepers = SweepCombined::getSimpleSweepers();
+   std::vector<CandidatesGrid> grids = TestModels::getSimplePuzzles();
+   ASSERT_EQ(grids.size(), 133);
+
+   for (auto &grid : grids)
+   {
+      ISweep::iterate(*sweepers, grid);
+      ASSERT_TRUE(grid.isSolved());
+   }
+}
+
+TEST(CandidatesGridTest, Medium)
+{
+   // ASSERT_TRUE(false);
+   SweepCombined *sweepers = SweepCombined::getMediumSweepers();
+   std::vector<CandidatesGrid> grids = TestModels::getMediumPuzzles();
+   ASSERT_EQ(grids.size(), 863);
+   int numSolved = 0;
+   for (auto &grid : grids)
+   {
+      ISweep::iterate(*sweepers, grid);
+      if (grid.isSolved())
+      {
+         numSolved += 1;
+      }
+   }
+   ASSERT_EQ(numSolved, 863);
+}
+
+TEST(CandidatesGridTest, Hard)
+{
+   // ASSERT_TRUE(false);
+   SweepCombined *sweepers = SweepCombined::getHardSweepers();
+   std::vector<CandidatesGrid> grids = TestModels::getHardPuzzles();
+   ASSERT_EQ(grids.size(), 1278);
+   int numSolved = 0;
+   for (auto &grid : grids)
+   {
+      ISweep::iterate(*sweepers, grid);
+      if (grid.isSolved())
+      {
+         numSolved += 1;
+      }
+   }
+   ASSERT_EQ(numSolved, 610);
 }
