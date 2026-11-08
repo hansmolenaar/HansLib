@@ -43,9 +43,9 @@ TEST(CandidatesGridTest, Solved)
    ASSERT_TRUE(solved.isSolved());
 }
 
-TEST(GridTest, CheckValidOK)
+TEST(CandidatesGridTest, CheckValidOK)
 {
-   Grid grid;
+   CandidatesGrid grid;
    ASSERT_NO_THROW(grid.checkValidSudoku());
 
    grid = GenerateSolvedGrid();
@@ -54,7 +54,7 @@ TEST(GridTest, CheckValidOK)
 
 TEST(CandidatesGridTest, CheckValidDoubleValue)
 {
-   Grid grid;
+   CandidatesGrid grid;
 
    grid.setGiven(1, 1);
    ASSERT_NO_THROW(grid.checkValidSudoku());
