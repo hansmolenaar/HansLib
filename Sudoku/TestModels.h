@@ -12,6 +12,7 @@ namespace TestModels
 std::vector<CandidatesGrid> getSimplePuzzles();
 std::vector<CandidatesGrid> getMediumPuzzles();
 std::vector<CandidatesGrid> getHardPuzzles();
+std::vector<std::string> getHardPuzzlesInStringFormat();
 }; // namespace TestModels
 
 } // namespace Sudoku

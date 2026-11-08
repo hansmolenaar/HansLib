@@ -2,11 +2,14 @@
 #include "CandidatesGrid.h"
 #include "MyAssert.h"
 
+#include <algorithm>
 #include <string>
 #include <vector>
 
 using namespace Sudoku;
 using namespace Utilities;
+
+namespace str = std::ranges;
 
 namespace
 {
@@ -2303,10 +2306,16 @@ const std::vector<std::string> grahamHardPuzzles = {
     "0105e4b77efb 001209700000000000005000400150804036800605007600090005300050004080000060500702008  4.6",
 };
 
+std::string GrahamStringToStandardString(const std::string &str)
+{
+   auto result = str.substr(13, 81); // strip extra stuff
+   str::replace(result, UndefinedValueCharOnInput, ValueUndefinedChar);
+   return result;
+}
+
 CandidatesGrid GrahamStringToGrid(const std::string &str)
 {
-   const auto stripped = str.substr(13, 81);
-   return CandidatesGrid::FromString(stripped, UndefinedValueCharOnInput);
+   return CandidatesGrid::FromString(GrahamStringToStandardString(str));
 }
 
 } // namespace GrahamPuzzles
@@ -2334,9 +2343,17 @@ std::vector<CandidatesGrid> TestModels::getMediumPuzzles()
 std::vector<CandidatesGrid> TestModels::getHardPuzzles()
 {
    std::vector<CandidatesGrid> result;
-   for (const auto &str : GrahamPuzzles::grahamHardPuzzles)
+   for (auto str : getHardPuzzlesInStringFormat())
    {
-      result.emplace_back(GrahamPuzzles::GrahamStringToGrid(str));
+      result.emplace_back(CandidatesGrid::FromString(str));
    }
+
+   return result;
+}
+
+std::vector<std::string> TestModels::getHardPuzzlesInStringFormat()
+{
+   std::vector<std::string> result(GrahamPuzzles::grahamHardPuzzles.size());
+   str::transform(GrahamPuzzles::grahamHardPuzzles, result.begin(), GrahamPuzzles::GrahamStringToStandardString);
    return result;
 }
