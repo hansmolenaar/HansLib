@@ -4,6 +4,7 @@
 #include "House.h"
 #include "Single.h"
 #include "SudokuUtils.h"
+#include "TestModels.h"
 
 #include <algorithm>
 
@@ -103,4 +104,18 @@ TEST(SudokuUtilsTest, GetValue2Fields)
    ASSERT_EQ(v2f[1].size(), 2);
    ASSERT_EQ(Utilities::Single(v2f[2]), 2);
    ASSERT_EQ(v2f[8].size(), 2);
+}
+
+TEST(SudokuUtilsTest, GetNotSolvedCells)
+{
+   CandidatesGrid grid;
+   grid.setGiven(42, 4);
+   ASSERT_EQ(SudokuUtils::getNotSolvedCells(grid).size(), NumField - 1);
+   grid.setGiven(0, 5);
+   ASSERT_EQ(SudokuUtils::getNotSolvedCells(grid).size(), NumField - 2);
+   ASSERT_EQ(SudokuUtils::getNotSolvedCells(grid).front(), Cell::get(1));
+
+   grid = TestModels::getSolvedGrid();
+   const auto activeCells = SudokuUtils::getNotSolvedCells(grid);
+   ASSERT_TRUE(activeCells.empty());
 }

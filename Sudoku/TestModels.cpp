@@ -2357,3 +2357,22 @@ std::vector<std::string> TestModels::getHardPuzzlesInStringFormat()
    str::transform(GrahamPuzzles::grahamHardPuzzles, result.begin(), GrahamPuzzles::GrahamStringToStandardString);
    return result;
 }
+
+CandidatesGrid TestModels::getSolvedGrid()
+{
+   const std::array<Value, NumField> diagramValues = {
+       1, 2, 3, 4, 5, 6, 7, 8, 9, 4, 5, 6, 7, 8, 9, 1, 2, 3, 7, 8, 9, 1, 2, 3, 4, 5, 6,
+
+       2, 3, 4, 5, 6, 7, 8, 9, 1, 5, 6, 7, 8, 9, 1, 2, 3, 4, 8, 9, 1, 2, 3, 4, 5, 6, 7,
+
+       3, 4, 5, 6, 7, 8, 9, 1, 2, 6, 7, 8, 9, 1, 2, 3, 4, 5, 9, 1, 2, 3, 4, 5, 6, 7, 8,
+   };
+
+   CandidatesGrid result;
+
+   for (auto field : FieldAll)
+   {
+      result.setGiven(field, diagramValues[field]);
+   }
+   return result;
+}

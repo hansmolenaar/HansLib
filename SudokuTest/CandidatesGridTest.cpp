@@ -8,29 +8,6 @@
 
 using namespace Sudoku;
 
-namespace
-{
-
-CandidatesGrid GenerateSolvedGrid()
-{
-   const std::array<Value, NumField> diagramValues = {
-       1, 2, 3, 4, 5, 6, 7, 8, 9, 4, 5, 6, 7, 8, 9, 1, 2, 3, 7, 8, 9, 1, 2, 3, 4, 5, 6,
-
-       2, 3, 4, 5, 6, 7, 8, 9, 1, 5, 6, 7, 8, 9, 1, 2, 3, 4, 8, 9, 1, 2, 3, 4, 5, 6, 7,
-
-       3, 4, 5, 6, 7, 8, 9, 1, 2, 6, 7, 8, 9, 1, 2, 3, 4, 5, 9, 1, 2, 3, 4, 5, 6, 7, 8,
-   };
-
-   CandidatesGrid result;
-
-   for (auto field : FieldAll)
-   {
-      result.setGiven(field, diagramValues[field]);
-   }
-   return result;
-}
-} // namespace
-
 TEST(CandidatesGridTest, DefaultConstructor)
 {
    const CandidatesGrid cg;
@@ -39,7 +16,7 @@ TEST(CandidatesGridTest, DefaultConstructor)
 
 TEST(CandidatesGridTest, Solved)
 {
-   const auto solved = GenerateSolvedGrid();
+   const auto solved = TestModels::getSolvedGrid();
    ASSERT_TRUE(solved.isSolved());
 }
 
@@ -48,7 +25,7 @@ TEST(CandidatesGridTest, CheckValidOK)
    CandidatesGrid grid;
    ASSERT_NO_THROW(grid.checkValidSudoku());
 
-   grid = GenerateSolvedGrid();
+   grid = TestModels::getSolvedGrid();
    ASSERT_NO_THROW(grid.checkValidSudoku());
 }
 

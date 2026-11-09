@@ -62,6 +62,19 @@ std::bitset<NumValue + 1> SudokuUtils::getSolvedValues(const CandidatesGrid &gri
    return result;
 }
 
+boost::container::static_vector<Cell, NumField> SudokuUtils::getNotSolvedCells(const CandidatesGrid &grid)
+{
+   boost::container::static_vector<Cell, NumField> result;
+   for (const Cell &cell : Cell::getAll())
+   {
+      if (!grid[cell.field].isSolved())
+      {
+         result.push_back(cell);
+      }
+   }
+   return result;
+}
+
 std::bitset<NumValue + 1> SudokuUtils::getSolvedValues(const CandidatesGrid &grid, std::span<const Field> fields)
 {
    std::bitset<NumValue + 1> result;

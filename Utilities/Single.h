@@ -34,18 +34,18 @@ template <typename T> const T &Utilities::Single(const std::vector<T> &container
 
 template <typename T> T &Utilities::Single(std::vector<T> &container)
 {
-   MyAssert(container.size() == 1);
+   MyAssert(container.size() == 1, "Expect single value, actual " + std::to_string(container.size()));
    return container.front();
 }
 
 template <typename T, size_t N> const T &Utilities::Single(const boost::container::static_vector<T, N> &container)
 {
-   MyAssert(container.size() == 1);
+   MyAssert(container.size() == 1, "Expect single value, actual " + std::to_string(container.size()));
    return container.front();
 }
 
 template <typename T> const T &Utilities::Single(const std::span<const T> &container)
 {
-   MyAssert(container.size() == 1);
+   MyAssert(container.size() == 1, "Expect single value, actual " + std::to_string(container.size()));
    return container.front();
 }
