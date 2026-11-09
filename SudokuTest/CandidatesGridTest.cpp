@@ -161,7 +161,7 @@ TEST(CandidatesGridTest, Simple)
 
 TEST(CandidatesGridTest, Medium)
 {
-   // ASSERT_TRUE(false);
+   ASSERT_TRUE(false);
    SweepCombined *sweepers = SweepCombined::getMediumSweepers();
    std::vector<CandidatesGrid> grids = TestModels::getMediumPuzzles();
    ASSERT_EQ(grids.size(), 863);
@@ -179,7 +179,7 @@ TEST(CandidatesGridTest, Medium)
 
 TEST(CandidatesGridTest, Hard)
 {
-   // ASSERT_TRUE(false);
+   ASSERT_TRUE(false);
    SweepCombined *sweepers = SweepCombined::getHardSweepers();
    std::vector<CandidatesGrid> grids = TestModels::getHardPuzzles();
    ASSERT_EQ(grids.size(), 1278);

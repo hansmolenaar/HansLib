@@ -27,7 +27,7 @@ class Network
 
    std::span<const Cell> getCells() const;
 
-   // Order of cells on input is not relevant
+   // Order of cells on input is not relevant, throws if not found
    Link getLink(const Cell &, const Cell &) const;
    std::span<const Cell> getConnectedCells(const Cell &) const;
    Color getColor(const Cell &) const;
@@ -35,6 +35,7 @@ class Network
    static std::vector<Network> create(std::span<const Link>);
 
  private:
+   // Must be connected, throw otherwise
    explicit Network(std::span<const Link>);
 
    void add(const Link &);

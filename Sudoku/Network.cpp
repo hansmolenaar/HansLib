@@ -6,6 +6,19 @@
 using namespace Sudoku;
 using namespace Utilities;
 
+std::vector<Network> Network::create(std::span<const Link> links)
+{
+   if (links.empty())
+   {
+      return {};
+   }
+
+   // TODO multiple components
+   std::vector<Network> result;
+   result.push_back(Network{links});
+   return result;
+}
+
 Network::Network(std::span<const Link> links)
 {
    for (const auto &link : links)
@@ -70,7 +83,7 @@ void Network::setColors()
    // Initialize
    std::set<Cell> done;
    auto activeCell = m_cells.back();
-   std::vector<Cell> todo(1, m_cells.front());
+   std::vector<Cell> todo(1, m_cells.back());
    m_colors[activeCell] = Color::Blue;
    while (!todo.empty())
    {
@@ -95,4 +108,10 @@ void Network::setColors()
          }
       }
    }
+   MyAssert(m_cells.size() == m_colors.size());
+}
+
+Color Network::getColor(const Cell &cell) const
+{
+   return m_colors.at(cell);
 }
