@@ -35,4 +35,16 @@ constexpr Index NumHouse = 3 * NumIndex;
 
 constexpr char ValueUndefinedChar = '.';
 
+enum class LinkType
+{
+   Strong,
+   Weak
+};
+
+enum class Color
+{
+   Blue,
+   Green
+};
+
 } // namespace Sudoku

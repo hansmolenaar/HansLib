@@ -1,13 +1,11 @@
 #include "TestModels.h"
 #include "CandidatesGrid.h"
-#include "MyAssert.h"
 
 #include <algorithm>
 #include <string>
 #include <vector>
 
 using namespace Sudoku;
-using namespace Utilities;
 
 namespace str = std::ranges;
 
