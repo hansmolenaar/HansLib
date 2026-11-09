@@ -40,11 +40,4 @@ enum class LinkType
    Strong,
    Weak
 };
-
-enum class Color
-{
-   Blue,
-   Green
-};
-
 } // namespace Sudoku

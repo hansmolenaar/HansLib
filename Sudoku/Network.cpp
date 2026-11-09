@@ -1,6 +1,8 @@
 #include "Network.h"
 #include "MyAssert.h"
 
+#include <set>
+
 using namespace Sudoku;
 using namespace Utilities;
 
@@ -40,6 +42,11 @@ void Network::connect(const Cell &cellFrom, const Cell &cellTo)
    m_connections[cellFrom].push_back(cellTo);
 }
 
+std::span<const Cell> Network::getConnectedCells(const Cell &cell) const
+{
+   return m_connections.at(cell);
+}
+
 std::span<const Cell> Network::getCells() const
 {
    return m_cells;
@@ -61,6 +68,31 @@ void Network::setColors()
    }
 
    // Initialize
+   std::set<Cell> done;
    auto activeCell = m_cells.back();
-   m_colors[] std::vector<Cell> todo(m_cells.front());
+   std::vector<Cell> todo(1, m_cells.front());
+   m_colors[activeCell] = Color::Blue;
+   while (!todo.empty())
+   {
+      activeCell = todo.back();
+      todo.pop_back();
+      done.insert(activeCell);
+      const Color otherColor = getOtherColor(m_colors.at(activeCell));
+      for (auto ngb : getConnectedCells(activeCell))
+      {
+         const auto found = m_colors.find(ngb);
+         if (found == m_colors.end())
+         {
+            m_colors[ngb] = otherColor;
+         }
+         else
+         {
+            MyAssert(found->second == otherColor);
+         }
+         if (!done.contains(ngb))
+         {
+            todo.push_back(ngb);
+         }
+      }
+   }
 }

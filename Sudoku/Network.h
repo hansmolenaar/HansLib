@@ -6,6 +6,19 @@
 namespace Sudoku
 {
 
+enum class Color
+{
+   Blue,
+   Green
+};
+
+constexpr Color getOtherColor(Color color)
+{
+   if (color == Color::Blue)
+      return Color::Green;
+   return Color::Blue;
+}
+
 // A network is by definition connected
 class Network
 {
