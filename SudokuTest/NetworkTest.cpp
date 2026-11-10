@@ -66,3 +66,40 @@ TEST(NetworkTest, TwoLinks)
    ASSERT_EQ(networks[0].getLink(cell2, cell3).type, LinkType::Strong);
    ASSERT_ANY_THROW(networks.front().getLink(cell1, cell3));
 }
+
+TEST(NetworkTest, Triangle)
+{
+   const Cell cell1 = Cell::get(42);
+   const Cell cell2 = Cell::get(0);
+   const Cell cell3 = Cell::get(3);
+   const Link link1{cell1, cell2, LinkType::Strong};
+   const Link link2{cell2, cell3, LinkType::Strong};
+   const Link link3{cell3, cell1, LinkType::Strong};
+   const std::array<Link, 3> links{link1, link2, link3};
+   const auto networks = Network::create(links);
+   const auto network = Single(networks);
+   const auto colors = Network::setColors(network);
+   ASSERT_TRUE(colors.empty());
+
+   ASSERT_EQ(network.getCells().size(), 3);
+   const auto connected = network.getConnectedCells(cell3);
+   ASSERT_EQ(connected.size(), 2);
+   ASSERT_TRUE(Contains(connected, cell1));
+   ASSERT_TRUE(Contains(connected, cell2));
+}
+
+TEST(NetworkTest, TwoDisjointLinks)
+{
+   const Cell cell1 = Cell::get(1);
+   const Cell cell2 = Cell::get(2);
+   const Cell cell3 = Cell::get(3);
+   const Cell cell4 = Cell::get(4);
+   const Link link1{cell1, cell2, LinkType::Weak};
+   const Link link2{cell3, cell4, LinkType::Strong};
+   const std::array<Link, 2> links{link1, link2};
+
+   const auto networks = Network::create(links);
+   ASSERT_EQ(networks.size(), 2);
+   ASSERT_EQ(networks[0].getCells().size(), 2);
+   ASSERT_EQ(networks[1].getCells().size(), 2);
+}

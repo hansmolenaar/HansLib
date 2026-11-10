@@ -1,7 +1,10 @@
 #include "Network.h"
 #include "MyAssert.h"
+#include "SudokuDefines.h"
 
 #include <algorithm>
+#include <bitset>
+#include <map>
 #include <set>
 
 using namespace Sudoku;
@@ -15,9 +18,45 @@ std::vector<Network> Network::create(std::span<const Link> links)
       return {};
    }
 
-   // TODO multiple components
+   std::multimap<Cell, Link> cell2link;
+   for (const auto link : links)
+   {
+      cell2link.emplace(link.cellMin, link);
+      cell2link.emplace(link.cellMax, link);
+   }
+
    std::vector<Network> result;
-   result.push_back(Network{links});
+   std::bitset<NumField> done;
+   for (Field field = 0; field < NumField; ++field)
+   {
+      if (done.test(field))
+      {
+         continue;
+      }
+      std::vector<Link> component;
+      std::vector<Field> todo(1, field);
+      while (!todo.empty())
+      {
+         const Field cur = todo.back();
+         todo.pop_back();
+         if (!done.test(cur))
+         {
+            done.set(cur);
+
+            auto range = cell2link.equal_range(Cell::get(cur));
+            for (auto itr = range.first; itr != range.second; ++itr)
+            {
+               component.push_back(itr->second);
+               todo.push_back(itr->second.cellMin.field);
+               todo.push_back(itr->second.cellMax.field);
+            }
+         }
+      }
+      if (!component.empty())
+      {
+         result.emplace_back(Network(component));
+      }
+   }
    return result;
 }
 

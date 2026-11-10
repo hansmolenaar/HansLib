@@ -23,7 +23,7 @@ class Network
    static std::vector<Network> create(std::span<const Link>);
 
  private:
-   // Must be connected, throw otherwise
+   // Must be connected!
    explicit Network(std::span<const Link>);
 
    void add(const Link &);
