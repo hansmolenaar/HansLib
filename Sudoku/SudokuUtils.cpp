@@ -47,6 +47,19 @@ boost::container::static_vector<Cell, NumCellsInHouse> SudokuUtils::getNotSolved
    return result;
 }
 
+FieldFlags SudokuUtils::getSolvedCells(const CandidatesGrid &grid)
+{
+   FieldFlags result;
+   for (Field field : FieldAll)
+   {
+      if (grid[field].isSolved())
+      {
+         result.set(field);
+      }
+   }
+   return result;
+}
+
 std::bitset<NumValue + 1> SudokuUtils::getSolvedValues(const CandidatesGrid &grid, std::span<const Cell> cells)
 {
    std::bitset<NumValue + 1> result;

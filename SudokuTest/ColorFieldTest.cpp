@@ -25,6 +25,8 @@ TEST(ColorFieldTest, Blue)
 
    ASSERT_ANY_THROW(colorField.set(field, Color::Green));
    ASSERT_ANY_THROW(colorField.set(cell, Color::Green));
+   ASSERT_EQ(colorField.getCellsWithColor(Color::Blue).size(), 1);
+   ASSERT_EQ(colorField.getCellsWithColor(Color::Green).size(), 0);
 }
 
 TEST(ColorFieldTest, Green)
@@ -40,4 +42,7 @@ TEST(ColorFieldTest, Green)
 
    ASSERT_ANY_THROW(colorField.set(field, Color::Blue));
    ASSERT_ANY_THROW(colorField.set(cell, Color::Blue));
+
+   ASSERT_EQ(colorField.getCellsWithColor(Color::Blue).size(), 0);
+   ASSERT_EQ(colorField.getCellsWithColor(Color::Green).size(), 1);
 }

@@ -6,6 +6,7 @@
 #include "UniqueSorted.h"
 
 #include <algorithm>
+#include <iterator>
 #include <vector>
 
 using namespace Sudoku;
@@ -73,5 +74,16 @@ boost::container::static_vector<HouseType, 2> Visiblity::areVisibleVia(const Cel
          result.push_back(type);
       }
    }
+   return result;
+}
+
+std::vector<Cell> Visiblity::getVisibleCells(std::span<const Cell> cells)
+{
+   std::vector<Cell> result;
+   for (const auto &cell : cells)
+   {
+      str::copy(getVisibleCells(cell), std::back_inserter(result));
+   }
+   UniqueSorted(result);
    return result;
 }

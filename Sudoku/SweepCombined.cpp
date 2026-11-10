@@ -3,6 +3,7 @@
 #include "SweepIntersectionElimination.h"
 #include "SweepNakedSingle.h"
 #include "SweepNakedTuples.h"
+#include "SweepSimpleColoring.h"
 #include "SweepXWing.h"
 
 using namespace Sudoku;
@@ -22,7 +23,7 @@ auto concat_arrays(const std::array<T, N> &a, const std::array<T, M> &b)
 
 constexpr size_t numSimpleSweepers = 2;
 constexpr size_t numMediumSweepers = 7;
-constexpr size_t numHardSweepers = 1;
+constexpr size_t numHardSweepers = 2;
 
 std::array<ISweep *, numSimpleSweepers> getSimple()
 {
@@ -58,7 +59,8 @@ std::array<ISweep *, numSimpleSweepers + numMediumSweepers> getMedium()
 std::array<ISweep *, numSimpleSweepers + numMediumSweepers + numHardSweepers> getHard()
 {
    static SweepXWing sweepXWing;
-   static std::array<ISweep *, numHardSweepers> hardOnly{&sweepXWing};
+   static SweepSimpleColoring sweepSimpleColoring;
+   static std::array<ISweep *, numHardSweepers> hardOnly{&sweepXWing, &sweepSimpleColoring};
    static std::array<ISweep *, numSimpleSweepers + numMediumSweepers + numHardSweepers> hard =
        concat_arrays<ISweep *, numSimpleSweepers + numMediumSweepers, numHardSweepers>(getMedium(), hardOnly);
    return hard;

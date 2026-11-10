@@ -3,7 +3,6 @@
 #include "SudokuDefines.h"
 
 #include <algorithm>
-#include <bitset>
 #include <map>
 #include <set>
 
@@ -26,7 +25,7 @@ std::vector<Network> Network::create(std::span<const Link> links)
    }
 
    std::vector<Network> result;
-   std::bitset<NumField> done;
+   FieldFlags done;
    for (Field field = 0; field < NumField; ++field)
    {
       if (done.test(field))

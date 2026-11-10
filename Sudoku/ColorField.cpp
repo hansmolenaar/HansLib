@@ -1,9 +1,13 @@
 #include "ColorField.h"
 #include "MyAssert.h"
+
+#include <algorithm>
+#include <iterator>
 #include <stdexcept>
 
 using namespace Sudoku;
 using namespace Utilities;
+namespace str = std::ranges;
 
 bool ColorField::empty() const
 {
@@ -55,4 +59,12 @@ bool ColorField::hasColor(Field field) const
 bool ColorField::hasColor(const Cell &cell) const
 {
    return hasColor(cell.field);
+}
+
+std::vector<Cell> ColorField::getCellsWithColor(Color color) const
+{
+   std::vector<Cell> result;
+   str::copy_if(Cell::getAll(), std::back_inserter(result),
+                [this, &color](const Cell &cell) { return hasColor(cell) && get(cell) == color; });
+   return result;
 }

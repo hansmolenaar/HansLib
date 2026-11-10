@@ -192,5 +192,5 @@ TEST(CandidatesGridTest, Hard)
          numSolved += 1;
       }
    }
-   ASSERT_EQ(numSolved, 610);
+   ASSERT_EQ(numSolved, 699);
 }

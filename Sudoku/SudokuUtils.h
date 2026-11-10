@@ -25,6 +25,7 @@ Value2Fields getValue2Fields(const CandidatesGrid &, std::span<Field>);
 Value2Fields getValue2Fields(const CandidatesGrid &, std::span<const Cell>);
 
 boost::container::static_vector<Cell, NumField> getNotSolvedCells(const CandidatesGrid &);
+FieldFlags getSolvedCells(const CandidatesGrid &);
 
 } // namespace SudokuUtils
 } // namespace Sudoku

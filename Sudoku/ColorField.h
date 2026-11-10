@@ -2,7 +2,6 @@
 
 #include "Cell.h"
 #include "SudokuDefines.h"
-#include <bitset>
 
 namespace Sudoku
 {
@@ -33,10 +32,11 @@ class ColorField
    bool empty() const;
    bool hasColor(Field) const;
    bool hasColor(const Cell &) const;
+   std::vector<Cell> getCellsWithColor(Color) const;
 
  private:
-   std::bitset<NumField> m_isBlue;
-   std::bitset<NumField> m_isGreen;
+   FieldFlags m_isBlue;
+   FieldFlags m_isGreen;
 };
 
 } // namespace Sudoku

@@ -119,3 +119,12 @@ TEST(SudokuUtilsTest, GetNotSolvedCells)
    const auto activeCells = SudokuUtils::getNotSolvedCells(grid);
    ASSERT_TRUE(activeCells.empty());
 }
+
+TEST(SudokuUtilsTest, GetSolvedCellsBitSet)
+{
+   CandidatesGrid grid;
+   grid.setGiven(42, 4);
+   const auto solvedCells = SudokuUtils::getSolvedCells(grid);
+   ASSERT_EQ(solvedCells.count(), 1);
+   ASSERT_TRUE(solvedCells.test(42));
+}

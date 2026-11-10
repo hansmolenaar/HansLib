@@ -1,5 +1,6 @@
 #pragma once
 
+#include <bitset>
 #include <ranges>
 
 namespace Sudoku
@@ -18,6 +19,7 @@ using Field = unsigned short; // 0..80
 constexpr Field NumField = NumIndex * NumIndex;
 constexpr Field FieldUndefined = NumField;
 constexpr auto FieldAll = std::ranges::iota_view{static_cast<Field>(0), NumField};
+using FieldFlags = std::bitset<NumField>;
 
 using BoxIndex = unsigned short; // 0..2
 constexpr BoxIndex NumBoxIndex(3);

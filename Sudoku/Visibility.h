@@ -11,6 +11,7 @@ constexpr Field NumVisibleCellls = 20; // NOTE: a cell is NOT visible to itself
 
 struct Visiblity
 {
+   static std::vector<Cell> getVisibleCells(std::span<const Cell>);
    static std::span<const Cell> getVisibleCells(const Cell &);
    static std::span<const Cell> getVisibleCells(Field);
    static bool areVisible(const Cell &, const Cell &);
