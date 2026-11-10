@@ -13,6 +13,8 @@ struct Link
    Cell cellMin;
    Cell cellMax;
    LinkType type;
+
+   auto operator<=>(const Link &) const = default;
 };
 
 } // namespace Sudoku
