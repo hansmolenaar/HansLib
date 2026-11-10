@@ -28,7 +28,8 @@ TEST(NetworkTest, SingleLink)
    ASSERT_EQ(Single(connected), cell2);
    connected = networks.front().getConnectedCells(cell2);
    ASSERT_EQ(Single(connected), cell1);
-   ASSERT_NE(networks[0].getColor(cell1), networks[0].getColor(cell2));
+   const auto colors = Network::setColors(networks[0]);
+   ASSERT_NE(colors.get(cell1), colors.get(cell2));
    ASSERT_EQ(networks[0].getLink(cell1, cell2).type, LinkType::Weak);
    ASSERT_EQ(networks[0].getLink(cell2, cell1).type, LinkType::Weak);
 }
@@ -56,9 +57,10 @@ TEST(NetworkTest, TwoLinks)
    ASSERT_TRUE(Contains(connected, cell1));
    ASSERT_TRUE(Contains(connected, cell3));
 
-   ASSERT_NE(networks[0].getColor(cell1), networks[0].getColor(cell2));
-   ASSERT_NE(networks[0].getColor(cell2), networks[0].getColor(cell3));
-   ASSERT_EQ(networks[0].getColor(cell1), networks[0].getColor(cell3));
+   const auto colors = Network::setColors(networks[0]);
+   ASSERT_NE(colors.get(cell1), colors.get(cell2));
+   ASSERT_NE(colors.get(cell2), colors.get(cell3));
+   ASSERT_EQ(colors.get(cell1), colors.get(cell3));
 
    ASSERT_EQ(networks[0].getLink(cell1, cell2).type, LinkType::Weak);
    ASSERT_EQ(networks[0].getLink(cell2, cell3).type, LinkType::Strong);

@@ -1,10 +1,12 @@
 #include "Network.h"
 #include "MyAssert.h"
 
+#include <algorithm>
 #include <set>
 
 using namespace Sudoku;
 using namespace Utilities;
+namespace str = std::ranges;
 
 std::vector<Network> Network::create(std::span<const Link> links)
 {
@@ -25,7 +27,6 @@ Network::Network(std::span<const Link> links)
    {
       add(link);
    }
-   setColors();
 }
 
 void Network::add(const Link &link)
@@ -73,34 +74,36 @@ Link Network::getLink(const Cell &cell1, const Cell &cell2) const
    return {cellPair.first, cellPair.second, found->second};
 }
 
-void Network::setColors()
+ColorField Network::setColors(const Network &netWork)
 {
-   if (m_cells.empty())
+   ColorField result;
+   const auto cells = netWork.getCells();
+   if (cells.empty())
    {
-      return;
+      return {};
    }
 
    // Initialize
    std::set<Cell> done;
-   auto activeCell = m_cells.back();
-   std::vector<Cell> todo(1, m_cells.back());
-   m_colors[activeCell] = Color::Blue;
+   auto activeCell = cells.back();
+   std::vector<Cell> todo(1, cells.back());
+   result.set(activeCell, Color::Blue);
    while (!todo.empty())
    {
       activeCell = todo.back();
       todo.pop_back();
       done.insert(activeCell);
-      const Color otherColor = getOtherColor(m_colors.at(activeCell));
-      for (auto ngb : getConnectedCells(activeCell))
+      const Color otherColor = getOtherColor(result.get(activeCell));
+      for (auto ngb : netWork.getConnectedCells(activeCell))
       {
-         const auto found = m_colors.find(ngb);
-         if (found == m_colors.end())
+         if (!result.hasColor(ngb))
          {
-            m_colors[ngb] = otherColor;
+            result.set(ngb, otherColor);
          }
-         else
+         else if (result.get(ngb) != otherColor)
          {
-            MyAssert(found->second == otherColor);
+            // Coloring fails
+            return {};
          }
          if (!done.contains(ngb))
          {
@@ -108,10 +111,9 @@ void Network::setColors()
          }
       }
    }
-   MyAssert(m_cells.size() == m_colors.size());
-}
 
-Color Network::getColor(const Cell &cell) const
-{
-   return m_colors.at(cell);
+   MyAssert(str::count_if(FieldAll, [&result](Field f) { return result.hasColor(f); }) ==
+            static_cast<int>(cells.size()));
+
+   return result;
 }
