@@ -155,6 +155,7 @@ TEST(CandidatesGridTest, Simple)
    for (auto &grid : grids)
    {
       ISweep::iterate(*sweepers, grid);
+      grid.checkValidSudoku();
       ASSERT_TRUE(grid.isSolved());
    }
 }
@@ -169,6 +170,7 @@ TEST(CandidatesGridTest, Medium)
    for (auto &grid : grids)
    {
       ISweep::iterate(*sweepers, grid);
+      grid.checkValidSudoku();
       if (grid.isSolved())
       {
          numSolved += 1;
@@ -187,10 +189,20 @@ TEST(CandidatesGridTest, Hard)
    for (auto &grid : grids)
    {
       ISweep::iterate(*sweepers, grid);
+      grid.checkValidSudoku();
       if (grid.isSolved())
       {
          numSolved += 1;
       }
    }
    ASSERT_EQ(numSolved, 699);
+}
+
+TEST(CandidatesGridTest, Invalid)
+{
+   CandidatesGrid cg;
+
+   cg.setGiven(3, 4);
+   cg.setGiven(7, 4);
+   ASSERT_ANY_THROW(cg.checkValidSudoku());
 }

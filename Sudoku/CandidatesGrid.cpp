@@ -169,15 +169,23 @@ void CandidatesGrid::checkValidSudoku() const
    for (const auto &house : House::getAllHouses())
    {
       ValueBits isUsed;
+      ValueBits isSolved;
       for (const auto &cell : house.cells)
       {
          const auto value = (*this)[cell.field].tryGetSolvedValue();
          if (value.has_value())
          {
-            MyAssert(!isUsed.test(value.value()));
+            // MyAssert(!isUsed.test(value.value()));
+            MyAssert(!isSolved.test(value.value()));
             isUsed.set(value.value());
+            isSolved.set(value.value());
+         }
+         else
+         {
+            isUsed |= (*this)[cell.field].getValues();
          }
       }
+      MyAssert(isUsed.count() == NumValue);
    }
 }
 
