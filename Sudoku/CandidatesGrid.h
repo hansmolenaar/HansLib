@@ -35,12 +35,19 @@ class CandidatesGrid
    template <typename R> bool RemoveCandidates(std::span<const Value> valuesToRemove, R &fromCells)
    {
       bool anyChange = false;
+      for (Value value : valuesToRemove)
+      {
+         anyChange |= RemoveCandidate(value, fromCells);
+      }
+      return anyChange;
+   }
+
+   template <typename R> bool RemoveCandidate(Value value, R &fromCells)
+   {
+      bool anyChange = false;
       for (const auto &cell : fromCells)
       {
-         for (Value value : valuesToRemove)
-         {
-            anyChange |= removeCandidate(cell.field, value);
-         }
+         anyChange |= removeCandidate(cell.field, value);
       }
       return anyChange;
    }

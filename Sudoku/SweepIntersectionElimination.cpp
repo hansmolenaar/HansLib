@@ -29,7 +29,7 @@ bool SweepIntersectionElimination::SweepHouse(CandidatesGrid &grid, const House 
          {
             const auto &intersectionHouse = House::getHouse(intersectionHouseId.value());
             auto activeCells = intersectionHouse.cells | std::views::filter(IsNotContained<Cell>{cells});
-            anyChange |= grid.RemoveCandidates({&value, &value + 1}, activeCells);
+            anyChange |= grid.RemoveCandidate(value, activeCells);
          }
       }
    }

@@ -8,6 +8,7 @@
 #include "Visibility.h"
 #include <algorithm>
 #include <iterator>
+#include <ranges>
 
 using namespace Sudoku;
 using namespace Utilities;
@@ -33,7 +34,6 @@ bool SweepSimpleColoring::removeSees2ColorsCandidates(CandidatesGrid &grid, Valu
                                                       const FieldBits &cellsToIgnore)
 
 {
-   bool anyChange = false;
    const auto cellsGreen = colors.getCellsWithColor(Color::Green);
    const auto cellsBlue = colors.getCellsWithColor(Color::Blue);
 
@@ -42,13 +42,9 @@ bool SweepSimpleColoring::removeSees2ColorsCandidates(CandidatesGrid &grid, Valu
    std::vector<Cell> seesBoth;
    std::set_intersection(seesGreen.begin(), seesGreen.end(), seesBlue.begin(), seesBlue.end(),
                          std::back_inserter(seesBoth));
-   for (const auto &cell : seesBoth)
-   {
-      if (!cellsToIgnore.test(cell.field))
-      {
-         anyChange |= grid.removeCandidate(cell.field, value);
-      }
-   }
+   auto useCell = [&cellsToIgnore](const Cell &c) { return !cellsToIgnore.test(c.field); };
+   auto activeCells = seesBoth | std::views::filter(useCell);
+   const bool anyChange = grid.RemoveCandidate(value, activeCells);
    return anyChange;
 }
 

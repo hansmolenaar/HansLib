@@ -18,7 +18,7 @@ bool RemoveCandidates(CandidatesGrid &grid, Value value, const XWing &xWing)
    const std::array<Cell, 4> fixedCells{xWing.lockedPair0[0], xWing.lockedPair0[1], xWing.lockedPair1[0],
                                         xWing.lockedPair1[1]};
    auto activeCells = House::getHouse(xWing.houseId0).cells | std::views::filter(IsNotContained<Cell>{fixedCells});
-   const bool anyChange = grid.RemoveCandidates(std::span<Value>(&value, &value + 1), activeCells);
+   const bool anyChange = grid.RemoveCandidate(value, activeCells);
    return anyChange;
 }
 
