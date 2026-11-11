@@ -16,7 +16,6 @@ namespace SudokuUtils
 boost::container::static_vector<Value, NumValue> getUniqueActiveValuesInCells(const CandidatesGrid &,
                                                                               std::span<const Cell>);
 Index countOccurence(const CandidatesGrid &, std::span<const Cell> cells, Value value);
-boost::container::static_vector<Cell, NumCellsInHouse> getNotSolvedCells(const CandidatesGrid &, const House &);
 std::bitset<NumValue + 1> getSolvedValues(const CandidatesGrid &, std::span<const Cell>);
 std::bitset<NumValue + 1> getSolvedValues(const CandidatesGrid &, std::span<const Field>);
 
@@ -24,8 +23,9 @@ using Value2Fields = std::array<boost::container::static_vector<Field, NumField>
 Value2Fields getValue2Fields(const CandidatesGrid &, std::span<Field>);
 Value2Fields getValue2Fields(const CandidatesGrid &, std::span<const Cell>);
 
-boost::container::static_vector<Cell, NumField> getNotSolvedCells(const CandidatesGrid &);
-FieldFlags getSolvedCells(const CandidatesGrid &);
+FieldBits getNotSolvedCells(const CandidatesGrid &, std::span<const Cell>);
+FieldBits getNotSolvedCells(const CandidatesGrid &);
+FieldBits getSolvedCells(const CandidatesGrid &);
 
 } // namespace SudokuUtils
 } // namespace Sudoku

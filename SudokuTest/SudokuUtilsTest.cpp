@@ -1,14 +1,18 @@
 #include <gtest/gtest.h>
 
+#include "BitsetUtils.h"
 #include "CandidatesGrid.h"
 #include "House.h"
 #include "Single.h"
+#include "SudokuDefines.h"
 #include "SudokuUtils.h"
 #include "TestModels.h"
 
 #include <algorithm>
 
+namespace str = std::ranges;
 using namespace Sudoku;
+using namespace Utilities;
 
 TEST(SudokuUtilsTest, Basic)
 {
@@ -64,19 +68,20 @@ TEST(SudokuUtilsTest, GetSolvedCells)
 {
    CandidatesGrid grid;
    const auto house = House::getBox(8);
-   auto retval = SudokuUtils::getNotSolvedCells(grid, house);
-   ASSERT_EQ(retval.size(), NumCellsInHouse);
+   auto retval = SudokuUtils::getNotSolvedCells(grid, house.cells);
+   ASSERT_EQ(retval.count(), NumCellsInHouse);
 
    grid.setGiven(6, 6, 1);
-   retval = SudokuUtils::getNotSolvedCells(grid, house);
-   ASSERT_EQ(retval.size(), NumCellsInHouse - 1);
+   retval = SudokuUtils::getNotSolvedCells(grid, house.cells);
+   ASSERT_EQ(retval.count(), NumCellsInHouse - 1);
 
    grid.setGiven(7, 7, 5);
-   retval = SudokuUtils::getNotSolvedCells(grid, house);
-   ASSERT_EQ(retval.size(), NumCellsInHouse - 2);
+   retval = SudokuUtils::getNotSolvedCells(grid, house.cells);
+   ASSERT_EQ(retval.count(), NumCellsInHouse - 2);
 
    const std::vector<Field> expect{61, 62, 69, 71, 78, 79, 80};
-   ASSERT_TRUE(std::equal(retval.begin(), retval.end(), expect.begin(), expect.end(), Cell::AreSame));
+   auto range = FieldAll | std::views::filter(Bitset{retval});
+   ASSERT_TRUE(std::equal(range.begin(), range.end(), expect.begin(), expect.end()));
 }
 
 TEST(SudokuUtilsTest, GetValue2Fields)
@@ -110,14 +115,14 @@ TEST(SudokuUtilsTest, GetNotSolvedCells)
 {
    CandidatesGrid grid;
    grid.setGiven(42, 4);
-   ASSERT_EQ(SudokuUtils::getNotSolvedCells(grid).size(), NumField - 1);
+   ASSERT_EQ(SudokuUtils::getNotSolvedCells(grid).count(), NumField - 1);
    grid.setGiven(0, 5);
-   ASSERT_EQ(SudokuUtils::getNotSolvedCells(grid).size(), NumField - 2);
-   ASSERT_EQ(SudokuUtils::getNotSolvedCells(grid).front(), Cell::get(1));
+   ASSERT_EQ(SudokuUtils::getNotSolvedCells(grid).count(), NumField - 2);
+   ASSERT_EQ(Bitset{SudokuUtils::getNotSolvedCells(grid)}.first(), 1);
 
    grid = TestModels::getSolvedGrid();
    const auto activeCells = SudokuUtils::getNotSolvedCells(grid);
-   ASSERT_TRUE(activeCells.empty());
+   ASSERT_TRUE(activeCells.none());
 }
 
 TEST(SudokuUtilsTest, GetSolvedCellsBitSet)

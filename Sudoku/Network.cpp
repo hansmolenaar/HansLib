@@ -25,7 +25,7 @@ std::vector<Network> Network::create(std::span<const Link> links)
    }
 
    std::vector<Network> result;
-   FieldFlags done;
+   FieldBits done;
    for (Field field = 0; field < NumField; ++field)
    {
       if (done.test(field))

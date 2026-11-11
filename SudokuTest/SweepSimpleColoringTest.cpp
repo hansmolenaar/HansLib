@@ -46,7 +46,7 @@ TEST(SweepSimpleColoringTest, BasicExample)
 
    Field expect = 701;
    ASSERT_EQ(grid.getNumCandidates(), expect);
-   const FieldFlags ignore;
+   const FieldBits ignore;
    const bool anyChange = SweepSimpleColoring::removeSees2ColorsCandidates(grid, value, coloring, ignore);
    ASSERT_FALSE(anyChange);
 }

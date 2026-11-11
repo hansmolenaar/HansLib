@@ -37,19 +37,22 @@ boost::container::static_vector<Value, NumValue> SudokuUtils::getUniqueActiveVal
    return result;
 }
 
-boost::container::static_vector<Cell, NumCellsInHouse> SudokuUtils::getNotSolvedCells(const CandidatesGrid &grid,
-                                                                                      const House &house)
+FieldBits SudokuUtils::getNotSolvedCells(const CandidatesGrid &grid, std::span<const Cell> cells)
 {
-   boost::container::static_vector<Cell, NumCellsInHouse> result(NumCellsInHouse);
-   const auto last = std::copy_if(house.cells.begin(), house.cells.end(), result.begin(),
-                                  [&grid](Cell cell) { return !grid[cell.field].isSolved(); });
-   result.erase(last, result.end());
+   FieldBits result;
+   for (const auto &c : cells)
+   {
+      if (!grid[c.field].isSolved())
+      {
+         result.set(c.field);
+      }
+   }
    return result;
 }
 
-FieldFlags SudokuUtils::getSolvedCells(const CandidatesGrid &grid)
+FieldBits SudokuUtils::getSolvedCells(const CandidatesGrid &grid)
 {
-   FieldFlags result;
+   FieldBits result;
    for (Field field : FieldAll)
    {
       if (grid[field].isSolved())
@@ -75,17 +78,9 @@ std::bitset<NumValue + 1> SudokuUtils::getSolvedValues(const CandidatesGrid &gri
    return result;
 }
 
-boost::container::static_vector<Cell, NumField> SudokuUtils::getNotSolvedCells(const CandidatesGrid &grid)
+FieldBits SudokuUtils::getNotSolvedCells(const CandidatesGrid &grid)
 {
-   boost::container::static_vector<Cell, NumField> result;
-   for (const Cell &cell : Cell::getAll())
-   {
-      if (!grid[cell.field].isSolved())
-      {
-         result.push_back(cell);
-      }
-   }
-   return result;
+   return getNotSolvedCells(grid, Cell::getAll());
 }
 
 std::bitset<NumValue + 1> SudokuUtils::getSolvedValues(const CandidatesGrid &grid, std::span<const Field> fields)

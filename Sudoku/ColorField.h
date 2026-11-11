@@ -35,8 +35,8 @@ class ColorField
    std::vector<Cell> getCellsWithColor(Color) const;
 
  private:
-   FieldFlags m_isBlue;
-   FieldFlags m_isGreen;
+   FieldBits m_isBlue;
+   FieldBits m_isGreen;
 };
 
 } // namespace Sudoku

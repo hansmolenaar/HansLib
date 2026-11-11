@@ -29,7 +29,7 @@ std::vector<Link> SweepSimpleColoring::getBilocationLinks(const CandidatesGrid &
 }
 
 bool SweepSimpleColoring::removeSees2ColorsCandidates(CandidatesGrid &grid, Value value, const ColorField &colors,
-                                                      const FieldFlags &cellsToIgnore)
+                                                      const FieldBits &cellsToIgnore)
 
 {
    bool anyChange = false;
