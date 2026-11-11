@@ -168,7 +168,7 @@ void CandidatesGrid::checkValidSudoku() const
    // Check rule of 1
    for (const auto &house : House::getAllHouses())
    {
-      std::bitset<NumValue + 1> isUsed; // all 0; 1 extra because Value is 1-based
+      ValueBits isUsed;
       for (const auto &cell : house.cells)
       {
          const auto value = (*this)[cell.field].tryGetSolvedValue();

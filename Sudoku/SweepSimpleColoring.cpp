@@ -1,6 +1,7 @@
 #include "SweepSimpleColoring.h"
 #include "CandidatesGrid.h"
 #include "ColorField.h"
+#include "House.h"
 #include "Network.h"
 #include "SudokuUtils.h"
 #include "UniqueSorted.h"

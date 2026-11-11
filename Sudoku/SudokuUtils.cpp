@@ -2,7 +2,6 @@
 #include "CandidatesGrid.h"
 #include "boost/container/static_vector.hpp"
 #include <algorithm>
-#include <bitset>
 
 using namespace Sudoku;
 
@@ -16,7 +15,7 @@ Index SudokuUtils::countOccurence(const CandidatesGrid &grid, std::span<const Ce
 boost::container::static_vector<Value, NumValue> SudokuUtils::getUniqueActiveValuesInCells(const CandidatesGrid &grid,
                                                                                            std::span<const Cell> cells)
 {
-   std::bitset<NumValue + 1> activeValues;
+   ValueBits activeValues;
    for (Cell cell : cells)
    {
       for (Value value : grid[cell.field])
@@ -50,6 +49,11 @@ FieldBits SudokuUtils::getNotSolvedCells(const CandidatesGrid &grid, std::span<c
    return result;
 }
 
+FieldBits SudokuUtils::getNotSolvedCells(const CandidatesGrid &grid)
+{
+   return getNotSolvedCells(grid, Cell::getAll());
+}
+
 FieldBits SudokuUtils::getSolvedCells(const CandidatesGrid &grid)
 {
    FieldBits result;
@@ -63,9 +67,9 @@ FieldBits SudokuUtils::getSolvedCells(const CandidatesGrid &grid)
    return result;
 }
 
-std::bitset<NumValue + 1> SudokuUtils::getSolvedValues(const CandidatesGrid &grid, std::span<const Cell> cells)
+ValueBits SudokuUtils::getSolvedValues(const CandidatesGrid &grid, std::span<const Cell> cells)
 {
-   std::bitset<NumValue + 1> result;
+   ValueBits result;
    for (auto cell : cells)
    {
       const auto &candidates = grid[cell.field];
@@ -78,14 +82,9 @@ std::bitset<NumValue + 1> SudokuUtils::getSolvedValues(const CandidatesGrid &gri
    return result;
 }
 
-FieldBits SudokuUtils::getNotSolvedCells(const CandidatesGrid &grid)
+ValueBits SudokuUtils::getSolvedValues(const CandidatesGrid &grid, std::span<const Field> fields)
 {
-   return getNotSolvedCells(grid, Cell::getAll());
-}
-
-std::bitset<NumValue + 1> SudokuUtils::getSolvedValues(const CandidatesGrid &grid, std::span<const Field> fields)
-{
-   std::bitset<NumValue + 1> result;
+   ValueBits result;
    for (auto field : fields)
    {
       const auto &candidates = grid[field];
