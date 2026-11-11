@@ -279,3 +279,13 @@ std::vector<CandidatesGrid> CandidatesGrid::getSymmetricEquivalents(const Candid
 
    return result;
 }
+
+ValueBits CandidatesGrid::getValuesInFields(const CandidatesGrid &grid, std::span<const Field> fields)
+{
+   ValueBits result;
+   for (Field field : fields)
+   {
+      result |= grid[field].getValues();
+   }
+   return result;
+}

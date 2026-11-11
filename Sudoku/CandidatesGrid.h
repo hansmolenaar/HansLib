@@ -5,6 +5,8 @@
 
 namespace Sudoku
 {
+struct Cell;
+
 class CandidatesGrid
 {
  public:
@@ -23,6 +25,7 @@ class CandidatesGrid
    static CandidatesGrid FromValues(const std::array<Value, NumField> &);
    static std::vector<std::string> DifferenceToStrings(const CandidatesGrid &, const CandidatesGrid &);
    static std::vector<CandidatesGrid> getSymmetricEquivalents(const CandidatesGrid &);
+   static ValueBits getValuesInFields(const CandidatesGrid &, std::span<const Field>);
 
    const Candidates &operator[](Field f) const
    {

@@ -1,13 +1,12 @@
 #include "SweepNakedTuples.h"
+#include "BitsetUtils.h"
 #include "CandidatesGrid.h"
 #include "Combinations.h"
 #include "Contains.h"
 #include "House.h"
 #include "SudokuDefines.h"
 #include "SudokuUtils.h"
-#include "UniqueSorted.h"
 #include <algorithm>
-#include <iterator>
 #include <ranges>
 
 using namespace Sudoku;
@@ -18,29 +17,21 @@ namespace str = std::ranges;
 namespace
 {
 
-std::vector<Value> GetUniqueValuesFromFields(const CandidatesGrid &grid, std::span<const Field> fields)
-{
-   std::vector<Value> result;
-   for (Field field : fields)
-   {
-      str::copy(grid[field], std::back_inserter(result));
-   }
-   UniqueSorted(result);
-   return result;
-}
-
 bool RemoveCandidates(CandidatesGrid &grid, const House &house, std::span<const Field> candidateTuple)
 {
-   const auto candidatesToRemove = GetUniqueValuesFromFields(grid, candidateTuple);
+   const auto candidatesToRemove = CandidatesGrid::getValuesInFields(grid, candidateTuple);
+   boost::container::static_vector<Value, NumValue> valuesToRemove(candidatesToRemove.count());
+   str::copy_if(ValueAll, valuesToRemove.begin(), Bitset{candidatesToRemove});
+
    auto cellNotInCandidateTuple = [&candidateTuple](const Cell &cell) { return !Contains(candidateTuple, cell.field); };
    auto cells = house.cells | std::views::filter(cellNotInCandidateTuple);
-   return grid.RemoveCandidates(candidatesToRemove, cells);
+   return grid.RemoveCandidates(valuesToRemove, cells);
 }
 
 bool IsNakedTuple(const CandidatesGrid &grid, const std::vector<Field> &candidateTuple)
 {
-   const auto values = GetUniqueValuesFromFields(grid, candidateTuple);
-   return values.size() == candidateTuple.size();
+   const auto values = CandidatesGrid::getValuesInFields(grid, candidateTuple);
+   return values.count() == candidateTuple.size();
 }
 
 } // namespace

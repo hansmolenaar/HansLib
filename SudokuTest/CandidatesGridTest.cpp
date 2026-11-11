@@ -206,3 +206,23 @@ TEST(CandidatesGridTest, Invalid)
    cg.setGiven(7, 4);
    ASSERT_ANY_THROW(cg.checkValidSudoku());
 }
+
+TEST(CandidatesGridTest, ValuesInFields)
+{
+   CandidatesGrid grid;
+
+   grid.setGiven(3, 4);
+   grid.setGiven(7, 6);
+
+   auto values = grid.getValuesInFields(grid, std::vector<Field>{3});
+   ASSERT_EQ(values.count(), 1);
+   ASSERT_TRUE(values.test(4));
+
+   values = grid.getValuesInFields(grid, std::vector<Field>{3, 7});
+   ASSERT_EQ(values.count(), 2);
+   ASSERT_TRUE(values.test(4));
+   ASSERT_TRUE(values.test(6));
+
+   values = grid.getValuesInFields(grid, std::vector<Field>{3, 7, 0});
+   ASSERT_EQ(values.count(), NumValue);
+}
