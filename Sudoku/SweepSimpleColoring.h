@@ -15,6 +15,7 @@ class SweepSimpleColoring : public ISweep
    static std::vector<Link> getBilocationLinks(const CandidatesGrid &, Value);
    static bool removeSees2ColorsCandidates(CandidatesGrid &, Value, const ColorField &, const FieldBits &);
    static bool removeTwiceInAUnit(CandidatesGrid &, Value, const ColorField &);
+   static bool removeOneColorEmptiesHouse(CandidatesGrid &, Value, const ColorField &, const FieldBits &);
    static bool sweep(CandidatesGrid &, Value);
 };
 

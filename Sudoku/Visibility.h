@@ -11,9 +11,12 @@ constexpr Field NumVisibleCellls = 20; // NOTE: a cell is NOT visible to itself
 
 struct Visiblity
 {
+   static FieldBits getVisibleFields(const FieldBits &);
+   static FieldBits getVisibleFields(std::span<const Cell>);
    static std::vector<Cell> getVisibleCells(std::span<const Cell>);
    static std::span<const Cell> getVisibleCells(const Cell &);
    static std::span<const Cell> getVisibleCells(Field);
+   static FieldBits getVisibleFields(Field);
    static bool areVisible(const Cell &, const Cell &);
    static bool areVisible(Field, Field);
    static boost::container::static_vector<HouseType, 2> areVisibleVia(const Cell &, const Cell &);

@@ -1,5 +1,6 @@
 #include "House.h"
 #include "MyAssert.h"
+#include "SudokuUtils.h"
 
 #include <algorithm>
 #include <stdexcept>
@@ -117,4 +118,9 @@ HouseId HouseId::getFromCellaAndType(const Cell &cell, HouseType type)
    default:
       throw std::runtime_error("Should not come here");
    }
+}
+
+FieldBits House::getFieldsInHouse(HouseId houseId)
+{
+   return SudokuUtils::getFields(getHouse(houseId).cells);
 }

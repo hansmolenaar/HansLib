@@ -115,3 +115,13 @@ SudokuUtils::Value2Fields SudokuUtils::getValue2Fields(const CandidatesGrid &gri
    str::transform(cells, fields.begin(), Cell::getField);
    return getValue2Fields(grid, fields);
 }
+
+FieldBits SudokuUtils::getFields(std::span<const Cell> cells)
+{
+   FieldBits result;
+   for (const auto &cell : cells)
+   {
+      result.set(cell.field);
+   }
+   return result;
+}

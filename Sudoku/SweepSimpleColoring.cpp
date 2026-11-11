@@ -2,6 +2,7 @@
 #include "CandidatesGrid.h"
 #include "ColorField.h"
 #include "House.h"
+#include "MyAssert.h"
 #include "Network.h"
 #include "SudokuUtils.h"
 #include "UniqueSorted.h"
@@ -73,6 +74,51 @@ bool SweepSimpleColoring::removeTwiceInAUnit(CandidatesGrid &grid, Value value, 
    return false;
 }
 
+bool SweepSimpleColoring::removeOneColorEmptiesHouse(CandidatesGrid &grid, Value value, const ColorField &colors,
+                                                     const FieldBits &cellsToIgnore)
+{
+   const FieldBits fieldsValue = CandidatesGrid::getActiveFieldsWithValue(grid, value);
+   const auto cellsBlue = colors.getCellsWithColor(Color::Blue);
+   const auto cellsGreen = colors.getCellsWithColor(Color::Green);
+   const auto fieldsBlue = SudokuUtils::getFields(cellsBlue);
+   const auto fieldsGreen = SudokuUtils::getFields(cellsGreen);
+
+   for (const House &house : House::getAllHouses())
+   {
+      const auto &fieldsInHouse = House::getFieldsInHouse(house.houseId);
+      if ((fieldsInHouse & cellsToIgnore).any())
+      {
+         // House contains part of the chain, we can ignore it
+         continue;
+      }
+
+      const auto cellsInHouseWithValue = fieldsValue & fieldsInHouse;
+      const auto numCellsInHouseWithValue = cellsInHouseWithValue.count();
+      if (numCellsInHouseWithValue == 0)
+      {
+         continue;
+      }
+      const auto visibleFields = Visiblity::getVisibleFields(cellsInHouseWithValue);
+      const auto numBlueVisibleFromHouse = (visibleFields & fieldsBlue).count();
+      const auto numGreenVisibleFromHouse = (visibleFields & fieldsGreen).count();
+      if (numBlueVisibleFromHouse == numCellsInHouseWithValue)
+      {
+         if (grid.RemoveCandidate(value, cellsBlue))
+         {
+            return true;
+         }
+      }
+      else if (numGreenVisibleFromHouse == numCellsInHouseWithValue)
+      {
+         if (grid.RemoveCandidate(value, cellsGreen))
+         {
+            return true;
+         }
+      }
+   }
+   return false;
+}
+
 bool SweepSimpleColoring::sweep(CandidatesGrid &grid, Value value)
 {
    const auto links = getBilocationLinks(grid, value);
@@ -97,6 +143,11 @@ bool SweepSimpleColoring::sweep(CandidatesGrid &grid, Value value)
       }
       if (SweepSimpleColoring::removeTwiceInAUnit(grid, value, coloring))
       {
+         return true;
+      }
+      if (SweepSimpleColoring::removeOneColorEmptiesHouse(grid, value, coloring, cellsToIgnore))
+      {
+         MyAssert(false, "RemoveOneColorEmptiesHouse first time, not tested!!"); // TODO
          return true;
       }
    }

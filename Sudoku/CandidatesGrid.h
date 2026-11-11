@@ -26,6 +26,7 @@ class CandidatesGrid
    static std::vector<std::string> DifferenceToStrings(const CandidatesGrid &, const CandidatesGrid &);
    static std::vector<CandidatesGrid> getSymmetricEquivalents(const CandidatesGrid &);
    static ValueBits getValuesInFields(const CandidatesGrid &, std::span<const Field>);
+   static FieldBits getActiveFieldsWithValue(const CandidatesGrid &, Value);
 
    const Candidates &operator[](Field f) const
    {

@@ -77,3 +77,14 @@ TEST(VisibilityTest, AreVisibleVia)
    ASSERT_EQ(retval[0], HouseType::Col);
    ASSERT_EQ(retval[1], HouseType::Box);
 }
+
+TEST(VisibilityTest, GetVisibleFields)
+{
+   std::vector<Cell> cells{Cell::get(0)};
+   FieldBits visibleFields = Visiblity::getVisibleFields(cells);
+   ASSERT_EQ(visibleFields.count(), 20);
+
+   cells.push_back(Cell::get(1));
+   visibleFields = Visiblity::getVisibleFields(cells);
+   ASSERT_EQ(visibleFields.count(), 27); // 6 new cells in column + cell(0)
+}

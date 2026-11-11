@@ -289,3 +289,17 @@ ValueBits CandidatesGrid::getValuesInFields(const CandidatesGrid &grid, std::spa
    }
    return result;
 }
+
+FieldBits CandidatesGrid::getActiveFieldsWithValue(const CandidatesGrid &grid, Value value)
+{
+   FieldBits result;
+   for (Field field : FieldAll)
+   {
+      if (grid[field].contains(value) && !grid[field].isSolved())
+      {
+         result.set(field);
+      }
+   }
+
+   return result;
+}

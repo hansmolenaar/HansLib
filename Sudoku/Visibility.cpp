@@ -1,12 +1,15 @@
 #include "Visibility.h"
+#include "BitsetUtils.h"
 #include "Functors.h"
 #include "House.h"
 #include "MyAssert.h"
 #include "SudokuDefines.h"
+#include "SudokuUtils.h"
 #include "UniqueSorted.h"
 
 #include <algorithm>
 #include <iterator>
+#include <ranges>
 #include <vector>
 
 using namespace Sudoku;
@@ -85,5 +88,25 @@ std::vector<Cell> Visiblity::getVisibleCells(std::span<const Cell> cells)
       str::copy(getVisibleCells(cell), std::back_inserter(result));
    }
    UniqueSorted(result);
+   return result;
+}
+
+FieldBits Visiblity::getVisibleFields(Field field)
+{
+   return SudokuUtils::getFields(getVisibleCells(field));
+}
+
+FieldBits Visiblity::getVisibleFields(std::span<const Cell> cells)
+{
+   return getVisibleFields(SudokuUtils::getFields(cells));
+}
+
+FieldBits Visiblity::getVisibleFields(const FieldBits &fields)
+{
+   FieldBits result;
+   for (Field field : FieldAll | std::views::filter(Bitset{fields}))
+   {
+      result |= getVisibleFields(field);
+   }
    return result;
 }

@@ -5,6 +5,8 @@
 #include "Network.h"
 #include "Single.h"
 #include "StreamUtils.h"
+#include "SudokuDefines.h"
+#include "SudokuUtils.h"
 #include "SweepCombined.h"
 #include "SweepSimpleColoring.h"
 #include "TestModels.h"
@@ -94,3 +96,40 @@ TEST(SweepSimpleColoringTest, TwiceInAUnit)
    }
    ASSERT_TRUE(anyChange);
 }
+
+#if false
+TEST(SweepSimpleColoringTest, ColorEmptiesHouse)
+{
+   SweepCombined *sweepCombined = SweepCombined::getMediumSweepers();
+   SweepSimpleColoring sweepSimpleColoring;
+   const std::string str = ".24...65.1.......7..8.1.9...........26..9..83.8.5.1.7.6..9.3..8..28547......7....";
+   CandidatesGrid grid = CandidatesGrid::FromString(str);
+   ISweep::iterate(*sweepCombined, grid);
+
+   // const Value value = 1;
+   for (Value value : ValueAll)
+   {
+      const auto links = SweepSimpleColoring::getBilocationLinks(grid, value);
+
+      const auto networks = Network::create(links);
+      bool anyChange = false;
+      for (const auto &network : networks)
+      {
+         const auto coloring = Network::setColors(network);
+         const auto coloredFields = SudokuUtils::getFields(network.getCells());
+         // std::cout << str << "\n";
+         std::cout << str << "\n";
+         std::cout << value << "\n";
+         std::cout << network << "\n\n";
+         std::cout << coloring << "\n";
+         std::cout << grid << "\n";
+         auto prv = grid;
+         anyChange |= SweepSimpleColoring::removeOneColorEmptiesHouse(grid, value, coloring, coloredFields);
+         std::cout << grid;
+         std::cout << CandidatesGrid::DifferenceToStrings(prv, grid);
+         ASSERT_FALSE(anyChange);
+      }
+      ASSERT_TRUE(anyChange);
+   }
+}
+#endif
