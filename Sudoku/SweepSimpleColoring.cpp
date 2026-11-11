@@ -59,17 +59,16 @@ bool SweepSimpleColoring::sweep(CandidatesGrid &grid, Value value)
    {
       return false;
    }
-
-   auto cellsToIgnore = SudokuUtils::getSolvedCells(grid);
-   for (const auto &link : links)
-   {
-      cellsToIgnore.set(link.cellMin.field);
-      cellsToIgnore.set(link.cellMax.field);
-   }
    const auto networks = Network::create(links);
    for (const auto &network : networks)
    {
       const auto coloring = Network::setColors(network);
+      auto cellsToIgnore = SudokuUtils::getSolvedCells(grid);
+      for (const auto &c : network.getCells())
+      {
+         cellsToIgnore.set(c.field);
+      }
+
       if (SweepSimpleColoring::removeSees2ColorsCandidates(grid, value, coloring, cellsToIgnore))
       {
          // Better start from scratch
