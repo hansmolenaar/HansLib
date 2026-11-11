@@ -51,7 +51,9 @@ bool RemoveCandidates(CandidatesGrid &grid, const House &house, std::span<const 
    boost::container::static_vector<Value, NumValue> activeValues;
    str::copy_if(ValueAll, std::back_inserter(activeValues), IsNotContained(candidateTuple));
 
-   return grid.RemoveCandidates(activeValues, house.cells, CellContainsAllValues{grid, candidateTuple});
+   const CellContainsAllValues cellPredicate{grid, candidateTuple};
+   auto activeCells = house.cells | std::views::filter(cellPredicate);
+   return grid.RemoveCandidates(activeValues, activeCells);
 }
 } // namespace
 

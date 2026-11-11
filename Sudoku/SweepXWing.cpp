@@ -15,11 +15,10 @@ namespace
 {
 bool RemoveCandidates(CandidatesGrid &grid, Value value, const XWing &xWing)
 {
-   std::array<Cell, 4> fixedCells{xWing.lockedPair0[0], xWing.lockedPair0[1], xWing.lockedPair1[0],
-                                  xWing.lockedPair1[1]};
-   IsNotContained<Cell> isNotFixed{fixedCells};
-   const bool anyChange =
-       grid.RemoveCandidates(std::span<Value>(&value, &value + 1), House::getHouse(xWing.houseId0).cells, isNotFixed);
+   const std::array<Cell, 4> fixedCells{xWing.lockedPair0[0], xWing.lockedPair0[1], xWing.lockedPair1[0],
+                                        xWing.lockedPair1[1]};
+   auto activeCells = House::getHouse(xWing.houseId0).cells | std::views::filter(IsNotContained<Cell>{fixedCells});
+   const bool anyChange = grid.RemoveCandidates(std::span<Value>(&value, &value + 1), activeCells);
    return anyChange;
 }
 

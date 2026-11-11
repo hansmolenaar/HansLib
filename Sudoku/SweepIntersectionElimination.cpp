@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <optional>
+#include <ranges>
 
 namespace str = std::ranges;
 using namespace Sudoku;
@@ -27,8 +28,8 @@ bool SweepIntersectionElimination::SweepHouse(CandidatesGrid &grid, const House 
          if (intersectionHouseId.has_value())
          {
             const auto &intersectionHouse = House::getHouse(intersectionHouseId.value());
-            anyChange |=
-                grid.RemoveCandidates({&value, &value + 1}, intersectionHouse.cells, IsNotContained<Cell>{cells});
+            auto activeCells = intersectionHouse.cells | std::views::filter(IsNotContained<Cell>{cells});
+            anyChange |= grid.RemoveCandidates({&value, &value + 1}, activeCells);
          }
       }
    }

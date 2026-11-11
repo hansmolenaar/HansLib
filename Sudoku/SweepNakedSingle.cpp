@@ -14,8 +14,7 @@ bool SweepNakedSingle::sweep(CandidatesGrid &grid)
       if (value)
       {
          const auto cells = Visiblity::getVisibleCells(field);
-         anyChange |=
-             grid.RemoveCandidates(std::span<const Value>(&*value, &*value + 1), cells, Functors::always<true>());
+         anyChange |= grid.RemoveCandidates(std::span<const Value>(&*value, &*value + 1), cells);
       }
    }
    return anyChange;

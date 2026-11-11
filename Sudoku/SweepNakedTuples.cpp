@@ -8,6 +8,7 @@
 #include "UniqueSorted.h"
 #include <algorithm>
 #include <iterator>
+#include <ranges>
 
 using namespace Sudoku;
 using namespace Utilities;
@@ -31,8 +32,9 @@ std::vector<Value> GetUniqueValuesFromFields(const CandidatesGrid &grid, std::sp
 bool RemoveCandidates(CandidatesGrid &grid, const House &house, std::span<const Field> candidateTuple)
 {
    const auto candidatesToRemove = GetUniqueValuesFromFields(grid, candidateTuple);
-   return grid.RemoveCandidates(candidatesToRemove, house.cells,
-                                [&candidateTuple](const Cell &cell) { return !Contains(candidateTuple, cell.field); });
+   auto cellNotInCandidateTuple = [&candidateTuple](const Cell &cell) { return !Contains(candidateTuple, cell.field); };
+   auto cells = house.cells | std::views::filter(cellNotInCandidateTuple);
+   return grid.RemoveCandidates(candidatesToRemove, cells);
 }
 
 bool IsNakedTuple(const CandidatesGrid &grid, const std::vector<Field> &candidateTuple)

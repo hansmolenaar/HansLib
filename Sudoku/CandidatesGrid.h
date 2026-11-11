@@ -29,18 +29,14 @@ class CandidatesGrid
       return m_candidates[f];
    }
 
-   template <typename C, typename P>
-   bool RemoveCandidates(std::span<const Value> valuesToRemove, const C &allCells, P useCellPredicate)
+   template <typename R> bool RemoveCandidates(std::span<const Value> valuesToRemove, R &fromCells)
    {
       bool anyChange = false;
-      for (const auto &cell : allCells)
+      for (const auto &cell : fromCells)
       {
-         if (useCellPredicate(cell))
+         for (Value value : valuesToRemove)
          {
-            for (Value value : valuesToRemove)
-            {
-               anyChange |= removeCandidate(cell.field, value);
-            }
+            anyChange |= removeCandidate(cell.field, value);
          }
       }
       return anyChange;
