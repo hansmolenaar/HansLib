@@ -62,6 +62,9 @@ TEST(NetworkTest, TwoLinks)
    ASSERT_NE(colors.get(cell2), colors.get(cell3));
    ASSERT_EQ(colors.get(cell1), colors.get(cell3));
 
+   ASSERT_TRUE(networks[0].contains(cell2, cell1));
+   ASSERT_FALSE(networks[0].contains(cell1, cell3));
+
    ASSERT_EQ(networks[0].getLink(cell1, cell2).type, LinkType::Weak);
    ASSERT_EQ(networks[0].getLink(cell2, cell3).type, LinkType::Strong);
    ASSERT_ANY_THROW(networks.front().getLink(cell1, cell3));
