@@ -17,8 +17,8 @@ class Network
 
    // Order of cells on input is not relevant, throws if not found
    Link getLink(const Cell &, const Cell &) const;
+   bool contains(const Cell &, const Cell &) const;
    std::span<const Cell> getConnectedCells(const Cell &) const;
-
    static ColorField setColors(const Network &);
    static std::vector<Network> create(std::span<const Link>);
 
@@ -35,3 +35,5 @@ class Network
 };
 
 } // namespace Sudoku
+
+std::ostream &operator<<(std::ostream &, const Sudoku::Network &);

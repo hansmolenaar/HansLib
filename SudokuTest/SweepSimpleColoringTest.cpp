@@ -7,6 +7,7 @@
 #include "StreamUtils.h"
 #include "SweepCombined.h"
 #include "SweepSimpleColoring.h"
+#include "TestModels.h"
 
 #include <iostream>
 
@@ -59,14 +60,37 @@ TEST(SweepSimpleColoringTest, Sees2Colors)
    auto grid = CandidatesGrid::FromString(puzzle);
    ISweep::iterate(*sweepCombined, grid);
    ASSERT_EQ(grid.getNumCandidates(), 131);
-   std::cout << grid;
-   auto prv = grid;
    Cell changedCell = Cell::getFromRowCol(4, 8);
    ASSERT_TRUE(grid[changedCell.field].contains(1));
    const bool anyChange = SweepSimpleColoring::sweep(grid, 1);
    ASSERT_FALSE(grid[changedCell.field].contains(1));
-   std::cout << grid;
-   std::cout << CandidatesGrid::DifferenceToStrings(prv, grid);
    ASSERT_TRUE(anyChange);
    ASSERT_EQ(grid.getNumCandidates(), 130);
+}
+
+TEST(SweepSimpleColoringTest, TwiceInAUnit)
+{
+   SweepCombined *sweepCombined = SweepCombined::getMediumSweepers();
+   SweepSimpleColoring sweepSimpleColoring;
+   const std::string str = "2..9.....8..5.3....547.6..2..8.....9.97...42.1.....3..3..1.589....8.2..3.....7..5";
+   CandidatesGrid grid = CandidatesGrid::FromString(str);
+   ISweep::iterate(*sweepCombined, grid);
+
+   const Value value = 4; // 6
+   const auto links = SweepSimpleColoring::getBilocationLinks(grid, value);
+
+   const auto networks = Network::create(links);
+   bool anyChange = false;
+   for (const auto &network : networks)
+   {
+      const auto coloring = Network::setColors(network);
+      // std::cout << network << "\n\n";
+      // std::cout << coloring << "\n";
+      // std::cout << grid << "\n";
+      // auto prv = grid;
+      anyChange |= SweepSimpleColoring::removeTwiceInAUnit(grid, value, coloring);
+      // std::cout << grid;
+      // std::cout << CandidatesGrid::DifferenceToStrings(prv, grid);
+   }
+   ASSERT_TRUE(anyChange);
 }

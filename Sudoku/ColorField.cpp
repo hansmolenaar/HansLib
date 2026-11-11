@@ -3,11 +3,21 @@
 
 #include <algorithm>
 #include <iterator>
+#include <ostream>
 #include <stdexcept>
 
 using namespace Sudoku;
 using namespace Utilities;
 namespace str = std::ranges;
+
+std::string Sudoku::toString(Color color)
+{
+   if (color == Color::Blue)
+   {
+      return "BLUE";
+   }
+   return "GREEN";
+}
 
 bool ColorField::empty() const
 {
@@ -67,4 +77,19 @@ std::vector<Cell> ColorField::getCellsWithColor(Color color) const
    str::copy_if(Cell::getAll(), std::back_inserter(result),
                 [this, &color](const Cell &cell) { return hasColor(cell) && get(cell) == color; });
    return result;
+}
+
+std::ostream &operator<<(std::ostream &os, const Sudoku::ColorField &coloring)
+{
+   for (Color color : ColorAll)
+   {
+      os << toString(color) << ":   ";
+      const auto cells = coloring.getCellsWithColor(color);
+      for (const auto &cell : cells)
+      {
+         os << cell << " ";
+      }
+      os << "\n";
+   }
+   return os;
 }

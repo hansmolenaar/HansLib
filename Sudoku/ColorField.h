@@ -11,6 +11,7 @@ enum class Color
    Blue,
    Green
 };
+constexpr std::array<Color, 2> ColorAll = {Color::Blue, Color::Green};
 
 constexpr Color getOtherColor(Color color)
 {
@@ -18,6 +19,8 @@ constexpr Color getOtherColor(Color color)
       return Color::Green;
    return Color::Blue;
 }
+
+std::string toString(Color);
 
 class ColorField
 {
@@ -40,3 +43,5 @@ class ColorField
 };
 
 } // namespace Sudoku
+
+std::ostream &operator<<(std::ostream &, const Sudoku::ColorField &);

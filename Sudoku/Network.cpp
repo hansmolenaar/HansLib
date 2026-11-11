@@ -4,6 +4,7 @@
 
 #include <algorithm>
 #include <map>
+#include <ostream>
 #include <set>
 
 using namespace Sudoku;
@@ -112,6 +113,12 @@ Link Network::getLink(const Cell &cell1, const Cell &cell2) const
    return {cellPair.first, cellPair.second, found->second};
 }
 
+bool Network::contains(const Cell &cell1, const Cell &cell2) const
+{
+   const auto cellPair = std::make_pair(std::min(cell1, cell2), std::max(cell1, cell2));
+   return m_links.find(cellPair) != m_links.end();
+}
+
 ColorField Network::setColors(const Network &netWork)
 {
    ColorField result;
@@ -154,4 +161,24 @@ ColorField Network::setColors(const Network &netWork)
             static_cast<int>(cells.size()));
 
    return result;
+}
+
+std::ostream &operator<<(std::ostream &os, const Sudoku::Network &network)
+{
+   std::set<Link> done;
+   const auto cells = network.getCells();
+   for (auto c : cells)
+   {
+      const auto ngbs = network.getConnectedCells(c);
+      for (const auto ngb : ngbs)
+      {
+         const auto link = network.getLink(c, ngb);
+         if (!done.contains(link))
+         {
+            done.insert(link);
+            os << link << "\n";
+         }
+      }
+   }
+   return os;
 }

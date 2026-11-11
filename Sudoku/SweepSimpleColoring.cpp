@@ -48,6 +48,31 @@ bool SweepSimpleColoring::removeSees2ColorsCandidates(CandidatesGrid &grid, Valu
    return anyChange;
 }
 
+bool SweepSimpleColoring::removeTwiceInAUnit(CandidatesGrid &grid, Value value, const ColorField &colors)
+{
+   for (Color color : ColorAll)
+   {
+      const auto cellsWithColor = colors.getCellsWithColor(color);
+      if (cellsWithColor.size() < 2)
+      {
+         continue;
+      }
+      for (Field n = 0; n < cellsWithColor.size() - 1; ++n)
+      {
+         const Cell cell1 = cellsWithColor.at(n);
+         const Cell cell2 = cellsWithColor.at(n + 1);
+         if (Visiblity::areVisible(cell1, cell2))
+         {
+            if (grid.RemoveCandidate(value, cellsWithColor))
+            {
+               return true;
+            }
+         }
+      }
+   }
+   return false;
+}
+
 bool SweepSimpleColoring::sweep(CandidatesGrid &grid, Value value)
 {
    const auto links = getBilocationLinks(grid, value);
@@ -68,6 +93,10 @@ bool SweepSimpleColoring::sweep(CandidatesGrid &grid, Value value)
       if (SweepSimpleColoring::removeSees2ColorsCandidates(grid, value, coloring, cellsToIgnore))
       {
          // Better start from scratch
+         return true;
+      }
+      if (SweepSimpleColoring::removeTwiceInAUnit(grid, value, coloring))
+      {
          return true;
       }
    }
