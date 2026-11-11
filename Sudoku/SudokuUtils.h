@@ -13,8 +13,7 @@ class CandidatesGrid;
 
 namespace SudokuUtils
 {
-boost::container::static_vector<Value, NumValue> getUniqueActiveValuesInCells(const CandidatesGrid &,
-                                                                              std::span<const Cell>);
+ValueBits getUniqueActiveValuesInCells(const CandidatesGrid &, std::span<const Cell>);
 Index countOccurence(const CandidatesGrid &, std::span<const Cell> cells, Value value);
 ValueBits getSolvedValues(const CandidatesGrid &, std::span<const Cell>);
 ValueBits getSolvedValues(const CandidatesGrid &, std::span<const Field>);

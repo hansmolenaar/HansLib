@@ -146,3 +146,10 @@ TEST(CandidatesTest, CIterator)
    const Candidates candidates;
    ASSERT_EQ(*candidates.cbegin(), 1);
 }
+
+TEST(CandidatesTest, GetValues)
+{
+   Candidates candidates;
+   ValueBits values = candidates.getValues();
+   ASSERT_EQ(values.count(), NumValue);
+}

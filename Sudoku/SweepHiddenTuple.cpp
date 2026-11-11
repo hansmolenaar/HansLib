@@ -1,4 +1,5 @@
 #include "SweepHiddenTuple.h"
+#include "BitsetUtils.h"
 #include "CandidatesGrid.h"
 #include "Combinations.h"
 #include "Contains.h"
@@ -9,6 +10,7 @@
 #include "boost/container/static_vector.hpp"
 #include <algorithm>
 #include <iterator>
+#include <ranges>
 
 using namespace Sudoku;
 using namespace Utilities;
@@ -57,11 +59,13 @@ bool SweepHiddenTuple::sweepHouse(CandidatesGrid &grid, const House &house, Inde
 {
    bool anyChange = false;
    const auto activeUniqueCandidates = SudokuUtils::getUniqueActiveValuesInCells(grid, house.cells);
-   if (activeUniqueCandidates.size() < size)
+   if (activeUniqueCandidates.count() < size)
    {
       return anyChange;
    }
-   const std::vector<Value> activeCandidates(activeUniqueCandidates.begin(), activeUniqueCandidates.end());
+
+   std::vector<Value> activeCandidates(activeUniqueCandidates.count());
+   str::copy_if(ValueAll, activeCandidates.begin(), Bitset{activeUniqueCandidates});
 
    Combinations<Value> combinations(activeCandidates, size);
    do

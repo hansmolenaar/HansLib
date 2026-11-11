@@ -22,19 +22,19 @@ TEST(SudokuUtilsTest, Basic)
    std::vector<Cell> someCells = {Cell{0}, Cell{2}};
 
    auto retval = SudokuUtils::getUniqueActiveValuesInCells(grid, someCells);
-   ASSERT_EQ(retval.size(), 8);
+   ASSERT_EQ(retval.count(), 8);
 
    grid.update();
    retval = SudokuUtils::getUniqueActiveValuesInCells(grid, someCells);
-   ASSERT_EQ(retval.size(), 7);
+   ASSERT_EQ(retval.count(), 7);
 
    someCells = {Cell{1}, Cell{2}};
    retval = SudokuUtils::getUniqueActiveValuesInCells(grid, someCells);
-   ASSERT_EQ(retval.size(), 0);
+   ASSERT_EQ(retval.count(), 0);
 
    someCells = {Cell{0}, Cell{4}};
    retval = SudokuUtils::getUniqueActiveValuesInCells(grid, someCells);
-   ASSERT_EQ(retval.size(), 7);
+   ASSERT_EQ(retval.count(), 7);
 }
 
 TEST(SudokuUtilsTest, GetActiveCandidatesInCells)
@@ -42,15 +42,15 @@ TEST(SudokuUtilsTest, GetActiveCandidatesInCells)
    CandidatesGrid cg;
    const auto house = House::getRow(0);
    auto retval = SudokuUtils::getUniqueActiveValuesInCells(cg, house.cells);
-   ASSERT_EQ(retval.size(), NumCellsInHouse);
+   ASSERT_EQ(retval.count(), NumCellsInHouse);
 
    cg.removeCandidate(0, 9);
    retval = SudokuUtils::getUniqueActiveValuesInCells(cg, house.cells);
-   ASSERT_EQ(retval.size(), NumCellsInHouse);
+   ASSERT_EQ(retval.count(), NumCellsInHouse);
 
    cg.setGiven(1, 5);
    retval = SudokuUtils::getUniqueActiveValuesInCells(cg, house.cells);
-   ASSERT_EQ(retval.size(), NumCellsInHouse - 1);
+   ASSERT_EQ(retval.count(), NumCellsInHouse - 1);
 }
 
 TEST(SudokuUtilsTest, CountOccurence)

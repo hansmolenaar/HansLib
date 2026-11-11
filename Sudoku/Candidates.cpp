@@ -119,3 +119,13 @@ bool Candidates::contains(std::span<const Value> values) const
 {
    return str::all_of(values, [this](Value value) { return contains(value); });
 }
+
+ValueBits Candidates::getValues() const
+{
+   ValueBits result;
+   for (Value value : m_candidates)
+   {
+      result.set(value);
+   }
+   return result;
+}

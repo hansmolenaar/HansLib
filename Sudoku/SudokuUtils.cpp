@@ -12,8 +12,7 @@ Index SudokuUtils::countOccurence(const CandidatesGrid &grid, std::span<const Ce
    return str::count_if(cells, [&grid, value](Cell cell) { return grid[cell.field].contains(value); });
 }
 
-boost::container::static_vector<Value, NumValue> SudokuUtils::getUniqueActiveValuesInCells(const CandidatesGrid &grid,
-                                                                                           std::span<const Cell> cells)
+ValueBits SudokuUtils::getUniqueActiveValuesInCells(const CandidatesGrid &grid, std::span<const Cell> cells)
 {
    ValueBits activeValues;
    for (Cell cell : cells)
@@ -25,12 +24,12 @@ boost::container::static_vector<Value, NumValue> SudokuUtils::getUniqueActiveVal
    }
 
    const auto valueIsSolved = SudokuUtils::getSolvedValues(grid, cells);
-   boost::container::static_vector<Value, NumValue> result;
+   ValueBits result;
    for (Value value : ValueAll)
    {
       if (activeValues[value] && !valueIsSolved.test(value))
       {
-         result.push_back(value);
+         result.set(value);
       }
    }
    return result;

@@ -74,6 +74,7 @@ class Candidates
    bool isSolved() const;
    Index size() const;
    std::optional<Value> tryGetSolvedValue() const;
+   ValueBits getValues() const;
    bool contains(Value) const;
    bool contains(std::span<const Value>) const;
 
