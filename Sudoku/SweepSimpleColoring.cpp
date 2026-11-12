@@ -136,13 +136,13 @@ bool SweepSimpleColoring::sweep(CandidatesGrid &grid, Value value)
    for (const auto &network : networks)
    {
       const auto coloring = Network::setColors(network);
-      auto cellsToIgnore = SudokuUtils::getSolvedCells(grid);
+      auto cellsInCurrectNetwork = SudokuUtils::getSolvedCells(grid);
       for (const auto &c : network.getCells())
       {
-         cellsToIgnore.set(c.field);
+         cellsInCurrectNetwork.set(c.field);
       }
 
-      if (SweepSimpleColoring::removeSees2ColorsCandidates(grid, value, coloring, cellsToIgnore))
+      if (SweepSimpleColoring::removeSees2ColorsCandidates(grid, value, coloring, cellsInCurrectNetwork))
       {
          // Better start from scratch
          return true;
@@ -151,7 +151,7 @@ bool SweepSimpleColoring::sweep(CandidatesGrid &grid, Value value)
       {
          return true;
       }
-      if (SweepSimpleColoring::removeOneColorEmptiesHouse(grid, value, coloring, cellsToIgnore))
+      if (SweepSimpleColoring::removeOneColorEmptiesHouse(grid, value, coloring, cellsInCurrectNetwork))
       {
          MyAssert(false, "RemoveOneColorEmptiesHouse first time, not tested!!"); // TODO
          return true;

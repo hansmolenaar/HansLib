@@ -161,7 +161,7 @@ void CandidatesGrid::checkValidSudoku() const
       const auto value = (*this)[f].tryGetSolvedValue();
       if (value.has_value())
       {
-         MyAssert(value >= lwr && value <= upr);
+         MyAssert(*value >= lwr && *value <= upr, "checkValidSudoku invalid value " + std::to_string(*value));
       }
    }
 
@@ -176,7 +176,9 @@ void CandidatesGrid::checkValidSudoku() const
          if (value.has_value())
          {
             // MyAssert(!isUsed.test(value.value()));
-            MyAssert(!isSolved.test(value.value()));
+            MyAssert(!isSolved.test(value.value()), "checkValidSudoku solved value " + std::to_string(*value) +
+                                                        " specified at least twice in house " +
+                                                        House::toString(house.houseId));
             isUsed.set(value.value());
             isSolved.set(value.value());
          }
@@ -185,7 +187,7 @@ void CandidatesGrid::checkValidSudoku() const
             isUsed |= (*this)[cell.field].getValues();
          }
       }
-      MyAssert(isUsed.count() == NumValue);
+      MyAssert(isUsed.count() == NumValue, "checkValidSudoku candidate missing in house");
    }
 }
 

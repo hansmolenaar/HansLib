@@ -201,6 +201,101 @@ TEST(SweepSimpleColoringTest, SingleColorEmptiesHouseExample1)
    ASSERT_EQ(grid.getNumCandidates(), expect);
 }
 
+TEST(SweepSimpleColoringTest, SingleColorEmptiesHouseExample2)
+{
+   SweepSimpleColoring sweepSimpleColoring;
+
+   CandidatesGrid grid;
+
+   grid.setGiven(Cell::rowCol2Field(0, 3), 5);
+   grid.setGiven(Cell::rowCol2Field(0, 4), 1);
+   grid.setGiven(Cell::rowCol2Field(0, 5), 4);
+   grid.setGiven(Cell::rowCol2Field(0, 6), 8);
+   grid.setGiven(Cell::rowCol2Field(0, 7), 9);
+   grid.setGiven(Cell::rowCol2Field(0, 8), 7);
+
+   grid.setGiven(Cell::rowCol2Field(1, 0), 5);
+   grid.setGiven(Cell::rowCol2Field(1, 1), 1);
+   grid.setGiven(Cell::rowCol2Field(1, 2), 9);
+   grid.setGiven(Cell::rowCol2Field(1, 6), 6);
+   grid.setGiven(Cell::rowCol2Field(1, 7), 4);
+   grid.setGiven(Cell::rowCol2Field(1, 8), 2);
+
+   grid.setGiven(Cell::rowCol2Field(2, 0), 8);
+   grid.setGiven(Cell::rowCol2Field(2, 1), 4);
+   grid.setGiven(Cell::rowCol2Field(2, 2), 7);
+   grid.setGiven(Cell::rowCol2Field(2, 3), 9);
+   grid.setGiven(Cell::rowCol2Field(2, 4), 6);
+   grid.setGiven(Cell::rowCol2Field(2, 5), 2);
+   grid.setGiven(Cell::rowCol2Field(2, 6), 1);
+   grid.setGiven(Cell::rowCol2Field(2, 7), 3);
+   grid.setGiven(Cell::rowCol2Field(2, 8), 5);
+
+   grid.setGiven(Cell::rowCol2Field(3, 3), 6);
+   grid.setGiven(Cell::rowCol2Field(3, 4), 8);
+   grid.setGiven(Cell::rowCol2Field(3, 5), 7);
+   grid.setGiven(Cell::rowCol2Field(3, 7), 5);
+   grid.setGiven(Cell::rowCol2Field(3, 8), 1);
+
+   grid.setGiven(Cell::rowCol2Field(4, 0), 1);
+   grid.setGiven(Cell::rowCol2Field(4, 1), 7);
+   grid.setGiven(Cell::rowCol2Field(4, 2), 8);
+   grid.setGiven(Cell::rowCol2Field(4, 4), 5);
+   grid.setGiven(Cell::rowCol2Field(4, 6), 4);
+
+   grid.setGiven(Cell::rowCol2Field(5, 1), 6);
+   grid.setGiven(Cell::rowCol2Field(5, 2), 5);
+   grid.setGiven(Cell::rowCol2Field(5, 3), 4);
+   grid.setGiven(Cell::rowCol2Field(5, 5), 1);
+   grid.setGiven(Cell::rowCol2Field(5, 6), 7);
+   grid.setGiven(Cell::rowCol2Field(5, 7), 8);
+
+   grid.setGiven(Cell::rowCol2Field(6, 0), 7);
+   grid.setGiven(Cell::rowCol2Field(6, 3), 1);
+   grid.setGiven(Cell::rowCol2Field(6, 5), 5);
+   grid.setGiven(Cell::rowCol2Field(6, 8), 8);
+
+   grid.setGiven(Cell::rowCol2Field(7, 1), 8);
+   grid.setGiven(Cell::rowCol2Field(7, 2), 3);
+   grid.setGiven(Cell::rowCol2Field(7, 6), 5);
+   grid.setGiven(Cell::rowCol2Field(7, 7), 1);
+   grid.setGiven(Cell::rowCol2Field(7, 8), 4);
+
+   grid.setGiven(Cell::rowCol2Field(8, 1), 5);
+   grid.setGiven(Cell::rowCol2Field(8, 2), 1);
+   grid.setGiven(Cell::rowCol2Field(8, 7), 7);
+
+   grid.checkValidSudoku();
+   grid.update();
+
+   ASSERT_TRUE(grid[Cell::rowCol2Field(5, 0)].contains(2));
+   ASSERT_TRUE(grid[Cell::rowCol2Field(4, 3)].contains(2));
+   ASSERT_TRUE(grid[Cell::rowCol2Field(3, 6)].contains(2));
+   ASSERT_TRUE(grid[Cell::rowCol2Field(6, 7)].contains(2));
+
+   Field expect = 137;
+   ASSERT_EQ(grid.getNumCandidates(), expect);
+   const Value value = 2;
+   const auto links = SweepSimpleColoring::getBilocationLinks(grid, value);
+
+   const auto networks = Network::create(links);
+   ASSERT_EQ(networks.size(), 1);
+   const auto &network = networks.front();
+   bool anyChange = false;
+   const auto coloring = Network::setColors(network);
+   const auto coloredFields = SudokuUtils::getFields(network.getCells());
+   anyChange |= SweepSimpleColoring::removeOneColorEmptiesHouse(grid, value, coloring, coloredFields);
+   ASSERT_TRUE(anyChange);
+
+   expect -= 4;
+   ASSERT_EQ(grid.getNumCandidates(), expect);
+
+   ASSERT_FALSE(grid[Cell::rowCol2Field(5, 0)].contains(2));
+   ASSERT_FALSE(grid[Cell::rowCol2Field(4, 3)].contains(2));
+   ASSERT_FALSE(grid[Cell::rowCol2Field(3, 6)].contains(2));
+   ASSERT_FALSE(grid[Cell::rowCol2Field(6, 7)].contains(2));
+}
+
 #if false
 TEST(SweepSimpleColoringTest, FindColorEmptiesHouse)
 {

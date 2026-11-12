@@ -31,9 +31,13 @@ struct House
    static const House &getHouse(HouseId);
    static const std::vector<House> &getAllHouses();
    static FieldBits getFieldsInHouse(HouseId);
+   static std::string toString(HouseType);
+   static std::string toString(HouseId);
 
    HouseId houseId;
    std::array<Cell, NumIndex> cells;
 };
 
 } // namespace Sudoku
+
+std::ostream &operator<<(std::ostream &, Sudoku::HouseId);

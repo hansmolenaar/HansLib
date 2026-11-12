@@ -3,6 +3,8 @@
 #include "SudokuUtils.h"
 
 #include <algorithm>
+#include <ostream>
+#include <sstream>
 #include <stdexcept>
 #include <vector>
 
@@ -123,4 +125,33 @@ HouseId HouseId::getFromCellaAndType(const Cell &cell, HouseType type)
 FieldBits House::getFieldsInHouse(HouseId houseId)
 {
    return SudokuUtils::getFields(getHouse(houseId).cells);
+}
+
+std::string House::toString(HouseType houseType)
+{
+   if (houseType == HouseType::Row)
+   {
+      return "ROW";
+   }
+   else if (houseType == HouseType::Col)
+   {
+      return "COL";
+   }
+   else
+   {
+      return "BOX";
+   }
+}
+
+std::string House::toString(HouseId houseId)
+{
+   std::stringstream stream;
+   stream << houseId;
+   return stream.str();
+}
+
+std::ostream &operator<<(std::ostream &os, Sudoku::HouseId houseId)
+{
+   os << "[" << House::toString(houseId.houseType) << " " << houseId.houseIndex << "]";
+   return os;
 }

@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <ostream>
 #include <stdexcept>
+#include <string>
 #include <vector>
 
 using namespace Sudoku;
@@ -84,6 +85,8 @@ const Cell &Cell::getFromRowCol(Index row, Index col)
 
 Field Cell::rowCol2Field(Index row, Index col)
 {
+   MyAssert(row >= 0 && row < NumIndex && col >= 0 && col < NumIndex,
+            "Cell::rowCol2Field invalid row,col: (" + std::to_string(row) + ", " + std::to_string(col) + ")");
    return row * NumIndex + col;
 }
 
