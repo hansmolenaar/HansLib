@@ -82,6 +82,8 @@ bool SweepSimpleColoring::removeOneColorEmptiesHouse(CandidatesGrid &grid, Value
    const auto cellsGreen = colors.getCellsWithColor(Color::Green);
    const auto fieldsBlue = SudokuUtils::getFields(cellsBlue);
    const auto fieldsGreen = SudokuUtils::getFields(cellsGreen);
+   const auto visibleFieldsBlue = Visiblity::getVisibleFields(fieldsBlue);
+   const auto visibleFieldsGreen = Visiblity::getVisibleFields(fieldsGreen);
 
    for (const House &house : House::getAllHouses())
    {
@@ -98,17 +100,21 @@ bool SweepSimpleColoring::removeOneColorEmptiesHouse(CandidatesGrid &grid, Value
       {
          continue;
       }
-      const auto visibleFields = Visiblity::getVisibleFields(cellsInHouseWithValue);
-      const auto numBlueVisibleFromHouse = (visibleFields & fieldsBlue).count();
-      const auto numGreenVisibleFromHouse = (visibleFields & fieldsGreen).count();
-      if (numBlueVisibleFromHouse == numCellsInHouseWithValue)
+      const auto numCellsInHouseSeesBlue = (cellsInHouseWithValue & visibleFieldsBlue).count();
+      const auto numCellsInHouseSeesGreen = (cellsInHouseWithValue & visibleFieldsGreen).count();
+      if (std::min(numCellsInHouseSeesBlue, numCellsInHouseSeesGreen) > 0)
+      {
+         // Both colors are visible, ready
+         continue;
+      }
+      if (numCellsInHouseSeesBlue == numCellsInHouseWithValue)
       {
          if (grid.RemoveCandidate(value, cellsBlue))
          {
             return true;
          }
       }
-      else if (numGreenVisibleFromHouse == numCellsInHouseWithValue)
+      else if (numCellsInHouseSeesGreen == numCellsInHouseWithValue)
       {
          if (grid.RemoveCandidate(value, cellsGreen))
          {

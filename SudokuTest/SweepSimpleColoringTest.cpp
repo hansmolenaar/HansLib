@@ -11,6 +11,7 @@
 #include "SweepSimpleColoring.h"
 #include "TestModels.h"
 
+#include <fstream>
 #include <iostream>
 
 using namespace Sudoku;
@@ -130,6 +131,139 @@ TEST(SweepSimpleColoringTest, ColorEmptiesHouse)
          ASSERT_FALSE(anyChange);
       }
       ASSERT_TRUE(anyChange);
+   }
+}
+#endif
+
+TEST(SweepSimpleColoringTest, SingleColorEmptiesHouseExample1)
+{
+   SweepSimpleColoring sweepSimpleColoring;
+
+   CandidatesGrid grid;
+   grid.setGiven(Cell::rowCol2Field(0, 3), 7);
+   grid.setGiven(Cell::rowCol2Field(0, 6), 5);
+
+   grid.setGiven(Cell::rowCol2Field(1, 0), 3);
+   grid.setGiven(Cell::rowCol2Field(1, 5), 1);
+   grid.setGiven(Cell::rowCol2Field(1, 6), 4);
+   grid.setGiven(Cell::rowCol2Field(1, 8), 7);
+
+   grid.setGiven(Cell::rowCol2Field(2, 0), 7);
+   grid.setGiven(Cell::rowCol2Field(2, 1), 1);
+   grid.setGiven(Cell::rowCol2Field(2, 7), 6);
+
+   grid.setGiven(Cell::rowCol2Field(3, 3), 1);
+   grid.setGiven(Cell::rowCol2Field(3, 4), 8);
+   grid.setGiven(Cell::rowCol2Field(3, 5), 5);
+
+   grid.setGiven(Cell::rowCol2Field(4, 0), 5);
+   grid.setGiven(Cell::rowCol2Field(4, 3), 9);
+   grid.setGiven(Cell::rowCol2Field(4, 4), 2);
+   grid.setGiven(Cell::rowCol2Field(4, 5), 4);
+   grid.setGiven(Cell::rowCol2Field(4, 8), 3);
+
+   grid.setGiven(Cell::rowCol2Field(5, 3), 3);
+   grid.setGiven(Cell::rowCol2Field(5, 4), 6);
+   grid.setGiven(Cell::rowCol2Field(5, 5), 7);
+   grid.setGiven(Cell::rowCol2Field(5, 8), 5);
+
+   grid.setGiven(Cell::rowCol2Field(6, 1), 6);
+   grid.setGiven(Cell::rowCol2Field(6, 4), 7);
+   grid.setGiven(Cell::rowCol2Field(6, 6), 2);
+   grid.setGiven(Cell::rowCol2Field(6, 7), 5);
+
+   grid.setGiven(Cell::rowCol2Field(7, 2), 7);
+   grid.setGiven(Cell::rowCol2Field(7, 3), 5);
+   grid.setGiven(Cell::rowCol2Field(7, 8), 8);
+
+   grid.setGiven(Cell::rowCol2Field(8, 1), 5);
+   grid.setGiven(Cell::rowCol2Field(8, 2), 4);
+   grid.setGiven(Cell::rowCol2Field(8, 5), 2);
+
+   grid.update();
+   auto expect = 207;
+   ASSERT_EQ(grid.getNumCandidates(), expect);
+
+   const Value value = 6;
+   const auto links = SweepSimpleColoring::getBilocationLinks(grid, value);
+
+   const auto networks = Network::create(links);
+   ASSERT_EQ(networks.size(), 4);
+   bool anyChange = false;
+   for (const auto &network : networks)
+   {
+      const auto coloring = Network::setColors(network);
+      const auto coloredFields = SudokuUtils::getFields(network.getCells());
+      anyChange |= SweepSimpleColoring::removeOneColorEmptiesHouse(grid, value, coloring, coloredFields);
+   }
+   ASSERT_TRUE(anyChange);
+   expect -= 4;
+   ASSERT_EQ(grid.getNumCandidates(), expect);
+}
+
+#if false
+TEST(SweepSimpleColoringTest, FindColorEmptiesHouse)
+{
+   std::ifstream file("/home/hans/src/Top_50K_Toughest.txt");
+   SweepSimpleColoring sweepSimpleColoring;
+
+   // String to store each line of the file.
+   std::string line;
+
+   if (file.is_open())
+   {
+      // Read each line from the file and store it in the
+      // 'line' variable.
+      while (getline(file, line))
+      {
+         CandidatesGrid grid = CandidatesGrid::FromString(line.substr(0, NumField), '0');
+         grid.update();
+         std::cout << line << "\n";
+         sweepSimpleColoring.sweep(grid);
+      }
+
+      // Close the file stream once all lines have been
+      // read.
+      file.close();
+   }
+   else
+   {
+      // Print an error message to the standard error
+      // stream if the file cannot be opened.
+      std::cerr << "Unable to open file!" << std::endl;
+   }
+}
+#endif
+#if false
+TEST(SweepSimpleColoringTest, FindColorEmptiesHouse)
+{
+   std::ifstream file("/home/hans/src/Top_50K_Toughest.txt");
+   SweepSimpleColoring sweepSimpleColoring;
+
+   // String to store each line of the file.
+   std::string line;
+
+   if (file.is_open())
+   {
+      // Read each line from the file and store it in the
+      // 'line' variable.
+      while (getline(file, line))
+      {
+         CandidatesGrid grid = CandidatesGrid::FromString(line.substr(0, NumField), '0');
+         grid.update();
+         std::cout << line << "\n";
+         sweepSimpleColoring.sweep(grid);
+      }
+
+      // Close the file stream once all lines have been
+      // read.
+      file.close();
+   }
+   else
+   {
+      // Print an error message to the standard error
+      // stream if the file cannot be opened.
+      std::cerr << "Unable to open file!" << std::endl;
    }
 }
 #endif

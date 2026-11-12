@@ -191,7 +191,8 @@ void CandidatesGrid::checkValidSudoku() const
 
 CandidatesGrid CandidatesGrid::FromString(const std::string &str, char valueUndef)
 {
-   MyAssert(str.length() == NumField);
+   MyAssert(str.length() == NumField, "CandidatesGrid::FromString expected string of length " +
+                                          std::to_string(NumField) + ", actual " + std::to_string(str.length()));
    CandidatesGrid result;
    for (Field f : FieldAll)
    {
