@@ -1,6 +1,7 @@
 #include "SweepSimpleColoring.h"
 #include "CandidatesGrid.h"
 #include "ColorField.h"
+#include "FieldsCache.h"
 #include "House.h"
 #include "MyAssert.h"
 #include "Network.h"
@@ -84,10 +85,10 @@ bool SweepSimpleColoring::removeOneColorEmptiesHouse(CandidatesGrid &grid, Value
    const auto fieldsGreen = SudokuUtils::getFields(cellsGreen);
    const auto visibleFieldsBlue = Visiblity::getVisibleFields(fieldsBlue);
    const auto visibleFieldsGreen = Visiblity::getVisibleFields(fieldsGreen);
-
+   FieldsCache cache(grid);
    for (const House &house : House::getAllHouses())
    {
-      const auto &fieldsInHouse = House::getFieldsInHouse(house.houseId);
+      const auto &fieldsInHouse = cache.getHouseFields(house.houseId);
       if ((fieldsInHouse & cellsToIgnore).any())
       {
          // House contains part of the chain, we can ignore it
