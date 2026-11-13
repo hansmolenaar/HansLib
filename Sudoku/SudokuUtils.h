@@ -3,7 +3,6 @@
 #include "Cell.h"
 #include "SudokuDefines.h"
 
-#include <bitset>
 #include <boost/container/static_vector.hpp>
 
 namespace Sudoku
