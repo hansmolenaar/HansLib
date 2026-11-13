@@ -14,10 +14,26 @@ class FieldsCache
  public:
    explicit FieldsCache(const CandidatesGrid &grid);
    FieldBits getHouseFields(HouseId);
+   FieldBits getActiveFieldsWithValue(Value);
+
+   template <class OutputIt> static void BitsToFields(const FieldBits &fb, OutputIt itr);
 
  private:
    const CandidatesGrid *m_grid;
    std::array<FieldBits, NumHouse> m_fieldsInHouse;
+   std::array<FieldBits, NumValue + 1> m_activeFieldswithValue;
 };
+
+template <class OutputIt> void FieldsCache::BitsToFields(const FieldBits &fb, OutputIt itr)
+{
+   for (Field field : FieldAll)
+   {
+      if (fb[field])
+      {
+         *itr = field;
+         ++itr;
+      }
+   }
+}
 
 } // namespace Sudoku
