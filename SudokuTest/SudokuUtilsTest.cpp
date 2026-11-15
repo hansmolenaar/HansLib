@@ -63,27 +63,6 @@ TEST(SudokuUtilsTest, CountOccurence)
    ASSERT_EQ(SudokuUtils::countOccurence(cg, house.cells, 2), NumCellsInHouse - 1);
    ASSERT_EQ(SudokuUtils::countOccurence(cg, house.cells, 3), NumCellsInHouse);
 }
-
-TEST(SudokuUtilsTest, GetSolvedCells)
-{
-   CandidatesGrid grid;
-   const auto house = House::getBox(8);
-   auto retval = SudokuUtils::getNotSolvedCells(grid, house.cells);
-   ASSERT_EQ(retval.count(), NumCellsInHouse);
-
-   grid.setGiven(6, 6, 1);
-   retval = SudokuUtils::getNotSolvedCells(grid, house.cells);
-   ASSERT_EQ(retval.count(), NumCellsInHouse - 1);
-
-   grid.setGiven(7, 7, 5);
-   retval = SudokuUtils::getNotSolvedCells(grid, house.cells);
-   ASSERT_EQ(retval.count(), NumCellsInHouse - 2);
-
-   const std::vector<Field> expect{61, 62, 69, 71, 78, 79, 80};
-   auto range = FieldAll | std::views::filter(Bitset{retval});
-   ASSERT_TRUE(std::equal(range.begin(), range.end(), expect.begin(), expect.end()));
-}
-
 TEST(SudokuUtilsTest, GetValue2Fields)
 {
    CandidatesGrid grid;

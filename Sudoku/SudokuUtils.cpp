@@ -35,19 +35,6 @@ ValueBits SudokuUtils::getUniqueActiveValuesInCells(const CandidatesGrid &grid, 
    return result;
 }
 
-FieldBits SudokuUtils::getNotSolvedCells(const CandidatesGrid &grid, std::span<const Cell> cells)
-{
-   FieldBits result;
-   for (const auto &c : cells)
-   {
-      if (!grid[c.field].isSolved())
-      {
-         result.set(c.field);
-      }
-   }
-   return result;
-}
-
 ValueBits SudokuUtils::getSolvedValues(const CandidatesGrid &grid, std::span<const Cell> cells)
 {
    ValueBits result;

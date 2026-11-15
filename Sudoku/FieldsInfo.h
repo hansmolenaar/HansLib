@@ -14,16 +14,19 @@ class FieldsInfo
  public:
    explicit FieldsInfo(const CandidatesGrid &grid);
    void update();
-   FieldBits getHouseFields(HouseId);
-   FieldBits getActiveFieldsWithValue(Value);
-   FieldBits getActiveFields();
-   FieldBits getSolvedFields();
+   FieldBits getHouseFields(HouseId) const;
+   FieldBits getActiveFieldsWithValue(Value) const;
+   FieldBits getActiveFields() const;
+   FieldBits getSolvedFields() const;
 
    template <class OutputIt> static void BitsToFields(const FieldBits &fb, OutputIt itr);
 
  private:
+   // Immutable
    const CandidatesGrid *m_grid;
    std::array<FieldBits, NumHouse> m_fieldsInHouse;
+
+   // Mutable
    std::array<FieldBits, NumValue + 1> m_activeFieldswithValue;
    FieldBits m_activeFields;
    FieldBits m_solvedFields;

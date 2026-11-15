@@ -65,3 +65,27 @@ TEST(FieldsInfoTest, GetSolvedCellsBitSet)
    ASSERT_EQ(solvedCells.count(), 1);
    ASSERT_TRUE(solvedCells.test(42));
 }
+
+TEST(FieldsInfoTest, GetSolvedCells)
+{
+   CandidatesGrid grid;
+   FieldsInfo finfo(grid);
+   const auto house = House::getBox(8);
+   const auto houseFields = finfo.getHouseFields(house.houseId);
+   FieldBits activeFields = finfo.getActiveFields() & houseFields;
+   ASSERT_EQ(activeFields.count(), NumCellsInHouse);
+
+   grid.setGiven(6, 6, 1);
+   finfo.update();
+   activeFields = finfo.getActiveFields() & houseFields;
+   ASSERT_EQ(activeFields.count(), NumCellsInHouse - 1);
+
+   grid.setGiven(7, 7, 5);
+   finfo.update();
+   activeFields = finfo.getActiveFields() & houseFields;
+   ASSERT_EQ(activeFields.count(), NumCellsInHouse - 2);
+
+   const std::vector<Field> expect{61, 62, 69, 71, 78, 79, 80};
+   auto range = FieldAll | std::views::filter(Bitset{activeFields});
+   ASSERT_TRUE(std::equal(range.begin(), range.end(), expect.begin(), expect.end()));
+}

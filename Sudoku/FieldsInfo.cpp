@@ -20,7 +20,15 @@ FieldsInfo::FieldsInfo(const CandidatesGrid &grid) : m_grid(&grid)
 
 void FieldsInfo::update()
 {
-   // Nonsolved fields with value
+   // Clear all mutable data and ...
+   m_solvedFields.reset();
+   m_activeFields.reset();
+   for (auto itr : m_activeFieldswithValue)
+   {
+      itr.reset();
+   }
+
+   // ... refill
    for (const Cell &cell : Cell::getAll())
    {
       const Field field = cell.field;
@@ -40,24 +48,24 @@ void FieldsInfo::update()
    }
 }
 
-FieldBits FieldsInfo::getHouseFields(HouseId houseId)
+FieldBits FieldsInfo::getHouseFields(HouseId houseId) const
 {
    const int houseType = static_cast<int>(houseId.houseType);
    const auto pos = houseType * NumIndex + houseId.houseIndex;
    return m_fieldsInHouse.at(pos);
 }
 
-FieldBits FieldsInfo::getActiveFieldsWithValue(Value value)
+FieldBits FieldsInfo::getActiveFieldsWithValue(Value value) const
 {
    return m_activeFieldswithValue.at(value);
 }
 
-FieldBits FieldsInfo::getActiveFields()
+FieldBits FieldsInfo::getActiveFields() const
 {
    return m_activeFields;
 }
 
-FieldBits FieldsInfo::getSolvedFields()
+FieldBits FieldsInfo::getSolvedFields() const
 {
    return m_solvedFields;
 }
