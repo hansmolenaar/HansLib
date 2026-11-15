@@ -226,14 +226,3 @@ TEST(CandidatesGridTest, ValuesInFields)
    values = grid.getValuesInFields(grid, std::vector<Field>{3, 7, 0});
    ASSERT_EQ(values.count(), NumValue);
 }
-
-TEST(CandidatesGridTest, GetActiveFieldsWithValue)
-{
-   CandidatesGrid grid;
-   FieldBits fieldsValue = CandidatesGrid::getActiveFieldsWithValue(grid, 3);
-   ASSERT_EQ(fieldsValue.count(), NumField);
-
-   grid = TestModels::getSolvedGrid();
-   fieldsValue = CandidatesGrid::getActiveFieldsWithValue(grid, 3);
-   ASSERT_EQ(fieldsValue.count(), 0);
-}

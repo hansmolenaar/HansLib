@@ -22,7 +22,6 @@ Value2Fields getValue2Fields(const CandidatesGrid &, std::span<Field>);
 Value2Fields getValue2Fields(const CandidatesGrid &, std::span<const Cell>);
 
 FieldBits getNotSolvedCells(const CandidatesGrid &, std::span<const Cell>);
-FieldBits getNotSolvedCells(const CandidatesGrid &);
 FieldBits getSolvedCells(const CandidatesGrid &);
 FieldBits getFields(std::span<const Cell>);
 

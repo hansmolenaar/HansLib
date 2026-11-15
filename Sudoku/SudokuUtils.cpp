@@ -48,11 +48,6 @@ FieldBits SudokuUtils::getNotSolvedCells(const CandidatesGrid &grid, std::span<c
    return result;
 }
 
-FieldBits SudokuUtils::getNotSolvedCells(const CandidatesGrid &grid)
-{
-   return getNotSolvedCells(grid, Cell::getAll());
-}
-
 FieldBits SudokuUtils::getSolvedCells(const CandidatesGrid &grid)
 {
    FieldBits result;

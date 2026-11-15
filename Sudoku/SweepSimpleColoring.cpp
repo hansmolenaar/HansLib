@@ -78,14 +78,14 @@ bool SweepSimpleColoring::removeTwiceInAUnit(CandidatesGrid &grid, Value value, 
 bool SweepSimpleColoring::removeOneColorEmptiesHouse(CandidatesGrid &grid, Value value, const ColorField &colors,
                                                      const FieldBits &cellsToIgnore)
 {
-   const FieldBits fieldsValue = CandidatesGrid::getActiveFieldsWithValue(grid, value);
+   FieldsInfo finfo(grid);
+   const FieldBits fieldsValue = finfo.getActiveFieldsWithValue(value);
    const auto cellsBlue = colors.getCellsWithColor(Color::Blue);
    const auto cellsGreen = colors.getCellsWithColor(Color::Green);
    const auto fieldsBlue = SudokuUtils::getFields(cellsBlue);
    const auto fieldsGreen = SudokuUtils::getFields(cellsGreen);
    const auto visibleFieldsBlue = Visiblity::getVisibleFields(fieldsBlue);
    const auto visibleFieldsGreen = Visiblity::getVisibleFields(fieldsGreen);
-   FieldsInfo finfo(grid);
    for (const House &house : House::getAllHouses())
    {
       const auto &fieldsInHouse = finfo.getHouseFields(house.houseId);

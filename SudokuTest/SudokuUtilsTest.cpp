@@ -111,20 +111,6 @@ TEST(SudokuUtilsTest, GetValue2Fields)
    ASSERT_EQ(v2f[8].size(), 2);
 }
 
-TEST(SudokuUtilsTest, GetNotSolvedCells)
-{
-   CandidatesGrid grid;
-   grid.setGiven(42, 4);
-   ASSERT_EQ(SudokuUtils::getNotSolvedCells(grid).count(), NumField - 1);
-   grid.setGiven(0, 5);
-   ASSERT_EQ(SudokuUtils::getNotSolvedCells(grid).count(), NumField - 2);
-   ASSERT_EQ(Bitset{SudokuUtils::getNotSolvedCells(grid)}.first(), 1);
-
-   grid = TestModels::getSolvedGrid();
-   const auto activeCells = SudokuUtils::getNotSolvedCells(grid);
-   ASSERT_TRUE(activeCells.none());
-}
-
 TEST(SudokuUtilsTest, GetSolvedCellsBitSet)
 {
    CandidatesGrid grid;
