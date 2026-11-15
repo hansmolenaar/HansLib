@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Cell.h"
-#include "FieldsCache.h"
+#include "FieldsInfo.h"
 #include "SudokuDefines.h"
 
 #include <span>
@@ -29,7 +29,7 @@ class LockedPair
 class LockedPairs
 {
  public:
-   explicit LockedPairs(FieldsCache &);
+   explicit LockedPairs(FieldsInfo &);
    std::span<const LockedPair> getPairs(Value) const;
 
  private:

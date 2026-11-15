@@ -42,18 +42,18 @@ std::ostream &operator<<(std::ostream &os, const Sudoku::LockedPair &lp)
 
 // Locked Pairs
 
-LockedPairs::LockedPairs(FieldsCache &cache)
+LockedPairs::LockedPairs(FieldsInfo &finfo)
 {
    for (const auto &house : House::getAllHouses())
    {
-      const FieldBits houseFields = cache.getHouseFields(house.houseId);
+      const FieldBits houseFields = finfo.getHouseFields(house.houseId);
       for (Value value : ValueAll)
       {
-         const auto &houseFieldsWithValue = houseFields & cache.getActiveFieldsWithValue(value);
+         const auto &houseFieldsWithValue = houseFields & finfo.getActiveFieldsWithValue(value);
          if (houseFieldsWithValue.count() == 2)
          {
             std::array<Field, 2> fieldPair;
-            FieldsCache::BitsToFields(houseFieldsWithValue, fieldPair.begin());
+            FieldsInfo::BitsToFields(houseFieldsWithValue, fieldPair.begin());
             m_lockedPairs[value].emplace_back(value, Cell::get(fieldPair[0]), Cell::get(fieldPair[1]));
          }
       }

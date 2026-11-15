@@ -1,11 +1,11 @@
 
-#include "FieldsCache.h"
+#include "FieldsInfo.h"
 #include "House.h"
 #include "SudokuDefines.h"
 
 using namespace Sudoku;
 
-FieldsCache::FieldsCache(const CandidatesGrid &grid) : m_grid(&grid)
+FieldsInfo::FieldsInfo(const CandidatesGrid &grid) : m_grid(&grid)
 {
    // Fields in House
    auto itr = m_fieldsInHouse.begin();
@@ -29,14 +29,14 @@ FieldsCache::FieldsCache(const CandidatesGrid &grid) : m_grid(&grid)
    }
 }
 
-FieldBits FieldsCache::getHouseFields(HouseId houseId)
+FieldBits FieldsInfo::getHouseFields(HouseId houseId)
 {
    const int houseType = static_cast<int>(houseId.houseType);
    const auto pos = houseType * NumIndex + houseId.houseIndex;
    return m_fieldsInHouse.at(pos);
 }
 
-FieldBits FieldsCache::getActiveFieldsWithValue(Value value)
+FieldBits FieldsInfo::getActiveFieldsWithValue(Value value)
 {
    return m_activeFieldswithValue.at(value);
 }

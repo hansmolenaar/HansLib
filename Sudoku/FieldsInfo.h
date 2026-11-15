@@ -9,10 +9,10 @@ namespace Sudoku
 
 struct HouseId;
 
-class FieldsCache
+class FieldsInfo
 {
  public:
-   explicit FieldsCache(const CandidatesGrid &grid);
+   explicit FieldsInfo(const CandidatesGrid &grid);
    FieldBits getHouseFields(HouseId);
    FieldBits getActiveFieldsWithValue(Value);
 
@@ -24,7 +24,7 @@ class FieldsCache
    std::array<FieldBits, NumValue + 1> m_activeFieldswithValue;
 };
 
-template <class OutputIt> void FieldsCache::BitsToFields(const FieldBits &fb, OutputIt itr)
+template <class OutputIt> void FieldsInfo::BitsToFields(const FieldBits &fb, OutputIt itr)
 {
    for (Field field : FieldAll)
    {

@@ -42,7 +42,7 @@ TEST(LockedPairsTest, Basics)
       grid.setGiven(8, c, valueToSet);
    }
 
-   FieldsCache cache(grid);
+   FieldsInfo cache(grid);
    const LockedPairs lps(cache);
 
    ASSERT_EQ(lps.getPairs(1).size(), 2);
@@ -65,7 +65,7 @@ TEST(LockedPairsTest, Count)
 
    auto grid = CandidatesGrid::FromString(puzzle);
    grid.update();
-   FieldsCache cache(grid);
+   FieldsInfo cache(grid);
    LockedPairs lps(cache);
    ASSERT_EQ(lps.getPairs(1).size(), 4);
    ASSERT_EQ(lps.getPairs(2).size(), 0);

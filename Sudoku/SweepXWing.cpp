@@ -80,8 +80,8 @@ std::optional<XWing> SweepXWing::isXWing(std::span<const LockedPair> candidatePa
 
 bool SweepXWing::sweep(CandidatesGrid &grid)
 {
-   FieldsCache cache(grid);
-   const LockedPairs lps(cache);
+   FieldsInfo finfo(grid);
+   const LockedPairs lps(finfo);
    for (Value value : ValueAll)
    {
       const auto lockedPairs = lps.getPairs(value);

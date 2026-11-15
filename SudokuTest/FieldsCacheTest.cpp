@@ -1,20 +1,20 @@
 #include <gtest/gtest.h>
 
 #include "CandidatesGrid.h"
-#include "FieldsCache.h"
+#include "FieldsInfo.h"
 #include "House.h"
 #include "SudokuDefines.h"
 
 using namespace Sudoku;
 
-TEST(FieldsCacheTest, GetHouseFields)
+TEST(FieldsInfoTest, GetHouseFields)
 {
    CandidatesGrid grid;
-   FieldsCache cache(grid);
+   FieldsInfo finfo(grid);
 
    for (const auto &house : House::getAllHouses())
    {
-      const FieldBits &fb = cache.getHouseFields(house.houseId);
+      const FieldBits &fb = finfo.getHouseFields(house.houseId);
       for (const auto &cell : house.cells)
       {
          ASSERT_TRUE(fb.test(cell.field));
