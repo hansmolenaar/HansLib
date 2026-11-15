@@ -1,6 +1,8 @@
 #include "CandidatesGrid.h"
+#include "BitsetUtils.h"
 #include "Cell.h"
 #include "Contains.h"
+#include "FieldsInfo.h"
 #include "House.h"
 #include "MyAssert.h"
 #include "StreamUtils.h"
@@ -9,7 +11,6 @@
 #include "SweepNakedSingle.h"
 
 #include <algorithm>
-#include <bitset>
 #include <iostream>
 #include <numeric>
 #include <string>
@@ -27,6 +28,7 @@ typedef std::array<std::string, NumBoxIndex> (*candidatesToStringsPtr)(const Can
 
 std::vector<std::string> ToStrings(const CandidatesGrid &grid, candidatesToStringsPtr fun)
 {
+   const FieldsInfo finfo(grid);
    std::vector<std::string> result;
    const std::string hsep = "*-----------------*-----------------*-----------------*";
    const std::string box_hsep_top_bot = "*******************************************************";
@@ -53,10 +55,11 @@ std::vector<std::string> ToStrings(const CandidatesGrid &grid, candidatesToStrin
       result.push_back({});
       result.push_back({});
 
-      const House &house = House::getRow(row);
-      for (const auto &cell : house.cells)
+      const HouseId houseId{HouseType::Row, row};
+      const auto house = finfo.getHouseFields(houseId);
+      for (Field field : FieldAll | std::views::filter(Bitset{house}))
       {
-         const Field field = cell.field;
+         const auto cell = Cell::get(field);
          const auto cstrings = fun(grid[field]);
 
          for (auto p : BoxIndexAll)

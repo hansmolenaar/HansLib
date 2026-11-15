@@ -5,6 +5,22 @@
 
 using namespace Sudoku;
 
+namespace
+{
+Field getFlatHouseId(HouseType houseType, Index index)
+{
+   const int flatType = static_cast<int>(houseType);
+   const auto pos = flatType * NumIndex + index;
+   return pos;
+}
+
+Field getFlatHouseId(HouseId houseId)
+{
+   return getFlatHouseId(houseId.houseType, houseId.houseIndex);
+}
+
+} // namespace
+
 FieldsInfo::FieldsInfo(const CandidatesGrid &grid) : m_grid(&grid)
 {
    // Fields in House
@@ -50,8 +66,7 @@ void FieldsInfo::update()
 
 FieldBits FieldsInfo::getHouseFields(HouseId houseId) const
 {
-   const int houseType = static_cast<int>(houseId.houseType);
-   const auto pos = houseType * NumIndex + houseId.houseIndex;
+   const auto pos = getFlatHouseId(houseId);
    return m_fieldsInHouse.at(pos);
 }
 
