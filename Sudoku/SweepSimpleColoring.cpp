@@ -133,11 +133,12 @@ bool SweepSimpleColoring::sweep(CandidatesGrid &grid, Value value)
    {
       return false;
    }
+   FieldsInfo finfo(grid);
    const auto networks = Network::create(links);
    for (const auto &network : networks)
    {
       const auto coloring = Network::setColors(network);
-      auto cellsInCurrectNetwork = SudokuUtils::getSolvedCells(grid);
+      auto cellsInCurrectNetwork = finfo.getSolvedFields();
       for (const auto &c : network.getCells())
       {
          cellsInCurrectNetwork.set(c.field);

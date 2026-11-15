@@ -55,3 +55,13 @@ TEST(FieldsInfoTest, GetNotSolvedCells)
    const auto activeCells = finfo.getActiveFields();
    ASSERT_TRUE(activeCells.none());
 }
+
+TEST(FieldsInfoTest, GetSolvedCellsBitSet)
+{
+   CandidatesGrid grid;
+   grid.setGiven(42, 4);
+   FieldsInfo finfo(grid);
+   const auto solvedCells = finfo.getSolvedFields();
+   ASSERT_EQ(solvedCells.count(), 1);
+   ASSERT_TRUE(solvedCells.test(42));
+}

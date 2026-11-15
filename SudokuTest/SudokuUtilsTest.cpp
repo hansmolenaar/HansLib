@@ -110,12 +110,3 @@ TEST(SudokuUtilsTest, GetValue2Fields)
    ASSERT_EQ(Utilities::Single(v2f[2]), 2);
    ASSERT_EQ(v2f[8].size(), 2);
 }
-
-TEST(SudokuUtilsTest, GetSolvedCellsBitSet)
-{
-   CandidatesGrid grid;
-   grid.setGiven(42, 4);
-   const auto solvedCells = SudokuUtils::getSolvedCells(grid);
-   ASSERT_EQ(solvedCells.count(), 1);
-   ASSERT_TRUE(solvedCells.test(42));
-}

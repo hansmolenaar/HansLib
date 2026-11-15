@@ -17,6 +17,7 @@ class FieldsInfo
    FieldBits getHouseFields(HouseId);
    FieldBits getActiveFieldsWithValue(Value);
    FieldBits getActiveFields();
+   FieldBits getSolvedFields();
 
    template <class OutputIt> static void BitsToFields(const FieldBits &fb, OutputIt itr);
 
@@ -25,6 +26,7 @@ class FieldsInfo
    std::array<FieldBits, NumHouse> m_fieldsInHouse;
    std::array<FieldBits, NumValue + 1> m_activeFieldswithValue;
    FieldBits m_activeFields;
+   FieldBits m_solvedFields;
 };
 
 template <class OutputIt> void FieldsInfo::BitsToFields(const FieldBits &fb, OutputIt itr)

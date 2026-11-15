@@ -48,19 +48,6 @@ FieldBits SudokuUtils::getNotSolvedCells(const CandidatesGrid &grid, std::span<c
    return result;
 }
 
-FieldBits SudokuUtils::getSolvedCells(const CandidatesGrid &grid)
-{
-   FieldBits result;
-   for (Field field : FieldAll)
-   {
-      if (grid[field].isSolved())
-      {
-         result.set(field);
-      }
-   }
-   return result;
-}
-
 ValueBits SudokuUtils::getSolvedValues(const CandidatesGrid &grid, std::span<const Cell> cells)
 {
    ValueBits result;

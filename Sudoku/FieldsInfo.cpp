@@ -25,7 +25,11 @@ void FieldsInfo::update()
    {
       const Field field = cell.field;
       const Candidates &candidates = (*m_grid)[field];
-      if (!candidates.isSolved())
+      if (candidates.isSolved())
+      {
+         m_solvedFields.set(field);
+      }
+      else
       {
          m_activeFields.set(field);
          for (Value value : candidates)
@@ -51,4 +55,9 @@ FieldBits FieldsInfo::getActiveFieldsWithValue(Value value)
 FieldBits FieldsInfo::getActiveFields()
 {
    return m_activeFields;
+}
+
+FieldBits FieldsInfo::getSolvedFields()
+{
+   return m_solvedFields;
 }
