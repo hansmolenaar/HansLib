@@ -18,6 +18,8 @@ class FieldsInfo
    FieldBits getActiveFieldsWithValue(Value) const;
    FieldBits getActiveFields() const;
    FieldBits getSolvedFields() const;
+   FieldBits getVisibleFields(Field) const;
+   FieldBits getAllVisibleFields(const FieldBits &) const;
 
    template <class OutputIt> static void BitsToFields(const FieldBits &fb, OutputIt itr);
 
@@ -25,6 +27,7 @@ class FieldsInfo
    // Immutable
    const CandidatesGrid *m_grid;
    std::array<FieldBits, NumHouse> m_fieldsInHouse;
+   std::array<FieldBits, NumField> m_visible;
 
    // Mutable
    std::array<FieldBits, NumValue + 1> m_activeFieldswithValue;

@@ -89,3 +89,31 @@ TEST(FieldsInfoTest, GetSolvedCells)
    auto range = FieldAll | std::views::filter(Bitset{activeFields});
    ASSERT_TRUE(std::equal(range.begin(), range.end(), expect.begin(), expect.end()));
 }
+
+TEST(FieldsInfoTest, GetVisibleFields)
+{
+   const CandidatesGrid grid = TestModels::getSolvedGrid();
+   FieldsInfo finfo(grid);
+
+   for (Field field : FieldAll)
+   {
+      const auto visible = finfo.getVisibleFields(field);
+      ASSERT_EQ(visible.count(), 20);
+      ASSERT_FALSE(visible.test(field));
+   }
+}
+
+TEST(FieldsInfoTest, GetAllVisibleFields)
+{
+   const CandidatesGrid grid = TestModels::getSolvedGrid();
+   FieldsInfo finfo(grid);
+   FieldBits cells;
+   cells.set(0);
+
+   FieldBits visibleFields = finfo.getAllVisibleFields(cells);
+   ASSERT_EQ(visibleFields.count(), 20);
+
+   cells.set(1);
+   visibleFields = finfo.getAllVisibleFields(cells);
+   ASSERT_EQ(visibleFields.count(), 27); // 6 new cells in column + cell(0)
+}

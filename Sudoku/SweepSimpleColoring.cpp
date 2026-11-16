@@ -84,8 +84,8 @@ bool SweepSimpleColoring::removeOneColorEmptiesHouse(CandidatesGrid &grid, Value
    const auto cellsGreen = colors.getCellsWithColor(Color::Green);
    const auto fieldsBlue = SudokuUtils::getFields(cellsBlue);
    const auto fieldsGreen = SudokuUtils::getFields(cellsGreen);
-   const auto visibleFieldsBlue = Visiblity::getVisibleFields(fieldsBlue);
-   const auto visibleFieldsGreen = Visiblity::getVisibleFields(fieldsGreen);
+   const auto visibleFieldsBlue = finfo.getAllVisibleFields(fieldsBlue);
+   const auto visibleFieldsGreen = finfo.getAllVisibleFields(fieldsGreen);
    for (const House &house : House::getAllHouses())
    {
       const auto &fieldsInHouse = finfo.getHouseFields(house.houseId);
