@@ -42,7 +42,10 @@ TEST(SweepSimpleColoringTest, BasicExample)
 {
    const Value value = 1;
    CandidatesGrid grid = getSimpleExample();
-   const auto links = SweepSimpleColoring::getBilocationLinks(grid, value);
+   FieldsInfo finfo(grid);
+   const auto links = SweepSimpleColoring::getBilocationLinks(grid, finfo, value);
+   finfo.update();
+
    ASSERT_EQ(links.size(), 4);
    const auto networks = Network::create(links);
    const auto network = Single(networks);
@@ -52,7 +55,6 @@ TEST(SweepSimpleColoringTest, BasicExample)
    Field expect = 701;
    ASSERT_EQ(grid.getNumCandidates(), expect);
    const FieldBits ignore;
-   const FieldsInfo finfo(grid);
    const bool anyChange = SweepSimpleColoring::removeSees2ColorsCandidates(grid, finfo, value, coloring, ignore);
    ASSERT_FALSE(anyChange);
 }
@@ -80,9 +82,10 @@ TEST(SweepSimpleColoringTest, TwiceInAUnit)
    const std::string str = "2..9.....8..5.3....547.6..2..8.....9.97...42.1.....3..3..1.589....8.2..3.....7..5";
    CandidatesGrid grid = CandidatesGrid::FromString(str);
    ISweep::iterate(*sweepCombined, grid);
+   FieldsInfo finfo(grid);
 
    const Value value = 4; // 6
-   const auto links = SweepSimpleColoring::getBilocationLinks(grid, value);
+   const auto links = SweepSimpleColoring::getBilocationLinks(grid, finfo, value);
 
    const auto networks = Network::create(links);
    bool anyChange = false;
@@ -187,7 +190,8 @@ TEST(SweepSimpleColoringTest, SingleColorEmptiesHouseExample1)
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
    const Value value = 6;
-   const auto links = SweepSimpleColoring::getBilocationLinks(grid, value);
+   const FieldsInfo finfo(grid);
+   const auto links = SweepSimpleColoring::getBilocationLinks(grid, finfo, value);
 
    const auto networks = Network::create(links);
    ASSERT_EQ(networks.size(), 4);
@@ -278,7 +282,8 @@ TEST(SweepSimpleColoringTest, SingleColorEmptiesHouseExample2)
    Field expect = 137;
    ASSERT_EQ(grid.getNumCandidates(), expect);
    const Value value = 2;
-   const auto links = SweepSimpleColoring::getBilocationLinks(grid, value);
+   const FieldsInfo finfo(grid);
+   const auto links = SweepSimpleColoring::getBilocationLinks(grid, finfo, value);
 
    const auto networks = Network::create(links);
    ASSERT_EQ(networks.size(), 1);

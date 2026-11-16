@@ -9,22 +9,22 @@
 #include "UniqueSorted.h"
 #include "Visibility.h"
 #include <algorithm>
-#include <iterator>
-#include <ranges>
 
 using namespace Sudoku;
 using namespace Utilities;
 
-std::vector<Link> SweepSimpleColoring::getBilocationLinks(const CandidatesGrid &grid, Value value)
+std::vector<Link> SweepSimpleColoring::getBilocationLinks(const CandidatesGrid &grid, const FieldsInfo &finfo,
+                                                          Value value)
 {
    std::vector<Link> result;
-   for (const House &house : House::getAllHouses())
+   for (HouseId houseId : House::getAllHouseIds())
    {
-      const auto value2fields = SudokuUtils::getValue2Fields(grid, std::span(house.cells));
-      const auto &fields = value2fields[value];
-      if (fields.size() == 2)
+      const auto fields = finfo.getHouseFields(houseId) & finfo.getActiveFieldsWithValue(value);
+      if (fields.count() == 2)
       {
-         result.emplace_back(Cell::get(fields.front()), Cell::get(fields.back()), LinkType::Strong);
+         std::array<Field, 2> fieldPair;
+         FieldsInfo::BitsToFields(fields, fieldPair.begin());
+         result.emplace_back(Cell::get(fieldPair[0]), Cell::get(fieldPair[1]), LinkType::Strong);
       }
    }
 
@@ -125,12 +125,12 @@ bool SweepSimpleColoring::removeOneColorEmptiesHouse(CandidatesGrid &grid, Value
 
 bool SweepSimpleColoring::sweep(CandidatesGrid &grid, Value value)
 {
-   const auto links = getBilocationLinks(grid, value);
+   const FieldsInfo finfo(grid);
+   const auto links = getBilocationLinks(grid, finfo, value);
    if (links.empty())
    {
       return false;
    }
-   FieldsInfo finfo(grid);
    const auto networks = Network::create(links);
    for (const auto &network : networks)
    {
