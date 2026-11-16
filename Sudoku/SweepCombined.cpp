@@ -82,7 +82,8 @@ bool SweepCombined::sweep(CandidatesGrid &grid)
    for (auto *s : m_sweepers)
    {
       anyChange = s->sweep(grid);
-      // Stop after first change, and iterate
+      // Stop after first change, and iterate.
+      // Notice that we go back to SweepNakedSingle
       if (anyChange)
       {
          break;

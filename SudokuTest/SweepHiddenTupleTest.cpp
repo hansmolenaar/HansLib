@@ -45,7 +45,7 @@ TEST(SweepHidddenTupleTest, Pair)
 
    anyChange = SweepHiddenTuple::sweep(grid, 2);
    ASSERT_TRUE(anyChange);
-   expect -= 8;
+   expect -= 32;
    ASSERT_EQ(grid.getNumCandidates(), expect);
 }
 
@@ -81,15 +81,15 @@ TEST(SweepHidddenTupleTest, SweepExample1)
    ASSERT_EQ(grid.getNumCandidates(), 260);
 
    SweepHiddenSingle().sweep(grid);
-   ASSERT_EQ(grid.getNumCandidates(), 233);
+   ASSERT_EQ(grid.getNumCandidates(), 123);
 
    while (SweepHiddenSingle().sweep(grid))
    {
    }
-   ASSERT_EQ(grid.getNumCandidates(), 218);
+   ASSERT_EQ(grid.getNumCandidates(), 81);
 
    grid.update();
-   ASSERT_EQ(grid.getNumCandidates(), 149);
+   ASSERT_EQ(grid.getNumCandidates(), 81);
 }
 
 TEST(SweepHidddenTupleTest, BasicExamplePair)

@@ -86,7 +86,11 @@ bool SweepHiddenTuple::sweep(CandidatesGrid &grid, Index size)
    bool anyChange = false;
    for (const House &house : House::getAllHouses())
    {
-      anyChange |= sweepHouse(grid, house, size);
+      if (sweepHouse(grid, house, size))
+      {
+         anyChange = true;
+         grid.update();
+      }
    }
    return anyChange;
 }

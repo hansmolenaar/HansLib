@@ -11,8 +11,8 @@
 #include "SudokuUtils.h"
 #include "UniqueSorted.h"
 #include "Visibility.h"
+
 #include <algorithm>
-#include <iostream>
 #include <string>
 
 using namespace Sudoku;
