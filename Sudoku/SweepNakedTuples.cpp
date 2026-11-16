@@ -84,7 +84,11 @@ bool SweepNakedTuples::sweepHousesOfType(CandidatesGrid &grid, FieldsInfo &finfo
    for (Index idx : IndexAll)
    {
       houseId.houseIndex = idx;
-      anyChange |= sweepHouse(grid, finfo, houseId, tupleSize);
+      if (sweepHouse(grid, finfo, houseId, tupleSize))
+      {
+         anyChange = true;
+         grid.update();
+      }
    }
    return anyChange;
 }
@@ -96,7 +100,7 @@ bool SweepNakedTuples::sweep(CandidatesGrid &grid, Index tupleSize)
    for (HouseType type : HouseTypeAll)
    {
       anyChange |= sweepHousesOfType(grid, finfo, type, tupleSize);
-   };
+   }
    return anyChange;
 }
 
@@ -109,7 +113,7 @@ bool SweepNakedPairs::sweep(CandidatesGrid &grid)
    for (HouseType type : HouseTypeAll)
    {
       anyChange |= SweepNakedTuples::sweepHousesOfType(grid, finfo, type, 2);
-   };
+   }
    return anyChange;
 }
 
@@ -122,7 +126,7 @@ bool SweepNakedTriplet::sweep(CandidatesGrid &grid)
    for (HouseType type : HouseTypeAll)
    {
       anyChange |= SweepNakedTuples::sweepHousesOfType(grid, finfo, type, 3);
-   };
+   }
    return anyChange;
 }
 
@@ -135,6 +139,6 @@ bool SweepNakedQuartet::sweep(CandidatesGrid &grid)
    for (HouseType type : HouseTypeAll)
    {
       anyChange |= SweepNakedTuples::sweepHousesOfType(grid, finfo, type, 4);
-   };
+   }
    return anyChange;
 }

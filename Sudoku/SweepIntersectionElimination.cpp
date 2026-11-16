@@ -77,7 +77,11 @@ bool SweepIntersectionElimination::sweep(CandidatesGrid &grid)
    bool anyChange = false;
    for (const auto &house : House::getAllHouses())
    {
-      anyChange |= SweepHouse(grid, house);
+      if (SweepHouse(grid, house))
+      {
+         anyChange = true;
+         grid.update();
+      }
    }
    return anyChange;
 };

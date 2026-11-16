@@ -72,7 +72,7 @@ TEST(SweepIntersectionElimination, PointingPairCol)
    ASSERT_EQ(grid.getNumCandidates(), expect);
    auto retval = SweepIntersectionElimination().sweep(grid);
    ASSERT_TRUE(retval);
-   expect -= 6;
+   expect -= 42;
    ASSERT_EQ(grid.getNumCandidates(), expect);
 }
 
@@ -94,7 +94,7 @@ TEST(SweepIntersectionElimination, PointingPairRow)
    ASSERT_EQ(grid.getNumCandidates(), expect);
    auto retval = SweepIntersectionElimination().sweep(grid);
    ASSERT_TRUE(retval);
-   expect -= 12;
+   expect -= 72;
    ASSERT_EQ(grid.getNumCandidates(), expect);
 }
 
@@ -125,7 +125,7 @@ TEST(SweepIntersectionElimination, BoxLine)
    const auto retval = SweepIntersectionElimination().sweep(grid);
    // std::cout << CandidatesGrid::DifferenceToStrings(prv, grid) << "\n";
    ASSERT_TRUE(retval);
-   expect -= 18;
+   expect -= 84;
    ASSERT_EQ(grid.getNumCandidates(), expect);
    ASSERT_FALSE(grid[Cell::getFromRowCol(1, 4).field].contains(2));
    ASSERT_FALSE(grid[Cell::getFromRowCol(2, 3).field].contains(2));
