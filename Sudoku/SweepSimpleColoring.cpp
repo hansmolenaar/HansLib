@@ -25,7 +25,7 @@ std::vector<Link> SweepSimpleColoring::getBilocationLinks(const CandidatesGrid &
    for (const House &house : House::getAllHouses())
    {
       const auto houseBits = finfo.getHouseFields(house.houseId);
-      const auto fieldBits = houseBits & finfo.getFieldsWithValue(value); // TODO getActiveFields ???
+      const auto fieldBits = houseBits & finfo.getActiveFieldsWithValue(value);
 
       if (fieldBits.count() == 2)
       {
@@ -172,7 +172,11 @@ bool SweepSimpleColoring::sweep(CandidatesGrid &grid)
    bool anyChange = false;
    for (Value value : ValueAll)
    {
-      anyChange |= sweep(grid, value);
+      if (sweep(grid, value))
+      {
+         anyChange = true;
+         grid.update();
+      }
    }
    return anyChange;
 }

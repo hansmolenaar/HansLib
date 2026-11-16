@@ -133,14 +133,14 @@ ValueBits Candidates::getValues() const
 
 std::ostream &operator<<(std::ostream &os, const Sudoku::Candidates &candidates)
 {
-   os << "Candidates: ";
+   os << "Candidates (";
    for (Value value : ValueAll)
    {
       if (candidates.contains(value))
       {
          os << std::to_string(value) << " ";
       }
-      os << "\n";
    }
+   os << ")";
    return os;
 }
