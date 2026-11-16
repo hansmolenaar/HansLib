@@ -127,13 +127,17 @@ bool CandidatesGrid::setCandidates(Index row, Index col, std::initializer_list<V
 
 bool CandidatesGrid::removeCandidate(Field field, Value value)
 {
-#if false
-   if (field == 76 && value == 5)
-   {
-      std::cout << *this;
-   }
-#endif
    return m_candidates.at(field).removeCandidate(value);
+}
+
+bool CandidatesGrid::removeCandidateFromFields(const FieldBits &fields, Value value)
+{
+   bool anyChange = false;
+   for (Field field : FieldAll | std::views::filter(Bitset{fields}))
+   {
+      anyChange |= removeCandidate(field, value);
+   }
+   return anyChange;
 }
 
 void CandidatesGrid::setGiven(Field field, Value value)

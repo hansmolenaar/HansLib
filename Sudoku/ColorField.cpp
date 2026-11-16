@@ -79,6 +79,18 @@ std::vector<Cell> ColorField::getCellsWithColor(Color color) const
    return result;
 }
 
+FieldBits ColorField::getFieldsWithColor(Color color) const
+{
+   if (color == Color::Blue)
+   {
+      return m_isBlue;
+   }
+   else
+   {
+      return m_isGreen;
+   }
+}
+
 std::ostream &operator<<(std::ostream &os, const Sudoku::ColorField &coloring)
 {
    for (Color color : ColorAll)

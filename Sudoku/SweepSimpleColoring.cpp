@@ -32,21 +32,18 @@ std::vector<Link> SweepSimpleColoring::getBilocationLinks(const CandidatesGrid &
    return result;
 }
 
-bool SweepSimpleColoring::removeSees2ColorsCandidates(CandidatesGrid &grid, Value value, const ColorField &colors,
-                                                      const FieldBits &cellsToIgnore)
+bool SweepSimpleColoring::removeSees2ColorsCandidates(CandidatesGrid &grid, const FieldsInfo &finfo, Value value,
+                                                      const ColorField &colors, const FieldBits &cellsToIgnore)
 
 {
-   const auto cellsGreen = colors.getCellsWithColor(Color::Green);
-   const auto cellsBlue = colors.getCellsWithColor(Color::Blue);
+   const auto cellsGreen = colors.getFieldsWithColor(Color::Green);
+   const auto cellsBlue = colors.getFieldsWithColor(Color::Blue);
 
-   const std::vector<Cell> seesGreen = Visiblity::getVisibleCells(cellsGreen);
-   const std::vector<Cell> seesBlue = Visiblity::getVisibleCells(cellsBlue);
-   std::vector<Cell> seesBoth;
-   std::set_intersection(seesGreen.begin(), seesGreen.end(), seesBlue.begin(), seesBlue.end(),
-                         std::back_inserter(seesBoth));
-   auto useCell = [&cellsToIgnore](const Cell &c) { return !cellsToIgnore.test(c.field); };
-   auto activeCells = seesBoth | std::views::filter(useCell);
-   const bool anyChange = grid.RemoveCandidate(value, activeCells);
+   const auto seesBlue = finfo.getAllVisibleFields(cellsBlue);
+   const auto seesGreen = finfo.getAllVisibleFields(cellsGreen);
+   auto useFields = seesBlue & seesGreen;
+   useFields &= ~cellsToIgnore;
+   const bool anyChange = grid.removeCandidateFromFields(useFields, value);
    return anyChange;
 }
 
@@ -144,7 +141,7 @@ bool SweepSimpleColoring::sweep(CandidatesGrid &grid, Value value)
          cellsInCurrectNetwork.set(c.field);
       }
 
-      if (SweepSimpleColoring::removeSees2ColorsCandidates(grid, value, coloring, cellsInCurrectNetwork))
+      if (SweepSimpleColoring::removeSees2ColorsCandidates(grid, finfo, value, coloring, cellsInCurrectNetwork))
       {
          // Better start from scratch
          return true;

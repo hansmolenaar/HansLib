@@ -17,6 +17,7 @@ class CandidatesGrid
    bool setCandidates(Field, std::initializer_list<Value>);
    bool setCandidates(Index, Index, std::initializer_list<Value>);
    bool removeCandidate(Field, Value);
+   bool removeCandidateFromFields(const FieldBits &, Value);
    void update();                 // set candidates from givens
    void checkValidSudoku() const; // throws if not valid
    bool isSolved() const;

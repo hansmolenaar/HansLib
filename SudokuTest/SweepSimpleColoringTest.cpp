@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "CandidatesGrid.h"
+#include "FieldsInfo.h"
 #include "ISweep.h"
 #include "Network.h"
 #include "Single.h"
@@ -51,7 +52,8 @@ TEST(SweepSimpleColoringTest, BasicExample)
    Field expect = 701;
    ASSERT_EQ(grid.getNumCandidates(), expect);
    const FieldBits ignore;
-   const bool anyChange = SweepSimpleColoring::removeSees2ColorsCandidates(grid, value, coloring, ignore);
+   const FieldsInfo finfo(grid);
+   const bool anyChange = SweepSimpleColoring::removeSees2ColorsCandidates(grid, finfo, value, coloring, ignore);
    ASSERT_FALSE(anyChange);
 }
 

@@ -35,7 +35,8 @@ class ColorField
    bool empty() const;
    bool hasColor(Field) const;
    bool hasColor(const Cell &) const;
-   std::vector<Cell> getCellsWithColor(Color) const;
+   std::vector<Cell> getCellsWithColor(Color) const; // TODO remove me
+   FieldBits getFieldsWithColor(Color) const;
 
  private:
    FieldBits m_isBlue;

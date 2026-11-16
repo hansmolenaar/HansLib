@@ -79,14 +79,3 @@ boost::container::static_vector<HouseType, 2> Visiblity::areVisibleVia(const Cel
    }
    return result;
 }
-
-std::vector<Cell> Visiblity::getVisibleCells(std::span<const Cell> cells)
-{
-   std::vector<Cell> result;
-   for (const auto &cell : cells)
-   {
-      str::copy(getVisibleCells(cell), std::back_inserter(result));
-   }
-   UniqueSorted(result);
-   return result;
-}
