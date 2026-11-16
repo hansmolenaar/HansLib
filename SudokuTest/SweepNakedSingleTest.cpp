@@ -1,11 +1,14 @@
 #include <gtest/gtest.h>
 
+#include "BitsetUtils.h"
 #include "CandidatesGrid.h"
 #include "Cell.h"
+#include "FieldsInfo.h"
 #include "House.h"
 #include "SweepNakedSingle.h"
 
 using namespace Sudoku;
+using namespace Utilities;
 
 TEST(SweepNakedSingleTest, RowSimple)
 {
@@ -42,17 +45,18 @@ TEST(SweepNakedSingleTest, BoxSimple)
 {
    const Index row = 6;
    const Index col = 3;
-   const Cell cell(Cell::rowCol2Field(row, col));
-   const House &house = House::getBox(cell.box);
-   const Field fieldToSkip = house.cells[3].field;
    CandidatesGrid grid;
+   const FieldsInfo finfo(grid);
+   const Cell cell(Cell::rowCol2Field(row, col));
+   const auto house = finfo.getHouseFields(HouseId{HouseType::Box, cell.box});
+   const Field fieldToSkip = *(FieldAll | std::views::filter(Bitset{house}) | std::views::drop(2)).begin();
    Value val = 0;
-   for (const Cell &c : house.cells)
+   for (Field field : FieldAll | std::views::filter(Bitset{house}))
    {
-      if (c.field != fieldToSkip)
+      if (field != fieldToSkip)
       {
          ++val;
-         grid.setGiven(c.field, val);
+         grid.setGiven(field, val);
       }
    }
 

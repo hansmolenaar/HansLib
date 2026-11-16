@@ -15,8 +15,6 @@
 using namespace Sudoku;
 using namespace Utilities;
 
-namespace str = std::ranges;
-
 bool Visiblity::areVisible(const Cell &cell0, const Cell &cell1)
 {
    if (cell0.field == cell1.field)
@@ -29,35 +27,6 @@ bool Visiblity::areVisible(const Cell &cell0, const Cell &cell1)
 bool Visiblity::areVisible(Field field0, Field field1)
 {
    return areVisible(Cell::get(field0), Cell::get(field1));
-}
-
-std::span<const Cell> Visiblity::getVisibleCells(const Cell &cell)
-{
-   static bool isSet = false;
-   static std::array<std::array<Cell, NumVisibleCellls>, NumField> visibleCells;
-   if (!isSet)
-   {
-      for (auto field : FieldAll)
-      {
-         std::vector<Cell> work(3 * (NumCellsInHouse - 1));
-         const Cell &cell = Cell::get(field);
-         const Functors::IsNotEqualTo<Cell> isNotEqualTo{cell};
-         std::array<HouseId, 3> visibleHouses = {HouseId{HouseType::Row, cell.row}, HouseId{HouseType::Col, cell.col},
-                                                 HouseId{HouseType::Box, cell.box}};
-         auto itr = work.begin();
-         for (auto houseId : visibleHouses)
-         {
-            str::copy_if(House::getHouse(houseId).cells, itr, isNotEqualTo);
-            itr += (NumCellsInHouse - 1);
-         }
-         UniqueSorted(work);
-         MyAssert(work.size() == NumVisibleCellls);
-         str::copy(work, visibleCells[field].begin());
-      }
-      isSet = true;
-   }
-
-   return visibleCells[cell.field];
 }
 
 boost::container::static_vector<HouseType, 2> Visiblity::areVisibleVia(const Cell &cell0, const Cell &cell1)
