@@ -15,6 +15,7 @@ class FieldsInfo
    explicit FieldsInfo(const CandidatesGrid &grid);
    void update();
    FieldBits getHouseFields(HouseId) const;
+   FieldBits getFieldsWithValue(Value) const;
    FieldBits getActiveFieldsWithValue(Value) const;
    FieldBits getActiveFields() const;
    FieldBits getSolvedFields() const;
@@ -31,6 +32,7 @@ class FieldsInfo
 
    // Mutable
    std::array<FieldBits, NumValue + 1> m_activeFieldswithValue;
+   std::array<FieldBits, NumValue + 1> m_fieldswithValue;
    FieldBits m_activeFields;
    FieldBits m_solvedFields;
 };

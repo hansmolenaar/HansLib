@@ -3,6 +3,7 @@
 #include "MyAssert.h"
 
 #include <algorithm>
+#include <ostream>
 #include <string>
 
 using namespace Sudoku;
@@ -128,4 +129,18 @@ ValueBits Candidates::getValues() const
       result.set(value);
    }
    return result;
+}
+
+std::ostream &operator<<(std::ostream &os, const Sudoku::Candidates &candidates)
+{
+   os << "Candidates: ";
+   for (Value value : ValueAll)
+   {
+      if (candidates.contains(value))
+      {
+         os << std::to_string(value) << " ";
+      }
+      os << "\n";
+   }
+   return os;
 }

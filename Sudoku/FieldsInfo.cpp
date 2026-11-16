@@ -56,6 +56,10 @@ void FieldsInfo::update()
    for (auto itr : m_activeFieldswithValue)
    {
       itr.reset();
+      for (auto itr : m_fieldswithValue)
+      {
+         itr.reset();
+      }
    }
 
    // ... refill
@@ -74,6 +78,11 @@ void FieldsInfo::update()
          {
             m_activeFieldswithValue[value].set(field);
          }
+      }
+
+      for (Value value : candidates)
+      {
+         m_fieldswithValue[value].set(field);
       }
    }
 }
@@ -112,4 +121,9 @@ FieldBits FieldsInfo::getActiveFields() const
 FieldBits FieldsInfo::getSolvedFields() const
 {
    return m_solvedFields;
+}
+
+FieldBits FieldsInfo::getFieldsWithValue(Value value) const
+{
+   return m_fieldswithValue.at(value);
 }

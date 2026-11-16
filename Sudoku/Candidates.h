@@ -107,3 +107,5 @@ class Candidates
    boost::container::static_vector<Value, NumIndex> m_candidates = {1, 2, 3, 4, 5, 6, 7, 8, 9};
 };
 } // namespace Sudoku
+
+std::ostream &operator<<(std::ostream &, const Sudoku::Candidates &);

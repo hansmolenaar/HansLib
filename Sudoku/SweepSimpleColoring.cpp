@@ -1,29 +1,36 @@
 #include "SweepSimpleColoring.h"
+#include "BitsetUtils.h"
 #include "CandidatesGrid.h"
 #include "ColorField.h"
 #include "FieldsInfo.h"
 #include "House.h"
 #include "MyAssert.h"
 #include "Network.h"
+#include "StreamUtils.h"
+#include "SudokuDefines.h"
 #include "SudokuUtils.h"
 #include "UniqueSorted.h"
 #include "Visibility.h"
 #include <algorithm>
+#include <iostream>
+#include <string>
 
 using namespace Sudoku;
 using namespace Utilities;
 
-std::vector<Link> SweepSimpleColoring::getBilocationLinks(const CandidatesGrid &grid, const FieldsInfo &finfo,
-                                                          Value value)
+std::vector<Link> SweepSimpleColoring::getBilocationLinks(const CandidatesGrid &grid, FieldsInfo finfo, Value value)
 {
+   finfo.update();
    std::vector<Link> result;
-   for (HouseId houseId : House::getAllHouseIds())
+   for (const House &house : House::getAllHouses())
    {
-      const auto fields = finfo.getHouseFields(houseId) & finfo.getActiveFieldsWithValue(value);
-      if (fields.count() == 2)
+      const auto houseBits = finfo.getHouseFields(house.houseId);
+      const auto fieldBits = houseBits & finfo.getFieldsWithValue(value); // TODO getActiveFields ???
+
+      if (fieldBits.count() == 2)
       {
          std::array<Field, 2> fieldPair;
-         FieldsInfo::BitsToFields(fields, fieldPair.begin());
+         FieldsInfo::BitsToFields(fieldBits, fieldPair.begin());
          result.emplace_back(Cell::get(fieldPair[0]), Cell::get(fieldPair[1]), LinkType::Strong);
       }
    }
