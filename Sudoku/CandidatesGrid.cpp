@@ -160,6 +160,7 @@ void CandidatesGrid::update()
 
 void CandidatesGrid::checkValidSudoku() const
 {
+   const FieldsInfo finfo(*this);
    // Check if value within bounds
    constexpr Value lwr = ValueAll.front();
    constexpr Value upr = ValueAll.back();
@@ -173,25 +174,24 @@ void CandidatesGrid::checkValidSudoku() const
    }
 
    // Check rule of 1
-   for (const auto &house : House::getAllHouses())
+   for (const auto &house : House::getAllHouseIds())
    {
       ValueBits isUsed;
       ValueBits isSolved;
-      for (const auto &cell : house.cells)
+      for (Field field : FieldAll | std::views::filter(Bitset{finfo.getHouseFields(house)}))
       {
-         const auto value = (*this)[cell.field].tryGetSolvedValue();
+         const auto value = (*this)[field].tryGetSolvedValue();
          if (value.has_value())
          {
             // MyAssert(!isUsed.test(value.value()));
             MyAssert(!isSolved.test(value.value()), "checkValidSudoku solved value " + std::to_string(*value) +
-                                                        " specified at least twice in house " +
-                                                        House::toString(house.houseId));
+                                                        " specified at least twice in house " + House::toString(house));
             isUsed.set(value.value());
             isSolved.set(value.value());
          }
          else
          {
-            isUsed |= (*this)[cell.field].getValues();
+            isUsed |= (*this)[field].getValues();
          }
       }
       MyAssert(isUsed.count() == NumValue, "checkValidSudoku candidate missing in house");

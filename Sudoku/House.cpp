@@ -1,5 +1,6 @@
 #include "House.h"
 #include "MyAssert.h"
+#include "SudokuDefines.h"
 
 #include <algorithm>
 #include <ostream>
@@ -99,6 +100,23 @@ const std::vector<House> &House::getAllHouses()
       MyAssert(housesAll.size() == NumHouse);
    }
    return housesAll;
+}
+
+const std::array<HouseId, NumHouse> &House::getAllHouseIds()
+{
+   constexpr static std::array<HouseId, NumHouse> s_allHouseIds = {
+       HouseId{HouseType::Row, 0}, HouseId{HouseType::Row, 1}, HouseId{HouseType::Row, 2},
+       HouseId{HouseType::Row, 3}, HouseId{HouseType::Row, 4}, HouseId{HouseType::Row, 5},
+       HouseId{HouseType::Row, 6}, HouseId{HouseType::Row, 7}, HouseId{HouseType::Row, 8},
+
+       HouseId{HouseType::Col, 0}, HouseId{HouseType::Col, 1}, HouseId{HouseType::Col, 2},
+       HouseId{HouseType::Col, 3}, HouseId{HouseType::Col, 4}, HouseId{HouseType::Col, 5},
+       HouseId{HouseType::Col, 6}, HouseId{HouseType::Col, 7}, HouseId{HouseType::Col, 8},
+
+       HouseId{HouseType::Box, 0}, HouseId{HouseType::Box, 1}, HouseId{HouseType::Box, 2},
+       HouseId{HouseType::Box, 3}, HouseId{HouseType::Box, 4}, HouseId{HouseType::Box, 5},
+       HouseId{HouseType::Box, 6}, HouseId{HouseType::Box, 7}, HouseId{HouseType::Box, 8}};
+   return s_allHouseIds;
 }
 
 bool CellInHouse::operator()(const Cell &cell) const
