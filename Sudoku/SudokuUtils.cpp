@@ -94,3 +94,13 @@ FieldBits SudokuUtils::getFields(std::span<const Cell> cells)
    }
    return result;
 }
+
+FieldBits SudokuUtils::getFields(std::span<const Field> fields)
+{
+   FieldBits result;
+   for (auto f : fields)
+   {
+      result.set(f);
+   }
+   return result;
+}

@@ -22,6 +22,7 @@ Value2Fields getValue2Fields(const CandidatesGrid &, std::span<Field>);
 Value2Fields getValue2Fields(const CandidatesGrid &, std::span<const Cell>);
 
 FieldBits getFields(std::span<const Cell>);
+FieldBits getFields(std::span<const Field>);
 
 } // namespace SudokuUtils
 } // namespace Sudoku

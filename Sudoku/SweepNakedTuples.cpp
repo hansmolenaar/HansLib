@@ -3,6 +3,7 @@
 #include "CandidatesGrid.h"
 #include "Combinations.h"
 #include "Contains.h"
+#include "FieldsInfo.h"
 #include "House.h"
 #include "SudokuDefines.h"
 #include "SudokuUtils.h"
@@ -17,15 +18,19 @@ namespace str = std::ranges;
 namespace
 {
 
-bool RemoveCandidates(CandidatesGrid &grid, const House &house, std::span<const Field> candidateTuple)
+bool RemoveCandidates(CandidatesGrid &grid, const FieldBits &house, std::span<const Field> candidateTuple)
 {
    const auto candidatesToRemove = CandidatesGrid::getValuesInFields(grid, candidateTuple);
    boost::container::static_vector<Value, NumValue> valuesToRemove(candidatesToRemove.count());
    str::copy_if(ValueAll, valuesToRemove.begin(), Bitset{candidatesToRemove});
 
-   auto cellNotInCandidateTuple = [&candidateTuple](const Cell &cell) { return !Contains(candidateTuple, cell.field); };
-   auto cells = house.cells | std::views::filter(cellNotInCandidateTuple);
-   return grid.RemoveCandidates(valuesToRemove, cells);
+   const auto fields = house & ~SudokuUtils::getFields(candidateTuple);
+   bool anyChange = false;
+   for (Value value : valuesToRemove)
+   {
+      anyChange |= grid.removeCandidateFromFields(fields, value);
+   }
+   return anyChange;
 }
 
 bool IsNakedTuple(const CandidatesGrid &grid, const std::vector<Field> &candidateTuple)
@@ -36,17 +41,19 @@ bool IsNakedTuple(const CandidatesGrid &grid, const std::vector<Field> &candidat
 
 } // namespace
 
-bool SweepNakedTuples::sweepHouse(CandidatesGrid &grid, const House &house, Index tupleSize)
+bool SweepNakedTuples::sweepHouse(CandidatesGrid &grid, const FieldsInfo &finfo, HouseId houseId, Index tupleSize)
 
 {
    bool anyChange = false;
 
+   const FieldBits house = finfo.getHouseFields(houseId);
+   const FieldBits fields = house & finfo.getActiveFields();
    std::vector<Field> activeFields;
-   for (Cell cell : house.cells)
+   for (Field field : FieldAll | std::views::filter(Bitset{fields}))
    {
-      if (!grid[cell.field].isSolved() && grid[cell.field].size() <= tupleSize)
+      if (grid[field].size() <= tupleSize)
       {
-         activeFields.push_back(cell.field);
+         activeFields.push_back(field);
       }
    }
 
@@ -67,60 +74,64 @@ bool SweepNakedTuples::sweepHouse(CandidatesGrid &grid, const House &house, Inde
    return anyChange;
 }
 
-bool SweepNakedTuples::sweepHousesOfType(CandidatesGrid &grid, HouseType type, Index tupleSize)
+bool SweepNakedTuples::sweepHousesOfType(CandidatesGrid &grid, const FieldsInfo &finfo, HouseType type, Index tupleSize)
 {
    bool anyChange = false;
    HouseId houseId{type, IndexUndefined};
    for (Index idx : IndexAll)
    {
       houseId.houseIndex = idx;
-      anyChange |= sweepHouse(grid, House::getHouse(houseId), tupleSize);
+      anyChange |= sweepHouse(grid, finfo, houseId, tupleSize);
    }
    return anyChange;
 }
 
-bool SweepNakedTuples::sweep(CandidatesGrid &cg, Index tupleSize)
+bool SweepNakedTuples::sweep(CandidatesGrid &grid, Index tupleSize)
 {
+   const FieldsInfo finfo(grid);
    bool anyChange = false;
    for (HouseType type : HouseTypeAll)
    {
-      anyChange |= sweepHousesOfType(cg, type, tupleSize);
+      anyChange |= sweepHousesOfType(grid, finfo, type, tupleSize);
    };
    return anyChange;
 }
 
 // ***************************************************************
 
-bool SweepNakedPairs::sweep(CandidatesGrid &cg)
+bool SweepNakedPairs::sweep(CandidatesGrid &grid)
 {
+   const FieldsInfo finfo(grid);
    bool anyChange = false;
    for (HouseType type : HouseTypeAll)
    {
-      anyChange |= SweepNakedTuples::sweepHousesOfType(cg, type, 2);
+      anyChange |= SweepNakedTuples::sweepHousesOfType(grid, finfo, type, 2);
    };
    return anyChange;
 }
 
 // ***************************************************************
 
-bool SweepNakedTriplet::sweep(CandidatesGrid &cg)
+bool SweepNakedTriplet::sweep(CandidatesGrid &grid)
 {
+   const FieldsInfo finfo(grid);
    bool anyChange = false;
    for (HouseType type : HouseTypeAll)
    {
-      anyChange |= SweepNakedTuples::sweepHousesOfType(cg, type, 3);
+      anyChange |= SweepNakedTuples::sweepHousesOfType(grid, finfo, type, 3);
    };
    return anyChange;
 }
 
 // ***************************************************************
 
-bool SweepNakedQuartet::sweep(CandidatesGrid &cg)
+bool SweepNakedQuartet::sweep(CandidatesGrid &grid)
 {
+   const FieldsInfo finfo(grid);
    bool anyChange = false;
    for (HouseType type : HouseTypeAll)
    {
-      anyChange |= SweepNakedTuples::sweepHousesOfType(cg, type, 4);
+      anyChange |= SweepNakedTuples::sweepHousesOfType(grid, finfo, type, 4);
    };
    return anyChange;
 }
