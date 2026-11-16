@@ -33,14 +33,12 @@ TEST(SweepNakedTuplesTest, SweepNakedPair_1)
    ASSERT_FALSE(value0.has_value());
    FieldsInfo finfo(grid);
    SweepNakedTuples::sweepHouse(grid, finfo, HouseId{HouseType::Row, 1}, 2);
-   finfo.update();
 
    expectNumCandidates -= 2 * 6;
    ASSERT_EQ(grid.getNumCandidates(), expectNumCandidates); // Remainer of row removed
 
    bool anyChange = SweepNakedTuples::sweepHouse(grid, finfo, HouseId{HouseType::Box, 0}, 2);
    ASSERT_TRUE(anyChange);
-   finfo.update();
    value0 = grid[Field22].tryGetSolvedValue();
    ASSERT_TRUE(value0.has_value());
    ASSERT_EQ(value0.value(), 5);
@@ -82,7 +80,6 @@ TEST(SweepNakedTuplesTest, SweepNakedPair_2)
    ASSERT_EQ(grid.getNumCandidates(), expectNumCandidates);
 
    SweepNakedTuples::sweepHousesOfType(grid, finfo, HouseType::Row, 2);
-   finfo.update();
    expectNumCandidates -= 2;
    ASSERT_EQ(grid.getNumCandidates(), expectNumCandidates);
    ASSERT_EQ(grid[field7].tryGetSolvedValue().value(), 6);
@@ -104,7 +101,6 @@ TEST(SweepNakedTuplesTest, SweepNakedTuples_1)
 
    FieldsInfo finfo(grid);
    SweepNakedTuples::sweepHousesOfType(grid, finfo, HouseType::Col, 3);
-   finfo.update();
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
    SweepNakedTuples::sweepHousesOfType(grid, finfo, HouseType::Row, 3);
@@ -119,7 +115,6 @@ TEST(SweepNakedTuplesTest, SweepNakedTuples_1)
    SweepNakedTuples::sweepHousesOfType(grid, finfo, HouseType::Box, 2);
    expect -= 6;
    ASSERT_EQ(grid.getNumCandidates(), expect);
-   finfo.update();
 
    SweepNakedTuples::sweepHousesOfType(grid, finfo, HouseType::Row, 2);
    expect -= 7;
@@ -147,30 +142,24 @@ TEST(SweepNakedTuplesTest, SweepNakedTuples_2)
    FieldsInfo finfo(grid);
    SweepNakedTuples::sweepHousesOfType(grid, finfo, HouseType::Row, 2);
    ASSERT_EQ(grid.getNumCandidates(), expect);
-   finfo.update();
 
    SweepNakedTuples::sweepHousesOfType(grid, finfo, HouseType::Col, 2);
-   finfo.update();
    expect -= 6;
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
    SweepNakedTuples::sweepHousesOfType(grid, finfo, HouseType::Box, 2);
-   finfo.update();
    expect -= 2;
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
    SweepNakedTuples::sweepHousesOfType(grid, finfo, HouseType::Col, 3);
-   finfo.update();
    expect -= 8;
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
    SweepNakedTuples::sweepHousesOfType(grid, finfo, HouseType::Row, 3);
-   finfo.update();
    expect -= 9;
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
    SweepNakedTuples::sweepHousesOfType(grid, finfo, HouseType::Box, 3);
-   finfo.update();
    expect -= 1;
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
@@ -203,16 +192,13 @@ TEST(SweepNakedTuplesTest, SweepNakedTuples_3)
 
    FieldsInfo finfo(grid);
    SweepNakedTuples::sweepHousesOfType(grid, finfo, HouseType::Row, 2);
-   finfo.update();
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
    SweepNakedTuples::sweepHousesOfType(grid, finfo, HouseType::Col, 2);
-   finfo.update();
    expect -= 2;
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
    SweepNakedTuples::sweepHousesOfType(grid, finfo, HouseType::Box, 2);
-   finfo.update();
    expect -= 5;
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
@@ -222,20 +208,16 @@ TEST(SweepNakedTuplesTest, SweepNakedTuples_3)
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
    SweepNakedTuples::sweepHousesOfType(grid, finfo, HouseType::Col, 3);
-   finfo.update();
    expect -= 3;
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
    SweepNakedTuples::sweepHousesOfType(grid, finfo, HouseType::Row, 3);
-   finfo.update();
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
    SweepNakedTuples::sweepHousesOfType(grid, finfo, HouseType::Box, 3);
-   finfo.update();
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
    SweepNakedTuples::sweepHousesOfType(grid, finfo, HouseType::Box, 3);
-   finfo.update();
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
    SweepNakedSingle().sweep(grid);
@@ -244,24 +226,19 @@ TEST(SweepNakedTuplesTest, SweepNakedTuples_3)
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
    SweepNakedTuples::sweepHousesOfType(grid, finfo, HouseType::Row, 3);
-   finfo.update();
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
    SweepNakedTuples::sweepHousesOfType(grid, finfo, HouseType::Box, 3);
-   finfo.update();
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
    SweepNakedTuples::sweepHousesOfType(grid, finfo, HouseType::Col, 2);
-   finfo.update();
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
    SweepNakedTuples::sweepHousesOfType(grid, finfo, HouseType::Box, 2);
-   finfo.update();
    expect -= 3;
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
    SweepNakedTuples::sweepHousesOfType(grid, finfo, HouseType::Row, 2);
-   finfo.update();
    expect -= 7;
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
@@ -302,15 +279,12 @@ TEST(SweepNakedTuplesTest, SweepNakedTuples_222_box)
 
    FieldsInfo finfo(grid);
    SweepNakedTuples::sweepHousesOfType(grid, finfo, HouseType::Col, 3);
-   finfo.update();
    ASSERT_EQ(grid.getNumCandidates(), expectNumCandidates);
 
    SweepNakedTuples::sweepHousesOfType(grid, finfo, HouseType::Row, 3);
-   finfo.update();
    ASSERT_EQ(grid.getNumCandidates(), expectNumCandidates);
 
    SweepNakedTuples::sweepHousesOfType(grid, finfo, HouseType::Box, 3);
-   finfo.update();
    expectNumCandidates -= 6 * 3;
    ASSERT_EQ(grid.getNumCandidates(), expectNumCandidates);
 }
@@ -329,15 +303,12 @@ TEST(SweepNakedTuplesTest, SweepNakedTuples_222_row)
 
    FieldsInfo finfo(grid);
    SweepNakedTuples::sweepHousesOfType(grid, finfo, HouseType::Col, 3);
-   finfo.update();
    ASSERT_EQ(grid.getNumCandidates(), expectNumCandidates);
 
    SweepNakedTuples::sweepHousesOfType(grid, finfo, HouseType::Box, 3);
-   finfo.update();
    ASSERT_EQ(grid.getNumCandidates(), expectNumCandidates);
 
    SweepNakedTuples::sweepHousesOfType(grid, finfo, HouseType::Row, 3);
-   finfo.update();
    expectNumCandidates -= 6 * 3;
    ASSERT_EQ(grid.getNumCandidates(), expectNumCandidates);
 }
@@ -356,15 +327,12 @@ TEST(SweepNakedTuplesTest, SweepNakedTuples_223_a)
 
    FieldsInfo finfo(grid);
    SweepNakedTuples::sweepHousesOfType(grid, finfo, HouseType::Col, 3);
-   finfo.update();
    ASSERT_EQ(grid.getNumCandidates(), expectNumCandidates);
 
    SweepNakedTuples::sweepHousesOfType(grid, finfo, HouseType::Row, 3);
-   finfo.update();
    ASSERT_EQ(grid.getNumCandidates(), expectNumCandidates);
 
    SweepNakedTuples::sweepHousesOfType(grid, finfo, HouseType::Box, 3);
-   finfo.update();
    expectNumCandidates -= 6 * 3;
    ASSERT_EQ(grid.getNumCandidates(), expectNumCandidates);
 }

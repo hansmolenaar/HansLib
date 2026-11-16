@@ -11,8 +11,8 @@ class FieldsInfo;
 namespace SweepNakedTuples
 {
 bool sweep(CandidatesGrid &, Index);
-bool sweepHouse(CandidatesGrid &grid, const FieldsInfo &, HouseId, Index);
-bool sweepHousesOfType(CandidatesGrid &, const FieldsInfo &, HouseType, Index);
+bool sweepHouse(CandidatesGrid &grid, FieldsInfo &, HouseId, Index);
+bool sweepHousesOfType(CandidatesGrid &, FieldsInfo &, HouseType, Index);
 }; // namespace SweepNakedTuples
 
 class SweepNakedPairs : public ISweep

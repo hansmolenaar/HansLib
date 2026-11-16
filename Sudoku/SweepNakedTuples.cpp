@@ -2,7 +2,6 @@
 #include "BitsetUtils.h"
 #include "CandidatesGrid.h"
 #include "Combinations.h"
-#include "Contains.h"
 #include "FieldsInfo.h"
 #include "House.h"
 #include "SudokuDefines.h"
@@ -41,7 +40,7 @@ bool IsNakedTuple(const CandidatesGrid &grid, const std::vector<Field> &candidat
 
 } // namespace
 
-bool SweepNakedTuples::sweepHouse(CandidatesGrid &grid, const FieldsInfo &finfo, HouseId houseId, Index tupleSize)
+bool SweepNakedTuples::sweepHouse(CandidatesGrid &grid, FieldsInfo &finfo, HouseId houseId, Index tupleSize)
 
 {
    bool anyChange = false;
@@ -71,10 +70,14 @@ bool SweepNakedTuples::sweepHouse(CandidatesGrid &grid, const FieldsInfo &finfo,
       }
    } while (combinations.next());
 
+   if (anyChange)
+   {
+      finfo.update();
+   }
    return anyChange;
 }
 
-bool SweepNakedTuples::sweepHousesOfType(CandidatesGrid &grid, const FieldsInfo &finfo, HouseType type, Index tupleSize)
+bool SweepNakedTuples::sweepHousesOfType(CandidatesGrid &grid, FieldsInfo &finfo, HouseType type, Index tupleSize)
 {
    bool anyChange = false;
    HouseId houseId{type, IndexUndefined};
@@ -88,7 +91,7 @@ bool SweepNakedTuples::sweepHousesOfType(CandidatesGrid &grid, const FieldsInfo 
 
 bool SweepNakedTuples::sweep(CandidatesGrid &grid, Index tupleSize)
 {
-   const FieldsInfo finfo(grid);
+   FieldsInfo finfo(grid);
    bool anyChange = false;
    for (HouseType type : HouseTypeAll)
    {
@@ -101,7 +104,7 @@ bool SweepNakedTuples::sweep(CandidatesGrid &grid, Index tupleSize)
 
 bool SweepNakedPairs::sweep(CandidatesGrid &grid)
 {
-   const FieldsInfo finfo(grid);
+   FieldsInfo finfo(grid);
    bool anyChange = false;
    for (HouseType type : HouseTypeAll)
    {
@@ -114,7 +117,7 @@ bool SweepNakedPairs::sweep(CandidatesGrid &grid)
 
 bool SweepNakedTriplet::sweep(CandidatesGrid &grid)
 {
-   const FieldsInfo finfo(grid);
+   FieldsInfo finfo(grid);
    bool anyChange = false;
    for (HouseType type : HouseTypeAll)
    {
@@ -127,7 +130,7 @@ bool SweepNakedTriplet::sweep(CandidatesGrid &grid)
 
 bool SweepNakedQuartet::sweep(CandidatesGrid &grid)
 {
-   const FieldsInfo finfo(grid);
+   FieldsInfo finfo(grid);
    bool anyChange = false;
    for (HouseType type : HouseTypeAll)
    {
