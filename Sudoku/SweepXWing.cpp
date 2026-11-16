@@ -36,7 +36,7 @@ std::optional<HouseId> getWeakConnectionVisibility(const Cell &cell0, const Cell
 {
    if (cell0 == cell1)
    {
-      return {}; // TODO this could be a degeneate case
+      return {};
    }
    const auto visibility = Visiblity::areVisibleVia(cell0, cell1);
    if (visibility.size() == 1)
@@ -98,6 +98,7 @@ bool SweepXWing::sweep(CandidatesGrid &grid)
             const bool anyChange = RemoveCandidates(grid, value, xWing.value());
             if (anyChange)
             {
+               grid.update();
                return true;
             }
          }

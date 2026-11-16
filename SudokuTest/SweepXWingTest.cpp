@@ -32,6 +32,10 @@ TEST(SweepXWingTest, Basics)
    auto expect = 589;
    ASSERT_EQ(expect, grid.getNumCandidates());
 
+   grid.update();
+   expect -= 142;
+   ASSERT_EQ(expect, grid.getNumCandidates());
+
    SweepXWing().sweep(grid);
    expect -= 7;
    ASSERT_EQ(expect, grid.getNumCandidates());
