@@ -60,11 +60,6 @@ std::span<const Cell> Visiblity::getVisibleCells(const Cell &cell)
    return visibleCells[cell.field];
 }
 
-std::span<const Cell> Visiblity::getVisibleCells(Field field)
-{
-   return getVisibleCells(Cell::get(field));
-}
-
 boost::container::static_vector<HouseType, 2> Visiblity::areVisibleVia(const Cell &cell0, const Cell &cell1)
 {
    if (cell0.field == cell1.field)

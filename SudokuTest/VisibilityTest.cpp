@@ -26,29 +26,6 @@ TEST(VisibilityTest, AreVisibleField)
    ASSERT_FALSE(Visiblity::areVisible(field, Cell::rowCol2Field(3, 3)));
 }
 
-TEST(VisibilityTest, VisibleFields)
-{
-   for (Field field : FieldAll)
-   {
-      std::span<const Cell> cells = Visiblity::getVisibleCells(Cell::get(field));
-      std::span<const Cell> cellsFromField = Visiblity::getVisibleCells(field);
-
-      ASSERT_EQ(cells.size(), NumVisibleCellls);
-      ASSERT_EQ(cells.size(), cellsFromField.size());
-      for (size_t n = 0; n < NumVisibleCellls; ++n)
-      {
-         ASSERT_NE(cells[n].field, field);
-         ASSERT_EQ(cells[n].field, cellsFromField[n].field);
-         ASSERT_TRUE(Visiblity::areVisible(field, cells[n].field));
-         if (n > 0)
-         {
-            // String increasing
-            ASSERT_LT(cells[n - 1].field, cells[n].field);
-         }
-      }
-   }
-}
-
 TEST(VisibilityTest, AreVisibleVia)
 {
    const Cell cell{0};

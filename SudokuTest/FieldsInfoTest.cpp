@@ -6,6 +6,7 @@
 #include "House.h"
 #include "SudokuDefines.h"
 #include "TestModels.h"
+#include "Visibility.h"
 
 using namespace Sudoku;
 using namespace Utilities;
@@ -116,4 +117,21 @@ TEST(FieldsInfoTest, GetAllVisibleFields)
    cells.set(1);
    visibleFields = finfo.getAllVisibleFields(cells);
    ASSERT_EQ(visibleFields.count(), 27); // 6 new cells in column + cell(0)
+}
+
+TEST(VisibilityTest, VisibleFields)
+{
+   const CandidatesGrid grid;
+   const FieldsInfo finfo(grid);
+
+   for (Field field : FieldAll)
+   {
+      const FieldBits visibleFields = finfo.getVisibleFields(field);
+      ASSERT_FALSE(visibleFields.test(field));
+      ASSERT_EQ(visibleFields.count(), NumVisibleCellls);
+      for (Field visibleField : FieldAll | std::views::filter(Bitset{visibleFields}))
+      {
+         ASSERT_TRUE(Visiblity::areVisible(field, visibleField));
+      }
+   }
 }
