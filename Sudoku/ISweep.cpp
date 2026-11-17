@@ -27,6 +27,6 @@ bool ISweep::sweep(CandidatesGrid &grid)
 {
    FieldsInfo finfo(grid);
    const auto fieldValues = collect(finfo);
-   const auto changes = grid.apply(grid, fieldValues);
+   const auto changes = grid.apply(fieldValues);
    return changes.numValuesChanged > 0;
 }

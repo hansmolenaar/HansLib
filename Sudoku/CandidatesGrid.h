@@ -3,12 +3,12 @@
 #include "Candidates.h"
 #include "FieldValue.h"
 
-#include <set>
 #include <vector>
 
 namespace Sudoku
 {
 struct Cell;
+class FieldsInfo;
 
 class CandidatesGrid
 {
@@ -24,7 +24,8 @@ class CandidatesGrid
    void update();                 // set candidates from givens
    void checkValidSudoku() const; // throws if not valid
    bool isSolved() const;
-   GridChange apply(CandidatesGrid &grid, const std::set<FieldValue> &fieldValues);
+   GridChange apply(const FieldValue::Container &);
+   GridChange apply(const FieldValue::Container &, FieldsInfo &);
 
    static CandidatesGrid FromString(const std::string &, char = ValueUndefinedChar);
    static CandidatesGrid FromValues(const std::array<Value, NumField> &);

@@ -32,14 +32,6 @@ void collect(const FieldsInfo &finfo, const FieldBits &house, std::span<const Fi
    }
 }
 
-bool RemoveCandidates(CandidatesGrid &grid, const FieldBits &house, std::span<const Field> candidateTuple)
-{
-   FieldValue::Container fieldValues;
-   FieldsInfo finfo(grid);
-   collect(finfo, house, candidateTuple, fieldValues);
-   return grid.apply(grid, fieldValues).numValuesChanged > 0;
-}
-
 bool IsNakedTuple(const CandidatesGrid &grid, const std::vector<Field> &candidateTuple)
 {
    const auto values = CandidatesGrid::getValuesInFields(grid, candidateTuple);
@@ -51,7 +43,16 @@ bool IsNakedTuple(const CandidatesGrid &grid, const std::vector<Field> &candidat
 bool SweepNakedTuples::sweepHouse(CandidatesGrid &grid, FieldsInfo &finfo, HouseId houseId, Index tupleSize)
 
 {
-   bool anyChange = false;
+   const auto fieldValues = collectHouse(finfo, houseId, tupleSize);
+   const auto changes = grid.apply(fieldValues, finfo);
+   return changes.numValuesChanged > 0;
+}
+
+FieldValue::Container SweepNakedTuples::collectHouse(const FieldsInfo &finfo, HouseId houseId, Index tupleSize)
+
+{
+   FieldValue::Container result;
+   const CandidatesGrid &grid = finfo.getGrid();
 
    const FieldBits house = finfo.getHouseFields(houseId);
    const FieldBits fields = house & finfo.getActiveFields();
@@ -66,7 +67,7 @@ bool SweepNakedTuples::sweepHouse(CandidatesGrid &grid, FieldsInfo &finfo, House
 
    if (activeFields.size() < tupleSize)
    {
-      return anyChange;
+      return result;
    }
 
    Combinations<Field> combinations(activeFields, tupleSize);
@@ -74,15 +75,11 @@ bool SweepNakedTuples::sweepHouse(CandidatesGrid &grid, FieldsInfo &finfo, House
    {
       if (IsNakedTuple(grid, combinations()))
       {
-         anyChange |= RemoveCandidates(grid, house, combinations());
+         collect(finfo, house, combinations(), result);
       }
    } while (combinations.next());
 
-   if (anyChange)
-   {
-      finfo.update();
-   }
-   return anyChange;
+   return result;
 }
 
 bool SweepNakedTuples::sweepHousesOfType(CandidatesGrid &grid, FieldsInfo &finfo, HouseType type, Index tupleSize)

@@ -140,7 +140,21 @@ bool CandidatesGrid::removeCandidateFromFields(const FieldBits &fields, Value va
    return anyChange;
 }
 
-GridChange CandidatesGrid::apply(CandidatesGrid &grid, const std::set<FieldValue> &fieldValues)
+GridChange CandidatesGrid::apply(const FieldValue::Container &fieldValues, FieldsInfo &finfo)
+{
+   GridChange change;
+   for (const auto &fv : fieldValues)
+   {
+      change += m_candidates.at(fv.field).removeCandidate(fv.value);
+   }
+   if (change.numValuesChanged > 0)
+   {
+      finfo.update();
+   }
+   return change;
+}
+
+GridChange CandidatesGrid::apply(const std::set<FieldValue> &fieldValues)
 {
    GridChange change;
    for (const auto &fv : fieldValues)
