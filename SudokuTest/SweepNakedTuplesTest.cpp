@@ -50,7 +50,7 @@ TEST(SweepNakedTuplesTest, SweepNakedPair_1)
    ASSERT_EQ(grid.getNumCandidates(), expectNumCandidates);
 
    fieldValues = SweepNakedTuples::collectHousesOfType(finfo, HouseType::Box, 2);
-   ASSERT_EQ(fieldValues.size(), 14);
+   ASSERT_EQ(fieldValues.size(), 5);
    const auto changes = grid.apply(fieldValues, finfo);
    ASSERT_EQ(changes.numValuesChanged, 0);
    ASSERT_EQ(grid.getNumCandidates(), expectNumCandidates);
@@ -97,7 +97,6 @@ TEST(SweepNakedTuplesTest, SweepNakedPair_2)
    ASSERT_EQ(grid[field0].size(), 2);
 }
 
-#if false
 TEST(SweepNakedTuplesTest, SweepNakedTuples_1)
 {
    const std::array<Value, NumField> diagramValues = {
@@ -107,28 +106,32 @@ TEST(SweepNakedTuplesTest, SweepNakedTuples_1)
    };
 
    auto grid = CandidatesGrid::FromValues(diagramValues);
-   SweepNakedSingle().sweep(grid);
+   grid.update();
    Field expect = 152;
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
    FieldsInfo finfo(grid);
-   SweepNakedTuples::sweepHousesOfType(grid, finfo, HouseType::Col, 3);
+   auto fieldValues = SweepNakedTuples::collectHousesOfType(finfo, HouseType::Col, 3);
+   ASSERT_TRUE(fieldValues.empty());
+   auto changes = grid.apply(fieldValues, finfo);
+   ASSERT_EQ(changes.numValuesChanged, 0);
+
+   fieldValues = SweepNakedTuples::collectHousesOfType(finfo, HouseType::Row, 3);
+   ASSERT_TRUE(fieldValues.empty());
+
+   fieldValues = SweepNakedTuples::collectHousesOfType(finfo, HouseType::Box, 3);
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
-   SweepNakedTuples::sweepHousesOfType(grid, finfo, HouseType::Row, 3);
+   fieldValues = SweepNakedTuples::collectHousesOfType(finfo, HouseType::Col, 2);
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
-   SweepNakedTuples::sweepHousesOfType(grid, finfo, HouseType::Box, 3);
-   ASSERT_EQ(grid.getNumCandidates(), expect);
-
-   SweepNakedTuples::sweepHousesOfType(grid, finfo, HouseType::Col, 2);
-   ASSERT_EQ(grid.getNumCandidates(), expect);
-
-   SweepNakedTuples::sweepHousesOfType(grid, finfo, HouseType::Box, 2);
+   fieldValues = SweepNakedTuples::collectHousesOfType(finfo, HouseType::Box, 2);
+   grid.applyAndUpdate(fieldValues, finfo);
    expect -= 6;
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
-   SweepNakedTuples::sweepHousesOfType(grid, finfo, HouseType::Row, 2);
+   fieldValues = SweepNakedTuples::collectHousesOfType(finfo, HouseType::Row, 2);
+   grid.applyAndUpdate(fieldValues, finfo);
    expect -= 17;
    ASSERT_EQ(grid.getNumCandidates(), expect);
 }
@@ -152,31 +155,37 @@ TEST(SweepNakedTuplesTest, SweepNakedTuples_2)
    SweepHiddenSingle().sweep(grid);
 
    FieldsInfo finfo(grid);
-   SweepNakedTuples::sweepHousesOfType(grid, finfo, HouseType::Row, 2);
+   auto fieldValues = SweepNakedTuples::collectHousesOfType(finfo, HouseType::Row, 2);
+   ASSERT_TRUE(fieldValues.empty());
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
-   SweepNakedTuples::sweepHousesOfType(grid, finfo, HouseType::Col, 2);
+   fieldValues = SweepNakedTuples::collectHousesOfType(finfo, HouseType::Col, 2);
+   grid.applyAndUpdate(fieldValues, finfo);
    expect -= 6;
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
-   SweepNakedTuples::sweepHousesOfType(grid, finfo, HouseType::Box, 2);
+   fieldValues = SweepNakedTuples::collectHousesOfType(finfo, HouseType::Box, 2);
+   grid.applyAndUpdate(fieldValues, finfo);
    expect -= 2;
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
-   SweepNakedTuples::sweepHousesOfType(grid, finfo, HouseType::Col, 3);
-   expect -= 38;
+   fieldValues = SweepNakedTuples::collectHousesOfType(finfo, HouseType::Col, 3);
+   grid.applyAndUpdate(fieldValues, finfo);
+   expect -= 33;
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
-   SweepNakedTuples::sweepHousesOfType(grid, finfo, HouseType::Row, 3);
-   expect -= 7;
+   fieldValues = SweepNakedTuples::collectHousesOfType(finfo, HouseType::Row, 3);
+   grid.applyAndUpdate(fieldValues, finfo);
+   expect -= 10;
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
-   SweepNakedTuples::sweepHousesOfType(grid, finfo, HouseType::Box, 3);
-   expect -= 8;
+   fieldValues = SweepNakedTuples::collectHousesOfType(finfo, HouseType::Box, 3);
+   grid.applyAndUpdate(fieldValues, finfo);
+   expect -= 10;
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
    SweepNakedPairs().sweep(grid);
-   expect -= 5;
+   expect -= 4;
    ASSERT_EQ(grid.getNumCandidates(), expect);
 }
 
@@ -204,50 +213,57 @@ TEST(SweepNakedTuplesTest, SweepNakedTuples_3)
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
    FieldsInfo finfo(grid);
-   SweepNakedTuples::sweepHousesOfType(grid, finfo, HouseType::Row, 2);
+   auto fieldValues = SweepNakedTuples::collectHousesOfType(finfo, HouseType::Row, 2);
+   grid.applyAndUpdate(fieldValues, finfo);
    expect -= 7;
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
-   SweepNakedTuples::sweepHousesOfType(grid, finfo, HouseType::Col, 2);
+   fieldValues = SweepNakedTuples::collectHousesOfType(finfo, HouseType::Col, 2);
+   grid.applyAndUpdate(fieldValues, finfo);
    expect -= 6;
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
-   SweepNakedTuples::sweepHousesOfType(grid, finfo, HouseType::Box, 2);
+   fieldValues = SweepNakedTuples::collectHousesOfType(finfo, HouseType::Box, 2);
+   grid.applyAndUpdate(fieldValues, finfo);
    expect -= 28;
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
    SweepNakedSingle().sweep(grid);
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
-   SweepNakedTuples::sweepHousesOfType(grid, finfo, HouseType::Col, 3);
+   fieldValues = SweepNakedTuples::collectHousesOfType(finfo, HouseType::Col, 3);
+   grid.applyAndUpdate(fieldValues, finfo);
    expect -= 37;
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
-   SweepNakedTuples::sweepHousesOfType(grid, finfo, HouseType::Row, 3);
+   fieldValues = SweepNakedTuples::collectHousesOfType(finfo, HouseType::Row, 3);
+   grid.applyAndUpdate(fieldValues, finfo);
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
-   SweepNakedTuples::sweepHousesOfType(grid, finfo, HouseType::Box, 3);
+   fieldValues = SweepNakedTuples::collectHousesOfType(finfo, HouseType::Box, 3);
+   grid.applyAndUpdate(fieldValues, finfo);
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
-   SweepNakedTuples::sweepHousesOfType(grid, finfo, HouseType::Box, 3);
+   fieldValues = SweepNakedTuples::collectHousesOfType(finfo, HouseType::Box, 3);
+   grid.applyAndUpdate(fieldValues, finfo);
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
    SweepNakedSingle().sweep(grid);
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
-   SweepNakedTuples::sweepHousesOfType(grid, finfo, HouseType::Row, 3);
-   ASSERT_EQ(grid.getNumCandidates(), expect);
+   fieldValues = SweepNakedTuples::collectHousesOfType(finfo, HouseType::Row, 3);
+   ASSERT_TRUE(fieldValues.empty());
 
-   SweepNakedTuples::sweepHousesOfType(grid, finfo, HouseType::Box, 3);
-   ASSERT_EQ(grid.getNumCandidates(), expect);
+   fieldValues = SweepNakedTuples::collectHousesOfType(finfo, HouseType::Box, 3);
+   ASSERT_TRUE(fieldValues.empty());
 
-   SweepNakedTuples::sweepHousesOfType(grid, finfo, HouseType::Col, 2);
-   ASSERT_EQ(grid.getNumCandidates(), expect);
+   fieldValues = SweepNakedTuples::collectHousesOfType(finfo, HouseType::Col, 2);
+   ASSERT_TRUE(fieldValues.empty());
 
-   SweepNakedTuples::sweepHousesOfType(grid, finfo, HouseType::Box, 2);
-   ASSERT_EQ(grid.getNumCandidates(), expect);
+   fieldValues = SweepNakedTuples::collectHousesOfType(finfo, HouseType::Box, 2);
+   ASSERT_TRUE(fieldValues.empty());
 
-   SweepNakedTuples::sweepHousesOfType(grid, finfo, HouseType::Row, 2);
+   fieldValues = SweepNakedTuples::collectHousesOfType(finfo, HouseType::Row, 2);
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
    SweepNakedSingle().sweep(grid);
@@ -269,6 +285,7 @@ TEST(SweepNakedTuplesTest, SweepNakedTuples_3)
    ASSERT_EQ(grid.getNumCandidates(), NumField);
    ASSERT_TRUE(grid.isSolved());
 }
+
 TEST(SweepNakedTuplesTest, SweepNakedTuples_222_box)
 {
    CandidatesGrid grid;
@@ -281,13 +298,14 @@ TEST(SweepNakedTuplesTest, SweepNakedTuples_222_box)
    ASSERT_EQ(grid.getNumCandidates(), expectNumCandidates);
 
    FieldsInfo finfo(grid);
-   SweepNakedTuples::sweepHousesOfType(grid, finfo, HouseType::Col, 3);
-   ASSERT_EQ(grid.getNumCandidates(), expectNumCandidates);
+   auto fieldValues = SweepNakedTuples::collectHousesOfType(finfo, HouseType::Col, 3);
+   ASSERT_TRUE(fieldValues.empty());
 
-   SweepNakedTuples::sweepHousesOfType(grid, finfo, HouseType::Row, 3);
-   ASSERT_EQ(grid.getNumCandidates(), expectNumCandidates);
+   fieldValues = SweepNakedTuples::collectHousesOfType(finfo, HouseType::Row, 3);
+   ASSERT_TRUE(fieldValues.empty());
 
-   SweepNakedTuples::sweepHousesOfType(grid, finfo, HouseType::Box, 3);
+   fieldValues = SweepNakedTuples::collectHousesOfType(finfo, HouseType::Box, 3);
+   grid.applyAndUpdate(fieldValues, finfo);
    expectNumCandidates -= 6 * 3;
    ASSERT_EQ(grid.getNumCandidates(), expectNumCandidates);
 }
@@ -305,13 +323,14 @@ TEST(SweepNakedTuplesTest, SweepNakedTuples_222_row)
    ASSERT_EQ(grid.getNumCandidates(), expectNumCandidates);
 
    FieldsInfo finfo(grid);
-   SweepNakedTuples::sweepHousesOfType(grid, finfo, HouseType::Col, 3);
-   ASSERT_EQ(grid.getNumCandidates(), expectNumCandidates);
+   auto fieldValues = SweepNakedTuples::collectHousesOfType(finfo, HouseType::Col, 3);
+   ASSERT_TRUE(fieldValues.empty());
 
-   SweepNakedTuples::sweepHousesOfType(grid, finfo, HouseType::Box, 3);
-   ASSERT_EQ(grid.getNumCandidates(), expectNumCandidates);
+   fieldValues = SweepNakedTuples::collectHousesOfType(finfo, HouseType::Box, 3);
+   ASSERT_TRUE(fieldValues.empty());
 
-   SweepNakedTuples::sweepHousesOfType(grid, finfo, HouseType::Row, 3);
+   fieldValues = SweepNakedTuples::collectHousesOfType(finfo, HouseType::Row, 3);
+   grid.applyAndUpdate(fieldValues, finfo);
    expectNumCandidates -= 6 * 3;
    ASSERT_EQ(grid.getNumCandidates(), expectNumCandidates);
 }
@@ -329,13 +348,14 @@ TEST(SweepNakedTuplesTest, SweepNakedTuples_223_a)
    ASSERT_EQ(grid.getNumCandidates(), expectNumCandidates);
 
    FieldsInfo finfo(grid);
-   SweepNakedTuples::sweepHousesOfType(grid, finfo, HouseType::Col, 3);
-   ASSERT_EQ(grid.getNumCandidates(), expectNumCandidates);
+   auto fieldValues = SweepNakedTuples::collectHousesOfType(finfo, HouseType::Col, 3);
+   ASSERT_TRUE(fieldValues.empty());
 
-   SweepNakedTuples::sweepHousesOfType(grid, finfo, HouseType::Row, 3);
-   ASSERT_EQ(grid.getNumCandidates(), expectNumCandidates);
+   fieldValues = SweepNakedTuples::collectHousesOfType(finfo, HouseType::Row, 3);
+   ASSERT_TRUE(fieldValues.empty());
 
-   SweepNakedTuples::sweepHousesOfType(grid, finfo, HouseType::Box, 3);
+   fieldValues = SweepNakedTuples::collectHousesOfType(finfo, HouseType::Box, 3);
+   grid.applyAndUpdate(fieldValues, finfo);
    expectNumCandidates -= 6 * 3;
    ASSERT_EQ(grid.getNumCandidates(), expectNumCandidates);
 }
@@ -365,8 +385,8 @@ TEST(SweepNakedTuplesTest, SweepNakedQuartet)
    ASSERT_EQ(grid.getNumCandidates(), expectNumCandidates);
 
    FieldsInfo finfo(grid);
-   SweepNakedTuples::sweepHousesOfType(grid, finfo, HouseType::Box, 4);
-   expectNumCandidates -= 19;
+   const auto fieldValues = SweepNakedTuples::collectHousesOfType(finfo, HouseType::Box, 4);
+   grid.applyAndUpdate(fieldValues, finfo);
+   expectNumCandidates -= 7;
    ASSERT_EQ(grid.getNumCandidates(), expectNumCandidates);
 }
-#endif

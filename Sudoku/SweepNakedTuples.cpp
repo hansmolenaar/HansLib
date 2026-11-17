@@ -28,7 +28,8 @@ void add(const FieldsInfo &finfo, const FieldBits &house, std::span<const Field>
    const auto fields = house & ~SudokuUtils::getFields(candidateTuple);
    for (Value value : valuesToRemove)
    {
-      FieldValue::add(fields, value, fieldValues);
+      const auto fieldsWithValue = fields & finfo.getActiveFieldsWithValue(value);
+      FieldValue::add(fieldsWithValue, value, fieldValues);
    }
 }
 
