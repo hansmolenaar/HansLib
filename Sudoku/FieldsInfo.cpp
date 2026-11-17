@@ -63,9 +63,8 @@ void FieldsInfo::update()
    }
 
    // ... refill
-   for (const Cell &cell : Cell::getAll())
+   for (Field field : FieldAll)
    {
-      const Field field = cell.field;
       const Candidates &candidates = (*m_grid)[field];
       if (candidates.isSolved())
       {

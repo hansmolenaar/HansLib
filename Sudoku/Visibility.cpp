@@ -1,19 +1,7 @@
 #include "Visibility.h"
-#include "BitsetUtils.h"
-#include "Functors.h"
-#include "House.h"
-#include "MyAssert.h"
 #include "SudokuDefines.h"
-#include "SudokuUtils.h"
-#include "UniqueSorted.h"
-
-#include <algorithm>
-#include <iterator>
-#include <ranges>
-#include <vector>
 
 using namespace Sudoku;
-using namespace Utilities;
 
 bool Visiblity::areVisible(const Cell &cell0, const Cell &cell1)
 {
