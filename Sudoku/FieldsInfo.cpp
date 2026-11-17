@@ -127,3 +127,8 @@ FieldBits FieldsInfo::getFieldsWithValue(Value value) const
 {
    return m_fieldswithValue.at(value);
 }
+
+const CandidatesGrid &FieldsInfo::getGrid() const
+{
+   return *m_grid;
+}

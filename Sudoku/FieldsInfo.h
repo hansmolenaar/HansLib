@@ -14,6 +14,7 @@ class FieldsInfo
  public:
    explicit FieldsInfo(const CandidatesGrid &grid);
    void update();
+   const CandidatesGrid &getGrid() const;
    FieldBits getHouseFields(HouseId) const;
    FieldBits getFieldsWithValue(Value) const;
    FieldBits getActiveFieldsWithValue(Value) const;

@@ -3,6 +3,7 @@
 #include "CandidatesGrid.h"
 #include "Combinations.h"
 #include "Contains.h"
+#include "FieldsInfo.h"
 #include "House.h"
 #include "StreamUtils.h"
 #include "SudokuDefines.h"
@@ -21,6 +22,10 @@ namespace
 {
 struct CellContainsAllValues
 {
+   bool operator()(Field field) const
+   {
+      return grid[field].contains(values);
+   }
    bool operator()(const Cell &cell) const
    {
       return grid[cell.field].contains(values);
@@ -30,18 +35,19 @@ struct CellContainsAllValues
    std::span<const Value> values;
 };
 
-bool IsHiddenTuple(const CandidatesGrid &grid, const House &house, std::span<const Value> candidateValueTuple)
+bool IsHiddenTuple(const FieldsInfo &finfo, const House &house, std::span<const Value> candidateValueTuple)
 {
    const auto size = candidateValueTuple.size();
+   auto houseFields = finfo.getHouseFields(house.houseId);
    for (Value value : candidateValueTuple)
    {
-      if (SudokuUtils::countOccurence(grid, house.cells, value) != size)
+      if ((houseFields & finfo.getFieldsWithValue(value)).count() != size)
       {
          return false;
       }
    }
-   const CellContainsAllValues containsHiddenTuple{grid, candidateValueTuple};
-   const Index count = str::count_if(house.cells, containsHiddenTuple);
+   const CellContainsAllValues containsHiddenTuple{finfo.getGrid(), candidateValueTuple};
+   const Index count = str::count_if(FieldAll | std::views::filter(Bitset{houseFields}), containsHiddenTuple);
    return (count == size);
 }
 
@@ -65,6 +71,7 @@ bool SweepHiddenTuple::sweepHouse(CandidatesGrid &grid, const House &house, Inde
    {
       return anyChange;
    }
+   const FieldsInfo finfo(grid);
 
    std::vector<Value> activeCandidates(activeUniqueCandidates.count());
    str::copy_if(ValueAll, activeCandidates.begin(), Bitset{activeUniqueCandidates});
@@ -72,7 +79,7 @@ bool SweepHiddenTuple::sweepHouse(CandidatesGrid &grid, const House &house, Inde
    Combinations<Value> combinations(activeCandidates, size);
    do
    {
-      if (IsHiddenTuple(grid, house, combinations()))
+      if (IsHiddenTuple(finfo, house, combinations()))
       {
          anyChange |= RemoveCandidates(grid, house, combinations());
       }
