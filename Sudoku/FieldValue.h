@@ -2,6 +2,8 @@
 
 #include "SudokuDefines.h"
 
+#include <set>
+
 namespace Sudoku
 {
 
@@ -9,6 +11,8 @@ struct FieldValue
 {
    Field field = FieldUndefined;
    Value value = ValueUndefined;
+   using Container = std::set<FieldValue>;
+   static void add(const FieldBits &, Value, Container &);
 
    auto operator<=>(const FieldValue &) const = default;
 };

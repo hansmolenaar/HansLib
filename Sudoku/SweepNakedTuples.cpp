@@ -17,19 +17,27 @@ namespace str = std::ranges;
 namespace
 {
 
-bool RemoveCandidates(CandidatesGrid &grid, const FieldBits &house, std::span<const Field> candidateTuple)
+void collect(const FieldsInfo &finfo, const FieldBits &house, std::span<const Field> candidateTuple,
+             FieldValue::Container &fieldValues)
 {
+   const CandidatesGrid &grid = finfo.getGrid();
    const auto candidatesToRemove = CandidatesGrid::getValuesInFields(grid, candidateTuple);
    boost::container::static_vector<Value, NumValue> valuesToRemove(candidatesToRemove.count());
    str::copy_if(ValueAll, valuesToRemove.begin(), Bitset{candidatesToRemove});
 
    const auto fields = house & ~SudokuUtils::getFields(candidateTuple);
-   bool anyChange = false;
    for (Value value : valuesToRemove)
    {
-      anyChange |= grid.removeCandidateFromFields(fields, value);
+      FieldValue::add(fields, value, fieldValues);
    }
-   return anyChange;
+}
+
+bool RemoveCandidates(CandidatesGrid &grid, const FieldBits &house, std::span<const Field> candidateTuple)
+{
+   FieldValue::Container fieldValues;
+   FieldsInfo finfo(grid);
+   collect(finfo, house, candidateTuple, fieldValues);
+   return grid.apply(grid, fieldValues).numValuesChanged > 0;
 }
 
 bool IsNakedTuple(const CandidatesGrid &grid, const std::vector<Field> &candidateTuple)
