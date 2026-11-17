@@ -35,10 +35,10 @@ struct CellContainsAllValues
    std::span<const Value> values;
 };
 
-bool IsHiddenTuple(const FieldsInfo &finfo, const House &house, std::span<const Value> candidateValueTuple)
+bool IsHiddenTuple(const FieldsInfo &finfo, const HouseId &house, std::span<const Value> candidateValueTuple)
 {
    const auto size = candidateValueTuple.size();
-   auto houseFields = finfo.getHouseFields(house.houseId);
+   auto houseFields = finfo.getHouseFields(house);
    for (Value value : candidateValueTuple)
    {
       if ((houseFields & finfo.getFieldsWithValue(value)).count() != size)
@@ -51,15 +51,23 @@ bool IsHiddenTuple(const FieldsInfo &finfo, const House &house, std::span<const 
    return (count == size);
 }
 
-bool RemoveCandidates(CandidatesGrid &grid, const House &house, std::span<const Value> candidateTuple)
+bool RemoveCandidates(CandidatesGrid &grid, FieldsInfo &finfo, const HouseId &house,
+                      std::span<const Value> candidateTuple)
 {
    // Remove all values except the candidate tuple
    boost::container::static_vector<Value, NumValue> activeValues;
    str::copy_if(ValueAll, std::back_inserter(activeValues), IsNotContained(candidateTuple));
 
+   auto houseFields = finfo.getHouseFields(house);
    const CellContainsAllValues cellPredicate{grid, candidateTuple};
-   auto activeCells = house.cells | std::views::filter(cellPredicate);
-   return grid.RemoveCandidates(activeValues, activeCells);
+   auto activeFields = FieldAll | std::views::filter(Bitset{houseFields}) | std::views::filter(cellPredicate);
+
+   const bool anyChange = grid.RemoveCandidatesFromFields(activeValues, activeFields);
+   if (anyChange)
+   {
+      finfo.update();
+   }
+   return anyChange;
 }
 } // namespace
 
@@ -71,7 +79,7 @@ bool SweepHiddenTuple::sweepHouse(CandidatesGrid &grid, const House &house, Inde
    {
       return anyChange;
    }
-   const FieldsInfo finfo(grid);
+   FieldsInfo finfo(grid);
 
    std::vector<Value> activeCandidates(activeUniqueCandidates.count());
    str::copy_if(ValueAll, activeCandidates.begin(), Bitset{activeUniqueCandidates});
@@ -79,9 +87,9 @@ bool SweepHiddenTuple::sweepHouse(CandidatesGrid &grid, const House &house, Inde
    Combinations<Value> combinations(activeCandidates, size);
    do
    {
-      if (IsHiddenTuple(finfo, house, combinations()))
+      if (IsHiddenTuple(finfo, house.houseId, combinations()))
       {
-         anyChange |= RemoveCandidates(grid, house, combinations());
+         anyChange |= RemoveCandidates(grid, finfo, house.houseId, combinations());
       }
    } while (combinations.next());
 

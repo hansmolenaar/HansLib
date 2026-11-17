@@ -53,6 +53,26 @@ class CandidatesGrid
       return anyChange;
    }
 
+   template <typename R> bool RemoveCandidatesFromFields(std::span<const Value> valuesToRemove, R &fromFields)
+   {
+      bool anyChange = false;
+      for (Value value : valuesToRemove)
+      {
+         anyChange |= RemoveCandidatesFromFields(value, fromFields);
+      }
+      return anyChange;
+   }
+
+   template <typename R> bool RemoveCandidatesFromFields(Value value, R &fromFields)
+   {
+      bool anyChange = false;
+      for (const auto &field : fromFields)
+      {
+         anyChange |= removeCandidate(field, value);
+      }
+      return anyChange;
+   }
+
  private:
    std::array<Candidates, NumField> m_candidates;
 };
