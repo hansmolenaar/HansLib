@@ -1,9 +1,11 @@
 #include "SudokuUtils.h"
+#include "BitsetUtils.h"
 #include "CandidatesGrid.h"
 #include "boost/container/static_vector.hpp"
 #include <algorithm>
 
 using namespace Sudoku;
+using namespace Utilities;
 
 namespace str = std::ranges;
 
@@ -12,54 +14,34 @@ Index SudokuUtils::countOccurence(const CandidatesGrid &grid, std::span<const Ce
    return str::count_if(cells, [&grid, value](Cell cell) { return grid[cell.field].contains(value); });
 }
 
-ValueBits SudokuUtils::getUniqueActiveValuesInCells(const CandidatesGrid &grid, std::span<const Cell> cells)
+ValueBits SudokuUtils::getUniqueActiveValuesInCells(const CandidatesGrid &grid, const FieldBits &fields)
 {
    ValueBits activeValues;
-   for (Cell cell : cells)
+   for (Field field : FieldAll | std::views::filter(Bitset{fields}))
    {
-      for (Value value : grid[cell.field])
+      for (Value value : grid[field])
       {
          activeValues[value] = true;
       }
    }
 
-   const auto valueIsSolved = SudokuUtils::getSolvedValues(grid, cells);
+   ValueBits valueIsSolved;
+   for (Field field : FieldAll | std::views::filter(Bitset{fields}))
+   {
+      const auto &candidates = grid[field];
+      const auto solved = candidates.tryGetSolvedValue();
+      if (solved.has_value())
+      {
+         valueIsSolved.set(solved.value());
+      }
+   }
+
    ValueBits result;
    for (Value value : ValueAll)
    {
       if (activeValues[value] && !valueIsSolved.test(value))
       {
          result.set(value);
-      }
-   }
-   return result;
-}
-
-ValueBits SudokuUtils::getSolvedValues(const CandidatesGrid &grid, std::span<const Cell> cells)
-{
-   ValueBits result;
-   for (auto cell : cells)
-   {
-      const auto &candidates = grid[cell.field];
-      const auto solved = candidates.tryGetSolvedValue();
-      if (solved.has_value())
-      {
-         result.set(solved.value());
-      }
-   }
-   return result;
-}
-
-ValueBits SudokuUtils::getSolvedValues(const CandidatesGrid &grid, std::span<const Field> fields)
-{
-   ValueBits result;
-   for (auto field : fields)
-   {
-      const auto &candidates = grid[field];
-      const auto solved = candidates.tryGetSolvedValue();
-      if (solved.has_value())
-      {
-         result.set(solved.value());
       }
    }
    return result;

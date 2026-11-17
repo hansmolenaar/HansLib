@@ -73,13 +73,14 @@ bool RemoveCandidates(CandidatesGrid &grid, FieldsInfo &finfo, const HouseId &ho
 
 bool SweepHiddenTuple::sweepHouse(CandidatesGrid &grid, const House &house, Index size)
 {
+   FieldsInfo finfo(grid);
    bool anyChange = false;
-   const auto activeUniqueCandidates = SudokuUtils::getUniqueActiveValuesInCells(grid, house.cells);
+   const auto activeUniqueCandidates =
+       SudokuUtils::getUniqueActiveValuesInCells(grid, finfo.getHouseFields(house.houseId));
    if (activeUniqueCandidates.count() < size)
    {
       return anyChange;
    }
-   FieldsInfo finfo(grid);
 
    std::vector<Value> activeCandidates(activeUniqueCandidates.count());
    str::copy_if(ValueAll, activeCandidates.begin(), Bitset{activeUniqueCandidates});
