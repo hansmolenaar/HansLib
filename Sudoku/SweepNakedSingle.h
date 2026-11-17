@@ -8,7 +8,7 @@ namespace Sudoku
 class SweepNakedSingle : public ISweep
 {
  public:
-   bool sweep(CandidatesGrid &) override;
+   std::set<FieldValue> collect(const FieldsInfo &) override;
 };
 
 } // namespace Sudoku

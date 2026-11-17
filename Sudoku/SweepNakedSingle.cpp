@@ -6,22 +6,19 @@
 using namespace Sudoku;
 using namespace Utilities;
 
-bool SweepNakedSingle::sweep(CandidatesGrid &grid)
+std::set<FieldValue> SweepNakedSingle::collect(const FieldsInfo &finfo)
 {
-   std::array<FieldBits, NumValue + 1> toRemove;
-
-   FieldsInfo finfo(grid);
+   std::set<FieldValue> result;
+   const CandidatesGrid &grid = finfo.getGrid();
    const auto &solvedFields = finfo.getSolvedFields();
    for (Field field : FieldAll | std::views::filter(Bitset{solvedFields}))
    {
       const Value value = grid[field].tryGetSolvedValue().value();
-      toRemove[value] |= finfo.getVisibleFields(field);
+      const auto visibleFields = finfo.getVisibleFields(field);
+      for (Field field : FieldAll | std::views::filter(Bitset{visibleFields}))
+      {
+         result.insert({field, value});
+      }
    }
-
-   bool anyChange = false;
-   for (Value value : ValueAll)
-   {
-      anyChange |= grid.removeCandidateFromFields(toRemove.at(value), value);
-   }
-   return anyChange;
+   return result;
 }
