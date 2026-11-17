@@ -26,6 +26,7 @@ class CandidatesGrid
    bool isSolved() const;
    GridChange apply(const FieldValue::Container &);
    GridChange apply(const FieldValue::Container &, FieldsInfo &);
+   bool applyAndUpdate(const FieldValue::Container &, FieldsInfo &);
 
    static CandidatesGrid FromString(const std::string &, char = ValueUndefinedChar);
    static CandidatesGrid FromValues(const std::array<Value, NumField> &);

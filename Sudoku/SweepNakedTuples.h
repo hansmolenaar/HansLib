@@ -10,9 +10,8 @@ class FieldsInfo;
 
 namespace SweepNakedTuples
 {
-bool sweep(CandidatesGrid &, Index);
-bool sweepHouse(CandidatesGrid &grid, FieldsInfo &, HouseId, Index);
-bool sweepHousesOfType(CandidatesGrid &, FieldsInfo &, HouseType, Index);
+FieldValue::Container collect(const FieldsInfo &, Index);
+FieldValue::Container collectHousesOfType(const FieldsInfo &, HouseType, Index);
 FieldValue::Container collectHouse(const FieldsInfo &, HouseId, Index);
 }; // namespace SweepNakedTuples
 

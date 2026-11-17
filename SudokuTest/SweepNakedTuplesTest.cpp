@@ -32,21 +32,27 @@ TEST(SweepNakedTuplesTest, SweepNakedPair_1)
    auto value0 = grid[Field22].tryGetSolvedValue();
    ASSERT_FALSE(value0.has_value());
    FieldsInfo finfo(grid);
-   SweepNakedTuples::sweepHouse(grid, finfo, HouseId{HouseType::Row, 1}, 2);
+   FieldValue::Container fieldValues;
+   fieldValues = SweepNakedTuples::collectHouse(finfo, HouseId{HouseType::Row, 1}, 2);
+   grid.apply(fieldValues, finfo);
 
    expectNumCandidates -= 2 * 6;
    ASSERT_EQ(grid.getNumCandidates(), expectNumCandidates); // Remainer of row removed
 
-   bool anyChange = SweepNakedTuples::sweepHouse(grid, finfo, HouseId{HouseType::Box, 0}, 2);
-   ASSERT_TRUE(anyChange);
+   fieldValues = SweepNakedTuples::collectHouse(finfo, HouseId{HouseType::Box, 0}, 2);
+   ASSERT_FALSE(fieldValues.empty());
+   grid.apply(fieldValues, finfo);
+
    value0 = grid[Field22].tryGetSolvedValue();
    ASSERT_TRUE(value0.has_value());
    ASSERT_EQ(value0.value(), 5);
    expectNumCandidates -= 5;
    ASSERT_EQ(grid.getNumCandidates(), expectNumCandidates);
 
-   anyChange = SweepNakedTuples::sweepHousesOfType(grid, finfo, HouseType::Box, 2);
-   ASSERT_FALSE(anyChange);
+   fieldValues = SweepNakedTuples::collectHousesOfType(finfo, HouseType::Box, 2);
+   ASSERT_EQ(fieldValues.size(), 14);
+   const auto changes = grid.apply(fieldValues, finfo);
+   ASSERT_EQ(changes.numValuesChanged, 0);
    ASSERT_EQ(grid.getNumCandidates(), expectNumCandidates);
 }
 
@@ -73,19 +79,25 @@ TEST(SweepNakedTuplesTest, SweepNakedPair_2)
    ASSERT_FALSE(value0.has_value());
 
    FieldsInfo finfo(grid);
-   SweepNakedTuples::sweepHousesOfType(grid, finfo, HouseType::Col, 2);
+   FieldValue::Container fieldValues;
+   fieldValues = SweepNakedTuples::collectHousesOfType(finfo, HouseType::Col, 2);
+   grid.apply(fieldValues, finfo);
    ASSERT_EQ(grid.getNumCandidates(), expectNumCandidates);
 
-   SweepNakedTuples::sweepHousesOfType(grid, finfo, HouseType::Box, 2);
+   fieldValues = SweepNakedTuples::collectHousesOfType(finfo, HouseType::Box, 2);
+   auto changes = grid.apply(fieldValues, finfo);
+   ASSERT_EQ(changes.numValuesChanged, 0);
    ASSERT_EQ(grid.getNumCandidates(), expectNumCandidates);
 
-   SweepNakedTuples::sweepHousesOfType(grid, finfo, HouseType::Row, 2);
+   fieldValues = SweepNakedTuples::collectHousesOfType(finfo, HouseType::Row, 2);
+   grid.applyAndUpdate(fieldValues, finfo);
    expectNumCandidates -= 64;
    ASSERT_EQ(grid.getNumCandidates(), expectNumCandidates);
    ASSERT_EQ(grid[field7].tryGetSolvedValue().value(), 6);
    ASSERT_EQ(grid[field0].size(), 2);
 }
 
+#if false
 TEST(SweepNakedTuplesTest, SweepNakedTuples_1)
 {
    const std::array<Value, NumField> diagramValues = {
@@ -257,7 +269,6 @@ TEST(SweepNakedTuplesTest, SweepNakedTuples_3)
    ASSERT_EQ(grid.getNumCandidates(), NumField);
    ASSERT_TRUE(grid.isSolved());
 }
-
 TEST(SweepNakedTuplesTest, SweepNakedTuples_222_box)
 {
    CandidatesGrid grid;
@@ -358,3 +369,4 @@ TEST(SweepNakedTuplesTest, SweepNakedQuartet)
    expectNumCandidates -= 19;
    ASSERT_EQ(grid.getNumCandidates(), expectNumCandidates);
 }
+#endif

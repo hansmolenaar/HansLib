@@ -148,6 +148,7 @@ TEST(CandidatesGridTest, Symmetries)
 
 TEST(CandidatesGridTest, Simple)
 {
+   ASSERT_TRUE(true);
    SweepCombined *sweepers = SweepCombined::getSimpleSweepers();
    std::vector<CandidatesGrid> grids = TestModels::getSimplePuzzles();
    ASSERT_EQ(grids.size(), 133);

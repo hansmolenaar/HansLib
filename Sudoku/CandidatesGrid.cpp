@@ -164,6 +164,21 @@ GridChange CandidatesGrid::apply(const std::set<FieldValue> &fieldValues)
    return change;
 }
 
+bool CandidatesGrid::applyAndUpdate(const FieldValue::Container &fieldValues, FieldsInfo &finfo)
+{
+   const auto changes = apply(fieldValues);
+   if (changes.numValuesChanged == 0)
+   {
+      return false;
+   }
+   if (changes.numFieldsSolved > 0)
+   {
+      update();
+   }
+   finfo.update();
+   return true;
+}
+
 void CandidatesGrid::setGiven(Field field, Value value)
 {
    MyAssert((*this)[field].size() == NumValue);

@@ -17,8 +17,8 @@ namespace str = std::ranges;
 namespace
 {
 
-void collect(const FieldsInfo &finfo, const FieldBits &house, std::span<const Field> candidateTuple,
-             FieldValue::Container &fieldValues)
+void add(const FieldsInfo &finfo, const FieldBits &house, std::span<const Field> candidateTuple,
+         FieldValue::Container &fieldValues)
 {
    const CandidatesGrid &grid = finfo.getGrid();
    const auto candidatesToRemove = CandidatesGrid::getValuesInFields(grid, candidateTuple);
@@ -40,16 +40,7 @@ bool IsNakedTuple(const CandidatesGrid &grid, const std::vector<Field> &candidat
 
 } // namespace
 
-bool SweepNakedTuples::sweepHouse(CandidatesGrid &grid, FieldsInfo &finfo, HouseId houseId, Index tupleSize)
-
-{
-   const auto fieldValues = collectHouse(finfo, houseId, tupleSize);
-   const auto changes = grid.apply(fieldValues, finfo);
-   return changes.numValuesChanged > 0;
-}
-
 FieldValue::Container SweepNakedTuples::collectHouse(const FieldsInfo &finfo, HouseId houseId, Index tupleSize)
-
 {
    FieldValue::Container result;
    const CandidatesGrid &grid = finfo.getGrid();
@@ -75,75 +66,64 @@ FieldValue::Container SweepNakedTuples::collectHouse(const FieldsInfo &finfo, Ho
    {
       if (IsNakedTuple(grid, combinations()))
       {
-         collect(finfo, house, combinations(), result);
+         add(finfo, house, combinations(), result);
       }
    } while (combinations.next());
 
    return result;
 }
 
-bool SweepNakedTuples::sweepHousesOfType(CandidatesGrid &grid, FieldsInfo &finfo, HouseType type, Index tupleSize)
+FieldValue::Container SweepNakedTuples::collectHousesOfType(const FieldsInfo &finfo, HouseType type, Index tupleSize)
 {
-   bool anyChange = false;
+   FieldValue::Container result;
    HouseId houseId{type, IndexUndefined};
    for (Index idx : IndexAll)
    {
       houseId.houseIndex = idx;
-      if (sweepHouse(grid, finfo, houseId, tupleSize))
-      {
-         anyChange = true;
-         grid.update();
-      }
+      const auto fieldValuesHouse = collectHouse(finfo, houseId, tupleSize);
+      result.insert(fieldValuesHouse.begin(), fieldValuesHouse.end());
    }
-   return anyChange;
+   return result;
+   ;
 }
 
-bool SweepNakedTuples::sweep(CandidatesGrid &grid, Index tupleSize)
+FieldValue::Container SweepNakedTuples::collect(const FieldsInfo &finfo, Index tupleSize)
 {
-   FieldsInfo finfo(grid);
-   bool anyChange = false;
+   FieldValue::Container result;
    for (HouseType type : HouseTypeAll)
    {
-      anyChange |= sweepHousesOfType(grid, finfo, type, tupleSize);
+      const auto fieldValuesHouseType = collectHousesOfType(finfo, type, tupleSize);
+      result.insert(fieldValuesHouseType.begin(), fieldValuesHouseType.end());
    }
-   return anyChange;
+   return result;
 }
 
 // ***************************************************************
 
 bool SweepNakedPairs::sweep(CandidatesGrid &grid)
 {
-   FieldsInfo finfo(grid);
-   bool anyChange = false;
-   for (HouseType type : HouseTypeAll)
-   {
-      anyChange |= SweepNakedTuples::sweepHousesOfType(grid, finfo, type, 2);
-   }
-   return anyChange;
+   const FieldsInfo finfo(grid);
+   const auto fieldValues = SweepNakedTuples::collect(finfo, 2);
+   const auto changes = grid.apply(fieldValues);
+   return changes.numValuesChanged > 0;
 }
 
 // ***************************************************************
 
 bool SweepNakedTriplet::sweep(CandidatesGrid &grid)
 {
-   FieldsInfo finfo(grid);
-   bool anyChange = false;
-   for (HouseType type : HouseTypeAll)
-   {
-      anyChange |= SweepNakedTuples::sweepHousesOfType(grid, finfo, type, 3);
-   }
-   return anyChange;
+   const FieldsInfo finfo(grid);
+   const auto fieldValues = SweepNakedTuples::collect(finfo, 3);
+   const auto changes = grid.apply(fieldValues);
+   return changes.numValuesChanged > 0;
 }
 
 // ***************************************************************
 
 bool SweepNakedQuartet::sweep(CandidatesGrid &grid)
 {
-   FieldsInfo finfo(grid);
-   bool anyChange = false;
-   for (HouseType type : HouseTypeAll)
-   {
-      anyChange |= SweepNakedTuples::sweepHousesOfType(grid, finfo, type, 4);
-   }
-   return anyChange;
+   const FieldsInfo finfo(grid);
+   const auto fieldValues = SweepNakedTuples::collect(finfo, 4);
+   const auto changes = grid.apply(fieldValues);
+   return changes.numValuesChanged > 0;
 }
