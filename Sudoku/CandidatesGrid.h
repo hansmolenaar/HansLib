@@ -1,6 +1,9 @@
 #pragma once
 
 #include "Candidates.h"
+#include "FieldValue.h"
+
+#include <set>
 #include <vector>
 
 namespace Sudoku
@@ -21,6 +24,7 @@ class CandidatesGrid
    void update();                 // set candidates from givens
    void checkValidSudoku() const; // throws if not valid
    bool isSolved() const;
+   GridChange apply(CandidatesGrid &grid, const std::set<FieldValue> &fieldValues);
 
    static CandidatesGrid FromString(const std::string &, char = ValueUndefinedChar);
    static CandidatesGrid FromValues(const std::array<Value, NumField> &);

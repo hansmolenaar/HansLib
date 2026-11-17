@@ -1,6 +1,8 @@
 #pragma once
 
+#include "GridChange.h"
 #include "SudokuDefines.h"
+
 #include <boost/container/static_vector.hpp>
 
 #include <initializer_list>
@@ -70,7 +72,7 @@ class Candidates
 {
  public:
    bool setOnly(std::initializer_list<Value>);
-   bool removeCandidate(Value);
+   GridChange removeCandidate(Value);
    bool isSolved() const;
    Index size() const;
    std::optional<Value> tryGetSolvedValue() const;

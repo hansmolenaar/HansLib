@@ -16,8 +16,9 @@ bool Candidates::contains(Value v) const
    return Contains(m_candidates, v);
 }
 
-bool Candidates::removeCandidate(Value v)
+GridChange Candidates::removeCandidate(Value v)
 {
+   GridChange gridChange;
    const auto found = str::find(m_candidates, v);
    const bool anyChange = found != m_candidates.end();
 
@@ -25,8 +26,13 @@ bool Candidates::removeCandidate(Value v)
    {
       MyAssert(size() > 1, "Trying to remove solved value " + std::to_string(v));
       m_candidates.erase(found);
+      gridChange.numValuesChanged = 1;
+      if (isSolved())
+      {
+         gridChange.numFieldsSolved += 1;
+      }
    }
-   return anyChange;
+   return gridChange;
 }
 
 bool Candidates::isSolved() const

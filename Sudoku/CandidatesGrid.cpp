@@ -127,7 +127,7 @@ bool CandidatesGrid::setCandidates(Index row, Index col, std::initializer_list<V
 
 bool CandidatesGrid::removeCandidate(Field field, Value value)
 {
-   return m_candidates.at(field).removeCandidate(value);
+   return m_candidates.at(field).removeCandidate(value).numValuesChanged > 0;
 }
 
 bool CandidatesGrid::removeCandidateFromFields(const FieldBits &fields, Value value)
@@ -138,6 +138,16 @@ bool CandidatesGrid::removeCandidateFromFields(const FieldBits &fields, Value va
       anyChange |= removeCandidate(field, value);
    }
    return anyChange;
+}
+
+GridChange CandidatesGrid::apply(CandidatesGrid &grid, const std::set<FieldValue> &fieldValues)
+{
+   GridChange change;
+   for (const auto &fv : fieldValues)
+   {
+      change += m_candidates.at(fv.field).removeCandidate(fv.value);
+   }
+   return change;
 }
 
 void CandidatesGrid::setGiven(Field field, Value value)
