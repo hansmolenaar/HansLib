@@ -1,11 +1,11 @@
 #include <gtest/gtest.h>
 
-#include "Contains.h"
 #include "Network.h"
 #include "Single.h"
 #include "SudokuUtils.h"
 
 using namespace Sudoku;
+using namespace SudokuUtils;
 using namespace Utilities;
 
 TEST(NetworkTest, EmptyList)
@@ -24,12 +24,12 @@ TEST(NetworkTest, SingleLink)
    ASSERT_EQ(networks.size(), 1);
    const auto fields = Single(networks).getFields();
    ASSERT_EQ(fields.count(), 2);
-   ASSERT_EQ(*(SudokuUtils::FieldBitsToRange(fields).begin()), cell2.field);
-   ASSERT_EQ(*((SudokuUtils::FieldBitsToRange(fields) | std::views::drop(1)).begin()), cell1.field);
-   auto connected = networks.front().getConnectedCells(cell1);
-   ASSERT_EQ(Single(connected), cell2);
-   connected = networks.front().getConnectedCells(cell2);
-   ASSERT_EQ(Single(connected), cell1);
+   ASSERT_EQ(*(FieldBitsToRange(fields).begin()), cell2.field);
+   ASSERT_EQ(*((FieldBitsToRange(fields) | std::views::drop(1)).begin()), cell1.field);
+   auto connected = networks.front().getConnectedFields(cell1.field);
+   ASSERT_EQ(SingleField(connected), cell2.field);
+   connected = networks.front().getConnectedFields(cell2.field);
+   ASSERT_EQ(SingleField(connected), cell1.field);
    const auto colors = Network::setColors(networks[0]);
    ASSERT_NE(colors.get(cell1.field), colors.get(cell2.field));
    ASSERT_EQ(networks[0].getLink(cell1.field, cell2.field).type, LinkType::Weak);
@@ -49,15 +49,15 @@ TEST(NetworkTest, TwoLinks)
    ASSERT_EQ(networks.size(), 1);
    ASSERT_EQ(Single(networks).getFields().count(), 3);
 
-   auto connected = networks.front().getConnectedCells(cell1);
-   ASSERT_EQ(Single(connected), cell2);
+   auto connected = networks.front().getConnectedFields(cell1.field);
+   ASSERT_EQ(SingleField(connected), cell2.field);
 
-   connected = networks.front().getConnectedCells(cell3);
-   ASSERT_EQ(Single(connected), cell2);
+   connected = networks.front().getConnectedFields(cell3.field);
+   ASSERT_EQ(SingleField(connected), cell2.field);
 
-   connected = networks.front().getConnectedCells(cell2);
-   ASSERT_TRUE(Contains(connected, cell1));
-   ASSERT_TRUE(Contains(connected, cell3));
+   connected = networks.front().getConnectedFields(cell2.field);
+   ASSERT_TRUE(connected.test(cell1.field));
+   ASSERT_TRUE(connected.test(cell3.field));
 
    const auto colors = Network::setColors(networks[0]);
    ASSERT_NE(colors.get(cell1.field), colors.get(cell2.field));
@@ -87,10 +87,10 @@ TEST(NetworkTest, Triangle)
    ASSERT_TRUE(colors.empty());
 
    ASSERT_EQ(network.getFields().count(), 3);
-   const auto connected = network.getConnectedCells(cell3);
-   ASSERT_EQ(connected.size(), 2);
-   ASSERT_TRUE(Contains(connected, cell1));
-   ASSERT_TRUE(Contains(connected, cell2));
+   const auto connected = network.getConnectedFields(cell3.field);
+   ASSERT_EQ(connected.count(), 2);
+   ASSERT_TRUE(connected.test(cell1.field));
+   ASSERT_TRUE(connected.test(cell2.field));
 }
 
 TEST(NetworkTest, TwoDisjointLinks)

@@ -105,9 +105,9 @@ void Network::connect(const Cell &cellFrom, const Cell &cellTo)
    m_connections[cellFrom].push_back(cellTo);
 }
 
-std::span<const Cell> Network::getConnectedCells(const Cell &cell) const
+FieldBits Network::getConnectedFields(Field field) const
 {
-   return m_connections.at(cell);
+   return SudokuUtils::getFields(m_connections.at(Cell::get(field)));
 }
 
 FieldBits Network::getFields() const
@@ -142,23 +142,23 @@ ColorField Network::setColors(const Network &netWork)
    str::transform(SudokuUtils::FieldBitsToRange(fields), std::back_inserter(cells), Cell::get);
 
    // Initialize
-   std::set<Cell> done;
+   std::set<Field> done;
    auto activeCell = cells.back();
-   std::vector<Cell> todo(1, cells.back());
+   std::vector<Field> todo(1, cells.back().field);
    result.set(activeCell.field, Color::Blue);
    while (!todo.empty())
    {
-      activeCell = todo.back();
+      activeCell = Cell::get(todo.back());
       todo.pop_back();
-      done.insert(activeCell);
+      done.insert(activeCell.field);
       const Color otherColor = getOtherColor(result.get(activeCell.field));
-      for (auto ngb : netWork.getConnectedCells(activeCell))
+      for (auto ngb : SudokuUtils::FieldBitsToRange(netWork.getConnectedFields(activeCell.field)))
       {
-         if (!result.hasColor(ngb.field))
+         if (!result.hasColor(ngb))
          {
-            result.set(ngb.field, otherColor);
+            result.set(ngb, otherColor);
          }
-         else if (result.get(ngb.field) != otherColor)
+         else if (result.get(ngb) != otherColor)
          {
             // Coloring fails
             return {};
@@ -182,10 +182,10 @@ std::ostream &operator<<(std::ostream &os, const Sudoku::Network &network)
    const auto fields = network.getFields();
    for (auto field : SudokuUtils::FieldBitsToRange(fields))
    {
-      const auto ngbs = network.getConnectedCells(Cell::get(field));
-      for (const auto ngb : ngbs)
+      const auto ngbs = network.getConnectedFields(field);
+      for (const auto ngb : SudokuUtils::FieldBitsToRange(ngbs))
       {
-         const auto link = network.getLink(field, ngb.field);
+         const auto link = network.getLink(field, ngb);
          if (!done.contains(link))
          {
             done.insert(link);

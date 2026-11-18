@@ -18,7 +18,7 @@ class Network
    // Order of cells on input is not relevant, throws if not found
    Link getLink(Field, Field) const;
    bool contains(Field, Field) const;
-   std::span<const Cell> getConnectedCells(const Cell &) const;
+   FieldBits getConnectedFields(Field) const;
    static ColorField setColors(const Network &);
    static std::vector<Network> create(std::span<const Link>);
 

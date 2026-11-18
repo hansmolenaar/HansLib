@@ -24,6 +24,8 @@ template <typename InputItr> const std::iterator_traits<InputItr>::value_type &S
    return *b;
 }
 
+template <typename R> auto SingleInRange(R &);
+
 } // namespace Utilities
 
 template <typename T> const T &Utilities::Single(const std::vector<T> &container)
@@ -48,4 +50,8 @@ template <typename T> const T &Utilities::Single(const std::span<const T> &conta
 {
    MyAssert(container.size() == 1, "Expect single value, actual " + std::to_string(container.size()));
    return container.front();
+}
+
+template <typename R> auto SingleInRange(R &range)
+{
 }
