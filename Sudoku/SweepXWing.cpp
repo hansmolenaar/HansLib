@@ -22,6 +22,21 @@ bool RemoveCandidates(CandidatesGrid &grid, Value value, const XWing &xWing)
    return anyChange;
 }
 
+void collectCandidates(const FieldsInfo &finfo, Value value, const XWing &xWing, FieldValue::Container &fieldsValue)
+{
+   const std::array<Cell, 4> fixedCells{xWing.lockedPair0[0], xWing.lockedPair0[1], xWing.lockedPair1[0],
+                                        xWing.lockedPair1[1]};
+   auto activeCells = House::getHouse(xWing.houseId0).cells | std::views::filter(IsNotContained<Cell>{fixedCells});
+   const auto &onlyUseFields = finfo.getActiveFieldsWithValue(value);
+   for (const Cell &c : activeCells)
+   {
+      if (onlyUseFields.test(c.field))
+      {
+         fieldsValue.insert({c.field, value});
+      }
+   }
+}
+
 bool IsSimpleLineLockedPair(const LockedPair &lp)
 {
    const auto visibility = Visiblity::areVisibleVia(lp[0], lp[1]);
@@ -98,11 +113,35 @@ bool SweepXWing::sweep(CandidatesGrid &grid)
             const bool anyChange = RemoveCandidates(grid, value, xWing.value());
             if (anyChange)
             {
-               grid.update();
+               // grid.update();
                return true;
             }
          }
       } while (combinations.next());
    }
    return false;
+}
+
+FieldValue::Container SweepXWing::collect(const FieldsInfo &finfo)
+{
+   FieldValue::Container result;
+   const LockedPairs lps(finfo);
+   for (Value value : ValueAll)
+   {
+      const auto lockedPairs = lps.getPairs(value);
+      if (lockedPairs.size() < 2)
+      {
+         continue;
+      }
+      Combinations<LockedPair> combinations(lockedPairs, 2);
+      do
+      {
+         const auto xWing = isXWing(combinations());
+         if (xWing.has_value())
+         {
+            collectCandidates(finfo, value, xWing.value(), result);
+         }
+      } while (combinations.next());
+   }
+   return result;
 }

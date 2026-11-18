@@ -29,7 +29,7 @@ class LockedPair
 class LockedPairs
 {
  public:
-   explicit LockedPairs(FieldsInfo &);
+   explicit LockedPairs(const FieldsInfo &);
    std::span<const LockedPair> getPairs(Value) const;
 
  private:

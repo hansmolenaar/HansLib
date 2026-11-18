@@ -53,13 +53,10 @@ void FieldsInfo::update()
    // Clear all mutable data and ...
    m_solvedFields.reset();
    m_activeFields.reset();
-   for (auto itr : m_activeFieldswithValue)
+   for (Value value : ValueAll)
    {
-      itr.reset();
-      for (auto itr : m_fieldswithValue)
-      {
-         itr.reset();
-      }
+      m_activeFieldswithValue[value].reset();
+      m_fieldswithValue[value].reset();
    }
 
    // ... refill

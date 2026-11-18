@@ -50,10 +50,7 @@ TEST(SweepNakedTuplesTest, SweepNakedPair_1)
    ASSERT_EQ(grid.getNumCandidates(), expectNumCandidates);
 
    fieldValues = SweepNakedTuples::collectHousesOfType(finfo, HouseType::Box, 2);
-   ASSERT_EQ(fieldValues.size(), 5);
-   const auto changes = grid.apply(fieldValues, finfo);
-   ASSERT_EQ(changes.numValuesChanged, 0);
-   ASSERT_EQ(grid.getNumCandidates(), expectNumCandidates);
+   ASSERT_EQ(fieldValues.size(), 0);
 }
 
 TEST(SweepNakedTuplesTest, SweepNakedPair_2)

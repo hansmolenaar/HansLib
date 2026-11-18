@@ -42,7 +42,7 @@ std::ostream &operator<<(std::ostream &os, const Sudoku::LockedPair &lp)
 
 // Locked Pairs
 
-LockedPairs::LockedPairs(FieldsInfo &finfo)
+LockedPairs::LockedPairs(const FieldsInfo &finfo)
 {
    for (const auto &house : House::getAllHouses())
    {

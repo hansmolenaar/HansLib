@@ -36,14 +36,30 @@ TEST(SweepXWingTest, Basics)
    expect -= 142;
    ASSERT_EQ(expect, grid.getNumCandidates());
 
-   SweepXWing().sweep(grid);
-   expect -= 7;
+   FieldsInfo finfo(grid);
+   auto fieldsValue = SweepXWing().collect(finfo);
+   ASSERT_EQ(fieldsValue.size(), 14);
+   auto gridChanges = grid.apply(fieldsValue, finfo);
+   ASSERT_EQ(gridChanges.numValuesChanged, 14);
+   ASSERT_EQ(gridChanges.numFieldsSolved, 0);
+   expect -= 14;
    ASSERT_EQ(expect, grid.getNumCandidates());
 
-   SweepXWing().sweep(grid);
-   expect -= 7;
-   ASSERT_EQ(expect, grid.getNumCandidates());
+   const auto finfoOld = finfo;
+   finfo = FieldsInfo(grid);
 
-   SweepXWing().sweep(grid);
-   ASSERT_EQ(expect, grid.getNumCandidates());
+   ASSERT_EQ(finfoOld.getActiveFields(), finfo.getActiveFields());
+   ASSERT_EQ(finfoOld.getSolvedFields(), finfo.getSolvedFields());
+   for (HouseId h : House::getAllHouseIds())
+   {
+      ASSERT_EQ(finfoOld.getHouseFields(h), finfo.getHouseFields(h));
+   }
+   for (Value v : ValueAll)
+   {
+      ASSERT_EQ(finfoOld.getFieldsWithValue(v), finfo.getFieldsWithValue(v));
+      ASSERT_EQ(finfoOld.getActiveFieldsWithValue(v), finfo.getActiveFieldsWithValue(v));
+   }
+
+   fieldsValue = SweepXWing().collect(finfoOld);
+   ASSERT_EQ(fieldsValue.size(), 0);
 }
