@@ -26,16 +26,13 @@ class ColorField
 {
  public:
    void set(Field, Color);
-   void set(const Cell &, Color);
 
    // throws if not set
    Color get(Field) const;
-   Color get(const Cell &) const; // TODO remove me
 
    bool empty() const;
    bool hasColor(Field) const;
-   bool hasColor(const Cell &) const;
-   std::vector<Cell> getCellsWithColor(Color) const; // TODO remove me
+
    FieldBits getFieldsWithColor(Color) const;
 
  private:

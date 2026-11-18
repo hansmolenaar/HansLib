@@ -57,22 +57,29 @@ bool SweepSimpleColoring::removeTwiceInAUnit(CandidatesGrid &grid, Value value, 
 {
    for (Color color : ColorAll)
    {
-      const auto cellsWithColor = colors.getCellsWithColor(color);
-      if (cellsWithColor.size() < 2)
+      const auto fieldsWithColor = colors.getFieldsWithColor(color);
+      const auto numFieldsWithColor = fieldsWithColor.count();
+      if (numFieldsWithColor < 2)
       {
          continue;
       }
-      for (Field n = 0; n < cellsWithColor.size() - 1; ++n)
+
+      std::optional<Field> prev;
+      for (Field f : SudokuUtils::FieldBitsToRange(fieldsWithColor))
       {
-         const Cell cell1 = cellsWithColor.at(n);
-         const Cell cell2 = cellsWithColor.at(n + 1);
-         if (Visiblity::areVisible(cell1, cell2))
+         if (!prev.has_value())
          {
-            if (grid.RemoveCandidate(value, cellsWithColor))
+            prev = f;
+            continue;
+         }
+         if (Visiblity::areVisible(f, prev.value()))
+         {
+            if (grid.removeCandidateFromFields(fieldsWithColor, value))
             {
                return true;
             }
          }
+         prev = f;
       }
    }
    return false;
@@ -83,10 +90,8 @@ bool SweepSimpleColoring::removeOneColorEmptiesHouse(CandidatesGrid &grid, Value
 {
    FieldsInfo finfo(grid);
    const FieldBits fieldsValue = finfo.getActiveFieldsWithValue(value);
-   const auto cellsBlue = colors.getCellsWithColor(Color::Blue);
-   const auto cellsGreen = colors.getCellsWithColor(Color::Green);
-   const auto fieldsBlue = SudokuUtils::getFields(cellsBlue);
-   const auto fieldsGreen = SudokuUtils::getFields(cellsGreen);
+   const auto fieldsBlue = colors.getFieldsWithColor(Color::Blue);
+   const auto fieldsGreen = colors.getFieldsWithColor(Color::Green);
    const auto visibleFieldsBlue = finfo.getAllVisibleFields(fieldsBlue);
    const auto visibleFieldsGreen = finfo.getAllVisibleFields(fieldsGreen);
    for (const House &house : House::getAllHouses())
@@ -113,14 +118,14 @@ bool SweepSimpleColoring::removeOneColorEmptiesHouse(CandidatesGrid &grid, Value
       }
       if (numCellsInHouseSeesBlue == numCellsInHouseWithValue)
       {
-         if (grid.RemoveCandidate(value, cellsBlue))
+         if (grid.removeCandidateFromFields(fieldsBlue, value))
          {
             return true;
          }
       }
       else if (numCellsInHouseSeesGreen == numCellsInHouseWithValue)
       {
-         if (grid.RemoveCandidate(value, cellsGreen))
+         if (grid.removeCandidateFromFields(fieldsGreen, value))
          {
             return true;
          }

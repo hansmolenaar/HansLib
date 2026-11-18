@@ -19,14 +19,12 @@ TEST(ColorFieldTest, Blue)
    colorField.set(field, Color::Blue);
    ASSERT_EQ(colorField.get(field), Color::Blue);
 
-   const Cell cell = Cell::get(field);
-   colorField.set(cell, Color::Blue);
-   ASSERT_EQ(colorField.get(cell), Color::Blue);
+   colorField.set(field, Color::Blue);
+   ASSERT_EQ(colorField.get(field), Color::Blue);
 
    ASSERT_ANY_THROW(colorField.set(field, Color::Green));
-   ASSERT_ANY_THROW(colorField.set(cell, Color::Green));
-   ASSERT_EQ(colorField.getCellsWithColor(Color::Blue).size(), 1);
-   ASSERT_EQ(colorField.getCellsWithColor(Color::Green).size(), 0);
+   ASSERT_EQ(colorField.getFieldsWithColor(Color::Blue).count(), 1);
+   ASSERT_EQ(colorField.getFieldsWithColor(Color::Green).count(), 0);
 }
 
 TEST(ColorFieldTest, Green)
@@ -36,13 +34,11 @@ TEST(ColorFieldTest, Green)
    colorField.set(field, Color::Green);
    ASSERT_EQ(colorField.get(field), Color::Green);
 
-   const Cell cell = Cell::get(field);
-   colorField.set(cell, Color::Green);
-   ASSERT_EQ(colorField.get(cell), Color::Green);
+   colorField.set(field, Color::Green);
+   ASSERT_EQ(colorField.get(field), Color::Green);
 
    ASSERT_ANY_THROW(colorField.set(field, Color::Blue));
-   ASSERT_ANY_THROW(colorField.set(cell, Color::Blue));
 
-   ASSERT_EQ(colorField.getCellsWithColor(Color::Blue).size(), 0);
-   ASSERT_EQ(colorField.getCellsWithColor(Color::Green).size(), 1);
+   ASSERT_EQ(colorField.getFieldsWithColor(Color::Blue).count(), 0);
+   ASSERT_EQ(colorField.getFieldsWithColor(Color::Green).count(), 1);
 }

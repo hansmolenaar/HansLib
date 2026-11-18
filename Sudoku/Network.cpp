@@ -132,20 +132,20 @@ ColorField Network::setColors(const Network &netWork)
    std::set<Cell> done;
    auto activeCell = cells.back();
    std::vector<Cell> todo(1, cells.back());
-   result.set(activeCell, Color::Blue);
+   result.set(activeCell.field, Color::Blue);
    while (!todo.empty())
    {
       activeCell = todo.back();
       todo.pop_back();
       done.insert(activeCell);
-      const Color otherColor = getOtherColor(result.get(activeCell));
+      const Color otherColor = getOtherColor(result.get(activeCell.field));
       for (auto ngb : netWork.getConnectedCells(activeCell))
       {
-         if (!result.hasColor(ngb))
+         if (!result.hasColor(ngb.field))
          {
-            result.set(ngb, otherColor);
+            result.set(ngb.field, otherColor);
          }
-         else if (result.get(ngb) != otherColor)
+         else if (result.get(ngb.field) != otherColor)
          {
             // Coloring fails
             return {};
