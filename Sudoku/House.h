@@ -17,12 +17,6 @@ struct HouseId
    auto operator<=>(const HouseId &) const = default;
 };
 
-struct CellInHouse
-{
-   bool operator()(const Cell &) const;
-   HouseId houseId;
-};
-
 struct House
 {
    static const House &getRow(Index);
