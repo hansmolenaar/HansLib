@@ -4,7 +4,6 @@
 #include "Cell.h"
 #include "SweepCombined.h"
 #include "TestModels.h"
-#include <iostream>
 
 using namespace Sudoku;
 

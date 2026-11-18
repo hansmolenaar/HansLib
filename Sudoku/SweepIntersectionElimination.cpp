@@ -1,54 +1,15 @@
 #include "SweepIntersectionElimination.h"
 #include "CandidatesGrid.h"
-#include "Contains.h"
 #include "FieldsInfo.h"
 #include "MyAssert.h"
 #include "SudokuUtils.h"
-#include "boost/container/static_vector.hpp"
 
 #include <algorithm>
-#include <iostream>
 #include <optional>
-#include <ranges>
-#include <string>
 
 namespace str = std::ranges;
 using namespace Sudoku;
 using namespace Utilities;
-
-bool SweepIntersectionElimination::SweepHouse(CandidatesGrid &grid, const House &house)
-{
-   bool anyChange = false;
-   const auto value2fields = SudokuUtils::getValue2Fields(grid, house.cells);
-   for (Value value : ValueAll)
-   {
-      const auto numFieldsWithValue = value2fields[value].size();
-      if (numFieldsWithValue == 2 || numFieldsWithValue == 3)
-      {
-         boost::container::static_vector<Cell, 3> cells(numFieldsWithValue);
-         str::transform(value2fields[value], cells.begin(), Cell::get);
-         MyAssert(cells.size() == numFieldsWithValue);
-         const auto intersectionHouseId = TryGetIntersectionHouse(house.houseId.houseType, cells);
-         if (intersectionHouseId.has_value())
-         {
-            const auto &intersectionHouse = House::getHouse(intersectionHouseId.value());
-            auto activeCells = intersectionHouse.cells | std::views::filter(IsNotContained<Cell>{cells});
-
-// TODO remove me
-#if false
-            std::cout << "SweepHouse value = " << std::to_string(value) << "     cell ";
-            for (const auto c : activeCells)
-            {
-               std::cout << c << " ";
-            }
-            std::cout << "\n";
-#endif
-            anyChange |= grid.RemoveCandidate(value, activeCells);
-         }
-      }
-   }
-   return anyChange;
-};
 
 std::optional<HouseId> SweepIntersectionElimination::TryGetIntersectionHouse(HouseType houseTypeIn,
                                                                              std::span<const Cell> cells)
@@ -90,7 +51,6 @@ FieldValue::Container SweepIntersectionElimination::collectHouse(const FieldsInf
 {
    FieldValue::Container result;
    const auto house = finfo.getHouseFields(houseId);
-   const auto activeFields = finfo.getActiveFields();
    for (Value value : ValueAll)
    {
       const auto activeFieldsWithValue = finfo.getActiveFieldsWithValue(value);
@@ -98,27 +58,15 @@ FieldValue::Container SweepIntersectionElimination::collectHouse(const FieldsInf
       const auto numFieldsWithValue = fieldsWithValueInHouse.count();
       if (numFieldsWithValue == 2 || numFieldsWithValue == 3)
       {
-         const auto fields = SudokuUtils::FieldBitsToVector(fieldsWithValueInHouse); // TODO clean up
+         const auto fields = SudokuUtils::FieldBitsToVector(fieldsWithValueInHouse);
          std::vector<Cell> cells(fields.size());
          std::transform(fields.begin(), fields.end(), cells.begin(), Cell::get);
-         MyAssert(cells.size() == numFieldsWithValue);
          const auto intersectionHouseId = TryGetIntersectionHouse(houseId.houseType, cells);
          if (intersectionHouseId.has_value())
          {
-            const auto intersectionHouse = finfo.getHouseFields(intersectionHouseId.value()) & activeFields;
-            for (Field field : SudokuUtils::FieldBitsToRange(intersectionHouse))
-            {
-               if (!fieldsWithValueInHouse.test(field) && activeFieldsWithValue.test(field))
-               {
-                  std::cout << "CcollectHouse   " << Cell::get(field) << " " << std::to_string(value) << "\n";
-                  result.insert({field, value});
-                  MyAssert(!finfo.getGrid()[field].isSolved(),
-                           "collectHouse field is solved: " + std::to_string(field)); // TODO remove me
-                  MyAssert(finfo.getGrid()[field].contains(value), "collectHouse field " + std::to_string(field) +
-                                                                       " does not contain value " +
-                                                                       std::to_string(value)); // TODO remove me
-               }
-            }
+            const auto intersectionHouse = finfo.getHouseFields(intersectionHouseId.value());
+            const auto fieldsToCancel = intersectionHouse & activeFieldsWithValue & ~fieldsWithValueInHouse;
+            FieldValue::add(fieldsToCancel, value, result);
          }
       }
    }
@@ -135,17 +83,3 @@ FieldValue::Container SweepIntersectionElimination::collect(const FieldsInfo &fi
 
    return result;
 }
-
-bool SweepIntersectionElimination::sweep(CandidatesGrid &grid)
-{
-   bool anyChange = false;
-   for (const auto &house : House::getAllHouses())
-   {
-      if (SweepHouse(grid, house))
-      {
-         anyChange = true;
-         // grid.update();
-      }
-   }
-   return anyChange;
-};
