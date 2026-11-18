@@ -18,13 +18,9 @@ class SweepSimpleColoring : public ISweep
    static std::vector<Link> getBilocationLinks(const CandidatesGrid &, FieldsInfo, Value);
    static FieldValue::Container collectSees2ColorsCandidates(const FieldsInfo &, Value, const ColorField &,
                                                              const FieldBits &);
-   static bool removeSees2ColorsCandidates(CandidatesGrid &, const FieldsInfo &, Value, const ColorField &,
-                                           const FieldBits &);
    static FieldValue::Container collectTwiceInAUnit(const FieldsInfo &, Value, const ColorField &);
-   static bool removeTwiceInAUnit(CandidatesGrid &, Value, const ColorField &);
    static FieldValue::Container collectOneColorEmptiesHouse(const FieldsInfo &, Value, const ColorField &,
                                                             const FieldBits &);
-   static bool removeOneColorEmptiesHouse(CandidatesGrid &, Value, const ColorField &, const FieldBits &);
 };
 
 } // namespace Sudoku

@@ -56,14 +56,6 @@ FieldValue::Container SweepSimpleColoring::collectSees2ColorsCandidates(const Fi
    return result;
 }
 
-bool SweepSimpleColoring::removeSees2ColorsCandidates(CandidatesGrid &grid, const FieldsInfo &finfo, Value value,
-                                                      const ColorField &colors, const FieldBits &cellsToIgnore)
-{
-   const auto toRemove = collectSees2ColorsCandidates(finfo, value, colors, cellsToIgnore);
-   const GridChange changes = grid.apply(toRemove);
-   return changes.numValuesChanged > 0;
-}
-
 FieldValue::Container SweepSimpleColoring::collectTwiceInAUnit(const FieldsInfo &finfo, Value value,
                                                                const ColorField &colors)
 {
@@ -93,14 +85,6 @@ FieldValue::Container SweepSimpleColoring::collectTwiceInAUnit(const FieldsInfo 
       }
    }
    return result;
-}
-
-bool SweepSimpleColoring::removeTwiceInAUnit(CandidatesGrid &grid, Value value, const ColorField &colors)
-{
-   const FieldsInfo finfo(grid);
-   const auto toRemove = collectTwiceInAUnit(finfo, value, colors);
-   const GridChange changes = grid.apply(toRemove);
-   return changes.numValuesChanged > 0;
 }
 
 FieldValue::Container SweepSimpleColoring::collectOneColorEmptiesHouse(const FieldsInfo &finfo, Value value,
@@ -146,15 +130,6 @@ FieldValue::Container SweepSimpleColoring::collectOneColorEmptiesHouse(const Fie
    }
 
    return result;
-}
-
-bool SweepSimpleColoring::removeOneColorEmptiesHouse(CandidatesGrid &grid, Value value, const ColorField &colors,
-                                                     const FieldBits &cellsToIgnore)
-{
-   const FieldsInfo finfo(grid);
-   const auto toRemove = collectOneColorEmptiesHouse(finfo, value, colors, cellsToIgnore);
-   const GridChange changes = grid.apply(toRemove);
-   return changes.numValuesChanged > 0;
 }
 
 FieldValue::Container SweepSimpleColoring::collect(const FieldsInfo &finfo)

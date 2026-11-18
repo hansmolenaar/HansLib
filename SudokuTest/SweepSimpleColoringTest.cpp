@@ -3,6 +3,7 @@
 #include "CandidatesGrid.h"
 #include "FieldValue.h"
 #include "FieldsInfo.h"
+#include "GridChange.h"
 #include "ISweep.h"
 #include "Network.h"
 #include "Single.h"
@@ -83,25 +84,23 @@ TEST(SweepSimpleColoringTest, TwiceInAUnit)
    const std::string str = "2..9.....8..5.3....547.6..2..8.....9.97...42.1.....3..3..1.589....8.2..3.....7..5";
    CandidatesGrid grid = CandidatesGrid::FromString(str);
    ISweep::iterate(*sweepCombined, grid);
-   FieldsInfo finfo(grid);
+   const FieldsInfo finfo(grid);
 
    const Value value = 4; // 6
    const auto links = SweepSimpleColoring::getBilocationLinks(grid, finfo, value);
 
    const auto networks = Network::create(links);
-   bool anyChange = false;
+   FieldValue::Container fieldValues;
    for (const auto &network : networks)
    {
       const auto coloring = Network::setColors(network);
-      // std::cout << network << "\n\n";
-      // std::cout << coloring << "\n";
-      // std::cout << grid << "\n";
-      // auto prv = grid;
-      anyChange |= SweepSimpleColoring::removeTwiceInAUnit(grid, value, coloring);
-      // std::cout << grid;
-      // std::cout << CandidatesGrid::DifferenceToStrings(prv, grid);
+
+      FieldValue::add(SweepSimpleColoring::collectTwiceInAUnit(finfo, value, coloring), fieldValues);
    }
-   ASSERT_TRUE(anyChange);
+   ASSERT_EQ(fieldValues.size(), 4);
+   const auto changes = grid.apply(fieldValues);
+   ASSERT_EQ(changes.numValuesChanged, 4);
+   ASSERT_EQ(changes.numFieldsSolved, 3);
 }
 
 #if false

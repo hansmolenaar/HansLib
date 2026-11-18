@@ -11,3 +11,8 @@ void FieldValue::add(const FieldBits &fields, Value value, Container &fieldValue
       fieldValues.insert({field, value});
    }
 }
+
+void FieldValue::add(const Container &toAdd, Container &sum)
+{
+   sum.insert(toAdd.begin(), toAdd.end());
+}
