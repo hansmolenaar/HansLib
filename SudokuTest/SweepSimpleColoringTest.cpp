@@ -70,10 +70,10 @@ TEST(SweepSimpleColoringTest, Sees2Colors)
    Cell changedCell = Cell::getFromRowCol(4, 8);
    ASSERT_TRUE(grid[changedCell.field].contains(1));
    const FieldsInfo finfo(grid);
-   const bool anyChange = SweepSimpleColoring::sweep(grid, 1);
+   const bool anyChange = SweepSimpleColoring().sweep(grid);
    ASSERT_FALSE(grid[changedCell.field].contains(1));
    ASSERT_TRUE(anyChange);
-   ASSERT_EQ(grid.getNumCandidates(), 130);
+   ASSERT_EQ(grid.getNumCandidates(), 129);
 }
 
 TEST(SweepSimpleColoringTest, TwiceInAUnit)

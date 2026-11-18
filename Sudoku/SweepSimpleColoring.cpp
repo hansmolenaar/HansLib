@@ -157,43 +157,6 @@ bool SweepSimpleColoring::removeOneColorEmptiesHouse(CandidatesGrid &grid, Value
    return changes.numValuesChanged > 0;
 }
 
-bool SweepSimpleColoring::sweep(CandidatesGrid &grid, Value value)
-{
-   const FieldsInfo finfo(grid);
-   const auto links = getBilocationLinks(grid, finfo, value);
-   if (links.empty())
-   {
-      return false;
-   }
-   const auto networks = Network::create(links);
-   for (const auto &network : networks)
-   {
-      const auto coloring = Network::setColors(network);
-      auto cellsInCurrectNetwork = finfo.getSolvedFields();
-      for (auto field : SudokuUtils::FieldBitsToRange(network.getFields()))
-      {
-         cellsInCurrectNetwork.set(field);
-      }
-
-      if (SweepSimpleColoring::removeSees2ColorsCandidates(grid, finfo, value, coloring, cellsInCurrectNetwork))
-      {
-         // Better start from scratch
-         return true;
-      }
-      if (SweepSimpleColoring::removeTwiceInAUnit(grid, value, coloring))
-      {
-         return true;
-      }
-      if (SweepSimpleColoring::removeOneColorEmptiesHouse(grid, value, coloring, cellsInCurrectNetwork))
-      {
-         MyAssert(false, "RemoveOneColorEmptiesHouse first time, not tested!!"); // TODO
-         return true;
-      }
-   }
-
-   return false;
-}
-
 FieldValue::Container SweepSimpleColoring::collect(const FieldsInfo &finfo)
 {
    FieldValue::Container result;
@@ -226,18 +189,4 @@ FieldValue::Container SweepSimpleColoring::collect(const FieldsInfo &finfo)
    }
 
    return result;
-}
-
-bool SweepSimpleColoring::sweep(CandidatesGrid &grid)
-{
-   bool anyChange = false;
-   for (Value value : ValueAll)
-   {
-      if (sweep(grid, value))
-      {
-         anyChange = true;
-         grid.update();
-      }
-   }
-   return anyChange;
 }

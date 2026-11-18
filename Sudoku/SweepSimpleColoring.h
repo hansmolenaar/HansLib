@@ -13,7 +13,6 @@ class FieldsInfo;
 class SweepSimpleColoring : public ISweep
 {
  public:
-   bool sweep(CandidatesGrid &) override;
    FieldValue::Container collect(const FieldsInfo &) override;
 
    static std::vector<Link> getBilocationLinks(const CandidatesGrid &, FieldsInfo, Value);
@@ -26,7 +25,6 @@ class SweepSimpleColoring : public ISweep
    static FieldValue::Container collectOneColorEmptiesHouse(const FieldsInfo &, Value, const ColorField &,
                                                             const FieldBits &);
    static bool removeOneColorEmptiesHouse(CandidatesGrid &, Value, const ColorField &, const FieldBits &);
-   static bool sweep(CandidatesGrid &, Value);
 };
 
 } // namespace Sudoku
