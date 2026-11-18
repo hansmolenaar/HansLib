@@ -4,32 +4,32 @@
 #include "MyAssert.h"
 #include "SudokuUtils.h"
 
-#include <algorithm>
 #include <optional>
 
-namespace str = std::ranges;
 using namespace Sudoku;
 using namespace Utilities;
 
 std::optional<HouseId> SweepIntersectionElimination::TryGetIntersectionHouse(HouseType houseTypeIn,
-                                                                             std::span<const Cell> cells)
+                                                                             const FieldBits &fields,
+                                                                             const FieldsInfo &finfo)
 {
-   const auto size = cells.size();
+   const auto size = fields.count();
    MyAssert(size >= 2 && size <= 3);
-   const HouseId houseIn = HouseId::getFromCellaAndType(cells.front(), houseTypeIn);
-   MyAssert(str::all_of(cells, CellInHouse{houseIn}));
+   const Cell cell1 = Cell::get(SudokuUtils::FirstField(fields));
+   const HouseId houseIn = HouseId::getFromCellaAndType(cell1, houseTypeIn);
+   MyAssert((fields & finfo.getHouseFields(houseIn)).count() == size);
 
    HouseId houseOut;
    if (houseTypeIn == HouseType::Box)
    {
       // Row or Col
-      houseOut = HouseId::getFromCellaAndType(cells.front(), HouseType::Row);
-      if (str::all_of(cells, CellInHouse{houseOut}))
+      houseOut = HouseId::getFromCellaAndType(cell1, HouseType::Row);
+      if ((fields & finfo.getHouseFields(houseOut)).count() == size)
       {
          return houseOut;
       }
-      houseOut = HouseId::getFromCellaAndType(cells.front(), HouseType::Col);
-      if (str::all_of(cells, CellInHouse{houseOut}))
+      houseOut = HouseId::getFromCellaAndType(cell1, HouseType::Col);
+      if ((fields & finfo.getHouseFields(houseOut)).count() == size)
       {
          return houseOut;
       }
@@ -37,8 +37,8 @@ std::optional<HouseId> SweepIntersectionElimination::TryGetIntersectionHouse(Hou
    else
    {
       // Only box possible
-      houseOut = HouseId::getFromCellaAndType(cells.front(), HouseType::Box);
-      if (str::all_of(cells, CellInHouse{houseOut}))
+      houseOut = HouseId::getFromCellaAndType(cell1, HouseType::Box);
+      if ((fields & finfo.getHouseFields(houseOut)).count() == size)
       {
          return houseOut;
       }
@@ -58,10 +58,7 @@ FieldValue::Container SweepIntersectionElimination::collectHouse(const FieldsInf
       const auto numFieldsWithValue = fieldsWithValueInHouse.count();
       if (numFieldsWithValue == 2 || numFieldsWithValue == 3)
       {
-         const auto fields = SudokuUtils::FieldBitsToVector(fieldsWithValueInHouse);
-         std::vector<Cell> cells(fields.size());
-         std::transform(fields.begin(), fields.end(), cells.begin(), Cell::get);
-         const auto intersectionHouseId = TryGetIntersectionHouse(houseId.houseType, cells);
+         const auto intersectionHouseId = TryGetIntersectionHouse(houseId.houseType, fieldsWithValueInHouse, finfo);
          if (intersectionHouseId.has_value())
          {
             const auto intersectionHouse = finfo.getHouseFields(intersectionHouseId.value());

@@ -1,5 +1,6 @@
 #include "SudokuUtils.h"
 #include "CandidatesGrid.h"
+#include "MyException.h"
 #include "boost/container/static_vector.hpp"
 #include <algorithm>
 
@@ -84,4 +85,13 @@ FieldBits SudokuUtils::getFields(std::span<const Field> fields)
       result.set(f);
    }
    return result;
+}
+
+Field SudokuUtils::FirstField(const FieldBits &fb)
+{
+   for (Field field : FieldBitsToRange(fb))
+   {
+      return field;
+   }
+   throw MyException("FirstField empty");
 }

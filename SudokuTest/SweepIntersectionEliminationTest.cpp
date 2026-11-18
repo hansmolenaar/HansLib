@@ -9,49 +9,68 @@ using namespace Sudoku;
 
 TEST(SweepIntersectionElimination, BoxRow)
 {
-   std::vector<Cell> cells{Cell::get(0), Cell::get(2)};
-   std::optional<HouseId> retval = SweepIntersectionElimination::TryGetIntersectionHouse(HouseType::Box, cells);
+   const CandidatesGrid grid;
+   const FieldsInfo finfo(grid);
+   FieldBits fields;
+   fields.set(0);
+   fields.set(2);
+   std::optional<HouseId> retval = SweepIntersectionElimination::TryGetIntersectionHouse(HouseType::Box, fields, finfo);
    ASSERT_TRUE(retval.has_value());
    ASSERT_EQ(retval.value(), (HouseId{HouseType::Row, 0}));
 
-   cells.push_back(Cell::get(1));
-   retval = SweepIntersectionElimination::TryGetIntersectionHouse(HouseType::Box, cells);
+   fields.set(1);
+   retval = SweepIntersectionElimination::TryGetIntersectionHouse(HouseType::Box, fields, finfo);
    ASSERT_TRUE(retval.has_value());
    ASSERT_EQ(retval.value(), (HouseId{HouseType::Row, 0}));
 
-   cells.push_back(Cell::get(3));
-   ASSERT_ANY_THROW(SweepIntersectionElimination::TryGetIntersectionHouse(HouseType::Box, cells));
+   fields.set(3);
+   ASSERT_ANY_THROW(SweepIntersectionElimination::TryGetIntersectionHouse(HouseType::Box, fields, finfo));
 
-   cells = {Cell::get(0), Cell::get(1), Cell::get(11)};
-   retval = SweepIntersectionElimination::TryGetIntersectionHouse(HouseType::Box, cells);
+   fields.reset();
+   fields.set(0);
+   fields.set(1);
+   fields.set(11);
+   retval = SweepIntersectionElimination::TryGetIntersectionHouse(HouseType::Box, fields, finfo);
    ASSERT_FALSE(retval.has_value());
 
-   cells = {Cell::get(0), Cell::get(10)};
-   retval = SweepIntersectionElimination::TryGetIntersectionHouse(HouseType::Box, cells);
+   fields.reset();
+   fields.set(0);
+   fields.set(10);
+   retval = SweepIntersectionElimination::TryGetIntersectionHouse(HouseType::Box, fields, finfo);
    ASSERT_FALSE(retval.has_value());
 }
 
 TEST(SweepIntersectionElimination, BoxCol)
 {
-   std::vector<Cell> cells{Cell::getFromRowCol(0, 5), Cell::getFromRowCol(2, 5)};
-   std::optional<HouseId> retval = SweepIntersectionElimination::TryGetIntersectionHouse(HouseType::Box, cells);
+   const CandidatesGrid grid;
+   const FieldsInfo finfo(grid);
+   FieldBits fields;
+   fields.set(Cell::getFromRowCol(0, 5).field);
+   fields.set(Cell::getFromRowCol(2, 5).field);
+
+   std::optional<HouseId> retval = SweepIntersectionElimination::TryGetIntersectionHouse(HouseType::Box, fields, finfo);
    ASSERT_TRUE(retval.has_value());
    ASSERT_EQ(retval.value(), (HouseId{HouseType::Col, 5}));
 
-   cells.push_back(Cell::getFromRowCol(1, 5));
-   retval = SweepIntersectionElimination::TryGetIntersectionHouse(HouseType::Box, cells);
+   fields.set(Cell::getFromRowCol(1, 5).field);
+   retval = SweepIntersectionElimination::TryGetIntersectionHouse(HouseType::Box, fields, finfo);
    ASSERT_TRUE(retval.has_value());
    ASSERT_EQ(retval.value(), (HouseId{HouseType::Col, 5}));
 
-   cells.push_back(Cell::getFromRowCol(3, 5));
-   ASSERT_ANY_THROW(SweepIntersectionElimination::TryGetIntersectionHouse(HouseType::Box, cells));
+   fields.set(Cell::getFromRowCol(3, 5).field);
+   ASSERT_ANY_THROW(SweepIntersectionElimination::TryGetIntersectionHouse(HouseType::Box, fields, finfo));
 
-   cells = {Cell::getFromRowCol(0, 0), Cell::getFromRowCol(1, 1), Cell::getFromRowCol(1, 2)};
-   retval = SweepIntersectionElimination::TryGetIntersectionHouse(HouseType::Box, cells);
+   fields.reset();
+   fields.set(Cell::getFromRowCol(0, 0).field);
+   fields.set(Cell::getFromRowCol(1, 1).field);
+   fields.set(Cell::getFromRowCol(1, 2).field);
+   retval = SweepIntersectionElimination::TryGetIntersectionHouse(HouseType::Box, fields, finfo);
    ASSERT_FALSE(retval.has_value());
 
-   cells = {Cell::getFromRowCol(0, 7), Cell::getFromRowCol(2, 6)};
-   retval = SweepIntersectionElimination::TryGetIntersectionHouse(HouseType::Box, cells);
+   fields.reset();
+   fields.set(Cell::getFromRowCol(0, 7).field);
+   fields.set(Cell::getFromRowCol(2, 6).field);
+   retval = SweepIntersectionElimination::TryGetIntersectionHouse(HouseType::Box, fields, finfo);
    ASSERT_FALSE(retval.has_value());
 }
 
