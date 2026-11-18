@@ -147,9 +147,9 @@ bool SweepSimpleColoring::sweep(CandidatesGrid &grid, Value value)
    {
       const auto coloring = Network::setColors(network);
       auto cellsInCurrectNetwork = finfo.getSolvedFields();
-      for (const auto &c : network.getCells())
+      for (auto field : SudokuUtils::FieldBitsToRange(network.getFields()))
       {
-         cellsInCurrectNetwork.set(c.field);
+         cellsInCurrectNetwork.set(field);
       }
 
       if (SweepSimpleColoring::removeSees2ColorsCandidates(grid, finfo, value, coloring, cellsInCurrectNetwork))

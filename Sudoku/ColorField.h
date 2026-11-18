@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Cell.h"
 #include "SudokuDefines.h"
 
 namespace Sudoku

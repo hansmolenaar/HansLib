@@ -199,7 +199,7 @@ TEST(SweepSimpleColoringTest, SingleColorEmptiesHouseExample1)
    for (const auto &network : networks)
    {
       const auto coloring = Network::setColors(network);
-      const auto coloredFields = SudokuUtils::getFields(network.getCells());
+      const auto coloredFields = network.getFields();
       anyChange |= SweepSimpleColoring::removeOneColorEmptiesHouse(grid, value, coloring, coloredFields);
    }
    ASSERT_TRUE(anyChange);
@@ -290,7 +290,7 @@ TEST(SweepSimpleColoringTest, SingleColorEmptiesHouseExample2)
    const auto &network = networks.front();
    bool anyChange = false;
    const auto coloring = Network::setColors(network);
-   const auto coloredFields = SudokuUtils::getFields(network.getCells());
+   const auto coloredFields = network.getFields();
    anyChange |= SweepSimpleColoring::removeOneColorEmptiesHouse(grid, value, coloring, coloredFields);
    ASSERT_TRUE(anyChange);
 

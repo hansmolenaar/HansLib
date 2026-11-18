@@ -1,8 +1,9 @@
 #include "Network.h"
 #include "MyAssert.h"
-#include "SudokuDefines.h"
+#include "SudokuUtils.h"
 
 #include <algorithm>
+#include <iterator>
 #include <map>
 #include <ostream>
 #include <set>
@@ -10,6 +11,15 @@
 using namespace Sudoku;
 using namespace Utilities;
 namespace str = std::ranges;
+
+namespace
+{
+auto getCellPair(Field field1, Field field2)
+{
+   return std::make_pair(std::min(Cell::get(field1), Cell::get(field2)),
+                         std::max(Cell::get(field1), Cell::get(field2)));
+}
+} // namespace
 
 std::vector<Network> Network::create(std::span<const Link> links)
 {
@@ -90,7 +100,7 @@ void Network::connect(const Cell &cellFrom, const Cell &cellTo)
 {
    if (m_connections.find(cellFrom) == m_connections.end())
    {
-      m_cells.push_back(cellFrom);
+      m_fields.set(cellFrom.field);
    }
    m_connections[cellFrom].push_back(cellTo);
 }
@@ -100,33 +110,36 @@ std::span<const Cell> Network::getConnectedCells(const Cell &cell) const
    return m_connections.at(cell);
 }
 
-std::span<const Cell> Network::getCells() const
+FieldBits Network::getFields() const
 {
-   return m_cells;
+   return m_fields;
 }
 
-Link Network::getLink(const Cell &cell1, const Cell &cell2) const
+Link Network::getLink(Field field1, Field field2) const
 {
-   const auto cellPair = std::make_pair(std::min(cell1, cell2), std::max(cell1, cell2));
+   const auto cellPair = getCellPair(field1, field2);
    const auto found = m_links.find(cellPair);
    MyAssert(found != m_links.end(), "Network::getLink unknown link specified");
    return {cellPair.first, cellPair.second, found->second};
 }
 
-bool Network::contains(const Cell &cell1, const Cell &cell2) const
+bool Network::contains(Field field1, Field field2) const
 {
-   const auto cellPair = std::make_pair(std::min(cell1, cell2), std::max(cell1, cell2));
+   const auto cellPair =
+       std::make_pair(std::min(Cell::get(field1), Cell::get(field2)), std::max(Cell::get(field1), Cell::get(field2)));
    return m_links.find(cellPair) != m_links.end();
 }
 
 ColorField Network::setColors(const Network &netWork)
 {
    ColorField result;
-   const auto cells = netWork.getCells();
-   if (cells.empty())
+   const auto fields = netWork.getFields();
+   if (fields.none())
    {
       return {};
    }
+   std::vector<Cell> cells;
+   str::transform(SudokuUtils::FieldBitsToRange(fields), std::back_inserter(cells), Cell::get);
 
    // Initialize
    std::set<Cell> done;
@@ -166,13 +179,13 @@ ColorField Network::setColors(const Network &netWork)
 std::ostream &operator<<(std::ostream &os, const Sudoku::Network &network)
 {
    std::set<Link> done;
-   const auto cells = network.getCells();
-   for (auto c : cells)
+   const auto fields = network.getFields();
+   for (auto field : SudokuUtils::FieldBitsToRange(fields))
    {
-      const auto ngbs = network.getConnectedCells(c);
+      const auto ngbs = network.getConnectedCells(Cell::get(field));
       for (const auto ngb : ngbs)
       {
-         const auto link = network.getLink(c, ngb);
+         const auto link = network.getLink(field, ngb.field);
          if (!done.contains(link))
          {
             done.insert(link);
