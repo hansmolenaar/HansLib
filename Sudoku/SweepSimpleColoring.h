@@ -14,6 +14,8 @@ class SweepSimpleColoring : public ISweep
 {
  public:
    bool sweep(CandidatesGrid &) override;
+   FieldValue::Container collect(const FieldsInfo &) override;
+
    static std::vector<Link> getBilocationLinks(const CandidatesGrid &, FieldsInfo, Value);
    static FieldValue::Container collectSees2ColorsCandidates(const FieldsInfo &, Value, const ColorField &,
                                                              const FieldBits &);

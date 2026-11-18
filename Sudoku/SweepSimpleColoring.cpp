@@ -49,6 +49,7 @@ FieldValue::Container SweepSimpleColoring::collectSees2ColorsCandidates(const Fi
    const auto seesGreen = finfo.getAllVisibleFields(cellsGreen);
    auto fields = seesBlue & seesGreen;
    fields &= ~cellsToIgnore;
+   fields &= finfo.getFieldsWithValue(value);
 
    FieldValue::Container result;
    FieldValue::add(fields, value, result);
@@ -191,6 +192,40 @@ bool SweepSimpleColoring::sweep(CandidatesGrid &grid, Value value)
    }
 
    return false;
+}
+
+FieldValue::Container SweepSimpleColoring::collect(const FieldsInfo &finfo)
+{
+   FieldValue::Container result;
+   const CandidatesGrid &grid = finfo.getGrid();
+   for (Value value : ValueAll)
+   {
+      const auto links = getBilocationLinks(grid, finfo, value);
+
+      if (links.empty())
+      {
+         continue;
+      }
+      const auto networks = Network::create(links);
+      for (const auto &network : networks)
+      {
+         const auto coloring = Network::setColors(network);
+         const auto cellsInCurrectNetwork = network.getFields();
+
+         const auto twoColors =
+             SweepSimpleColoring::collectSees2ColorsCandidates(finfo, value, coloring, cellsInCurrectNetwork);
+         result.insert(twoColors.begin(), twoColors.end());
+
+         const auto twice = SweepSimpleColoring::collectTwiceInAUnit(finfo, value, coloring);
+         result.insert(twice.begin(), twice.end());
+
+         const auto empties =
+             SweepSimpleColoring::collectOneColorEmptiesHouse(finfo, value, coloring, cellsInCurrectNetwork);
+         result.insert(empties.begin(), empties.end());
+      }
+   }
+
+   return result;
 }
 
 bool SweepSimpleColoring::sweep(CandidatesGrid &grid)

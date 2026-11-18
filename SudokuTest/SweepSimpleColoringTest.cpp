@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "CandidatesGrid.h"
+#include "FieldValue.h"
 #include "FieldsInfo.h"
 #include "ISweep.h"
 #include "Network.h"
@@ -44,7 +45,6 @@ TEST(SweepSimpleColoringTest, BasicExample)
    CandidatesGrid grid = getSimpleExample();
    FieldsInfo finfo(grid);
    const auto links = SweepSimpleColoring::getBilocationLinks(grid, finfo, value);
-   finfo.update();
 
    ASSERT_EQ(links.size(), 4);
    const auto networks = Network::create(links);
@@ -55,8 +55,8 @@ TEST(SweepSimpleColoringTest, BasicExample)
    Field expect = 701;
    ASSERT_EQ(grid.getNumCandidates(), expect);
    const FieldBits ignore;
-   const bool anyChange = SweepSimpleColoring::removeSees2ColorsCandidates(grid, finfo, value, coloring, ignore);
-   ASSERT_FALSE(anyChange);
+   const auto fieldValues = SweepSimpleColoring::collectSees2ColorsCandidates(finfo, value, coloring, ignore);
+   ASSERT_TRUE(fieldValues.empty());
 }
 
 TEST(SweepSimpleColoringTest, Sees2Colors)
@@ -69,6 +69,7 @@ TEST(SweepSimpleColoringTest, Sees2Colors)
    ASSERT_EQ(grid.getNumCandidates(), 131);
    Cell changedCell = Cell::getFromRowCol(4, 8);
    ASSERT_TRUE(grid[changedCell.field].contains(1));
+   const FieldsInfo finfo(grid);
    const bool anyChange = SweepSimpleColoring::sweep(grid, 1);
    ASSERT_FALSE(grid[changedCell.field].contains(1));
    ASSERT_TRUE(anyChange);
@@ -195,15 +196,21 @@ TEST(SweepSimpleColoringTest, SingleColorEmptiesHouseExample1)
 
    const auto networks = Network::create(links);
    ASSERT_EQ(networks.size(), 4);
-   bool anyChange = false;
+   FieldValue::Container fieldValues;
    for (const auto &network : networks)
    {
       const auto coloring = Network::setColors(network);
       const auto coloredFields = network.getFields();
-      anyChange |= SweepSimpleColoring::removeOneColorEmptiesHouse(grid, value, coloring, coloredFields);
+
+      const auto emptiesHosue = SweepSimpleColoring::collectOneColorEmptiesHouse(finfo, value, coloring, coloredFields);
+      fieldValues.insert(emptiesHosue.begin(), emptiesHosue.end());
    }
-   ASSERT_TRUE(anyChange);
+
+   ASSERT_EQ(fieldValues.size(), 4);
    expect -= 4;
+   const auto changes = grid.apply(fieldValues);
+   ASSERT_EQ(changes.numValuesChanged, 4);
+   ASSERT_EQ(changes.numFieldsSolved, 1);
    ASSERT_EQ(grid.getNumCandidates(), expect);
 }
 
@@ -288,13 +295,13 @@ TEST(SweepSimpleColoringTest, SingleColorEmptiesHouseExample2)
    const auto networks = Network::create(links);
    ASSERT_EQ(networks.size(), 1);
    const auto &network = networks.front();
-   bool anyChange = false;
    const auto coloring = Network::setColors(network);
    const auto coloredFields = network.getFields();
-   anyChange |= SweepSimpleColoring::removeOneColorEmptiesHouse(grid, value, coloring, coloredFields);
-   ASSERT_TRUE(anyChange);
-
+   const auto fieldValues = SweepSimpleColoring::collectOneColorEmptiesHouse(finfo, value, coloring, coloredFields);
+   ASSERT_EQ(fieldValues.size(), 4);
    expect -= 4;
+
+   grid.apply(fieldValues);
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
    ASSERT_FALSE(grid[Cell::rowCol2Field(5, 0)].contains(2));
