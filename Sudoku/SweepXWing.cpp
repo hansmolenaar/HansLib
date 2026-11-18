@@ -13,15 +13,6 @@ using namespace Utilities;
 
 namespace
 {
-bool RemoveCandidates(CandidatesGrid &grid, Value value, const XWing &xWing)
-{
-   const std::array<Cell, 4> fixedCells{xWing.lockedPair0[0], xWing.lockedPair0[1], xWing.lockedPair1[0],
-                                        xWing.lockedPair1[1]};
-   auto activeCells = House::getHouse(xWing.houseId0).cells | std::views::filter(IsNotContained<Cell>{fixedCells});
-   const bool anyChange = grid.RemoveCandidate(value, activeCells);
-   return anyChange;
-}
-
 void collectCandidates(const FieldsInfo &finfo, Value value, const XWing &xWing, FieldValue::Container &fieldsValue)
 {
    const std::array<Cell, 4> fixedCells{xWing.lockedPair0[0], xWing.lockedPair0[1], xWing.lockedPair1[0],
@@ -91,35 +82,6 @@ std::optional<XWing> SweepXWing::isXWing(std::span<const LockedPair> candidatePa
       return XWing{lp0, *weakConn0, lp1, *weakConn1};
    }
    return {};
-}
-
-bool SweepXWing::sweep(CandidatesGrid &grid)
-{
-   FieldsInfo finfo(grid);
-   const LockedPairs lps(finfo);
-   for (Value value : ValueAll)
-   {
-      const auto lockedPairs = lps.getPairs(value);
-      if (lockedPairs.size() < 2)
-      {
-         continue;
-      }
-      Combinations<LockedPair> combinations(lockedPairs, 2);
-      do
-      {
-         const auto xWing = isXWing(combinations());
-         if (xWing.has_value())
-         {
-            const bool anyChange = RemoveCandidates(grid, value, xWing.value());
-            if (anyChange)
-            {
-               // grid.update();
-               return true;
-            }
-         }
-      } while (combinations.next());
-   }
-   return false;
 }
 
 FieldValue::Container SweepXWing::collect(const FieldsInfo &finfo)

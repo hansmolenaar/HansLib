@@ -5,6 +5,7 @@
 #include "FieldsInfo.h"
 #include "House.h"
 #include "SudokuDefines.h"
+#include "SweepNakedSingle.h"
 #include "TestModels.h"
 #include "Visibility.h"
 
@@ -133,5 +134,31 @@ TEST(VisibilityTest, VisibleFields)
       {
          ASSERT_TRUE(Visiblity::areVisible(field, visibleField));
       }
+   }
+}
+
+TEST(VisibilityTest, Update)
+{
+   CandidatesGrid grid;
+   grid.setGiven(6, 6, 1);
+   grid.setGiven(7, 7, 5);
+
+   FieldsInfo finfo(grid);
+   const auto fieldValues = SweepNakedSingle().collect(finfo);
+   grid.apply(fieldValues, finfo);
+
+   const auto finfoOld = finfo;
+   finfo = FieldsInfo(grid);
+
+   ASSERT_EQ(finfoOld.getActiveFields(), finfo.getActiveFields());
+   ASSERT_EQ(finfoOld.getSolvedFields(), finfo.getSolvedFields());
+   for (HouseId h : House::getAllHouseIds())
+   {
+      ASSERT_EQ(finfoOld.getHouseFields(h), finfo.getHouseFields(h));
+   }
+   for (Value v : ValueAll)
+   {
+      ASSERT_EQ(finfoOld.getFieldsWithValue(v), finfo.getFieldsWithValue(v));
+      ASSERT_EQ(finfoOld.getActiveFieldsWithValue(v), finfo.getActiveFieldsWithValue(v));
    }
 }

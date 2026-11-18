@@ -22,7 +22,6 @@ class SweepXWing : public ISweep
 {
  public:
    FieldValue::Container collect(const FieldsInfo &) override;
-   bool sweep(CandidatesGrid &) override;
    static std::optional<XWing> isXWing(std::span<const LockedPair>);
 };
 

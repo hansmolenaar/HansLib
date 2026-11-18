@@ -45,21 +45,6 @@ TEST(SweepXWingTest, Basics)
    expect -= 14;
    ASSERT_EQ(expect, grid.getNumCandidates());
 
-   const auto finfoOld = finfo;
-   finfo = FieldsInfo(grid);
-
-   ASSERT_EQ(finfoOld.getActiveFields(), finfo.getActiveFields());
-   ASSERT_EQ(finfoOld.getSolvedFields(), finfo.getSolvedFields());
-   for (HouseId h : House::getAllHouseIds())
-   {
-      ASSERT_EQ(finfoOld.getHouseFields(h), finfo.getHouseFields(h));
-   }
-   for (Value v : ValueAll)
-   {
-      ASSERT_EQ(finfoOld.getFieldsWithValue(v), finfo.getFieldsWithValue(v));
-      ASSERT_EQ(finfoOld.getActiveFieldsWithValue(v), finfo.getActiveFieldsWithValue(v));
-   }
-
-   fieldsValue = SweepXWing().collect(finfoOld);
+   fieldsValue = SweepXWing().collect(finfo);
    ASSERT_EQ(fieldsValue.size(), 0);
 }
