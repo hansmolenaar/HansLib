@@ -1,5 +1,6 @@
 #pragma once
 
+#include "BitsetUtils.h"
 #include "Cell.h"
 #include "SudokuDefines.h"
 
@@ -21,6 +22,11 @@ Value2Fields getValue2Fields(const CandidatesGrid &, std::span<const Cell>);
 
 FieldBits getFields(std::span<const Cell>);
 FieldBits getFields(std::span<const Field>);
+
+inline auto FieldBitsToRange(const FieldBits &fb)
+{
+   return FieldAll | std::views::filter(Utilities::Bitset{fb});
+}
 
 } // namespace SudokuUtils
 } // namespace Sudoku

@@ -30,7 +30,7 @@ class ColorField
 
    // throws if not set
    Color get(Field) const;
-   Color get(const Cell &) const;
+   Color get(const Cell &) const; // TODO remove me
 
    bool empty() const;
    bool hasColor(Field) const;

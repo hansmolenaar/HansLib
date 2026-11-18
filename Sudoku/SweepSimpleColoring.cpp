@@ -1,5 +1,4 @@
 #include "SweepSimpleColoring.h"
-#include "BitsetUtils.h"
 #include "CandidatesGrid.h"
 #include "ColorField.h"
 #include "FieldsInfo.h"

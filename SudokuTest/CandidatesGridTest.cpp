@@ -8,6 +8,8 @@
 
 using namespace Sudoku;
 
+#define ONLY_SMALL_TESTS false
+
 TEST(CandidatesGridTest, DefaultConstructor)
 {
    const CandidatesGrid cg;
@@ -148,7 +150,7 @@ TEST(CandidatesGridTest, Symmetries)
 
 TEST(CandidatesGridTest, Simple)
 {
-   ASSERT_TRUE(true);
+   ASSERT_FALSE(ONLY_SMALL_TESTS);
    SweepCombined *sweepers = SweepCombined::getSimpleSweepers();
    std::vector<CandidatesGrid> grids = TestModels::getSimplePuzzles();
    ASSERT_EQ(grids.size(), 133);
@@ -163,7 +165,7 @@ TEST(CandidatesGridTest, Simple)
 
 TEST(CandidatesGridTest, Medium)
 {
-   ASSERT_TRUE(true);
+   ASSERT_FALSE(ONLY_SMALL_TESTS);
    SweepCombined *sweepers = SweepCombined::getMediumSweepers();
    std::vector<CandidatesGrid> grids = TestModels::getMediumPuzzles();
    ASSERT_EQ(grids.size(), 863);
@@ -182,7 +184,7 @@ TEST(CandidatesGridTest, Medium)
 
 TEST(CandidatesGridTest, Hard)
 {
-   ASSERT_TRUE(true);
+   ASSERT_FALSE(ONLY_SMALL_TESTS);
    SweepCombined *sweepers = SweepCombined::getHardSweepers();
    std::vector<CandidatesGrid> grids = TestModels::getHardPuzzles();
    ASSERT_EQ(grids.size(), 1278);

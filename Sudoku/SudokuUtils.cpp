@@ -1,5 +1,4 @@
 #include "SudokuUtils.h"
-#include "BitsetUtils.h"
 #include "CandidatesGrid.h"
 #include "boost/container/static_vector.hpp"
 #include <algorithm>
@@ -17,7 +16,7 @@ Index SudokuUtils::countOccurence(const CandidatesGrid &grid, std::span<const Ce
 ValueBits SudokuUtils::getUniqueActiveValuesInCells(const CandidatesGrid &grid, const FieldBits &fields)
 {
    ValueBits activeValues;
-   for (Field field : FieldAll | std::views::filter(Bitset{fields}))
+   for (Field field : FieldBitsToRange(fields))
    {
       for (Value value : grid[field])
       {
@@ -26,7 +25,7 @@ ValueBits SudokuUtils::getUniqueActiveValuesInCells(const CandidatesGrid &grid, 
    }
 
    ValueBits valueIsSolved;
-   for (Field field : FieldAll | std::views::filter(Bitset{fields}))
+   for (Field field : FieldBitsToRange(fields))
    {
       const auto &candidates = grid[field];
       const auto solved = candidates.tryGetSolvedValue();
