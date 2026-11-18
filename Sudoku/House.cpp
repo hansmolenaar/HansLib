@@ -2,7 +2,6 @@
 #include "MyAssert.h"
 #include "SudokuDefines.h"
 
-#include <algorithm>
 #include <ostream>
 #include <sstream>
 #include <stdexcept>
@@ -10,7 +9,6 @@
 
 using namespace Sudoku;
 using namespace Utilities;
-namespace str = std::ranges;
 
 namespace
 {
@@ -29,7 +27,6 @@ std::vector<House> getHousesBy(HouseType houseType)
       MyAssert(idx2cell.at(idx).size() == NumIndex);
       House house;
       house.houseId = {houseType, idx};
-      str::copy(idx2cell.at(idx), house.cellS.begin());
       housesByIdx.at(idx) = house;
    }
 
