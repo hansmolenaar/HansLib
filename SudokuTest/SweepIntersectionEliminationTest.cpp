@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "CandidatesGrid.h"
+#include "FieldsInfo.h"
 #include "StreamUtils.h"
 #include "SweepIntersectionElimination.h"
 
@@ -69,10 +70,14 @@ TEST(SweepIntersectionElimination, PointingPairCol)
    grid.setCandidates(2, 1, {5, 6, 7});
 
    Field expect = 670;
-   ASSERT_EQ(grid.getNumCandidates(), expect);
-   auto retval = SweepIntersectionElimination().sweep(grid);
+   FieldsInfo finfo(grid);
+   const auto fieldValues = SweepIntersectionElimination().collect(finfo);
+   ASSERT_EQ(fieldValues.size(), 6);
+
+   // auto retval = SweepIntersectionElimination().sweep(grid);
+   const auto retval = grid.applyAndUpdate(fieldValues, finfo);
    ASSERT_TRUE(retval);
-   expect -= 42;
+   expect -= 6;
    ASSERT_EQ(grid.getNumCandidates(), expect);
 }
 
@@ -90,11 +95,19 @@ TEST(SweepIntersectionElimination, PointingPairRow)
    grid.setCandidates(8, 4, {3, 7, 9});
    grid.setCandidates(8, 5, {3, 4, 7});
 
+   FieldsInfo finfo(grid);
+   const auto fieldValues = SweepIntersectionElimination().collect(finfo);
+   ASSERT_EQ(fieldValues.size(), 12);
+
    Field expect = 665;
    ASSERT_EQ(grid.getNumCandidates(), expect);
-   auto retval = SweepIntersectionElimination().sweep(grid);
-   ASSERT_TRUE(retval);
-   expect -= 72;
+   // auto retval = SweepIntersectionElimination().sweep(grid);
+   // const auto retval = grid.applyAndUpdate(fieldValues, finfo);
+   const auto retval = grid.apply(fieldValues, finfo);
+   ASSERT_EQ(retval.numValuesChanged, 12);
+   ASSERT_EQ(retval.numFieldsSolved, 0);
+   // ASSERT_TRUE(retval);
+   expect -= 12;
    ASSERT_EQ(grid.getNumCandidates(), expect);
 }
 
@@ -118,14 +131,17 @@ TEST(SweepIntersectionElimination, BoxLine)
    grid.setCandidates(2, 3, {2, 3, 4, 5});
    grid.setCandidates(2, 4, {2, 3, 4, 5, 9});
 
+   FieldsInfo finfo(grid);
+   const auto fieldValues = SweepIntersectionElimination().collect(finfo);
+   ASSERT_EQ(fieldValues.size(), 15);
+
    Field expect = 630;
    ASSERT_EQ(grid.getNumCandidates(), expect);
-   // auto prv = grid;
-   // std::cout << grid << "\n";
-   const auto retval = SweepIntersectionElimination().sweep(grid);
-   // std::cout << CandidatesGrid::DifferenceToStrings(prv, grid) << "\n";
+   // const auto retval = SweepIntersectionElimination().sweep(grid);
+   const auto retval = grid.applyAndUpdate(fieldValues, finfo);
+
    ASSERT_TRUE(retval);
-   expect -= 84;
+   expect -= 15;
    ASSERT_EQ(grid.getNumCandidates(), expect);
    ASSERT_FALSE(grid[Cell::getFromRowCol(1, 4).field].contains(2));
    ASSERT_FALSE(grid[Cell::getFromRowCol(2, 3).field].contains(2));
