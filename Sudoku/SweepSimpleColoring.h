@@ -21,6 +21,8 @@ class SweepSimpleColoring : public ISweep
                                            const FieldBits &);
    static FieldValue::Container collectTwiceInAUnit(const FieldsInfo &, Value, const ColorField &);
    static bool removeTwiceInAUnit(CandidatesGrid &, Value, const ColorField &);
+   static FieldValue::Container collectOneColorEmptiesHouse(const FieldsInfo &, Value, const ColorField &,
+                                                            const FieldBits &);
    static bool removeOneColorEmptiesHouse(CandidatesGrid &, Value, const ColorField &, const FieldBits &);
    static bool sweep(CandidatesGrid &, Value);
 };

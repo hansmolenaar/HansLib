@@ -102,10 +102,11 @@ bool SweepSimpleColoring::removeTwiceInAUnit(CandidatesGrid &grid, Value value, 
    return changes.numValuesChanged > 0;
 }
 
-bool SweepSimpleColoring::removeOneColorEmptiesHouse(CandidatesGrid &grid, Value value, const ColorField &colors,
-                                                     const FieldBits &cellsToIgnore)
+FieldValue::Container SweepSimpleColoring::collectOneColorEmptiesHouse(const FieldsInfo &finfo, Value value,
+                                                                       const ColorField &colors,
+                                                                       const FieldBits &cellsToIgnore)
 {
-   FieldsInfo finfo(grid);
+   FieldValue::Container result;
    const FieldBits fieldsValue = finfo.getActiveFieldsWithValue(value);
    const auto fieldsBlue = colors.getFieldsWithColor(Color::Blue);
    const auto fieldsGreen = colors.getFieldsWithColor(Color::Green);
@@ -135,20 +136,24 @@ bool SweepSimpleColoring::removeOneColorEmptiesHouse(CandidatesGrid &grid, Value
       }
       if (numCellsInHouseSeesBlue == numCellsInHouseWithValue)
       {
-         if (grid.removeCandidateFromFields(fieldsBlue, value))
-         {
-            return true;
-         }
+         FieldValue::add(fieldsBlue, value, result);
       }
       else if (numCellsInHouseSeesGreen == numCellsInHouseWithValue)
       {
-         if (grid.removeCandidateFromFields(fieldsGreen, value))
-         {
-            return true;
-         }
+         FieldValue::add(fieldsGreen, value, result);
       }
    }
-   return false;
+
+   return result;
+}
+
+bool SweepSimpleColoring::removeOneColorEmptiesHouse(CandidatesGrid &grid, Value value, const ColorField &colors,
+                                                     const FieldBits &cellsToIgnore)
+{
+   const FieldsInfo finfo(grid);
+   const auto toRemove = collectOneColorEmptiesHouse(finfo, value, colors, cellsToIgnore);
+   const GridChange changes = grid.apply(toRemove);
+   return changes.numValuesChanged > 0;
 }
 
 bool SweepSimpleColoring::sweep(CandidatesGrid &grid, Value value)
