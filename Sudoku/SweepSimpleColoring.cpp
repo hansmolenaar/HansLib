@@ -38,23 +38,35 @@ std::vector<Link> SweepSimpleColoring::getBilocationLinks(const CandidatesGrid &
    return result;
 }
 
-bool SweepSimpleColoring::removeSees2ColorsCandidates(CandidatesGrid &grid, const FieldsInfo &finfo, Value value,
-                                                      const ColorField &colors, const FieldBits &cellsToIgnore)
-
+FieldValue::Container SweepSimpleColoring::collectSees2ColorsCandidates(const FieldsInfo &finfo, Value value,
+                                                                        const ColorField &colors,
+                                                                        const FieldBits &cellsToIgnore)
 {
    const auto cellsGreen = colors.getFieldsWithColor(Color::Green);
    const auto cellsBlue = colors.getFieldsWithColor(Color::Blue);
 
    const auto seesBlue = finfo.getAllVisibleFields(cellsBlue);
    const auto seesGreen = finfo.getAllVisibleFields(cellsGreen);
-   auto useFields = seesBlue & seesGreen;
-   useFields &= ~cellsToIgnore;
-   const bool anyChange = grid.removeCandidateFromFields(useFields, value);
-   return anyChange;
+   auto fields = seesBlue & seesGreen;
+   fields &= ~cellsToIgnore;
+
+   FieldValue::Container result;
+   FieldValue::add(fields, value, result);
+   return result;
 }
 
-bool SweepSimpleColoring::removeTwiceInAUnit(CandidatesGrid &grid, Value value, const ColorField &colors)
+bool SweepSimpleColoring::removeSees2ColorsCandidates(CandidatesGrid &grid, const FieldsInfo &finfo, Value value,
+                                                      const ColorField &colors, const FieldBits &cellsToIgnore)
 {
+   const auto toRemove = collectSees2ColorsCandidates(finfo, value, colors, cellsToIgnore);
+   const GridChange changes = grid.apply(toRemove);
+   return changes.numValuesChanged > 0;
+}
+
+FieldValue::Container SweepSimpleColoring::collectTwiceInAUnit(const FieldsInfo &finfo, Value value,
+                                                               const ColorField &colors)
+{
+   FieldValue::Container result;
    for (Color color : ColorAll)
    {
       const auto fieldsWithColor = colors.getFieldsWithColor(color);
@@ -74,15 +86,20 @@ bool SweepSimpleColoring::removeTwiceInAUnit(CandidatesGrid &grid, Value value, 
          }
          if (Visiblity::areVisible(f, prev.value()))
          {
-            if (grid.removeCandidateFromFields(fieldsWithColor, value))
-            {
-               return true;
-            }
+            FieldValue::add(fieldsWithColor, value, result);
          }
          prev = f;
       }
    }
-   return false;
+   return result;
+}
+
+bool SweepSimpleColoring::removeTwiceInAUnit(CandidatesGrid &grid, Value value, const ColorField &colors)
+{
+   const FieldsInfo finfo(grid);
+   const auto toRemove = collectTwiceInAUnit(finfo, value, colors);
+   const GridChange changes = grid.apply(toRemove);
+   return changes.numValuesChanged > 0;
 }
 
 bool SweepSimpleColoring::removeOneColorEmptiesHouse(CandidatesGrid &grid, Value value, const ColorField &colors,
