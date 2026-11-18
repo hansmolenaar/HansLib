@@ -29,7 +29,7 @@ struct House
    static std::string toString(HouseId);
 
    HouseId houseId;
-   std::array<Cell, NumIndex> cells;
+   std::array<Cell, NumIndex> cellS;
 };
 
 } // namespace Sudoku

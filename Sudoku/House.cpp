@@ -29,7 +29,7 @@ std::vector<House> getHousesBy(HouseType houseType)
       MyAssert(idx2cell.at(idx).size() == NumIndex);
       House house;
       house.houseId = {houseType, idx};
-      str::copy(idx2cell.at(idx), house.cells.begin());
+      str::copy(idx2cell.at(idx), house.cellS.begin());
       housesByIdx.at(idx) = house;
    }
 
@@ -117,11 +117,6 @@ const std::array<HouseId, NumHouse> &House::getAllHouseIds()
        HouseId{HouseType::Box, 3}, HouseId{HouseType::Box, 4}, HouseId{HouseType::Box, 5},
        HouseId{HouseType::Box, 6}, HouseId{HouseType::Box, 7}, HouseId{HouseType::Box, 8}};
    return s_allHouseIds;
-}
-
-bool CellInHouse::operator()(const Cell &cell) const
-{
-   return houseId == HouseId::getFromCellaAndType(cell, houseId.houseType);
 }
 
 HouseId HouseId::getFromCellaAndType(const Cell &cell, HouseType type)

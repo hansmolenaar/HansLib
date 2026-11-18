@@ -59,16 +59,6 @@ TEST(SudokuUtilsTest, GetActiveCandidatesInCells)
    ASSERT_EQ(retval.count(), NumCellsInHouse - 1);
 }
 
-TEST(SudokuUtilsTest, CountOccurence)
-{
-   constexpr Field field = 2;
-   CandidatesGrid cg;
-   const auto house = House::getRow(0);
-
-   cg.setCandidates(field, {3, 4});
-   ASSERT_EQ(SudokuUtils::countOccurence(cg, house.cells, 2), NumCellsInHouse - 1);
-   ASSERT_EQ(SudokuUtils::countOccurence(cg, house.cells, 3), NumCellsInHouse);
-}
 TEST(SudokuUtilsTest, GetValue2Fields)
 {
    CandidatesGrid grid;

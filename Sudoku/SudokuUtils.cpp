@@ -9,11 +9,6 @@ using namespace Utilities;
 
 namespace str = std::ranges;
 
-Index SudokuUtils::countOccurence(const CandidatesGrid &grid, std::span<const Cell> cells, Value value)
-{
-   return str::count_if(cells, [&grid, value](Cell cell) { return grid[cell.field].contains(value); });
-}
-
 ValueBits SudokuUtils::getUniqueActiveValuesInCells(const CandidatesGrid &grid, const FieldBits &fields)
 {
    ValueBits activeValues;

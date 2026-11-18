@@ -1,7 +1,6 @@
 #include "SweepXWing.h"
 #include "CandidatesGrid.h"
 #include "Combinations.h"
-#include "Contains.h"
 #include "LockedPairs.h"
 #include "MyAssert.h"
 #include "SudokuDefines.h"
@@ -15,17 +14,14 @@ namespace
 {
 void collectCandidates(const FieldsInfo &finfo, Value value, const XWing &xWing, FieldValue::Container &fieldsValue)
 {
-   const std::array<Cell, 4> fixedCells{xWing.lockedPair0[0], xWing.lockedPair0[1], xWing.lockedPair1[0],
-                                        xWing.lockedPair1[1]};
-   auto activeCells = House::getHouse(xWing.houseId0).cells | std::views::filter(IsNotContained<Cell>{fixedCells});
-   const auto &onlyUseFields = finfo.getActiveFieldsWithValue(value);
-   for (const Cell &c : activeCells)
-   {
-      if (onlyUseFields.test(c.field))
-      {
-         fieldsValue.insert({c.field, value});
-      }
-   }
+   FieldBits fixedFields;
+   fixedFields.set(xWing.lockedPair0[0].field);
+   fixedFields.set(xWing.lockedPair0[1].field);
+   fixedFields.set(xWing.lockedPair1[0].field);
+   fixedFields.set(xWing.lockedPair1[1].field);
+   const auto activeFields =
+       finfo.getHouseFields(xWing.houseId0) & ~fixedFields & finfo.getActiveFieldsWithValue(value);
+   FieldValue::add(activeFields, value, fieldsValue);
 }
 
 bool IsSimpleLineLockedPair(const LockedPair &lp)

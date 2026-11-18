@@ -1,7 +1,9 @@
 #include <gtest/gtest.h>
 
+#include "FieldsInfo.h"
 #include "House.h"
 #include "MyAssert.h"
+#include "SudokuUtils.h"
 
 using namespace Sudoku;
 using namespace Utilities;
@@ -10,6 +12,8 @@ namespace
 {
 template <typename F> void TestGetHouse(F &&getHouse)
 {
+   CandidatesGrid grid;
+   FieldsInfo finfo(grid);
    std::set<Field> fieldsFound;
 
    for (auto idx : IndexAll)
@@ -17,8 +21,10 @@ template <typename F> void TestGetHouse(F &&getHouse)
       const House &house = getHouse(idx);
       const HouseType houseType = house.houseId.houseType;
       MyAssert(house.houseId.houseIndex == idx);
-      for (const Cell &cell : house.cells)
+      const auto houseFields = finfo.getHouseFields(house.houseId);
+      for (Field field : SudokuUtils::FieldBitsToRange(houseFields))
       {
+         const Cell cell = Cell::get(field);
          MyAssert(cell[houseType] == idx);
          fieldsFound.insert(cell.field);
       }
@@ -59,16 +65,4 @@ TEST(HouseTest, GetFromCellAndType)
    ASSERT_EQ(HouseId::getFromCellaAndType(cell, HouseType::Row), (HouseId{HouseType::Row, 4}));
    ASSERT_EQ(HouseId::getFromCellaAndType(cell, HouseType::Col), (HouseId{HouseType::Col, 6}));
    ASSERT_EQ(HouseId::getFromCellaAndType(cell, HouseType::Box), (HouseId{HouseType::Box, 5}));
-}
-
-TEST(HouseTest, CellInHouse)
-{
-   const HouseId houseId = HouseId::getFromCellaAndType(Cell::get(42), HouseType::Row);
-   const CellInHouse cellInHouse{houseId};
-
-   ASSERT_TRUE(cellInHouse(Cell::get(41)));
-   ASSERT_TRUE(cellInHouse(Cell::get(42)));
-   ASSERT_TRUE(cellInHouse(Cell::get(43)));
-   ASSERT_FALSE(cellInHouse(Cell::getFromRowCol(5, 6)));
-   ASSERT_FALSE(cellInHouse(Cell::get(0)));
 }

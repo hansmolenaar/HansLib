@@ -20,10 +20,7 @@ TEST(FieldsInfoTest, GetHouseFields)
    for (const auto &house : House::getAllHouses())
    {
       const FieldBits &fb = finfo.getHouseFields(house.houseId);
-      for (const auto &cell : house.cells)
-      {
-         ASSERT_TRUE(fb.test(cell.field));
-      }
+      ASSERT_EQ(fb.count(), 9);
    }
 }
 
