@@ -2,7 +2,12 @@
 
 #include "CandidatesGrid.h"
 #include "Cell.h"
+#include "FieldsInfo.h"
 #include "SweepHiddenTuple.h"
+#include "TestUtils.h"
+
+#include "StreamUtils.h"
+#include <iostream>
 
 using namespace Sudoku;
 
@@ -20,7 +25,6 @@ TEST(SweepHidddenTupleTest, BasicExample)
 TEST(SweepHidddenTupleTest, Pair)
 {
    CandidatesGrid grid;
-   CandidatesGrid prv;
 
    // Hidden pair 2, 6
    grid.setGiven(3, 1, 1);
@@ -34,18 +38,33 @@ TEST(SweepHidddenTupleTest, Pair)
    grid.setCandidates(Cell::getFromRowCol(5, 0).field, {2, 3, 6, 7, 9});
    grid.setCandidates(Cell::getFromRowCol(5, 2).field, {4, 3, 7, 9});
 
-   Field expect = 682;
+   grid.update();
+
+   Field expect = 658;
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
+   FieldsInfo finfo(grid);
+   FieldValue::Container fieldsValues;
+   fieldsValues = SweepHiddenTuple::collectTuplesOfSize(finfo, 3);
+   ASSERT_TRUE(fieldsValues.empty());
    bool anyChange = SweepHiddenTuple::sweep(grid, 3);
    ASSERT_FALSE(anyChange);
 
+   fieldsValues = SweepHiddenTuple::collectTuplesOfSize(finfo, 1);
+   ASSERT_TRUE(fieldsValues.empty());
    anyChange = SweepHiddenTuple::sweep(grid, 1);
    ASSERT_FALSE(anyChange);
 
-   anyChange = SweepHiddenTuple::sweep(grid, 2);
-   ASSERT_TRUE(anyChange);
-   expect -= 32;
+   fieldsValues = SweepHiddenTuple::collectTuplesOfSize(finfo, 2);
+   TestUtils::CheckFieldValues(grid, fieldsValues);
+   ASSERT_EQ(fieldsValues.size(), 8);
+   auto changes = grid.apply(fieldsValues);
+   ASSERT_EQ(changes.numValuesChanged, 8);
+   ASSERT_EQ(changes.numFieldsSolved, 0);
+   expect -= changes.numValuesChanged;
+   ASSERT_EQ(grid.getNumCandidates(), expect);
+
+   grid.update();
    ASSERT_EQ(grid.getNumCandidates(), expect);
 }
 
@@ -78,24 +97,32 @@ TEST(SweepHidddenTupleTest, SweepExample1)
    grid.setGiven(8, 8, 9);
 
    grid.update();
-   ASSERT_EQ(grid.getNumCandidates(), 260);
+   auto expect = grid.getNumCandidates();
 
-   SweepHiddenSingle().sweep(grid);
-   ASSERT_EQ(grid.getNumCandidates(), 123);
+   FieldsInfo finfo(grid);
 
-   while (SweepHiddenSingle().sweep(grid))
-   {
-   }
-   ASSERT_EQ(grid.getNumCandidates(), 81);
+   FieldValue::Container fieldsValues;
+   fieldsValues = SweepHiddenTuple::collectTuplesOfSize(finfo, 1);
+   TestUtils::CheckFieldValues(grid, fieldsValues);
+   ASSERT_EQ(fieldsValues.size(), 16);
+
+   auto changes = grid.apply(fieldsValues);
+   ASSERT_EQ(changes.numValuesChanged, fieldsValues.size());
+   ASSERT_EQ(changes.numFieldsSolved, 5);
+   expect -= fieldsValues.size();
+   ASSERT_EQ(grid.getNumCandidates(), expect);
 
    grid.update();
-   ASSERT_EQ(grid.getNumCandidates(), 81);
+   SweepHiddenSingle().sweep(grid);
+   grid.update();
+   ASSERT_EQ(grid.getNumCandidates(), 129);
 }
 
 TEST(SweepHidddenTupleTest, BasicExamplePair)
 {
    constexpr Index row = 8;
 
+   CandidatesGrid prv;
    CandidatesGrid grid;
    grid.setGiven(row, 1, 6);
    grid.setGiven(row, 3, 4);
@@ -110,7 +137,12 @@ TEST(SweepHidddenTupleTest, BasicExamplePair)
 
    auto value0 = grid[Cell::rowCol2Field(row, 0)].tryGetSolvedValue();
    ASSERT_FALSE(value0.has_value());
+
+   prv = grid;
+   std::cout << prv << "\n";
    SweepHiddenSingle().sweep(grid);
+   std::cout << grid << "\n";
+   std::cout << CandidatesGrid::DifferenceToStrings(prv, grid);
 
    value0 = grid[Cell::rowCol2Field(row, 0)].tryGetSolvedValue();
    ASSERT_TRUE(value0.has_value());

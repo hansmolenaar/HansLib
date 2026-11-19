@@ -68,6 +68,28 @@ bool RemoveCandidates(CandidatesGrid &grid, FieldsInfo &finfo, const House &hous
    }
    return anyChange;
 }
+
+void CollectCandidates(const FieldsInfo &finfo, const House &house, std::span<const Value> candidateTuple,
+                       FieldValue::Container &fieldValues)
+{
+   // Remove all values  except the candidate tuple
+   boost::container::static_vector<Value, NumValue> activeValues;
+   str::copy_if(ValueAll, std::back_inserter(activeValues), IsNotContained(candidateTuple));
+
+   auto activeFields = finfo.getHouseFields(house);
+   for (Value value : candidateTuple)
+   {
+      activeFields &= finfo.getActiveFieldsWithValue(value);
+   }
+
+   // activeFields now contain all of the values in the value tuplie
+   for (Value value : activeValues)
+   {
+      const auto removeValueFromFields = activeFields & finfo.getFieldsWithValue(value);
+      FieldValue::add(removeValueFromFields, value, fieldValues);
+   }
+}
+
 } // namespace
 
 bool SweepHiddenTuple::sweepHouse(CandidatesGrid &grid, const House &house, Index size)
@@ -95,6 +117,41 @@ bool SweepHiddenTuple::sweepHouse(CandidatesGrid &grid, const House &house, Inde
    return anyChange;
 }
 
+FieldValue::Container SweepHiddenTuple::collectHouse(const FieldsInfo &finfo, const House &house, Index size)
+{
+   FieldValue::Container result;
+   const CandidatesGrid &grid = finfo.getGrid();
+   const auto activeUniqueCandidates = SudokuUtils::getUniqueActiveValuesInCells(grid, finfo.getHouseFields(house));
+   if (activeUniqueCandidates.count() < size)
+   {
+      return result;
+   }
+
+   std::vector<Value> activeCandidates(activeUniqueCandidates.count());
+   str::copy_if(ValueAll, activeCandidates.begin(), Bitset{activeUniqueCandidates});
+
+   Combinations<Value> combinations(activeCandidates, size);
+   do
+   {
+      if (IsHiddenTuple(finfo, house, combinations()))
+      {
+         CollectCandidates(finfo, house, combinations(), result);
+      }
+   } while (combinations.next());
+
+   return result;
+}
+
+FieldValue::Container SweepHiddenTuple::collectTuplesOfSize(const FieldsInfo &finfo, Index size)
+{
+   FieldValue::Container result;
+   for (House house : House::getAllHouses())
+   {
+      FieldValue::add(collectHouse(finfo, house, size), result);
+   }
+   return result;
+}
+
 bool SweepHiddenTuple::sweep(CandidatesGrid &grid, Index size)
 {
    bool anyChange = false;
@@ -111,28 +168,28 @@ bool SweepHiddenTuple::sweep(CandidatesGrid &grid, Index size)
 
 // *******************************************************************************************
 
-bool SweepHiddenSingle::sweep(CandidatesGrid &grid)
+FieldValue::Container SweepHiddenSingle::collect(const FieldsInfo &finfo)
 {
-   return SweepHiddenTuple::sweep(grid, 1);
+   return SweepHiddenTuple::collectTuplesOfSize(finfo, 1);
 };
 
 // *******************************************************************************************
 
-bool SweepHiddenPair::sweep(CandidatesGrid &grid)
+FieldValue::Container SweepHiddenPair::collect(const FieldsInfo &finfo)
 {
-   return SweepHiddenTuple::sweep(grid, 2);
+   return SweepHiddenTuple::collectTuplesOfSize(finfo, 2);
 };
 
 // *******************************************************************************************
 
-bool SweepHiddenTriplet::sweep(CandidatesGrid &grid)
+FieldValue::Container SweepHiddenTriplet::collect(const FieldsInfo &finfo)
 {
-   return SweepHiddenTuple::sweep(grid, 3);
+   return SweepHiddenTuple::collectTuplesOfSize(finfo, 3);
 };
 
 // *******************************************************************************************
 
-bool SweepHiddenQuartet::sweep(CandidatesGrid &grid)
+FieldValue::Container SweepHiddenQuartet::collect(const FieldsInfo &finfo)
 {
-   return SweepHiddenTuple::sweep(grid, 4);
+   return SweepHiddenTuple::collectTuplesOfSize(finfo, 4);
 };
