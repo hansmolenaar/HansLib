@@ -14,11 +14,11 @@ using namespace Sudoku;
 TEST(SweepHidddenTupleTest, BasicExample)
 {
    CandidatesGrid grid;
-
+   FieldsInfo finfo(grid);
    for (Index size = 1; size <= 3; ++size)
    {
-      const bool anyChange = SweepHiddenTuple::sweep(grid, size);
-      ASSERT_FALSE(anyChange);
+      const auto fieldValues = SweepHiddenTuple::collectTuplesOfSize(finfo, size);
+      ASSERT_TRUE(fieldValues.empty());
    }
 }
 
@@ -47,13 +47,11 @@ TEST(SweepHidddenTupleTest, Pair)
    FieldValue::Container fieldsValues;
    fieldsValues = SweepHiddenTuple::collectTuplesOfSize(finfo, 3);
    ASSERT_TRUE(fieldsValues.empty());
-   bool anyChange = SweepHiddenTuple::sweep(grid, 3);
-   ASSERT_FALSE(anyChange);
+   fieldsValues = SweepHiddenTuple::collectTuplesOfSize(finfo, 3);
+   ASSERT_TRUE(fieldsValues.empty());
 
    fieldsValues = SweepHiddenTuple::collectTuplesOfSize(finfo, 1);
    ASSERT_TRUE(fieldsValues.empty());
-   anyChange = SweepHiddenTuple::sweep(grid, 1);
-   ASSERT_FALSE(anyChange);
 
    fieldsValues = SweepHiddenTuple::collectTuplesOfSize(finfo, 2);
    TestUtils::CheckFieldValues(grid, fieldsValues);

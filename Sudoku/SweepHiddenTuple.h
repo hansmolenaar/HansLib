@@ -9,8 +9,6 @@ namespace Sudoku
 
 namespace SweepHiddenTuple
 {
-bool sweepHouse(CandidatesGrid &, const House &, Index);
-bool sweep(CandidatesGrid &, Index);
 FieldValue::Container collectHouse(const FieldsInfo &, const House &, Index);
 FieldValue::Container collectTuplesOfSize(const FieldsInfo &, Index);
 FieldValue::Container collect(const FieldsInfo &);

@@ -50,25 +50,6 @@ bool IsHiddenTuple(const FieldsInfo &finfo, const House &house, std::span<const 
    return (count == size);
 }
 
-bool RemoveCandidates(CandidatesGrid &grid, FieldsInfo &finfo, const House &house,
-                      std::span<const Value> candidateTuple)
-{
-   // Remove all values except the candidate tuple
-   boost::container::static_vector<Value, NumValue> activeValues;
-   str::copy_if(ValueAll, std::back_inserter(activeValues), IsNotContained(candidateTuple));
-
-   auto houseFields = finfo.getHouseFields(house);
-   const CellContainsAllValues cellPredicate{grid, candidateTuple};
-   auto activeFields = FieldAll | std::views::filter(Bitset{houseFields}) | std::views::filter(cellPredicate);
-
-   const bool anyChange = grid.RemoveCandidatesFromFields(activeValues, activeFields);
-   if (anyChange)
-   {
-      finfo.update();
-   }
-   return anyChange;
-}
-
 void CollectCandidates(const FieldsInfo &finfo, const House &house, std::span<const Value> candidateTuple,
                        FieldValue::Container &fieldValues)
 {
@@ -91,31 +72,6 @@ void CollectCandidates(const FieldsInfo &finfo, const House &house, std::span<co
 }
 
 } // namespace
-
-bool SweepHiddenTuple::sweepHouse(CandidatesGrid &grid, const House &house, Index size)
-{
-   FieldsInfo finfo(grid);
-   bool anyChange = false;
-   const auto activeUniqueCandidates = SudokuUtils::getUniqueActiveValuesInCells(grid, finfo.getHouseFields(house));
-   if (activeUniqueCandidates.count() < size)
-   {
-      return anyChange;
-   }
-
-   std::vector<Value> activeCandidates(activeUniqueCandidates.count());
-   str::copy_if(ValueAll, activeCandidates.begin(), Bitset{activeUniqueCandidates});
-
-   Combinations<Value> combinations(activeCandidates, size);
-   do
-   {
-      if (IsHiddenTuple(finfo, house, combinations()))
-      {
-         anyChange |= RemoveCandidates(grid, finfo, house, combinations());
-      }
-   } while (combinations.next());
-
-   return anyChange;
-}
 
 FieldValue::Container SweepHiddenTuple::collectHouse(const FieldsInfo &finfo, const House &house, Index size)
 {
@@ -150,20 +106,6 @@ FieldValue::Container SweepHiddenTuple::collectTuplesOfSize(const FieldsInfo &fi
       FieldValue::add(collectHouse(finfo, house, size), result);
    }
    return result;
-}
-
-bool SweepHiddenTuple::sweep(CandidatesGrid &grid, Index size)
-{
-   bool anyChange = false;
-   for (const House &house : House::getAllHouses())
-   {
-      if (sweepHouse(grid, house, size))
-      {
-         anyChange = true;
-         grid.update();
-      }
-   }
-   return anyChange;
 }
 
 // *******************************************************************************************
