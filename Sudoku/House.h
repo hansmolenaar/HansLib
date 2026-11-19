@@ -19,15 +19,13 @@ struct HouseId
 
 struct House
 {
-   static const House &getRow(Index);
-   static const House &getCol(Index);
-   static const House &getBox(Index);
-   static const House &getHouse(HouseId);
    static const std::vector<House> &getAllHouses();
    static const std::array<HouseId, NumHouse> &getAllHouseIds();
    static std::string toString(HouseType);
    static std::string toString(HouseId);
 
+   HouseType houseType;
+   Index houseIndex = IndexUndefined;
    HouseId houseId;
 };
 

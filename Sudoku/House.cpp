@@ -26,6 +26,8 @@ std::vector<House> getHousesBy(HouseType houseType)
    {
       MyAssert(idx2cell.at(idx).size() == NumIndex);
       House house;
+      house.houseType = houseType;
+      house.houseIndex = idx;
       house.houseId = {houseType, idx};
       housesByIdx.at(idx) = house;
    }
@@ -33,9 +35,7 @@ std::vector<House> getHousesBy(HouseType houseType)
    return housesByIdx;
 }
 
-} // namespace
-
-const House &House::getRow(Index row)
+const House &getRow(Index row)
 {
    static std::vector<House> housesByRow;
    if (housesByRow.empty())
@@ -45,7 +45,7 @@ const House &House::getRow(Index row)
    return housesByRow.at(row);
 }
 
-const House &House::getCol(Index col)
+const House &getCol(Index col)
 {
    static std::vector<House> housesByCol;
    if (housesByCol.empty())
@@ -55,7 +55,7 @@ const House &House::getCol(Index col)
    return housesByCol.at(col);
 }
 
-const House &House::getBox(Index box)
+const House &getBox(Index box)
 {
    static std::vector<House> housesByBox;
    if (housesByBox.empty())
@@ -65,7 +65,7 @@ const House &House::getBox(Index box)
    return housesByBox.at(box);
 }
 
-const House &House::getHouse(HouseId houseId)
+const House &getHouse(HouseId houseId)
 {
    if (houseId.houseType == HouseType::Row)
    {
@@ -82,6 +82,7 @@ const House &House::getHouse(HouseId houseId)
    }
 }
 
+} // namespace
 const std::vector<House> &House::getAllHouses()
 {
    static std::vector<House> housesAll;
