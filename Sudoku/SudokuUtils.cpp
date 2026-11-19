@@ -42,26 +42,6 @@ ValueBits SudokuUtils::getUniqueActiveValuesInCells(const CandidatesGrid &grid, 
    return result;
 }
 
-SudokuUtils::Value2Fields SudokuUtils::getValue2Fields(const CandidatesGrid &grid, std::span<Field> fields)
-{
-   Value2Fields result;
-   for (auto field : fields)
-   {
-      for (auto value : grid[field])
-      {
-         result[value].push_back(field);
-      }
-   }
-   return result;
-}
-
-SudokuUtils::Value2Fields SudokuUtils::getValue2Fields(const CandidatesGrid &grid, std::span<const Cell> cells)
-{
-   boost::container::static_vector<Field, NumField> fields(cells.size());
-   str::transform(cells, fields.begin(), Cell::getField);
-   return getValue2Fields(grid, fields);
-}
-
 FieldBits SudokuUtils::getFields(std::span<const Cell> cells)
 {
    FieldBits result;

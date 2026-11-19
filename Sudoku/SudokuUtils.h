@@ -20,10 +20,6 @@ namespace SudokuUtils
 {
 ValueBits getUniqueActiveValuesInCells(const CandidatesGrid &, const FieldBits &);
 
-using Value2Fields = std::array<boost::container::static_vector<Field, NumField>, NumValue + 1>;
-Value2Fields getValue2Fields(const CandidatesGrid &, std::span<Field>);
-Value2Fields getValue2Fields(const CandidatesGrid &, std::span<const Cell>);
-
 FieldBits getFields(std::span<const Cell>);
 FieldBits getFields(std::span<const Field>);
 
