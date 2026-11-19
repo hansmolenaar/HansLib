@@ -13,9 +13,9 @@ class LockedPair;
 struct XWing
 {
    LockedPair lockedPair0;
-   HouseId houseId0;
+   House house0;
    LockedPair lockedPair1;
-   HouseId houseId1;
+   House house1;
 };
 
 class SweepXWing : public ISweep

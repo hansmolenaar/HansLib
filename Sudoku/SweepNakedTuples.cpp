@@ -41,13 +41,13 @@ bool IsNakedTuple(const CandidatesGrid &grid, const std::vector<Field> &candidat
 
 } // namespace
 
-FieldValue::Container SweepNakedTuples::collectHouse(const FieldsInfo &finfo, HouseId houseId, Index tupleSize)
+FieldValue::Container SweepNakedTuples::collectHouse(const FieldsInfo &finfo, const House &house, Index tupleSize)
 {
    FieldValue::Container result;
    const CandidatesGrid &grid = finfo.getGrid();
 
-   const FieldBits house = finfo.getHouseFields(houseId);
-   const FieldBits fields = house & finfo.getActiveFields();
+   const FieldBits houseFields = finfo.getHouseFields(house);
+   const FieldBits fields = houseFields & finfo.getActiveFields();
    std::vector<Field> activeFields;
    for (Field field : FieldAll | std::views::filter(Bitset{fields}))
    {
@@ -67,7 +67,7 @@ FieldValue::Container SweepNakedTuples::collectHouse(const FieldsInfo &finfo, Ho
    {
       if (IsNakedTuple(grid, combinations()))
       {
-         add(finfo, house, combinations(), result);
+         add(finfo, houseFields, combinations(), result);
       }
    } while (combinations.next());
 
@@ -77,11 +77,10 @@ FieldValue::Container SweepNakedTuples::collectHouse(const FieldsInfo &finfo, Ho
 FieldValue::Container SweepNakedTuples::collectHousesOfType(const FieldsInfo &finfo, HouseType type, Index tupleSize)
 {
    FieldValue::Container result;
-   HouseId houseId{type, IndexUndefined};
    for (Index idx : IndexAll)
    {
-      houseId.houseIndex = idx;
-      const auto fieldValuesHouse = collectHouse(finfo, houseId, tupleSize);
+      const House house{type, idx, {type, idx}};
+      const auto fieldValuesHouse = collectHouse(finfo, house, tupleSize);
       result.insert(fieldValuesHouse.begin(), fieldValuesHouse.end());
    }
    return result;

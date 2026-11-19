@@ -5,7 +5,6 @@
 #include "Contains.h"
 #include "FieldsInfo.h"
 #include "House.h"
-#include "StreamUtils.h"
 #include "SudokuDefines.h"
 #include "SudokuUtils.h"
 #include "boost/container/static_vector.hpp"
@@ -51,7 +50,7 @@ bool IsHiddenTuple(const FieldsInfo &finfo, const House &house, std::span<const 
    return (count == size);
 }
 
-bool RemoveCandidates(CandidatesGrid &grid, FieldsInfo &finfo, const HouseId &house,
+bool RemoveCandidates(CandidatesGrid &grid, FieldsInfo &finfo, const House &house,
                       std::span<const Value> candidateTuple)
 {
    // Remove all values except the candidate tuple
@@ -75,8 +74,7 @@ bool SweepHiddenTuple::sweepHouse(CandidatesGrid &grid, const House &house, Inde
 {
    FieldsInfo finfo(grid);
    bool anyChange = false;
-   const auto activeUniqueCandidates =
-       SudokuUtils::getUniqueActiveValuesInCells(grid, finfo.getHouseFields(house.houseId));
+   const auto activeUniqueCandidates = SudokuUtils::getUniqueActiveValuesInCells(grid, finfo.getHouseFields(house));
    if (activeUniqueCandidates.count() < size)
    {
       return anyChange;
@@ -90,7 +88,7 @@ bool SweepHiddenTuple::sweepHouse(CandidatesGrid &grid, const House &house, Inde
    {
       if (IsHiddenTuple(finfo, house, combinations()))
       {
-         anyChange |= RemoveCandidates(grid, finfo, house.houseId, combinations());
+         anyChange |= RemoveCandidates(grid, finfo, house, combinations());
       }
    } while (combinations.next());
 

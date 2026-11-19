@@ -133,6 +133,21 @@ HouseId HouseId::getFromCellaAndType(const Cell &cell, HouseType type)
    }
 }
 
+House House::getFromCellaAndType(const Cell &cell, HouseType type)
+{
+   switch (type)
+   {
+   case HouseType::Row:
+      return {type, cell.row, {type, cell.row}};
+   case HouseType::Col:
+      return {type, cell.col, {type, cell.col}};
+   case HouseType::Box:
+      return {type, cell.box, {type, cell.box}};
+   default:
+      throw std::runtime_error("Should not come here");
+   }
+}
+
 std::string House::toString(HouseType houseType)
 {
    if (houseType == HouseType::Row)

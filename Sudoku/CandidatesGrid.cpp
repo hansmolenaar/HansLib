@@ -218,7 +218,7 @@ void CandidatesGrid::checkValidSudoku() const
    {
       ValueBits isUsed;
       ValueBits isSolved;
-      for (Field field : FieldAll | std::views::filter(Bitset{finfo.getHouseFields(house.houseId)}))
+      for (Field field : FieldAll | std::views::filter(Bitset{finfo.getHouseFields(house)}))
       {
          const auto value = (*this)[field].tryGetSolvedValue();
          if (value.has_value())

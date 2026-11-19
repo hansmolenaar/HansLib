@@ -14,14 +14,14 @@ TEST(SweepIntersectionElimination, BoxRow)
    FieldBits fields;
    fields.set(0);
    fields.set(2);
-   std::optional<HouseId> retval = SweepIntersectionElimination::TryGetIntersectionHouse(HouseType::Box, fields, finfo);
+   std::optional<House> retval = SweepIntersectionElimination::TryGetIntersectionHouse(HouseType::Box, fields, finfo);
    ASSERT_TRUE(retval.has_value());
-   ASSERT_EQ(retval.value(), (HouseId{HouseType::Row, 0}));
+   ASSERT_EQ(retval.value().houseId, (HouseId{HouseType::Row, 0}));
 
    fields.set(1);
    retval = SweepIntersectionElimination::TryGetIntersectionHouse(HouseType::Box, fields, finfo);
    ASSERT_TRUE(retval.has_value());
-   ASSERT_EQ(retval.value(), (HouseId{HouseType::Row, 0}));
+   ASSERT_EQ(retval.value().houseId, (HouseId{HouseType::Row, 0}));
 
    fields.set(3);
    ASSERT_ANY_THROW(SweepIntersectionElimination::TryGetIntersectionHouse(HouseType::Box, fields, finfo));
@@ -48,14 +48,14 @@ TEST(SweepIntersectionElimination, BoxCol)
    fields.set(Cell::getFromRowCol(0, 5).field);
    fields.set(Cell::getFromRowCol(2, 5).field);
 
-   std::optional<HouseId> retval = SweepIntersectionElimination::TryGetIntersectionHouse(HouseType::Box, fields, finfo);
+   std::optional<House> retval = SweepIntersectionElimination::TryGetIntersectionHouse(HouseType::Box, fields, finfo);
    ASSERT_TRUE(retval.has_value());
-   ASSERT_EQ(retval.value(), (HouseId{HouseType::Col, 5}));
+   ASSERT_EQ(retval.value().houseId, (HouseId{HouseType::Col, 5}));
 
    fields.set(Cell::getFromRowCol(1, 5).field);
    retval = SweepIntersectionElimination::TryGetIntersectionHouse(HouseType::Box, fields, finfo);
    ASSERT_TRUE(retval.has_value());
-   ASSERT_EQ(retval.value(), (HouseId{HouseType::Col, 5}));
+   ASSERT_EQ(retval.value().houseId, (HouseId{HouseType::Col, 5}));
 
    fields.set(Cell::getFromRowCol(3, 5).field);
    ASSERT_ANY_THROW(SweepIntersectionElimination::TryGetIntersectionHouse(HouseType::Box, fields, finfo));

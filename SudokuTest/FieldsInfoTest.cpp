@@ -19,7 +19,7 @@ TEST(FieldsInfoTest, GetHouseFields)
 
    for (const auto &house : House::getAllHouses())
    {
-      const FieldBits &fb = finfo.getHouseFields(house.houseId);
+      const FieldBits &fb = finfo.getHouseFields(house);
       ASSERT_EQ(fb.count(), 9);
    }
 }
@@ -69,7 +69,7 @@ TEST(FieldsInfoTest, GetSolvedCells)
 {
    CandidatesGrid grid;
    FieldsInfo finfo(grid);
-   const HouseId house{HouseType::Box, 8};
+   const House house{HouseType::Box, 8, {HouseType::Box, 8}};
    const auto houseFields = finfo.getHouseFields(house);
    FieldBits activeFields = finfo.getActiveFields() & houseFields;
    ASSERT_EQ(activeFields.count(), NumCellsInHouse);
@@ -151,7 +151,7 @@ TEST(VisibilityTest, Update)
    ASSERT_EQ(finfoOld.getSolvedFields(), finfo.getSolvedFields());
    for (House h : House::getAllHouses())
    {
-      ASSERT_EQ(finfoOld.getHouseFields(h.houseId), finfo.getHouseFields(h.houseId));
+      ASSERT_EQ(finfoOld.getHouseFields(h), finfo.getHouseFields(h));
    }
    for (Value v : ValueAll)
    {

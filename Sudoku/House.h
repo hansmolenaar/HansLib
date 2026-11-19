@@ -18,9 +18,12 @@ struct HouseId
 
 struct House
 {
+   static House getFromCellaAndType(const Cell &, HouseType);
    static const std::vector<House> &getAllHouses();
    static std::string toString(HouseType);
    static std::string toString(const House &);
+
+   auto operator<=>(const House &) const = default;
 
    HouseType houseType;
    Index houseIndex = IndexUndefined;

@@ -12,7 +12,7 @@ namespace SweepNakedTuples
 {
 FieldValue::Container collect(const FieldsInfo &, Index);
 FieldValue::Container collectHousesOfType(const FieldsInfo &, HouseType, Index);
-FieldValue::Container collectHouse(const FieldsInfo &, HouseId, Index);
+FieldValue::Container collectHouse(const FieldsInfo &, const House &, Index);
 }; // namespace SweepNakedTuples
 
 class SweepNakedPairs : public ISweep

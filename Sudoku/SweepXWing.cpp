@@ -19,8 +19,7 @@ void collectCandidates(const FieldsInfo &finfo, Value value, const XWing &xWing,
    fixedFields.set(xWing.lockedPair0[1].field);
    fixedFields.set(xWing.lockedPair1[0].field);
    fixedFields.set(xWing.lockedPair1[1].field);
-   const auto activeFields =
-       finfo.getHouseFields(xWing.houseId0) & ~fixedFields & finfo.getActiveFieldsWithValue(value);
+   const auto activeFields = finfo.getHouseFields(xWing.house0) & ~fixedFields & finfo.getActiveFieldsWithValue(value);
    FieldValue::add(activeFields, value, fieldsValue);
 }
 
@@ -34,7 +33,7 @@ bool IsSimpleLineLockedPair(const LockedPair &lp)
    return visibility.at(0) != HouseType::Box;
 }
 
-std::optional<HouseId> getWeakConnectionVisibility(const Cell &cell0, const Cell &cell1)
+std::optional<House> getWeakConnectionVisibility(const Cell &cell0, const Cell &cell1)
 {
    if (cell0 == cell1)
    {
@@ -46,7 +45,7 @@ std::optional<HouseId> getWeakConnectionVisibility(const Cell &cell0, const Cell
       const auto type = visibility.front();
       if (type != HouseType::Box)
       {
-         return {HouseId::getFromCellaAndType(cell0, type)};
+         return {House::getFromCellaAndType(cell0, type)};
       }
    }
    return {};
