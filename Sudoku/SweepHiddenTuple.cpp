@@ -35,7 +35,7 @@ struct CellContainsAllValues
    std::span<const Value> values;
 };
 
-bool IsHiddenTuple(const FieldsInfo &finfo, const HouseId &house, std::span<const Value> candidateValueTuple)
+bool IsHiddenTuple(const FieldsInfo &finfo, const House &house, std::span<const Value> candidateValueTuple)
 {
    const auto size = candidateValueTuple.size();
    auto houseFields = finfo.getHouseFields(house);
@@ -88,7 +88,7 @@ bool SweepHiddenTuple::sweepHouse(CandidatesGrid &grid, const House &house, Inde
    Combinations<Value> combinations(activeCandidates, size);
    do
    {
-      if (IsHiddenTuple(finfo, house.houseId, combinations()))
+      if (IsHiddenTuple(finfo, house, combinations()))
       {
          anyChange |= RemoveCandidates(grid, finfo, house.houseId, combinations());
       }

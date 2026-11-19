@@ -46,7 +46,7 @@ LockedPairs::LockedPairs(const FieldsInfo &finfo)
 {
    for (const auto &house : House::getAllHouses())
    {
-      const FieldBits houseFields = finfo.getHouseFields(house.houseId);
+      const FieldBits houseFields = finfo.getHouseFields(house);
       for (Value value : ValueAll)
       {
          const auto &houseFieldsWithValue = houseFields & finfo.getActiveFieldsWithValue(value);

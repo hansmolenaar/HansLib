@@ -2,7 +2,6 @@
 
 #include "Cell.h"
 #include "SudokuDefines.h"
-#include <array>
 #include <vector>
 
 namespace Sudoku
@@ -20,9 +19,8 @@ struct HouseId
 struct House
 {
    static const std::vector<House> &getAllHouses();
-   static const std::array<HouseId, NumHouse> &getAllHouseIds();
    static std::string toString(HouseType);
-   static std::string toString(HouseId);
+   static std::string toString(const House &);
 
    HouseType houseType;
    Index houseIndex = IndexUndefined;
@@ -31,4 +29,4 @@ struct House
 
 } // namespace Sudoku
 
-std::ostream &operator<<(std::ostream &, Sudoku::HouseId);
+std::ostream &operator<<(std::ostream &, const Sudoku::House &);

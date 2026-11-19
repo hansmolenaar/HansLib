@@ -7,6 +7,7 @@
 namespace Sudoku
 {
 
+struct House;
 struct HouseId;
 
 class FieldsInfo
@@ -15,6 +16,7 @@ class FieldsInfo
    explicit FieldsInfo(const CandidatesGrid &grid);
    void update();
    const CandidatesGrid &getGrid() const;
+   FieldBits getHouseFields(const House &) const;
    FieldBits getHouseFields(HouseId) const;
    FieldBits getFieldsWithValue(Value) const;
    FieldBits getActiveFieldsWithValue(Value) const;

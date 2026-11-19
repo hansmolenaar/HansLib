@@ -56,8 +56,9 @@ std::vector<std::string> ToStrings(const CandidatesGrid &grid, candidatesToStrin
       result.push_back({});
 
       const HouseId houseId{HouseType::Row, row};
-      const auto house = finfo.getHouseFields(houseId);
-      for (Field field : FieldAll | std::views::filter(Bitset{house}))
+      const House house{HouseType::Row, row, houseId};
+      const auto houseFields = finfo.getHouseFields(house);
+      for (Field field : SudokuUtils::FieldBitsToRange(houseFields))
       {
          const auto cell = Cell::get(field);
          const auto cstrings = fun(grid[field]);
@@ -213,11 +214,11 @@ void CandidatesGrid::checkValidSudoku() const
    }
 
    // Check rule of 1
-   for (const auto &house : House::getAllHouseIds())
+   for (const auto &house : House::getAllHouses())
    {
       ValueBits isUsed;
       ValueBits isSolved;
-      for (Field field : FieldAll | std::views::filter(Bitset{finfo.getHouseFields(house)}))
+      for (Field field : FieldAll | std::views::filter(Bitset{finfo.getHouseFields(house.houseId)}))
       {
          const auto value = (*this)[field].tryGetSolvedValue();
          if (value.has_value())

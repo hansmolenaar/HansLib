@@ -149,9 +149,9 @@ TEST(VisibilityTest, Update)
 
    ASSERT_EQ(finfoOld.getActiveFields(), finfo.getActiveFields());
    ASSERT_EQ(finfoOld.getSolvedFields(), finfo.getSolvedFields());
-   for (HouseId h : House::getAllHouseIds())
+   for (House h : House::getAllHouses())
    {
-      ASSERT_EQ(finfoOld.getHouseFields(h), finfo.getHouseFields(h));
+      ASSERT_EQ(finfoOld.getHouseFields(h.houseId), finfo.getHouseFields(h.houseId));
    }
    for (Value v : ValueAll)
    {

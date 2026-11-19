@@ -23,7 +23,7 @@ std::vector<Link> SweepSimpleColoring::getBilocationLinks(const CandidatesGrid &
    std::vector<Link> result;
    for (const House &house : House::getAllHouses())
    {
-      const auto houseBits = finfo.getHouseFields(house.houseId);
+      const auto houseBits = finfo.getHouseFields(house);
       const auto fieldBits = houseBits & finfo.getActiveFieldsWithValue(value);
 
       if (fieldBits.count() == 2)
@@ -99,7 +99,7 @@ FieldValue::Container SweepSimpleColoring::collectOneColorEmptiesHouse(const Fie
    const auto visibleFieldsGreen = finfo.getAllVisibleFields(fieldsGreen);
    for (const House &house : House::getAllHouses())
    {
-      const auto &fieldsInHouse = finfo.getHouseFields(house.houseId);
+      const auto &fieldsInHouse = finfo.getHouseFields(house);
       if ((fieldsInHouse & cellsToIgnore).any())
       {
          // House contains part of the chain, we can ignore it

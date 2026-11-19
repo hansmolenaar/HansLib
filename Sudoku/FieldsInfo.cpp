@@ -104,6 +104,12 @@ FieldBits FieldsInfo::getHouseFields(HouseId houseId) const
    return m_fieldsInHouse.at(pos);
 }
 
+FieldBits FieldsInfo::getHouseFields(const House &house) const
+{
+   const auto pos = getFlatHouseId(house.houseType, house.houseIndex);
+   return m_fieldsInHouse.at(pos);
+}
+
 FieldBits FieldsInfo::getActiveFieldsWithValue(Value value) const
 {
    return m_activeFieldswithValue.at(value);

@@ -99,7 +99,7 @@ const std::vector<House> &House::getAllHouses()
    }
    return housesAll;
 }
-
+#if false
 const std::array<HouseId, NumHouse> &House::getAllHouseIds()
 {
    constexpr static std::array<HouseId, NumHouse> s_allHouseIds = {
@@ -116,6 +116,7 @@ const std::array<HouseId, NumHouse> &House::getAllHouseIds()
        HouseId{HouseType::Box, 6}, HouseId{HouseType::Box, 7}, HouseId{HouseType::Box, 8}};
    return s_allHouseIds;
 }
+#endif
 
 HouseId HouseId::getFromCellaAndType(const Cell &cell, HouseType type)
 {
@@ -147,16 +148,16 @@ std::string House::toString(HouseType houseType)
       return "BOX";
    }
 }
+std::string House::toString(const House &house)
 
-std::string House::toString(HouseId houseId)
 {
    std::stringstream stream;
-   stream << houseId;
+   stream << house;
    return stream.str();
 }
 
-std::ostream &operator<<(std::ostream &os, Sudoku::HouseId houseId)
+std::ostream &operator<<(std::ostream &os, const Sudoku::House &house)
 {
-   os << "[" << House::toString(houseId.houseType) << " " << houseId.houseIndex << "]";
+   os << "[" << House::toString(house.houseType) << " " << house.houseIndex << "]";
    return os;
 }
