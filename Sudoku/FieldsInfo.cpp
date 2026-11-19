@@ -16,11 +16,6 @@ Field getFlatHouseId(HouseType houseType, Index index)
    return pos;
 }
 
-Field getFlatHouseId(HouseId houseId)
-{
-   return getFlatHouseId(houseId.houseType, houseId.houseIndex);
-}
-
 } // namespace
 
 FieldsInfo::FieldsInfo(const CandidatesGrid &grid) : m_grid(&grid)
@@ -38,9 +33,9 @@ FieldsInfo::FieldsInfo(const CandidatesGrid &grid) : m_grid(&grid)
    for (Field field : FieldAll)
    {
       const Cell cell = Cell::get(field);
-      m_visible[field] |= getHouseFields(HouseId{HouseType::Row, cell.row});
-      m_visible[field] |= getHouseFields(HouseId{HouseType::Col, cell.col});
-      m_visible[field] |= getHouseFields(HouseId{HouseType::Box, cell.box});
+      m_visible[field] |= getHouseFields({HouseType::Row, cell.row});
+      m_visible[field] |= getHouseFields({HouseType::Col, cell.col});
+      m_visible[field] |= getHouseFields({HouseType::Box, cell.box});
       // By convention
       m_visible[field].reset(field);
    }
@@ -96,12 +91,6 @@ FieldBits FieldsInfo::getAllVisibleFields(const FieldBits &fieldBits) const
       result |= getVisibleFields(field);
    }
    return result;
-}
-
-FieldBits FieldsInfo::getHouseFields(HouseId houseId) const
-{
-   const auto pos = getFlatHouseId(houseId);
-   return m_fieldsInHouse.at(pos);
 }
 
 FieldBits FieldsInfo::getHouseFields(const House &house) const
