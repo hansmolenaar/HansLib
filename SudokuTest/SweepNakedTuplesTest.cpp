@@ -9,6 +9,7 @@
 #include "SweepHiddenTuple.h"
 #include "SweepNakedSingle.h"
 #include "SweepNakedTuples.h"
+#include "TestUtils.h"
 
 using namespace Sudoku;
 
@@ -34,6 +35,7 @@ TEST(SweepNakedTuplesTest, SweepNakedPair_1)
    FieldsInfo finfo(grid);
    FieldValue::Container fieldValues;
    fieldValues = SweepNakedTuples::collectHouse(finfo, House{HouseType::Row, 1}, 2);
+   TestUtils::CheckFieldValues(grid, fieldValues);
    grid.apply(fieldValues, finfo);
 
    expectNumCandidates -= 2 * 6;
@@ -87,6 +89,7 @@ TEST(SweepNakedTuplesTest, SweepNakedPair_2)
    ASSERT_EQ(grid.getNumCandidates(), expectNumCandidates);
 
    fieldValues = SweepNakedTuples::collectHousesOfType(finfo, HouseType::Row, 2);
+   TestUtils::CheckFieldValues(grid, fieldValues);
    grid.applyAndUpdate(fieldValues, finfo);
    expectNumCandidates -= 64;
    ASSERT_EQ(grid.getNumCandidates(), expectNumCandidates);

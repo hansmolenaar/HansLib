@@ -100,30 +100,21 @@ FieldValue::Container SweepNakedTuples::collect(const FieldsInfo &finfo, Index t
 
 // ***************************************************************
 
-bool SweepNakedPairs::sweep(CandidatesGrid &grid)
+FieldValue::Container SweepNakedPairs::collect(const FieldsInfo &finfo)
 {
-   const FieldsInfo finfo(grid);
-   const auto fieldValues = SweepNakedTuples::collect(finfo, 2);
-   const auto changes = grid.apply(fieldValues);
-   return changes.numValuesChanged > 0;
+   return SweepNakedTuples::collect(finfo, 2);
 }
 
 // ***************************************************************
 
-bool SweepNakedTriplet::sweep(CandidatesGrid &grid)
+FieldValue::Container SweepNakedTriplet::collect(const FieldsInfo &finfo)
 {
-   const FieldsInfo finfo(grid);
-   const auto fieldValues = SweepNakedTuples::collect(finfo, 3);
-   const auto changes = grid.apply(fieldValues);
-   return changes.numValuesChanged > 0;
+   return SweepNakedTuples::collect(finfo, 3);
 }
 
 // ***************************************************************
 
-bool SweepNakedQuartet::sweep(CandidatesGrid &grid)
+FieldValue::Container SweepNakedQuartet::collect(const FieldsInfo &finfo)
 {
-   const FieldsInfo finfo(grid);
-   const auto fieldValues = SweepNakedTuples::collect(finfo, 4);
-   const auto changes = grid.apply(fieldValues);
-   return changes.numValuesChanged > 0;
+   return SweepNakedTuples::collect(finfo, 4);
 }

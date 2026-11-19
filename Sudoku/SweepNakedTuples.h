@@ -18,19 +18,19 @@ FieldValue::Container collectHouse(const FieldsInfo &, const House &, Index);
 class SweepNakedPairs : public ISweep
 {
  public:
-   bool sweep(CandidatesGrid &) override;
+   FieldValue::Container collect(const FieldsInfo &) override;
 };
 
 class SweepNakedTriplet : public ISweep
 {
  public:
-   bool sweep(CandidatesGrid &) override;
+   FieldValue::Container collect(const FieldsInfo &) override;
 };
 
 class SweepNakedQuartet : public ISweep
 {
  public:
-   bool sweep(CandidatesGrid &) override;
+   FieldValue::Container collect(const FieldsInfo &) override;
 };
 
 } // namespace Sudoku

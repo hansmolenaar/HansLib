@@ -7,15 +7,11 @@
 #include "ISweep.h"
 #include "Network.h"
 #include "Single.h"
-#include "StreamUtils.h"
 #include "SudokuDefines.h"
 #include "SudokuUtils.h"
 #include "SweepCombined.h"
 #include "SweepSimpleColoring.h"
-#include "TestModels.h"
-
-#include <fstream>
-#include <iostream>
+#include "TestUtils.h"
 
 using namespace Sudoku;
 using namespace Utilities;
@@ -98,6 +94,7 @@ TEST(SweepSimpleColoringTest, TwiceInAUnit)
       FieldValue::add(SweepSimpleColoring::collectTwiceInAUnit(finfo, value, coloring), fieldValues);
    }
    ASSERT_EQ(fieldValues.size(), 4);
+   TestUtils::CheckFieldValues(grid, fieldValues);
    const auto changes = grid.apply(fieldValues);
    ASSERT_EQ(changes.numValuesChanged, 4);
    ASSERT_EQ(changes.numFieldsSolved, 3);
@@ -205,6 +202,7 @@ TEST(SweepSimpleColoringTest, SingleColorEmptiesHouseExample1)
       fieldValues.insert(emptiesHosue.begin(), emptiesHosue.end());
    }
 
+   TestUtils::CheckFieldValues(grid, fieldValues);
    ASSERT_EQ(fieldValues.size(), 4);
    expect -= 4;
    const auto changes = grid.apply(fieldValues);
