@@ -12,8 +12,6 @@ struct HouseId
    HouseType houseType;
    Index houseIndex = IndexUndefined;
    static HouseId getFromCellaAndType(const Cell &, HouseType);
-
-   auto operator<=>(const HouseId &) const = default;
 };
 
 struct House
@@ -27,7 +25,6 @@ struct House
 
    HouseType houseType;
    Index houseIndex = IndexUndefined;
-   HouseId houseId;
 };
 
 } // namespace Sudoku

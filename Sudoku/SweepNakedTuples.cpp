@@ -79,7 +79,7 @@ FieldValue::Container SweepNakedTuples::collectHousesOfType(const FieldsInfo &fi
    FieldValue::Container result;
    for (Index idx : IndexAll)
    {
-      const House house{type, idx, {type, idx}};
+      const House house{type, idx};
       const auto fieldValuesHouse = collectHouse(finfo, house, tupleSize);
       result.insert(fieldValuesHouse.begin(), fieldValuesHouse.end());
    }

@@ -69,7 +69,7 @@ TEST(FieldsInfoTest, GetSolvedCells)
 {
    CandidatesGrid grid;
    FieldsInfo finfo(grid);
-   const House house{HouseType::Box, 8, {HouseType::Box, 8}};
+   const House house{HouseType::Box, 8};
    const auto houseFields = finfo.getHouseFields(house);
    FieldBits activeFields = finfo.getActiveFields() & houseFields;
    ASSERT_EQ(activeFields.count(), NumCellsInHouse);

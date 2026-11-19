@@ -19,9 +19,9 @@ template <typename F> void TestGetHouse(F &&getHouse)
    for (auto idx : IndexAll)
    {
       const House &house = getHouse(idx);
-      const HouseType houseType = house.houseId.houseType;
-      MyAssert(house.houseId.houseIndex == idx);
-      const auto houseFields = finfo.getHouseFields(house.houseId);
+      const HouseType houseType = house.houseType;
+      MyAssert(house.houseIndex == idx);
+      const auto houseFields = finfo.getHouseFields(house);
       for (Field field : SudokuUtils::FieldBitsToRange(houseFields))
       {
          const Cell cell = Cell::get(field);
@@ -38,7 +38,7 @@ template <typename F> void TestGetHouse(F &&getHouse)
 TEST(HouseTest, GetFromCellAndType)
 {
    const Cell cell = Cell::get(42);
-   ASSERT_EQ(HouseId::getFromCellaAndType(cell, HouseType::Row), (HouseId{HouseType::Row, 4}));
-   ASSERT_EQ(HouseId::getFromCellaAndType(cell, HouseType::Col), (HouseId{HouseType::Col, 6}));
-   ASSERT_EQ(HouseId::getFromCellaAndType(cell, HouseType::Box), (HouseId{HouseType::Box, 5}));
+   ASSERT_EQ(House::getFromCellaAndType(cell, HouseType::Row), (House{HouseType::Row, 4}));
+   ASSERT_EQ(House::getFromCellaAndType(cell, HouseType::Col), (House{HouseType::Col, 6}));
+   ASSERT_EQ(House::getFromCellaAndType(cell, HouseType::Box), (House{HouseType::Box, 5}));
 }

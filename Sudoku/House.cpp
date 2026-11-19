@@ -28,7 +28,6 @@ std::vector<House> getHousesBy(HouseType houseType)
       House house;
       house.houseType = houseType;
       house.houseIndex = idx;
-      house.houseId = {houseType, idx};
       housesByIdx.at(idx) = house;
    }
 
@@ -138,11 +137,11 @@ House House::getFromCellaAndType(const Cell &cell, HouseType type)
    switch (type)
    {
    case HouseType::Row:
-      return {type, cell.row, {type, cell.row}};
+      return {type, cell.row};
    case HouseType::Col:
-      return {type, cell.col, {type, cell.col}};
+      return {type, cell.col};
    case HouseType::Box:
-      return {type, cell.box, {type, cell.box}};
+      return {type, cell.box};
    default:
       throw std::runtime_error("Should not come here");
    }

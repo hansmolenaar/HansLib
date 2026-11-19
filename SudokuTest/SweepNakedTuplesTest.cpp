@@ -33,13 +33,13 @@ TEST(SweepNakedTuplesTest, SweepNakedPair_1)
    ASSERT_FALSE(value0.has_value());
    FieldsInfo finfo(grid);
    FieldValue::Container fieldValues;
-   fieldValues = SweepNakedTuples::collectHouse(finfo, House{HouseType::Row, 1, {HouseType::Row, 1}}, 2);
+   fieldValues = SweepNakedTuples::collectHouse(finfo, House{HouseType::Row, 1}, 2);
    grid.apply(fieldValues, finfo);
 
    expectNumCandidates -= 2 * 6;
    ASSERT_EQ(grid.getNumCandidates(), expectNumCandidates); // Remainer of row removed
 
-   fieldValues = SweepNakedTuples::collectHouse(finfo, House{HouseType::Box, 0, {HouseType::Box, 0}}, 2);
+   fieldValues = SweepNakedTuples::collectHouse(finfo, House{HouseType::Box, 0}, 2);
    ASSERT_FALSE(fieldValues.empty());
    grid.apply(fieldValues, finfo);
 

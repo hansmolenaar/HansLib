@@ -48,7 +48,7 @@ TEST(SweepNakedSingleTest, BoxSimple)
    CandidatesGrid grid;
    const FieldsInfo finfo(grid);
    const Cell cell(Cell::rowCol2Field(row, col));
-   const auto house = finfo.getHouseFields(House{HouseType::Box, cell.box, {HouseType::Box, cell.box}});
+   const auto house = finfo.getHouseFields(House{HouseType::Box, cell.box});
    const Field fieldToSkip = *(FieldAll | std::views::filter(Bitset{house}) | std::views::drop(2)).begin();
    Value val = 0;
    for (Field field : FieldAll | std::views::filter(Bitset{house}))

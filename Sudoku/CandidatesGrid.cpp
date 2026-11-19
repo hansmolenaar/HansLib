@@ -55,8 +55,7 @@ std::vector<std::string> ToStrings(const CandidatesGrid &grid, candidatesToStrin
       result.push_back({});
       result.push_back({});
 
-      const HouseId houseId{HouseType::Row, row};
-      const House house{HouseType::Row, row, houseId};
+      const House house{HouseType::Row, row};
       const auto houseFields = finfo.getHouseFields(house);
       for (Field field : SudokuUtils::FieldBitsToRange(houseFields))
       {

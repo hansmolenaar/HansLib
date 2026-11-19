@@ -43,7 +43,7 @@ TEST(SudokuUtilsTest, GetActiveCandidatesInCells)
 {
    CandidatesGrid cg;
    FieldsInfo finfo(cg);
-   const House house(HouseType::Row, 0, {HouseType::Row, 0});
+   const House house(HouseType::Row, 0);
    const auto houseFields = finfo.getHouseFields(house);
    auto retval = SudokuUtils::getUniqueActiveValuesInCells(cg, houseFields);
    ASSERT_EQ(retval.count(), NumCellsInHouse);
