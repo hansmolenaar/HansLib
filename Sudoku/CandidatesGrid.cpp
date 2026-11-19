@@ -130,16 +130,6 @@ bool CandidatesGrid::removeCandidate(Field field, Value value)
    return m_candidates.at(field).removeCandidate(value).numValuesChanged > 0;
 }
 
-bool CandidatesGrid::removeCandidateFromFields(const FieldBits &fields, Value value)
-{
-   bool anyChange = false;
-   for (Field field : FieldAll | std::views::filter(Bitset{fields}))
-   {
-      anyChange |= removeCandidate(field, value);
-   }
-   return anyChange;
-}
-
 GridChange CandidatesGrid::apply(const FieldValue::Container &fieldValues, FieldsInfo &finfo)
 {
    GridChange change;

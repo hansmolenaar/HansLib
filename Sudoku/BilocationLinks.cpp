@@ -1,7 +1,4 @@
 #include "BilocationLinks.h"
-#include "CandidatesGrid.h"
-#include "House.h"
-#include "UniqueSorted.h"
 
 using namespace Sudoku;
 using namespace Utilities;

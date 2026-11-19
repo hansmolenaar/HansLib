@@ -20,7 +20,7 @@ class CandidatesGrid
    bool setCandidates(Field, std::initializer_list<Value>);
    bool setCandidates(Index, Index, std::initializer_list<Value>);
    bool removeCandidate(Field, Value);
-   bool removeCandidateFromFields(const FieldBits &, Value);
+
    void update();                 // set candidates from givens
    void checkValidSudoku() const; // throws if not valid
    bool isSolved() const;
@@ -37,46 +37,6 @@ class CandidatesGrid
    const Candidates &operator[](Field f) const
    {
       return m_candidates[f];
-   }
-
-   template <typename R> bool RemoveCandidates(std::span<const Value> valuesToRemove, R &fromCells)
-   {
-      bool anyChange = false;
-      for (Value value : valuesToRemove)
-      {
-         anyChange |= RemoveCandidate(value, fromCells);
-      }
-      return anyChange;
-   }
-
-   template <typename R> bool RemoveCandidate(Value value, R &fromCells)
-   {
-      bool anyChange = false;
-      for (const auto &cell : fromCells)
-      {
-         anyChange |= removeCandidate(cell.field, value);
-      }
-      return anyChange;
-   }
-
-   template <typename R> bool RemoveCandidatesFromFields(std::span<const Value> valuesToRemove, R &fromFields)
-   {
-      bool anyChange = false;
-      for (Value value : valuesToRemove)
-      {
-         anyChange |= RemoveCandidatesFromFields(value, fromFields);
-      }
-      return anyChange;
-   }
-
-   template <typename R> bool RemoveCandidatesFromFields(Value value, R &fromFields)
-   {
-      bool anyChange = false;
-      for (const auto &field : fromFields)
-      {
-         anyChange |= removeCandidate(field, value);
-      }
-      return anyChange;
    }
 
  private:
