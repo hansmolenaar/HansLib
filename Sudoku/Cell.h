@@ -1,9 +1,8 @@
 #pragma once
 
 #include "SudokuDefines.h"
-#include "boost/container/static_vector.hpp"
 
-#include <vector>
+#include <span>
 
 namespace Sudoku
 {
@@ -20,13 +19,10 @@ struct Cell
    auto operator<=>(const Cell &) const = default;
    Index operator[](HouseType) const;
 
-   static const std::vector<Cell> &getAll();
-   static Field getField(const Cell &);
+   static std::span<const Cell> getAll();
    static const Cell &get(Field);
    static const Cell &getFromRowCol(Index, Index);
    static Field rowCol2Field(Index, Index);
-   static bool AreSame(const Cell &cell, Field field);
-   static boost::container::static_vector<Field, NumField> cells2fields(std::span<const Cell>);
 
    static const Cell &Rotate(const Cell &);
    static const Cell &ReflectX(const Cell &);

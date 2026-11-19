@@ -1,7 +1,6 @@
 #include "Cell.h"
 #include "MyAssert.h"
 
-#include <algorithm>
 #include <ostream>
 #include <stdexcept>
 #include <string>
@@ -9,7 +8,6 @@
 
 using namespace Sudoku;
 using namespace Utilities;
-namespace str = std::ranges;
 
 namespace
 {
@@ -59,7 +57,7 @@ Index Cell::operator[](HouseType type) const
    }
 }
 
-const std::vector<Cell> &Cell::getAll()
+std::span<const Cell> Cell::getAll()
 {
    static std::vector<Cell> s_allCells;
    if (s_allCells.empty())
@@ -74,7 +72,7 @@ const std::vector<Cell> &Cell::getAll()
 
 const Cell &Cell::get(Field f)
 {
-   return getAll().at(f);
+   return getAll()[f];
 }
 
 const Cell &Cell::getFromRowCol(Index row, Index col)
@@ -88,23 +86,6 @@ Field Cell::rowCol2Field(Index row, Index col)
    MyAssert(row >= 0 && row < NumIndex && col >= 0 && col < NumIndex,
             "Cell::rowCol2Field invalid row,col: (" + std::to_string(row) + ", " + std::to_string(col) + ")");
    return row * NumIndex + col;
-}
-
-bool Cell::AreSame(const Cell &cell, Field field)
-{
-   return cell.field == field;
-}
-
-Field Cell::getField(const Cell &cell)
-{
-   return cell.field;
-}
-
-boost::container::static_vector<Field, NumField> Cell::cells2fields(std::span<const Cell> cells)
-{
-   boost::container::static_vector<Field, NumField> result(cells.size());
-   str::transform(cells, result.begin(), Cell::getField);
-   return result;
 }
 
 std::ostream &operator<<(std::ostream &os, const Sudoku::Cell &cell)

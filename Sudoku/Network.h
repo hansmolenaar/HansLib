@@ -3,6 +3,7 @@
 #include "ColorField.h"
 #include "Link.h"
 #include <map>
+#include <vector>
 
 namespace Sudoku
 {

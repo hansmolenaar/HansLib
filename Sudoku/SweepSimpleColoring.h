@@ -4,6 +4,8 @@
 #include "ISweep.h"
 #include "Link.h"
 
+#include <vector>
+
 namespace Sudoku
 {
 class CandidatesGrid;

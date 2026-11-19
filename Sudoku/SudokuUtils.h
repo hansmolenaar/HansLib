@@ -10,6 +10,7 @@
 #include <iterator>
 #include <optional>
 #include <ranges>
+#include <vector>
 
 namespace Sudoku
 {
