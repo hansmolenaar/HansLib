@@ -76,12 +76,12 @@ SweepCombined::SweepCombined(std::span<ISweep *> sweepers) : m_sweepers(sweepers
 {
 }
 
-bool SweepCombined::sweep(CandidatesGrid &grid)
+bool SweepCombined::sweep(CandidatesGrid &grid, FieldsInfo &finfo)
 {
    bool anyChange = false;
    for (auto *s : m_sweepers)
    {
-      anyChange = s->sweep(grid);
+      anyChange = s->sweep(grid, finfo);
       // Stop after first change, and iterate.
       // Notice that we go back to SweepNakedSingle
       if (anyChange)

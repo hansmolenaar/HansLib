@@ -6,9 +6,6 @@
 #include "SweepHiddenTuple.h"
 #include "TestUtils.h"
 
-#include "StreamUtils.h"
-#include <iostream>
-
 using namespace Sudoku;
 
 TEST(SweepHidddenTupleTest, BasicExample)
@@ -114,8 +111,7 @@ TEST(SweepHidddenTupleTest, SweepExample1)
 
    grid.update(finfo);
    TestUtils::CheckFieldInfo(finfo);
-   SweepHiddenSingle().sweep(grid);
-   finfo.update();
+   SweepHiddenSingle().sweep(grid, finfo);
    TestUtils::CheckFieldInfo(finfo);
    grid.update(finfo);
    TestUtils::CheckFieldInfo(finfo);
@@ -141,12 +137,8 @@ TEST(SweepHidddenTupleTest, BasicExamplePair)
    auto value0 = grid[Cell::rowCol2Field(row, 0)].tryGetSolvedValue();
    ASSERT_FALSE(value0.has_value());
 
-   // CandidatesGrid prv;
-   // prv = grid;
-   // std::cout << prv << "\n";
-   SweepHiddenSingle().sweep(grid);
-   // std::cout << grid << "\n";
-   // std::cout << CandidatesGrid::DifferenceToStrings(prv, grid);
+   FieldsInfo finfo(grid);
+   SweepHiddenSingle().sweep(grid, finfo);
 
    value0 = grid[Cell::rowCol2Field(row, 0)].tryGetSolvedValue();
    ASSERT_TRUE(value0.has_value());

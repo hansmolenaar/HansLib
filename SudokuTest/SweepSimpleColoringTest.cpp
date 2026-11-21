@@ -67,7 +67,7 @@ TEST(SweepSimpleColoringTest, Sees2Colors)
    ASSERT_EQ(grid.getNumCandidates(), 131);
    Cell changedCell = Cell::getFromRowCol(4, 8);
    ASSERT_TRUE(grid[changedCell.field].contains(1));
-   const bool anyChange = SweepSimpleColoring().sweep(grid);
+   const bool anyChange = SweepSimpleColoring().sweep(grid, finfo);
    ASSERT_FALSE(grid[changedCell.field].contains(1));
    ASSERT_TRUE(anyChange);
    ASSERT_EQ(grid.getNumCandidates(), 129);

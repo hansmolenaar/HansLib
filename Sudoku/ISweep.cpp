@@ -10,18 +10,13 @@ bool ISweep::iterate(ISweep &sweeper, CandidatesGrid &grid, FieldsInfo &finfo)
    bool changeInSweep = false;
    do
    {
-      changeInSweep = sweeper.sweep(grid);
+      changeInSweep = sweeper.sweep(grid, finfo);
       anyChange |= changeInSweep;
    } while (changeInSweep);
-   if (anyChange)
-   {
-      finfo.update();
-   }
    return anyChange;
 }
-bool ISweep::sweep(CandidatesGrid &grid)
+bool ISweep::sweep(CandidatesGrid &grid, FieldsInfo &finfo)
 {
-   FieldsInfo finfo(grid);
    const auto fieldValues = collect(finfo);
    const auto changes = grid.apply(fieldValues, finfo);
    return changes.numValuesChanged > 0;

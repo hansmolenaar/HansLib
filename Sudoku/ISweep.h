@@ -12,7 +12,7 @@ class ISweep : public IStrategy
  public:
    virtual ~ISweep() = default;
 
-   virtual bool sweep(CandidatesGrid &);
+   virtual bool sweep(CandidatesGrid &, FieldsInfo &);
    static bool iterate(ISweep &, CandidatesGrid &, FieldsInfo &);
 };
 

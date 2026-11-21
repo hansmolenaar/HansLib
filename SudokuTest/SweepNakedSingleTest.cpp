@@ -6,8 +6,7 @@
 #include "FieldsInfo.h"
 #include "House.h"
 #include "SweepNakedSingle.h"
-
-#include "StreamUtils.h"
+#include "TestUtils.h"
 
 using namespace Sudoku;
 using namespace Utilities;
@@ -21,12 +20,13 @@ TEST(SweepNakedSingleTest, RowSimple)
       grid.setCandidates(f, {value});
    }
 
-   const FieldsInfo finfo(grid);
+   FieldsInfo finfo(grid);
    const auto collected = SweepNakedSingle().collect(finfo);
    ASSERT_TRUE(collected.contains({0, 8}));
    ASSERT_EQ(collected.size(), 104);
 
-   SweepNakedSingle().sweep(grid);
+   SweepNakedSingle().sweep(grid, finfo);
+   TestUtils::CheckFieldInfo(finfo);
    ASSERT_EQ(grid[0].tryGetSolvedValue().value(), 1);
 }
 
@@ -44,7 +44,8 @@ TEST(SweepNakedSingleTest, ColSimple)
       }
    }
 
-   SweepNakedSingle().sweep(grid);
+   FieldsInfo finfo(grid);
+   SweepNakedSingle().sweep(grid, finfo);
    ASSERT_EQ(grid[cell.field].tryGetSolvedValue().value(), row + 1);
 }
 
@@ -53,7 +54,7 @@ TEST(SweepNakedSingleTest, BoxSimple)
    const Index row = 6;
    const Index col = 3;
    CandidatesGrid grid;
-   const FieldsInfo finfo(grid);
+   FieldsInfo finfo(grid);
    const Cell cell(Cell::rowCol2Field(row, col));
    const auto house = finfo.getHouseFields(House{HouseType::Box, cell.box});
    const Field fieldToSkip = *(FieldAll | std::views::filter(Bitset{house}) | std::views::drop(2)).begin();
@@ -67,7 +68,8 @@ TEST(SweepNakedSingleTest, BoxSimple)
       }
    }
 
-   SweepNakedSingle().sweep(grid);
+   finfo.update();
+   SweepNakedSingle().sweep(grid, finfo);
    ASSERT_EQ(grid[fieldToSkip].tryGetSolvedValue().value(), 9);
 }
 
@@ -86,9 +88,11 @@ TEST(SweepNakedSingleTest, SweepExample1)
    grid.setGiven(6, 1, 4);
    grid.setGiven(6, 2, 6);
 
+   FieldsInfo finfo(grid);
    for (int s = 0; s < 10; ++s)
    {
-      SweepNakedSingle().sweep(grid);
+      SweepNakedSingle().sweep(grid, finfo);
+      TestUtils::CheckFieldInfo(finfo);
    }
    ASSERT_EQ(grid.getNumCandidates(), 463);
 }

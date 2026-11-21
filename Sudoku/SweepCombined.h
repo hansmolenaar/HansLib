@@ -13,7 +13,7 @@ class SweepCombined : public ISweep
  public:
    SweepCombined(std::initializer_list<ISweep *>);
    SweepCombined(std::span<ISweep *>);
-   bool sweep(CandidatesGrid &) override;
+   bool sweep(CandidatesGrid &, FieldsInfo &) override;
    static SweepCombined *getSimpleSweepers();
    static SweepCombined *getMediumSweepers();
    static SweepCombined *getHardSweepers();
