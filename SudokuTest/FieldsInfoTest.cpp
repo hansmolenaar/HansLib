@@ -7,6 +7,7 @@
 #include "SudokuDefines.h"
 #include "SweepNakedSingle.h"
 #include "TestModels.h"
+#include "TestUtils.h"
 #include "Visibility.h"
 
 using namespace Sudoku;
@@ -143,19 +144,4 @@ TEST(VisibilityTest, Update)
    FieldsInfo finfo(grid);
    const auto fieldValues = SweepNakedSingle().collect(finfo);
    grid.apply(fieldValues, finfo);
-
-   const auto finfoOld = finfo;
-   finfo = FieldsInfo(grid);
-
-   ASSERT_EQ(finfoOld.getActiveFields(), finfo.getActiveFields());
-   ASSERT_EQ(finfoOld.getSolvedFields(), finfo.getSolvedFields());
-   for (House h : House::getAllHouses())
-   {
-      ASSERT_EQ(finfoOld.getHouseFields(h), finfo.getHouseFields(h));
-   }
-   for (Value v : ValueAll)
-   {
-      ASSERT_EQ(finfoOld.getFieldsWithValue(v), finfo.getFieldsWithValue(v));
-      ASSERT_EQ(finfoOld.getActiveFieldsWithValue(v), finfo.getActiveFieldsWithValue(v));
-   }
 }

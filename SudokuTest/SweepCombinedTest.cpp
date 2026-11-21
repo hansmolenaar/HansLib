@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "CandidatesGrid.h"
+#include "FieldsInfo.h"
 #include "SweepCombined.h"
 #include "SweepHiddenTuple.h"
 #include "SweepNakedSingle.h"
@@ -27,7 +28,8 @@ SweepCombined sweepCombined({&nakedSingle, &hiddenSingle});
 TEST(SweepCombinedTest, SweepExample1)
 {
    CandidatesGrid grid = CandidatesGrid::FromString(model_1);
-   grid.update();
+   FieldsInfo finfo(grid);
+   grid.update(finfo);
    ASSERT_EQ(grid.getNumCandidates(), 213);
    ISweep::iterate(sweepCombined, grid);
    ASSERT_NO_THROW(grid.checkValidSudoku());
@@ -37,7 +39,8 @@ TEST(SweepCombinedTest, SweepExample1)
 TEST(SweepCombinedTest, SweepExample2)
 {
    CandidatesGrid grid = CandidatesGrid ::FromString(model_2);
-   grid.update();
+   FieldsInfo finfo(grid);
+   grid.update(finfo);
    ASSERT_EQ(grid.getNumCandidates(), 170);
    ISweep::iterate(sweepCombined, grid);
    ASSERT_NO_THROW(grid.checkValidSudoku());
@@ -47,7 +50,8 @@ TEST(SweepCombinedTest, SweepExample2)
 TEST(SweepCombinedTest, SweepExample3)
 {
    CandidatesGrid grid = CandidatesGrid ::FromString(model_3);
-   grid.update();
+   FieldsInfo finfo(grid);
+   grid.update(finfo);
    ASSERT_EQ(grid.getNumCandidates(), 238);
    ISweep::iterate(sweepCombined, grid);
    ASSERT_NO_THROW(grid.checkValidSudoku());
@@ -57,7 +61,8 @@ TEST(SweepCombinedTest, SweepExample3)
 TEST(SweepCombinedTest, SweepExample4)
 {
    CandidatesGrid grid = CandidatesGrid ::FromString(model_4);
-   grid.update();
+   FieldsInfo finfo(grid);
+   grid.update(finfo);
    ASSERT_EQ(grid.getNumCandidates(), 269);
    ISweep::iterate(sweepCombined, grid);
    ASSERT_NO_THROW(grid.checkValidSudoku());
@@ -67,7 +72,8 @@ TEST(SweepCombinedTest, SweepExample4)
 TEST(SweepCombinedTest, SweepExample5)
 {
    CandidatesGrid grid = CandidatesGrid ::FromString(model_5);
-   grid.update();
+   FieldsInfo finfo(grid);
+   grid.update(finfo);
    ASSERT_EQ(grid.getNumCandidates(), 247);
    ISweep::iterate(sweepCombined, grid);
    ASSERT_NO_THROW(grid.checkValidSudoku());
@@ -77,7 +83,8 @@ TEST(SweepCombinedTest, SweepExample5)
 TEST(SweepCombinedTest, SweepExample6)
 {
    CandidatesGrid grid = CandidatesGrid ::FromString(model_6);
-   grid.update();
+   FieldsInfo finfo(grid);
+   grid.update(finfo);
    ASSERT_EQ(grid.getNumCandidates(), 224);
    ISweep::iterate(sweepCombined, grid);
    ASSERT_NO_THROW(grid.checkValidSudoku());

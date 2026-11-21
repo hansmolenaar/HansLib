@@ -2,6 +2,7 @@
 
 #include "CandidatesGrid.h"
 #include "Cell.h"
+#include "FieldsInfo.h"
 #include "SweepCombined.h"
 #include "TestModels.h"
 
@@ -61,7 +62,8 @@ TEST(CandidatesGridTest, update)
    grid.setGiven(6, 1, 4);
    grid.setGiven(6, 2, 6);
 
-   grid.update();
+   FieldsInfo finfo(grid);
+   grid.update(finfo);
    ASSERT_NO_THROW(grid.checkValidSudoku());
    ASSERT_EQ(grid.getNumCandidates(), 433);
    auto found = grid[Cell::rowCol2Field(2, 1)].tryGetSolvedValue();
@@ -133,7 +135,8 @@ TEST(CandidatesGridTest, Symmetries)
 {
    const std::string str = "020010840709200001604000290000030020800102004090040000037000602100005903062070050";
    CandidatesGrid grid = CandidatesGrid::FromString(str, '0');
-   grid.update();
+   FieldsInfo finfo(grid);
+   grid.update(finfo);
 
    const std::vector<CandidatesGrid> grids = CandidatesGrid::getSymmetricEquivalents(grid);
    // std::cout << grids[0] << "\n";

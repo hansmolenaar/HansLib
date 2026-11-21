@@ -106,11 +106,11 @@ TEST(SweepNakedTuplesTest, SweepNakedTuples_1)
    };
 
    auto grid = CandidatesGrid::FromValues(diagramValues);
-   grid.update();
+   FieldsInfo finfo(grid);
+   grid.update(finfo);
    Field expect = 152;
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
-   FieldsInfo finfo(grid);
    auto fieldValues = SweepNakedTuples::collectHousesOfType(finfo, HouseType::Col, 3);
    ASSERT_TRUE(fieldValues.empty());
    auto changes = grid.apply(fieldValues, finfo);

@@ -38,12 +38,12 @@ TEST(SweepHidddenTupleTest, Pair)
    grid.setCandidates(Cell::getFromRowCol(5, 0).field, {2, 3, 6, 7, 9});
    grid.setCandidates(Cell::getFromRowCol(5, 2).field, {4, 3, 7, 9});
 
-   grid.update();
+   FieldsInfo finfo(grid);
+   grid.update(finfo);
 
    Field expect = 658;
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
-   FieldsInfo finfo(grid);
    FieldValue::Container fieldsValues;
    fieldsValues = SweepHiddenTuple::collectTuplesOfSize(finfo, 3);
    ASSERT_TRUE(fieldsValues.empty());
@@ -62,7 +62,7 @@ TEST(SweepHidddenTupleTest, Pair)
    expect -= changes.numValuesChanged;
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
-   grid.update();
+   grid.update(finfo);
    ASSERT_EQ(grid.getNumCandidates(), expect);
 }
 
@@ -94,10 +94,9 @@ TEST(SweepHidddenTupleTest, SweepExample1)
    grid.setGiven(8, 3, 1);
    grid.setGiven(8, 8, 9);
 
-   grid.update();
-   auto expect = grid.getNumCandidates();
-
    FieldsInfo finfo(grid);
+   grid.update(finfo);
+   auto expect = grid.getNumCandidates();
 
    FieldValue::Container fieldsValues;
    fieldsValues = SweepHiddenTuple::collectTuplesOfSize(finfo, 1);
@@ -110,9 +109,10 @@ TEST(SweepHidddenTupleTest, SweepExample1)
    expect -= fieldsValues.size();
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
-   grid.update();
+   grid.update(finfo);
    SweepHiddenSingle().sweep(grid);
-   grid.update();
+   finfo.update();
+   grid.update(finfo);
    ASSERT_EQ(grid.getNumCandidates(), 129);
 }
 

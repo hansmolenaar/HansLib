@@ -182,12 +182,12 @@ TEST(SweepSimpleColoringTest, SingleColorEmptiesHouseExample1)
    grid.setGiven(Cell::rowCol2Field(8, 2), 4);
    grid.setGiven(Cell::rowCol2Field(8, 5), 2);
 
-   grid.update();
+   FieldsInfo finfo(grid);
+   grid.update(finfo);
    auto expect = 207;
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
    const Value value = 6;
-   const FieldsInfo finfo(grid);
    const auto links = SweepSimpleColoring::getBilocationLinks(grid, finfo, value);
 
    const auto networks = Network::create(links);
@@ -276,7 +276,8 @@ TEST(SweepSimpleColoringTest, SingleColorEmptiesHouseExample2)
    grid.setGiven(Cell::rowCol2Field(8, 7), 7);
 
    grid.checkValidSudoku();
-   grid.update();
+   FieldsInfo finfo(grid);
+   grid.update(finfo);
 
    ASSERT_TRUE(grid[Cell::rowCol2Field(5, 0)].contains(2));
    ASSERT_TRUE(grid[Cell::rowCol2Field(4, 3)].contains(2));
@@ -286,7 +287,6 @@ TEST(SweepSimpleColoringTest, SingleColorEmptiesHouseExample2)
    Field expect = 137;
    ASSERT_EQ(grid.getNumCandidates(), expect);
    const Value value = 2;
-   const FieldsInfo finfo(grid);
    const auto links = SweepSimpleColoring::getBilocationLinks(grid, finfo, value);
 
    const auto networks = Network::create(links);

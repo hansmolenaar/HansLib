@@ -32,11 +32,11 @@ TEST(SweepXWingTest, Basics)
    auto expect = 589;
    ASSERT_EQ(expect, grid.getNumCandidates());
 
-   grid.update();
+   FieldsInfo finfo(grid);
+   grid.update(finfo);
    expect -= 142;
    ASSERT_EQ(expect, grid.getNumCandidates());
 
-   FieldsInfo finfo(grid);
    auto fieldsValue = SweepXWing().collect(finfo);
    ASSERT_EQ(fieldsValue.size(), 14);
    auto gridChanges = grid.apply(fieldsValue, finfo);

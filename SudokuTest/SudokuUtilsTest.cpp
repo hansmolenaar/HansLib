@@ -22,7 +22,8 @@ TEST(SudokuUtilsTest, Basic)
    auto retval = SudokuUtils::getUniqueActiveValuesInCells(grid, someCells);
    ASSERT_EQ(retval.count(), 8);
 
-   grid.update();
+   FieldsInfo finfo(grid);
+   grid.update(finfo);
    retval = SudokuUtils::getUniqueActiveValuesInCells(grid, someCells);
    ASSERT_EQ(retval.count(), 7);
 

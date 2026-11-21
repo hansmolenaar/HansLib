@@ -163,7 +163,7 @@ bool CandidatesGrid::applyAndUpdate(const FieldValue::Container &fieldValues, Fi
    }
    if (changes.numFieldsSolved > 0)
    {
-      update();
+      update(finfo);
    }
    finfo.update();
    return true;
@@ -181,10 +181,14 @@ void CandidatesGrid::setGiven(Index row, Index col, Value value)
    setGiven(field, value);
 }
 
-void CandidatesGrid::update()
+void CandidatesGrid::update(FieldsInfo &finfo)
 {
    SweepNakedSingle sweeper;
-   ISweep::iterate(sweeper, *this);
+   const bool anyChange = ISweep::iterate(sweeper, *this);
+   if (anyChange)
+   {
+      finfo.update();
+   }
 }
 
 void CandidatesGrid::checkValidSudoku() const
