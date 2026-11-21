@@ -80,7 +80,7 @@ TEST(SweepSimpleColoringTest, TwiceInAUnit)
    const std::string str = "2..9.....8..5.3....547.6..2..8.....9.97...42.1.....3..3..1.589....8.2..3.....7..5";
    CandidatesGrid grid = CandidatesGrid::FromString(str);
    ISweep::iterate(*sweepCombined, grid);
-   const FieldsInfo finfo(grid);
+   FieldsInfo finfo(grid);
 
    const Value value = 4; // 6
    const auto links = SweepSimpleColoring::getBilocationLinks(grid, finfo, value);
@@ -95,7 +95,8 @@ TEST(SweepSimpleColoringTest, TwiceInAUnit)
    }
    ASSERT_EQ(fieldValues.size(), 4);
    TestUtils::CheckFieldValues(grid, fieldValues);
-   const auto changes = grid.apply(fieldValues);
+   finfo.update();
+   const auto changes = grid.apply(fieldValues, finfo);
    ASSERT_EQ(changes.numValuesChanged, 4);
    ASSERT_EQ(changes.numFieldsSolved, 3);
 }
@@ -205,7 +206,8 @@ TEST(SweepSimpleColoringTest, SingleColorEmptiesHouseExample1)
    TestUtils::CheckFieldValues(grid, fieldValues);
    ASSERT_EQ(fieldValues.size(), 4);
    expect -= 4;
-   const auto changes = grid.apply(fieldValues);
+   finfo.update();
+   const auto changes = grid.apply(fieldValues, finfo);
    ASSERT_EQ(changes.numValuesChanged, 4);
    ASSERT_EQ(changes.numFieldsSolved, 1);
    ASSERT_EQ(grid.getNumCandidates(), expect);
@@ -298,7 +300,8 @@ TEST(SweepSimpleColoringTest, SingleColorEmptiesHouseExample2)
    ASSERT_EQ(fieldValues.size(), 4);
    expect -= 4;
 
-   grid.apply(fieldValues);
+   finfo.update();
+   grid.apply(fieldValues, finfo);
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
    ASSERT_FALSE(grid[Cell::rowCol2Field(5, 0)].contains(2));

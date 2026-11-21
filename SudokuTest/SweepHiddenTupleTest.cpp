@@ -56,7 +56,8 @@ TEST(SweepHidddenTupleTest, Pair)
    fieldsValues = SweepHiddenTuple::collectTuplesOfSize(finfo, 2);
    TestUtils::CheckFieldValues(grid, fieldsValues);
    ASSERT_EQ(fieldsValues.size(), 8);
-   auto changes = grid.apply(fieldsValues);
+   finfo.update();
+   auto changes = grid.apply(fieldsValues, finfo);
    ASSERT_EQ(changes.numValuesChanged, 8);
    ASSERT_EQ(changes.numFieldsSolved, 0);
    expect -= changes.numValuesChanged;
@@ -96,6 +97,7 @@ TEST(SweepHidddenTupleTest, SweepExample1)
 
    FieldsInfo finfo(grid);
    grid.update(finfo);
+   TestUtils::CheckFieldInfo(finfo);
    auto expect = grid.getNumCandidates();
 
    FieldValue::Container fieldsValues;
@@ -103,16 +105,20 @@ TEST(SweepHidddenTupleTest, SweepExample1)
    TestUtils::CheckFieldValues(grid, fieldsValues);
    ASSERT_EQ(fieldsValues.size(), 16);
 
-   auto changes = grid.apply(fieldsValues);
+   auto changes = grid.apply(fieldsValues, finfo);
+   TestUtils::CheckFieldInfo(finfo);
    ASSERT_EQ(changes.numValuesChanged, fieldsValues.size());
    ASSERT_EQ(changes.numFieldsSolved, 5);
    expect -= fieldsValues.size();
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
    grid.update(finfo);
+   TestUtils::CheckFieldInfo(finfo);
    SweepHiddenSingle().sweep(grid);
    finfo.update();
+   TestUtils::CheckFieldInfo(finfo);
    grid.update(finfo);
+   TestUtils::CheckFieldInfo(finfo);
    ASSERT_EQ(grid.getNumCandidates(), 129);
 }
 
@@ -120,7 +126,6 @@ TEST(SweepHidddenTupleTest, BasicExamplePair)
 {
    constexpr Index row = 8;
 
-   CandidatesGrid prv;
    CandidatesGrid grid;
    grid.setGiven(row, 1, 6);
    grid.setGiven(row, 3, 4);
@@ -136,11 +141,12 @@ TEST(SweepHidddenTupleTest, BasicExamplePair)
    auto value0 = grid[Cell::rowCol2Field(row, 0)].tryGetSolvedValue();
    ASSERT_FALSE(value0.has_value());
 
-   prv = grid;
-   std::cout << prv << "\n";
+   // CandidatesGrid prv;
+   // prv = grid;
+   // std::cout << prv << "\n";
    SweepHiddenSingle().sweep(grid);
-   std::cout << grid << "\n";
-   std::cout << CandidatesGrid::DifferenceToStrings(prv, grid);
+   // std::cout << grid << "\n";
+   // std::cout << CandidatesGrid::DifferenceToStrings(prv, grid);
 
    value0 = grid[Cell::rowCol2Field(row, 0)].tryGetSolvedValue();
    ASSERT_TRUE(value0.has_value());

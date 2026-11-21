@@ -144,19 +144,9 @@ GridChange CandidatesGrid::apply(const FieldValue::Container &fieldValues, Field
    return change;
 }
 
-GridChange CandidatesGrid::apply(const std::set<FieldValue> &fieldValues)
-{
-   GridChange change;
-   for (const auto &fv : fieldValues)
-   {
-      change += m_candidates.at(fv.field).removeCandidate(fv.value);
-   }
-   return change;
-}
-
 bool CandidatesGrid::applyAndUpdate(const FieldValue::Container &fieldValues, FieldsInfo &finfo)
 {
-   const auto changes = apply(fieldValues);
+   const auto changes = apply(fieldValues, finfo);
    if (changes.numValuesChanged == 0)
    {
       return false;
@@ -165,7 +155,6 @@ bool CandidatesGrid::applyAndUpdate(const FieldValue::Container &fieldValues, Fi
    {
       update(finfo);
    }
-   finfo.update();
    return true;
 }
 
