@@ -17,12 +17,6 @@ bool ISweep::iterate(ISweep &sweeper, CandidatesGrid &grid)
    } while (changeInSweep);
    return anyChange;
 }
-
-FieldValue::Container ISweep::collect(const FieldsInfo &)
-{
-   throw std::runtime_error("ISweep::collect");
-}
-
 bool ISweep::sweep(CandidatesGrid &grid)
 {
    FieldsInfo finfo(grid);

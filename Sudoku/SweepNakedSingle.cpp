@@ -1,24 +1,22 @@
 #include "SweepNakedSingle.h"
-#include "BitsetUtils.h"
 #include "CandidatesGrid.h"
 #include "FieldsInfo.h"
+#include "SudokuUtils.h"
 
 using namespace Sudoku;
 using namespace Utilities;
 
 std::set<FieldValue> SweepNakedSingle::collect(const FieldsInfo &finfo)
 {
-   std::set<FieldValue> result;
-   const CandidatesGrid &grid = finfo.getGrid();
+   FieldValue::Container result;
    const auto &solvedFields = finfo.getSolvedFields();
-   for (Field field : FieldAll | std::views::filter(Bitset{solvedFields}))
+
+   const CandidatesGrid &grid = finfo.getGrid();
+   for (Field field : SudokuUtils::FieldBitsToRange(solvedFields))
    {
       const Value value = grid[field].tryGetSolvedValue().value();
-      const auto visibleFields = finfo.getVisibleFields(field);
-      for (Field field : FieldAll | std::views::filter(Bitset{visibleFields}))
-      {
-         result.insert({field, value});
-      }
+      auto visibleFields = finfo.getVisibleFields(field) & finfo.getActiveFieldsWithValue(value);
+      FieldValue::add(visibleFields, value, result);
    }
    return result;
 }

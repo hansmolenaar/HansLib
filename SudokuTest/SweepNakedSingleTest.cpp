@@ -7,6 +7,8 @@
 #include "House.h"
 #include "SweepNakedSingle.h"
 
+#include "StreamUtils.h"
+
 using namespace Sudoku;
 using namespace Utilities;
 
@@ -18,6 +20,11 @@ TEST(SweepNakedSingleTest, RowSimple)
       const Value value = f + 1;
       grid.setCandidates(f, {value});
    }
+
+   const FieldsInfo finfo(grid);
+   const auto collected = SweepNakedSingle().collect(finfo);
+   ASSERT_TRUE(collected.contains({0, 8}));
+   ASSERT_EQ(collected.size(), 104);
 
    SweepNakedSingle().sweep(grid);
    ASSERT_EQ(grid[0].tryGetSolvedValue().value(), 1);

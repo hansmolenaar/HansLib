@@ -1,18 +1,17 @@
 #pragma once
 
-#include "FieldValue.h"
+#include "IStrategy.h"
 
 namespace Sudoku
 {
 class CandidatesGrid;
 class FieldsInfo;
 
-class ISweep
+class ISweep : public IStrategy
 {
  public:
    virtual ~ISweep() = default;
 
-   virtual FieldValue::Container collect(const FieldsInfo &);
    virtual bool sweep(CandidatesGrid &);
    static bool iterate(ISweep &, CandidatesGrid &);
 };
