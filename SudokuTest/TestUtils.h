@@ -3,12 +3,15 @@
 #include "CandidatesGrid.h"
 #include "FieldValue.h"
 #include "FieldsInfo.h"
+#include "GridChange.h"
 #include "IStrategy.h"
 
 namespace TestUtils
 {
 void CheckFieldValues(const Sudoku::CandidatesGrid &, const Sudoku::FieldValue::Container &);
 void CheckFieldInfo(const Sudoku::FieldsInfo &);
-void CheckStrategy(Sudoku::IStrategy &);
+void CheckStrategyInterface(Sudoku::IStrategy &);
+void CheckStrategy(Sudoku::IStrategy &, Sudoku::CandidatesGrid &, const Sudoku::GridChange &);
+void ShowStrategy(Sudoku::IStrategy &, Sudoku::FieldsInfo &);
 
 } // namespace TestUtils

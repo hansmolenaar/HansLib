@@ -7,7 +7,6 @@
 #include "SudokuDefines.h"
 #include "SudokuUtils.h"
 #include <algorithm>
-#include <ranges>
 
 using namespace Sudoku;
 using namespace Utilities;
@@ -49,7 +48,7 @@ FieldValue::Container SweepNakedTuples::collectHouse(const FieldsInfo &finfo, co
    const FieldBits houseFields = finfo.getHouseFields(house);
    const FieldBits fields = houseFields & finfo.getActiveFields();
    std::vector<Field> activeFields;
-   for (Field field : FieldAll | std::views::filter(Bitset{fields}))
+   for (Field field : SudokuUtils::FieldBitsToRange(fields))
    {
       if (grid[field].size() <= tupleSize)
       {

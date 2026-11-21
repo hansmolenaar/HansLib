@@ -10,7 +10,7 @@ using namespace Sudoku;
 TEST(SweepIntersectionElimination, Strategy)
 {
    SweepIntersectionElimination strategy;
-   TestUtils::CheckStrategy(strategy);
+   TestUtils::CheckStrategyInterface(strategy);
 }
 
 TEST(SweepIntersectionElimination, BoxRow)

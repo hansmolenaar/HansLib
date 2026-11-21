@@ -14,7 +14,7 @@ using namespace Utilities;
 TEST(SweepNakedSingleTest, Strategy)
 {
    SweepNakedSingle strategy;
-   TestUtils::CheckStrategy(strategy);
+   TestUtils::CheckStrategyInterface(strategy);
 }
 
 TEST(SweepNakedSingleTest, RowSimple)

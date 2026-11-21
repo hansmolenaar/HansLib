@@ -11,16 +11,16 @@ using namespace Sudoku;
 TEST(SweepHidddenTupleTest, Strategy)
 {
    SweepHiddenSingle single;
-   TestUtils::CheckStrategy(single);
+   TestUtils::CheckStrategyInterface(single);
 
    SweepHiddenPair pair;
-   TestUtils::CheckStrategy(pair);
+   TestUtils::CheckStrategyInterface(pair);
 
    SweepHiddenTriplet triplet;
-   TestUtils::CheckStrategy(triplet);
+   TestUtils::CheckStrategyInterface(triplet);
 
    SweepHiddenQuartet quartet;
-   TestUtils::CheckStrategy(quartet);
+   TestUtils::CheckStrategyInterface(quartet);
 }
 
 TEST(SweepHidddenTupleTest, BasicExample)

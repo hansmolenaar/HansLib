@@ -2,6 +2,8 @@
 
 #include "House.h"
 #include "IStrategy.h"
+#include "StreamUtils.h"
+#include "Sweep.h"
 #include "TestModels.h"
 #include "TestUtils.h"
 
@@ -31,7 +33,7 @@ void TestUtils::CheckFieldInfo(const FieldsInfo &finfoOld)
    }
 }
 
-void TestUtils::CheckStrategy(Sudoku::IStrategy &strategy)
+void TestUtils::CheckStrategyInterface(Sudoku::IStrategy &strategy)
 {
    // full grid
    const CandidatesGrid grid;
@@ -44,4 +46,32 @@ void TestUtils::CheckStrategy(Sudoku::IStrategy &strategy)
    finfo = FieldsInfo(solved);
    fvs = strategy.collect(finfo);
    ASSERT_TRUE(fvs.empty());
+}
+
+void TestUtils::CheckStrategy(Sudoku::IStrategy &strategy, Sudoku::CandidatesGrid &grid,
+                              const Sudoku::GridChange &expect)
+{
+   Sweep sweep({&strategy});
+   for (auto eqv : CandidatesGrid::getSymmetricEquivalents(grid))
+   {
+      FieldsInfo finfo(eqv);
+      const auto fvs = strategy.collect(finfo);
+      ASSERT_EQ(fvs.size(), expect.numValuesChanged);
+      const auto changes = sweep.singleSweep(eqv, finfo);
+      ASSERT_EQ(changes.numValuesChanged, expect.numValuesChanged);
+      ASSERT_EQ(changes.numFieldsSolved, expect.numFieldsSolved);
+   }
+}
+
+void TestUtils::ShowStrategy(Sudoku::IStrategy &strategy, Sudoku::FieldsInfo &finfo)
+{
+   Sweep sweep({&strategy});
+   CandidatesGrid grid = finfo.getGrid();
+   auto prv = grid;
+   auto fvs = strategy.collect(finfo);
+   auto changes = sweep.singleSweep(grid, finfo);
+   std::cout << prv << "\n" << grid << "\n" << CandidatesGrid::DifferenceToStrings(prv, grid);
+   EXPECT_EQ(changes.numValuesChanged, 0);
+   EXPECT_EQ(changes.numFieldsSolved, 0);
+   ASSERT_TRUE(false);
 }

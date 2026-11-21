@@ -9,7 +9,7 @@ using namespace Sudoku;
 TEST(SweepXWingTest, Strategy)
 {
    SweepXWing strategy;
-   TestUtils::CheckStrategy(strategy);
+   TestUtils::CheckStrategyInterface(strategy);
 }
 
 TEST(SweepXWingTest, Basics)

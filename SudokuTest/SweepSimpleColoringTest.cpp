@@ -39,7 +39,7 @@ CandidatesGrid getSimpleExample()
 TEST(SweepSimpleColoringTest, Strategy)
 {
    SweepSimpleColoring strategy;
-   TestUtils::CheckStrategy(strategy);
+   TestUtils::CheckStrategyInterface(strategy);
 }
 
 TEST(SweepSimpleColoringTest, BasicExample)
