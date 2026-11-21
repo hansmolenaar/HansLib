@@ -3,23 +3,19 @@
 #include "ColorField.h"
 #include "FieldsInfo.h"
 #include "House.h"
-#include "MyAssert.h"
 #include "Network.h"
-#include "StreamUtils.h"
 #include "SudokuDefines.h"
 #include "SudokuUtils.h"
 #include "UniqueSorted.h"
 #include "Visibility.h"
 
 #include <algorithm>
-#include <string>
 
 using namespace Sudoku;
 using namespace Utilities;
 
 std::vector<Link> SweepSimpleColoring::getBilocationLinks(const CandidatesGrid &grid, FieldsInfo finfo, Value value)
 {
-   finfo.update();
    std::vector<Link> result;
    for (const House &house : House::getAllHouses())
    {

@@ -53,10 +53,10 @@ TEST(SweepHidddenTupleTest, Pair)
    fieldsValues = SweepHiddenTuple::collectTuplesOfSize(finfo, 2);
    TestUtils::CheckFieldValues(grid, fieldsValues);
    ASSERT_EQ(fieldsValues.size(), 8);
-   finfo.update();
    auto changes = grid.apply(fieldsValues, finfo);
    ASSERT_EQ(changes.numValuesChanged, 8);
    ASSERT_EQ(changes.numFieldsSolved, 0);
+   TestUtils::CheckFieldInfo(finfo);
    expect -= changes.numValuesChanged;
    ASSERT_EQ(grid.getNumCandidates(), expect);
 

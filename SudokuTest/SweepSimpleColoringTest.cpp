@@ -95,7 +95,7 @@ TEST(SweepSimpleColoringTest, TwiceInAUnit)
    }
    ASSERT_EQ(fieldValues.size(), 4);
    TestUtils::CheckFieldValues(grid, fieldValues);
-   finfo.update();
+
    const auto changes = grid.apply(fieldValues, finfo);
    ASSERT_EQ(changes.numValuesChanged, 4);
    ASSERT_EQ(changes.numFieldsSolved, 3);
@@ -206,7 +206,7 @@ TEST(SweepSimpleColoringTest, SingleColorEmptiesHouseExample1)
    TestUtils::CheckFieldValues(grid, fieldValues);
    ASSERT_EQ(fieldValues.size(), 4);
    expect -= 4;
-   finfo.update();
+
    const auto changes = grid.apply(fieldValues, finfo);
    ASSERT_EQ(changes.numValuesChanged, 4);
    ASSERT_EQ(changes.numFieldsSolved, 1);
@@ -300,7 +300,6 @@ TEST(SweepSimpleColoringTest, SingleColorEmptiesHouseExample2)
    ASSERT_EQ(fieldValues.size(), 4);
    expect -= 4;
 
-   finfo.update();
    grid.apply(fieldValues, finfo);
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
