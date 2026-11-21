@@ -1,6 +1,8 @@
 #include <gtest/gtest.h>
 
 #include "House.h"
+#include "IStrategy.h"
+#include "TestModels.h"
 #include "TestUtils.h"
 
 using namespace Sudoku;
@@ -27,4 +29,19 @@ void TestUtils::CheckFieldInfo(const FieldsInfo &finfoOld)
       ASSERT_EQ(finfoOld.getFieldsWithValue(v), finfo.getFieldsWithValue(v));
       ASSERT_EQ(finfoOld.getActiveFieldsWithValue(v), finfo.getActiveFieldsWithValue(v));
    }
+}
+
+void TestUtils::CheckStrategy(Sudoku::IStrategy &strategy)
+{
+   // full grid
+   const CandidatesGrid grid;
+   FieldsInfo finfo(grid);
+   auto fvs = strategy.collect(finfo);
+   ASSERT_TRUE(fvs.empty());
+
+   // solved
+   const auto solved = TestModels::getSolvedGrid();
+   finfo = FieldsInfo(solved);
+   fvs = strategy.collect(finfo);
+   ASSERT_TRUE(fvs.empty());
 }

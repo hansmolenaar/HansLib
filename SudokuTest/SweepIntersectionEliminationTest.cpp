@@ -2,10 +2,16 @@
 
 #include "CandidatesGrid.h"
 #include "FieldsInfo.h"
-#include "StreamUtils.h"
 #include "SweepIntersectionElimination.h"
+#include "TestUtils.h"
 
 using namespace Sudoku;
+
+TEST(SweepIntersectionElimination, Strategy)
+{
+   SweepIntersectionElimination strategy;
+   TestUtils::CheckStrategy(strategy);
+}
 
 TEST(SweepIntersectionElimination, BoxRow)
 {

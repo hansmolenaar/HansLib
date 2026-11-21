@@ -2,8 +2,15 @@
 
 #include "CandidatesGrid.h"
 #include "SweepXWing.h"
+#include "TestUtils.h"
 
 using namespace Sudoku;
+
+TEST(SweepXWingTest, Strategy)
+{
+   SweepXWing strategy;
+   TestUtils::CheckStrategy(strategy);
+}
 
 TEST(SweepXWingTest, Basics)
 {

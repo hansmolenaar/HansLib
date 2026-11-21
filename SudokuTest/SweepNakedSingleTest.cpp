@@ -11,6 +11,12 @@
 using namespace Sudoku;
 using namespace Utilities;
 
+TEST(SweepNakedSingleTest, Strategy)
+{
+   SweepNakedSingle strategy;
+   TestUtils::CheckStrategy(strategy);
+}
+
 TEST(SweepNakedSingleTest, RowSimple)
 {
    CandidatesGrid grid;

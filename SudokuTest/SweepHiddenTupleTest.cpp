@@ -8,6 +8,21 @@
 
 using namespace Sudoku;
 
+TEST(SweepHidddenTupleTest, Strategy)
+{
+   SweepHiddenSingle single;
+   TestUtils::CheckStrategy(single);
+
+   SweepHiddenPair pair;
+   TestUtils::CheckStrategy(pair);
+
+   SweepHiddenTriplet triplet;
+   TestUtils::CheckStrategy(triplet);
+
+   SweepHiddenQuartet quartet;
+   TestUtils::CheckStrategy(quartet);
+}
+
 TEST(SweepHidddenTupleTest, BasicExample)
 {
    CandidatesGrid grid;

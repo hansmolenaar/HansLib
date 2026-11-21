@@ -36,6 +36,12 @@ CandidatesGrid getSimpleExample()
 
 }; // namespace
 
+TEST(SweepSimpleColoringTest, Strategy)
+{
+   SweepSimpleColoring strategy;
+   TestUtils::CheckStrategy(strategy);
+}
+
 TEST(SweepSimpleColoringTest, BasicExample)
 {
    const Value value = 1;

@@ -13,6 +13,18 @@
 
 using namespace Sudoku;
 
+TEST(SweepNakedTuplesTest, Strategy)
+{
+   SweepNakedPairs pair;
+   TestUtils::CheckStrategy(pair);
+
+   SweepNakedTriplet triplet;
+   TestUtils::CheckStrategy(triplet);
+
+   SweepNakedQuartet quartet;
+   TestUtils::CheckStrategy(quartet);
+}
+
 TEST(SweepNakedTuplesTest, SweepNakedPair_1)
 {
    CandidatesGrid grid;
