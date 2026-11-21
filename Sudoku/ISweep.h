@@ -13,7 +13,7 @@ class ISweep : public IStrategy
    virtual ~ISweep() = default;
 
    virtual bool sweep(CandidatesGrid &);
-   static bool iterate(ISweep &, CandidatesGrid &);
+   static bool iterate(ISweep &, CandidatesGrid &, FieldsInfo &);
 };
 
 } // namespace Sudoku

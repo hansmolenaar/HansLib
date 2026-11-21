@@ -31,7 +31,7 @@ TEST(SweepCombinedTest, SweepExample1)
    FieldsInfo finfo(grid);
    grid.update(finfo);
    ASSERT_EQ(grid.getNumCandidates(), 213);
-   ISweep::iterate(sweepCombined, grid);
+   ISweep::iterate(sweepCombined, grid, finfo);
    ASSERT_NO_THROW(grid.checkValidSudoku());
    ASSERT_TRUE(grid.isSolved());
 }
@@ -42,7 +42,7 @@ TEST(SweepCombinedTest, SweepExample2)
    FieldsInfo finfo(grid);
    grid.update(finfo);
    ASSERT_EQ(grid.getNumCandidates(), 170);
-   ISweep::iterate(sweepCombined, grid);
+   ISweep::iterate(sweepCombined, grid, finfo);
    ASSERT_NO_THROW(grid.checkValidSudoku());
    ASSERT_TRUE(grid.isSolved());
 }
@@ -53,7 +53,7 @@ TEST(SweepCombinedTest, SweepExample3)
    FieldsInfo finfo(grid);
    grid.update(finfo);
    ASSERT_EQ(grid.getNumCandidates(), 238);
-   ISweep::iterate(sweepCombined, grid);
+   ISweep::iterate(sweepCombined, grid, finfo);
    ASSERT_NO_THROW(grid.checkValidSudoku());
    ASSERT_TRUE(grid.isSolved());
 }
@@ -64,7 +64,7 @@ TEST(SweepCombinedTest, SweepExample4)
    FieldsInfo finfo(grid);
    grid.update(finfo);
    ASSERT_EQ(grid.getNumCandidates(), 269);
-   ISweep::iterate(sweepCombined, grid);
+   ISweep::iterate(sweepCombined, grid, finfo);
    ASSERT_NO_THROW(grid.checkValidSudoku());
    ASSERT_TRUE(grid.isSolved());
 }
@@ -75,7 +75,7 @@ TEST(SweepCombinedTest, SweepExample5)
    FieldsInfo finfo(grid);
    grid.update(finfo);
    ASSERT_EQ(grid.getNumCandidates(), 247);
-   ISweep::iterate(sweepCombined, grid);
+   ISweep::iterate(sweepCombined, grid, finfo);
    ASSERT_NO_THROW(grid.checkValidSudoku());
    ASSERT_TRUE(grid.isSolved());
 }
@@ -86,7 +86,7 @@ TEST(SweepCombinedTest, SweepExample6)
    FieldsInfo finfo(grid);
    grid.update(finfo);
    ASSERT_EQ(grid.getNumCandidates(), 224);
-   ISweep::iterate(sweepCombined, grid);
+   ISweep::iterate(sweepCombined, grid, finfo);
    ASSERT_NO_THROW(grid.checkValidSudoku());
    ASSERT_TRUE(grid.isSolved());
 }

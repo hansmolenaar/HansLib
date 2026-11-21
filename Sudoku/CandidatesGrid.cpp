@@ -173,11 +173,7 @@ void CandidatesGrid::setGiven(Index row, Index col, Value value)
 void CandidatesGrid::update(FieldsInfo &finfo)
 {
    SweepNakedSingle sweeper;
-   const bool anyChange = ISweep::iterate(sweeper, *this);
-   if (anyChange)
-   {
-      finfo.update();
-   }
+   ISweep::iterate(sweeper, *this, finfo);
 }
 
 void CandidatesGrid::checkValidSudoku() const

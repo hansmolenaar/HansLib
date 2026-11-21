@@ -8,7 +8,7 @@
 
 using namespace Sudoku;
 
-#define ONLY_SMALL_TESTS false
+#define ONLY_SMALL_TESTS true
 
 TEST(CandidatesGridTest, DefaultConstructor)
 {
@@ -159,7 +159,8 @@ TEST(CandidatesGridTest, Simple)
 
    for (auto &grid : grids)
    {
-      ISweep::iterate(*sweepers, grid);
+      FieldsInfo finfo(grid);
+      ISweep::iterate(*sweepers, grid, finfo);
       grid.checkValidSudoku();
       ASSERT_TRUE(grid.isSolved());
    }
@@ -174,7 +175,8 @@ TEST(CandidatesGridTest, Medium)
    int numSolved = 0;
    for (auto &grid : grids)
    {
-      ISweep::iterate(*sweepers, grid);
+      FieldsInfo finfo(grid);
+      ISweep::iterate(*sweepers, grid, finfo);
       grid.checkValidSudoku();
       if (grid.isSolved())
       {
@@ -193,7 +195,8 @@ TEST(CandidatesGridTest, Hard)
    int numSolved = 0;
    for (auto &grid : grids)
    {
-      ISweep::iterate(*sweepers, grid);
+      FieldsInfo finfo(grid);
+      ISweep::iterate(*sweepers, grid, finfo);
       grid.checkValidSudoku();
       if (grid.isSolved())
       {

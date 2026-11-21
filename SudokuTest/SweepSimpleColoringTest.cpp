@@ -62,11 +62,11 @@ TEST(SweepSimpleColoringTest, Sees2Colors)
 
    const std::string puzzle = "1.85..4.6....7.9..53...4..7..1.6...8.9.4.8.7.8...5.6..7..1...69..6.8....9.4..62.5";
    auto grid = CandidatesGrid::FromString(puzzle);
-   ISweep::iterate(*sweepCombined, grid);
+   FieldsInfo finfo(grid);
+   ISweep::iterate(*sweepCombined, grid, finfo);
    ASSERT_EQ(grid.getNumCandidates(), 131);
    Cell changedCell = Cell::getFromRowCol(4, 8);
    ASSERT_TRUE(grid[changedCell.field].contains(1));
-   const FieldsInfo finfo(grid);
    const bool anyChange = SweepSimpleColoring().sweep(grid);
    ASSERT_FALSE(grid[changedCell.field].contains(1));
    ASSERT_TRUE(anyChange);
@@ -79,8 +79,8 @@ TEST(SweepSimpleColoringTest, TwiceInAUnit)
    SweepSimpleColoring sweepSimpleColoring;
    const std::string str = "2..9.....8..5.3....547.6..2..8.....9.97...42.1.....3..3..1.589....8.2..3.....7..5";
    CandidatesGrid grid = CandidatesGrid::FromString(str);
-   ISweep::iterate(*sweepCombined, grid);
    FieldsInfo finfo(grid);
+   ISweep::iterate(*sweepCombined, grid, finfo);
 
    const Value value = 4; // 6
    const auto links = SweepSimpleColoring::getBilocationLinks(grid, finfo, value);
@@ -310,39 +310,6 @@ TEST(SweepSimpleColoringTest, SingleColorEmptiesHouseExample2)
    ASSERT_FALSE(grid[Cell::rowCol2Field(6, 7)].contains(2));
 }
 
-#if false
-TEST(SweepSimpleColoringTest, FindColorEmptiesHouse)
-{
-   std::ifstream file("/home/hans/src/Top_50K_Toughest.txt");
-   SweepSimpleColoring sweepSimpleColoring;
-
-   // String to store each line of the file.
-   std::string line;
-
-   if (file.is_open())
-   {
-      // Read each line from the file and store it in the
-      // 'line' variable.
-      while (getline(file, line))
-      {
-         CandidatesGrid grid = CandidatesGrid::FromString(line.substr(0, NumField), '0');
-         grid.update();
-         std::cout << line << "\n";
-         sweepSimpleColoring.sweep(grid);
-      }
-
-      // Close the file stream once all lines have been
-      // read.
-      file.close();
-   }
-   else
-   {
-      // Print an error message to the standard error
-      // stream if the file cannot be opened.
-      std::cerr << "Unable to open file!" << std::endl;
-   }
-}
-#endif
 #if false
 TEST(SweepSimpleColoringTest, FindColorEmptiesHouse)
 {
