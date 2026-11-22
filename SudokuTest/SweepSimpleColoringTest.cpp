@@ -70,6 +70,11 @@ TEST(SweepSimpleColoringTest, Sees2Colors)
    auto grid = CandidatesGrid::FromString(puzzle);
    FieldsInfo finfo(grid);
    ISweep::iterate(*sweepCombined, grid, finfo);
+
+   SweepSimpleColoring strategy;
+   // TestUtils::ShowStrategy(strategy, grid);
+   TestUtils::CheckStrategy(strategy, grid, {2, 1});
+
    ASSERT_EQ(grid.getNumCandidates(), 131);
    Cell changedCell = Cell::getFromRowCol(4, 8);
    ASSERT_TRUE(grid[changedCell.field].contains(1));
@@ -102,9 +107,9 @@ TEST(SweepSimpleColoringTest, TwiceInAUnit)
    ASSERT_EQ(fieldValues.size(), 4);
    TestUtils::CheckFieldValues(grid, fieldValues);
 
-   const auto changes = grid.apply(fieldValues, finfo);
-   ASSERT_EQ(changes.numValuesChanged, 4);
-   ASSERT_EQ(changes.numFieldsSolved, 3);
+   SweepSimpleColoring strategy;
+   // TestUtils::ShowStrategy(strategy, grid);
+   TestUtils::CheckStrategy(strategy, grid, {7, 4});
 }
 
 #if false
@@ -208,15 +213,12 @@ TEST(SweepSimpleColoringTest, SingleColorEmptiesHouseExample1)
       const auto emptiesHosue = SweepSimpleColoring::collectOneColorEmptiesHouse(finfo, value, coloring, coloredFields);
       fieldValues.insert(emptiesHosue.begin(), emptiesHosue.end());
    }
-
    TestUtils::CheckFieldValues(grid, fieldValues);
    ASSERT_EQ(fieldValues.size(), 4);
-   expect -= 4;
 
-   const auto changes = grid.apply(fieldValues, finfo);
-   ASSERT_EQ(changes.numValuesChanged, 4);
-   ASSERT_EQ(changes.numFieldsSolved, 1);
-   ASSERT_EQ(grid.getNumCandidates(), expect);
+   SweepSimpleColoring strategy;
+   // TestUtils::ShowStrategy(strategy, grid);
+   TestUtils::CheckStrategy(strategy, grid, {5, 1});
 }
 
 TEST(SweepSimpleColoringTest, SingleColorEmptiesHouseExample2)
@@ -305,6 +307,10 @@ TEST(SweepSimpleColoringTest, SingleColorEmptiesHouseExample2)
    const auto fieldValues = SweepSimpleColoring::collectOneColorEmptiesHouse(finfo, value, coloring, coloredFields);
    ASSERT_EQ(fieldValues.size(), 4);
    expect -= 4;
+
+   SweepSimpleColoring strategy;
+   // TestUtils::ShowStrategy(strategy, grid);
+   TestUtils::CheckStrategy(strategy, grid, {5, 2});
 
    grid.apply(fieldValues, finfo);
    ASSERT_EQ(grid.getNumCandidates(), expect);

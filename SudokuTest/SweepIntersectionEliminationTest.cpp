@@ -97,16 +97,13 @@ TEST(SweepIntersectionElimination, PointingPairCol)
    grid.setCandidates(2, 0, {4, 5, 7});
    grid.setCandidates(2, 1, {5, 6, 7});
 
-   Field expect = 670;
+   SweepIntersectionElimination strategy;
    FieldsInfo finfo(grid);
-   const auto fieldValues = SweepIntersectionElimination().collect(finfo);
+
+   const auto fieldValues = strategy.collect(finfo);
    ASSERT_EQ(fieldValues.size(), 6);
 
-   // auto retval = SweepIntersectionElimination().sweep(grid);
-   const auto retval = grid.applyAndUpdate(fieldValues, finfo);
-   ASSERT_TRUE(retval);
-   expect -= 6;
-   ASSERT_EQ(grid.getNumCandidates(), expect);
+   TestUtils::CheckStrategy(strategy, grid, {6, 0});
 }
 
 TEST(SweepIntersectionElimination, PointingPairRow)
@@ -123,18 +120,19 @@ TEST(SweepIntersectionElimination, PointingPairRow)
    grid.setCandidates(8, 4, {3, 7, 9});
    grid.setCandidates(8, 5, {3, 4, 7});
 
+   SweepIntersectionElimination strategy;
    FieldsInfo finfo(grid);
+   TestUtils::CheckStrategy(strategy, grid, {12, 0});
+
    const auto fieldValues = SweepIntersectionElimination().collect(finfo);
    ASSERT_EQ(fieldValues.size(), 12);
 
    Field expect = 665;
    ASSERT_EQ(grid.getNumCandidates(), expect);
-   // auto retval = SweepIntersectionElimination().sweep(grid);
-   // const auto retval = grid.applyAndUpdate(fieldValues, finfo);
    const auto retval = grid.apply(fieldValues, finfo);
    ASSERT_EQ(retval.numValuesChanged, 12);
    ASSERT_EQ(retval.numFieldsSolved, 0);
-   // ASSERT_TRUE(retval);
+
    expect -= 12;
    ASSERT_EQ(grid.getNumCandidates(), expect);
 }
@@ -159,15 +157,17 @@ TEST(SweepIntersectionElimination, BoxLine)
    grid.setCandidates(2, 3, {2, 3, 4, 5});
    grid.setCandidates(2, 4, {2, 3, 4, 5, 9});
 
+   SweepIntersectionElimination strategy;
    FieldsInfo finfo(grid);
+   TestUtils::CheckStrategy(strategy, grid, {15, 0});
+
    const auto fieldValues = SweepIntersectionElimination().collect(finfo);
    ASSERT_EQ(fieldValues.size(), 15);
 
    Field expect = 630;
    ASSERT_EQ(grid.getNumCandidates(), expect);
-   // const auto retval = SweepIntersectionElimination().sweep(grid);
-   const auto retval = grid.applyAndUpdate(fieldValues, finfo);
 
+   const auto retval = grid.applyAndUpdate(fieldValues, finfo);
    ASSERT_TRUE(retval);
    expect -= 15;
    ASSERT_EQ(grid.getNumCandidates(), expect);
