@@ -86,7 +86,7 @@ FieldValue::Container SweepNakedTuples::collectHousesOfType(const FieldsInfo &fi
    ;
 }
 
-FieldValue::Container SweepNakedTuples::collect(const FieldsInfo &finfo, Index tupleSize)
+FieldValue::Container SweepNakedTuples::collectOfTupleSize(const FieldsInfo &finfo, Index tupleSize)
 {
    FieldValue::Container result;
    for (HouseType type : HouseTypeAll)
@@ -97,23 +97,11 @@ FieldValue::Container SweepNakedTuples::collect(const FieldsInfo &finfo, Index t
    return result;
 }
 
-// ***************************************************************
-
-FieldValue::Container SweepNakedPairs::collect(const FieldsInfo &finfo)
+FieldValue::Container SweepNakedTuples::collect(const FieldsInfo &finfo)
 {
-   return SweepNakedTuples::collect(finfo, 2);
-}
-
-// ***************************************************************
-
-FieldValue::Container SweepNakedTriplet::collect(const FieldsInfo &finfo)
-{
-   return SweepNakedTuples::collect(finfo, 3);
-}
-
-// ***************************************************************
-
-FieldValue::Container SweepNakedQuartet::collect(const FieldsInfo &finfo)
-{
-   return SweepNakedTuples::collect(finfo, 4);
+   FieldValue::Container result;
+   FieldValue::add(collectOfTupleSize(finfo, 2), result);
+   FieldValue::add(collectOfTupleSize(finfo, 3), result);
+   FieldValue::add(collectOfTupleSize(finfo, 4), result);
+   return result;
 }
