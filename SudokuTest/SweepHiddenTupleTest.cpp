@@ -161,10 +161,6 @@ TEST(SweepHidddenTupleTest, Pair_1)
       grid.removeCandidates(Cell::rowCol2Field(row, col), pair);
    }
 
-   FieldsInfo finfo(grid);
-   auto removeMe = SweepHiddenTuple::collectTuplesOfSize(finfo, 2);
-   ASSERT_EQ(removeMe.size(), 14);
-
    SweepHiddenTuple strategy;
    // TestUtils::ShowStrategy(strategy, grid);
    TestUtils::CheckStrategy(strategy, grid, {2 * 7, 0});
@@ -193,7 +189,9 @@ TEST(SweepHidddenTupleTest, Triple_322)
 
    SweepHiddenTuple strategy;
    FieldsInfo finfo(grid);
-   strategy.collect(finfo);
-   TestUtils::ShowStrategy(strategy, grid);
-   TestUtils::CheckStrategy(strategy, grid, {2 * 7, 0});
+   const auto fieldValues = strategy.collectTuplesOfSize(finfo, 3);
+   ASSERT_EQ(fieldValues.size(), 3 * 6);
+
+   // TestUtils::ShowStrategy(strategy, grid);
+   TestUtils::CheckStrategy(strategy, grid, {3 * 6, 0});
 }

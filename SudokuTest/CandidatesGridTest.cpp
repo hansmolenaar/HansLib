@@ -8,7 +8,7 @@
 
 using namespace Sudoku;
 
-#define ONLY_SMALL_TESTS true
+#define ONLY_SMALL_TESTS false
 
 TEST(CandidatesGridTest, DefaultConstructor)
 {

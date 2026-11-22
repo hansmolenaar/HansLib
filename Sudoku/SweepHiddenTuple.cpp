@@ -51,13 +51,14 @@ void CollectCandidates(const FieldsInfo &finfo, const House &house, std::span<co
    boost::container::static_vector<Value, NumValue> activeValues;
    str::copy_if(ValueAll, std::back_inserter(activeValues), IsNotContained(candidateTuple));
 
-   auto activeFields = finfo.getHouseFields(house);
+   const auto houseFields = finfo.getHouseFields(house);
+   FieldBits activeFields;
    for (Value value : candidateTuple)
    {
-      activeFields &= finfo.getActiveFieldsWithValue(value);
+      activeFields |= finfo.getActiveFieldsWithValue(value) & houseFields;
    }
+   MyAssert(activeFields.count() == candidateTuple.size());
 
-   // activeFields now contain all of the values in the value tuplie
    for (Value value : activeValues)
    {
       const auto removeValueFromFields = activeFields & finfo.getFieldsWithValue(value);
