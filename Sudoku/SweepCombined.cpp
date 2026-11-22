@@ -22,7 +22,7 @@ auto concat_arrays(const std::array<T, N> &a, const std::array<T, M> &b)
 }
 
 constexpr size_t numSimpleSweepers = 2;
-constexpr size_t numMediumSweepers = 5;
+constexpr size_t numMediumSweepers = 3;
 constexpr size_t numHardSweepers = 2;
 
 std::array<ISweep *, numSimpleSweepers> getSimple()
@@ -36,12 +36,12 @@ std::array<ISweep *, numSimpleSweepers> getSimple()
 std::array<ISweep *, numSimpleSweepers + numMediumSweepers> getMedium()
 {
    static SweepNakedTuples sweepNakedTuples;
-   static SweepHiddenPair sweepHiddenPair;
-   static SweepHiddenTriplet sweepHiddenTriplet;
-   static SweepHiddenQuartet sweepHiddenQuartet;
+   static SweepHiddenTuple sweepHiddenTuple;
    static SweepIntersectionElimination sweepIntersectionElimination;
    static std::array<ISweep *, numMediumSweepers> mediumOnly{
-       &sweepNakedTuples, &sweepHiddenPair, &sweepHiddenTriplet, &sweepHiddenQuartet, &sweepIntersectionElimination,
+       &sweepNakedTuples,
+       &sweepHiddenTuple,
+       &sweepIntersectionElimination,
    };
    static std::array<ISweep *, numSimpleSweepers + numMediumSweepers> medium =
        concat_arrays<ISweep *, numSimpleSweepers, numMediumSweepers>(getSimple(), mediumOnly);

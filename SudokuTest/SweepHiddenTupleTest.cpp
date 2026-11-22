@@ -195,3 +195,57 @@ TEST(SweepHidddenTupleTest, Triple_322)
    // TestUtils::ShowStrategy(strategy, grid);
    TestUtils::CheckStrategy(strategy, grid, {3 * 6, 0});
 }
+
+TEST(SweepHidddenTupleTest, Triple_332)
+{
+   constexpr Index row = 8;
+   ValueBits bits;
+   bits.set(7);
+   bits.set(8);
+   bits.set(9);
+
+   CandidatesGrid grid;
+
+   for (Index col = 1; col < 7; ++col)
+   {
+      grid.removeCandidates(Cell::rowCol2Field(row, col), bits);
+   }
+   bits.reset();
+   bits.set(7);
+   grid.removeCandidates(Cell::rowCol2Field(row, 8), bits);
+
+   SweepHiddenTuple strategy;
+   TestUtils::CheckStrategy(strategy, grid, {3 * 6, 0});
+}
+
+TEST(SweepHidddenTupleTest, Triple_222)
+{
+   constexpr Index row = 8;
+   ValueBits bits;
+   bits.set(7);
+   bits.set(8);
+   bits.set(9);
+
+   CandidatesGrid grid;
+
+   for (Index col = 1; col < 7; ++col)
+   {
+      grid.removeCandidates(Cell::rowCol2Field(row, col), bits);
+   }
+   bits.reset();
+   bits.set(7);
+   grid.removeCandidates(Cell::rowCol2Field(row, 0), bits);
+   bits.reset();
+
+   bits.reset();
+   bits.set(8);
+   grid.removeCandidates(Cell::rowCol2Field(row, 7), bits);
+
+   bits.reset();
+   bits.set(9);
+   grid.removeCandidates(Cell::rowCol2Field(row, 8), bits);
+
+   SweepHiddenTuple strategy;
+   // TestUtils::ShowStrategy(strategy, grid);
+   TestUtils::CheckStrategy(strategy, grid, {3 * 6, 0});
+}

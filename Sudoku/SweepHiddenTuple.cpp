@@ -126,24 +126,3 @@ FieldValue::Container SweepHiddenSingle::collect(const FieldsInfo &finfo)
 {
    return SweepHiddenTuple::collectTuplesOfSize(finfo, 1);
 };
-
-// *******************************************************************************************
-
-FieldValue::Container SweepHiddenPair::collect(const FieldsInfo &finfo)
-{
-   return SweepHiddenTuple::collectTuplesOfSize(finfo, 2);
-};
-
-// *******************************************************************************************
-
-FieldValue::Container SweepHiddenTriplet::collect(const FieldsInfo &finfo)
-{
-   return SweepHiddenTuple::collectTuplesOfSize(finfo, 3);
-};
-
-// *******************************************************************************************
-
-FieldValue::Container SweepHiddenQuartet::collect(const FieldsInfo &finfo)
-{
-   return SweepHiddenTuple::collectTuplesOfSize(finfo, 4);
-};
