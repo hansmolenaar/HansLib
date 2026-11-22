@@ -27,7 +27,7 @@ TEST(SweepNakedTuplesTest, Pair_1)
    grid.setCandidates(Cell::rowCol2Field(0, 0), {1, 2});
    grid.setCandidates(Cell::rowCol2Field(0, 1), {1, 2});
 
-   FieldsInfo finfo(grid);
+   const FieldsInfo finfo(grid);
    auto fvs = SweepNakedTuples::collectHouse(finfo, House{HouseType::Row, 0}, 2);
    ASSERT_EQ(fvs.size(), 14);
 
@@ -48,7 +48,7 @@ TEST(SweepNakedTuplesTest, NakedPair_2)
    grid.setCandidates(Cell::rowCol2Field(0, 0), {2, 3});
    grid.setCandidates(Cell::rowCol2Field(1, 1), {3, 2});
 
-   FieldsInfo finfo(grid);
+   const FieldsInfo finfo(grid);
 
    auto fvs = SweepNakedTuples::collectHouse(finfo, House{HouseType::Row, 1}, 2);
    ASSERT_EQ(fvs.size(), 0);
@@ -79,8 +79,8 @@ TEST(SweepNakedTuplesTest, SweepNakedPair_2)
    grid.setCandidates(Cell::rowCol2Field(row, 6), {1, 5});
    grid.setCandidates(Cell::rowCol2Field(row, 7), {1, 6});
 
-   FieldsInfo finfo(grid);
-   // TestUtils::ShowStrategy(strategy, finfo);
+   const FieldsInfo finfo(grid);
+   // TestUtils::ShowStrategy(strategy, grid);
 
    auto fieldValues = SweepNakedTuples::collectHousesOfType(finfo, HouseType::Col, 2);
    EXPECT_EQ(fieldValues.size(), 0);
@@ -198,8 +198,8 @@ TEST(SweepNakedTuplesTest, SweepNakedTuples_223_a)
    ASSERT_EQ(grid.getNumCandidates(), expectNumCandidates);
 
    SweepNakedTuples strategy;
-   FieldsInfo finfo(grid);
-   // TestUtils::ShowStrategy(strategy, finfo);
+   const FieldsInfo finfo(grid);
+   // TestUtils::ShowStrategy(strategy, grid);
 
    auto fieldValues = SweepNakedTuples::collectHousesOfType(finfo, HouseType::Col, 3);
    ASSERT_TRUE(fieldValues.empty());
@@ -232,8 +232,8 @@ TEST(SweepNakedTuplesTest, NakedQuartet_1)
    ASSERT_EQ(grid.getNumCandidates(), expectNumCandidates);
 
    SweepNakedTuples strategy;
-   FieldsInfo finfo(grid);
-   // TestUtils::ShowStrategy(strategy, finfo);
+   const FieldsInfo finfo(grid);
+   // TestUtils::ShowStrategy(strategy, grid);
 
    ASSERT_EQ(SweepNakedTuples::collectOfTupleSize(finfo, 2).size(), 0);
    ASSERT_EQ(SweepNakedTuples::collectOfTupleSize(finfo, 3).size(), 0);
@@ -253,8 +253,8 @@ TEST(SweepNakedTuplesTest, NakedQuartet_2)
    grid.setCandidates(Cell::rowCol2Field(0, 2), {1, 2, 4, 5});
 
    SweepNakedTuples strategy;
-   FieldsInfo finfo(grid);
-   // TestUtils::ShowStrategy(strategy, finfo);
+   const FieldsInfo finfo(grid);
+   // TestUtils::ShowStrategy(strategy, grid);
 
    ASSERT_EQ(SweepNakedTuples::collectOfTupleSize(finfo, 2).size(), 0);
    ASSERT_EQ(SweepNakedTuples::collectOfTupleSize(finfo, 3).size(), 0);

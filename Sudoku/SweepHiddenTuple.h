@@ -7,11 +7,14 @@
 namespace Sudoku
 {
 
-namespace SweepHiddenTuple
+class SweepHiddenTuple : public IStrategy
 {
-FieldValue::Container collectHouse(const FieldsInfo &, const House &, Index);
-FieldValue::Container collectTuplesOfSize(const FieldsInfo &, Index);
-FieldValue::Container collect(const FieldsInfo &);
+ public:
+   FieldValue::Container collect(const FieldsInfo &) override;
+
+   static FieldValue::Container collectHouse(const FieldsInfo &, const House &, Index);
+   static FieldValue::Container collectTuplesOfSize(const FieldsInfo &, Index);
+   // TODO static FieldValue::Container collect(const FieldsInfo &);
 
 }; // namespace SweepHiddenTuple
 

@@ -11,7 +11,7 @@ namespace TestUtils
 void CheckFieldValues(const Sudoku::CandidatesGrid &, const Sudoku::FieldValue::Container &);
 void CheckFieldInfo(const Sudoku::FieldsInfo &);
 void CheckStrategyInterface(Sudoku::IStrategy &);
-void CheckStrategy(Sudoku::IStrategy &, Sudoku::CandidatesGrid &, const Sudoku::GridChange &);
-void ShowStrategy(Sudoku::IStrategy &, Sudoku::FieldsInfo &);
+void CheckStrategy(Sudoku::IStrategy &, const Sudoku::CandidatesGrid &, const Sudoku::GridChange &);
+void ShowStrategy(Sudoku::IStrategy &, const Sudoku::CandidatesGrid &);
 
 } // namespace TestUtils

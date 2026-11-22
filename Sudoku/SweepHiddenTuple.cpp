@@ -19,34 +19,28 @@ namespace str = std::ranges;
 
 namespace
 {
-struct CellContainsAllValues
+struct CellContainsAnyValue
 {
    bool operator()(Field field) const
    {
-      return grid[field].contains(values);
-   }
-   bool operator()(const Cell &cell) const
-   {
-      return grid[cell.field].contains(values);
+      return (grid[field].getValues() & values).any();
    }
 
    const CandidatesGrid &grid;
-   std::span<const Value> values;
+   ValueBits values;
 };
 
 bool IsHiddenTuple(const FieldsInfo &finfo, const House &house, std::span<const Value> candidateValueTuple)
 {
    const auto size = candidateValueTuple.size();
-   auto houseFields = finfo.getHouseFields(house);
-   for (Value value : candidateValueTuple)
+   ValueBits valueBits;
+   for (Value v : candidateValueTuple)
    {
-      if ((houseFields & finfo.getFieldsWithValue(value)).count() != size)
-      {
-         return false;
-      }
+      valueBits.set(v);
    }
-   const CellContainsAllValues containsHiddenTuple{finfo.getGrid(), candidateValueTuple};
-   const Index count = str::count_if(FieldAll | std::views::filter(Bitset{houseFields}), containsHiddenTuple);
+   const auto activeHouseFields = finfo.getHouseFields(house) & finfo.getActiveFields();
+   const CellContainsAnyValue containsHiddenTuple{finfo.getGrid(), valueBits};
+   const Index count = str::count_if(FieldAll | std::views::filter(Bitset{activeHouseFields}), containsHiddenTuple);
    return (count == size);
 }
 
@@ -76,15 +70,23 @@ void CollectCandidates(const FieldsInfo &finfo, const House &house, std::span<co
 FieldValue::Container SweepHiddenTuple::collectHouse(const FieldsInfo &finfo, const House &house, Index size)
 {
    FieldValue::Container result;
-   const CandidatesGrid &grid = finfo.getGrid();
-   const auto activeUniqueCandidates = SudokuUtils::getUniqueActiveValuesInCells(grid, finfo.getHouseFields(house));
-   if (activeUniqueCandidates.count() < size)
+
+   const auto houseFields = finfo.getHouseFields(house);
+   std::vector<Value> activeCandidates;
+   for (Value value : ValueAll)
    {
-      return result;
+      const auto fieldsInHouseWithValue = finfo.getActiveFieldsWithValue(value) & houseFields;
+      const auto numFieldsInHouseWithValue = fieldsInHouseWithValue.count();
+      if (numFieldsInHouseWithValue > 0 && numFieldsInHouseWithValue <= size)
+      {
+         activeCandidates.push_back(value);
+      }
    }
 
-   std::vector<Value> activeCandidates(activeUniqueCandidates.count());
-   str::copy_if(ValueAll, activeCandidates.begin(), Bitset{activeUniqueCandidates});
+   if (activeCandidates.size() < size)
+   {
+      return {};
+   }
 
    Combinations<Value> combinations(activeCandidates, size);
    do
@@ -107,6 +109,15 @@ FieldValue::Container SweepHiddenTuple::collectTuplesOfSize(const FieldsInfo &fi
    }
    return result;
 }
+
+FieldValue::Container SweepHiddenTuple::collect(const FieldsInfo &finfo)
+{
+   FieldValue::Container result;
+   FieldValue::add(collectTuplesOfSize(finfo, 2), result);
+   FieldValue::add(collectTuplesOfSize(finfo, 3), result);
+   FieldValue::add(collectTuplesOfSize(finfo, 4), result);
+   return result;
+};
 
 // *******************************************************************************************
 

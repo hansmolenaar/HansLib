@@ -31,6 +31,11 @@ inline auto FieldBitsToRange(const FieldBits &fb)
    return FieldAll | std::views::filter(Utilities::Bitset{fb});
 }
 
+inline auto ValueBitsToRange(const ValueBits &vb)
+{
+   return ValueAll | std::views::filter(Utilities::Bitset{vb});
+}
+
 // Convenience function for testing
 inline std::vector<Field> FieldBitsToVector(const FieldBits &fb)
 {

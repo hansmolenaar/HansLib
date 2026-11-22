@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 
+#include "CandidatesGrid.h"
 #include "House.h"
 #include "IStrategy.h"
 #include "StreamUtils.h"
@@ -48,7 +49,7 @@ void TestUtils::CheckStrategyInterface(Sudoku::IStrategy &strategy)
    ASSERT_TRUE(fvs.empty());
 }
 
-void TestUtils::CheckStrategy(Sudoku::IStrategy &strategy, Sudoku::CandidatesGrid &grid,
+void TestUtils::CheckStrategy(Sudoku::IStrategy &strategy, const Sudoku::CandidatesGrid &grid,
                               const Sudoku::GridChange &expect)
 {
    Sweep sweep({&strategy});
@@ -63,10 +64,11 @@ void TestUtils::CheckStrategy(Sudoku::IStrategy &strategy, Sudoku::CandidatesGri
    }
 }
 
-void TestUtils::ShowStrategy(Sudoku::IStrategy &strategy, Sudoku::FieldsInfo &finfo)
+void TestUtils::ShowStrategy(Sudoku::IStrategy &strategy, const Sudoku::CandidatesGrid &gridIn)
 {
+   CandidatesGrid grid = gridIn;
+   FieldsInfo finfo(grid);
    Sweep sweep({&strategy});
-   CandidatesGrid grid = finfo.getGrid();
    auto prv = grid;
    auto fvs = strategy.collect(finfo);
    auto changes = sweep.singleSweep(grid, finfo);

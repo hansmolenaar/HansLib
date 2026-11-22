@@ -115,6 +115,16 @@ Index CandidatesGrid::getNumCandidates() const
                           [](Index acc, const Candidates &c) { return acc + c.size(); });
 }
 
+bool CandidatesGrid::removeCandidates(Field field, ValueBits valueBits)
+{
+   GridChange change;
+   for (Value value : SudokuUtils::ValueBitsToRange(valueBits))
+   {
+      change += m_candidates.at(field).removeCandidate(value);
+   }
+   return change.numFieldsSolved > 0;
+}
+
 bool CandidatesGrid::setCandidates(Field field, std::initializer_list<Value> values)
 {
    return m_candidates.at(field).setOnly(values);

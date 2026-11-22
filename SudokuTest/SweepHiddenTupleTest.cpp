@@ -13,25 +13,8 @@ TEST(SweepHidddenTupleTest, Strategy)
    SweepHiddenSingle single;
    TestUtils::CheckStrategyInterface(single);
 
-   SweepHiddenPair pair;
-   TestUtils::CheckStrategyInterface(pair);
-
-   SweepHiddenTriplet triplet;
-   TestUtils::CheckStrategyInterface(triplet);
-
-   SweepHiddenQuartet quartet;
-   TestUtils::CheckStrategyInterface(quartet);
-}
-
-TEST(SweepHidddenTupleTest, BasicExample)
-{
-   CandidatesGrid grid;
-   FieldsInfo finfo(grid);
-   for (Index size = 1; size <= 3; ++size)
-   {
-      const auto fieldValues = SweepHiddenTuple::collectTuplesOfSize(finfo, size);
-      ASSERT_TRUE(fieldValues.empty());
-   }
+   SweepHiddenTuple tuple;
+   TestUtils::CheckStrategyInterface(tuple);
 }
 
 TEST(SweepHidddenTupleTest, Pair)
@@ -68,15 +51,12 @@ TEST(SweepHidddenTupleTest, Pair)
    fieldsValues = SweepHiddenTuple::collectTuplesOfSize(finfo, 2);
    TestUtils::CheckFieldValues(grid, fieldsValues);
    ASSERT_EQ(fieldsValues.size(), 8);
-   auto changes = grid.apply(fieldsValues, finfo);
-   ASSERT_EQ(changes.numValuesChanged, 8);
-   ASSERT_EQ(changes.numFieldsSolved, 0);
-   TestUtils::CheckFieldInfo(finfo);
-   expect -= changes.numValuesChanged;
-   ASSERT_EQ(grid.getNumCandidates(), expect);
 
-   grid.update(finfo);
-   ASSERT_EQ(grid.getNumCandidates(), expect);
+   SweepHiddenSingle strategy1;
+   TestUtils::CheckStrategy(strategy1, grid, {0, 0});
+
+   SweepHiddenTuple strategy;
+   TestUtils::CheckStrategy(strategy, grid, {8, 0});
 }
 
 TEST(SweepHidddenTupleTest, SweepExample1)
@@ -149,13 +129,71 @@ TEST(SweepHidddenTupleTest, BasicExamplePair)
    grid.setCandidates(Cell::rowCol2Field(row, 5), {1, 5});
    grid.setCandidates(Cell::rowCol2Field(row, 6), {1, 3, 5});
 
+   SweepHiddenTuple strategy;
+   // TestUtils::ShowStrategy(strategy, grid);
+   TestUtils::CheckStrategy(strategy, grid, {0, 0});
+
+   SweepHiddenSingle strategy1;
+
    auto value0 = grid[Cell::rowCol2Field(row, 0)].tryGetSolvedValue();
    ASSERT_FALSE(value0.has_value());
 
    FieldsInfo finfo(grid);
-   SweepHiddenSingle().sweep(grid, finfo);
+   const auto fieldValues = strategy1.collect(finfo);
+   grid.apply(fieldValues, finfo);
 
    value0 = grid[Cell::rowCol2Field(row, 0)].tryGetSolvedValue();
    ASSERT_TRUE(value0.has_value());
    ASSERT_EQ(value0.value(), 7);
+}
+
+TEST(SweepHidddenTupleTest, Pair_1)
+{
+   constexpr Index row = 8;
+   ValueBits pair;
+   pair.set(8);
+   pair.set(9);
+
+   CandidatesGrid grid;
+
+   for (Index col = 1; col < 8; ++col)
+   {
+      grid.removeCandidates(Cell::rowCol2Field(row, col), pair);
+   }
+
+   FieldsInfo finfo(grid);
+   auto removeMe = SweepHiddenTuple::collectTuplesOfSize(finfo, 2);
+   ASSERT_EQ(removeMe.size(), 14);
+
+   SweepHiddenTuple strategy;
+   // TestUtils::ShowStrategy(strategy, grid);
+   TestUtils::CheckStrategy(strategy, grid, {2 * 7, 0});
+}
+
+TEST(SweepHidddenTupleTest, Triple_322)
+{
+   constexpr Index row = 8;
+   ValueBits bits;
+   bits.set(7);
+   bits.set(8);
+   bits.set(9);
+
+   CandidatesGrid grid;
+
+   for (Index col = 1; col < 7; ++col)
+   {
+      grid.removeCandidates(Cell::rowCol2Field(row, col), bits);
+   }
+   bits.reset();
+   bits.set(7);
+   grid.removeCandidates(Cell::rowCol2Field(row, 0), bits);
+   bits.reset();
+   bits.set(9);
+   grid.removeCandidates(Cell::rowCol2Field(row, 8), bits);
+
+   SweepHiddenTuple strategy;
+   FieldsInfo finfo(grid);
+   strategy.collect(finfo);
+   TestUtils::ShowStrategy(strategy, grid);
+   TestUtils::CheckStrategy(strategy, grid, {2 * 7, 0});
 }

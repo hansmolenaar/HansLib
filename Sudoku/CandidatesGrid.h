@@ -17,6 +17,7 @@ class CandidatesGrid
 
    void setGiven(Field, Value);
    void setGiven(Index, Index, Value);
+   bool removeCandidates(Field, ValueBits);
    bool setCandidates(Field, std::initializer_list<Value>);
    bool setCandidates(Index, Index, std::initializer_list<Value>);
    bool removeCandidate(Field, Value);
