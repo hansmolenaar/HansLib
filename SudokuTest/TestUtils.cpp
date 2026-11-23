@@ -47,8 +47,7 @@ void TestUtils::CheckStrategyInterface(Sudoku::IStrategy &strategy)
    // solved
    const auto solved = TestModels::getSolvedGrid();
    finfo = FieldsInfo(solved);
-   fieldValues.clear();
-   strategy.collect(finfo, fieldValues);
+   fieldValues = strategy.collect(finfo);
    ASSERT_TRUE(fieldValues.empty());
    ASSERT_FALSE(anyChange);
 }
