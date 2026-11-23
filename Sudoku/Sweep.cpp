@@ -1,5 +1,6 @@
 #include "Sweep.h"
 #include "CandidatesGrid.h"
+#include "GridChange.h"
 #include "IStrategy.h"
 #include "SweepNakedSingle.h"
 
@@ -15,16 +16,17 @@ Sweep::Sweep(Strategies &&strategy) : m_strategies(std::move(strategy))
 
 GridChange Sweep::singleSweep(CandidatesGrid &grid, FieldsInfo &finfo) const
 {
-   FieldValue::Container fieldsAndValues;
-
    for (auto *strategy : m_strategies.get())
    {
       const auto fvs = strategy->collect(finfo);
-      FieldValue::add(fvs, fieldsAndValues);
+      if (!fvs.empty())
+      {
+         const auto result = grid.apply(fvs, finfo);
+         return result;
+      }
    }
 
-   const auto result = grid.apply(fieldsAndValues, finfo);
-   return result;
+   return {};
 }
 
 bool Sweep::singleSweepAndUpdate(CandidatesGrid &grid, FieldsInfo &finfo) const

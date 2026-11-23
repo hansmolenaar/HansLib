@@ -3,7 +3,8 @@
 #include "CandidatesGrid.h"
 #include "Cell.h"
 #include "FieldsInfo.h"
-#include "SweepCombined.h"
+#include "Strategies.h"
+#include "Sweep.h"
 #include "TestModels.h"
 
 using namespace Sudoku;
@@ -153,14 +154,14 @@ TEST(CandidatesGridTest, Symmetries)
 TEST(CandidatesGridTest, Simple)
 {
    ASSERT_FALSE(ONLY_SMALL_TESTS);
-   SweepCombined *sweepers = SweepCombined::getSimpleSweepers();
+   Sweep sweepers(Strategies::getSimpleStrategies());
    std::vector<CandidatesGrid> grids = TestModels::getSimplePuzzles();
    ASSERT_EQ(grids.size(), 133);
 
    for (auto &grid : grids)
    {
       FieldsInfo finfo(grid);
-      ISweep::iterate(*sweepers, grid, finfo);
+      sweepers.iterate(grid, finfo);
       grid.checkValidSudoku();
       ASSERT_TRUE(grid.isSolved());
    }
@@ -169,14 +170,14 @@ TEST(CandidatesGridTest, Simple)
 TEST(CandidatesGridTest, Medium)
 {
    ASSERT_FALSE(ONLY_SMALL_TESTS);
-   SweepCombined *sweepers = SweepCombined::getMediumSweepers();
+   Sweep sweepers(Strategies::getMediumStrategies());
    std::vector<CandidatesGrid> grids = TestModels::getMediumPuzzles();
    ASSERT_EQ(grids.size(), 863);
    int numSolved = 0;
    for (auto &grid : grids)
    {
       FieldsInfo finfo(grid);
-      ISweep::iterate(*sweepers, grid, finfo);
+      sweepers.iterate(grid, finfo);
       grid.checkValidSudoku();
       if (grid.isSolved())
       {
@@ -189,14 +190,14 @@ TEST(CandidatesGridTest, Medium)
 TEST(CandidatesGridTest, Hard)
 {
    ASSERT_FALSE(ONLY_SMALL_TESTS);
-   SweepCombined *sweepers = SweepCombined::getHardSweepers();
+   Sweep sweepers(Strategies::getAllStrategies());
    std::vector<CandidatesGrid> grids = TestModels::getHardPuzzles();
    ASSERT_EQ(grids.size(), 1278);
    int numSolved = 0;
    for (auto &grid : grids)
    {
       FieldsInfo finfo(grid);
-      ISweep::iterate(*sweepers, grid, finfo);
+      sweepers.iterate(grid, finfo);
       grid.checkValidSudoku();
       if (grid.isSolved())
       {
