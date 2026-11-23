@@ -9,6 +9,8 @@
 #include "Sweep.h"
 #include "TestUtils.h"
 
+#include <iostream>
+
 using namespace Sudoku;
 
 TEST(StrategyNakedTuplesTest, Strategy)
@@ -82,19 +84,19 @@ TEST(StrategyNakedTuplesTest, StrategyNakedPair_2)
    // TestUtils::ShowStrategy(strategy, grid);
 
    auto fieldValues = StrategyNakedTuples::collectHousesOfType(finfo, HouseType::Col, 2);
-   EXPECT_EQ(fieldValues.size(), 0);
+   ASSERT_EQ(fieldValues.size(), 0);
 
    fieldValues = StrategyNakedTuples::collectHousesOfType(finfo, HouseType::Box, 2);
-   EXPECT_EQ(fieldValues.size(), 0);
+   ASSERT_EQ(fieldValues.size(), 0);
 
    fieldValues = StrategyNakedTuples::collectHousesOfType(finfo, HouseType::Row, 2);
-   EXPECT_EQ(fieldValues.size(), 2);
+   ASSERT_EQ(fieldValues.size(), 2);
 
    fieldValues = StrategyNakedTuples::collectOfTupleSize(finfo, 2); // 1 5
-   EXPECT_EQ(fieldValues.size(), 2);
+   ASSERT_EQ(fieldValues.size(), 2);
 
    fieldValues = StrategyNakedTuples::collectOfTupleSize(finfo, 3); // 1 5 6
-   EXPECT_EQ(fieldValues.size(), 3);
+   ASSERT_EQ(fieldValues.size(), 3);
 
    TestUtils::CheckStrategy(strategy, grid, {4, 1});
 }
@@ -114,7 +116,6 @@ TEST(StrategyNakedTuplesTest, StrategyNakedTuples_1)
    Field expect = 152;
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
-   // TestUtils::ShowStrategy(strategy, grid);
    auto fieldValues = StrategyNakedTuples::collectHousesOfType(finfo, HouseType::Col, 3);
    ASSERT_TRUE(fieldValues.empty());
 
@@ -130,8 +131,7 @@ TEST(StrategyNakedTuplesTest, StrategyNakedTuples_1)
    fieldValues = StrategyNakedTuples::collectHousesOfType(finfo, HouseType::Col, 2);
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
-   Sweep sweep(&strategy);
-   TestUtils::CheckStrategy(strategy, grid, {13, 1});
+   TestUtils::CheckStrategy(strategy, grid, {14, 2});
 }
 
 TEST(StrategyNakedTuplesTest, Box_222)

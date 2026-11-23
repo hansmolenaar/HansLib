@@ -13,6 +13,7 @@
 #include "boost/container/static_vector.hpp"
 
 #include <algorithm>
+#include <iostream>
 
 using namespace Sudoku;
 using namespace Utilities;
@@ -25,6 +26,7 @@ namespace
 void add(const FieldsInfo &finfo, const FieldBits &house, std::span<const Field> candidateTuple,
          FieldValue::Container &fieldValues)
 {
+   bool isLogged = true;
    const CandidatesGrid &grid = finfo.getGrid();
    const auto candidatesToRemove = CandidatesGrid::getValuesInFields(grid, candidateTuple);
    boost::container::static_vector<Value, NumValue> valuesToRemove(candidatesToRemove.count());
@@ -34,7 +36,22 @@ void add(const FieldsInfo &finfo, const FieldBits &house, std::span<const Field>
    for (Value value : valuesToRemove)
    {
       const auto fieldsWithValue = fields & finfo.getActiveFieldsWithValue(value);
-      FieldValue::add(fieldsWithValue, value, fieldValues);
+      const bool anyChange = FieldValue::add(fieldsWithValue, value, fieldValues);
+      if (anyChange && !isLogged)
+      {
+         isLogged = true;
+         std::cout << "Naked tuple of size " << candidateTuple.size() << " with values (";
+         for (Value value : SudokuUtils::ValueBitsToRange(candidatesToRemove))
+         {
+            std::cout << " " << value;
+         }
+         std::cout << " ) and cells ";
+         for (Field field : candidateTuple)
+         {
+            std::cout << " " << Cell::get(field);
+         }
+         std::cout << " )\n";
+      }
    }
 }
 
@@ -48,13 +65,31 @@ void addBendedTriplets(const FieldsInfo &finfo,
                        const boost::container::static_vector<BendedNakedTripleResult, 3> &xtraLines,
                        std::span<const Field> candidateTuple, FieldValue::Container &fieldValues)
 {
+   bool isLogged = true;
    for (const auto &bnt : xtraLines)
    {
-      const auto house = finfo.getHouseFields(bnt.line);
-      const auto fields = house & ~SudokuUtils::getFields(candidateTuple);
+
+      const auto fieldsInHouse = finfo.getHouseFields(bnt.line) & ~SudokuUtils::getFields(candidateTuple);
       for (Value value : SudokuUtils::ValueBitsToRange(bnt.values))
       {
-         FieldValue::add(fields, value, fieldValues);
+         const auto fields = fieldsInHouse & finfo.getActiveFieldsWithValue(value);
+         const bool anyChange = FieldValue::add(fields, value, fieldValues);
+
+         if (anyChange && !isLogged)
+         {
+            isLogged = true;
+            std::cout << "Bended triplet of the cells  ";
+            for (Field field : candidateTuple)
+            {
+               std::cout << " " << Cell::get(field);
+            }
+            std::cout << " ) with the line " << bnt.line << " with values (";
+            for (Value value : SudokuUtils::ValueBitsToRange(bnt.values))
+            {
+               std::cout << " " << value;
+            }
+            std::cout << ")\n";
+         }
       }
    }
 }
@@ -134,7 +169,7 @@ FieldValue::Container StrategyNakedTuples::collectHouse(const FieldsInfo &finfo,
       if (IsNakedTuple(grid, combinations()))
       {
          add(finfo, houseFields, combinations(), result);
-         if (tupleSize == 13) // TODO
+         if (tupleSize == 3)
          {
             const auto xtra = IsBendedNakedTriplet(grid, combinations());
             addBendedTriplets(finfo, xtra, combinations(), result);
@@ -155,7 +190,6 @@ FieldValue::Container StrategyNakedTuples::collectHousesOfType(const FieldsInfo 
       result.insert(fieldValuesHouse.begin(), fieldValuesHouse.end());
    }
    return result;
-   ;
 }
 
 FieldValue::Container StrategyNakedTuples::collectOfTupleSize(const FieldsInfo &finfo, Index tupleSize)
