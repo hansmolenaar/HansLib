@@ -125,7 +125,7 @@ boost::container::static_vector<BendedNakedTripleResult, 3> IsBendedNakedTriplet
    {
       std::array<Field, numFields - 1> other2;
       str::copy_if(candidateTuple, other2.begin(), Functors::IsNotEqualTo{pairField});
-      const auto visibility = Visiblity::areVisibleVia(Cell::get(other2[0]), Cell::get(other2[1]));
+      const auto visibility = Visibility::areVisibleVia(Cell::get(other2[0]), Cell::get(other2[1]));
       for (auto houseType : visibility)
       {
          if (houseType != HouseType::Box)

@@ -9,7 +9,7 @@ namespace Sudoku
 
 constexpr Field NumVisibleCellls = 20; // NOTE: a cell is NOT visible to itself
 
-struct Visiblity
+struct Visibility
 {
    static bool areVisible(const Cell &, const Cell &);
    static bool areVisible(Field, Field);

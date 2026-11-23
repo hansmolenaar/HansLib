@@ -25,7 +25,7 @@ void collectCandidates(const FieldsInfo &finfo, Value value, const XWing &xWing,
 
 bool IsSimpleLineLockedPair(const LockedPair &lp)
 {
-   const auto visibility = Visiblity::areVisibleVia(lp[0], lp[1]);
+   const auto visibility = Visibility::areVisibleVia(lp[0], lp[1]);
    if (visibility.size() != 1)
    {
       return false;
@@ -39,7 +39,7 @@ std::optional<House> getWeakConnectionVisibility(const Cell &cell0, const Cell &
    {
       return {};
    }
-   const auto visibility = Visiblity::areVisibleVia(cell0, cell1);
+   const auto visibility = Visibility::areVisibleVia(cell0, cell1);
    if (visibility.size() == 1)
    {
       const auto type = visibility.front();

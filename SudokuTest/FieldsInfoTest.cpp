@@ -130,7 +130,7 @@ TEST(VisibilityTest, VisibleFields)
       ASSERT_EQ(visibleFields.count(), NumVisibleCellls);
       for (Field visibleField : FieldAll | std::views::filter(Bitset{visibleFields}))
       {
-         ASSERT_TRUE(Visiblity::areVisible(field, visibleField));
+         ASSERT_TRUE(Visibility::areVisible(field, visibleField));
       }
    }
 }

@@ -73,7 +73,7 @@ FieldValue::Container StrategySimpleColoring::collectTwiceInAUnit(const FieldsIn
             prev = f;
             continue;
          }
-         if (Visiblity::areVisible(f, prev.value()))
+         if (Visibility::areVisible(f, prev.value()))
          {
             FieldValue::add(fieldsWithColor, value, result);
          }
