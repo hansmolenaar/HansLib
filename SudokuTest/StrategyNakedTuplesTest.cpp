@@ -15,12 +15,27 @@ using namespace Sudoku;
 
 namespace
 {
-void CollectTuplesOfSize(const FieldsInfo &finfo, Index tupleSize, Field expect)
+FieldValue::Container CollectHouse(const FieldsInfo &finfo, const House &house, Index size)
 {
-   FieldValue::Container fvs;
-   StrategyNakedTuples::collectOfTupleSize(finfo, tupleSize, fvs);
-   ASSERT_EQ(fvs.size(), expect);
+   FieldValue::Container result;
+   StrategyNakedTuples::collectHouse(finfo, house, size, result);
+   return result;
 }
+
+FieldValue::Container CollectTupleSize(const FieldsInfo &finfo, Index size)
+{
+   FieldValue::Container result;
+   StrategyNakedTuples::collectOfTupleSize(finfo, size, result);
+   return result;
+}
+
+FieldValue::Container CollectHousesOfType(const FieldsInfo &finfo, HouseType houseType, Index size)
+{
+   FieldValue::Container result;
+   StrategyNakedTuples::collectHousesOfType(finfo, houseType, size, result);
+   return result;
+}
+
 } // namespace
 
 TEST(StrategyNakedTuplesTest, Strategy)
@@ -39,16 +54,13 @@ TEST(StrategyNakedTuplesTest, Pair_1)
    grid.setCandidates(Cell::rowCol2Field(0, 1), {1, 2});
 
    const FieldsInfo finfo(grid);
-   FieldValue::Container fvs;
-   StrategyNakedTuples::collectHouse(finfo, House{HouseType::Row, 0}, 2, fvs);
+   auto fvs = CollectHouse(finfo, House{HouseType::Row, 0}, 2);
    ASSERT_EQ(fvs.size(), 14);
 
-   fvs.clear();
-   StrategyNakedTuples::collectHouse(finfo, House{HouseType::Box, 0}, 2, fvs);
+   fvs = CollectHouse(finfo, House{HouseType::Box, 0}, 2);
    ASSERT_EQ(fvs.size(), 14);
 
-   fvs.clear();
-   StrategyNakedTuples::collectOfTupleSize(finfo, 2, fvs);
+   fvs = CollectTupleSize(finfo, 2);
    ASSERT_EQ(fvs.size(), 26);
 
    TestUtils::CheckStrategy(strategy, grid, GridChange{26, 0});
@@ -64,15 +76,13 @@ TEST(StrategyNakedTuplesTest, NakedPair_2)
 
    const FieldsInfo finfo(grid);
 
-   FieldValue::Container fvs;
-   StrategyNakedTuples::collectHouse(finfo, House{HouseType::Row, 1}, 2, fvs);
+   auto fvs = CollectHouse(finfo, House{HouseType::Row, 1}, 2);
    ASSERT_EQ(fvs.size(), 0);
 
-   StrategyNakedTuples::collectHouse(finfo, House{HouseType::Box, 0}, 2, fvs);
+   fvs = CollectHouse(finfo, House{HouseType::Box, 0}, 2);
    ASSERT_EQ(fvs.size(), 14);
 
-   fvs.clear();
-   StrategyNakedTuples::collectOfTupleSize(finfo, 2, fvs);
+   fvs = CollectTupleSize(finfo, 2);
    ASSERT_EQ(fvs.size(), 14);
 
    TestUtils::CheckStrategy(strategy, grid, GridChange{14, 0});
@@ -98,24 +108,19 @@ TEST(StrategyNakedTuplesTest, StrategyNakedPair_2)
    const FieldsInfo finfo(grid);
    // TestUtils::ShowStrategy(strategy, grid);
 
-   FieldValue::Container fieldValues;
-   StrategyNakedTuples::collectHousesOfType(finfo, HouseType::Col, 2, fieldValues);
+   auto fieldValues = CollectHousesOfType(finfo, HouseType::Col, 2);
    ASSERT_EQ(fieldValues.size(), 0);
 
-   fieldValues.clear();
-   StrategyNakedTuples::collectHousesOfType(finfo, HouseType::Box, 2, fieldValues);
+   fieldValues = CollectHousesOfType(finfo, HouseType::Box, 2);
    ASSERT_EQ(fieldValues.size(), 0);
 
-   fieldValues.clear();
-   StrategyNakedTuples::collectHousesOfType(finfo, HouseType::Row, 2, fieldValues);
+   fieldValues = CollectHousesOfType(finfo, HouseType::Row, 2);
    ASSERT_EQ(fieldValues.size(), 2);
 
-   fieldValues.clear();
-   StrategyNakedTuples::collectOfTupleSize(finfo, 2, fieldValues); // 1 5
+   fieldValues = CollectTupleSize(finfo, 2); // 1 5
    ASSERT_EQ(fieldValues.size(), 2);
 
-   fieldValues.clear();
-   StrategyNakedTuples::collectOfTupleSize(finfo, 3, fieldValues); // 1 5 6
+   fieldValues = CollectTupleSize(finfo, 3); // 1 5 6
    ASSERT_EQ(fieldValues.size(), 3);
 
    TestUtils::CheckStrategy(strategy, grid, {4, 1});
@@ -136,23 +141,19 @@ TEST(StrategyNakedTuplesTest, StrategyNakedTuples_1)
    Field expect = 152;
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
-   FieldValue::Container fieldValues;
-   StrategyNakedTuples::collectHousesOfType(finfo, HouseType::Col, 3, fieldValues);
+   auto fieldValues = CollectHousesOfType(finfo, HouseType::Col, 3);
    ASSERT_TRUE(fieldValues.empty());
 
    auto changes = grid.apply(fieldValues, finfo);
    ASSERT_EQ(changes.numValuesChanged, 0);
 
-   fieldValues.clear();
-   StrategyNakedTuples::collectHousesOfType(finfo, HouseType::Row, 3, fieldValues);
+   fieldValues = CollectHousesOfType(finfo, HouseType::Row, 3);
    ASSERT_EQ(fieldValues.size(), 0);
 
-   fieldValues.clear();
-   StrategyNakedTuples::collectHousesOfType(finfo, HouseType::Box, 3, fieldValues);
+   fieldValues = CollectHousesOfType(finfo, HouseType::Box, 3);
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
-   fieldValues.clear();
-   StrategyNakedTuples::collectHousesOfType(finfo, HouseType::Col, 2, fieldValues);
+   fieldValues = CollectHousesOfType(finfo, HouseType::Col, 2);
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
    TestUtils::CheckStrategy(strategy, grid, {14, 2});
@@ -171,16 +172,13 @@ TEST(StrategyNakedTuplesTest, Box_222)
 
    StrategyNakedTuples strategy;
    FieldsInfo finfo(grid);
-   FieldValue::Container fieldValues;
-   StrategyNakedTuples::collectHousesOfType(finfo, HouseType::Col, 3, fieldValues);
+   auto fieldValues = CollectHousesOfType(finfo, HouseType::Col, 3);
    ASSERT_TRUE(fieldValues.empty());
 
-   fieldValues.clear();
-   StrategyNakedTuples::collectHousesOfType(finfo, HouseType::Row, 3, fieldValues);
+   fieldValues = CollectHousesOfType(finfo, HouseType::Row, 3);
    ASSERT_TRUE(fieldValues.empty());
 
-   fieldValues.clear();
-   StrategyNakedTuples::collectHousesOfType(finfo, HouseType::Box, 3, fieldValues);
+   fieldValues = CollectHousesOfType(finfo, HouseType::Box, 3);
    ASSERT_EQ(fieldValues.size(), 3 * 6);
 
    TestUtils::CheckStrategy(strategy, grid, {18, 0});
@@ -200,16 +198,13 @@ TEST(StrategyNakedTuplesTest, Row_222)
 
    StrategyNakedTuples strategy;
    FieldsInfo finfo(grid);
-   FieldValue::Container fieldValues;
-   StrategyNakedTuples::collectHousesOfType(finfo, HouseType::Col, 3, fieldValues);
+   auto fieldValues = CollectHousesOfType(finfo, HouseType::Col, 3);
    ASSERT_TRUE(fieldValues.empty());
 
-   fieldValues.clear();
-   StrategyNakedTuples::collectHousesOfType(finfo, HouseType::Box, 3, fieldValues);
+   fieldValues = CollectHousesOfType(finfo, HouseType::Box, 3);
    ASSERT_TRUE(fieldValues.empty());
 
-   fieldValues.clear();
-   StrategyNakedTuples::collectHousesOfType(finfo, HouseType::Row, 3, fieldValues);
+   fieldValues = CollectHousesOfType(finfo, HouseType::Row, 3);
    ASSERT_EQ(fieldValues.size(), 3 * 6);
 
    TestUtils::CheckStrategy(strategy, grid, {18, 0});
@@ -231,14 +226,13 @@ TEST(StrategyNakedTuplesTest, StrategyNakedTuples_223_a)
    const FieldsInfo finfo(grid);
    // TestUtils::ShowStrategy(strategy, grid);
 
-   FieldValue::Container fieldValues;
-   StrategyNakedTuples::collectHousesOfType(finfo, HouseType::Col, 3, fieldValues);
+   auto fieldValues = CollectHousesOfType(finfo, HouseType::Col, 3);
    ASSERT_TRUE(fieldValues.empty());
 
-   StrategyNakedTuples::collectHousesOfType(finfo, HouseType::Row, 3, fieldValues);
+   fieldValues = CollectHousesOfType(finfo, HouseType::Row, 3);
    ASSERT_TRUE(fieldValues.empty());
 
-   StrategyNakedTuples::collectHousesOfType(finfo, HouseType::Box, 3, fieldValues);
+   fieldValues = CollectHousesOfType(finfo, HouseType::Box, 3);
    ASSERT_EQ(fieldValues.size(), 3 * 6);
 
    TestUtils::CheckStrategy(strategy, grid, {18, 0});
@@ -266,9 +260,9 @@ TEST(StrategyNakedTuplesTest, NakedQuartet_1)
    const FieldsInfo finfo(grid);
    // TestUtils::ShowStrategy(strategy, grid);
 
-   CollectTuplesOfSize(finfo, 2, 0);
-   CollectTuplesOfSize(finfo, 3, 0);
-   CollectTuplesOfSize(finfo, 4, 7);
+   ASSERT_EQ(CollectTupleSize(finfo, 2).size(), 0);
+   ASSERT_EQ(CollectTupleSize(finfo, 3).size(), 0);
+   ASSERT_EQ(CollectTupleSize(finfo, 4).size(), 7);
 
    TestUtils::CheckStrategy(strategy, grid, {7, 1});
 }
@@ -287,9 +281,9 @@ TEST(StrategyNakedTuplesTest, NakedQuartet_2)
    const FieldsInfo finfo(grid);
    // TestUtils::ShowStrategy(strategy, grid);
 
-   CollectTuplesOfSize(finfo, 2, 0);
-   CollectTuplesOfSize(finfo, 3, 0);
-   CollectTuplesOfSize(finfo, 4, 5 * 4 - 1);
+   ASSERT_EQ(CollectTupleSize(finfo, 2).size(), 0);
+   ASSERT_EQ(CollectTupleSize(finfo, 3).size(), 0);
+   ASSERT_EQ(CollectTupleSize(finfo, 4).size(), 5 * 4 - 1);
 
    TestUtils::CheckStrategy(strategy, grid, {19, 1});
 }
