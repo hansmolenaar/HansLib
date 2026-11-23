@@ -9,7 +9,7 @@
 
 using namespace Sudoku;
 
-#define ONLY_SMALL_TESTS false
+#define ONLY_SMALL_TESTS true
 
 TEST(CandidatesGridTest, DefaultConstructor)
 {

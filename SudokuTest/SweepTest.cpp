@@ -21,7 +21,7 @@ const std::string model_6 = "...........12.34...235.617..35...74.....3.....76...
 
 SweepHiddenSingle hiddenSingle;
 SweepNakedSingle nakedSingle;
-Sweep sweepCombined(Strategies{&nakedSingle, &hiddenSingle});
+Sweep sweep(Strategies{&nakedSingle, &hiddenSingle});
 
 } // namespace
 
@@ -78,7 +78,7 @@ TEST(SweepTest, SweepExample1)
    FieldsInfo finfo(grid);
    grid.update(finfo);
    ASSERT_EQ(grid.getNumCandidates(), 213);
-   sweepCombined.iterate(grid, finfo);
+   sweep.iterate(grid, finfo);
    ASSERT_NO_THROW(grid.checkValidSudoku());
    ASSERT_TRUE(grid.isSolved());
 }
@@ -89,7 +89,7 @@ TEST(SweepTest, SweepExample2)
    FieldsInfo finfo(grid);
    grid.update(finfo);
    ASSERT_EQ(grid.getNumCandidates(), 170);
-   sweepCombined.iterate(grid, finfo);
+   sweep.iterate(grid, finfo);
    ASSERT_NO_THROW(grid.checkValidSudoku());
    ASSERT_TRUE(grid.isSolved());
 }
@@ -100,7 +100,7 @@ TEST(SweepTest, SweepExample3)
    FieldsInfo finfo(grid);
    grid.update(finfo);
    ASSERT_EQ(grid.getNumCandidates(), 238);
-   sweepCombined.iterate(grid, finfo);
+   sweep.iterate(grid, finfo);
    ASSERT_NO_THROW(grid.checkValidSudoku());
    ASSERT_TRUE(grid.isSolved());
 }
@@ -111,7 +111,7 @@ TEST(SweepTest, SweepExample4)
    FieldsInfo finfo(grid);
    grid.update(finfo);
    ASSERT_EQ(grid.getNumCandidates(), 269);
-   sweepCombined.iterate(grid, finfo);
+   sweep.iterate(grid, finfo);
    ASSERT_NO_THROW(grid.checkValidSudoku());
    ASSERT_TRUE(grid.isSolved());
 }
@@ -122,7 +122,7 @@ TEST(SweepTest, SweepExample5)
    FieldsInfo finfo(grid);
    grid.update(finfo);
    ASSERT_EQ(grid.getNumCandidates(), 247);
-   sweepCombined.iterate(grid, finfo);
+   sweep.iterate(grid, finfo);
    ASSERT_NO_THROW(grid.checkValidSudoku());
    ASSERT_TRUE(grid.isSolved());
 }
@@ -133,7 +133,7 @@ TEST(SweepTest, SweepExample6)
    FieldsInfo finfo(grid);
    grid.update(finfo);
    ASSERT_EQ(grid.getNumCandidates(), 224);
-   sweepCombined.iterate(grid, finfo);
+   sweep.iterate(grid, finfo);
    ASSERT_NO_THROW(grid.checkValidSudoku());
    ASSERT_TRUE(grid.isSolved());
 }

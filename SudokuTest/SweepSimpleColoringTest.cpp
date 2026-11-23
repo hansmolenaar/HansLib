@@ -63,12 +63,12 @@ TEST(SweepSimpleColoringTest, BasicExample)
 
 TEST(SweepSimpleColoringTest, Sees2Colors)
 {
-   Sweep sweepCombined(Strategies::getMediumStrategies());
+   Sweep sweep(Strategies::getMediumStrategies());
 
    const std::string puzzle = "1.85..4.6....7.9..53...4..7..1.6...8.9.4.8.7.8...5.6..7..1...69..6.8....9.4..62.5";
    auto grid = CandidatesGrid::FromString(puzzle);
    FieldsInfo finfo(grid);
-   sweepCombined.iterate(grid, finfo);
+   sweep.iterate(grid, finfo);
 
    SweepSimpleColoring strategy;
    // TestUtils::ShowStrategy(strategy, grid);
@@ -85,12 +85,12 @@ TEST(SweepSimpleColoringTest, Sees2Colors)
 
 TEST(SweepSimpleColoringTest, TwiceInAUnit)
 {
-   Sweep sweepCombined(Strategies::getMediumStrategies());
+   Sweep sweep(Strategies::getMediumStrategies());
    SweepSimpleColoring sweepSimpleColoring;
    const std::string str = "2..9.....8..5.3....547.6..2..8.....9.97...42.1.....3..3..1.589....8.2..3.....7..5";
    CandidatesGrid grid = CandidatesGrid::FromString(str);
    FieldsInfo finfo(grid);
-   sweepCombined.iterate(grid, finfo);
+   sweep.iterate(grid, finfo);
 
    const Value value = 4; // 6
    const auto links = SweepSimpleColoring::getBilocationLinks(grid, finfo, value);
