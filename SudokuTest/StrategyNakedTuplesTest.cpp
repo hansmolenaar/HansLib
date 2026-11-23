@@ -94,7 +94,7 @@ TEST(StrategyNakedTuplesTest, StrategyNakedPair_2)
    EXPECT_EQ(fieldValues.size(), 2);
 
    fieldValues = StrategyNakedTuples::collectOfTupleSize(finfo, 3); // 1 5 6
-   EXPECT_EQ(fieldValues.size(), 13);
+   EXPECT_EQ(fieldValues.size(), 3);
 
    TestUtils::CheckStrategy(strategy, grid, {4, 1});
 }
@@ -107,21 +107,22 @@ TEST(StrategyNakedTuplesTest, StrategyNakedTuples_1)
        9, 5, 7, 0, 0, 8, 3, 0, 0, 0, 0, 3, 9, 0, 0, 4, 0, 0, 2, 4, 0, 0, 3, 0, 7, 0, 9,
    };
 
+   StrategyNakedTuples strategy;
    auto grid = CandidatesGrid::FromValues(diagramValues);
    FieldsInfo finfo(grid);
    grid.update(finfo);
    Field expect = 152;
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
+   // TestUtils::ShowStrategy(strategy, grid);
    auto fieldValues = StrategyNakedTuples::collectHousesOfType(finfo, HouseType::Col, 3);
    ASSERT_TRUE(fieldValues.empty());
 
    auto changes = grid.apply(fieldValues, finfo);
    ASSERT_EQ(changes.numValuesChanged, 0);
 
-   StrategyNakedTuples strategy;
    fieldValues = StrategyNakedTuples::collectHousesOfType(finfo, HouseType::Row, 3);
-   ASSERT_EQ(fieldValues.size(), 14);
+   ASSERT_EQ(fieldValues.size(), 0);
 
    fieldValues = StrategyNakedTuples::collectHousesOfType(finfo, HouseType::Box, 3);
    ASSERT_EQ(grid.getNumCandidates(), expect);

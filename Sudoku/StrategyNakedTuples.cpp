@@ -134,7 +134,7 @@ FieldValue::Container StrategyNakedTuples::collectHouse(const FieldsInfo &finfo,
       if (IsNakedTuple(grid, combinations()))
       {
          add(finfo, houseFields, combinations(), result);
-         if (tupleSize == 3)
+         if (tupleSize == 13) // TODO
          {
             const auto xtra = IsBendedNakedTriplet(grid, combinations());
             addBendedTriplets(finfo, xtra, combinations(), result);

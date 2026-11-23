@@ -52,11 +52,12 @@ void TestUtils::CheckStrategyInterface(Sudoku::IStrategy &strategy)
 void TestUtils::CheckStrategy(Sudoku::IStrategy &strategy, const Sudoku::CandidatesGrid &grid,
                               const Sudoku::GridChange &expect)
 {
-   Sweep sweep({&strategy});
+   Sweep sweep(&strategy);
    for (auto eqv : CandidatesGrid::getSymmetricEquivalents(grid))
    {
       FieldsInfo finfo(eqv);
       const auto fvs = strategy.collect(finfo);
+      CheckFieldValues(eqv, fvs);
       ASSERT_EQ(fvs.size(), expect.numValuesChanged);
       auto numCandidates = finfo.getGrid().getNumCandidates();
       const auto changes = sweep.singleSweep(eqv, finfo);
@@ -71,7 +72,7 @@ void TestUtils::ShowStrategy(Sudoku::IStrategy &strategy, const Sudoku::Candidat
 {
    CandidatesGrid grid = gridIn;
    FieldsInfo finfo(grid);
-   Sweep sweep({&strategy});
+   Sweep sweep(&strategy);
    auto prv = grid;
    auto fvs = strategy.collect(finfo);
    auto changes = sweep.singleSweep(grid, finfo);
