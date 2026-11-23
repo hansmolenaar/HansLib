@@ -3,6 +3,7 @@
 #include "CandidatesGrid.h"
 #include "Cell.h"
 #include "FieldsInfo.h"
+#include "Sweep.h"
 #include "SweepHiddenTuple.h"
 #include "TestUtils.h"
 
@@ -106,7 +107,8 @@ TEST(SweepHidddenTupleTest, SweepExample1)
 
    grid.update(finfo);
    TestUtils::CheckFieldInfo(finfo);
-   SweepHiddenSingle().sweep(grid, finfo);
+   SweepHiddenSingle strategy;
+   Sweep(&strategy).singleSweep(grid, finfo);
    TestUtils::CheckFieldInfo(finfo);
    grid.update(finfo);
    TestUtils::CheckFieldInfo(finfo);

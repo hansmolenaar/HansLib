@@ -8,6 +8,7 @@
 #include "StreamUtils.h"
 #include "SudokuDefines.h"
 #include "SudokuUtils.h"
+#include "Sweep.h"
 #include "SweepNakedSingle.h"
 
 #include <algorithm>
@@ -182,8 +183,8 @@ void CandidatesGrid::setGiven(Index row, Index col, Value value)
 
 void CandidatesGrid::update(FieldsInfo &finfo)
 {
-   SweepNakedSingle sweeper;
-   ISweep::iterate(sweeper, *this, finfo);
+   SweepNakedSingle strategy;
+   Sweep(&strategy).iterate(*this, finfo);
 }
 
 void CandidatesGrid::checkValidSudoku() const

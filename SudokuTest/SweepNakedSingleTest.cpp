@@ -5,6 +5,7 @@
 #include "Cell.h"
 #include "FieldsInfo.h"
 #include "House.h"
+#include "Sweep.h"
 #include "SweepNakedSingle.h"
 #include "TestUtils.h"
 
@@ -31,7 +32,8 @@ TEST(SweepNakedSingleTest, RowSimple)
    ASSERT_TRUE(collected.contains({0, 8}));
    ASSERT_EQ(collected.size(), 104);
 
-   SweepNakedSingle().sweep(grid, finfo);
+   SweepNakedSingle strategy;
+   Sweep(&strategy).singleSweep(grid, finfo);
    TestUtils::CheckFieldInfo(finfo);
    ASSERT_EQ(grid[0].tryGetSolvedValue().value(), 1);
 }
@@ -51,7 +53,8 @@ TEST(SweepNakedSingleTest, ColSimple)
    }
 
    FieldsInfo finfo(grid);
-   SweepNakedSingle().sweep(grid, finfo);
+   SweepNakedSingle strategy;
+   Sweep(&strategy).singleSweep(grid, finfo);
    ASSERT_EQ(grid[cell.field].tryGetSolvedValue().value(), row + 1);
 }
 
@@ -75,7 +78,8 @@ TEST(SweepNakedSingleTest, BoxSimple)
    }
 
    finfo.update();
-   SweepNakedSingle().sweep(grid, finfo);
+   SweepNakedSingle strategy;
+   Sweep(&strategy).singleSweep(grid, finfo);
    ASSERT_EQ(grid[fieldToSkip].tryGetSolvedValue().value(), 9);
 }
 
@@ -95,9 +99,10 @@ TEST(SweepNakedSingleTest, SweepExample1)
    grid.setGiven(6, 2, 6);
 
    FieldsInfo finfo(grid);
+   SweepNakedSingle strategy;
    for (int s = 0; s < 10; ++s)
    {
-      SweepNakedSingle().sweep(grid, finfo);
+      Sweep(&strategy).singleSweep(grid, finfo);
       TestUtils::CheckFieldInfo(finfo);
    }
    ASSERT_EQ(grid.getNumCandidates(), 463);

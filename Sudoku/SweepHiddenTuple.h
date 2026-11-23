@@ -1,13 +1,13 @@
 #pragma once
 
 #include "House.h"
-#include "ISweep.h"
+#include "IStrategy.h"
 #include "SudokuDefines.h"
 
 namespace Sudoku
 {
 
-class SweepHiddenTuple : public ISweep
+class SweepHiddenTuple : public IStrategy
 {
  public:
    FieldValue::Container collect(const FieldsInfo &) override;
@@ -18,7 +18,7 @@ class SweepHiddenTuple : public ISweep
 
 }; // namespace SweepHiddenTuple
 
-class SweepHiddenSingle : public ISweep
+class SweepHiddenSingle : public IStrategy
 {
  public:
    FieldValue::Container collect(const FieldsInfo &) override;

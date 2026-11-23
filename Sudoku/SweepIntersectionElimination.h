@@ -1,13 +1,13 @@
 #pragma once
 
 #include "House.h"
-#include "ISweep.h"
+#include "IStrategy.h"
 #include <optional>
 
 namespace Sudoku
 {
 // In TryGetIntersectionHouse
-class SweepIntersectionElimination : public ISweep
+class SweepIntersectionElimination : public IStrategy
 {
  public:
    FieldValue::Container collect(const FieldsInfo &) override;

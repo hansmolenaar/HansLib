@@ -1,7 +1,7 @@
 #pragma once
 
 #include "House.h"
-#include "ISweep.h"
+#include "IStrategy.h"
 #include "LockedPairs.h"
 #include <optional>
 #include <span>
@@ -18,7 +18,7 @@ struct XWing
    House house1;
 };
 
-class SweepXWing : public ISweep
+class SweepXWing : public IStrategy
 {
  public:
    FieldValue::Container collect(const FieldsInfo &) override;

@@ -4,7 +4,6 @@
 #include "Cell.h"
 #include "FieldsInfo.h"
 #include "House.h"
-#include "ISweep.h"
 #include "SudokuDefines.h"
 #include "Sweep.h"
 #include "SweepNakedTuples.h"
@@ -21,7 +20,7 @@ TEST(SweepNakedTuplesTest, Strategy)
 TEST(SweepNakedTuplesTest, Pair_1)
 {
    SweepNakedTuples strategy;
-   Sweep sweep({&strategy});
+   Sweep sweep(&strategy);
    CandidatesGrid grid;
 
    grid.setCandidates(Cell::rowCol2Field(0, 0), {1, 2});
@@ -43,7 +42,7 @@ TEST(SweepNakedTuplesTest, Pair_1)
 TEST(SweepNakedTuplesTest, NakedPair_2)
 {
    SweepNakedTuples strategy;
-   Sweep sweep({&strategy});
+   Sweep sweep(&strategy);
    CandidatesGrid grid;
    grid.setCandidates(Cell::rowCol2Field(0, 0), {2, 3});
    grid.setCandidates(Cell::rowCol2Field(1, 1), {3, 2});
@@ -65,7 +64,7 @@ TEST(SweepNakedTuplesTest, NakedPair_2)
 TEST(SweepNakedTuplesTest, SweepNakedPair_2)
 {
    SweepNakedTuples strategy;
-   Sweep sweep({&strategy});
+   Sweep sweep(&strategy);
    CandidatesGrid grid;
    const Index row = 8;
    grid.setGiven(row, 2, 4);
@@ -130,7 +129,7 @@ TEST(SweepNakedTuplesTest, SweepNakedTuples_1)
    fieldValues = SweepNakedTuples::collectHousesOfType(finfo, HouseType::Col, 2);
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
-   Sweep sweep({&strategy});
+   Sweep sweep(&strategy);
    TestUtils::CheckStrategy(strategy, grid, {13, 1});
 }
 

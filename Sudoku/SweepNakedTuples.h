@@ -1,14 +1,14 @@
 #pragma once
 
 #include "House.h"
-#include "ISweep.h"
+#include "IStrategy.h"
 
 namespace Sudoku
 {
 
 class FieldsInfo;
 
-class SweepNakedTuples : public ISweep
+class SweepNakedTuples : public IStrategy
 {
  public:
    static FieldValue::Container collectOfTupleSize(const FieldsInfo &, Index);

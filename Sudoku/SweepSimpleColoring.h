@@ -1,7 +1,7 @@
 #pragma once
 
 #include "FieldValue.h"
-#include "ISweep.h"
+#include "IStrategy.h"
 #include "Link.h"
 
 #include <vector>
@@ -12,7 +12,7 @@ class CandidatesGrid;
 class ColorField;
 class FieldsInfo;
 
-class SweepSimpleColoring : public ISweep
+class SweepSimpleColoring : public IStrategy
 {
  public:
    FieldValue::Container collect(const FieldsInfo &) override;

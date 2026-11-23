@@ -1,11 +1,11 @@
 #pragma once
 
-#include "ISweep.h"
+#include "IStrategy.h"
 
 namespace Sudoku
 {
 
-class SweepNakedSingle : public ISweep
+class SweepNakedSingle : public IStrategy
 {
  public:
    FieldValue::Container collect(const FieldsInfo &) override;
