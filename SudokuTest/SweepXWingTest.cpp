@@ -39,6 +39,10 @@ TEST(SweepXWingTest, Basics)
    auto expect = 589;
    ASSERT_EQ(expect, grid.getNumCandidates());
 
+   SweepXWing strategy;
+   // TestUtils::ShowStrategy(strategy, grid);
+   TestUtils::CheckStrategy(strategy, grid, {14, 0});
+
    FieldsInfo finfo(grid);
    grid.update(finfo);
    expect -= 142;

@@ -58,7 +58,10 @@ void TestUtils::CheckStrategy(Sudoku::IStrategy &strategy, const Sudoku::Candida
       FieldsInfo finfo(eqv);
       const auto fvs = strategy.collect(finfo);
       ASSERT_EQ(fvs.size(), expect.numValuesChanged);
+      auto numCandidates = finfo.getGrid().getNumCandidates();
       const auto changes = sweep.singleSweep(eqv, finfo);
+      numCandidates -= finfo.getGrid().getNumCandidates();
+      ASSERT_EQ(changes.numValuesChanged, numCandidates);
       ASSERT_EQ(changes.numValuesChanged, expect.numValuesChanged);
       ASSERT_EQ(changes.numFieldsSolved, expect.numFieldsSolved);
    }
