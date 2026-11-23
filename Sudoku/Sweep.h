@@ -1,9 +1,7 @@
 #pragma once
 
 #include "GridChange.h"
-#include <initializer_list>
-#include <span>
-#include <vector>
+#include "Strategies.h"
 
 namespace Sudoku
 {
@@ -14,15 +12,15 @@ class FieldsInfo;
 class Sweep
 {
  public:
-   Sweep(std::initializer_list<IStrategy *>);
-   Sweep(std::span<IStrategy *>);
+   explicit Sweep(IStrategy *);
+   explicit Sweep(Strategies &&);
 
    GridChange singleSweep(CandidatesGrid &, FieldsInfo &) const;
    bool singleSweepAndUpdate(CandidatesGrid &, FieldsInfo &) const;
    bool iterate(CandidatesGrid &, FieldsInfo &);
 
  private:
-   std::vector<IStrategy *> m_strategies;
+   Strategies m_strategies;
 };
 
 } // namespace Sudoku
