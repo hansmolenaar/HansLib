@@ -142,9 +142,9 @@ boost::container::static_vector<BendedNakedTripleResult, 3> IsBendedNakedTriplet
 
 } // namespace
 
-FieldValue::Container StrategyNakedTuples::collectHouse(const FieldsInfo &finfo, const House &house, Index tupleSize)
+void StrategyNakedTuples::collectHouse(const FieldsInfo &finfo, const House &house, Index tupleSize,
+                                       FieldValue::Container &result)
 {
-   FieldValue::Container result;
    const CandidatesGrid &grid = finfo.getGrid();
 
    const FieldBits houseFields = finfo.getHouseFields(house);
@@ -160,7 +160,7 @@ FieldValue::Container StrategyNakedTuples::collectHouse(const FieldsInfo &finfo,
 
    if (activeFields.size() < tupleSize)
    {
-      return result;
+      return;
    }
 
    Combinations<Field> combinations(activeFields, tupleSize);
@@ -176,38 +176,31 @@ FieldValue::Container StrategyNakedTuples::collectHouse(const FieldsInfo &finfo,
          }
       }
    } while (combinations.next());
-
-   return result;
 }
 
-FieldValue::Container StrategyNakedTuples::collectHousesOfType(const FieldsInfo &finfo, HouseType type, Index tupleSize)
+void StrategyNakedTuples::collectHousesOfType(const FieldsInfo &finfo, HouseType type, Index tupleSize,
+                                              FieldValue::Container &result)
 {
-   FieldValue::Container result;
    for (Index idx : IndexAll)
    {
       const House house{type, idx};
-      const auto fieldValuesHouse = collectHouse(finfo, house, tupleSize);
-      result.insert(fieldValuesHouse.begin(), fieldValuesHouse.end());
+      collectHouse(finfo, house, tupleSize, result);
    }
-   return result;
 }
 
-FieldValue::Container StrategyNakedTuples::collectOfTupleSize(const FieldsInfo &finfo, Index tupleSize)
+void StrategyNakedTuples::collectOfTupleSize(const FieldsInfo &finfo, Index tupleSize, FieldValue::Container &result)
 {
-   FieldValue::Container result;
    for (HouseType type : HouseTypeAll)
    {
-      const auto fieldValuesHouseType = collectHousesOfType(finfo, type, tupleSize);
-      result.insert(fieldValuesHouseType.begin(), fieldValuesHouseType.end());
+      collectHousesOfType(finfo, type, tupleSize, result);
    }
-   return result;
 }
 
 bool StrategyNakedTuples::collect(const FieldsInfo &finfo, FieldValue::Container &result)
 {
    const auto size = result.size();
-   FieldValue::add(collectOfTupleSize(finfo, 2), result);
-   FieldValue::add(collectOfTupleSize(finfo, 3), result);
-   FieldValue::add(collectOfTupleSize(finfo, 4), result);
+   collectOfTupleSize(finfo, 2, result);
+   collectOfTupleSize(finfo, 3, result);
+   collectOfTupleSize(finfo, 4, result);
    return size != result.size();
 }

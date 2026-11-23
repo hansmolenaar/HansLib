@@ -11,9 +11,9 @@ class FieldsInfo;
 class StrategyNakedTuples : public IStrategy
 {
  public:
-   static FieldValue::Container collectOfTupleSize(const FieldsInfo &, Index);
-   static FieldValue::Container collectHousesOfType(const FieldsInfo &, HouseType, Index);
-   static FieldValue::Container collectHouse(const FieldsInfo &, const House &, Index);
+   static void collectOfTupleSize(const FieldsInfo &, Index, FieldValue::Container &);
+   static void collectHousesOfType(const FieldsInfo &, HouseType, Index, FieldValue::Container &);
+   static void collectHouse(const FieldsInfo &, const House &, Index, FieldValue::Container &);
    bool collect(const FieldsInfo &, FieldValue::Container &) override;
 };
 

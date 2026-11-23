@@ -12,8 +12,8 @@ class StrategyHiddenTuple : public IStrategy
  public:
    bool collect(const FieldsInfo &, FieldValue::Container &) override;
 
-   static FieldValue::Container collectHouse(const FieldsInfo &, const House &, Index);
-   static FieldValue::Container collectTuplesOfSize(const FieldsInfo &, Index);
+   static void collectHouse(const FieldsInfo &, const House &, Index, FieldValue::Container &);
+   static void collectTuplesOfSize(const FieldsInfo &, Index, FieldValue::Container &);
    // TODO static FieldValue::Container collect(const FieldsInfo &);
 
 }; // namespace StrategyHiddenTuple

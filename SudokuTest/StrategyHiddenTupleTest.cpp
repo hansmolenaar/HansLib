@@ -40,18 +40,18 @@ TEST(StrategyHidddenTupleTest, Pair)
    Field expect = 658;
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
-   FieldValue::Container fieldsValues;
-   fieldsValues = StrategyHiddenTuple::collectTuplesOfSize(finfo, 3);
-   ASSERT_TRUE(fieldsValues.empty());
-   fieldsValues = StrategyHiddenTuple::collectTuplesOfSize(finfo, 3);
-   ASSERT_TRUE(fieldsValues.empty());
+   FieldValue::Container fieldValues;
+   StrategyHiddenTuple::collectTuplesOfSize(finfo, 3, fieldValues);
+   ASSERT_TRUE(fieldValues.empty());
+   StrategyHiddenTuple::collectTuplesOfSize(finfo, 3, fieldValues);
+   ASSERT_TRUE(fieldValues.empty());
 
-   fieldsValues = StrategyHiddenTuple::collectTuplesOfSize(finfo, 1);
-   ASSERT_TRUE(fieldsValues.empty());
+   StrategyHiddenTuple::collectTuplesOfSize(finfo, 1, fieldValues);
+   ASSERT_TRUE(fieldValues.empty());
 
-   fieldsValues = StrategyHiddenTuple::collectTuplesOfSize(finfo, 2);
-   TestUtils::CheckFieldValues(grid, fieldsValues);
-   ASSERT_EQ(fieldsValues.size(), 8);
+   StrategyHiddenTuple::collectTuplesOfSize(finfo, 2, fieldValues);
+   TestUtils::CheckFieldValues(grid, fieldValues);
+   ASSERT_EQ(fieldValues.size(), 8);
 
    StrategyHiddenSingle strategy1;
    TestUtils::CheckStrategy(strategy1, grid, {0, 0});
@@ -93,16 +93,16 @@ TEST(StrategyHidddenTupleTest, SweepExample1)
    TestUtils::CheckFieldInfo(finfo);
    auto expect = grid.getNumCandidates();
 
-   FieldValue::Container fieldsValues;
-   fieldsValues = StrategyHiddenTuple::collectTuplesOfSize(finfo, 1);
-   TestUtils::CheckFieldValues(grid, fieldsValues);
-   ASSERT_EQ(fieldsValues.size(), 16);
+   FieldValue::Container fieldValues;
+   StrategyHiddenTuple::collectTuplesOfSize(finfo, 1, fieldValues);
+   TestUtils::CheckFieldValues(grid, fieldValues);
+   ASSERT_EQ(fieldValues.size(), 16);
 
-   auto changes = grid.apply(fieldsValues, finfo);
+   auto changes = grid.apply(fieldValues, finfo);
    TestUtils::CheckFieldInfo(finfo);
-   ASSERT_EQ(changes.numValuesChanged, fieldsValues.size());
+   ASSERT_EQ(changes.numValuesChanged, fieldValues.size());
    ASSERT_EQ(changes.numFieldsSolved, 5);
-   expect -= fieldsValues.size();
+   expect -= fieldValues.size();
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
    grid.update(finfo);
@@ -193,7 +193,8 @@ TEST(StrategyHidddenTupleTest, Triple_322)
 
    StrategyHiddenTuple strategy;
    FieldsInfo finfo(grid);
-   const auto fieldValues = strategy.collectTuplesOfSize(finfo, 3);
+   FieldValue::Container fieldValues;
+   strategy.collectTuplesOfSize(finfo, 3, fieldValues);
    ASSERT_EQ(fieldValues.size(), 3 * 6);
 
    // TestUtils::ShowStrategy(strategy, grid);
