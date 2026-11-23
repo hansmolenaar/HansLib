@@ -34,7 +34,7 @@ bool Sweep::singleSweepAndUpdate(CandidatesGrid &grid, FieldsInfo &finfo) const
    const auto changes = singleSweep(grid, finfo);
    if (changes.numFieldsSolved > 0)
    {
-      SweepNakedSingle strategyNakedSingles;
+      StrategyNakedSingle strategyNakedSingles;
       Sweep sweepSingles(Strategies{&strategyNakedSingles});
       sweepSingles.iterate(grid, finfo);
    }

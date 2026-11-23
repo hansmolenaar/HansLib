@@ -12,13 +12,13 @@
 using namespace Sudoku;
 using namespace Utilities;
 
-TEST(SweepNakedSingleTest, Strategy)
+TEST(StrategyNakedSingleTest, Strategy)
 {
-   SweepNakedSingle strategy;
+   StrategyNakedSingle strategy;
    TestUtils::CheckStrategyInterface(strategy);
 }
 
-TEST(SweepNakedSingleTest, RowSimple)
+TEST(StrategyNakedSingleTest, RowSimple)
 {
    CandidatesGrid grid;
    for (Field f = 1; f < NumIndex; ++f)
@@ -28,17 +28,17 @@ TEST(SweepNakedSingleTest, RowSimple)
    }
 
    FieldsInfo finfo(grid);
-   const auto collected = SweepNakedSingle().collect(finfo);
+   const auto collected = StrategyNakedSingle().collect(finfo);
    ASSERT_TRUE(collected.contains({0, 8}));
    ASSERT_EQ(collected.size(), 104);
 
-   SweepNakedSingle strategy;
+   StrategyNakedSingle strategy;
    Sweep(&strategy).singleSweep(grid, finfo);
    TestUtils::CheckFieldInfo(finfo);
    ASSERT_EQ(grid[0].tryGetSolvedValue().value(), 1);
 }
 
-TEST(SweepNakedSingleTest, ColSimple)
+TEST(StrategyNakedSingleTest, ColSimple)
 {
    const Index row = 6;
    const Index col = 3;
@@ -53,12 +53,12 @@ TEST(SweepNakedSingleTest, ColSimple)
    }
 
    FieldsInfo finfo(grid);
-   SweepNakedSingle strategy;
+   StrategyNakedSingle strategy;
    Sweep(&strategy).singleSweep(grid, finfo);
    ASSERT_EQ(grid[cell.field].tryGetSolvedValue().value(), row + 1);
 }
 
-TEST(SweepNakedSingleTest, BoxSimple)
+TEST(StrategyNakedSingleTest, BoxSimple)
 {
    const Index row = 6;
    const Index col = 3;
@@ -78,12 +78,12 @@ TEST(SweepNakedSingleTest, BoxSimple)
    }
 
    finfo.update();
-   SweepNakedSingle strategy;
+   StrategyNakedSingle strategy;
    Sweep(&strategy).singleSweep(grid, finfo);
    ASSERT_EQ(grid[fieldToSkip].tryGetSolvedValue().value(), 9);
 }
 
-TEST(SweepNakedSingleTest, SweepExample1)
+TEST(StrategyNakedSingleTest, SweepExample1)
 {
    CandidatesGrid grid;
 
@@ -99,7 +99,7 @@ TEST(SweepNakedSingleTest, SweepExample1)
    grid.setGiven(6, 2, 6);
 
    FieldsInfo finfo(grid);
-   SweepNakedSingle strategy;
+   StrategyNakedSingle strategy;
    for (int s = 0; s < 10; ++s)
    {
       Sweep(&strategy).singleSweep(grid, finfo);

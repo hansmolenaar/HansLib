@@ -6,7 +6,7 @@
 using namespace Sudoku;
 using namespace Utilities;
 
-std::set<FieldValue> SweepNakedSingle::collect(const FieldsInfo &finfo)
+std::set<FieldValue> StrategyNakedSingle::collect(const FieldsInfo &finfo)
 {
    FieldValue::Container result;
    const auto &solvedFields = finfo.getSolvedFields();

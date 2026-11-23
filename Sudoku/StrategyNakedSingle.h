@@ -5,7 +5,7 @@
 namespace Sudoku
 {
 
-class SweepNakedSingle : public IStrategy
+class StrategyNakedSingle : public IStrategy
 {
  public:
    FieldValue::Container collect(const FieldsInfo &) override;

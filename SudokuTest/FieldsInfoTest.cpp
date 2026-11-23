@@ -142,6 +142,6 @@ TEST(VisibilityTest, Update)
    grid.setGiven(7, 7, 5);
 
    FieldsInfo finfo(grid);
-   const auto fieldValues = SweepNakedSingle().collect(finfo);
+   const auto fieldValues = StrategyNakedSingle().collect(finfo);
    grid.apply(fieldValues, finfo);
 }

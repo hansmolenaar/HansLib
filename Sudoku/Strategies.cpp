@@ -27,7 +27,7 @@ constexpr size_t numHardSweepers = 2;
 
 std::array<IStrategy *, numSimpleSweepers> getSimple()
 {
-   static SweepNakedSingle sweepNakedSingle;
+   static StrategyNakedSingle sweepNakedSingle;
    static SweepHiddenSingle sweepHiddenSingle;
    static std::array<IStrategy *, numSimpleSweepers> simple{&sweepNakedSingle, &sweepHiddenSingle};
    return simple;

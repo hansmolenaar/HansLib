@@ -183,7 +183,7 @@ void CandidatesGrid::setGiven(Index row, Index col, Value value)
 
 void CandidatesGrid::update(FieldsInfo &finfo)
 {
-   SweepNakedSingle strategy;
+   StrategyNakedSingle strategy;
    Sweep(&strategy).iterate(*this, finfo);
 }
 

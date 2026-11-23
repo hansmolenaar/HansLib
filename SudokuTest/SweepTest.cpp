@@ -20,14 +20,14 @@ const std::string model_5 = "1..2..3......4..5...6..7..82.....7...5..1..4...7...
 const std::string model_6 = "...........12.34...235.617..35...74.....3.....76...82..143.825...87.23...........";
 
 SweepHiddenSingle hiddenSingle;
-SweepNakedSingle nakedSingle;
+StrategyNakedSingle nakedSingle;
 Sweep sweep(Strategies{&nakedSingle, &hiddenSingle});
 
 } // namespace
 
 TEST(SweepTest, SingleSweep)
 {
-   SweepNakedSingle strategy;
+   StrategyNakedSingle strategy;
    Sweep sweep(&strategy);
    CandidatesGrid grid;
    grid.setGiven(80, 9);
@@ -40,7 +40,7 @@ TEST(SweepTest, SingleSweep)
 
 TEST(SweepTest, SingleSweepAndUpdate)
 {
-   SweepNakedSingle strategy;
+   StrategyNakedSingle strategy;
    Sweep sweep(&strategy);
    CandidatesGrid grid;
    grid.setCandidates(0, {1});
@@ -56,7 +56,7 @@ TEST(SweepTest, SingleSweepAndUpdate)
 
 TEST(SweepTest, Iterate)
 {
-   SweepNakedSingle strategy;
+   StrategyNakedSingle strategy;
    Sweep sweep(&strategy);
    CandidatesGrid grid;
    grid.setCandidates(0, {1});
