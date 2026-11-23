@@ -2,7 +2,7 @@
 
 #include "CandidatesGrid.h"
 #include "FieldsInfo.h"
-#include "SweepIntersectionElimination.h"
+#include "StrategyIntersectionElimination.h"
 #include "TestUtils.h"
 
 using namespace Sudoku;

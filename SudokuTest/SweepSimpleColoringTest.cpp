@@ -6,10 +6,10 @@
 #include "GridChange.h"
 #include "Network.h"
 #include "Single.h"
+#include "StrategySimpleColoring.h"
 #include "SudokuDefines.h"
 #include "SudokuUtils.h"
 #include "Sweep.h"
-#include "SweepSimpleColoring.h"
 #include "TestUtils.h"
 
 using namespace Sudoku;

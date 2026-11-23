@@ -3,8 +3,8 @@
 #include "CandidatesGrid.h"
 #include "Cell.h"
 #include "FieldsInfo.h"
+#include "StrategyHiddenTuple.h"
 #include "Sweep.h"
-#include "SweepHiddenTuple.h"
 #include "TestUtils.h"
 
 using namespace Sudoku;

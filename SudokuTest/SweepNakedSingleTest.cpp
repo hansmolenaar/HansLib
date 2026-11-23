@@ -5,8 +5,8 @@
 #include "Cell.h"
 #include "FieldsInfo.h"
 #include "House.h"
+#include "StrategyNakedSingle.h"
 #include "Sweep.h"
-#include "SweepNakedSingle.h"
 #include "TestUtils.h"
 
 using namespace Sudoku;

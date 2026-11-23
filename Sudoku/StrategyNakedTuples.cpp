@@ -1,4 +1,4 @@
-#include "SweepNakedTuples.h"
+#include "StrategyNakedTuples.h"
 #include "BitsetUtils.h"
 #include "CandidatesGrid.h"
 #include "Combinations.h"

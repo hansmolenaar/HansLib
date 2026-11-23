@@ -1,4 +1,4 @@
-#include "SweepXWing.h"
+#include "StrategyXWing.h"
 #include "CandidatesGrid.h"
 #include "Combinations.h"
 #include "LockedPairs.h"

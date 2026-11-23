@@ -1,4 +1,4 @@
-#include "SweepNakedSingle.h"
+#include "StrategyNakedSingle.h"
 #include "CandidatesGrid.h"
 #include "FieldsInfo.h"
 #include "SudokuUtils.h"

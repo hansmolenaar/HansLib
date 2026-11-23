@@ -1,4 +1,4 @@
-#include "SweepIntersectionElimination.h"
+#include "StrategyIntersectionElimination.h"
 #include "CandidatesGrid.h"
 #include "FieldsInfo.h"
 #include "MyAssert.h"

@@ -2,9 +2,9 @@
 
 #include "CandidatesGrid.h"
 #include "FieldsInfo.h"
+#include "StrategyHiddenTuple.h"
+#include "StrategyNakedSingle.h"
 #include "Sweep.h"
-#include "SweepHiddenTuple.h"
-#include "SweepNakedSingle.h"
 
 using namespace Sudoku;
 

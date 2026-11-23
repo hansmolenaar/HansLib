@@ -1,4 +1,4 @@
-#include "SweepHiddenTuple.h"
+#include "StrategyHiddenTuple.h"
 #include "BitsetUtils.h"
 #include "CandidatesGrid.h"
 #include "Combinations.h"

@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "CandidatesGrid.h"
-#include "SweepXWing.h"
+#include "StrategyXWing.h"
 #include "TestUtils.h"
 
 using namespace Sudoku;

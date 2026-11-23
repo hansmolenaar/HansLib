@@ -2,7 +2,7 @@
 #include "CandidatesGrid.h"
 #include "GridChange.h"
 #include "IStrategy.h"
-#include "SweepNakedSingle.h"
+#include "StrategyNakedSingle.h"
 
 using namespace Sudoku;
 

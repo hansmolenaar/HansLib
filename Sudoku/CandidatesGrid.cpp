@@ -5,11 +5,11 @@
 #include "FieldsInfo.h"
 #include "House.h"
 #include "MyAssert.h"
+#include "StrategyNakedSingle.h"
 #include "StreamUtils.h"
 #include "SudokuDefines.h"
 #include "SudokuUtils.h"
 #include "Sweep.h"
-#include "SweepNakedSingle.h"
 
 #include <algorithm>
 #include <iostream>

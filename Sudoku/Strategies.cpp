@@ -1,11 +1,11 @@
 #include "Strategies.h"
 
-#include "SweepHiddenTuple.h"
-#include "SweepIntersectionElimination.h"
-#include "SweepNakedSingle.h"
-#include "SweepNakedTuples.h"
-#include "SweepSimpleColoring.h"
-#include "SweepXWing.h"
+#include "StrategyHiddenTuple.h"
+#include "StrategyIntersectionElimination.h"
+#include "StrategyNakedSingle.h"
+#include "StrategyNakedTuples.h"
+#include "StrategySimpleColoring.h"
+#include "StrategyXWing.h"
 using namespace Sudoku;
 
 namespace

@@ -1,4 +1,4 @@
-#include "SweepSimpleColoring.h"
+#include "StrategySimpleColoring.h"
 #include "CandidatesGrid.h"
 #include "ColorField.h"
 #include "FieldsInfo.h"
