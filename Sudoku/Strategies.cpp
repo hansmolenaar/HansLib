@@ -21,40 +21,40 @@ auto concat_arrays(const std::array<T, N> &a, const std::array<T, M> &b)
    return r;
 }
 
-constexpr size_t numSimpleSweepers = 2;
-constexpr size_t numMediumSweepers = 3;
-constexpr size_t numHardSweepers = 2;
+constexpr size_t numSimpleStrategies = 2;
+constexpr size_t numMediumStrategies = 3;
+constexpr size_t numHardStrategies = 2;
 
-std::array<IStrategy *, numSimpleSweepers> getSimple()
+std::array<IStrategy *, numSimpleStrategies> getSimple()
 {
-   static StrategyNakedSingle sweepNakedSingle;
-   static StrategyHiddenSingle sweepHiddenSingle;
-   static std::array<IStrategy *, numSimpleSweepers> simple{&sweepNakedSingle, &sweepHiddenSingle};
+   static StrategyNakedSingle strategyNakedSingle;
+   static StrategyHiddenSingle strategyHiddenSingle;
+   static std::array<IStrategy *, numSimpleStrategies> simple{&strategyNakedSingle, &strategyHiddenSingle};
    return simple;
 }
 
-std::array<IStrategy *, numSimpleSweepers + numMediumSweepers> getMedium()
+std::array<IStrategy *, numSimpleStrategies + numMediumStrategies> getMedium()
 {
-   static StrategyNakedTuples sweepNakedTuples;
-   static StrategyHiddenTuple sweepHiddenTuple;
-   static StrategyIntersectionElimination sweepIntersectionElimination;
-   static std::array<IStrategy *, numMediumSweepers> mediumOnly{
-       &sweepNakedTuples,
-       &sweepHiddenTuple,
-       &sweepIntersectionElimination,
+   static StrategyNakedTuples strategyNakedTuples;
+   static StrategyHiddenTuple strategyHiddenTuple;
+   static StrategyIntersectionElimination strategyIntersectionElimination;
+   static std::array<IStrategy *, numMediumStrategies> mediumOnly{
+       &strategyNakedTuples,
+       &strategyHiddenTuple,
+       &strategyIntersectionElimination,
    };
-   static std::array<IStrategy *, numSimpleSweepers + numMediumSweepers> medium =
-       concat_arrays<IStrategy *, numSimpleSweepers, numMediumSweepers>(getSimple(), mediumOnly);
+   static std::array<IStrategy *, numSimpleStrategies + numMediumStrategies> medium =
+       concat_arrays<IStrategy *, numSimpleStrategies, numMediumStrategies>(getSimple(), mediumOnly);
    return medium;
 }
 
-std::array<IStrategy *, numSimpleSweepers + numMediumSweepers + numHardSweepers> getHard()
+std::array<IStrategy *, numSimpleStrategies + numMediumStrategies + numHardStrategies> getHard()
 {
-   static StrategyXWing sweepXWing;
-   static StrategySimpleColoring sweepSimpleColoring;
-   static std::array<IStrategy *, numHardSweepers> hardOnly{&sweepXWing, &sweepSimpleColoring};
-   static std::array<IStrategy *, numSimpleSweepers + numMediumSweepers + numHardSweepers> hard =
-       concat_arrays<IStrategy *, numSimpleSweepers + numMediumSweepers, numHardSweepers>(getMedium(), hardOnly);
+   static StrategyXWing strategyXWing;
+   static StrategySimpleColoring strategySimpleColoring;
+   static std::array<IStrategy *, numHardStrategies> hardOnly{&strategyXWing, &strategySimpleColoring};
+   static std::array<IStrategy *, numSimpleStrategies + numMediumStrategies + numHardStrategies> hard =
+       concat_arrays<IStrategy *, numSimpleStrategies + numMediumStrategies, numHardStrategies>(getMedium(), hardOnly);
    return hard;
 }
 }; // namespace
@@ -74,21 +74,21 @@ std::span<IStrategy *const> Strategies::get() const
 
 Strategies Strategies::getSimpleStrategies()
 {
-   static auto s_sweepers = getSimple();
-   static Strategies strategies(s_sweepers);
+   static auto s_strategies = getSimple();
+   static Strategies strategies(s_strategies);
    return strategies;
 }
 
 Strategies Strategies::getMediumStrategies()
 {
-   static auto s_sweepers = getMedium();
-   static Strategies strategies(s_sweepers);
+   static auto s_strategies = getMedium();
+   static Strategies strategies(s_strategies);
    return strategies;
 }
 
 Strategies Strategies::getAllStrategies()
 {
-   static auto s_sweepers = getHard();
-   static Strategies strategies(s_sweepers);
+   static auto s_strategies = getHard();
+   static Strategies strategies(s_strategies);
    return strategies;
 }

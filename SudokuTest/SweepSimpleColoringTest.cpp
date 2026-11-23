@@ -86,7 +86,7 @@ TEST(StrategySimpleColoringTest, Sees2Colors)
 TEST(StrategySimpleColoringTest, TwiceInAUnit)
 {
    Sweep sweep(Strategies::getMediumStrategies());
-   StrategySimpleColoring sweepSimpleColoring;
+   StrategySimpleColoring strategySimpleColoring;
    const std::string str = "2..9.....8..5.3....547.6..2..8.....9.97...42.1.....3..3..1.589....8.2..3.....7..5";
    CandidatesGrid grid = CandidatesGrid::FromString(str);
    FieldsInfo finfo(grid);
@@ -113,7 +113,7 @@ TEST(StrategySimpleColoringTest, TwiceInAUnit)
 
 TEST(StrategySimpleColoringTest, SingleColorEmptiesHouseExample1)
 {
-   StrategySimpleColoring sweepSimpleColoring;
+   StrategySimpleColoring strategySimpleColoring;
 
    CandidatesGrid grid;
    grid.setGiven(Cell::rowCol2Field(0, 3), 7);
@@ -186,7 +186,7 @@ TEST(StrategySimpleColoringTest, SingleColorEmptiesHouseExample1)
 
 TEST(StrategySimpleColoringTest, SingleColorEmptiesHouseExample2)
 {
-   StrategySimpleColoring sweepSimpleColoring;
+   StrategySimpleColoring strategySimpleColoring;
 
    CandidatesGrid grid;
 
@@ -288,7 +288,7 @@ TEST(StrategySimpleColoringTest, SingleColorEmptiesHouseExample2)
 TEST(StrategySimpleColoringTest, FindColorEmptiesHouse)
 {
    std::ifstream file("/home/hans/src/Top_50K_Toughest.txt");
-   StrategySimpleColoring sweepSimpleColoring;
+   StrategySimpleColoring strategySimpleColoring;
 
    // String to store each line of the file.
    std::string line;
@@ -302,7 +302,7 @@ TEST(StrategySimpleColoringTest, FindColorEmptiesHouse)
          CandidatesGrid grid = CandidatesGrid::FromString(line.substr(0, NumField), '0');
          grid.update();
          std::cout << line << "\n";
-         sweepSimpleColoring.sweep(grid);
+         strategySimpleColoring.sweep(grid);
       }
 
       // Close the file stream once all lines have been
