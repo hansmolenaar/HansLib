@@ -94,7 +94,7 @@ TEST(StrategyNakedTuplesTest, StrategyNakedPair_2)
    EXPECT_EQ(fieldValues.size(), 2);
 
    fieldValues = StrategyNakedTuples::collectOfTupleSize(finfo, 3); // 1 5 6
-   EXPECT_EQ(fieldValues.size(), 3);
+   EXPECT_EQ(fieldValues.size(), 13);
 
    TestUtils::CheckStrategy(strategy, grid, {4, 1});
 }
@@ -121,7 +121,7 @@ TEST(StrategyNakedTuplesTest, StrategyNakedTuples_1)
 
    StrategyNakedTuples strategy;
    fieldValues = StrategyNakedTuples::collectHousesOfType(finfo, HouseType::Row, 3);
-   ASSERT_TRUE(fieldValues.empty());
+   ASSERT_EQ(fieldValues.size(), 14);
 
    fieldValues = StrategyNakedTuples::collectHousesOfType(finfo, HouseType::Box, 3);
    ASSERT_EQ(grid.getNumCandidates(), expect);
@@ -260,4 +260,16 @@ TEST(StrategyNakedTuplesTest, NakedQuartet_2)
    ASSERT_EQ(StrategyNakedTuples::collectOfTupleSize(finfo, 4).size(), 5 * 4 - 1);
 
    TestUtils::CheckStrategy(strategy, grid, {19, 1});
+}
+
+TEST(StrategyNakedTuplesTest, NakedBendedTriplet_1)
+{
+   CandidatesGrid grid;
+   grid.setCandidates(Cell::rowCol2Field(6, 5), {6, 9});
+   grid.setCandidates(Cell::rowCol2Field(7, 4), {5, 6, 9});
+   grid.setCandidates(Cell::rowCol2Field(8, 4), {5, 6, 9});
+
+   StrategyNakedTuples strategy;
+   // TestUtils::ShowStrategy(strategy, grid);
+   TestUtils::CheckStrategy(strategy, grid, {6 * 3 + 6, 0});
 }

@@ -3,9 +3,15 @@
 #include "CandidatesGrid.h"
 #include "Combinations.h"
 #include "FieldsInfo.h"
+#include "Functors.h"
 #include "House.h"
+#include "MyAssert.h"
 #include "SudokuDefines.h"
 #include "SudokuUtils.h"
+#include "Visibility.h"
+
+#include "boost/container/static_vector.hpp"
+
 #include <algorithm>
 
 using namespace Sudoku;
@@ -32,10 +38,71 @@ void add(const FieldsInfo &finfo, const FieldBits &house, std::span<const Field>
    }
 }
 
+struct BendedNakedTripleResult
+{
+   House line;
+   ValueBits values;
+};
+
+void addBendedTriplets(const FieldsInfo &finfo,
+                       const boost::container::static_vector<BendedNakedTripleResult, 3> &xtraLines,
+                       std::span<const Field> candidateTuple, FieldValue::Container &fieldValues)
+{
+   for (const auto &bnt : xtraLines)
+   {
+      const auto house = finfo.getHouseFields(bnt.line);
+      const auto fields = house & ~SudokuUtils::getFields(candidateTuple);
+      for (Value value : SudokuUtils::ValueBitsToRange(bnt.values))
+      {
+         FieldValue::add(fields, value, fieldValues);
+      }
+   }
+}
+
 bool IsNakedTuple(const CandidatesGrid &grid, const std::vector<Field> &candidateTuple)
 {
    const auto values = CandidatesGrid::getValuesInFields(grid, candidateTuple);
    return values.count() == candidateTuple.size();
+}
+
+boost::container::static_vector<BendedNakedTripleResult, 3> IsBendedNakedTriplet(
+    const CandidatesGrid &grid, const std::vector<Field> &candidateTuple)
+{
+   constexpr Index numFields = 3;
+   boost::container::static_vector<Field, 3> pairFields;
+   ValueBits values;
+   for (size_t n = 0; n < numFields; ++n)
+   {
+      const Field field = candidateTuple.at(n);
+      const auto fieldValues = grid[field].getValues();
+      values |= fieldValues;
+
+      const auto numCandidates = fieldValues.count();
+      MyAssert(numCandidates > 1 && numCandidates <= 3);
+      if (numCandidates == 2)
+      {
+         pairFields.push_back(field);
+      }
+   }
+
+   boost::container::static_vector<BendedNakedTripleResult, numFields> result;
+   for (Field pairField : pairFields)
+   {
+      std::array<Field, numFields - 1> other2;
+      str::copy_if(candidateTuple, other2.begin(), Functors::IsNotEqualTo{pairField});
+      const auto visibility = Visiblity::areVisibleVia(Cell::get(other2[0]), Cell::get(other2[1]));
+      for (auto houseType : visibility)
+      {
+         if (houseType != HouseType::Box)
+         {
+            const ValueBits removeValues = values & ~grid[pairField].getValues();
+            const House house = House::getFromCellaAndType(Cell::get(other2[0]), houseType);
+            result.push_back(BendedNakedTripleResult{house, removeValues});
+         }
+      }
+   }
+
+   return result;
 }
 
 } // namespace
@@ -67,6 +134,11 @@ FieldValue::Container StrategyNakedTuples::collectHouse(const FieldsInfo &finfo,
       if (IsNakedTuple(grid, combinations()))
       {
          add(finfo, houseFields, combinations(), result);
+         if (tupleSize == 3)
+         {
+            const auto xtra = IsBendedNakedTriplet(grid, combinations());
+            addBendedTriplets(finfo, xtra, combinations(), result);
+         }
       }
    } while (combinations.next());
 
