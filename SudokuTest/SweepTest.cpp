@@ -19,7 +19,7 @@ const std::string model_4 = "1...2...3.4.....5....6.7.....5...8..7...8...2..6...
 const std::string model_5 = "1..2..3......4..5...6..7..82.....7...5..1..4...7.....98..1..2...6..2......4..6..7";
 const std::string model_6 = "...........12.34...235.617..35...74.....3.....76...82..143.825...87.23...........";
 
-SweepHiddenSingle hiddenSingle;
+StrategyHiddenSingle hiddenSingle;
 StrategyNakedSingle nakedSingle;
 Sweep sweep(Strategies{&nakedSingle, &hiddenSingle});
 

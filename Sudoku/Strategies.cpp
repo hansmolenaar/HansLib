@@ -28,16 +28,16 @@ constexpr size_t numHardSweepers = 2;
 std::array<IStrategy *, numSimpleSweepers> getSimple()
 {
    static StrategyNakedSingle sweepNakedSingle;
-   static SweepHiddenSingle sweepHiddenSingle;
+   static StrategyHiddenSingle sweepHiddenSingle;
    static std::array<IStrategy *, numSimpleSweepers> simple{&sweepNakedSingle, &sweepHiddenSingle};
    return simple;
 }
 
 std::array<IStrategy *, numSimpleSweepers + numMediumSweepers> getMedium()
 {
-   static SweepNakedTuples sweepNakedTuples;
-   static SweepHiddenTuple sweepHiddenTuple;
-   static SweepIntersectionElimination sweepIntersectionElimination;
+   static StrategyNakedTuples sweepNakedTuples;
+   static StrategyHiddenTuple sweepHiddenTuple;
+   static StrategyIntersectionElimination sweepIntersectionElimination;
    static std::array<IStrategy *, numMediumSweepers> mediumOnly{
        &sweepNakedTuples,
        &sweepHiddenTuple,
@@ -50,8 +50,8 @@ std::array<IStrategy *, numSimpleSweepers + numMediumSweepers> getMedium()
 
 std::array<IStrategy *, numSimpleSweepers + numMediumSweepers + numHardSweepers> getHard()
 {
-   static SweepXWing sweepXWing;
-   static SweepSimpleColoring sweepSimpleColoring;
+   static StrategyXWing sweepXWing;
+   static StrategySimpleColoring sweepSimpleColoring;
    static std::array<IStrategy *, numHardSweepers> hardOnly{&sweepXWing, &sweepSimpleColoring};
    static std::array<IStrategy *, numSimpleSweepers + numMediumSweepers + numHardSweepers> hard =
        concat_arrays<IStrategy *, numSimpleSweepers + numMediumSweepers, numHardSweepers>(getMedium(), hardOnly);

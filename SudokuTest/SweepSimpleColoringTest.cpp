@@ -35,18 +35,18 @@ CandidatesGrid getSimpleExample()
 
 }; // namespace
 
-TEST(SweepSimpleColoringTest, Strategy)
+TEST(StrategySimpleColoringTest, Strategy)
 {
-   SweepSimpleColoring strategy;
+   StrategySimpleColoring strategy;
    TestUtils::CheckStrategyInterface(strategy);
 }
 
-TEST(SweepSimpleColoringTest, BasicExample)
+TEST(StrategySimpleColoringTest, BasicExample)
 {
    const Value value = 1;
    CandidatesGrid grid = getSimpleExample();
    FieldsInfo finfo(grid);
-   const auto links = SweepSimpleColoring::getBilocationLinks(grid, finfo, value);
+   const auto links = StrategySimpleColoring::getBilocationLinks(grid, finfo, value);
 
    ASSERT_EQ(links.size(), 4);
    const auto networks = Network::create(links);
@@ -57,11 +57,11 @@ TEST(SweepSimpleColoringTest, BasicExample)
    Field expect = 701;
    ASSERT_EQ(grid.getNumCandidates(), expect);
    const FieldBits ignore;
-   const auto fieldValues = SweepSimpleColoring::collectSees2ColorsCandidates(finfo, value, coloring, ignore);
+   const auto fieldValues = StrategySimpleColoring::collectSees2ColorsCandidates(finfo, value, coloring, ignore);
    ASSERT_TRUE(fieldValues.empty());
 }
 
-TEST(SweepSimpleColoringTest, Sees2Colors)
+TEST(StrategySimpleColoringTest, Sees2Colors)
 {
    Sweep sweep(Strategies::getMediumStrategies());
 
@@ -70,7 +70,7 @@ TEST(SweepSimpleColoringTest, Sees2Colors)
    FieldsInfo finfo(grid);
    sweep.iterate(grid, finfo);
 
-   SweepSimpleColoring strategy;
+   StrategySimpleColoring strategy;
    // TestUtils::ShowStrategy(strategy, grid);
    TestUtils::CheckStrategy(strategy, grid, {2, 1});
 
@@ -83,17 +83,17 @@ TEST(SweepSimpleColoringTest, Sees2Colors)
    ASSERT_EQ(grid.getNumCandidates(), 129);
 }
 
-TEST(SweepSimpleColoringTest, TwiceInAUnit)
+TEST(StrategySimpleColoringTest, TwiceInAUnit)
 {
    Sweep sweep(Strategies::getMediumStrategies());
-   SweepSimpleColoring sweepSimpleColoring;
+   StrategySimpleColoring sweepSimpleColoring;
    const std::string str = "2..9.....8..5.3....547.6..2..8.....9.97...42.1.....3..3..1.589....8.2..3.....7..5";
    CandidatesGrid grid = CandidatesGrid::FromString(str);
    FieldsInfo finfo(grid);
    sweep.iterate(grid, finfo);
 
    const Value value = 4; // 6
-   const auto links = SweepSimpleColoring::getBilocationLinks(grid, finfo, value);
+   const auto links = StrategySimpleColoring::getBilocationLinks(grid, finfo, value);
 
    const auto networks = Network::create(links);
    FieldValue::Container fieldValues;
@@ -101,19 +101,19 @@ TEST(SweepSimpleColoringTest, TwiceInAUnit)
    {
       const auto coloring = Network::setColors(network);
 
-      FieldValue::add(SweepSimpleColoring::collectTwiceInAUnit(finfo, value, coloring), fieldValues);
+      FieldValue::add(StrategySimpleColoring::collectTwiceInAUnit(finfo, value, coloring), fieldValues);
    }
    ASSERT_EQ(fieldValues.size(), 4);
    TestUtils::CheckFieldValues(grid, fieldValues);
 
-   SweepSimpleColoring strategy;
+   StrategySimpleColoring strategy;
    // TestUtils::ShowStrategy(strategy, grid);
    TestUtils::CheckStrategy(strategy, grid, {7, 4});
 }
 
-TEST(SweepSimpleColoringTest, SingleColorEmptiesHouseExample1)
+TEST(StrategySimpleColoringTest, SingleColorEmptiesHouseExample1)
 {
-   SweepSimpleColoring sweepSimpleColoring;
+   StrategySimpleColoring sweepSimpleColoring;
 
    CandidatesGrid grid;
    grid.setGiven(Cell::rowCol2Field(0, 3), 7);
@@ -162,7 +162,7 @@ TEST(SweepSimpleColoringTest, SingleColorEmptiesHouseExample1)
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
    const Value value = 6;
-   const auto links = SweepSimpleColoring::getBilocationLinks(grid, finfo, value);
+   const auto links = StrategySimpleColoring::getBilocationLinks(grid, finfo, value);
 
    const auto networks = Network::create(links);
    ASSERT_EQ(networks.size(), 4);
@@ -172,20 +172,21 @@ TEST(SweepSimpleColoringTest, SingleColorEmptiesHouseExample1)
       const auto coloring = Network::setColors(network);
       const auto coloredFields = network.getFields();
 
-      const auto emptiesHosue = SweepSimpleColoring::collectOneColorEmptiesHouse(finfo, value, coloring, coloredFields);
+      const auto emptiesHosue =
+          StrategySimpleColoring::collectOneColorEmptiesHouse(finfo, value, coloring, coloredFields);
       fieldValues.insert(emptiesHosue.begin(), emptiesHosue.end());
    }
    TestUtils::CheckFieldValues(grid, fieldValues);
    ASSERT_EQ(fieldValues.size(), 4);
 
-   SweepSimpleColoring strategy;
+   StrategySimpleColoring strategy;
    // TestUtils::ShowStrategy(strategy, grid);
    TestUtils::CheckStrategy(strategy, grid, {5, 1});
 }
 
-TEST(SweepSimpleColoringTest, SingleColorEmptiesHouseExample2)
+TEST(StrategySimpleColoringTest, SingleColorEmptiesHouseExample2)
 {
-   SweepSimpleColoring sweepSimpleColoring;
+   StrategySimpleColoring sweepSimpleColoring;
 
    CandidatesGrid grid;
 
@@ -259,18 +260,18 @@ TEST(SweepSimpleColoringTest, SingleColorEmptiesHouseExample2)
    Field expect = 137;
    ASSERT_EQ(grid.getNumCandidates(), expect);
    const Value value = 2;
-   const auto links = SweepSimpleColoring::getBilocationLinks(grid, finfo, value);
+   const auto links = StrategySimpleColoring::getBilocationLinks(grid, finfo, value);
 
    const auto networks = Network::create(links);
    ASSERT_EQ(networks.size(), 1);
    const auto &network = networks.front();
    const auto coloring = Network::setColors(network);
    const auto coloredFields = network.getFields();
-   const auto fieldValues = SweepSimpleColoring::collectOneColorEmptiesHouse(finfo, value, coloring, coloredFields);
+   const auto fieldValues = StrategySimpleColoring::collectOneColorEmptiesHouse(finfo, value, coloring, coloredFields);
    ASSERT_EQ(fieldValues.size(), 4);
    expect -= 4;
 
-   SweepSimpleColoring strategy;
+   StrategySimpleColoring strategy;
    // TestUtils::ShowStrategy(strategy, grid);
    TestUtils::CheckStrategy(strategy, grid, {5, 2});
 
@@ -284,10 +285,10 @@ TEST(SweepSimpleColoringTest, SingleColorEmptiesHouseExample2)
 }
 
 #if false
-TEST(SweepSimpleColoringTest, FindColorEmptiesHouse)
+TEST(StrategySimpleColoringTest, FindColorEmptiesHouse)
 {
    std::ifstream file("/home/hans/src/Top_50K_Toughest.txt");
-   SweepSimpleColoring sweepSimpleColoring;
+   StrategySimpleColoring sweepSimpleColoring;
 
    // String to store each line of the file.
    std::string line;

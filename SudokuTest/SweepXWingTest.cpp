@@ -6,13 +6,13 @@
 
 using namespace Sudoku;
 
-TEST(SweepXWingTest, Strategy)
+TEST(StrategyXWingTest, Strategy)
 {
-   SweepXWing strategy;
+   StrategyXWing strategy;
    TestUtils::CheckStrategyInterface(strategy);
 }
 
-TEST(SweepXWingTest, Basics)
+TEST(StrategyXWingTest, Basics)
 {
    CandidatesGrid grid;
 
@@ -39,7 +39,7 @@ TEST(SweepXWingTest, Basics)
    auto expect = 589;
    ASSERT_EQ(expect, grid.getNumCandidates());
 
-   SweepXWing strategy;
+   StrategyXWing strategy;
    // TestUtils::ShowStrategy(strategy, grid);
    TestUtils::CheckStrategy(strategy, grid, {14, 0});
 
@@ -48,7 +48,7 @@ TEST(SweepXWingTest, Basics)
    expect -= 142;
    ASSERT_EQ(expect, grid.getNumCandidates());
 
-   auto fieldsValue = SweepXWing().collect(finfo);
+   auto fieldsValue = StrategyXWing().collect(finfo);
    ASSERT_EQ(fieldsValue.size(), 14);
    auto gridChanges = grid.apply(fieldsValue, finfo);
    ASSERT_EQ(gridChanges.numValuesChanged, 14);
@@ -56,6 +56,6 @@ TEST(SweepXWingTest, Basics)
    expect -= 14;
    ASSERT_EQ(expect, grid.getNumCandidates());
 
-   fieldsValue = SweepXWing().collect(finfo);
+   fieldsValue = StrategyXWing().collect(finfo);
    ASSERT_EQ(fieldsValue.size(), 0);
 }

@@ -53,7 +53,7 @@ std::optional<House> getWeakConnectionVisibility(const Cell &cell0, const Cell &
 
 }; // namespace
 
-std::optional<XWing> SweepXWing::isXWing(std::span<const LockedPair> candidatePair)
+std::optional<XWing> StrategyXWing::isXWing(std::span<const LockedPair> candidatePair)
 {
    MyAssert(candidatePair.size() == 2);
    const auto &lp0 = candidatePair[0];
@@ -79,7 +79,7 @@ std::optional<XWing> SweepXWing::isXWing(std::span<const LockedPair> candidatePa
    return {};
 }
 
-FieldValue::Container SweepXWing::collect(const FieldsInfo &finfo)
+FieldValue::Container StrategyXWing::collect(const FieldsInfo &finfo)
 {
    FieldValue::Container result;
    const LockedPairs lps(finfo);

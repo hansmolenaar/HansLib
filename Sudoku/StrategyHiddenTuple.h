@@ -7,7 +7,7 @@
 namespace Sudoku
 {
 
-class SweepHiddenTuple : public IStrategy
+class StrategyHiddenTuple : public IStrategy
 {
  public:
    FieldValue::Container collect(const FieldsInfo &) override;
@@ -16,9 +16,9 @@ class SweepHiddenTuple : public IStrategy
    static FieldValue::Container collectTuplesOfSize(const FieldsInfo &, Index);
    // TODO static FieldValue::Container collect(const FieldsInfo &);
 
-}; // namespace SweepHiddenTuple
+}; // namespace StrategyHiddenTuple
 
-class SweepHiddenSingle : public IStrategy
+class StrategyHiddenSingle : public IStrategy
 {
  public:
    FieldValue::Container collect(const FieldsInfo &) override;

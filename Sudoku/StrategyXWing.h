@@ -18,7 +18,7 @@ struct XWing
    House house1;
 };
 
-class SweepXWing : public IStrategy
+class StrategyXWing : public IStrategy
 {
  public:
    FieldValue::Container collect(const FieldsInfo &) override;

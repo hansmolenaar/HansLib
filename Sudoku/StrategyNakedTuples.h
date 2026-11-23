@@ -8,7 +8,7 @@ namespace Sudoku
 
 class FieldsInfo;
 
-class SweepNakedTuples : public IStrategy
+class StrategyNakedTuples : public IStrategy
 {
  public:
    static FieldValue::Container collectOfTupleSize(const FieldsInfo &, Index);

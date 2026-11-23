@@ -9,9 +9,9 @@
 using namespace Sudoku;
 using namespace Utilities;
 
-std::optional<House> SweepIntersectionElimination::TryGetIntersectionHouse(HouseType houseTypeIn,
-                                                                           const FieldBits &fields,
-                                                                           const FieldsInfo &finfo)
+std::optional<House> StrategyIntersectionElimination::TryGetIntersectionHouse(HouseType houseTypeIn,
+                                                                              const FieldBits &fields,
+                                                                              const FieldsInfo &finfo)
 {
    const auto size = fields.count();
    MyAssert(size >= 2 && size <= 3);
@@ -47,7 +47,7 @@ std::optional<House> SweepIntersectionElimination::TryGetIntersectionHouse(House
    return {};
 }
 
-FieldValue::Container SweepIntersectionElimination::collectHouse(const FieldsInfo &finfo, const House &house)
+FieldValue::Container StrategyIntersectionElimination::collectHouse(const FieldsInfo &finfo, const House &house)
 {
    FieldValue::Container result;
    const auto houseFields = finfo.getHouseFields(house);
@@ -71,7 +71,7 @@ FieldValue::Container SweepIntersectionElimination::collectHouse(const FieldsInf
    return result;
 }
 
-FieldValue::Container SweepIntersectionElimination::collect(const FieldsInfo &finfo)
+FieldValue::Container StrategyIntersectionElimination::collect(const FieldsInfo &finfo)
 {
    FieldValue::Container result;
    for (const auto &house : House::getAllHouses())

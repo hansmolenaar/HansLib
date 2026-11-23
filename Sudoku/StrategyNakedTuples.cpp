@@ -40,7 +40,7 @@ bool IsNakedTuple(const CandidatesGrid &grid, const std::vector<Field> &candidat
 
 } // namespace
 
-FieldValue::Container SweepNakedTuples::collectHouse(const FieldsInfo &finfo, const House &house, Index tupleSize)
+FieldValue::Container StrategyNakedTuples::collectHouse(const FieldsInfo &finfo, const House &house, Index tupleSize)
 {
    FieldValue::Container result;
    const CandidatesGrid &grid = finfo.getGrid();
@@ -73,7 +73,7 @@ FieldValue::Container SweepNakedTuples::collectHouse(const FieldsInfo &finfo, co
    return result;
 }
 
-FieldValue::Container SweepNakedTuples::collectHousesOfType(const FieldsInfo &finfo, HouseType type, Index tupleSize)
+FieldValue::Container StrategyNakedTuples::collectHousesOfType(const FieldsInfo &finfo, HouseType type, Index tupleSize)
 {
    FieldValue::Container result;
    for (Index idx : IndexAll)
@@ -86,7 +86,7 @@ FieldValue::Container SweepNakedTuples::collectHousesOfType(const FieldsInfo &fi
    ;
 }
 
-FieldValue::Container SweepNakedTuples::collectOfTupleSize(const FieldsInfo &finfo, Index tupleSize)
+FieldValue::Container StrategyNakedTuples::collectOfTupleSize(const FieldsInfo &finfo, Index tupleSize)
 {
    FieldValue::Container result;
    for (HouseType type : HouseTypeAll)
@@ -97,7 +97,7 @@ FieldValue::Container SweepNakedTuples::collectOfTupleSize(const FieldsInfo &fin
    return result;
 }
 
-FieldValue::Container SweepNakedTuples::collect(const FieldsInfo &finfo)
+FieldValue::Container StrategyNakedTuples::collect(const FieldsInfo &finfo)
 {
    FieldValue::Container result;
    FieldValue::add(collectOfTupleSize(finfo, 2), result);

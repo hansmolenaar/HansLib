@@ -68,7 +68,7 @@ void CollectCandidates(const FieldsInfo &finfo, const House &house, std::span<co
 
 } // namespace
 
-FieldValue::Container SweepHiddenTuple::collectHouse(const FieldsInfo &finfo, const House &house, Index size)
+FieldValue::Container StrategyHiddenTuple::collectHouse(const FieldsInfo &finfo, const House &house, Index size)
 {
    FieldValue::Container result;
 
@@ -101,7 +101,7 @@ FieldValue::Container SweepHiddenTuple::collectHouse(const FieldsInfo &finfo, co
    return result;
 }
 
-FieldValue::Container SweepHiddenTuple::collectTuplesOfSize(const FieldsInfo &finfo, Index size)
+FieldValue::Container StrategyHiddenTuple::collectTuplesOfSize(const FieldsInfo &finfo, Index size)
 {
    FieldValue::Container result;
    for (House house : House::getAllHouses())
@@ -111,7 +111,7 @@ FieldValue::Container SweepHiddenTuple::collectTuplesOfSize(const FieldsInfo &fi
    return result;
 }
 
-FieldValue::Container SweepHiddenTuple::collect(const FieldsInfo &finfo)
+FieldValue::Container StrategyHiddenTuple::collect(const FieldsInfo &finfo)
 {
    FieldValue::Container result;
    FieldValue::add(collectTuplesOfSize(finfo, 2), result);
@@ -122,7 +122,7 @@ FieldValue::Container SweepHiddenTuple::collect(const FieldsInfo &finfo)
 
 // *******************************************************************************************
 
-FieldValue::Container SweepHiddenSingle::collect(const FieldsInfo &finfo)
+FieldValue::Container StrategyHiddenSingle::collect(const FieldsInfo &finfo)
 {
-   return SweepHiddenTuple::collectTuplesOfSize(finfo, 1);
+   return StrategyHiddenTuple::collectTuplesOfSize(finfo, 1);
 };

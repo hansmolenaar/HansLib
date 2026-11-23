@@ -12,7 +12,7 @@ class CandidatesGrid;
 class ColorField;
 class FieldsInfo;
 
-class SweepSimpleColoring : public IStrategy
+class StrategySimpleColoring : public IStrategy
 {
  public:
    FieldValue::Container collect(const FieldsInfo &) override;

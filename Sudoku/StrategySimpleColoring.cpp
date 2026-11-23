@@ -14,7 +14,7 @@
 using namespace Sudoku;
 using namespace Utilities;
 
-std::vector<Link> SweepSimpleColoring::getBilocationLinks(const CandidatesGrid &grid, FieldsInfo finfo, Value value)
+std::vector<Link> StrategySimpleColoring::getBilocationLinks(const CandidatesGrid &grid, FieldsInfo finfo, Value value)
 {
    std::vector<Link> result;
    for (const House &house : House::getAllHouses())
@@ -34,9 +34,9 @@ std::vector<Link> SweepSimpleColoring::getBilocationLinks(const CandidatesGrid &
    return result;
 }
 
-FieldValue::Container SweepSimpleColoring::collectSees2ColorsCandidates(const FieldsInfo &finfo, Value value,
-                                                                        const ColorField &colors,
-                                                                        const FieldBits &cellsToIgnore)
+FieldValue::Container StrategySimpleColoring::collectSees2ColorsCandidates(const FieldsInfo &finfo, Value value,
+                                                                           const ColorField &colors,
+                                                                           const FieldBits &cellsToIgnore)
 {
    const auto cellsGreen = colors.getFieldsWithColor(Color::Green);
    const auto cellsBlue = colors.getFieldsWithColor(Color::Blue);
@@ -52,8 +52,8 @@ FieldValue::Container SweepSimpleColoring::collectSees2ColorsCandidates(const Fi
    return result;
 }
 
-FieldValue::Container SweepSimpleColoring::collectTwiceInAUnit(const FieldsInfo &finfo, Value value,
-                                                               const ColorField &colors)
+FieldValue::Container StrategySimpleColoring::collectTwiceInAUnit(const FieldsInfo &finfo, Value value,
+                                                                  const ColorField &colors)
 {
    FieldValue::Container result;
    for (Color color : ColorAll)
@@ -83,9 +83,9 @@ FieldValue::Container SweepSimpleColoring::collectTwiceInAUnit(const FieldsInfo 
    return result;
 }
 
-FieldValue::Container SweepSimpleColoring::collectOneColorEmptiesHouse(const FieldsInfo &finfo, Value value,
-                                                                       const ColorField &colors,
-                                                                       const FieldBits &cellsToIgnore)
+FieldValue::Container StrategySimpleColoring::collectOneColorEmptiesHouse(const FieldsInfo &finfo, Value value,
+                                                                          const ColorField &colors,
+                                                                          const FieldBits &cellsToIgnore)
 {
    FieldValue::Container result;
    const FieldBits fieldsValue = finfo.getActiveFieldsWithValue(value);
@@ -128,7 +128,7 @@ FieldValue::Container SweepSimpleColoring::collectOneColorEmptiesHouse(const Fie
    return result;
 }
 
-FieldValue::Container SweepSimpleColoring::collect(const FieldsInfo &finfo)
+FieldValue::Container StrategySimpleColoring::collect(const FieldsInfo &finfo)
 {
    FieldValue::Container result;
    const CandidatesGrid &grid = finfo.getGrid();
@@ -147,14 +147,14 @@ FieldValue::Container SweepSimpleColoring::collect(const FieldsInfo &finfo)
          const auto cellsInCurrectNetwork = network.getFields();
 
          const auto twoColors =
-             SweepSimpleColoring::collectSees2ColorsCandidates(finfo, value, coloring, cellsInCurrectNetwork);
+             StrategySimpleColoring::collectSees2ColorsCandidates(finfo, value, coloring, cellsInCurrectNetwork);
          result.insert(twoColors.begin(), twoColors.end());
 
-         const auto twice = SweepSimpleColoring::collectTwiceInAUnit(finfo, value, coloring);
+         const auto twice = StrategySimpleColoring::collectTwiceInAUnit(finfo, value, coloring);
          result.insert(twice.begin(), twice.end());
 
          const auto empties =
-             SweepSimpleColoring::collectOneColorEmptiesHouse(finfo, value, coloring, cellsInCurrectNetwork);
+             StrategySimpleColoring::collectOneColorEmptiesHouse(finfo, value, coloring, cellsInCurrectNetwork);
          result.insert(empties.begin(), empties.end());
       }
    }

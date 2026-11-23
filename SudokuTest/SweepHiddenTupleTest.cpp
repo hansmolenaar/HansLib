@@ -9,16 +9,16 @@
 
 using namespace Sudoku;
 
-TEST(SweepHidddenTupleTest, Strategy)
+TEST(StrategyHidddenTupleTest, Strategy)
 {
-   SweepHiddenSingle single;
+   StrategyHiddenSingle single;
    TestUtils::CheckStrategyInterface(single);
 
-   SweepHiddenTuple tuple;
+   StrategyHiddenTuple tuple;
    TestUtils::CheckStrategyInterface(tuple);
 }
 
-TEST(SweepHidddenTupleTest, Pair)
+TEST(StrategyHidddenTupleTest, Pair)
 {
    CandidatesGrid grid;
 
@@ -41,26 +41,26 @@ TEST(SweepHidddenTupleTest, Pair)
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
    FieldValue::Container fieldsValues;
-   fieldsValues = SweepHiddenTuple::collectTuplesOfSize(finfo, 3);
+   fieldsValues = StrategyHiddenTuple::collectTuplesOfSize(finfo, 3);
    ASSERT_TRUE(fieldsValues.empty());
-   fieldsValues = SweepHiddenTuple::collectTuplesOfSize(finfo, 3);
-   ASSERT_TRUE(fieldsValues.empty());
-
-   fieldsValues = SweepHiddenTuple::collectTuplesOfSize(finfo, 1);
+   fieldsValues = StrategyHiddenTuple::collectTuplesOfSize(finfo, 3);
    ASSERT_TRUE(fieldsValues.empty());
 
-   fieldsValues = SweepHiddenTuple::collectTuplesOfSize(finfo, 2);
+   fieldsValues = StrategyHiddenTuple::collectTuplesOfSize(finfo, 1);
+   ASSERT_TRUE(fieldsValues.empty());
+
+   fieldsValues = StrategyHiddenTuple::collectTuplesOfSize(finfo, 2);
    TestUtils::CheckFieldValues(grid, fieldsValues);
    ASSERT_EQ(fieldsValues.size(), 8);
 
-   SweepHiddenSingle strategy1;
+   StrategyHiddenSingle strategy1;
    TestUtils::CheckStrategy(strategy1, grid, {0, 0});
 
-   SweepHiddenTuple strategy;
+   StrategyHiddenTuple strategy;
    TestUtils::CheckStrategy(strategy, grid, {8, 0});
 }
 
-TEST(SweepHidddenTupleTest, SweepExample1)
+TEST(StrategyHidddenTupleTest, SweepExample1)
 {
    CandidatesGrid grid;
 
@@ -94,7 +94,7 @@ TEST(SweepHidddenTupleTest, SweepExample1)
    auto expect = grid.getNumCandidates();
 
    FieldValue::Container fieldsValues;
-   fieldsValues = SweepHiddenTuple::collectTuplesOfSize(finfo, 1);
+   fieldsValues = StrategyHiddenTuple::collectTuplesOfSize(finfo, 1);
    TestUtils::CheckFieldValues(grid, fieldsValues);
    ASSERT_EQ(fieldsValues.size(), 16);
 
@@ -107,7 +107,7 @@ TEST(SweepHidddenTupleTest, SweepExample1)
 
    grid.update(finfo);
    TestUtils::CheckFieldInfo(finfo);
-   SweepHiddenSingle strategy;
+   StrategyHiddenSingle strategy;
    Sweep(&strategy).singleSweep(grid, finfo);
    TestUtils::CheckFieldInfo(finfo);
    grid.update(finfo);
@@ -115,7 +115,7 @@ TEST(SweepHidddenTupleTest, SweepExample1)
    ASSERT_EQ(grid.getNumCandidates(), 129);
 }
 
-TEST(SweepHidddenTupleTest, BasicExamplePair)
+TEST(StrategyHidddenTupleTest, BasicExamplePair)
 {
    constexpr Index row = 8;
 
@@ -131,11 +131,11 @@ TEST(SweepHidddenTupleTest, BasicExamplePair)
    grid.setCandidates(Cell::rowCol2Field(row, 5), {1, 5});
    grid.setCandidates(Cell::rowCol2Field(row, 6), {1, 3, 5});
 
-   SweepHiddenTuple strategy;
+   StrategyHiddenTuple strategy;
    // TestUtils::ShowStrategy(strategy, grid);
    TestUtils::CheckStrategy(strategy, grid, {0, 0});
 
-   SweepHiddenSingle strategy1;
+   StrategyHiddenSingle strategy1;
 
    auto value0 = grid[Cell::rowCol2Field(row, 0)].tryGetSolvedValue();
    ASSERT_FALSE(value0.has_value());
@@ -149,7 +149,7 @@ TEST(SweepHidddenTupleTest, BasicExamplePair)
    ASSERT_EQ(value0.value(), 7);
 }
 
-TEST(SweepHidddenTupleTest, Pair_1)
+TEST(StrategyHidddenTupleTest, Pair_1)
 {
    constexpr Index row = 8;
    ValueBits pair;
@@ -163,12 +163,12 @@ TEST(SweepHidddenTupleTest, Pair_1)
       grid.removeCandidates(Cell::rowCol2Field(row, col), pair);
    }
 
-   SweepHiddenTuple strategy;
+   StrategyHiddenTuple strategy;
    // TestUtils::ShowStrategy(strategy, grid);
    TestUtils::CheckStrategy(strategy, grid, {2 * 7, 0});
 }
 
-TEST(SweepHidddenTupleTest, Triple_322)
+TEST(StrategyHidddenTupleTest, Triple_322)
 {
    constexpr Index row = 8;
    ValueBits bits;
@@ -189,7 +189,7 @@ TEST(SweepHidddenTupleTest, Triple_322)
    bits.set(9);
    grid.removeCandidates(Cell::rowCol2Field(row, 8), bits);
 
-   SweepHiddenTuple strategy;
+   StrategyHiddenTuple strategy;
    FieldsInfo finfo(grid);
    const auto fieldValues = strategy.collectTuplesOfSize(finfo, 3);
    ASSERT_EQ(fieldValues.size(), 3 * 6);
@@ -198,7 +198,7 @@ TEST(SweepHidddenTupleTest, Triple_322)
    TestUtils::CheckStrategy(strategy, grid, {3 * 6, 0});
 }
 
-TEST(SweepHidddenTupleTest, Triple_332)
+TEST(StrategyHidddenTupleTest, Triple_332)
 {
    constexpr Index row = 8;
    ValueBits bits;
@@ -216,11 +216,11 @@ TEST(SweepHidddenTupleTest, Triple_332)
    bits.set(7);
    grid.removeCandidates(Cell::rowCol2Field(row, 8), bits);
 
-   SweepHiddenTuple strategy;
+   StrategyHiddenTuple strategy;
    TestUtils::CheckStrategy(strategy, grid, {3 * 6, 0});
 }
 
-TEST(SweepHidddenTupleTest, Triple_222)
+TEST(StrategyHidddenTupleTest, Triple_222)
 {
    constexpr Index row = 8;
    ValueBits bits;
@@ -247,12 +247,12 @@ TEST(SweepHidddenTupleTest, Triple_222)
    bits.set(9);
    grid.removeCandidates(Cell::rowCol2Field(row, 8), bits);
 
-   SweepHiddenTuple strategy;
+   StrategyHiddenTuple strategy;
    // TestUtils::ShowStrategy(strategy, grid);
    TestUtils::CheckStrategy(strategy, grid, {3 * 6, 0});
 }
 
-TEST(SweepHidddenTupleTest, Quartet_1)
+TEST(StrategyHidddenTupleTest, Quartet_1)
 {
    constexpr Index row = 0;
    ValueBits bits;
@@ -274,12 +274,12 @@ TEST(SweepHidddenTupleTest, Quartet_1)
    bits.set(9);
    grid.removeCandidates(Cell::rowCol2Field(row, 8), bits);
 
-   SweepHiddenTuple strategy;
+   StrategyHiddenTuple strategy;
    // TestUtils::ShowStrategy(strategy, grid);
    TestUtils::CheckStrategy(strategy, grid, {4 * 5, 0});
 }
 
-TEST(SweepHidddenTupleTest, Quartet_2)
+TEST(StrategyHidddenTupleTest, Quartet_2)
 {
    CandidatesGrid grid;
 
@@ -300,7 +300,7 @@ TEST(SweepHidddenTupleTest, Quartet_2)
    grid.setCandidates(Cell::rowCol2Field(1, 1), {2, 3, 5, 6, 7, 8});
    grid.setCandidates(Cell::rowCol2Field(2, 2), {3, 4, 5, 6, 7, 8});
 
-   SweepHiddenTuple strategy;
+   StrategyHiddenTuple strategy;
    // TestUtils::ShowStrategy(strategy, grid);
    TestUtils::CheckStrategy(strategy, grid, {4 * 4, 0});
 }

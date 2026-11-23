@@ -7,48 +7,49 @@
 
 using namespace Sudoku;
 
-TEST(SweepIntersectionElimination, Strategy)
+TEST(StrategyIntersectionElimination, Strategy)
 {
-   SweepIntersectionElimination strategy;
+   StrategyIntersectionElimination strategy;
    TestUtils::CheckStrategyInterface(strategy);
 }
 
-TEST(SweepIntersectionElimination, BoxRow)
+TEST(StrategyIntersectionElimination, BoxRow)
 {
    const CandidatesGrid grid;
    const FieldsInfo finfo(grid);
    FieldBits fields;
    fields.set(0);
    fields.set(2);
-   std::optional<House> retval = SweepIntersectionElimination::TryGetIntersectionHouse(HouseType::Box, fields, finfo);
+   std::optional<House> retval =
+       StrategyIntersectionElimination::TryGetIntersectionHouse(HouseType::Box, fields, finfo);
    ASSERT_TRUE(retval.has_value());
    ASSERT_EQ(retval.value().houseType, HouseType::Row);
    ASSERT_EQ(retval.value().houseIndex, 0);
 
    fields.set(1);
-   retval = SweepIntersectionElimination::TryGetIntersectionHouse(HouseType::Box, fields, finfo);
+   retval = StrategyIntersectionElimination::TryGetIntersectionHouse(HouseType::Box, fields, finfo);
    ASSERT_TRUE(retval.has_value());
    ASSERT_EQ(retval.value().houseType, HouseType::Row);
    ASSERT_EQ(retval.value().houseIndex, 0);
 
    fields.set(3);
-   ASSERT_ANY_THROW(SweepIntersectionElimination::TryGetIntersectionHouse(HouseType::Box, fields, finfo));
+   ASSERT_ANY_THROW(StrategyIntersectionElimination::TryGetIntersectionHouse(HouseType::Box, fields, finfo));
 
    fields.reset();
    fields.set(0);
    fields.set(1);
    fields.set(11);
-   retval = SweepIntersectionElimination::TryGetIntersectionHouse(HouseType::Box, fields, finfo);
+   retval = StrategyIntersectionElimination::TryGetIntersectionHouse(HouseType::Box, fields, finfo);
    ASSERT_FALSE(retval.has_value());
 
    fields.reset();
    fields.set(0);
    fields.set(10);
-   retval = SweepIntersectionElimination::TryGetIntersectionHouse(HouseType::Box, fields, finfo);
+   retval = StrategyIntersectionElimination::TryGetIntersectionHouse(HouseType::Box, fields, finfo);
    ASSERT_FALSE(retval.has_value());
 }
 
-TEST(SweepIntersectionElimination, BoxCol)
+TEST(StrategyIntersectionElimination, BoxCol)
 {
    const CandidatesGrid grid;
    const FieldsInfo finfo(grid);
@@ -56,34 +57,35 @@ TEST(SweepIntersectionElimination, BoxCol)
    fields.set(Cell::getFromRowCol(0, 5).field);
    fields.set(Cell::getFromRowCol(2, 5).field);
 
-   std::optional<House> retval = SweepIntersectionElimination::TryGetIntersectionHouse(HouseType::Box, fields, finfo);
+   std::optional<House> retval =
+       StrategyIntersectionElimination::TryGetIntersectionHouse(HouseType::Box, fields, finfo);
    ASSERT_TRUE(retval.has_value());
    ASSERT_EQ(retval.value().houseType, HouseType::Col);
    ASSERT_EQ(retval.value().houseIndex, 5);
 
    fields.set(Cell::getFromRowCol(1, 5).field);
-   retval = SweepIntersectionElimination::TryGetIntersectionHouse(HouseType::Box, fields, finfo);
+   retval = StrategyIntersectionElimination::TryGetIntersectionHouse(HouseType::Box, fields, finfo);
    ASSERT_TRUE(retval.has_value());
    ASSERT_EQ(retval.value(), (House{HouseType::Col, 5}));
 
    fields.set(Cell::getFromRowCol(3, 5).field);
-   ASSERT_ANY_THROW(SweepIntersectionElimination::TryGetIntersectionHouse(HouseType::Box, fields, finfo));
+   ASSERT_ANY_THROW(StrategyIntersectionElimination::TryGetIntersectionHouse(HouseType::Box, fields, finfo));
 
    fields.reset();
    fields.set(Cell::getFromRowCol(0, 0).field);
    fields.set(Cell::getFromRowCol(1, 1).field);
    fields.set(Cell::getFromRowCol(1, 2).field);
-   retval = SweepIntersectionElimination::TryGetIntersectionHouse(HouseType::Box, fields, finfo);
+   retval = StrategyIntersectionElimination::TryGetIntersectionHouse(HouseType::Box, fields, finfo);
    ASSERT_FALSE(retval.has_value());
 
    fields.reset();
    fields.set(Cell::getFromRowCol(0, 7).field);
    fields.set(Cell::getFromRowCol(2, 6).field);
-   retval = SweepIntersectionElimination::TryGetIntersectionHouse(HouseType::Box, fields, finfo);
+   retval = StrategyIntersectionElimination::TryGetIntersectionHouse(HouseType::Box, fields, finfo);
    ASSERT_FALSE(retval.has_value());
 }
 
-TEST(SweepIntersectionElimination, PointingPairCol)
+TEST(StrategyIntersectionElimination, PointingPairCol)
 {
    CandidatesGrid grid;
    grid.setGiven(0, 2, 9);
@@ -97,7 +99,7 @@ TEST(SweepIntersectionElimination, PointingPairCol)
    grid.setCandidates(2, 0, {4, 5, 7});
    grid.setCandidates(2, 1, {5, 6, 7});
 
-   SweepIntersectionElimination strategy;
+   StrategyIntersectionElimination strategy;
    FieldsInfo finfo(grid);
 
    const auto fieldValues = strategy.collect(finfo);
@@ -106,7 +108,7 @@ TEST(SweepIntersectionElimination, PointingPairCol)
    TestUtils::CheckStrategy(strategy, grid, {6, 0});
 }
 
-TEST(SweepIntersectionElimination, PointingPairRow)
+TEST(StrategyIntersectionElimination, PointingPairRow)
 {
    CandidatesGrid grid;
    grid.setGiven(6, 3, 5);
@@ -120,11 +122,11 @@ TEST(SweepIntersectionElimination, PointingPairRow)
    grid.setCandidates(8, 4, {3, 7, 9});
    grid.setCandidates(8, 5, {3, 4, 7});
 
-   SweepIntersectionElimination strategy;
+   StrategyIntersectionElimination strategy;
    FieldsInfo finfo(grid);
    TestUtils::CheckStrategy(strategy, grid, {12, 0});
 
-   const auto fieldValues = SweepIntersectionElimination().collect(finfo);
+   const auto fieldValues = StrategyIntersectionElimination().collect(finfo);
    ASSERT_EQ(fieldValues.size(), 12);
 
    Field expect = 665;
@@ -137,7 +139,7 @@ TEST(SweepIntersectionElimination, PointingPairRow)
    ASSERT_EQ(grid.getNumCandidates(), expect);
 }
 
-TEST(SweepIntersectionElimination, BoxLine)
+TEST(StrategyIntersectionElimination, BoxLine)
 {
    CandidatesGrid grid;
    grid.setGiven(0, 5, 7);
@@ -157,11 +159,11 @@ TEST(SweepIntersectionElimination, BoxLine)
    grid.setCandidates(2, 3, {2, 3, 4, 5});
    grid.setCandidates(2, 4, {2, 3, 4, 5, 9});
 
-   SweepIntersectionElimination strategy;
+   StrategyIntersectionElimination strategy;
    FieldsInfo finfo(grid);
    TestUtils::CheckStrategy(strategy, grid, {15, 0});
 
-   const auto fieldValues = SweepIntersectionElimination().collect(finfo);
+   const auto fieldValues = StrategyIntersectionElimination().collect(finfo);
    ASSERT_EQ(fieldValues.size(), 15);
 
    Field expect = 630;

@@ -7,7 +7,7 @@
 namespace Sudoku
 {
 // In TryGetIntersectionHouse
-class SweepIntersectionElimination : public IStrategy
+class StrategyIntersectionElimination : public IStrategy
 {
  public:
    FieldValue::Container collect(const FieldsInfo &) override;
