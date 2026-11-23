@@ -79,9 +79,9 @@ std::optional<XWing> StrategyXWing::isXWing(std::span<const LockedPair> candidat
    return {};
 }
 
-FieldValue::Container StrategyXWing::collect(const FieldsInfo &finfo)
+bool StrategyXWing::collect(const FieldsInfo &finfo, FieldValue::Container &result)
 {
-   FieldValue::Container result;
+   const auto size = result.size();
    const LockedPairs lps(finfo);
    for (Value value : ValueAll)
    {
@@ -100,5 +100,5 @@ FieldValue::Container StrategyXWing::collect(const FieldsInfo &finfo)
          }
       } while (combinations.next());
    }
-   return result;
+   return size != result.size();
 }

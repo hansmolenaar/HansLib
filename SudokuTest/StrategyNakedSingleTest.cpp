@@ -28,7 +28,8 @@ TEST(StrategyNakedSingleTest, RowSimple)
    }
 
    FieldsInfo finfo(grid);
-   const auto collected = StrategyNakedSingle().collect(finfo);
+   FieldValue::Container collected;
+   StrategyNakedSingle().collect(finfo, collected);
    ASSERT_TRUE(collected.contains({0, 8}));
    ASSERT_EQ(collected.size(), 104);
 

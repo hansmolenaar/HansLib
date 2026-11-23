@@ -10,7 +10,7 @@ namespace Sudoku
 class StrategyIntersectionElimination : public IStrategy
 {
  public:
-   FieldValue::Container collect(const FieldsInfo &) override;
+   bool collect(const FieldsInfo &, FieldValue::Container &) override;
 
    static std::optional<House> TryGetIntersectionHouse(HouseType, const FieldBits &, const FieldsInfo &);
    static FieldValue::Container collectHouse(const FieldsInfo &, const House &);

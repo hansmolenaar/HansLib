@@ -10,7 +10,7 @@ namespace Sudoku
 class StrategyHiddenTuple : public IStrategy
 {
  public:
-   FieldValue::Container collect(const FieldsInfo &) override;
+   bool collect(const FieldsInfo &, FieldValue::Container &) override;
 
    static FieldValue::Container collectHouse(const FieldsInfo &, const House &, Index);
    static FieldValue::Container collectTuplesOfSize(const FieldsInfo &, Index);
@@ -21,7 +21,7 @@ class StrategyHiddenTuple : public IStrategy
 class StrategyHiddenSingle : public IStrategy
 {
  public:
-   FieldValue::Container collect(const FieldsInfo &) override;
+   bool collect(const FieldsInfo &, FieldValue::Container &) override;
 };
 
 } // namespace Sudoku

@@ -48,14 +48,16 @@ TEST(StrategyXWingTest, Basics)
    expect -= 142;
    ASSERT_EQ(expect, grid.getNumCandidates());
 
-   auto fieldsValue = StrategyXWing().collect(finfo);
-   ASSERT_EQ(fieldsValue.size(), 14);
-   auto gridChanges = grid.apply(fieldsValue, finfo);
+   FieldValue::Container fieldValues;
+   StrategyXWing().collect(finfo, fieldValues);
+   ASSERT_EQ(fieldValues.size(), 14);
+   auto gridChanges = grid.apply(fieldValues, finfo);
    ASSERT_EQ(gridChanges.numValuesChanged, 14);
    ASSERT_EQ(gridChanges.numFieldsSolved, 0);
    expect -= 14;
    ASSERT_EQ(expect, grid.getNumCandidates());
 
-   fieldsValue = StrategyXWing().collect(finfo);
-   ASSERT_EQ(fieldsValue.size(), 0);
+   fieldValues.clear();
+   StrategyXWing().collect(finfo, fieldValues);
+   ASSERT_EQ(fieldValues.size(), 0);
 }

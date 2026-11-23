@@ -14,7 +14,7 @@ class StrategyNakedTuples : public IStrategy
    static FieldValue::Container collectOfTupleSize(const FieldsInfo &, Index);
    static FieldValue::Container collectHousesOfType(const FieldsInfo &, HouseType, Index);
    static FieldValue::Container collectHouse(const FieldsInfo &, const House &, Index);
-   FieldValue::Container collect(const FieldsInfo &) override;
+   bool collect(const FieldsInfo &, FieldValue::Container &) override;
 };
 
 } // namespace Sudoku

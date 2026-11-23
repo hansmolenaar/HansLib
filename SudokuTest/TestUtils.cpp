@@ -39,14 +39,18 @@ void TestUtils::CheckStrategyInterface(Sudoku::IStrategy &strategy)
    // full grid
    const CandidatesGrid grid;
    FieldsInfo finfo(grid);
-   auto fvs = strategy.collect(finfo);
-   ASSERT_TRUE(fvs.empty());
+   FieldValue::Container fieldValues;
+   bool anyChange = strategy.collect(finfo, fieldValues);
+   ASSERT_FALSE(anyChange);
+   ASSERT_TRUE(fieldValues.empty());
 
    // solved
    const auto solved = TestModels::getSolvedGrid();
    finfo = FieldsInfo(solved);
-   fvs = strategy.collect(finfo);
-   ASSERT_TRUE(fvs.empty());
+   fieldValues.clear();
+   strategy.collect(finfo, fieldValues);
+   ASSERT_TRUE(fieldValues.empty());
+   ASSERT_FALSE(anyChange);
 }
 
 void TestUtils::CheckStrategy(Sudoku::IStrategy &strategy, const Sudoku::CandidatesGrid &grid,
@@ -56,8 +60,10 @@ void TestUtils::CheckStrategy(Sudoku::IStrategy &strategy, const Sudoku::Candida
    for (auto eqv : CandidatesGrid::getSymmetricEquivalents(grid))
    {
       FieldsInfo finfo(eqv);
-      const auto fvs = strategy.collect(finfo);
+      FieldValue::Container fvs;
+      const bool anyChange = strategy.collect(finfo, fvs);
       CheckFieldValues(eqv, fvs);
+      ASSERT_EQ(fvs.empty(), !anyChange);
       ASSERT_EQ(fvs.size(), expect.numValuesChanged);
       auto numCandidates = finfo.getGrid().getNumCandidates();
       const auto changes = sweep.singleSweep(eqv, finfo);
@@ -74,7 +80,8 @@ void TestUtils::ShowStrategy(Sudoku::IStrategy &strategy, const Sudoku::Candidat
    FieldsInfo finfo(grid);
    Sweep sweep(&strategy);
    auto prv = grid;
-   auto fvs = strategy.collect(finfo);
+   FieldValue::Container fvs;
+   strategy.collect(finfo, fvs);
    auto changes = sweep.singleSweep(grid, finfo);
    std::cout << prv << "\n" << grid << "\n" << CandidatesGrid::DifferenceToStrings(prv, grid);
    EXPECT_EQ(changes.numValuesChanged, 0);

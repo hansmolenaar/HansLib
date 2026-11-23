@@ -10,7 +10,7 @@ class IStrategy
 {
  public:
    virtual ~IStrategy() = default;
-   virtual FieldValue::Container collect(const FieldsInfo &) = 0;
+   virtual bool collect(const FieldsInfo &, FieldValue::Container &) = 0;
 };
 
 } // namespace Sudoku

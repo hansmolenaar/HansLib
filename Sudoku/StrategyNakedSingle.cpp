@@ -6,9 +6,9 @@
 using namespace Sudoku;
 using namespace Utilities;
 
-std::set<FieldValue> StrategyNakedSingle::collect(const FieldsInfo &finfo)
+bool StrategyNakedSingle::collect(const FieldsInfo &finfo, FieldValue::Container &result)
 {
-   FieldValue::Container result;
+   const auto size = result.size();
    const auto &solvedFields = finfo.getSolvedFields();
 
    const CandidatesGrid &grid = finfo.getGrid();
@@ -18,5 +18,5 @@ std::set<FieldValue> StrategyNakedSingle::collect(const FieldsInfo &finfo)
       auto visibleFields = finfo.getVisibleFields(field) & finfo.getActiveFieldsWithValue(value);
       FieldValue::add(visibleFields, value, result);
    }
-   return result;
+   return size != result.size();
 }

@@ -141,7 +141,9 @@ TEST(StrategyHidddenTupleTest, BasicExamplePair)
    ASSERT_FALSE(value0.has_value());
 
    FieldsInfo finfo(grid);
-   const auto fieldValues = strategy1.collect(finfo);
+   FieldValue::Container fieldValues;
+   const bool anyChange = strategy1.collect(finfo, fieldValues);
+   ASSERT_TRUE(anyChange);
    grid.apply(fieldValues, finfo);
 
    value0 = grid[Cell::rowCol2Field(row, 0)].tryGetSolvedValue();

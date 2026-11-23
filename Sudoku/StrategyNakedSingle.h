@@ -8,7 +8,7 @@ namespace Sudoku
 class StrategyNakedSingle : public IStrategy
 {
  public:
-   FieldValue::Container collect(const FieldsInfo &) override;
+   bool collect(const FieldsInfo &, FieldValue::Container &) override;
 };
 
 } // namespace Sudoku

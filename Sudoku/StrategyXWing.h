@@ -21,7 +21,8 @@ struct XWing
 class StrategyXWing : public IStrategy
 {
  public:
-   FieldValue::Container collect(const FieldsInfo &) override;
+   bool collect(const FieldsInfo &, FieldValue::Container &) override;
+
    static std::optional<XWing> isXWing(std::span<const LockedPair>);
 };
 

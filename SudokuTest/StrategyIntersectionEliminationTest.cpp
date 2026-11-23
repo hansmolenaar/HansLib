@@ -102,7 +102,9 @@ TEST(StrategyIntersectionElimination, PointingPairCol)
    StrategyIntersectionElimination strategy;
    FieldsInfo finfo(grid);
 
-   const auto fieldValues = strategy.collect(finfo);
+   FieldValue::Container fieldValues;
+   const bool anyChange = strategy.collect(finfo, fieldValues);
+   ASSERT_TRUE(anyChange);
    ASSERT_EQ(fieldValues.size(), 6);
 
    TestUtils::CheckStrategy(strategy, grid, {6, 0});
@@ -126,7 +128,8 @@ TEST(StrategyIntersectionElimination, PointingPairRow)
    FieldsInfo finfo(grid);
    TestUtils::CheckStrategy(strategy, grid, {12, 0});
 
-   const auto fieldValues = StrategyIntersectionElimination().collect(finfo);
+   FieldValue::Container fieldValues;
+   StrategyIntersectionElimination().collect(finfo, fieldValues);
    ASSERT_EQ(fieldValues.size(), 12);
 
    Field expect = 665;
@@ -163,7 +166,8 @@ TEST(StrategyIntersectionElimination, BoxLine)
    FieldsInfo finfo(grid);
    TestUtils::CheckStrategy(strategy, grid, {15, 0});
 
-   const auto fieldValues = StrategyIntersectionElimination().collect(finfo);
+   FieldValue::Container fieldValues;
+   StrategyIntersectionElimination().collect(finfo, fieldValues);
    ASSERT_EQ(fieldValues.size(), 15);
 
    Field expect = 630;

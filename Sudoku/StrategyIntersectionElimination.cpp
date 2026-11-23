@@ -71,13 +71,13 @@ FieldValue::Container StrategyIntersectionElimination::collectHouse(const Fields
    return result;
 }
 
-FieldValue::Container StrategyIntersectionElimination::collect(const FieldsInfo &finfo)
+bool StrategyIntersectionElimination::collect(const FieldsInfo &finfo, FieldValue::Container &result)
 {
-   FieldValue::Container result;
+   const auto size = result.size();
    for (const auto &house : House::getAllHouses())
    {
       FieldValue::add(collectHouse(finfo, house), result);
    }
 
-   return result;
+   return size != result.size();
 }

@@ -111,18 +111,20 @@ FieldValue::Container StrategyHiddenTuple::collectTuplesOfSize(const FieldsInfo 
    return result;
 }
 
-FieldValue::Container StrategyHiddenTuple::collect(const FieldsInfo &finfo)
+bool StrategyHiddenTuple::collect(const FieldsInfo &finfo, FieldValue::Container &result)
 {
-   FieldValue::Container result;
+   const auto size = result.size();
    FieldValue::add(collectTuplesOfSize(finfo, 2), result);
    FieldValue::add(collectTuplesOfSize(finfo, 3), result);
    FieldValue::add(collectTuplesOfSize(finfo, 4), result);
-   return result;
+   return size != result.size();
 };
 
 // *******************************************************************************************
 
-FieldValue::Container StrategyHiddenSingle::collect(const FieldsInfo &finfo)
+bool StrategyHiddenSingle::collect(const FieldsInfo &finfo, FieldValue::Container &result)
 {
-   return StrategyHiddenTuple::collectTuplesOfSize(finfo, 1);
+   const auto size = result.size();
+   FieldValue::add(StrategyHiddenTuple::collectTuplesOfSize(finfo, 1), result);
+   return size != result.size();
 };

@@ -2,12 +2,12 @@
 
 #include "BitsetUtils.h"
 #include "CandidatesGrid.h"
+#include "FieldValue.h"
 #include "FieldsInfo.h"
 #include "House.h"
 #include "StrategyNakedSingle.h"
 #include "SudokuDefines.h"
 #include "TestModels.h"
-#include "TestUtils.h"
 #include "Visibility.h"
 
 using namespace Sudoku;
@@ -142,6 +142,7 @@ TEST(VisibilityTest, Update)
    grid.setGiven(7, 7, 5);
 
    FieldsInfo finfo(grid);
-   const auto fieldValues = StrategyNakedSingle().collect(finfo);
-   grid.apply(fieldValues, finfo);
+   FieldValue::Container fvs;
+   StrategyNakedSingle().collect(finfo, fvs);
+   grid.apply(fvs, finfo);
 }
