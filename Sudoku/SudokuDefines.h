@@ -10,6 +10,7 @@ constexpr Value NumValue{9};
 constexpr Value ValueUndefined{0};
 constexpr auto ValueAll = std::ranges::iota_view{static_cast<Value>(1), static_cast<Value>(NumValue + 1)};
 using ValueBits = std::bitset<NumValue + 1>;
+constexpr char ValueUndefinedChar = '.';
 
 using Index = unsigned short; // 0..8
 constexpr Index NumIndex(9);
@@ -36,7 +37,8 @@ enum class HouseType
 constexpr std::array<HouseType, 3> HouseTypeAll = {HouseType::Row, HouseType::Col, HouseType::Box};
 constexpr Index NumHouse = 3 * NumIndex;
 
-constexpr char ValueUndefinedChar = '.';
+using FieldValueCount = unsigned short;
+constexpr FieldValueCount FieldValueCountMax = NumField * NumValue;
 
 enum class LinkType
 {

@@ -3,6 +3,7 @@
 #include "SudokuDefines.h"
 
 #include <set>
+#include <vector>
 
 namespace Sudoku
 {
@@ -16,6 +17,20 @@ struct FieldValue
    static void add(const Container &, Container &);
 
    auto operator<=>(const FieldValue &) const = default;
+};
+
+class FieldValues
+{
+ public:
+   FieldValueCount add(FieldValue);
+   FieldValueCount add(Field, Value);
+   FieldValueCount add(const FieldBits &, Value);
+   FieldValueCount add(const FieldValues &);
+   std::span<const FieldValue> get() const;
+
+ private:
+   std::vector<FieldValue> m_fieldValues;
+   std::set<FieldValue> m_fieldValuesSorted;
 };
 
 } // namespace Sudoku
