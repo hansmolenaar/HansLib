@@ -5,6 +5,7 @@
 #include "FieldsInfo.h"
 #include "Functors.h"
 #include "House.h"
+#include "Logging.h"
 #include "MyAssert.h"
 #include "SudokuDefines.h"
 #include "SudokuUtils.h"
@@ -14,6 +15,8 @@
 
 #include <algorithm>
 #include <iostream>
+#include <ostream>
+#include <sstream>
 
 using namespace Sudoku;
 using namespace Utilities;
@@ -23,35 +26,33 @@ namespace str = std::ranges;
 namespace
 {
 
-void add(const FieldsInfo &finfo, const FieldBits &house, std::span<const Field> candidateTuple,
-         FieldValues &fieldValues)
+void add(const FieldsInfo &finfo, const House &house, std::span<const Field> candidateTuple, FieldValues &fieldValues)
 {
-   bool isLogged = true;
+   bool doLog = false;
    const CandidatesGrid &grid = finfo.getGrid();
    const auto candidatesToRemove = CandidatesGrid::getValuesInFields(grid, candidateTuple);
    boost::container::static_vector<Value, NumValue> valuesToRemove(candidatesToRemove.count());
    str::copy_if(ValueAll, valuesToRemove.begin(), Bitset{candidatesToRemove});
 
-   const auto fields = house & ~SudokuUtils::getFields(candidateTuple);
+   const auto houseFields = finfo.getHouseFields(house);
+   const auto fields = houseFields & ~SudokuUtils::getFields(candidateTuple);
+   const auto prvSize = fieldValues.size();
    for (Value value : valuesToRemove)
    {
       const auto fieldsWithValue = fields & finfo.getActiveFieldsWithValue(value);
-      const bool anyChange = fieldValues.add(fieldsWithValue, value);
-      if (anyChange && !isLogged)
-      {
-         isLogged = true;
-         std::cout << "Naked tuple of size " << candidateTuple.size() << " with values (";
-         for (Value value : SudokuUtils::ValueBitsToRange(candidatesToRemove))
-         {
-            std::cout << " " << value;
-         }
-         std::cout << " ) and cells ";
-         for (Field field : candidateTuple)
-         {
-            std::cout << " " << Cell::get(field);
-         }
-         std::cout << " )\n";
-      }
+      fieldValues.add(fieldsWithValue, value);
+   }
+   if (doLog && prvSize != fieldValues.size())
+   {
+      Logging logMessage;
+      logMessage.strategyName = "StrategyNakedTuples";
+      logMessage.numChanges = fieldValues.size() - prvSize;
+      std::stringstream info;
+      info << "tuple with " << candidateTuple.size() << " cells";
+      info << " and values " << candidatesToRemove;
+      info << " in house " << house;
+      logMessage.info = info.str();
+      std::cout << logMessage;
    }
 }
 
@@ -63,9 +64,9 @@ struct BendedNakedTripleResult
 
 void addBendedTriplets(const FieldsInfo &finfo,
                        const boost::container::static_vector<BendedNakedTripleResult, 3> &xtraLines,
-                       std::span<const Field> candidateTuple, FieldValues &fieldValues)
+                       std::span<const Field> candidateTuple, House inHouse, FieldValues &fieldValues)
 {
-   bool isLogged = true;
+   bool doLog = false;
    for (const auto &bnt : xtraLines)
    {
 
@@ -73,22 +74,22 @@ void addBendedTriplets(const FieldsInfo &finfo,
       for (Value value : SudokuUtils::ValueBitsToRange(bnt.values))
       {
          const auto fields = fieldsInHouse & finfo.getActiveFieldsWithValue(value);
+         const auto prvSize = fieldValues.size();
          const bool anyChange = fieldValues.add(fields, value);
 
-         if (anyChange && !isLogged)
+         if (anyChange && doLog)
          {
-            isLogged = true;
-            std::cout << "Bended triplet of the cells  ";
-            for (Field field : candidateTuple)
-            {
-               std::cout << " " << Cell::get(field);
-            }
-            std::cout << " ) with the line " << bnt.line << " with values (";
-            for (Value value : SudokuUtils::ValueBitsToRange(bnt.values))
-            {
-               std::cout << " " << value;
-            }
-            std::cout << ")\n";
+            const auto valuesInTriplet = CandidatesGrid::getValuesInFields(finfo.getGrid(), candidateTuple);
+            Logging logMessage;
+            logMessage.strategyName = "StrategyNakedTuples";
+            logMessage.numChanges = fieldValues.size() - prvSize;
+            std::stringstream info;
+            info << "bended triplet ";
+            info << "with values " << valuesInTriplet;
+            info << " in house " << inHouse;
+            info << " removes " << value << " from line " << bnt.line;
+            logMessage.info = info.str();
+            std::cout << logMessage;
          }
       }
    }
@@ -165,11 +166,11 @@ void CollectHouse(const FieldsInfo &finfo, const House &house, Index tupleSize, 
    {
       if (IsNakedTuple(grid, combinations()))
       {
-         add(finfo, houseFields, combinations(), result);
+         add(finfo, house, combinations(), result);
          if (tupleSize == 3)
          {
             const auto xtra = IsBendedNakedTriplet(grid, combinations());
-            addBendedTriplets(finfo, xtra, combinations(), result);
+            addBendedTriplets(finfo, xtra, combinations(), house, result);
          }
       }
    } while (combinations.next());

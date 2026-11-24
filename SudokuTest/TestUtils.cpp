@@ -76,8 +76,6 @@ void TestUtils::ShowStrategy(Sudoku::IStrategy &strategy, const Sudoku::Candidat
    FieldsInfo finfo(grid);
    Sweep sweep(&strategy);
    auto prv = grid;
-   FieldValues fvs;
-   strategy.collect(finfo, fvs);
    auto changes = sweep.singleSweep(grid, finfo);
    std::cout << prv << "\n" << grid << "\n" << CandidatesGrid::DifferenceToStrings(prv, grid);
    EXPECT_EQ(changes.numValuesChanged, 0);
