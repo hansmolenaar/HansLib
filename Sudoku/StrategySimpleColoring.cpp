@@ -34,9 +34,9 @@ std::vector<Link> StrategySimpleColoring::getBilocationLinks(const CandidatesGri
    return result;
 }
 
-FieldValue::Container StrategySimpleColoring::collectSees2ColorsCandidates(const FieldsInfo &finfo, Value value,
-                                                                           const ColorField &colors,
-                                                                           const FieldBits &cellsToIgnore)
+void StrategySimpleColoring::collectSees2ColorsCandidates(const FieldsInfo &finfo, Value value,
+                                                          const ColorField &colors, const FieldBits &cellsToIgnore,
+                                                          FieldValues &fieldValues)
 {
    const auto cellsGreen = colors.getFieldsWithColor(Color::Green);
    const auto cellsBlue = colors.getFieldsWithColor(Color::Blue);
@@ -47,15 +47,12 @@ FieldValue::Container StrategySimpleColoring::collectSees2ColorsCandidates(const
    fields &= ~cellsToIgnore;
    fields &= finfo.getFieldsWithValue(value);
 
-   FieldValue::Container result;
-   FieldValue::add(fields, value, result);
-   return result;
+   fieldValues.add(fields, value);
 }
 
-FieldValue::Container StrategySimpleColoring::collectTwiceInAUnit(const FieldsInfo &finfo, Value value,
-                                                                  const ColorField &colors)
+void StrategySimpleColoring::collectTwiceInAUnit(const FieldsInfo &finfo, Value value, const ColorField &colors,
+                                                 FieldValues &fieldValues)
 {
-   FieldValue::Container result;
    for (Color color : ColorAll)
    {
       const auto fieldsWithColor = colors.getFieldsWithColor(color);
@@ -75,19 +72,16 @@ FieldValue::Container StrategySimpleColoring::collectTwiceInAUnit(const FieldsIn
          }
          if (Visibility::areVisible(f, prev.value()))
          {
-            FieldValue::add(fieldsWithColor, value, result);
+            fieldValues.add(fieldsWithColor, value);
          }
          prev = f;
       }
    }
-   return result;
 }
 
-FieldValue::Container StrategySimpleColoring::collectOneColorEmptiesHouse(const FieldsInfo &finfo, Value value,
-                                                                          const ColorField &colors,
-                                                                          const FieldBits &cellsToIgnore)
+void StrategySimpleColoring::collectOneColorEmptiesHouse(const FieldsInfo &finfo, Value value, const ColorField &colors,
+                                                         const FieldBits &cellsToIgnore, FieldValues &fieldValues)
 {
-   FieldValue::Container result;
    const FieldBits fieldsValue = finfo.getActiveFieldsWithValue(value);
    const auto fieldsBlue = colors.getFieldsWithColor(Color::Blue);
    const auto fieldsGreen = colors.getFieldsWithColor(Color::Green);
@@ -117,20 +111,17 @@ FieldValue::Container StrategySimpleColoring::collectOneColorEmptiesHouse(const 
       }
       if (numCellsInHouseSeesBlue == numCellsInHouseWithValue)
       {
-         FieldValue::add(fieldsBlue, value, result);
+         fieldValues.add(fieldsBlue, value);
       }
       else if (numCellsInHouseSeesGreen == numCellsInHouseWithValue)
       {
-         FieldValue::add(fieldsGreen, value, result);
+         fieldValues.add(fieldsGreen, value);
       }
    }
-
-   return result;
 }
 
-bool StrategySimpleColoring::collect(const FieldsInfo &finfo, FieldValue::Container &result)
+void StrategySimpleColoring::collect(const FieldsInfo &finfo, FieldValues &result)
 {
-   const auto size = result.size();
    const CandidatesGrid &grid = finfo.getGrid();
    for (Value value : ValueAll)
    {
@@ -146,18 +137,9 @@ bool StrategySimpleColoring::collect(const FieldsInfo &finfo, FieldValue::Contai
          const auto coloring = Network::setColors(network);
          const auto cellsInCurrectNetwork = network.getFields();
 
-         const auto twoColors =
-             StrategySimpleColoring::collectSees2ColorsCandidates(finfo, value, coloring, cellsInCurrectNetwork);
-         result.insert(twoColors.begin(), twoColors.end());
-
-         const auto twice = StrategySimpleColoring::collectTwiceInAUnit(finfo, value, coloring);
-         result.insert(twice.begin(), twice.end());
-
-         const auto empties =
-             StrategySimpleColoring::collectOneColorEmptiesHouse(finfo, value, coloring, cellsInCurrectNetwork);
-         result.insert(empties.begin(), empties.end());
+         StrategySimpleColoring::collectSees2ColorsCandidates(finfo, value, coloring, cellsInCurrectNetwork, result);
+         StrategySimpleColoring::collectTwiceInAUnit(finfo, value, coloring, result);
+         StrategySimpleColoring::collectOneColorEmptiesHouse(finfo, value, coloring, cellsInCurrectNetwork, result);
       }
    }
-
-   return size != result.size();
 }

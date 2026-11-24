@@ -28,8 +28,8 @@ class CandidatesGrid
    void update(FieldsInfo &);     // set candidates from givens
    void checkValidSudoku() const; // throws if not valid
    bool isSolved() const;
-   GridChange apply(const FieldValue::Container &, FieldsInfo &);
-   bool applyAndUpdate(const FieldValue::Container &, FieldsInfo &);
+   GridChange apply(const FieldValues &, FieldsInfo &);
+   bool applyAndUpdate(const FieldValues &, FieldsInfo &);
 
    static CandidatesGrid FromString(const std::string &, char = ValueUndefinedChar);
    static CandidatesGrid FromValues(const std::array<Value, NumField> &);

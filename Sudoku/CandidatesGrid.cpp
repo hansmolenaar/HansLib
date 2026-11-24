@@ -141,10 +141,10 @@ GridChange CandidatesGrid::removeCandidate(Field field, Value value)
    return m_candidates.at(field).removeCandidate(value);
 }
 
-GridChange CandidatesGrid::apply(const FieldValue::Container &fieldValues, FieldsInfo &finfo)
+GridChange CandidatesGrid::apply(const FieldValues &fieldValues, FieldsInfo &finfo)
 {
    GridChange change;
-   for (const auto &fv : fieldValues)
+   for (const auto &fv : fieldValues.get())
    {
       change += m_candidates.at(fv.field).removeCandidate(fv.value);
    }
@@ -155,7 +155,7 @@ GridChange CandidatesGrid::apply(const FieldValue::Container &fieldValues, Field
    return change;
 }
 
-bool CandidatesGrid::applyAndUpdate(const FieldValue::Container &fieldValues, FieldsInfo &finfo)
+bool CandidatesGrid::applyAndUpdate(const FieldValues &fieldValues, FieldsInfo &finfo)
 {
    const auto changes = apply(fieldValues, finfo);
    if (changes.numValuesChanged == 0)

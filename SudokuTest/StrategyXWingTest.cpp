@@ -48,7 +48,7 @@ TEST(StrategyXWingTest, Basics)
    expect -= 142;
    ASSERT_EQ(expect, grid.getNumCandidates());
 
-   FieldValue::Container fieldValues;
+   FieldValues fieldValues;
    StrategyXWing().collect(finfo, fieldValues);
    ASSERT_EQ(fieldValues.size(), 14);
    auto gridChanges = grid.apply(fieldValues, finfo);
@@ -57,7 +57,7 @@ TEST(StrategyXWingTest, Basics)
    expect -= 14;
    ASSERT_EQ(expect, grid.getNumCandidates());
 
-   fieldValues.clear();
+   fieldValues = FieldValues();
    StrategyXWing().collect(finfo, fieldValues);
    ASSERT_EQ(fieldValues.size(), 0);
 }

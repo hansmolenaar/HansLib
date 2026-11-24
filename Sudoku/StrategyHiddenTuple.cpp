@@ -44,9 +44,10 @@ bool IsHiddenTuple(const FieldsInfo &finfo, const House &house, std::span<const 
    return (count == size);
 }
 
-void CollectCandidates(const FieldsInfo &finfo, const House &house, std::span<const Value> candidateTuple,
-                       FieldValue::Container &fieldValues)
+FieldValueCount CollectCandidates(const FieldsInfo &finfo, const House &house, std::span<const Value> candidateTuple,
+                                  FieldValues &fieldValues)
 {
+   FieldValueCount count = 0;
    // Remove all values  except the candidate tuple
    boost::container::static_vector<Value, NumValue> activeValues;
    str::copy_if(ValueAll, std::back_inserter(activeValues), IsNotContained(candidateTuple));
@@ -62,12 +63,14 @@ void CollectCandidates(const FieldsInfo &finfo, const House &house, std::span<co
    for (Value value : activeValues)
    {
       const auto removeValueFromFields = activeFields & finfo.getFieldsWithValue(value);
-      FieldValue::add(removeValueFromFields, value, fieldValues);
+      count += fieldValues.add(removeValueFromFields, value);
    }
+   return count;
 }
 
-void CollectHouse(const FieldsInfo &finfo, const House &house, Index size, FieldValue::Container &fvs)
+FieldValueCount CollectHouse(const FieldsInfo &finfo, const House &house, Index size, FieldValues &fvs)
 {
+   FieldValueCount count = 0;
    const auto houseFields = finfo.getHouseFields(house);
    std::vector<Value> activeCandidates;
    for (Value value : ValueAll)
@@ -82,7 +85,7 @@ void CollectHouse(const FieldsInfo &finfo, const House &house, Index size, Field
 
    if (activeCandidates.size() < size)
    {
-      return;
+      return count;
    }
 
    Combinations<Value> combinations(activeCandidates, size);
@@ -90,35 +93,34 @@ void CollectHouse(const FieldsInfo &finfo, const House &house, Index size, Field
    {
       if (IsHiddenTuple(finfo, house, combinations()))
       {
-         CollectCandidates(finfo, house, combinations(), fvs);
+         count += CollectCandidates(finfo, house, combinations(), fvs);
       }
    } while (combinations.next());
+   return count;
 }
 
-void CollectTuplesOfSize(const FieldsInfo &finfo, Index size, FieldValue::Container &result)
+FieldValueCount CollectTuplesOfSize(const FieldsInfo &finfo, Index size, FieldValues &result)
 {
+   FieldValueCount count = 0;
    for (House house : House::getAllHouses())
    {
-      CollectHouse(finfo, house, size, result);
+      count += CollectHouse(finfo, house, size, result);
    }
+   return count;
 }
 
 } // namespace
 
-bool StrategyHiddenTuple::collect(const FieldsInfo &finfo, FieldValue::Container &result)
+void StrategyHiddenTuple::collect(const FieldsInfo &finfo, FieldValues &result)
 {
-   const auto size = result.size();
    CollectTuplesOfSize(finfo, 2, result);
    CollectTuplesOfSize(finfo, 3, result);
    CollectTuplesOfSize(finfo, 4, result);
-   return size != result.size();
 };
 
 // *******************************************************************************************
 
-bool StrategyHiddenSingle::collect(const FieldsInfo &finfo, FieldValue::Container &result)
+void StrategyHiddenSingle::collect(const FieldsInfo &finfo, FieldValues &result)
 {
-   const auto size = result.size();
    CollectTuplesOfSize(finfo, 1, result);
-   return size != result.size();
 };

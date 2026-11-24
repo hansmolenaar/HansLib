@@ -10,9 +10,9 @@
 
 using namespace Sudoku;
 
-void TestUtils::CheckFieldValues(const CandidatesGrid &grid, const FieldValue::Container &fieldsValues)
+void TestUtils::CheckFieldValues(const CandidatesGrid &grid, const FieldValues &fieldsValues)
 {
-   for (auto fv : fieldsValues)
+   for (auto fv : fieldsValues.get())
    {
       ASSERT_TRUE(grid[fv.field].contains(fv.value));
    }
@@ -39,17 +39,15 @@ void TestUtils::CheckStrategyInterface(Sudoku::IStrategy &strategy)
    // full grid
    const CandidatesGrid grid;
    FieldsInfo finfo(grid);
-   FieldValue::Container fieldValues;
-   bool anyChange = strategy.collect(finfo, fieldValues);
-   ASSERT_FALSE(anyChange);
-   ASSERT_TRUE(fieldValues.empty());
+   FieldValues fieldValues;
+   strategy.collect(finfo, fieldValues);
+   ASSERT_EQ(fieldValues.size(), 0);
 
    // solved
    const auto solved = TestModels::getSolvedGrid();
    finfo = FieldsInfo(solved);
    fieldValues = strategy.collect(finfo);
-   ASSERT_TRUE(fieldValues.empty());
-   ASSERT_FALSE(anyChange);
+   ASSERT_EQ(fieldValues.size(), 0);
 }
 
 void TestUtils::CheckStrategy(Sudoku::IStrategy &strategy, const Sudoku::CandidatesGrid &grid,
@@ -59,10 +57,9 @@ void TestUtils::CheckStrategy(Sudoku::IStrategy &strategy, const Sudoku::Candida
    for (auto eqv : CandidatesGrid::getSymmetricEquivalents(grid))
    {
       FieldsInfo finfo(eqv);
-      FieldValue::Container fvs;
-      const bool anyChange = strategy.collect(finfo, fvs);
+      FieldValues fvs;
+      strategy.collect(finfo, fvs);
       CheckFieldValues(eqv, fvs);
-      ASSERT_EQ(fvs.empty(), !anyChange);
       EXPECT_EQ(fvs.size(), expect.numValuesChanged);
       auto numCandidates = finfo.getGrid().getNumCandidates();
       const auto changes = sweep.singleSweep(eqv, finfo);
@@ -79,7 +76,7 @@ void TestUtils::ShowStrategy(Sudoku::IStrategy &strategy, const Sudoku::Candidat
    FieldsInfo finfo(grid);
    Sweep sweep(&strategy);
    auto prv = grid;
-   FieldValue::Container fvs;
+   FieldValues fvs;
    strategy.collect(finfo, fvs);
    auto changes = sweep.singleSweep(grid, finfo);
    std::cout << prv << "\n" << grid << "\n" << CandidatesGrid::DifferenceToStrings(prv, grid);

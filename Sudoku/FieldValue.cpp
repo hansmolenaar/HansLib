@@ -4,21 +4,6 @@
 using namespace Sudoku;
 using namespace Utilities;
 
-bool FieldValue::add(const FieldBits &fields, Value value, Container &fieldValues)
-{
-   const auto sizeBefore = fieldValues.size();
-   for (Field field : FieldAll | std::views::filter(Bitset{fields}))
-   {
-      fieldValues.insert({field, value});
-   }
-   return fieldValues.size() != sizeBefore;
-}
-
-void FieldValue::add(const Container &toAdd, Container &sum)
-{
-   sum.insert(toAdd.begin(), toAdd.end());
-}
-
 // *********************** FieldValues
 
 FieldValueCount FieldValues::add(FieldValue fv)
@@ -60,4 +45,9 @@ FieldValueCount FieldValues::add(const FieldValues &fvs)
 std::span<const FieldValue> FieldValues::get() const
 {
    return m_fieldValues;
+}
+
+size_t FieldValues::size() const
+{
+   return m_fieldValues.size();
 }

@@ -12,9 +12,6 @@ struct FieldValue
 {
    Field field = FieldUndefined;
    Value value = ValueUndefined;
-   using Container = std::set<FieldValue>;
-   static bool add(const FieldBits &, Value, Container &);
-   static void add(const Container &, Container &);
 
    auto operator<=>(const FieldValue &) const = default;
 };
@@ -27,6 +24,7 @@ class FieldValues
    FieldValueCount add(const FieldBits &, Value);
    FieldValueCount add(const FieldValues &);
    std::span<const FieldValue> get() const;
+   size_t size() const;
 
  private:
    std::vector<FieldValue> m_fieldValues;

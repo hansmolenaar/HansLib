@@ -1,6 +1,7 @@
 #pragma once
 
 #include "IStrategy.h"
+#include "SudokuDefines.h"
 
 namespace Sudoku
 {
@@ -8,13 +9,13 @@ namespace Sudoku
 class StrategyHiddenTuple : public IStrategy
 {
  public:
-   bool collect(const FieldsInfo &, FieldValue::Container &) override;
+   void collect(const FieldsInfo &, FieldValues &) override;
 }; // namespace StrategyHiddenTuple
 
 class StrategyHiddenSingle : public IStrategy
 {
  public:
-   bool collect(const FieldsInfo &, FieldValue::Container &) override;
+   void collect(const FieldsInfo &, FieldValues &) override;
 };
 
 } // namespace Sudoku

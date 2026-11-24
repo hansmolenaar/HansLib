@@ -24,7 +24,7 @@ namespace
 {
 
 void add(const FieldsInfo &finfo, const FieldBits &house, std::span<const Field> candidateTuple,
-         FieldValue::Container &fieldValues)
+         FieldValues &fieldValues)
 {
    bool isLogged = true;
    const CandidatesGrid &grid = finfo.getGrid();
@@ -36,7 +36,7 @@ void add(const FieldsInfo &finfo, const FieldBits &house, std::span<const Field>
    for (Value value : valuesToRemove)
    {
       const auto fieldsWithValue = fields & finfo.getActiveFieldsWithValue(value);
-      const bool anyChange = FieldValue::add(fieldsWithValue, value, fieldValues);
+      const bool anyChange = fieldValues.add(fieldsWithValue, value);
       if (anyChange && !isLogged)
       {
          isLogged = true;
@@ -63,7 +63,7 @@ struct BendedNakedTripleResult
 
 void addBendedTriplets(const FieldsInfo &finfo,
                        const boost::container::static_vector<BendedNakedTripleResult, 3> &xtraLines,
-                       std::span<const Field> candidateTuple, FieldValue::Container &fieldValues)
+                       std::span<const Field> candidateTuple, FieldValues &fieldValues)
 {
    bool isLogged = true;
    for (const auto &bnt : xtraLines)
@@ -73,7 +73,7 @@ void addBendedTriplets(const FieldsInfo &finfo,
       for (Value value : SudokuUtils::ValueBitsToRange(bnt.values))
       {
          const auto fields = fieldsInHouse & finfo.getActiveFieldsWithValue(value);
-         const bool anyChange = FieldValue::add(fields, value, fieldValues);
+         const bool anyChange = fieldValues.add(fields, value);
 
          if (anyChange && !isLogged)
          {
@@ -140,7 +140,7 @@ boost::container::static_vector<BendedNakedTripleResult, 3> IsBendedNakedTriplet
    return result;
 }
 
-void CollectHouse(const FieldsInfo &finfo, const House &house, Index tupleSize, FieldValue::Container &result)
+void CollectHouse(const FieldsInfo &finfo, const House &house, Index tupleSize, FieldValues &result)
 {
    const CandidatesGrid &grid = finfo.getGrid();
 
@@ -177,7 +177,7 @@ void CollectHouse(const FieldsInfo &finfo, const House &house, Index tupleSize, 
 } // namespace
 
 void StrategyNakedTuples::collectHousesOfType(const FieldsInfo &finfo, HouseType type, Index tupleSize,
-                                              FieldValue::Container &result)
+                                              FieldValues &result)
 {
    for (Index idx : IndexAll)
    {
@@ -186,7 +186,7 @@ void StrategyNakedTuples::collectHousesOfType(const FieldsInfo &finfo, HouseType
    }
 }
 
-void StrategyNakedTuples::collectOfTupleSize(const FieldsInfo &finfo, Index tupleSize, FieldValue::Container &result)
+void StrategyNakedTuples::collectOfTupleSize(const FieldsInfo &finfo, Index tupleSize, FieldValues &result)
 {
    for (HouseType type : HouseTypeAll)
    {
@@ -194,11 +194,9 @@ void StrategyNakedTuples::collectOfTupleSize(const FieldsInfo &finfo, Index tupl
    }
 }
 
-bool StrategyNakedTuples::collect(const FieldsInfo &finfo, FieldValue::Container &result)
+void StrategyNakedTuples::collect(const FieldsInfo &finfo, FieldValues &result)
 {
-   const auto size = result.size();
    collectOfTupleSize(finfo, 2, result);
    collectOfTupleSize(finfo, 3, result);
    collectOfTupleSize(finfo, 4, result);
-   return size != result.size();
 }

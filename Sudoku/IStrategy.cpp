@@ -2,9 +2,9 @@
 
 using namespace Sudoku;
 
-FieldValue::Container IStrategy::collect(const FieldsInfo &finfo)
+FieldValues IStrategy::collect(const FieldsInfo &finfo)
 {
-   FieldValue::Container result;
+   FieldValues result;
    collect(finfo, result);
    return result;
 }

@@ -2,6 +2,7 @@
 #include "CandidatesGrid.h"
 #include "FieldsInfo.h"
 #include "MyAssert.h"
+#include "SudokuDefines.h"
 #include "SudokuUtils.h"
 
 #include <optional>
@@ -47,9 +48,10 @@ std::optional<House> StrategyIntersectionElimination::TryGetIntersectionHouse(Ho
    return {};
 }
 
-FieldValue::Container StrategyIntersectionElimination::collectHouse(const FieldsInfo &finfo, const House &house)
+FieldValueCount StrategyIntersectionElimination::collectHouse(const FieldsInfo &finfo, const House &house,
+                                                              FieldValues &fieldValues)
 {
-   FieldValue::Container result;
+   FieldValueCount result = 0;
    const auto houseFields = finfo.getHouseFields(house);
    for (Value value : ValueAll)
    {
@@ -64,20 +66,17 @@ FieldValue::Container StrategyIntersectionElimination::collectHouse(const Fields
          {
             const auto intersectionHouseFields = finfo.getHouseFields(intersectionHouse.value());
             const auto fieldsToCancel = intersectionHouseFields & activeFieldsWithValue & ~fieldsWithValueInHouse;
-            FieldValue::add(fieldsToCancel, value, result);
+            result += fieldValues.add(fieldsToCancel, value);
          }
       }
    }
    return result;
 }
 
-bool StrategyIntersectionElimination::collect(const FieldsInfo &finfo, FieldValue::Container &result)
+void StrategyIntersectionElimination::collect(const FieldsInfo &finfo, FieldValues &result)
 {
-   const auto size = result.size();
    for (const auto &house : House::getAllHouses())
    {
-      FieldValue::add(collectHouse(finfo, house), result);
+      collectHouse(finfo, house, result);
    }
-
-   return size != result.size();
 }

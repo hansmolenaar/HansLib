@@ -16,16 +16,16 @@ using namespace Sudoku;
 namespace
 {
 
-FieldValue::Container CollectTupleSize(const FieldsInfo &finfo, Index size)
+FieldValues CollectTupleSize(const FieldsInfo &finfo, Index size)
 {
-   FieldValue::Container result;
+   FieldValues result;
    StrategyNakedTuples::collectOfTupleSize(finfo, size, result);
    return result;
 }
 
-FieldValue::Container CollectHousesOfType(const FieldsInfo &finfo, HouseType houseType, Index size)
+FieldValues CollectHousesOfType(const FieldsInfo &finfo, HouseType houseType, Index size)
 {
-   FieldValue::Container result;
+   FieldValues result;
    StrategyNakedTuples::collectHousesOfType(finfo, houseType, size, result);
    return result;
 }
@@ -116,7 +116,7 @@ TEST(StrategyNakedTuplesTest, StrategyNakedTuples_1)
    ASSERT_EQ(grid.getNumCandidates(), expect);
 
    auto fieldValues = CollectHousesOfType(finfo, HouseType::Col, 3);
-   ASSERT_TRUE(fieldValues.empty());
+   ASSERT_TRUE(fieldValues.get().empty());
 
    auto changes = grid.apply(fieldValues, finfo);
    ASSERT_EQ(changes.numValuesChanged, 0);
@@ -147,10 +147,10 @@ TEST(StrategyNakedTuplesTest, Box_222)
    StrategyNakedTuples strategy;
    FieldsInfo finfo(grid);
    auto fieldValues = CollectHousesOfType(finfo, HouseType::Col, 3);
-   ASSERT_TRUE(fieldValues.empty());
+   ASSERT_TRUE(fieldValues.get().empty());
 
    fieldValues = CollectHousesOfType(finfo, HouseType::Row, 3);
-   ASSERT_TRUE(fieldValues.empty());
+   ASSERT_TRUE(fieldValues.get().empty());
 
    fieldValues = CollectHousesOfType(finfo, HouseType::Box, 3);
    ASSERT_EQ(fieldValues.size(), 3 * 6);
@@ -173,10 +173,10 @@ TEST(StrategyNakedTuplesTest, Row_222)
    StrategyNakedTuples strategy;
    FieldsInfo finfo(grid);
    auto fieldValues = CollectHousesOfType(finfo, HouseType::Col, 3);
-   ASSERT_TRUE(fieldValues.empty());
+   ASSERT_TRUE(fieldValues.get().empty());
 
    fieldValues = CollectHousesOfType(finfo, HouseType::Box, 3);
-   ASSERT_TRUE(fieldValues.empty());
+   ASSERT_TRUE(fieldValues.get().empty());
 
    fieldValues = CollectHousesOfType(finfo, HouseType::Row, 3);
    ASSERT_EQ(fieldValues.size(), 3 * 6);
@@ -201,10 +201,10 @@ TEST(StrategyNakedTuplesTest, StrategyNakedTuples_223_a)
    // TestUtils::ShowStrategy(strategy, grid);
 
    auto fieldValues = CollectHousesOfType(finfo, HouseType::Col, 3);
-   ASSERT_TRUE(fieldValues.empty());
+   ASSERT_TRUE(fieldValues.get().empty());
 
    fieldValues = CollectHousesOfType(finfo, HouseType::Row, 3);
-   ASSERT_TRUE(fieldValues.empty());
+   ASSERT_TRUE(fieldValues.get().empty());
 
    fieldValues = CollectHousesOfType(finfo, HouseType::Box, 3);
    ASSERT_EQ(fieldValues.size(), 3 * 6);

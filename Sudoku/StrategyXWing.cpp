@@ -12,7 +12,7 @@ using namespace Utilities;
 
 namespace
 {
-void collectCandidates(const FieldsInfo &finfo, Value value, const XWing &xWing, FieldValue::Container &fieldsValue)
+void collectCandidates(const FieldsInfo &finfo, Value value, const XWing &xWing, FieldValues &fieldsValues)
 {
    FieldBits fixedFields;
    fixedFields.set(xWing.lockedPair0[0].field);
@@ -20,7 +20,7 @@ void collectCandidates(const FieldsInfo &finfo, Value value, const XWing &xWing,
    fixedFields.set(xWing.lockedPair1[0].field);
    fixedFields.set(xWing.lockedPair1[1].field);
    const auto activeFields = finfo.getHouseFields(xWing.house0) & ~fixedFields & finfo.getActiveFieldsWithValue(value);
-   FieldValue::add(activeFields, value, fieldsValue);
+   fieldsValues.add(activeFields, value);
 }
 
 bool IsSimpleLineLockedPair(const LockedPair &lp)
@@ -79,9 +79,8 @@ std::optional<XWing> StrategyXWing::isXWing(std::span<const LockedPair> candidat
    return {};
 }
 
-bool StrategyXWing::collect(const FieldsInfo &finfo, FieldValue::Container &result)
+void StrategyXWing::collect(const FieldsInfo &finfo, FieldValues &result)
 {
-   const auto size = result.size();
    const LockedPairs lps(finfo);
    for (Value value : ValueAll)
    {
@@ -100,5 +99,4 @@ bool StrategyXWing::collect(const FieldsInfo &finfo, FieldValue::Container &resu
          }
       } while (combinations.next());
    }
-   return size != result.size();
 }

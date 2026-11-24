@@ -57,8 +57,9 @@ TEST(StrategySimpleColoringTest, BasicExample)
    Field expect = 701;
    ASSERT_EQ(grid.getNumCandidates(), expect);
    const FieldBits ignore;
-   const auto fieldValues = StrategySimpleColoring::collectSees2ColorsCandidates(finfo, value, coloring, ignore);
-   ASSERT_TRUE(fieldValues.empty());
+   FieldValues fieldValues;
+   StrategySimpleColoring::collectSees2ColorsCandidates(finfo, value, coloring, ignore, fieldValues);
+   ASSERT_TRUE(fieldValues.get().empty());
 }
 
 TEST(StrategySimpleColoringTest, Sees2Colors)
@@ -96,12 +97,12 @@ TEST(StrategySimpleColoringTest, TwiceInAUnit)
    const auto links = StrategySimpleColoring::getBilocationLinks(grid, finfo, value);
 
    const auto networks = Network::create(links);
-   FieldValue::Container fieldValues;
+   FieldValues fieldValues;
    for (const auto &network : networks)
    {
       const auto coloring = Network::setColors(network);
 
-      FieldValue::add(StrategySimpleColoring::collectTwiceInAUnit(finfo, value, coloring), fieldValues);
+      StrategySimpleColoring::collectTwiceInAUnit(finfo, value, coloring, fieldValues);
    }
    ASSERT_EQ(fieldValues.size(), 4);
    TestUtils::CheckFieldValues(grid, fieldValues);
@@ -166,15 +167,13 @@ TEST(StrategySimpleColoringTest, SingleColorEmptiesHouseExample1)
 
    const auto networks = Network::create(links);
    ASSERT_EQ(networks.size(), 4);
-   FieldValue::Container fieldValues;
+   FieldValues fieldValues;
    for (const auto &network : networks)
    {
       const auto coloring = Network::setColors(network);
       const auto coloredFields = network.getFields();
 
-      const auto emptiesHosue =
-          StrategySimpleColoring::collectOneColorEmptiesHouse(finfo, value, coloring, coloredFields);
-      fieldValues.insert(emptiesHosue.begin(), emptiesHosue.end());
+      StrategySimpleColoring::collectOneColorEmptiesHouse(finfo, value, coloring, coloredFields, fieldValues);
    }
    TestUtils::CheckFieldValues(grid, fieldValues);
    ASSERT_EQ(fieldValues.size(), 4);
@@ -267,7 +266,8 @@ TEST(StrategySimpleColoringTest, SingleColorEmptiesHouseExample2)
    const auto &network = networks.front();
    const auto coloring = Network::setColors(network);
    const auto coloredFields = network.getFields();
-   const auto fieldValues = StrategySimpleColoring::collectOneColorEmptiesHouse(finfo, value, coloring, coloredFields);
+   FieldValues fieldValues;
+   StrategySimpleColoring::collectOneColorEmptiesHouse(finfo, value, coloring, coloredFields, fieldValues);
    ASSERT_EQ(fieldValues.size(), 4);
    expect -= 4;
 

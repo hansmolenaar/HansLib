@@ -142,7 +142,7 @@ TEST(VisibilityTest, Update)
    grid.setGiven(7, 7, 5);
 
    FieldsInfo finfo(grid);
-   FieldValue::Container fvs;
+   FieldValues fvs;
    StrategyNakedSingle().collect(finfo, fvs);
    grid.apply(fvs, finfo);
 }

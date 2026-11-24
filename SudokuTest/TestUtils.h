@@ -8,7 +8,7 @@
 
 namespace TestUtils
 {
-void CheckFieldValues(const Sudoku::CandidatesGrid &, const Sudoku::FieldValue::Container &);
+void CheckFieldValues(const Sudoku::CandidatesGrid &, const Sudoku::FieldValues &);
 void CheckFieldInfo(const Sudoku::FieldsInfo &);
 void CheckStrategyInterface(Sudoku::IStrategy &);
 void CheckStrategy(Sudoku::IStrategy &, const Sudoku::CandidatesGrid &, const Sudoku::GridChange &);

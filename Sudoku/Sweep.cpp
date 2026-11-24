@@ -16,11 +16,12 @@ Sweep::Sweep(Strategies &&strategy) : m_strategies(std::move(strategy))
 
 GridChange Sweep::singleSweep(CandidatesGrid &grid, FieldsInfo &finfo) const
 {
-   FieldValue ::Container fvs;
+   FieldValues fvs;
    for (auto *strategy : m_strategies.get())
    {
-      const bool anyChange = strategy->collect(finfo, fvs);
-      if (anyChange)
+      const auto prvSize = fvs.size();
+      strategy->collect(finfo, fvs);
+      if (prvSize != fvs.size())
       {
          const auto result = grid.apply(fvs, finfo);
          return result;

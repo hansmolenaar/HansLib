@@ -10,9 +10,9 @@ class FieldsInfo;
 class StrategyNakedTuples : public IStrategy
 {
  public:
-   static void collectOfTupleSize(const FieldsInfo &, Index, FieldValue::Container &);
-   static void collectHousesOfType(const FieldsInfo &, HouseType, Index, FieldValue::Container &);
-   bool collect(const FieldsInfo &, FieldValue::Container &) override;
+   static void collectOfTupleSize(const FieldsInfo &, Index, FieldValues &);
+   static void collectHousesOfType(const FieldsInfo &, HouseType, Index, FieldValues &);
+   void collect(const FieldsInfo &, FieldValues &) override;
 };
 
 } // namespace Sudoku

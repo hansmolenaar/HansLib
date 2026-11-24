@@ -15,14 +15,14 @@ class FieldsInfo;
 class StrategySimpleColoring : public IStrategy
 {
  public:
-   bool collect(const FieldsInfo &, FieldValue::Container &) override;
+   void collect(const FieldsInfo &, FieldValues &) override;
 
    static std::vector<Link> getBilocationLinks(const CandidatesGrid &, FieldsInfo, Value);
-   static FieldValue::Container collectSees2ColorsCandidates(const FieldsInfo &, Value, const ColorField &,
-                                                             const FieldBits &);
-   static FieldValue::Container collectTwiceInAUnit(const FieldsInfo &, Value, const ColorField &);
-   static FieldValue::Container collectOneColorEmptiesHouse(const FieldsInfo &, Value, const ColorField &,
-                                                            const FieldBits &);
+   static void collectSees2ColorsCandidates(const FieldsInfo &, Value, const ColorField &, const FieldBits &,
+                                            FieldValues &);
+   static void collectTwiceInAUnit(const FieldsInfo &, Value, const ColorField &, FieldValues &);
+   static void collectOneColorEmptiesHouse(const FieldsInfo &, Value, const ColorField &, const FieldBits &,
+                                           FieldValues &);
 };
 
 } // namespace Sudoku

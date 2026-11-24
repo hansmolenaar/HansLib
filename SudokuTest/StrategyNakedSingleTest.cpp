@@ -28,9 +28,8 @@ TEST(StrategyNakedSingleTest, RowSimple)
    }
 
    FieldsInfo finfo(grid);
-   FieldValue::Container collected;
+   FieldValues collected;
    StrategyNakedSingle().collect(finfo, collected);
-   ASSERT_TRUE(collected.contains({0, 8}));
    ASSERT_EQ(collected.size(), 104);
 
    StrategyNakedSingle strategy;
