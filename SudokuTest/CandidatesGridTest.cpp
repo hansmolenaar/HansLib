@@ -112,8 +112,8 @@ TEST(CandidatesGridTest, MesaageText)
    constexpr Value value = 3;
    CandidatesGrid cg;
    cg.setGiven(field, value);
-   const bool anyChange = cg.removeCandidate(field, value + 1);
-   ASSERT_FALSE(anyChange);
+   const auto changes = cg.removeCandidate(field, value + 1);
+   ASSERT_FALSE(changes.numValuesChanged > 0);
    ASSERT_ANY_THROW(cg.removeCandidate(field, value));
 }
 

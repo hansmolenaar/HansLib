@@ -15,12 +15,15 @@ class CandidatesGrid
  public:
    Index getNumCandidates() const;
 
+   // Testing
    void setGiven(Field, Value);
    void setGiven(Index, Index, Value);
-   bool removeCandidates(Field, ValueBits);
    bool setCandidates(Field, std::initializer_list<Value>);
    bool setCandidates(Index, Index, std::initializer_list<Value>);
-   bool removeCandidate(Field, Value);
+
+   // The real thig
+   GridChange removeCandidate(Field, Value);
+   GridChange removeCandidates(Field, ValueBits);
 
    void update(FieldsInfo &);     // set candidates from givens
    void checkValidSudoku() const; // throws if not valid

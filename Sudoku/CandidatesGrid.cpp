@@ -116,14 +116,14 @@ Index CandidatesGrid::getNumCandidates() const
                           [](Index acc, const Candidates &c) { return acc + c.size(); });
 }
 
-bool CandidatesGrid::removeCandidates(Field field, ValueBits valueBits)
+GridChange CandidatesGrid::removeCandidates(Field field, ValueBits valueBits)
 {
    GridChange change;
    for (Value value : SudokuUtils::ValueBitsToRange(valueBits))
    {
       change += m_candidates.at(field).removeCandidate(value);
    }
-   return change.numFieldsSolved > 0;
+   return change;
 }
 
 bool CandidatesGrid::setCandidates(Field field, std::initializer_list<Value> values)
@@ -136,9 +136,9 @@ bool CandidatesGrid::setCandidates(Index row, Index col, std::initializer_list<V
    return setCandidates(Cell::rowCol2Field(row, col), values);
 }
 
-bool CandidatesGrid::removeCandidate(Field field, Value value)
+GridChange CandidatesGrid::removeCandidate(Field field, Value value)
 {
-   return m_candidates.at(field).removeCandidate(value).numValuesChanged > 0;
+   return m_candidates.at(field).removeCandidate(value);
 }
 
 GridChange CandidatesGrid::apply(const FieldValue::Container &fieldValues, FieldsInfo &finfo)
