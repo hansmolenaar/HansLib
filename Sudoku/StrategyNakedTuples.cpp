@@ -140,10 +140,7 @@ boost::container::static_vector<BendedNakedTripleResult, 3> IsBendedNakedTriplet
    return result;
 }
 
-} // namespace
-
-void StrategyNakedTuples::collectHouse(const FieldsInfo &finfo, const House &house, Index tupleSize,
-                                       FieldValue::Container &result)
+void CollectHouse(const FieldsInfo &finfo, const House &house, Index tupleSize, FieldValue::Container &result)
 {
    const CandidatesGrid &grid = finfo.getGrid();
 
@@ -177,6 +174,7 @@ void StrategyNakedTuples::collectHouse(const FieldsInfo &finfo, const House &hou
       }
    } while (combinations.next());
 }
+} // namespace
 
 void StrategyNakedTuples::collectHousesOfType(const FieldsInfo &finfo, HouseType type, Index tupleSize,
                                               FieldValue::Container &result)
@@ -184,7 +182,7 @@ void StrategyNakedTuples::collectHousesOfType(const FieldsInfo &finfo, HouseType
    for (Index idx : IndexAll)
    {
       const House house{type, idx};
-      collectHouse(finfo, house, tupleSize, result);
+      CollectHouse(finfo, house, tupleSize, result);
    }
 }
 

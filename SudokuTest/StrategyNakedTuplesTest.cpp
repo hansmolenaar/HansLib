@@ -15,12 +15,6 @@ using namespace Sudoku;
 
 namespace
 {
-FieldValue::Container CollectHouse(const FieldsInfo &finfo, const House &house, Index size)
-{
-   FieldValue::Container result;
-   StrategyNakedTuples::collectHouse(finfo, house, size, result);
-   return result;
-}
 
 FieldValue::Container CollectTupleSize(const FieldsInfo &finfo, Index size)
 {
@@ -53,16 +47,6 @@ TEST(StrategyNakedTuplesTest, Pair_1)
    grid.setCandidates(Cell::rowCol2Field(0, 0), {1, 2});
    grid.setCandidates(Cell::rowCol2Field(0, 1), {1, 2});
 
-   const FieldsInfo finfo(grid);
-   auto fvs = CollectHouse(finfo, House{HouseType::Row, 0}, 2);
-   ASSERT_EQ(fvs.size(), 14);
-
-   fvs = CollectHouse(finfo, House{HouseType::Box, 0}, 2);
-   ASSERT_EQ(fvs.size(), 14);
-
-   fvs = CollectTupleSize(finfo, 2);
-   ASSERT_EQ(fvs.size(), 26);
-
    TestUtils::CheckStrategy(strategy, grid, GridChange{26, 0});
 }
 
@@ -75,16 +59,6 @@ TEST(StrategyNakedTuplesTest, NakedPair_2)
    grid.setCandidates(Cell::rowCol2Field(1, 1), {3, 2});
 
    const FieldsInfo finfo(grid);
-
-   auto fvs = CollectHouse(finfo, House{HouseType::Row, 1}, 2);
-   ASSERT_EQ(fvs.size(), 0);
-
-   fvs = CollectHouse(finfo, House{HouseType::Box, 0}, 2);
-   ASSERT_EQ(fvs.size(), 14);
-
-   fvs = CollectTupleSize(finfo, 2);
-   ASSERT_EQ(fvs.size(), 14);
-
    TestUtils::CheckStrategy(strategy, grid, GridChange{14, 0});
 }
 

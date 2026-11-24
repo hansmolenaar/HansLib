@@ -63,12 +63,12 @@ void TestUtils::CheckStrategy(Sudoku::IStrategy &strategy, const Sudoku::Candida
       const bool anyChange = strategy.collect(finfo, fvs);
       CheckFieldValues(eqv, fvs);
       ASSERT_EQ(fvs.empty(), !anyChange);
-      ASSERT_EQ(fvs.size(), expect.numValuesChanged);
+      EXPECT_EQ(fvs.size(), expect.numValuesChanged);
       auto numCandidates = finfo.getGrid().getNumCandidates();
       const auto changes = sweep.singleSweep(eqv, finfo);
       numCandidates -= finfo.getGrid().getNumCandidates();
-      ASSERT_EQ(changes.numValuesChanged, numCandidates);
-      ASSERT_EQ(changes.numValuesChanged, expect.numValuesChanged);
+      EXPECT_EQ(changes.numValuesChanged, numCandidates);
+      EXPECT_EQ(changes.numValuesChanged, expect.numValuesChanged);
       ASSERT_EQ(changes.numFieldsSolved, expect.numFieldsSolved);
    }
 }

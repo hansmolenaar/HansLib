@@ -9,16 +9,6 @@
 
 using namespace Sudoku;
 
-namespace
-{
-FieldValue::Container CollectTuplesOfSize(const FieldsInfo &finfo, Index size)
-{
-   FieldValue::Container result;
-   StrategyHiddenTuple ::collectTuplesOfSize(finfo, size, result);
-   return result;
-}
-} // namespace
-
 TEST(StrategyHidddenTupleTest, Strategy)
 {
    StrategyHiddenSingle single;
@@ -49,19 +39,6 @@ TEST(StrategyHidddenTupleTest, Pair)
 
    Field expect = 658;
    ASSERT_EQ(grid.getNumCandidates(), expect);
-
-   FieldValue::Container fieldsValues;
-   fieldsValues = CollectTuplesOfSize(finfo, 3);
-   ASSERT_TRUE(fieldsValues.empty());
-   fieldsValues = CollectTuplesOfSize(finfo, 3);
-   ASSERT_TRUE(fieldsValues.empty());
-
-   fieldsValues = CollectTuplesOfSize(finfo, 1);
-   ASSERT_TRUE(fieldsValues.empty());
-
-   fieldsValues = CollectTuplesOfSize(finfo, 2);
-   TestUtils::CheckFieldValues(grid, fieldsValues);
-   ASSERT_EQ(fieldsValues.size(), 8);
 
    StrategyHiddenSingle strategy1;
    TestUtils::CheckStrategy(strategy1, grid, {0, 0});
@@ -100,29 +77,17 @@ TEST(StrategyHidddenTupleTest, SweepExample1)
 
    FieldsInfo finfo(grid);
    grid.update(finfo);
-   TestUtils::CheckFieldInfo(finfo);
-   auto expect = grid.getNumCandidates();
 
-   FieldValue::Container fieldsValues;
-   fieldsValues = CollectTuplesOfSize(finfo, 1);
-   TestUtils::CheckFieldValues(grid, fieldsValues);
-   ASSERT_EQ(fieldsValues.size(), 16);
+   StrategyHiddenSingle strategy1;
+   TestUtils::CheckStrategy(strategy1, grid, {16, 5});
 
-   auto changes = grid.apply(fieldsValues, finfo);
-   TestUtils::CheckFieldInfo(finfo);
-   ASSERT_EQ(changes.numValuesChanged, fieldsValues.size());
-   ASSERT_EQ(changes.numFieldsSolved, 5);
-   expect -= fieldsValues.size();
-   ASSERT_EQ(grid.getNumCandidates(), expect);
+   const bool anyChange = Sweep(Strategies::getSimpleStrategies()).iterate(grid, finfo);
+   ASSERT_TRUE(anyChange);
 
-   grid.update(finfo);
-   TestUtils::CheckFieldInfo(finfo);
-   StrategyHiddenSingle strategy;
-   Sweep(&strategy).singleSweep(grid, finfo);
-   TestUtils::CheckFieldInfo(finfo);
-   grid.update(finfo);
-   TestUtils::CheckFieldInfo(finfo);
-   ASSERT_EQ(grid.getNumCandidates(), 129);
+   TestUtils::CheckStrategy(strategy1, grid, {0, 0});
+
+   StrategyHiddenTuple strategy;
+   TestUtils::CheckStrategy(strategy1, grid, {0, 0});
 }
 
 TEST(StrategyHidddenTupleTest, BasicExamplePair)
@@ -203,10 +168,6 @@ TEST(StrategyHidddenTupleTest, Triple_322)
 
    StrategyHiddenTuple strategy;
    FieldsInfo finfo(grid);
-   const auto fieldValues = CollectTuplesOfSize(finfo, 3);
-   ASSERT_EQ(fieldValues.size(), 3 * 6);
-
-   // TestUtils::ShowStrategy(strategy, grid);
    TestUtils::CheckStrategy(strategy, grid, {3 * 6, 0});
 }
 

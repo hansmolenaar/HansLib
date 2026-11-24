@@ -66,10 +66,7 @@ void CollectCandidates(const FieldsInfo &finfo, const House &house, std::span<co
    }
 }
 
-} // namespace
-
-void StrategyHiddenTuple::collectHouse(const FieldsInfo &finfo, const House &house, Index size,
-                                       FieldValue::Container &fvs)
+void CollectHouse(const FieldsInfo &finfo, const House &house, Index size, FieldValue::Container &fvs)
 {
    const auto houseFields = finfo.getHouseFields(house);
    std::vector<Value> activeCandidates;
@@ -98,20 +95,22 @@ void StrategyHiddenTuple::collectHouse(const FieldsInfo &finfo, const House &hou
    } while (combinations.next());
 }
 
-void StrategyHiddenTuple::collectTuplesOfSize(const FieldsInfo &finfo, Index size, FieldValue::Container &result)
+void CollectTuplesOfSize(const FieldsInfo &finfo, Index size, FieldValue::Container &result)
 {
    for (House house : House::getAllHouses())
    {
-      collectHouse(finfo, house, size, result);
+      CollectHouse(finfo, house, size, result);
    }
 }
+
+} // namespace
 
 bool StrategyHiddenTuple::collect(const FieldsInfo &finfo, FieldValue::Container &result)
 {
    const auto size = result.size();
-   collectTuplesOfSize(finfo, 2, result);
-   collectTuplesOfSize(finfo, 3, result);
-   collectTuplesOfSize(finfo, 4, result);
+   CollectTuplesOfSize(finfo, 2, result);
+   CollectTuplesOfSize(finfo, 3, result);
+   CollectTuplesOfSize(finfo, 4, result);
    return size != result.size();
 };
 
@@ -120,6 +119,6 @@ bool StrategyHiddenTuple::collect(const FieldsInfo &finfo, FieldValue::Container
 bool StrategyHiddenSingle::collect(const FieldsInfo &finfo, FieldValue::Container &result)
 {
    const auto size = result.size();
-   StrategyHiddenTuple::collectTuplesOfSize(finfo, 1, result);
+   CollectTuplesOfSize(finfo, 1, result);
    return size != result.size();
 };
