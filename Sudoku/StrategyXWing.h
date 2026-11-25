@@ -22,6 +22,7 @@ class StrategyXWing : public IStrategy
 {
  public:
    void collect(const FieldsInfo &, FieldValues &) override;
+   std::string getName() const override;
 
    static std::optional<XWing> isXWing(std::span<const LockedPair>);
 };

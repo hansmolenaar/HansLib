@@ -11,6 +11,7 @@ class IStrategy
  public:
    virtual ~IStrategy() = default;
    virtual void collect(const FieldsInfo &, FieldValues &) = 0;
+   virtual std::string getName() const = 0;
    FieldValues collect(const FieldsInfo &);
 };
 

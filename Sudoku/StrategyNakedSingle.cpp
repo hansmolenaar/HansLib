@@ -18,3 +18,8 @@ void StrategyNakedSingle::collect(const FieldsInfo &finfo, FieldValues &result)
       result.add(visibleFields, value);
    }
 }
+
+std::string StrategyNakedSingle::getName() const
+{
+   return "Naked single";
+}

@@ -16,6 +16,7 @@ class StrategySimpleColoring : public IStrategy
 {
  public:
    void collect(const FieldsInfo &, FieldValues &) override;
+   std::string getName() const override;
 
    static std::vector<Link> getBilocationLinks(const CandidatesGrid &, FieldsInfo, Value);
    static void collectSees2ColorsCandidates(const FieldsInfo &, Value, const ColorField &, const FieldBits &,

@@ -120,6 +120,10 @@ void StrategySimpleColoring::collectOneColorEmptiesHouse(const FieldsInfo &finfo
    }
 }
 
+std::string StrategySimpleColoring::getName() const
+{
+   return "Simple coloring";
+}
 void StrategySimpleColoring::collect(const FieldsInfo &finfo, FieldValues &result)
 {
    const CandidatesGrid &grid = finfo.getGrid();

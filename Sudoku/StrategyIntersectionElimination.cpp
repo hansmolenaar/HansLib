@@ -80,3 +80,8 @@ void StrategyIntersectionElimination::collect(const FieldsInfo &finfo, FieldValu
       collectHouse(finfo, house, result);
    }
 }
+
+std::string StrategyIntersectionElimination::getName() const
+{
+   return "Intersection elimination";
+}

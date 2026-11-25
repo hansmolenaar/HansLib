@@ -100,3 +100,8 @@ void StrategyXWing::collect(const FieldsInfo &finfo, FieldValues &result)
       } while (combinations.next());
    }
 }
+
+std::string StrategyXWing::getName() const
+{
+   return "X-wing";
+}

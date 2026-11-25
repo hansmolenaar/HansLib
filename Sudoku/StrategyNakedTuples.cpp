@@ -26,6 +26,11 @@ namespace str = std::ranges;
 namespace
 {
 
+std::string GetName()
+{
+   return "Naked tuple";
+}
+
 void add(const FieldsInfo &finfo, const House &house, std::span<const Field> candidateTuple, FieldValues &fieldValues)
 {
    bool doLog = false;
@@ -45,7 +50,7 @@ void add(const FieldsInfo &finfo, const House &house, std::span<const Field> can
    if (doLog && prvSize != fieldValues.size())
    {
       Logging logMessage;
-      logMessage.strategyName = "StrategyNakedTuples";
+      logMessage.strategyName = GetName();
       logMessage.numChanges = fieldValues.size() - prvSize;
       std::stringstream info;
       info << "tuple with " << candidateTuple.size() << " cells";
@@ -81,7 +86,7 @@ void addBendedTriplets(const FieldsInfo &finfo,
          {
             const auto valuesInTriplet = CandidatesGrid::getValuesInFields(finfo.getGrid(), candidateTuple);
             Logging logMessage;
-            logMessage.strategyName = "StrategyNakedTuples";
+            logMessage.strategyName = GetName();
             logMessage.numChanges = fieldValues.size() - prvSize;
             std::stringstream info;
             info << "bended triplet ";
@@ -200,4 +205,9 @@ void StrategyNakedTuples::collect(const FieldsInfo &finfo, FieldValues &result)
    collectOfTupleSize(finfo, 2, result);
    collectOfTupleSize(finfo, 3, result);
    collectOfTupleSize(finfo, 4, result);
+}
+
+std::string StrategyNakedTuples::getName() const
+{
+   return GetName();
 }

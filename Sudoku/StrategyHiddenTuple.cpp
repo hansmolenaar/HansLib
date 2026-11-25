@@ -118,9 +118,18 @@ void StrategyHiddenTuple::collect(const FieldsInfo &finfo, FieldValues &result)
    CollectTuplesOfSize(finfo, 4, result);
 };
 
+std::string StrategyHiddenTuple::getName() const
+{
+   return "Hidden tuple";
+}
 // *******************************************************************************************
 
 void StrategyHiddenSingle::collect(const FieldsInfo &finfo, FieldValues &result)
 {
    CollectTuplesOfSize(finfo, 1, result);
 };
+
+std::string StrategyHiddenSingle::getName() const
+{
+   return "Hidden single";
+}

@@ -36,6 +36,10 @@ void TestUtils::CheckFieldInfo(const FieldsInfo &finfoOld)
 
 void TestUtils::CheckStrategyInterface(Sudoku::IStrategy &strategy)
 {
+   const auto name = strategy.getName();
+   // std::cout << "Check strategy name: " << name << "\n";
+   ASSERT_FALSE(name.empty());
+
    // full grid
    const CandidatesGrid grid;
    FieldsInfo finfo(grid);
