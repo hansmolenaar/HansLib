@@ -94,7 +94,7 @@ FieldValueCount CollectCandidates(const FieldsInfo &finfo, const House &house, s
       {
          logMessage.strategyName = GetNameTuple();
          info << "tuple with " << candidateTuple.size() << " cells";
-         info << " and values " << Bitset<NumValue + 1>::create(candidateTuple);
+         info << " and values " << Bitset<ValueBits().size()>::create(candidateTuple);
       }
       info << " in house " << house;
       logMessage.info = info.str();
