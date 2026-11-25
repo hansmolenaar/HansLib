@@ -1,6 +1,8 @@
 #pragma once
 
 #include "SudokuDefines.h"
+#include <iostream>
+#include <sstream>
 #include <string>
 
 namespace Sudoku
@@ -11,6 +13,10 @@ struct Logging
    std::string strategyName;
    std::string info;
    size_t numChanges = 12345;
+
+   static void setDoLog(bool);
+   static bool getDoLog();
+   void log();
 };
 
 } // namespace Sudoku

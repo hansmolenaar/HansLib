@@ -18,6 +18,19 @@ TEST(StrategyHidddenTupleTest, Strategy)
    TestUtils::CheckStrategyInterface(tuple);
 }
 
+TEST(StrategyHidddenTupleTest, Single)
+{
+   StrategyHiddenSingle strategy;
+   CandidatesGrid grid;
+   for (Field field = 1; field < 9; ++field)
+   {
+      grid.removeCandidate(field, 9);
+   }
+
+   // TestUtils::ShowStrategy(strategy, grid);
+   TestUtils::CheckStrategy(strategy, grid, {8, 1});
+}
+
 TEST(StrategyHidddenTupleTest, Pair)
 {
    CandidatesGrid grid;

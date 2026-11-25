@@ -1,6 +1,7 @@
 #pragma once
 
 #include <bitset>
+#include <span>
 #include <stdexcept>
 
 namespace Utilities
@@ -24,6 +25,20 @@ template <std::size_t N> struct Bitset
          }
       }
       throw std::runtime_error("Bitset: not bits set");
+   }
+
+   static std::bitset<N> create(std::span<const unsigned short> positions)
+   {
+      std::bitset<N> result;
+      for (auto p : positions)
+      {
+         if (positions.size() >= N)
+         {
+            throw std::runtime_error("Bitset: incorrect position");
+         }
+         result.set(p);
+      }
+      return result;
    }
 };
 

@@ -18,8 +18,19 @@ TEST(StrategyNakedSingleTest, Strategy)
    TestUtils::CheckStrategyInterface(strategy);
 }
 
+TEST(StrategyNakedSingleTest, Basic)
+{
+   StrategyNakedSingle strategy;
+   CandidatesGrid grid;
+   grid.setCandidates(42, {9});
+
+   // TestUtils::ShowStrategy(strategy, grid);
+   TestUtils::CheckStrategy(strategy, grid, {20, 0});
+}
+
 TEST(StrategyNakedSingleTest, RowSimple)
 {
+   StrategyNakedSingle strategy;
    CandidatesGrid grid;
    for (Field f = 1; f < NumIndex; ++f)
    {
@@ -27,12 +38,12 @@ TEST(StrategyNakedSingleTest, RowSimple)
       grid.setCandidates(f, {value});
    }
 
+   // TestUtils::ShowStrategy(strategy, grid);
    FieldsInfo finfo(grid);
    FieldValues collected;
    StrategyNakedSingle().collect(finfo, collected);
    ASSERT_EQ(collected.size(), 104);
 
-   StrategyNakedSingle strategy;
    Sweep(&strategy).singleSweep(grid, finfo);
    TestUtils::CheckFieldInfo(finfo);
    ASSERT_EQ(grid[0].tryGetSolvedValue().value(), 1);

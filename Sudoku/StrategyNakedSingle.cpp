@@ -1,6 +1,7 @@
 #include "StrategyNakedSingle.h"
 #include "CandidatesGrid.h"
 #include "FieldsInfo.h"
+#include "Logging.h"
 #include "SudokuUtils.h"
 
 using namespace Sudoku;
@@ -15,7 +16,19 @@ void StrategyNakedSingle::collect(const FieldsInfo &finfo, FieldValues &result)
    {
       const Value value = grid[field].tryGetSolvedValue().value();
       auto visibleFields = finfo.getVisibleFields(field) & finfo.getActiveFieldsWithValue(value);
+      const auto prvSize = result.size();
       result.add(visibleFields, value);
+      if (Logging::getDoLog() && prvSize != result.size())
+      {
+         Logging logMessage;
+         logMessage.strategyName = getName();
+         logMessage.numChanges = result.size() - prvSize;
+         std::stringstream info;
+         info << "Cell " << Cell::get(field);
+         info << " with value " << value;
+         logMessage.info = info.str();
+         logMessage.log();
+      }
    }
 }
 

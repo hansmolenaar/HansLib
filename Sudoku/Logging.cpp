@@ -5,6 +5,25 @@
 
 using namespace Sudoku;
 
+namespace
+{
+static bool s_doLog = false;
+}
+void Logging::setDoLog(bool onOff)
+{
+   s_doLog = onOff;
+}
+
+bool Logging::getDoLog()
+{
+   return s_doLog;
+}
+
+void Logging::log()
+{
+   std::cout << *this;
+}
+
 std::ostream &operator<<(std::ostream &os, const Sudoku::Logging &logging)
 {
    os << logging.strategyName << ": " << logging.info << " -> " << logging.numChanges << " candidates removed\n";

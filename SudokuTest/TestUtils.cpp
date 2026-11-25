@@ -3,6 +3,7 @@
 #include "CandidatesGrid.h"
 #include "House.h"
 #include "IStrategy.h"
+#include "Logging.h"
 #include "StreamUtils.h"
 #include "Sweep.h"
 #include "TestModels.h"
@@ -62,6 +63,7 @@ void TestUtils::CheckStrategy(Sudoku::IStrategy &strategy, const Sudoku::Candida
    {
       FieldsInfo finfo(eqv);
       FieldValues fvs;
+
       strategy.collect(finfo, fvs);
       CheckFieldValues(eqv, fvs);
       EXPECT_EQ(fvs.size(), expect.numValuesChanged);
@@ -80,7 +82,11 @@ void TestUtils::ShowStrategy(Sudoku::IStrategy &strategy, const Sudoku::Candidat
    FieldsInfo finfo(grid);
    Sweep sweep(&strategy);
    auto prv = grid;
+
+   Logging::setDoLog(true);
    auto changes = sweep.singleSweep(grid, finfo);
+   Logging::setDoLog(false);
+
    std::cout << prv << "\n" << grid << "\n" << CandidatesGrid::DifferenceToStrings(prv, grid);
    EXPECT_EQ(changes.numValuesChanged, 0);
    EXPECT_EQ(changes.numFieldsSolved, 0);

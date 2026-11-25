@@ -5,6 +5,7 @@
 #include "Contains.h"
 #include "FieldsInfo.h"
 #include "House.h"
+#include "Logging.h"
 #include "SudokuDefines.h"
 #include "SudokuUtils.h"
 #include "boost/container/static_vector.hpp"
@@ -19,6 +20,17 @@ namespace str = std::ranges;
 
 namespace
 {
+
+std::string GetNameSingle()
+{
+   return "Hidden single";
+}
+
+std::string GetNameTuple()
+{
+   return "Hidden tuple";
+}
+
 struct CellContainsAnyValue
 {
    bool operator()(Field field) const
@@ -60,10 +72,33 @@ FieldValueCount CollectCandidates(const FieldsInfo &finfo, const House &house, s
    }
    MyAssert(activeFields.count() == candidateTuple.size());
 
+   const auto prvSize = fieldValues.size();
    for (Value value : activeValues)
    {
       const auto removeValueFromFields = activeFields & finfo.getFieldsWithValue(value);
       count += fieldValues.add(removeValueFromFields, value);
+   }
+   const auto changeSize = fieldValues.size() - prvSize;
+   if (Logging::getDoLog() && changeSize > 0)
+   {
+      Logging logMessage;
+      logMessage.numChanges = changeSize;
+      std::stringstream info;
+      if (candidateTuple.size() == 1)
+      {
+         logMessage.strategyName = GetNameSingle();
+         info << "single cell";
+         info << " with value " << candidateTuple.front();
+      }
+      else
+      {
+         logMessage.strategyName = GetNameTuple();
+         info << "tuple with " << candidateTuple.size() << " cells";
+         info << " and values " << Bitset<NumValue + 1>::create(candidateTuple);
+      }
+      info << " in house " << house;
+      logMessage.info = info.str();
+      logMessage.log();
    }
    return count;
 }
@@ -120,7 +155,7 @@ void StrategyHiddenTuple::collect(const FieldsInfo &finfo, FieldValues &result)
 
 std::string StrategyHiddenTuple::getName() const
 {
-   return "Hidden tuple";
+   return GetNameTuple();
 }
 // *******************************************************************************************
 
@@ -131,5 +166,5 @@ void StrategyHiddenSingle::collect(const FieldsInfo &finfo, FieldValues &result)
 
 std::string StrategyHiddenSingle::getName() const
 {
-   return "Hidden single";
+   return GetNameSingle();
 }

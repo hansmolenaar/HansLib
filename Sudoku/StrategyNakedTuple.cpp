@@ -14,9 +14,6 @@
 #include "boost/container/static_vector.hpp"
 
 #include <algorithm>
-#include <iostream>
-#include <ostream>
-#include <sstream>
 
 using namespace Sudoku;
 using namespace Utilities;
@@ -33,7 +30,6 @@ std::string GetName()
 
 void add(const FieldsInfo &finfo, const House &house, std::span<const Field> candidateTuple, FieldValues &fieldValues)
 {
-   bool doLog = false;
    const CandidatesGrid &grid = finfo.getGrid();
    const auto candidatesToRemove = CandidatesGrid::getValuesInFields(grid, candidateTuple);
    boost::container::static_vector<Value, NumValue> valuesToRemove(candidatesToRemove.count());
@@ -47,7 +43,7 @@ void add(const FieldsInfo &finfo, const House &house, std::span<const Field> can
       const auto fieldsWithValue = fields & finfo.getActiveFieldsWithValue(value);
       fieldValues.add(fieldsWithValue, value);
    }
-   if (doLog && prvSize != fieldValues.size())
+   if (Logging::getDoLog() && prvSize != fieldValues.size())
    {
       Logging logMessage;
       logMessage.strategyName = GetName();
@@ -57,7 +53,7 @@ void add(const FieldsInfo &finfo, const House &house, std::span<const Field> can
       info << " and values " << candidatesToRemove;
       info << " in house " << house;
       logMessage.info = info.str();
-      std::cout << logMessage;
+      logMessage.log();
    }
 }
 
@@ -71,7 +67,6 @@ void addBendedTriplets(const FieldsInfo &finfo,
                        const boost::container::static_vector<BendedNakedTripleResult, 3> &xtraLines,
                        std::span<const Field> candidateTuple, House inHouse, FieldValues &fieldValues)
 {
-   bool doLog = false;
    for (const auto &bnt : xtraLines)
    {
 
@@ -82,7 +77,7 @@ void addBendedTriplets(const FieldsInfo &finfo,
          const auto prvSize = fieldValues.size();
          const bool anyChange = fieldValues.add(fields, value);
 
-         if (anyChange && doLog)
+         if (Logging::getDoLog() && anyChange)
          {
             const auto valuesInTriplet = CandidatesGrid::getValuesInFields(finfo.getGrid(), candidateTuple);
             Logging logMessage;
@@ -94,7 +89,7 @@ void addBendedTriplets(const FieldsInfo &finfo,
             info << " in house " << inHouse;
             info << " removes " << value << " from line " << bnt.line;
             logMessage.info = info.str();
-            std::cout << logMessage;
+            logMessage.log();
          }
       }
    }
