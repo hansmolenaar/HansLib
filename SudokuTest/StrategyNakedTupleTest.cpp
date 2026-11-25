@@ -3,8 +3,7 @@
 #include "CandidatesGrid.h"
 #include "Cell.h"
 #include "FieldsInfo.h"
-#include "House.h"
-#include "StrategyNakedTuples.h"
+#include "StrategyNakedTuple.h"
 #include "SudokuDefines.h"
 #include "Sweep.h"
 #include "TestUtils.h"
@@ -19,28 +18,28 @@ namespace
 FieldValues CollectTupleSize(const FieldsInfo &finfo, Index size)
 {
    FieldValues result;
-   StrategyNakedTuples::collectOfTupleSize(finfo, size, result);
+   StrategyNakedTuple::collectOfTupleSize(finfo, size, result);
    return result;
 }
 
 FieldValues CollectHousesOfType(const FieldsInfo &finfo, HouseType houseType, Index size)
 {
    FieldValues result;
-   StrategyNakedTuples::collectHousesOfType(finfo, houseType, size, result);
+   StrategyNakedTuple::collectHousesOfType(finfo, houseType, size, result);
    return result;
 }
 
 } // namespace
 
-TEST(StrategyNakedTuplesTest, Strategy)
+TEST(StrategyNakedTupleTest, Strategy)
 {
-   StrategyNakedTuples strategy;
+   StrategyNakedTuple strategy;
    TestUtils::CheckStrategyInterface(strategy);
 }
 
-TEST(StrategyNakedTuplesTest, Pair_1)
+TEST(StrategyNakedTupleTest, Pair_1)
 {
-   StrategyNakedTuples strategy;
+   StrategyNakedTuple strategy;
    Sweep sweep(&strategy);
    CandidatesGrid grid;
 
@@ -50,9 +49,9 @@ TEST(StrategyNakedTuplesTest, Pair_1)
    TestUtils::CheckStrategy(strategy, grid, GridChange{26, 0});
 }
 
-TEST(StrategyNakedTuplesTest, NakedPair_2)
+TEST(StrategyNakedTupleTest, NakedPair_2)
 {
-   StrategyNakedTuples strategy;
+   StrategyNakedTuple strategy;
    Sweep sweep(&strategy);
    CandidatesGrid grid;
    grid.setCandidates(Cell::rowCol2Field(0, 0), {2, 3});
@@ -62,9 +61,9 @@ TEST(StrategyNakedTuplesTest, NakedPair_2)
    TestUtils::CheckStrategy(strategy, grid, GridChange{14, 0});
 }
 
-TEST(StrategyNakedTuplesTest, StrategyNakedPair_2)
+TEST(StrategyNakedTupleTest, StrategyNakedPair_2)
 {
-   StrategyNakedTuples strategy;
+   StrategyNakedTuple strategy;
    Sweep sweep(&strategy);
    CandidatesGrid grid;
    const Index row = 8;
@@ -100,7 +99,7 @@ TEST(StrategyNakedTuplesTest, StrategyNakedPair_2)
    TestUtils::CheckStrategy(strategy, grid, {4, 1});
 }
 
-TEST(StrategyNakedTuplesTest, StrategyNakedTuples_1)
+TEST(StrategyNakedTupleTest, StrategyNakedTuple_1)
 {
    const std::array<Value, NumField> diagramValues = {
        4, 0, 0, 0, 0, 0, 9, 3, 8, 0, 3, 2, 0, 9, 4, 1, 0, 0, 0, 9, 5, 3, 0, 0, 2, 4, 0,
@@ -108,7 +107,7 @@ TEST(StrategyNakedTuplesTest, StrategyNakedTuples_1)
        9, 5, 7, 0, 0, 8, 3, 0, 0, 0, 0, 3, 9, 0, 0, 4, 0, 0, 2, 4, 0, 0, 3, 0, 7, 0, 9,
    };
 
-   StrategyNakedTuples strategy;
+   StrategyNakedTuple strategy;
    auto grid = CandidatesGrid::FromValues(diagramValues);
    FieldsInfo finfo(grid);
    grid.update(finfo);
@@ -133,7 +132,7 @@ TEST(StrategyNakedTuplesTest, StrategyNakedTuples_1)
    TestUtils::CheckStrategy(strategy, grid, {14, 2});
 }
 
-TEST(StrategyNakedTuplesTest, Box_222)
+TEST(StrategyNakedTupleTest, Box_222)
 {
    CandidatesGrid grid;
 
@@ -144,7 +143,7 @@ TEST(StrategyNakedTuplesTest, Box_222)
    size_t expectNumCandidates = NumField * NumValue - 3 * 7;
    ASSERT_EQ(grid.getNumCandidates(), expectNumCandidates);
 
-   StrategyNakedTuples strategy;
+   StrategyNakedTuple strategy;
    FieldsInfo finfo(grid);
    auto fieldValues = CollectHousesOfType(finfo, HouseType::Col, 3);
    ASSERT_TRUE(fieldValues.get().empty());
@@ -158,7 +157,7 @@ TEST(StrategyNakedTuplesTest, Box_222)
    TestUtils::CheckStrategy(strategy, grid, {18, 0});
 }
 
-TEST(StrategyNakedTuplesTest, Row_222)
+TEST(StrategyNakedTupleTest, Row_222)
 {
    CandidatesGrid grid;
 
@@ -170,7 +169,7 @@ TEST(StrategyNakedTuplesTest, Row_222)
    size_t expectNumCandidates = NumField * NumValue - 3 * 7;
    ASSERT_EQ(grid.getNumCandidates(), expectNumCandidates);
 
-   StrategyNakedTuples strategy;
+   StrategyNakedTuple strategy;
    FieldsInfo finfo(grid);
    auto fieldValues = CollectHousesOfType(finfo, HouseType::Col, 3);
    ASSERT_TRUE(fieldValues.get().empty());
@@ -184,7 +183,7 @@ TEST(StrategyNakedTuplesTest, Row_222)
    TestUtils::CheckStrategy(strategy, grid, {18, 0});
 }
 
-TEST(StrategyNakedTuplesTest, StrategyNakedTuples_223_a)
+TEST(StrategyNakedTupleTest, StrategyNakedTuple_223_a)
 {
    CandidatesGrid grid;
 
@@ -196,7 +195,7 @@ TEST(StrategyNakedTuplesTest, StrategyNakedTuples_223_a)
 
    ASSERT_EQ(grid.getNumCandidates(), expectNumCandidates);
 
-   StrategyNakedTuples strategy;
+   StrategyNakedTuple strategy;
    const FieldsInfo finfo(grid);
    // TestUtils::ShowStrategy(strategy, grid);
 
@@ -212,7 +211,7 @@ TEST(StrategyNakedTuplesTest, StrategyNakedTuples_223_a)
    TestUtils::CheckStrategy(strategy, grid, {18, 0});
 }
 
-TEST(StrategyNakedTuplesTest, NakedQuartet_1)
+TEST(StrategyNakedTupleTest, NakedQuartet_1)
 {
    CandidatesGrid grid;
 
@@ -230,7 +229,7 @@ TEST(StrategyNakedTuplesTest, NakedQuartet_1)
 
    ASSERT_EQ(grid.getNumCandidates(), expectNumCandidates);
 
-   StrategyNakedTuples strategy;
+   StrategyNakedTuple strategy;
    const FieldsInfo finfo(grid);
    // TestUtils::ShowStrategy(strategy, grid);
 
@@ -241,7 +240,7 @@ TEST(StrategyNakedTuplesTest, NakedQuartet_1)
    TestUtils::CheckStrategy(strategy, grid, {7, 1});
 }
 
-TEST(StrategyNakedTuplesTest, NakedQuartet_2)
+TEST(StrategyNakedTupleTest, NakedQuartet_2)
 {
    CandidatesGrid grid;
 
@@ -251,7 +250,7 @@ TEST(StrategyNakedTuplesTest, NakedQuartet_2)
    grid.setCandidates(Cell::rowCol2Field(0, 8), {1, 2, 4});
    grid.setCandidates(Cell::rowCol2Field(0, 2), {1, 2, 4, 5});
 
-   StrategyNakedTuples strategy;
+   StrategyNakedTuple strategy;
    const FieldsInfo finfo(grid);
    // TestUtils::ShowStrategy(strategy, grid);
 
@@ -262,14 +261,14 @@ TEST(StrategyNakedTuplesTest, NakedQuartet_2)
    TestUtils::CheckStrategy(strategy, grid, {19, 1});
 }
 
-TEST(StrategyNakedTuplesTest, NakedBendedTriplet_1)
+TEST(StrategyNakedTupleTest, NakedBendedTriplet_1)
 {
    CandidatesGrid grid;
    grid.setCandidates(Cell::rowCol2Field(6, 5), {6, 9});
    grid.setCandidates(Cell::rowCol2Field(7, 4), {5, 6, 9});
    grid.setCandidates(Cell::rowCol2Field(8, 4), {5, 6, 9});
 
-   StrategyNakedTuples strategy;
+   StrategyNakedTuple strategy;
    // TestUtils::ShowStrategy(strategy, grid);
    TestUtils::CheckStrategy(strategy, grid, {6 * 3 + 6, 0});
 }

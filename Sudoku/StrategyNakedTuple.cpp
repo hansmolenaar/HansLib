@@ -1,4 +1,4 @@
-#include "StrategyNakedTuples.h"
+#include "StrategyNakedTuple.h"
 #include "BitsetUtils.h"
 #include "CandidatesGrid.h"
 #include "Combinations.h"
@@ -182,8 +182,8 @@ void CollectHouse(const FieldsInfo &finfo, const House &house, Index tupleSize, 
 }
 } // namespace
 
-void StrategyNakedTuples::collectHousesOfType(const FieldsInfo &finfo, HouseType type, Index tupleSize,
-                                              FieldValues &result)
+void StrategyNakedTuple::collectHousesOfType(const FieldsInfo &finfo, HouseType type, Index tupleSize,
+                                             FieldValues &result)
 {
    for (Index idx : IndexAll)
    {
@@ -192,7 +192,7 @@ void StrategyNakedTuples::collectHousesOfType(const FieldsInfo &finfo, HouseType
    }
 }
 
-void StrategyNakedTuples::collectOfTupleSize(const FieldsInfo &finfo, Index tupleSize, FieldValues &result)
+void StrategyNakedTuple::collectOfTupleSize(const FieldsInfo &finfo, Index tupleSize, FieldValues &result)
 {
    for (HouseType type : HouseTypeAll)
    {
@@ -200,14 +200,14 @@ void StrategyNakedTuples::collectOfTupleSize(const FieldsInfo &finfo, Index tupl
    }
 }
 
-void StrategyNakedTuples::collect(const FieldsInfo &finfo, FieldValues &result)
+void StrategyNakedTuple::collect(const FieldsInfo &finfo, FieldValues &result)
 {
    collectOfTupleSize(finfo, 2, result);
    collectOfTupleSize(finfo, 3, result);
    collectOfTupleSize(finfo, 4, result);
 }
 
-std::string StrategyNakedTuples::getName() const
+std::string StrategyNakedTuple::getName() const
 {
    return GetName();
 }

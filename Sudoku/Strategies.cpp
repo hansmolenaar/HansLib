@@ -3,7 +3,7 @@
 #include "StrategyHiddenTuple.h"
 #include "StrategyIntersectionElimination.h"
 #include "StrategyNakedSingle.h"
-#include "StrategyNakedTuples.h"
+#include "StrategyNakedTuple.h"
 #include "StrategySimpleColoring.h"
 #include "StrategyXWing.h"
 using namespace Sudoku;
@@ -35,11 +35,11 @@ std::array<IStrategy *, numSimpleStrategies> getSimple()
 
 std::array<IStrategy *, numSimpleStrategies + numMediumStrategies> getMedium()
 {
-   static StrategyNakedTuples strategyNakedTuples;
+   static StrategyNakedTuple strategyNakedTuple;
    static StrategyHiddenTuple strategyHiddenTuple;
    static StrategyIntersectionElimination strategyIntersectionElimination;
    static std::array<IStrategy *, numMediumStrategies> mediumOnly{
-       &strategyNakedTuples,
+       &strategyNakedTuple,
        &strategyHiddenTuple,
        &strategyIntersectionElimination,
    };

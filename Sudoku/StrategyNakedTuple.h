@@ -7,7 +7,7 @@ namespace Sudoku
 
 class FieldsInfo;
 
-class StrategyNakedTuples : public IStrategy
+class StrategyNakedTuple : public IStrategy
 {
  public:
    void collect(const FieldsInfo &, FieldValues &) override;
