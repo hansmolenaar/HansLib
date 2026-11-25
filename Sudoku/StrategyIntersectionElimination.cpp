@@ -1,6 +1,7 @@
 #include "StrategyIntersectionElimination.h"
 #include "CandidatesGrid.h"
 #include "FieldsInfo.h"
+#include "Logging.h"
 #include "MyAssert.h"
 #include "SudokuDefines.h"
 #include "SudokuUtils.h"
@@ -9,6 +10,14 @@
 
 using namespace Sudoku;
 using namespace Utilities;
+
+namespace
+{
+std::string GetName()
+{
+   return "Intersection elimination";
+}
+} // namespace
 
 std::optional<House> StrategyIntersectionElimination::TryGetIntersectionHouse(HouseType houseTypeIn,
                                                                               const FieldBits &fields,
@@ -66,7 +75,19 @@ FieldValueCount StrategyIntersectionElimination::collectHouse(const FieldsInfo &
          {
             const auto intersectionHouseFields = finfo.getHouseFields(intersectionHouse.value());
             const auto fieldsToCancel = intersectionHouseFields & activeFieldsWithValue & ~fieldsWithValueInHouse;
+            const auto prvSize = fieldValues.size();
             result += fieldValues.add(fieldsToCancel, value);
+            const auto changeSize = fieldValues.size() - prvSize;
+            if (Logging::getDoLog() && changeSize > 0)
+            {
+               Logging logMessage;
+               logMessage.numChanges = changeSize;
+               logMessage.strategyName = GetName();
+               logMessage.info << numFieldsWithValue << " cells in house " << house;
+               logMessage.info << " with value " << value;
+               logMessage.info << " eliminate this value from house " << intersectionHouse.value();
+               std::cout << logMessage;
+            }
          }
       }
    }
@@ -83,5 +104,5 @@ void StrategyIntersectionElimination::collect(const FieldsInfo &finfo, FieldValu
 
 std::string StrategyIntersectionElimination::getName() const
 {
-   return "Intersection elimination";
+   return GetName();
 }

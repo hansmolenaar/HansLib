@@ -9,6 +9,7 @@
 namespace Sudoku
 {
 class CandidatesGrid;
+class Network;
 class ColorField;
 class FieldsInfo;
 
@@ -19,11 +20,11 @@ class StrategySimpleColoring : public IStrategy
    std::string getName() const override;
 
    static std::vector<Link> getBilocationLinks(const CandidatesGrid &, FieldsInfo, Value);
-   static void collectSees2ColorsCandidates(const FieldsInfo &, Value, const ColorField &, const FieldBits &,
-                                            FieldValues &);
-   static void collectTwiceInAUnit(const FieldsInfo &, Value, const ColorField &, FieldValues &);
-   static void collectOneColorEmptiesHouse(const FieldsInfo &, Value, const ColorField &, const FieldBits &,
-                                           FieldValues &);
+   static void collectSees2ColorsCandidates(const FieldsInfo &, Value, const Network &, const ColorField &,
+                                            const FieldBits &, FieldValues &);
+   static void collectTwiceInAUnit(const FieldsInfo &, Value, const Network &, const ColorField &, FieldValues &);
+   static void collectOneColorEmptiesHouse(const FieldsInfo &, Value, const Network &, const ColorField &,
+                                           const FieldBits &, FieldValues &);
 };
 
 } // namespace Sudoku

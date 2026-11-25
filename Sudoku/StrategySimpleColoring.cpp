@@ -3,6 +3,7 @@
 #include "ColorField.h"
 #include "FieldsInfo.h"
 #include "House.h"
+#include "Logging.h"
 #include "Network.h"
 #include "SudokuDefines.h"
 #include "SudokuUtils.h"
@@ -13,6 +14,14 @@
 
 using namespace Sudoku;
 using namespace Utilities;
+
+namespace
+{
+std::string GetName()
+{
+   return "Simple coloring";
+}
+} // namespace
 
 std::vector<Link> StrategySimpleColoring::getBilocationLinks(const CandidatesGrid &grid, FieldsInfo finfo, Value value)
 {
@@ -34,7 +43,7 @@ std::vector<Link> StrategySimpleColoring::getBilocationLinks(const CandidatesGri
    return result;
 }
 
-void StrategySimpleColoring::collectSees2ColorsCandidates(const FieldsInfo &finfo, Value value,
+void StrategySimpleColoring::collectSees2ColorsCandidates(const FieldsInfo &finfo, Value value, const Network &network,
                                                           const ColorField &colors, const FieldBits &cellsToIgnore,
                                                           FieldValues &fieldValues)
 {
@@ -47,11 +56,22 @@ void StrategySimpleColoring::collectSees2ColorsCandidates(const FieldsInfo &finf
    fields &= ~cellsToIgnore;
    fields &= finfo.getFieldsWithValue(value);
 
+   const auto prvSize = fieldValues.size();
    fieldValues.add(fields, value);
+   const auto change = fieldValues.size() - prvSize;
+   if (Logging::getDoLog() && change > 0)
+   {
+      Logging logMessage;
+      logMessage.strategyName = GetName();
+      logMessage.numChanges = change;
+      logMessage.info << "Cell" << (fields.count() == 1 ? "" : "s") << " " << fields;
+      logMessage.info << " see two colors of the value " << value << " bi-location network" << network;
+      std::cout << logMessage;
+   }
 }
 
-void StrategySimpleColoring::collectTwiceInAUnit(const FieldsInfo &finfo, Value value, const ColorField &colors,
-                                                 FieldValues &fieldValues)
+void StrategySimpleColoring::collectTwiceInAUnit(const FieldsInfo &finfo, Value value, const Network &network,
+                                                 const ColorField &colors, FieldValues &fieldValues)
 {
    for (Color color : ColorAll)
    {
@@ -72,15 +92,29 @@ void StrategySimpleColoring::collectTwiceInAUnit(const FieldsInfo &finfo, Value 
          }
          if (Visibility::areVisible(f, prev.value()))
          {
+            const auto prvSize = fieldValues.size();
             fieldValues.add(fieldsWithColor, value);
+            const auto change = fieldValues.size() - prvSize;
+            if (Logging::getDoLog() && change > 0)
+            {
+               Logging logMessage;
+               logMessage.strategyName = GetName();
+               logMessage.numChanges = change;
+               const Cell prvCell = Cell::get(prev.value());
+               logMessage.info << "Cells " << Cell::get(f) << " and " << prvCell;
+               logMessage.info << " in the same unit ";
+               logMessage.info << " have the same color in the value " << value << " bi-location network " << network;
+               std::cout << logMessage;
+            }
          }
          prev = f;
       }
    }
 }
 
-void StrategySimpleColoring::collectOneColorEmptiesHouse(const FieldsInfo &finfo, Value value, const ColorField &colors,
-                                                         const FieldBits &cellsToIgnore, FieldValues &fieldValues)
+void StrategySimpleColoring::collectOneColorEmptiesHouse(const FieldsInfo &finfo, Value value, const Network &network,
+                                                         const ColorField &colors, const FieldBits &cellsToIgnore,
+                                                         FieldValues &fieldValues)
 {
    const FieldBits fieldsValue = finfo.getActiveFieldsWithValue(value);
    const auto fieldsBlue = colors.getFieldsWithColor(Color::Blue);
@@ -109,6 +143,7 @@ void StrategySimpleColoring::collectOneColorEmptiesHouse(const FieldsInfo &finfo
          // Both colors are visible, ready
          continue;
       }
+      const auto prvSize = fieldValues.size();
       if (numCellsInHouseSeesBlue == numCellsInHouseWithValue)
       {
          fieldValues.add(fieldsBlue, value);
@@ -117,13 +152,24 @@ void StrategySimpleColoring::collectOneColorEmptiesHouse(const FieldsInfo &finfo
       {
          fieldValues.add(fieldsGreen, value);
       }
+      const auto change = fieldValues.size() - prvSize;
+      if (Logging::getDoLog() && change > 0)
+      {
+         Logging logMessage;
+         logMessage.strategyName = GetName();
+         logMessage.numChanges = change;
+         logMessage.info << "House " << house << " should not loose value " << value;
+         logMessage.info << " because of the  value " << value << " bi-location network " << network;
+         std::cout << logMessage;
+      }
    }
 }
 
 std::string StrategySimpleColoring::getName() const
 {
-   return "Simple coloring";
+   return GetName();
 }
+
 void StrategySimpleColoring::collect(const FieldsInfo &finfo, FieldValues &result)
 {
    const CandidatesGrid &grid = finfo.getGrid();
@@ -141,9 +187,11 @@ void StrategySimpleColoring::collect(const FieldsInfo &finfo, FieldValues &resul
          const auto coloring = Network::setColors(network);
          const auto cellsInCurrectNetwork = network.getFields();
 
-         StrategySimpleColoring::collectSees2ColorsCandidates(finfo, value, coloring, cellsInCurrectNetwork, result);
-         StrategySimpleColoring::collectTwiceInAUnit(finfo, value, coloring, result);
-         StrategySimpleColoring::collectOneColorEmptiesHouse(finfo, value, coloring, cellsInCurrectNetwork, result);
+         StrategySimpleColoring::collectSees2ColorsCandidates(finfo, value, network, coloring, cellsInCurrectNetwork,
+                                                              result);
+         StrategySimpleColoring::collectTwiceInAUnit(finfo, value, network, coloring, result);
+         StrategySimpleColoring::collectOneColorEmptiesHouse(finfo, value, network, coloring, cellsInCurrectNetwork,
+                                                             result);
       }
    }
 }

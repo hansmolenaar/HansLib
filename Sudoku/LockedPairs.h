@@ -38,4 +38,5 @@ class LockedPairs
 
 } // namespace Sudoku
 
+std::ostream &operator<<(std::ostream &, const Sudoku::LockedPair &);
 std::ostream &operator<<(std::ostream &, const Sudoku::LockedPairs &);

@@ -106,6 +106,7 @@ TEST(StrategyIntersectionElimination, PointingPairCol)
    strategy.collect(finfo, fieldValues);
    ASSERT_EQ(fieldValues.size(), 6);
 
+   // TestUtils::ShowStrategy(strategy, grid);
    TestUtils::CheckStrategy(strategy, grid, {6, 0});
 }
 
@@ -163,6 +164,7 @@ TEST(StrategyIntersectionElimination, BoxLine)
 
    StrategyIntersectionElimination strategy;
    FieldsInfo finfo(grid);
+   // TestUtils::ShowStrategy(strategy, grid);
    TestUtils::CheckStrategy(strategy, grid, {15, 0});
 
    FieldValues fieldValues;

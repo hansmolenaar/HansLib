@@ -36,7 +36,7 @@ std::span<const Cell> LockedPair::getCells() const
 
 std::ostream &operator<<(std::ostream &os, const Sudoku::LockedPair &lp)
 {
-   os << lp[0] << " <=> " << lp[1];
+   os << lp[0] << " <=> " << lp[1] << " (v" << lp.getValue() << ")";
    return os;
 }
 

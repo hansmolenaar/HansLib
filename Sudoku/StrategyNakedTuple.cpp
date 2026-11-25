@@ -48,12 +48,10 @@ void add(const FieldsInfo &finfo, const House &house, std::span<const Field> can
       Logging logMessage;
       logMessage.strategyName = GetName();
       logMessage.numChanges = fieldValues.size() - prvSize;
-      std::stringstream info;
-      info << "tuple with " << candidateTuple.size() << " cells";
-      info << " and values " << candidatesToRemove;
-      info << " in house " << house;
-      logMessage.info = info.str();
-      logMessage.log();
+      logMessage.info << "tuple with " << candidateTuple.size() << " cells";
+      logMessage.info << " and values " << candidatesToRemove;
+      logMessage.info << " in house " << house;
+      std::cout << logMessage;
    }
 }
 
@@ -83,13 +81,11 @@ void addBendedTriplets(const FieldsInfo &finfo,
             Logging logMessage;
             logMessage.strategyName = GetName();
             logMessage.numChanges = fieldValues.size() - prvSize;
-            std::stringstream info;
-            info << "bended triplet ";
-            info << "with values " << valuesInTriplet;
-            info << " in house " << inHouse;
-            info << " removes " << value << " from line " << bnt.line;
-            logMessage.info = info.str();
-            logMessage.log();
+            logMessage.info << "bended triplet ";
+            logMessage.info << "with values " << valuesInTriplet;
+            logMessage.info << " in house " << inHouse;
+            logMessage.info << " removes " << value << " from line " << bnt.line;
+            std::cout << logMessage;
          }
       }
    }

@@ -23,11 +23,9 @@ void StrategyNakedSingle::collect(const FieldsInfo &finfo, FieldValues &result)
          Logging logMessage;
          logMessage.strategyName = getName();
          logMessage.numChanges = result.size() - prvSize;
-         std::stringstream info;
-         info << "Cell " << Cell::get(field);
-         info << " with value " << value;
-         logMessage.info = info.str();
-         logMessage.log();
+         logMessage.info << "Cell " << Cell::get(field);
+         logMessage.info << " with value " << value;
+         std::cout << logMessage;
       }
    }
 }

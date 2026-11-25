@@ -189,7 +189,7 @@ std::ostream &operator<<(std::ostream &os, const Sudoku::Network &network)
          if (!done.contains(link))
          {
             done.insert(link);
-            os << link << "\n";
+            os << "\n" << link;
          }
       }
    }

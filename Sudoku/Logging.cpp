@@ -1,4 +1,5 @@
 #include "Logging.h"
+#include "BitsetUtils.h"
 #include "SudokuUtils.h"
 
 #include <ostream>
@@ -19,14 +20,10 @@ bool Logging::getDoLog()
    return s_doLog;
 }
 
-void Logging::log()
-{
-   std::cout << *this;
-}
-
 std::ostream &operator<<(std::ostream &os, const Sudoku::Logging &logging)
 {
-   os << logging.strategyName << ": " << logging.info << " -> " << logging.numChanges << " candidates removed\n";
+   os << logging.strategyName << ": " << logging.info.str() << " -> ";
+   os << logging.numChanges << " candidate" << (logging.numChanges == 1 ? "" : "s") << " removed\n";
    return os;
 }
 
@@ -45,11 +42,11 @@ std::ostream &operator<<(std::ostream &os, const Sudoku::ValueBits &values)
    return os;
 }
 
-std::ostream &operator<<(std::ostream &os, std::span<const Sudoku::Field> fields)
+std::ostream &operator<<(std::ostream &os, const FieldBits &fields)
 {
    os << "(";
    bool first = true;
-   for (Field field : fields)
+   for (Field field : SudokuUtils::FieldBitsToRange(fields))
    {
       os << (first ? "" : " ");
       first = false;
@@ -57,5 +54,12 @@ std::ostream &operator<<(std::ostream &os, std::span<const Sudoku::Field> fields
    }
    os << ")";
 
+   return os;
+}
+
+std::ostream &operator<<(std::ostream &os, std::span<const Sudoku::Field> fields)
+{
+   const FieldBits fieldBits = Utilities::Bitset<FieldBits().size()>::create(fields);
+   os << fieldBits;
    return os;
 }

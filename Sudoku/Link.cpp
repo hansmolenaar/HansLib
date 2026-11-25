@@ -14,6 +14,6 @@ Link::Link(const Cell &cell1, const Cell &cell2, LinkType linkType)
 
 std::ostream &operator<<(std::ostream &stream, const Sudoku::Link &link)
 {
-   stream << link.cellMin << " <-=>  " << link.cellMax << "\n";
+   stream << link.cellMin << " <-=>  " << link.cellMax;
    return stream;
 }

@@ -83,22 +83,20 @@ FieldValueCount CollectCandidates(const FieldsInfo &finfo, const House &house, s
    {
       Logging logMessage;
       logMessage.numChanges = changeSize;
-      std::stringstream info;
       if (candidateTuple.size() == 1)
       {
          logMessage.strategyName = GetNameSingle();
-         info << "single cell";
-         info << " with value " << candidateTuple.front();
+         logMessage.info << "single cell";
+         logMessage.info << " with value " << candidateTuple.front();
       }
       else
       {
          logMessage.strategyName = GetNameTuple();
-         info << "tuple with " << candidateTuple.size() << " cells";
-         info << " and values " << Bitset<ValueBits().size()>::create(candidateTuple);
+         logMessage.info << "tuple with " << candidateTuple.size() << " cells";
+         logMessage.info << " and values " << Bitset<ValueBits().size()>::create(candidateTuple);
       }
-      info << " in house " << house;
-      logMessage.info = info.str();
-      logMessage.log();
+      logMessage.info << " in house " << house;
+      std::cout << logMessage;
    }
    return count;
 }

@@ -2,6 +2,7 @@
 #include "CandidatesGrid.h"
 #include "Combinations.h"
 #include "LockedPairs.h"
+#include "Logging.h"
 #include "MyAssert.h"
 #include "SudokuDefines.h"
 #include "Visibility.h"
@@ -12,7 +13,12 @@ using namespace Utilities;
 
 namespace
 {
-void collectCandidates(const FieldsInfo &finfo, Value value, const XWing &xWing, FieldValues &fieldsValues)
+std::string GetName()
+{
+   return "X-wing";
+}
+
+void collectCandidates(const FieldsInfo &finfo, Value value, const XWing &xWing, FieldValues &fieldValues)
 {
    FieldBits fixedFields;
    fixedFields.set(xWing.lockedPair0[0].field);
@@ -20,7 +26,18 @@ void collectCandidates(const FieldsInfo &finfo, Value value, const XWing &xWing,
    fixedFields.set(xWing.lockedPair1[0].field);
    fixedFields.set(xWing.lockedPair1[1].field);
    const auto activeFields = finfo.getHouseFields(xWing.house0) & ~fixedFields & finfo.getActiveFieldsWithValue(value);
-   fieldsValues.add(activeFields, value);
+   const auto prvSize = fieldValues.size();
+   fieldValues.add(activeFields, value);
+   const auto change = fieldValues.size() - prvSize;
+   if (Logging::getDoLog() && change > 0)
+   {
+      Logging logMessage;
+      logMessage.strategyName = GetName();
+      logMessage.numChanges = change;
+      logMessage.info << "LockedPair " << xWing.lockedPair0 << " in " << xWing.house0;
+      logMessage.info << " and " << xWing.lockedPair1 << " in " << xWing.house1;
+      std::cout << logMessage;
+   }
 }
 
 bool IsSimpleLineLockedPair(const LockedPair &lp)
@@ -103,5 +120,5 @@ void StrategyXWing::collect(const FieldsInfo &finfo, FieldValues &result)
 
 std::string StrategyXWing::getName() const
 {
-   return "X-wing";
+   return GetName();
 }
